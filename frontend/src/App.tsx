@@ -11,6 +11,9 @@ import AlertsPage from '@/pages/AlertsPage'
 import ReportsPage from '@/pages/ReportsPage'
 import UserManagementPage from '@/pages/UserManagementPage'
 import LoginPage from '@/pages/LoginPage'
+import ResourcesPage from '@/pages/ResourcesPage'
+import CampsPage from '@/pages/CampsPage'
+import TokensPage from '@/pages/TokensPage'
 
 const queryClient = new QueryClient()
 
@@ -32,6 +35,9 @@ const AppRouter = () => {
           <Route path="/alerts" element={<AlertsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/users" element={<UserManagementPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/camps" element={<CampsPage />} />
+          <Route path="/tokens" element={<TokensPage />} />
         </Routes>
       </DashboardLayout>
     </BrowserRouter>

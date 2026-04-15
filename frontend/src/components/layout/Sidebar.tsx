@@ -1,60 +1,81 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Map as MapIcon, AlertTriangle, Users, BarChart3, Bell, Settings, LogOut, Shield } from 'lucide-react'
+import { 
+  LayoutDashboard, 
+  MapPin, 
+  AlertTriangle, 
+  Users, 
+  BarChart3, 
+  Radio, 
+  Package, 
+  Building2, 
+  QrCode, 
+  Settings, 
+  LogOut, 
+  Shield 
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const navigation = [
+const mainNavigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Impact Map', href: '/map', icon: MapIcon, status: 'LIVE' },
+  { name: 'Impact Map', href: '/map', icon: MapPin, status: 'LIVE' },
   { name: 'Incidents', href: '/incidents', icon: AlertTriangle, count: 12 },
-  { name: 'Alerts', href: '/alerts', icon: Bell, count: 3 },
+  { name: 'Alerts', href: '/alerts', icon: Radio, count: 3 },
   { name: 'Analytics', href: '/reports', icon: BarChart3 },
   { name: 'User Management', href: '/users', icon: Users },
+]
+
+const resourceNavigation = [
+  { name: 'Resources', href: '/resources', icon: Package },
+  { name: 'Relief Camps', href: '/camps', icon: Building2 },
+  { name: 'Token System', href: '/tokens', icon: QrCode },
 ]
 
 export function Sidebar() {
   const location = useLocation()
 
   return (
-    <div className="flex flex-col w-72 bg-card border-r h-full shadow-[1px_0_0_0_rgba(0,0,0,0.05)]">
-      <div className="flex items-center gap-3 p-8 border-b border-border/40 mb-2">
-        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0">
-          <Shield className="text-primary w-7 h-7" />
+    <div className="flex flex-col w-72 bg-white border-r h-full shadow-[1px_0_0_0_rgba(0,0,0,0.02)]">
+      {/* Brand Header */}
+      <div className="flex items-center gap-3 p-8 pb-10">
+        <div className="w-10 h-10 bg-[#0061ff]/10 rounded-xl flex items-center justify-center shrink-0">
+          <Shield className="text-[#0061ff] w-6 h-6" />
         </div>
-        <div className="min-w-0">
-          <h1 className="text-xl font-black leading-none tracking-tighter text-foreground uppercase">SURAKSHA</h1>
-          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mt-1 opacity-70">DMC Command Center</p>
+        <div>
+          <h1 className="text-xl font-bold leading-none tracking-tight text-[#0061ff] uppercase">SURAKSHA</h1>
+          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1.5 opacity-70">Command Center</p>
         </div>
       </div>
       
-      <nav className="flex-1 px-4 space-y-1.5 mt-2">
-        {navigation.map((item) => {
+      {/* All Navigation is scrollable together */}
+      <nav className="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+        {mainNavigation.map((item) => {
           const isActive = location.pathname === item.href
           return (
             <Link
               key={item.name}
               to={item.href}
               className={cn(
-                "flex items-center justify-between px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 group",
+                "relative flex items-center justify-between px-5 py-3.5 text-sm font-semibold rounded-2xl transition-all duration-300 group",
                 isActive 
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]" 
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground hover:pl-5"
+                  ? "bg-gradient-to-r from-[#0061ff] to-[#00c6ff] text-white shadow-lg shadow-blue-500/25" 
+                  : "text-slate-600 hover:bg-slate-50 hover:text-[#0061ff]"
               )}
             >
-              <div className="flex items-center gap-3">
-                <item.icon className={cn("w-5 h-5", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary transition-colors")} />
-                {item.name}
+              <div className="flex items-center gap-3.5">
+                <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-slate-400 group-hover:text-[#0061ff] opacity-70 group-hover:opacity-100 transition-all")} />
+                <span className="tracking-tight">{item.name}</span>
               </div>
               
               {item.status && (
-                <span className="text-[10px] font-bold bg-green-500 text-white px-2 py-0.5 rounded-full animate-pulse">
+                <span className="text-[10px] font-bold bg-[#00d26a] text-white px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm shadow-green-500/20">
                   {item.status}
                 </span>
               )}
               
               {item.count && !item.status && (
                 <span className={cn(
-                  "text-[11px] font-bold px-2 py-0.5 rounded-full",
-                  isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                  "text-[11px] font-bold px-2 py-0.5 min-w-[1.5rem] text-center rounded-full transition-colors",
+                  isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500"
                 )}>
                   {item.count}
                 </span>
@@ -62,25 +83,53 @@ export function Sidebar() {
             </Link>
           )
         })}
-      </nav>
 
-      <div className="p-4 mt-auto border-t border-border/50">
-        <Link
-          to="/settings"
-          className={cn(
-            "flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl transition-all hover:bg-muted mb-2",
-            location.pathname === '/settings' ? "text-primary" : "text-muted-foreground"
-          )}
-        >
-          <Settings className="w-5 h-5" />
-          Settings
-        </Link>
-        
-        <button className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-muted-foreground w-full rounded-xl hover:bg-destructive/5 hover:text-destructive transition-all">
-          <LogOut className="w-5 h-5" />
-          Logout
-        </button>
-      </div>
+        <div className="pt-10 mb-2">
+          <h2 className="px-5 mb-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] opacity-60">Resources</h2>
+          
+          <div className="space-y-1">
+            {resourceNavigation.map((item) => {
+              const isActive = location.pathname === item.href
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center gap-3.5 px-5 py-3.5 text-sm font-semibold rounded-2xl transition-all duration-300 group",
+                    isActive 
+                      ? "bg-gradient-to-r from-[#0061ff] to-[#00c6ff] text-white shadow-lg shadow-blue-500/25" 
+                      : "text-slate-600 hover:bg-slate-50 hover:text-[#0061ff]"
+                  )}
+                >
+                  <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-slate-400 group-hover:text-[#0061ff] opacity-70 group-hover:opacity-100 transition-all")} />
+                  <span className="tracking-tight">{item.name}</span>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Settings and Logout moved inside scrollable nav */}
+        <div className="pt-10 pb-10 space-y-2">
+          <Link
+            to="/settings"
+            className={cn(
+              "flex items-center gap-3.5 px-5 py-3.5 text-sm font-bold rounded-2xl transition-all duration-300",
+              location.pathname === '/settings' 
+                ? "bg-[#F1F5F9] text-[#0061ff]" 
+                : "text-[#0061ff] bg-[#F1F5F9] hover:bg-[#E2EAF1]"
+            )}
+          >
+            <Settings className="w-5 h-5" />
+            Settings
+          </Link>
+          
+          <button className="flex items-center gap-3.5 px-5 py-3.5 text-sm font-bold text-[#E11D48] w-full rounded-2xl bg-[#FFF1F1] hover:bg-[#FFE4E4] transition-all duration-300">
+            <LogOut className="w-5 h-5" />
+            Logout
+          </button>
+        </div>
+      </nav>
     </div>
   )
 }

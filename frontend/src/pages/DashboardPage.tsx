@@ -1,179 +1,169 @@
-import React from 'react'
-import { AlertCircle, Users, Bell, Clock, ArrowUpRight, ArrowDownRight, MapPin, ChevronRight, Globe, Filter } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { ImpactMap } from '@/components/map/ImpactMap'
+import { 
+  AlertTriangle, Users, Clock, Heart, Package, LayoutGrid, 
+  TrendingUp, TrendingDown, Download, Filter, MapPin, 
+  Building2, ChevronRight 
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const stats = [
+const mainStats = [
+  { label: 'Active Incidents', value: '12', trend: '+3', isUp: true, icon: AlertTriangle, color: 'text-red-500', blob: 'bg-red-400' },
+  { label: 'Volunteers Active', value: '84', trend: '+12', isUp: true, icon: Users, color: 'text-green-600', blob: 'bg-green-400' },
+  { label: 'Relief Camps', value: '12', trend: '+2', isUp: true, icon: Building2, color: 'text-purple-600', blob: 'bg-purple-400' },
+  { label: 'Avg Response Time', value: '14m', trend: '-3m', isUp: false, icon: Clock, color: 'text-blue-600', blob: 'bg-blue-400' },
+]
+
+const secondaryStats = [
   { 
-    label: 'Active Incidents', 
-    value: '12', 
-    trend: '+3', 
-    trendUp: true, 
-    icon: AlertCircle, 
-    color: 'text-red-500', 
-    bg: 'bg-red-50',
-    dotColor: 'bg-red-500'
+    label: 'Family Safety Updates', 
+    value: '842', 
+    subtext: '245 marked safe in last 24h', 
+    icon: Heart, 
+    color: 'bg-pink-500',
+    cardClass: 'bg-[#fff5f7] border-[#fee2e7]',
+    footerColor: 'text-pink-600'
   },
   { 
-    label: 'Volunteers Active', 
-    value: '84', 
-    trend: '+12', 
-    trendUp: true, 
-    icon: Users, 
-    color: 'text-green-500', 
-    bg: 'bg-green-50',
-    dotColor: 'bg-green-500'
+    label: 'Community Resources', 
+    value: '80', 
+    subtext: '23 boats, 15 vehicles available', 
+    icon: Package, 
+    color: 'bg-green-500',
+    cardClass: 'bg-[#f0fdf4] border-[#dcfce7]',
+    footerColor: 'text-green-600'
   },
   { 
-    label: 'Pending Alerts', 
-    value: '3', 
-    trend: '-2', 
-    trendUp: false, 
-    icon: Bell, 
-    color: 'text-orange-500', 
-    bg: 'bg-orange-50',
-    dotColor: 'bg-orange-500'
-  },
-  { 
-    label: 'Avg Response Time', 
-    value: '14m', 
-    trend: '-3m', 
-    trendUp: false, 
-    icon: Clock, 
-    color: 'text-blue-500', 
-    bg: 'bg-blue-50',
-    dotColor: 'bg-blue-500'
+    label: 'Token Distributions', 
+    value: '1,245', 
+    subtext: '23 duplicates prevented', 
+    icon: LayoutGrid, 
+    color: 'bg-blue-500',
+    cardClass: 'bg-[#eff6ff] border-[#dbeafe]',
+    footerColor: 'text-blue-600'
   },
 ]
 
-const incidents = [
-  {
-    id: '#INC-1245',
-    type: 'Flash Flood',
-    location: 'Colombo 7, Bambalapitiya',
-    priority: 'CRITICAL',
-    status: 'PENDING',
-    time: '5 min ago',
-    mlScore: 0.95
-  },
-  {
-    id: '#INC-1244',
-    type: 'Landslide',
-    location: 'Kandy District',
-    priority: 'HIGH',
-    status: 'PENDING',
-    time: '15 min ago',
-    mlScore: 0.87
-  },
-  {
-    id: '#INC-1243',
-    type: 'Building Collapse',
-    location: 'Dehiwala',
-    priority: 'HIGH',
-    status: 'IN PROGRESS',
-    time: '1 hour ago',
-    mlScore: 0.82
-  },
-  {
-    id: '#INC-1242',
-    type: 'Medical Emergency',
-    location: 'Wellawatta',
-    priority: 'MEDIUM',
-    status: 'ASSIGNED',
-    time: '2 hours ago',
-    mlScore: 0.65
-  },
+const mlQueue = [
+  { id: '#INC-1245', type: 'Flash Flood', location: 'Colombo 7, Bambalapitiya', priority: 'CRITICAL', time: '5 min ago', status: 'PENDING', score: '0.95' },
+  { id: '#INC-1244', type: 'Landslide', location: 'Kandy District', priority: 'HIGH', time: '15 min ago', status: 'PENDING', score: '0.87' },
+  { id: '#INC-1243', type: 'Building Collapse', location: 'Dehiwala', priority: 'HIGH', time: '1 hour ago', status: 'IN PROGRESS', score: '0.82' },
+  { id: '#INC-1242', type: 'Medical Emergency', location: 'Wellawatta', priority: 'MEDIUM', time: '2 hours ago', status: 'ASSIGNED', score: '0.65' },
 ]
 
 const recentAlerts = [
-  { title: 'Flash Flood Warning', location: 'Colombo 7', time: '10 min ago', recipients: 2340 },
-  { title: 'Landslide Risk', location: 'Kandy', time: '1 hour ago', recipients: 1520 },
-  { title: 'Severe Weather', location: 'Galle', time: '3 hours ago', recipients: 3100 },
+  { title: 'Flash Flood Warning', location: 'Colombo 7', time: '10 min ago', recipients: '2340 recipients' },
+  { title: 'Landslide Risk', location: 'Kandy', time: '1 hour ago', recipients: '1520 recipients' },
+  { title: 'Severe Weather', location: 'Galle', time: '3 hours ago', recipients: '3100 recipients' },
 ]
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div>
-        <h2 className="text-3xl font-bold text-foreground tracking-tight">Dashboard</h2>
-        <p className="text-muted-foreground mt-1">Real-time disaster management overview</p>
+    <div className="space-y-8 animate-in fade-in duration-500 font-sans">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Dashboard</h1>
+          <p className="text-slate-500 mt-1 font-medium">Real-time disaster management overview</p>
+        </div>
+        <button className="flex items-center gap-2 px-5 py-2.5 bg-[#0061ff] text-white rounded-xl text-sm font-medium shadow-lg shadow-blue-500/20 hover:scale-[1.02] transition-all active:scale-95 shadow-[0_8px_20px_-6px_rgba(0,97,255,0.4)]">
+          <Download className="w-4 h-4" />
+          Export Report
+        </button>
       </div>
 
-      {/* Stats Grid */}
+      {/* Main Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => (
-          <div key={stat.label} className="suraksha-card p-6 flex flex-col items-start relative overflow-hidden group hover:border-primary/30 transition-all cursor-default">
-            <div className={cn("p-3 rounded-2xl mb-4 transition-transform group-hover:scale-110", stat.bg)}>
-              <stat.icon className={cn("w-6 h-6", stat.color)} />
-            </div>
-            <div className="flex items-baseline justify-between w-full">
-              <h3 className="text-3xl font-bold tracking-tight">{stat.value}</h3>
+        {mainStats.map((stat, i) => (
+          <div key={i} className="suraksha-card p-7 group hover:shadow-xl transition-all">
+            <div className={`stat-blob ${stat.blob}`} />
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <div className={cn("p-3 rounded-2xl bg-white shadow-sm border border-slate-100", stat.color)}>
+                <stat.icon className="w-6 h-6" />
+              </div>
               <div className={cn(
-                "flex items-center text-xs font-bold px-2 py-1 rounded-lg",
-                stat.trendUp ? "text-green-600 bg-green-50" : "text-red-600 bg-red-50"
+                "flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg",
+                stat.isUp ? "text-green-600" : "text-red-500"
               )}>
-                {stat.trendUp ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />}
+                {stat.isUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                 {stat.trend}
               </div>
             </div>
-            <p className="text-sm font-medium text-muted-foreground mt-1">{stat.label}</p>
-            
-            {/* Background Decoration */}
-            <div className={cn("absolute -right-4 -bottom-4 w-24 h-24 rounded-full opacity-5 group-hover:opacity-10 transition-opacity", stat.dotColor)} />
+            <div className="relative z-10">
+              <div className="text-4xl font-bold text-[#1e293b] mb-1">{stat.value}</div>
+              <div className="text-[11px] font-medium text-slate-400 uppercase tracking-widest">{stat.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Secondary Stats Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {secondaryStats.map((stat, i) => (
+          <div key={i} className={cn("p-6 rounded-[1.5rem] border transition-all hover:shadow-lg flex items-center gap-5", stat.cardClass)}>
+            <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-110", stat.color)}>
+              <stat.icon className="w-7 h-7 text-white" />
+            </div>
+            <div className="flex-1">
+              <div className="flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold text-[#1e293b]">{stat.value}</span>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-tight">{stat.label}</span>
+                </div>
+                <div className={cn("text-[11px] font-medium mt-1", stat.footerColor)}>{stat.subtext}</div>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* ML Queue */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between px-2">
-            <h3 className="text-xl font-bold flex items-center gap-2">
-              ML-Sorted Priority Queue
-              <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Automated</span>
-            </h3>
-            <button className="text-sm font-semibold text-muted-foreground flex items-center gap-2 hover:text-primary transition-colors">
-              <Filter className="w-4 h-4" /> Filter
+        {/* ML Priority Queue */}
+        <div className="lg:col-span-2 suraksha-card p-8">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold text-[#1e293b]">ML-Sorted Priority Queue</h3>
+            <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors text-blue-600 font-semibold text-sm">
+              <Filter className="w-4 h-4" />
+              Filter
             </button>
           </div>
           
           <div className="space-y-4">
-            {incidents.map((incident) => (
-              <div key={incident.id} className="suraksha-card p-5 group hover:border-primary/20 transition-all cursor-pointer">
-                <div className="flex justify-between items-start mb-3">
+            {mlQueue.map((item, idx) => (
+              <div key={idx} className="p-6 border border-slate-50 rounded-2xl hover:border-blue-100 hover:bg-blue-50/10 transition-all group cursor-pointer">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-muted-foreground">{incident.id}</span>
+                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">{item.id}</span>
                     <span className={cn(
-                      "text-[10px] font-bold px-2 py-1 rounded-md tracking-wider",
-                      incident.priority === 'CRITICAL' ? "bg-red-100 text-red-600" : "bg-orange-100 text-orange-600"
-                    )}>
-                      {incident.priority}
-                    </span>
+                      "text-[10px] font-semibold px-3 py-1 rounded-full uppercase tracking-tight",
+                      item.priority === 'CRITICAL' ? "bg-red-50 text-red-500" : 
+                      item.priority === 'HIGH' ? "bg-orange-50 text-orange-500" :
+                      "bg-yellow-50 text-yellow-600"
+                    )}>{item.priority}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
-                    <Clock className="w-3.5 h-3.5" /> {incident.time}
-                  </span>
+                  <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
+                    <Clock className="w-4 h-4 text-slate-300" />
+                    {item.time}
+                  </div>
                 </div>
                 
-                <h4 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{incident.type}</h4>
+                <h4 className="text-2xl font-bold text-[#1e293b] group-hover:text-[#0061ff] transition-colors leading-tight">{item.type}</h4>
                 
-                <div className="flex items-center gap-2 text-muted-foreground mb-4">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-sm font-medium">{incident.location}</span>
+                <div className="flex items-center gap-2 text-sm font-semibold text-slate-400 mt-2">
+                  <MapPin className="w-4 h-4 text-slate-300" />
+                  {item.location}
                 </div>
-                
-                <div className="flex items-center justify-between border-t border-border/50 pt-4">
+
+                <div className="h-px bg-slate-50 my-5" />
+
+                <div className="flex items-center justify-between">
                   <span className={cn(
-                    "text-[10px] font-bold px-3 py-1.5 rounded-lg tracking-widest",
-                    incident.status === 'PENDING' ? "bg-yellow-100 text-yellow-600" : 
-                    incident.status === 'IN PROGRESS' ? "bg-blue-100 text-blue-600" : "bg-cyan-100 text-cyan-600"
-                  )}>
-                    {incident.status}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-muted-foreground">ML Score:</span>
-                    <span className="text-sm font-bold text-primary">{incident.mlScore}</span>
+                    "text-[11px] font-semibold px-4 py-1.5 rounded-lg uppercase tracking-widest",
+                    item.status === 'PENDING' ? "bg-amber-50 text-amber-600 border border-amber-100/50" :
+                    item.status === 'IN PROGRESS' ? "bg-blue-50 text-blue-600 border border-blue-100/50" :
+                    item.status === 'ASSIGNED' ? "bg-teal-50 text-teal-600 border border-teal-100/50" :
+                    "bg-slate-50 text-slate-500"
+                  )}>{item.status}</span>
+                  <div className="text-xs font-semibold text-slate-400">
+                    ML Score: <span className="text-[#0061ff] font-semibold text-sm ml-1">{item.score}</span>
                   </div>
                 </div>
               </div>
@@ -181,61 +171,80 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Recent Alerts & Map Preview */}
-        <div className="space-y-8">
-          <div className="suraksha-card overflow-hidden flex flex-col h-fit">
-            <div className="p-5 border-b border-border/50">
-              <h3 className="font-bold text-lg">Recent Alerts</h3>
-            </div>
-            <div className="p-5 space-y-6">
-              {recentAlerts.map((alert, idx) => (
-                <div key={idx} className="flex gap-4 group">
-                  <div className="w-1.5 h-12 bg-primary/20 rounded-full bg-gradient-to-b from-primary to-primary/20" />
-                  <div className="flex-1 space-y-1">
-                    <h5 className="font-bold text-sm group-hover:text-primary transition-colors">{alert.title}</h5>
-                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-medium uppercase tracking-tight">
-                      <MapPin className="w-3 h-3" /> {alert.location}
-                    </div>
-                    <div className="flex items-center justify-between text-[11px] font-bold text-muted-foreground/60 pt-1">
-                      <span>{alert.time}</span>
-                      <span>{alert.recipients.toLocaleString()} recipients</span>
-                    </div>
-                  </div>
+        {/* Recent Alerts Widget */}
+        <div className="suraksha-card p-8">
+          <h3 className="text-xl font-bold text-[#1e293b] mb-8">Recent Alerts</h3>
+          <div className="space-y-4">
+            {recentAlerts.map((alert, idx) => (
+              <div key={idx} className="p-5 border border-slate-50 rounded-2xl hover:border-blue-100 hover:bg-blue-50/30 transition-all group">
+                <h4 className="text-[16px] font-bold text-[#1e293b] leading-tight group-hover:text-[#0061ff] transition-colors mb-2">{alert.title}</h4>
+                
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+                  <MapPin className="w-3.5 h-3.5 text-slate-300" />
+                  {alert.location}
                 </div>
-              ))}
-            </div>
-            <button className="w-full p-4 text-sm font-bold text-primary hover:bg-primary/5 transition-colors border-t border-border/50 flex items-center justify-center gap-2">
-              View All Alerts <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="suraksha-card p-5 h-80 flex flex-col">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-lg">GIS Impact Map Preview</h3>
-              <Link to="/map" className="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
-                Open Full Map <ArrowUpRight className="w-3 h-3" />
-              </Link>
-            </div>
-            <div className="flex-1 bg-muted/30 rounded-xl relative overflow-hidden border border-border/50 group">
-              <ImpactMap />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl border border-white/20 shadow-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <Globe className="text-white w-4 h-4" />
+                
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex items-center gap-2 text-[10px] font-medium text-slate-400 uppercase tracking-tight">
+                    <Clock className="w-3.5 h-3.5 text-slate-300" />
+                    {alert.time}
                   </div>
-                  <div>
-                    <h6 className="text-[11px] font-bold text-foreground">Interactive GIS Map</h6>
-                    <p className="text-[9px] text-muted-foreground font-bold">12 incidents • 84 volunteers</p>
-                  </div>
-                </div>
-                <div className="flex -space-x-2">
-                   {[1, 2, 3].map(i => (
-                     <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-muted" />
-                   ))}
+                  <span className="text-[11px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md">{alert.recipients}</span>
                 </div>
               </div>
+            ))}
+          </div>
+          <button className="w-full mt-8 py-4 px-6 border-2 border-slate-50 rounded-2xl text-[11px] font-semibold text-slate-400 uppercase tracking-widest hover:border-[#0061ff] hover:text-[#0061ff] transition-all">
+            View All Broadcasts
+          </button>
+        </div>
+      </div>
+
+      {/* GIS Impact Map Preview */}
+      <div className="suraksha-card p-8">
+        <div className="flex items-center justify-between mb-8">
+          <h3 className="text-xl font-bold text-[#1e293b]">GIS Impact Map Preview</h3>
+          <button className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:underline transition-all">
+            Open Full Map
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="relative h-[400px] w-full bg-[#e0f2fe] rounded-[2rem] overflow-hidden border-4 border-white shadow-inner flex items-center justify-center">
+          {/* Stylized Map Elements */}
+          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none" />
+          
+          {/* Centered Large Marker */}
+          <div className="flex flex-col items-center gap-2 transform -translate-y-4">
+            <div className="p-4 bg-white rounded-full shadow-2xl animate-bounce">
+              <MapPin className="w-10 h-10 text-blue-600 fill-blue-50" />
             </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-[#1e293b]">Interactive GIS Map</div>
+              <div className="text-sm font-semibold text-slate-500">12 incidents • 84 volunteers</div>
+            </div>
+          </div>
+
+          {/* Scattered Markers */}
+          <div className="absolute top-[20%] left-[10%] w-4 h-4 bg-red-500 rounded-full shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse" />
+          <div className="absolute top-[40%] right-[15%] w-5 h-5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.5)]" />
+          <div className="absolute bottom-[25%] left-[20%] w-3 h-3 bg-yellow-400 rounded-full" />
+          <div className="absolute bottom-[30%] right-[10%] w-3 h-3 bg-green-500 rounded-full" />
+
+          {/* Map Legend Overlay */}
+          <div className="absolute bottom-6 left-6 p-5 bg-white/90 backdrop-blur-md rounded-2xl border border-slate-100 shadow-xl space-y-3">
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+              <span className="text-xs font-medium text-slate-600 group-hover:text-blue-600 transition-colors">Incidents</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-slate-300 text-pink-600 focus:ring-pink-500" />
+              <span className="text-xs font-medium text-slate-600 group-hover:text-pink-600 transition-colors">Heatmap</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-green-600 focus:ring-green-500" />
+              <span className="text-xs font-medium text-slate-600 group-hover:text-green-600 transition-colors">Volunteers</span>
+            </label>
           </div>
         </div>
       </div>

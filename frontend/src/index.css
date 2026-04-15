@@ -79,11 +79,15 @@
 /* Custom Suraksha UI Utility Classes */
 @layer components {
   .suraksha-card {
-    @apply bg-card border border-border/40 rounded-2xl shadow-md transition-all duration-300;
+    @apply bg-card border border-border/60 rounded-[1.5rem] shadow-sm transition-all duration-300 relative overflow-hidden;
   }
   
   .premium-shadow {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  }
+
+  .stat-blob {
+    @apply absolute -top-4 -right-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none;
   }
 }
 
