@@ -14,6 +14,9 @@ import {
   Shield 
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
+import { useEffect, useState } from 'react'
+import { incidentService, alertService } from '../../services/api'
 import logo from '@/pictures/Full logo.png'
 
 export function Sidebar() {

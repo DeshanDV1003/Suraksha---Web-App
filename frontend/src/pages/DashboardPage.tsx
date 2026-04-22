@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import {
-  AlertTriangle, Users, Clock, Heart, Package, LayoutGrid,
-  TrendingUp, TrendingDown, Download, Filter, MapPin,
+import { 
+  AlertTriangle, Users, Clock, Heart, Package, LayoutGrid, 
+  TrendingUp, TrendingDown, Download, Filter, MapPin, 
   Building2, ChevronRight, Plus, X, Send
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { incidentService, alertService, campService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function DashboardPage() {
+  const { user } = useAuth()
   const [incidents, setIncidents] = useState<any[]>([])
   const [alerts, setAlerts] = useState<any[]>([])
   const [camps, setCamps] = useState<any[]>([])

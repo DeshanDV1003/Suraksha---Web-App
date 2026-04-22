@@ -1,4 +1,5 @@
 import { Bell, Search } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
 export function Header() {
   return (
