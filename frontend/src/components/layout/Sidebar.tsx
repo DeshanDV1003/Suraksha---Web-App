@@ -14,9 +14,7 @@ import {
   Shield 
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useAuth } from '@/hooks/useAuth'
-import { useEffect, useState } from 'react'
-import { incidentService, alertService } from '../../services/api'
+import logo from '@/pictures/Full logo.png'
 
 export function Sidebar() {
   const location = useLocation()
@@ -62,8 +60,8 @@ export function Sidebar() {
     <div className="flex flex-col w-72 bg-white border-r h-full shadow-[1px_0_0_0_rgba(0,0,0,0.02)]">
       {/* Brand Header */}
       <div className="flex items-center gap-3 p-8 pb-10">
-        <div className="w-10 h-10 bg-[#0061ff]/10 rounded-xl flex items-center justify-center shrink-0">
-          <Shield className="text-[#0061ff] w-6 h-6" />
+        <div className="w-12 h-12 flex items-center justify-center shrink-0">
+          <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
         </div>
         <div>
           <h1 className="text-xl font-bold leading-none tracking-tight text-[#0061ff] uppercase">SURAKSHA</h1>

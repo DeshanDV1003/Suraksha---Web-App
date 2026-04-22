@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { 
-  AlertTriangle, Users, Clock, Heart, Package, LayoutGrid, 
-  TrendingUp, TrendingDown, Download, Filter, MapPin, 
+import {
+  AlertTriangle, Users, Clock, Heart, Package, LayoutGrid,
+  TrendingUp, TrendingDown, Download, Filter, MapPin,
   Building2, ChevronRight, Plus, X, Send
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -13,7 +13,7 @@ export default function DashboardPage() {
   const [alerts, setAlerts] = useState<any[]>([])
   const [camps, setCamps] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  
+
   // Modal states
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false)
   const [newAlert, setNewAlert] = useState({ title: '', message: '', location: '', type: 'INFO' })
@@ -56,68 +56,68 @@ export default function DashboardPage() {
   }
 
   const mainStats = [
-    { 
-      label: 'Active Incidents', 
-      value: incidents.filter(i => i.status !== 'RESOLVED').length.toString(), 
-      trend: '+3', 
-      isUp: true, 
-      icon: AlertTriangle, 
-      color: 'text-red-500', 
-      blob: 'bg-red-400' 
+    {
+      label: 'Active Incidents',
+      value: incidents.filter(i => i.status !== 'RESOLVED').length.toString(),
+      trend: '+3',
+      isUp: true,
+      icon: AlertTriangle,
+      color: 'text-red-500',
+      blob: 'bg-red-400'
     },
-    { 
-      label: 'Volunteers Active', 
+    {
+      label: 'Volunteers Active',
       value: '84', // Placeholder as we don't have volunteer logic yet
-      trend: '+12', 
-      isUp: true, 
-      icon: Users, 
-      color: 'text-green-600', 
-      blob: 'bg-green-400' 
+      trend: '+12',
+      isUp: true,
+      icon: Users,
+      color: 'text-green-600',
+      blob: 'bg-green-400'
     },
-    { 
-      label: 'Relief Camps', 
-      value: camps.length.toString(), 
-      trend: '+2', 
-      isUp: true, 
-      icon: Building2, 
-      color: 'text-purple-600', 
-      blob: 'bg-purple-400' 
+    {
+      label: 'Relief Camps',
+      value: camps.length.toString(),
+      trend: '+2',
+      isUp: true,
+      icon: Building2,
+      color: 'text-purple-600',
+      blob: 'bg-purple-400'
     },
-    { 
-      label: 'Avg Response Time', 
-      value: '14m', 
-      trend: '-3m', 
-      isUp: false, 
-      icon: Clock, 
-      color: 'text-blue-600', 
-      blob: 'bg-blue-400' 
+    {
+      label: 'Avg Response Time',
+      value: '14m',
+      trend: '-3m',
+      isUp: false,
+      icon: Clock,
+      color: 'text-blue-600',
+      blob: 'bg-blue-400'
     },
   ]
 
   const secondaryStats = [
-    { 
-      label: 'Family Safety Updates', 
-      value: '842', 
-      subtext: '245 marked safe in last 24h', 
-      icon: Heart, 
+    {
+      label: 'Family Safety Updates',
+      value: '842',
+      subtext: '245 marked safe in last 24h',
+      icon: Heart,
       color: 'bg-pink-500',
       cardClass: 'bg-[#fff5f7] border-[#fee2e7]',
       footerColor: 'text-pink-600'
     },
-    { 
-      label: 'Community Resources', 
-      value: '80', 
-      subtext: '23 boats, 15 vehicles available', 
-      icon: Package, 
+    {
+      label: 'Community Resources',
+      value: '80',
+      subtext: '23 boats, 15 vehicles available',
+      icon: Package,
       color: 'bg-green-500',
       cardClass: 'bg-[#f0fdf4] border-[#dcfce7]',
       footerColor: 'text-green-600'
     },
-    { 
-      label: 'Token Distributions', 
-      value: '1,245', 
-      subtext: '23 duplicates prevented', 
-      icon: LayoutGrid, 
+    {
+      label: 'Token Distributions',
+      value: '1,245',
+      subtext: '23 duplicates prevented',
+      icon: LayoutGrid,
       color: 'bg-blue-500',
       cardClass: 'bg-[#eff6ff] border-[#dbeafe]',
       footerColor: 'text-blue-600'
@@ -145,7 +145,7 @@ export default function DashboardPage() {
             <Download className="w-4 h-4" />
             Export Report
           </button>
-          <button 
+          <button
             onClick={() => setIsAlertModalOpen(true)}
             className="flex items-center gap-2 px-6 py-2.5 bg-[#0061ff] text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95"
           >
@@ -210,7 +210,7 @@ export default function DashboardPage() {
               Filter Results
             </button>
           </div>
-          
+
           <div className="space-y-4">
             {incidents.length === 0 ? (
               <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
@@ -224,9 +224,9 @@ export default function DashboardPage() {
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]">#INC-{item.id.slice(0, 4)}</span>
                       <span className={cn(
                         "text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider",
-                        item.severity === 'CRITICAL' ? "bg-red-100 text-red-600" : 
-                        item.severity === 'HIGH' ? "bg-orange-100 text-orange-600" :
-                        "bg-yellow-100 text-yellow-700"
+                        item.severity === 'CRITICAL' ? "bg-red-100 text-red-600" :
+                          item.severity === 'HIGH' ? "bg-orange-100 text-orange-600" :
+                            "bg-yellow-100 text-yellow-700"
                       )}>{item.severity}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
@@ -234,23 +234,23 @@ export default function DashboardPage() {
                       {formatRelTime(item.createdAt)}
                     </div>
                   </div>
-                  
+
                   <h4 className="text-2xl font-bold text-[#1e293b] group-hover:text-[#0061ff] transition-colors leading-tight">{item.title}</h4>
-                  
+
                   <div className="flex items-center gap-2 text-sm font-bold text-slate-500 mt-2">
                     <MapPin className="w-4 h-4 text-slate-300" />
                     {item.location}
                   </div>
-  
+
                   <div className="h-px bg-slate-100 my-5" />
-  
+
                   <div className="flex items-center justify-between">
                     <span className={cn(
                       "text-[10px] font-bold px-4 py-1.5 rounded-xl uppercase tracking-[0.1em] border",
                       item.status === 'PENDING' ? "bg-amber-50 text-amber-600 border-amber-100" :
-                      item.status === 'IN_PROGRESS' ? "border-blue-100 bg-blue-50 text-blue-600" :
-                      item.status === 'ASSIGNED' ? "border-teal-100 bg-teal-50 text-teal-600" :
-                      "bg-slate-50 text-slate-500 border-slate-200"
+                        item.status === 'IN_PROGRESS' ? "border-blue-100 bg-blue-50 text-blue-600" :
+                          item.status === 'ASSIGNED' ? "border-teal-100 bg-teal-50 text-teal-600" :
+                            "bg-slate-50 text-slate-500 border-slate-200"
                     )}>{item.status.replace('_', ' ')}</span>
                     <div className="text-xs font-bold text-slate-400">
                       ML Score: <span className="text-[#0061ff] font-extrabold text-sm ml-1">0.92</span>
@@ -267,19 +267,19 @@ export default function DashboardPage() {
           <h3 className="text-xl font-bold text-[#1e293b] mb-8">Recent Alerts</h3>
           <div className="space-y-4">
             {alerts.length === 0 ? (
-               <div className="text-center py-10">
-                 <p className="text-slate-400 text-xs font-bold uppercase">No active alerts</p>
-               </div>
+              <div className="text-center py-10">
+                <p className="text-slate-400 text-xs font-bold uppercase">No active alerts</p>
+              </div>
             ) : (
               alerts.slice(0, 3).map((alert, idx) => (
                 <div key={idx} className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-[#0061ff]/30 hover:shadow-md transition-all group">
                   <h4 className="text-[16px] font-bold text-[#1e293b] leading-tight group-hover:text-[#0061ff] transition-colors mb-2">{alert.title}</h4>
-                  
+
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
                     <MapPin className="w-3.5 h-3.5 text-slate-300" />
                     {alert.location}
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-5">
                     <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       <Clock className="w-3.5 h-3.5 text-slate-300" />
@@ -314,19 +314,19 @@ export default function DashboardPage() {
           {/* Simulated Map Background */}
           <div className="absolute inset-0 bg-[#e0f2fe] pointer-events-none" />
           <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] pointer-events-none" />
-          
+
           {/* Main Map Content - Visual Placeholder for full GIS integration */}
           <div className="relative z-10 flex flex-col items-center gap-4">
-             <div className="relative">
-                <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-ping scale-150" />
-                <div className="w-20 h-20 bg-white rounded-full shadow-2xl flex items-center justify-center relative z-10 border border-blue-50 group-hover/map:scale-110 transition-transform duration-500">
-                  <MapPin className="w-10 h-10 text-[#0061ff] fill-blue-50/50" />
-                </div>
-             </div>
-             <div className="text-center px-6 py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-xl">
-                <div className="text-xl font-extrabold text-[#1e293b]">Dynamic GIS Coverage</div>
-                <div className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">{incidents.length} incidents • 84 volunteers active</div>
-             </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-ping scale-150" />
+              <div className="w-20 h-20 bg-white rounded-full shadow-2xl flex items-center justify-center relative z-10 border border-blue-50 group-hover/map:scale-110 transition-transform duration-500">
+                <MapPin className="w-10 h-10 text-[#0061ff] fill-blue-50/50" />
+              </div>
+            </div>
+            <div className="text-center px-6 py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-xl">
+              <div className="text-xl font-extrabold text-[#1e293b]">Dynamic GIS Coverage</div>
+              <div className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">{incidents.length} incidents • 84 volunteers active</div>
+            </div>
           </div>
 
           <div className="absolute top-[15%] left-[12%] w-6 h-6 bg-red-500 rounded-full shadow-lg shadow-red-500/50 animate-pulse border-2 border-white" />
@@ -346,87 +346,87 @@ export default function DashboardPage() {
       {/* New Alert Modal */}
       {isAlertModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
-           <div 
-             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" 
-             onClick={() => setIsAlertModalOpen(false)}
-           />
-           <div className="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-2xl border border-white overflow-hidden">
-              <div className="p-8 pb-0 flex items-center justify-between">
-                <h2 className="text-2xl font-extrabold text-[#1e293b]">New Alert Broadcast</h2>
-                <button 
-                  onClick={() => setIsAlertModalOpen(false)}
-                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-                >
-                  <X className="w-6 h-6 text-slate-400" />
-                </button>
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setIsAlertModalOpen(false)}
+          />
+          <div className="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-2xl border border-white overflow-hidden">
+            <div className="p-8 pb-0 flex items-center justify-between">
+              <h2 className="text-2xl font-extrabold text-[#1e293b]">New Alert Broadcast</h2>
+              <button
+                onClick={() => setIsAlertModalOpen(false)}
+                className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+              >
+                <X className="w-6 h-6 text-slate-400" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateAlert} className="p-8 space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Alert Title</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. Flash Flood Warning"
+                  className="suraksha-input"
+                  value={newAlert.title}
+                  onChange={(e) => setNewAlert({ ...newAlert, title: e.target.value })}
+                />
               </div>
 
-              <form onSubmit={handleCreateAlert} className="p-8 space-y-6">
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Alert Title</label>
-                    <input 
-                      required
-                      type="text" 
-                      placeholder="e.g. Flash Flood Warning"
-                      className="suraksha-input"
-                      value={newAlert.title}
-                      onChange={(e) => setNewAlert({...newAlert, title: e.target.value})}
-                    />
-                 </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Location</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="e.g. Colombo 07"
+                    className="suraksha-input"
+                    value={newAlert.location}
+                    onChange={(e) => setNewAlert({ ...newAlert, location: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Severity Type</label>
+                  <select
+                    className="suraksha-input appearance-none"
+                    value={newAlert.type}
+                    onChange={(e) => setNewAlert({ ...newAlert, type: e.target.value })}
+                  >
+                    <option value="INFO">Info</option>
+                    <option value="WARNING">Warning</option>
+                    <option value="EMERGENCY">Emergency</option>
+                  </select>
+                </div>
+              </div>
 
-                 <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Location</label>
-                      <input 
-                        required
-                        type="text" 
-                        placeholder="e.g. Colombo 07"
-                        className="suraksha-input"
-                        value={newAlert.location}
-                        onChange={(e) => setNewAlert({...newAlert, location: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Severity Type</label>
-                      <select 
-                        className="suraksha-input appearance-none"
-                        value={newAlert.type}
-                        onChange={(e) => setNewAlert({...newAlert, type: e.target.value})}
-                      >
-                        <option value="INFO">Info</option>
-                        <option value="WARNING">Warning</option>
-                        <option value="EMERGENCY">Emergency</option>
-                      </select>
-                    </div>
-                 </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Broadcast Message</label>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="Describe the emergency details..."
+                  className="suraksha-input resize-none"
+                  value={newAlert.message}
+                  onChange={(e) => setNewAlert({ ...newAlert, message: e.target.value })}
+                />
+              </div>
 
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Broadcast Message</label>
-                    <textarea 
-                      required
-                      rows={4}
-                      placeholder="Describe the emergency details..."
-                      className="suraksha-input resize-none"
-                      value={newAlert.message}
-                      onChange={(e) => setNewAlert({...newAlert, message: e.target.value})}
-                    />
-                 </div>
-
-                 <button 
-                   disabled={isSubmitting}
-                   className="suraksha-button w-full h-14 flex items-center justify-center gap-2 text-base font-bold"
-                 >
-                   {isSubmitting ? (
-                     <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                   ) : (
-                     <>
-                       <Send className="w-5 h-5" />
-                       Send Broadcast Now
-                     </>
-                   )}
-                 </button>
-              </form>
-           </div>
+              <button
+                disabled={isSubmitting}
+                className="suraksha-button w-full h-14 flex items-center justify-center gap-2 text-base font-bold"
+              >
+                {isSubmitting ? (
+                  <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    Send Broadcast Now
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

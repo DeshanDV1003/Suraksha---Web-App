@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { AlertTriangle } from 'lucide-react'
+import logo from '@/pictures/Full logo.png'
+import backgroundVideo from '@/videos/Cinematic_Disaster_Response_Tech_Background.mp4'
 
 export default function LoginPage() {
   const { login, user } = useAuth()
@@ -31,11 +33,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-accent/20 p-4 font-sans">
-      <div className="max-w-md w-full bg-card border rounded-[2rem] shadow-2xl p-10 space-y-8 animate-in fade-in zoom-in duration-300">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden p-4 font-sans">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={backgroundVideo} type="video/mp4" />
+      </video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-[#1e293b]/60 backdrop-blur-[2px]" />
+
+      <div className="max-w-md w-full bg-white/95 backdrop-blur-xl border-none rounded-[2.5rem] shadow-2xl p-10 space-y-8 animate-in fade-in zoom-in duration-700 relative z-10">
         <div className="text-center space-y-2">
-          <div className="w-16 h-16 bg-[#0061ff] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/20">
-            <AlertTriangle className="text-white w-10 h-10" />
+          <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6">
+            <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-[#1e293b]">Suraksha</h1>
           <p className="text-slate-500 font-medium">Disaster Management Coordination</p>

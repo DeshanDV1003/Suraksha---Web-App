@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Shield, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { authService } from '../services/api'
+import logo from '@/pictures/Full logo.png'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -33,8 +34,8 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] p-4 font-sans focus:outline-none">
       <div className="max-w-[480px] w-full bg-white border border-slate-100 rounded-[2.5rem] shadow-2xl p-10 space-y-8 animate-in fade-in zoom-in duration-300">
         <div className="text-center space-y-3">
-          <div className="w-14 h-14 bg-[#0061ff] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20">
-            <Shield className="text-white w-8 h-8" />
+          <div className="w-20 h-20 flex items-center justify-center mx-auto mb-4">
+            <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Create Account</h1>
           <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Join the Response Team</p>

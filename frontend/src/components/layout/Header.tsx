@@ -7,9 +7,9 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3 bg-muted/50 px-4 py-2 rounded-xl w-96 border border-transparent focus-within:border-primary/20 focus-within:bg-card transition-all group">
           <Search className="w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-          <input 
-            type="text" 
-            placeholder="Search incidents, alerts, volunteers..." 
+          <input
+            type="text"
+            placeholder="Search incidents, alerts, volunteers..."
             className="bg-transparent border-none outline-none text-sm w-full placeholder:text-muted-foreground/70"
           />
         </div>
@@ -20,7 +20,7 @@ export function Header() {
           <Bell className="w-5 h-5 text-muted-foreground" />
           <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-destructive rounded-full border-2 border-card"></span>
         </button>
-        
+
         <div className="flex items-center gap-4 pl-6 border-l border-border/60">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-semibold text-foreground">DMC Officer</p>
