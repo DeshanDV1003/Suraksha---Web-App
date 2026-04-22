@@ -82,6 +82,18 @@
     @apply bg-card border border-border/60 rounded-[1.5rem] shadow-sm transition-all duration-300 relative overflow-hidden;
   }
   
+  .suraksha-input {
+    @apply w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-5 text-sm font-semibold text-[#1e293b] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0061ff]/20 focus:border-[#0061ff]/40 transition-all;
+  }
+
+  .suraksha-button {
+    @apply px-6 py-2.5 bg-[#0061ff] text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .suraksha-button-outline {
+    @apply px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50 active:scale-95 transition-all;
+  }
+
   .premium-shadow {
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
   }

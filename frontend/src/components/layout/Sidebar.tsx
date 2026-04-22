@@ -14,24 +14,49 @@ import {
   Shield 
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const mainNavigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Impact Map', href: '/map', icon: MapPin, status: 'LIVE' },
-  { name: 'Incidents', href: '/incidents', icon: AlertTriangle, count: 12 },
-  { name: 'Alerts', href: '/alerts', icon: Radio, count: 3 },
-  { name: 'Analytics', href: '/reports', icon: BarChart3 },
-  { name: 'User Management', href: '/users', icon: Users },
-]
-
-const resourceNavigation = [
-  { name: 'Resources', href: '/resources', icon: Package },
-  { name: 'Relief Camps', href: '/camps', icon: Building2 },
-  { name: 'Token System', href: '/tokens', icon: QrCode },
-]
+import { useAuth } from '@/hooks/useAuth'
+import { useEffect, useState } from 'react'
+import { incidentService, alertService } from '../../services/api'
 
 export function Sidebar() {
   const location = useLocation()
+  const { logout, user } = useAuth()
+  const [counts, setCounts] = useState({ incidents: 0, alerts: 0 })
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const [incRes, alertRes] = await Promise.all([
+          incidentService.getIncidents(),
+          alertService.getAlerts()
+        ])
+        setCounts({
+          incidents: incRes.data.filter((i: any) => i.status !== 'RESOLVED').length,
+          alerts: alertRes.data.length
+        })
+      } catch (err) {
+        console.error('Failed to fetch counts', err)
+      }
+    }
+    fetchCounts()
+    const interval = setInterval(fetchCounts, 30000) // Polling for counts
+    return () => clearInterval(interval)
+  }, [])
+
+  const mainNavigation = [
+    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Impact Map', href: '/map', icon: MapPin, status: 'LIVE' },
+    { name: 'Incidents', href: '/incidents', icon: AlertTriangle, count: counts.incidents },
+    { name: 'Alerts', href: '/alerts', icon: Radio, count: counts.alerts },
+    { name: 'Analytics', href: '/reports', icon: BarChart3 },
+    { name: 'User Management', href: '/users', icon: Users },
+  ]
+  
+  const resourceNavigation = [
+    { name: 'Resources', href: '/resources', icon: Package },
+    { name: 'Relief Camps', href: '/camps', icon: Building2 },
+    { name: 'Token System', href: '/tokens', icon: QrCode },
+  ]
 
   return (
     <div className="flex flex-col w-72 bg-white border-r h-full shadow-[1px_0_0_0_rgba(0,0,0,0.02)]">
@@ -72,7 +97,7 @@ export function Sidebar() {
                 </span>
               )}
               
-              {item.count && !item.status && (
+              {item.count !== undefined && item.count > 0 && !item.status && (
                 <span className={cn(
                   "text-[11px] font-bold px-2 py-0.5 min-w-[1.5rem] text-center rounded-full transition-colors",
                   isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500"
@@ -117,19 +142,33 @@ export function Sidebar() {
               "flex items-center gap-3.5 px-5 py-3.5 text-sm font-bold rounded-2xl transition-all duration-300",
               location.pathname === '/settings' 
                 ? "bg-[#F1F5F9] text-[#0061ff]" 
-                : "text-[#0061ff] bg-[#F1F5F9] hover:bg-[#E2EAF1]"
+                : "text-slate-500 hover:bg-slate-50 transition-all"
             )}
           >
-            <Settings className="w-5 h-5" />
+            <Settings className="w-5 h-5 text-slate-400" />
             Settings
           </Link>
           
-          <button className="flex items-center gap-3.5 px-5 py-3.5 text-sm font-bold text-[#E11D48] w-full rounded-2xl bg-[#FFF1F1] hover:bg-[#FFE4E4] transition-all duration-300">
+          <button 
+            onClick={logout}
+            className="flex items-center gap-3.5 px-5 py-3.5 text-sm font-bold text-[#E11D48] w-full rounded-2xl bg-[#FFF1F1] hover:bg-[#FFE4E4] transition-all duration-300"
+          >
             <LogOut className="w-5 h-5" />
             Logout
           </button>
         </div>
       </nav>
+
+      {/* Profile Bar at very bottom */}
+      <div className="p-6 border-t border-slate-50 flex items-center gap-3 bg-white">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0061ff] to-[#00c6ff] flex items-center justify-center text-white text-xs font-black shadow-lg">
+             {user?.name?.slice(0, 2).toUpperCase() || 'AD'}
+          </div>
+          <div className="flex-1 min-w-0">
+             <div className="text-sm font-black text-[#1e293b] truncate capitalize">{user?.name || 'Admin'}</div>
+             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{user?.role?.replace('_', ' ') || 'DMC Officer'}</div>
+          </div>
+      </div>
     </div>
   )
 }

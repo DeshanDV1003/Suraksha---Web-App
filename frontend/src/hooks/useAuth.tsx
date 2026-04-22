@@ -1,9 +1,10 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { useAppStore } from '@/store/useAppStore'
+import { authService } from '../services/api'
 
 interface AuthContextType {
   user: any
-  login: (role: string) => void
+  login: (credentials: any) => Promise<void>
   logout: () => void
 }
 
@@ -12,18 +13,33 @@ const AuthContext = createContext<AuthContextType | null>(null)
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, setUser, setAuthenticated } = useAppStore()
 
-  const login = (role: string) => {
-    // In a real app, this would involve a backend call and JWT storage
-    const mockUser = {
-      id: '1',
-      name: 'Test Officer',
-      role: role as any,
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user')
+    const token = localStorage.getItem('token')
+    if (savedUser && token) {
+      setUser(JSON.parse(savedUser))
+      setAuthenticated(true)
     }
-    setUser(mockUser)
-    setAuthenticated(true)
+  }, [setUser, setAuthenticated])
+
+  const login = async (credentials: any) => {
+    try {
+      const res = await authService.login(credentials)
+      const { token, user: userData } = res.data
+      
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(userData))
+      
+      setUser(userData)
+      setAuthenticated(true)
+    } catch (error) {
+      throw error
+    }
   }
 
   const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setUser(null)
     setAuthenticated(false)
   }

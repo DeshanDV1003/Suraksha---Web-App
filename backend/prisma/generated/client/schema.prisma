@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CITIZEN
+  VOLUNTEER
+  ADMIN
+  DMC_OFFICER
+}
+
+enum Status {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum AlertType {
+  INFO
+  WARNING
+  EMERGENCY
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String?
+  role      Role     @default(CITIZEN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reports IncidentReport[]
+  tokens  Token[]
+}
+
+model IncidentReport {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  location    String
+  latitude    Float?
+  longitude   Float?
+  status      Status   @default(PENDING)
+  severity    Severity @default(MEDIUM)
+  category    String
+  images      String[]
+  reporterId  String
+  reporter    User     @relation(fields: [reporterId], references: id)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Alert {
+  id        String    @id @default(uuid())
+  title     String
+  message   String
+  location  String
+  type      AlertType @default(INFO)
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model ReliefCamp {
+  id               String   @id @default(uuid())
+  name             String
+  location         String
+  latitude         Float?
+  longitude        Float?
+  currentOccupancy Int      @default(0)
+  totalCapacity    Int
+  services         String[] // e.g. ["food", "medical", "water"]
+  status           String   @default("OPEN")
+  waitTime         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Token {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: id)
+  type      String   @default("RELIEF")
+  status    String   @default("ACTIVE") // ACTIVE, USED, EXPIRED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Resource {
+  id        String   @id @default(uuid())
+  type      String
+  owner     String
+  location  String
+  capacity  String
+  status    String   @default("AVAILABLE")
+  contact   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
