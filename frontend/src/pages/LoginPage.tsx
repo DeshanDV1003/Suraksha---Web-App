@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { AlertTriangle } from 'lucide-react'
-import logo from '@/pictures/Full logo.png'
+import logo from '@/pictures/Half logo.png'
 import backgroundVideo from '@/videos/Cinematic_Disaster_Response_Tech_Background.mp4'
 
 export default function LoginPage() {
