@@ -36,7 +36,7 @@ export const getAlerts = async (req: Request, res: Response) => {
   }
 };
 
-export const deactivateAlert = async (req: Request, res: Response) => {
+export const deactivateAlert = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const alert = await prisma.alert.update({
@@ -49,7 +49,7 @@ export const deactivateAlert = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteAlert = async (req: Request, res: Response) => {
+export const deleteAlert = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     await prisma.alert.delete({

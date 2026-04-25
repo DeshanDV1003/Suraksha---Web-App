@@ -60,7 +60,7 @@ export const getUserIncidents = async (req: any, res: Response) => {
 
 export const updateIncidentStatus = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status } = req.body;
 
     const incident = await prisma.incidentReport.update({
@@ -78,7 +78,7 @@ export const updateIncidentStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteIncident = async (req: Request, res: Response) => {
+export const deleteIncident = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     await prisma.incidentReport.delete({
@@ -90,7 +90,7 @@ export const deleteIncident = async (req: Request, res: Response) => {
   }
 };
 
-export const getIncidentById = async (req: Request, res: Response) => {
+export const getIncidentById = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const incident = await prisma.incidentReport.findUnique({

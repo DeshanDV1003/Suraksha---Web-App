@@ -11,7 +11,11 @@ import {
   QrCode, 
   Settings, 
   LogOut, 
-  Shield 
+  Shield,
+  HeartPulse,
+  Home,
+  UserSearch,
+  HandHelping
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -57,6 +61,14 @@ export function Sidebar() {
     { name: 'Resources', href: '/resources', icon: Package },
     { name: 'Relief Camps', href: '/camps', icon: Building2 },
     { name: 'Token System', href: '/tokens', icon: QrCode },
+  ]
+
+  const safetyNavigation = [
+    { name: 'Volunteers', href: '/volunteers', icon: Shield },
+    { name: 'Help Requests', href: '/help-requests', icon: HandHelping },
+    { name: 'Damage Reports', href: '/damage-assessment', icon: Home },
+    { name: 'Missing Persons', href: '/missing-persons', icon: UserSearch },
+    { name: 'Support Center', href: '/support', icon: HeartPulse },
   ]
 
   return (
@@ -115,6 +127,31 @@ export function Sidebar() {
           
           <div className="space-y-1">
             {resourceNavigation.map((item) => {
+              const isActive = location.pathname === item.href
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center gap-3.5 px-5 py-3.5 text-sm font-semibold rounded-2xl transition-all duration-300 group",
+                    isActive 
+                      ? "bg-gradient-to-r from-[#0061ff] to-[#00c6ff] text-white shadow-lg shadow-blue-500/25" 
+                      : "text-slate-600 hover:bg-slate-50 hover:text-[#0061ff]"
+                  )}
+                >
+                  <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-slate-400 group-hover:text-[#0061ff] opacity-70 group-hover:opacity-100 transition-all")} />
+                  <span className="tracking-tight">{item.name}</span>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="pt-2 mb-2">
+          <h2 className="px-5 mb-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] opacity-60">Safety & Support</h2>
+          
+          <div className="space-y-1">
+            {safetyNavigation.map((item) => {
               const isActive = location.pathname === item.href
               return (
                 <Link

@@ -5,7 +5,7 @@ import {
   Building2, ChevronRight, Plus, X, Send
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { incidentService, alertService, campService } from '../services/api'
+import { incidentService, alertService, campService, volunteerService, helpRequestService, assessmentService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -14,6 +14,9 @@ export default function DashboardPage() {
   const [incidents, setIncidents] = useState<any[]>([])
   const [alerts, setAlerts] = useState<any[]>([])
   const [camps, setCamps] = useState<any[]>([])
+  const [volunteersCount, setVolunteersCount] = useState(0)
+  const [helpRequestsCount, setHelpRequestsCount] = useState(0)
+  const [missingCount, setMissingCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   // Modal states
@@ -23,14 +26,20 @@ export default function DashboardPage() {
 
   const fetchData = async () => {
     try {
-      const [incRes, alertRes, campRes] = await Promise.all([
+      const [incRes, alertRes, campRes, volRes, helpRes, missingRes] = await Promise.all([
         incidentService.getIncidents(),
         alertService.getAlerts(),
-        campService.getCamps()
+        campService.getCamps(),
+        volunteerService.listVolunteers(),
+        helpRequestService.getRequests(),
+        assessmentService.getMissing()
       ])
       setIncidents(incRes.data)
       setAlerts(alertRes.data)
       setCamps(campRes.data)
+      setVolunteersCount(volRes.data.length)
+      setHelpRequestsCount(helpRes.data.length)
+      setMissingCount(missingRes.data.length)
     } catch (error) {
       console.error('Failed to fetch dashboard data', error)
     } finally {
@@ -69,7 +78,7 @@ export default function DashboardPage() {
     },
     {
       label: 'Volunteers Active',
-      value: '84', // Placeholder as we don't have volunteer logic yet
+      value: volunteersCount.toString(),
       trend: '+12',
       isUp: true,
       icon: Users,
@@ -84,6 +93,15 @@ export default function DashboardPage() {
       icon: Building2,
       color: 'text-purple-600',
       blob: 'bg-purple-400'
+    },
+    {
+      label: 'Help Requests',
+      value: helpRequestsCount.toString(),
+      trend: '+5',
+      isUp: true,
+      icon: Heart,
+      color: 'text-pink-600',
+      blob: 'bg-pink-400'
     },
     {
       label: 'Avg Response Time',

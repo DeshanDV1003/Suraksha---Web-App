@@ -62,4 +62,40 @@ export const tokenService = {
   useToken: (code: string) => api.post('/tokens/use', { code }),
 };
 
+export const volunteerService = {
+  upsertProfile: (data: any) => api.post('/volunteers/profile', data),
+  getProfile: () => api.get('/volunteers/profile'),
+  listVolunteers: () => api.get('/volunteers/list'),
+  createTask: (data: any) => api.post('/volunteers/tasks', data),
+  getMyTasks: () => api.get('/volunteers/tasks/my'),
+  updateTaskStatus: (id: string, status: string) => api.patch(`/volunteers/tasks/${id}/status`, { status }),
+};
+
+export const helpRequestService = {
+  createRequest: (data: any) => api.post('/help-requests', data),
+  getRequests: () => api.get('/help-requests'),
+  registerVerifier: (data: any) => api.post('/help-requests/verifier/register', data),
+  verifyAction: (data: any) => api.post('/help-requests/verifier/verify', data),
+};
+
+export const reliefTokenService = {
+  issueToken: (data: any) => api.post('/relief-tokens/issue', data),
+  claimToken: (data: any) => api.post('/relief-tokens/claim', data),
+  recordDistribution: (data: any) => api.post('/relief-tokens/distribution', data),
+};
+
+export const assessmentService = {
+  reportDamage: (data: any) => api.post('/assessments/damage', data),
+  getAssessments: () => api.get('/assessments/damage'),
+  reportMissing: (data: any) => api.post('/assessments/missing', data),
+  getMissing: () => api.get('/assessments/missing'),
+  updateMissingStatus: (id: string, status: string) => api.patch(`/assessments/missing/${id}/status`, { status }),
+};
+
+export const supportService = {
+  createRequest: (data: any) => api.post('/support', data),
+  getRequests: () => api.get('/support'),
+  updateStatus: (id: string, data: any) => api.patch(`/support/${id}/status`, data),
+};
+
 export default api;

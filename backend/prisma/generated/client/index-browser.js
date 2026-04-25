@@ -195,9 +195,233 @@ exports.Prisma.ResourceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  incidentId: 'incidentId',
+  assignedToId: 'assignedToId',
+  assignedById: 'assignedById',
+  priority: 'priority',
+  status: 'status',
+  dueDate: 'dueDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VolunteerProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  skills: 'skills',
+  availability: 'availability',
+  rating: 'rating',
+  completedTasks: 'completedTasks',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.HelpRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  description: 'description',
+  location: 'location',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  priority: 'priority',
+  status: 'status',
+  peopleCount: 'peopleCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReportVerificationScalarFieldEnum = {
+  id: 'id',
+  reportId: 'reportId',
+  userId: 'userId',
+  status: 'status',
+  comment: 'comment',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DistributionScalarFieldEnum = {
+  id: 'id',
+  tokenId: 'tokenId',
+  itemType: 'itemType',
+  quantity: 'quantity',
+  deliveredBy: 'deliveredBy',
+  location: 'location',
+  proofImage: 'proofImage',
+  deliveredAt: 'deliveredAt'
+};
+
+exports.Prisma.MissingPersonScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  age: 'age',
+  description: 'description',
+  lastSeen: 'lastSeen',
+  photo: 'photo',
+  reportedBy: 'reportedBy',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  message: 'message',
+  read: 'read',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MLLogScalarFieldEnum = {
+  id: 'id',
+  inputData: 'inputData',
+  prediction: 'prediction',
+  confidence: 'confidence',
+  modelVersion: 'modelVersion',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.IncidentHistoryScalarFieldEnum = {
+  id: 'id',
+  incidentId: 'incidentId',
+  status: 'status',
+  updatedBy: 'updatedBy',
+  note: 'note',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ResourceRequestMatchScalarFieldEnum = {
+  id: 'id',
+  requestId: 'requestId',
+  resourceId: 'resourceId',
+  matchScore: 'matchScore',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  entity: 'entity',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LocationLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ReliefTokenScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  qrCodeData: 'qrCodeData',
+  userId: 'userId',
+  campId: 'campId',
+  status: 'status',
+  usageCount: 'usageCount',
+  maxUsage: 'maxUsage',
+  issuedAt: 'issuedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReliefTokenClaimScalarFieldEnum = {
+  id: 'id',
+  tokenId: 'tokenId',
+  claimedAt: 'claimedAt',
+  claimedBy: 'claimedBy',
+  itemType: 'itemType',
+  quantity: 'quantity',
+  proofImage: 'proofImage',
+  campId: 'campId',
+  notes: 'notes'
+};
+
+exports.Prisma.DamageAssessmentScalarFieldEnum = {
+  id: 'id',
+  reportedById: 'reportedById',
+  incidentId: 'incidentId',
+  location: 'location',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  category: 'category',
+  structuralDamage: 'structuralDamage',
+  cropDamage: 'cropDamage',
+  utilityDamage: 'utilityDamage',
+  roadDamage: 'roadDamage',
+  affectedPersons: 'affectedPersons',
+  estimatedLoss: 'estimatedLoss',
+  mediaUrls: 'mediaUrls',
+  status: 'status',
+  notes: 'notes',
+  verifiedById: 'verifiedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LocalVerifierScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  verifierRole: 'verifierRole',
+  jurisdiction: 'jurisdiction',
+  orgName: 'orgName',
+  isApproved: 'isApproved',
+  approvedAt: 'approvedAt',
+  approvedById: 'approvedById',
+  verificationsCount: 'verificationsCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerifierActionScalarFieldEnum = {
+  id: 'id',
+  verifierId: 'verifierId',
+  incidentId: 'incidentId',
+  helpRequestId: 'helpRequestId',
+  result: 'result',
+  comment: 'comment',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PsychologicalSupportRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  description: 'description',
+  urgency: 'urgency',
+  status: 'status',
+  anonymous: 'anonymous',
+  location: 'location',
+  affectedCount: 'affectedCount',
+  assignedToId: 'assignedToId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -208,6 +432,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Role = exports.$Enums.Role = {
   CITIZEN: 'CITIZEN',
@@ -236,13 +466,99 @@ exports.AlertType = exports.$Enums.AlertType = {
   EMERGENCY: 'EMERGENCY'
 };
 
+exports.TokenStatus = exports.$Enums.TokenStatus = {
+  ACTIVE: 'ACTIVE',
+  PARTIALLY_USED: 'PARTIALLY_USED',
+  FULLY_USED: 'FULLY_USED',
+  EXPIRED: 'EXPIRED',
+  REVOKED: 'REVOKED'
+};
+
+exports.DamageCategory = exports.$Enums.DamageCategory = {
+  RESIDENTIAL: 'RESIDENTIAL',
+  AGRICULTURAL: 'AGRICULTURAL',
+  INFRASTRUCTURE: 'INFRASTRUCTURE',
+  COMMERCIAL: 'COMMERCIAL',
+  UTILITY: 'UTILITY',
+  OTHER: 'OTHER'
+};
+
+exports.DamageLevel = exports.$Enums.DamageLevel = {
+  NONE: 'NONE',
+  MINOR: 'MINOR',
+  MODERATE: 'MODERATE',
+  MAJOR: 'MAJOR',
+  TOTAL_LOSS: 'TOTAL_LOSS'
+};
+
+exports.DamageStatus = exports.$Enums.DamageStatus = {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  VERIFIED: 'VERIFIED',
+  REJECTED: 'REJECTED'
+};
+
+exports.VerifierRole = exports.$Enums.VerifierRole = {
+  GRAMA_NILADHARI: 'GRAMA_NILADHARI',
+  VILLAGE_OFFICER: 'VILLAGE_OFFICER',
+  COMMUNITY_LEADER: 'COMMUNITY_LEADER',
+  NGO_OFFICER: 'NGO_OFFICER',
+  LOCAL_AUTHORITY: 'LOCAL_AUTHORITY'
+};
+
+exports.VerificationResult = exports.$Enums.VerificationResult = {
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED',
+  NEEDS_INVESTIGATION: 'NEEDS_INVESTIGATION'
+};
+
+exports.SupportType = exports.$Enums.SupportType = {
+  COUNSELING: 'COUNSELING',
+  CHILD_SUPPORT: 'CHILD_SUPPORT',
+  TRAUMA_CARE: 'TRAUMA_CARE',
+  GRIEF_SUPPORT: 'GRIEF_SUPPORT',
+  GENERAL: 'GENERAL'
+};
+
+exports.SupportUrgency = exports.$Enums.SupportUrgency = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+};
+
+exports.SupportStatus = exports.$Enums.SupportStatus = {
+  PENDING: 'PENDING',
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   IncidentReport: 'IncidentReport',
   Alert: 'Alert',
   ReliefCamp: 'ReliefCamp',
   Token: 'Token',
-  Resource: 'Resource'
+  Resource: 'Resource',
+  Task: 'Task',
+  VolunteerProfile: 'VolunteerProfile',
+  HelpRequest: 'HelpRequest',
+  ReportVerification: 'ReportVerification',
+  Distribution: 'Distribution',
+  MissingPerson: 'MissingPerson',
+  Notification: 'Notification',
+  MLLog: 'MLLog',
+  IncidentHistory: 'IncidentHistory',
+  ResourceRequestMatch: 'ResourceRequestMatch',
+  AuditLog: 'AuditLog',
+  LocationLog: 'LocationLog',
+  ReliefToken: 'ReliefToken',
+  ReliefTokenClaim: 'ReliefTokenClaim',
+  DamageAssessment: 'DamageAssessment',
+  LocalVerifier: 'LocalVerifier',
+  VerifierAction: 'VerifierAction',
+  PsychologicalSupportRequest: 'PsychologicalSupportRequest'
 };
 
 /**

@@ -16,6 +16,11 @@ import ResourcesPage from '@/pages/ResourcesPage'
 import CampsPage from '@/pages/CampsPage'
 import TokensPage from '@/pages/TokensPage'
 import SettingsPage from '@/pages/SettingsPage'
+import VolunteerPage from './pages/VolunteerPage'
+import HelpRequestsPage from './pages/HelpRequestsPage'
+import DamageAssessmentPage from './pages/DamageAssessmentPage'
+import MissingPersonsPage from './pages/MissingPersonsPage'
+import SupportPage from './pages/SupportPage'
 
 const queryClient = new QueryClient()
 
@@ -35,6 +40,11 @@ const ProtectedRoutes = () => {
         <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/camps" element={<CampsPage />} />
         <Route path="/tokens" element={<TokensPage />} />
+        <Route path="/volunteers" element={<VolunteerPage />} />
+        <Route path="/help-requests" element={<HelpRequestsPage />} />
+        <Route path="/damage-assessment" element={<DamageAssessmentPage />} />
+        <Route path="/missing-persons" element={<MissingPersonsPage />} />
+        <Route path="/support" element={<SupportPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </DashboardLayout>

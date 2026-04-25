@@ -14,6 +14,11 @@ import campRoutes from './routes/campRoutes';
 import userRoutes from './routes/userRoutes';
 import resourceRoutes from './routes/resourceRoutes';
 import tokenRoutes from './routes/tokenRoutes';
+import volunteerRoutes from './routes/volunteerRoutes';
+import helpRequestRoutes from './routes/helpRequestRoutes';
+import reliefTokenRoutes from './routes/reliefTokenRoutes';
+import assessmentRoutes from './routes/assessmentRoutes';
+import supportRoutes from './routes/supportRoutes';
 
 dotenv.config();
 
@@ -41,6 +46,11 @@ app.use('/api/camps', campRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/tokens', tokenRoutes);
+app.use('/api/volunteers', volunteerRoutes);
+app.use('/api/help-requests', helpRequestRoutes);
+app.use('/api/relief-tokens', reliefTokenRoutes);
+app.use('/api/assessments', assessmentRoutes);
+app.use('/api/support', supportRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 

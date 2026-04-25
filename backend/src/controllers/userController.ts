@@ -20,7 +20,7 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUserRole = async (req: Request, res: Response) => {
+export const updateUserRole = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
@@ -42,7 +42,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     await prisma.user.delete({
@@ -70,6 +70,25 @@ export const updateProfile = async (req: any, res: Response) => {
       }
     });
 
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getMe = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        volunteerProfile: true,
+        reliefTokens: true,
+        helpRequests: true,
+        supportRequests: true,
+        assignedTasks: true,
+      }
+    });
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
