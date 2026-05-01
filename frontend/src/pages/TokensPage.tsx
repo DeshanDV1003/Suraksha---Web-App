@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { tokenService, userService } from '@/services/api'
+import { useAppStore } from '@/store/useAppStore'
 import { formatDistanceToNow } from 'date-fns'
 
 interface Token {
@@ -31,12 +32,21 @@ export default function TokensPage() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [tokensRes, usersRes] = await Promise.all([
-        tokenService.getTokens(),
-        userService.getUsers()
-      ])
+      
+      // Fetch tokens (everyone authenticated can see history, or restricted to officers?)
+      const tokensRes = await tokenService.getTokens()
       setTokens(tokensRes.data)
-      setUsers(usersRes.data)
+
+      // Only fetch users if the current user is an admin or officer (to populate the "Issue Token" dropdown)
+      const user = useAppStore.getState().user;
+      if (user && (user.role === 'ADMIN' || user.role === 'DMC_OFFICER')) {
+        try {
+          const usersRes = await userService.getUsers()
+          setUsers(usersRes.data)
+        } catch (uErr) {
+          console.warn('Failed to fetch users list (likely permission restricted):', uErr)
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch token data:', error)
       alert('Failed to load token information')
@@ -94,6 +104,9 @@ export default function TokensPage() {
     { label: 'Success Rate', value: tokens.length > 0 ? `${Math.round((tokens.filter(t => t.status === 'USED').length / tokens.length) * 100)}%` : '0%', color: 'text-purple-600' },
   ]
 
+  const user = useAppStore(state => state.user)
+  const isStaff = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
       {/* Header */}
@@ -115,7 +128,7 @@ export default function TokensPage() {
             className="suraksha-button bg-[#0061ff] text-white shadow-lg shadow-blue-500/25"
           >
             <QrCode className="w-5 h-5" />
-            Issue Token
+            Generate New Token
           </button>
         </div>
       </div>
@@ -195,7 +208,7 @@ export default function TokensPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white w-full max-w-lg rounded-[1.5rem] shadow-lg overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-2xl font-black text-[#1e293b]">Request Assistance</h2>
+              <h2 className="text-2xl font-black text-[#1e293b]">Generate New Token</h2>
               <button onClick={() => setShowGenModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <X className="w-6 h-6" />
               </button>
@@ -248,7 +261,7 @@ export default function TokensPage() {
                   className="flex-1 px-6 py-4 bg-[#0061ff] text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
-                  Issue Token
+                  Generate New Token
                 </button>
               </div>
             </form>

@@ -3,7 +3,7 @@ import { create } from 'zustand'
 interface User {
   id: string
   name: string
-  role: 'DMC_ADMIN' | 'DMC_OFFICER' | 'VOLUNTEER'
+  role: 'CITIZEN' | 'VOLUNTEER' | 'ADMIN' | 'DMC_OFFICER'
 }
 
 interface AppState {
