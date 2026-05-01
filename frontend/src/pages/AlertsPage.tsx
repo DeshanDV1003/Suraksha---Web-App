@@ -8,6 +8,7 @@ import {
 import { cn } from '@/lib/utils'
 import { alertService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
+import { useAppStore } from '@/store/useAppStore'
 
 const categories = [
   { 
@@ -67,13 +68,13 @@ const categories = [
 ]
 
 export default function AlertsPage() {
+  const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [alerts, setAlerts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [newAlert, setNewAlert] = useState({ title: '', message: '', location: '', type: 'INFO' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   
-  // Search and Filter State
-  const [searchTerm, setSearchTerm] = useState('')
+  // Filter State
   const [filterType, setFilterType] = useState('ALL')
 
   const fetchAlerts = async () => {
@@ -96,6 +97,17 @@ export default function AlertsPage() {
     setIsSubmitting(true)
     try {
       await alertService.createAlert(newAlert)
+      
+      // Add notification to global store
+      addNotification({
+        id: Date.now().toString(),
+        title: 'Directive Broadcasted',
+        message: `New alert: ${newAlert.title} in ${newAlert.location}`,
+        time: 'Just now',
+        type: 'alert',
+        unread: true
+      })
+
       setNewAlert({ title: '', message: '', location: '', type: 'INFO' })
       fetchAlerts()
     } catch (err) {
@@ -125,8 +137,9 @@ export default function AlertsPage() {
   }
 
   const filteredAlerts = alerts.filter(alert => {
-    const matchesSearch = alert.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          alert.location.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSearch = alert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          alert.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          alert.message.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesType = filterType === 'ALL' || alert.type === filterType
     return matchesSearch && matchesType
   })
@@ -309,8 +322,8 @@ export default function AlertsPage() {
                    type="text" 
                    placeholder="Search logs..." 
                    className="suraksha-input pl-12 h-12 bg-white"
-                   value={searchTerm}
-                   onChange={(e) => setSearchTerm(e.target.value)}
+                   value={searchQuery}
+                   onChange={(e) => setSearchQuery(e.target.value)}
                  />
               </div>
               <select 

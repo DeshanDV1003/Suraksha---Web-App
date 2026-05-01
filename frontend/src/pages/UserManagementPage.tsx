@@ -3,11 +3,12 @@ import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { userService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
+import { useAppStore } from '@/store/useAppStore'
 
 export default function UserManagementPage() {
+  const { searchQuery, setSearchQuery } = useAppStore()
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState('All Roles')
   const [isOnboardModalOpen, setIsOnboardModalOpen] = useState(false)
 
@@ -47,7 +48,9 @@ export default function UserManagementPage() {
   }
 
   const filteredUsers = users.filter(u => {
-    const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase())
+    const matchesSearch = u.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          u.id.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesRole = roleFilter === 'All Roles' || u.role === roleFilter
     return matchesSearch && matchesRole
   })
@@ -121,8 +124,8 @@ export default function UserManagementPage() {
                 type="text" 
                 placeholder="Search by identity name or secure email..." 
                 className="suraksha-input pl-16 h-16 bg-slate-50 border-none font-bold placeholder:italic"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
          </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { User, ClipboardList, CheckCircle2, Clock, Shield, Star, Award, Phone, Loader2, Plus, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { volunteerService } from '@/services/api'
+import { useAppStore } from '@/store/useAppStore'
 
 interface Task {
   id: string
@@ -16,6 +17,7 @@ interface Task {
 }
 
 export default function VolunteerPage() {
+  const { searchQuery } = useAppStore()
   const [profile, setProfile] = useState<any>(null)
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
@@ -90,8 +92,8 @@ export default function VolunteerPage() {
             <Shield className="w-12 h-12 text-white" />
           </div>
           <div className="text-center md:text-left flex-1">
-            <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Volunteer Portal</h1>
-            <p className="text-slate-500 mt-2 font-medium text-lg">Manage your assignments and contribute to the community safety</p>
+            <h1 className="text-4xl font-black text-[#1e293b] tracking-tight">Volunteer Portal</h1>
+            <p className="text-slate-500 mt-2 font-bold">Manage your assignments and contribute to the community safety</p>
           </div>
           <div className="flex gap-2 p-1.5 bg-slate-100 rounded-2xl">
             <button 
@@ -122,28 +124,38 @@ export default function VolunteerPage() {
           {activeTab === 'tasks' ? (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                  <ClipboardList className="w-6 h-6 text-blue-500" />
+                <h2 className="text-2xl font-black text-[#1e293b] flex items-center gap-3">
+                  <ClipboardList className="w-6 h-6 text-[#0061ff]" />
                   Assigned Tasks
                 </h2>
-                <span className="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-                  {tasks.length} Active
+                <span className="bg-[#eff6ff] text-[#0061ff] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider">
+                  {tasks.length} Active Assignments
                 </span>
               </div>
 
-              {tasks.length === 0 ? (
-                <div className="bg-white border border-dashed border-slate-200 rounded-[2rem] p-20 text-center space-y-4">
+              {tasks.filter(t => 
+                t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                t.incident?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+              ).length === 0 ? (
+                <div className="suraksha-card bg-white border border-dashed border-slate-200 rounded-[2.5rem] p-20 text-center space-y-4">
                   <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-10 h-10 text-slate-200" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-slate-700">All caught up!</h3>
-                    <p className="text-slate-400 mt-1">No tasks assigned to you at the moment.</p>
+                    <h3 className="text-xl font-black text-[#1e293b]">{searchQuery ? 'No matching tasks' : 'All caught up!'}</h3>
+                    <p className="text-slate-400 mt-1 font-bold italic">{searchQuery ? `No results for "${searchQuery}"` : 'No tasks assigned to you at the moment.'}</p>
                   </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-6">
-                  {tasks.map((task) => (
+                  {tasks
+                    .filter(t => 
+                      t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      t.incident?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((task) => (
                     <div key={task.id} className="group bg-white border border-slate-100 rounded-[1.5rem] p-8 hover:shadow-xl hover:shadow-blue-500/5 transition-all relative overflow-hidden">
                       <div className={cn(
                         "absolute top-0 left-0 w-1.5 h-full",
@@ -164,8 +176,8 @@ export default function VolunteerPage() {
                              <span className="text-slate-300 text-xs">•</span>
                              <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">{task.incident?.title || 'General Operation'}</span>
                           </div>
-                          <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{task.title}</h3>
-                          <p className="text-slate-500 text-sm leading-relaxed">{task.description}</p>
+                          <h3 className="text-xl font-black text-[#1e293b] group-hover:text-[#0061ff] transition-colors">{task.title}</h3>
+                          <p className="text-slate-500 text-sm font-bold leading-relaxed">{task.description}</p>
                         </div>
                         <div className="text-right">
                           <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Due Date</div>
@@ -220,14 +232,14 @@ export default function VolunteerPage() {
               )}
             </div>
           ) : (
-            <div className="bg-white border border-slate-100 rounded-[2rem] p-10 shadow-sm space-y-10">
+            <div className="suraksha-card p-10 space-y-10">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">Volunteer Profile</h2>
-                  <p className="text-slate-500 font-medium">Keep your skills and availability updated</p>
+                  <h2 className="text-2xl font-black text-[#1e293b]">Volunteer Profile</h2>
+                  <p className="text-slate-500 font-bold">Keep your skills and availability updated</p>
                 </div>
                 <div className={cn(
-                  "px-4 py-2 rounded-2xl flex items-center gap-2 text-xs font-bold uppercase tracking-widest",
+                  "px-4 py-2 rounded-2xl flex items-center gap-2 text-[10px] font-black uppercase tracking-widest",
                   profile?.availability ? "bg-green-50 text-green-600" : "bg-slate-100 text-slate-500"
                 )}>
                   <div className={cn("w-2 h-2 rounded-full", profile?.availability ? "bg-green-500 animate-pulse" : "bg-slate-400")} />
@@ -244,7 +256,7 @@ export default function VolunteerPage() {
                       type="text"
                       defaultValue={profile?.skills?.join(', ') || ''}
                       placeholder="e.g. First Aid, Swimming, Cooking, Driving"
-                      className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+                      className="suraksha-input"
                     />
                   </div>
                   <div className="space-y-3">
@@ -264,7 +276,7 @@ export default function VolunteerPage() {
                 <div className="pt-4">
                   <button 
                     disabled={isUpdating}
-                    className="w-full md:w-auto px-10 py-4 bg-[#0061ff] text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="suraksha-button w-full md:w-auto px-10 py-4 h-14 flex items-center justify-center gap-2"
                   >
                     {isUpdating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
                     Update Volunteer Status

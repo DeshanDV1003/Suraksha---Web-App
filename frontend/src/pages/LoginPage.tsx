@@ -26,7 +26,9 @@ export default function LoginPage() {
     try {
       await login({ email, password })
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.')
+      const message = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      const details = err.response?.data?.details ? ` (${err.response.data.details})` : '';
+      setError(message + details);
     } finally {
       setLoading(false)
     }
@@ -66,10 +68,10 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Email Address</label>
-            <input 
+            <input
               required
-              type="email" 
-              placeholder="officer@dmc.gov.lk" 
+              type="email"
+              placeholder="officer@dmc.gov.lk"
               className="suraksha-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -77,16 +79,16 @@ export default function LoginPage() {
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Password</label>
-            <input 
+            <input
               required
-              type="password" 
-              placeholder="••••••••" 
+              type="password"
+              placeholder="••••••••"
               className="suraksha-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button 
+          <button
             type="submit"
             disabled={loading}
             className="suraksha-button w-full h-14 flex items-center justify-center"
@@ -100,11 +102,11 @@ export default function LoginPage() {
         </form>
 
         <div className="text-center pt-4 space-y-4">
-           <p className="text-sm font-bold text-slate-400">
-             Don't have an account?{' '}
-             <Link to="/register" className="text-[#0061ff] hover:underline">Sign Up</Link>
-           </p>
-           <p className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">Suraksha v1.0.0</p>
+          <p className="text-sm font-bold text-slate-400">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-[#0061ff] hover:underline">Sign Up</Link>
+          </p>
+          <p className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">Suraksha v1.0.0</p>
         </div>
       </div>
     </div>

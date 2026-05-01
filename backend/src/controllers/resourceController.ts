@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
-import prisma from '../utils/prisma';
+import * as resourceService from '../services/resourceService';
 
 export const getResources = async (req: Request, res: Response) => {
   try {
-    const resources = await prisma.resource.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+    const resources = await resourceService.getAllResources();
     res.json(resources);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -14,17 +12,7 @@ export const getResources = async (req: Request, res: Response) => {
 
 export const createResource = async (req: Request, res: Response) => {
   try {
-    const { type, owner, location, capacity, status, contact } = req.body;
-    const resource = await prisma.resource.create({
-      data: {
-        type,
-        owner,
-        location,
-        capacity,
-        status: status || 'AVAILABLE',
-        contact,
-      },
-    });
+    const resource = await resourceService.createResource(req.body);
 
     // Emit socket event for real-time update
     const io = req.app.get('socketio');
@@ -38,12 +26,9 @@ export const createResource = async (req: Request, res: Response) => {
 
 export const updateResourceStatus = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status } = req.body;
-    const resource = await prisma.resource.update({
-      where: { id: id as string },
-      data: { status },
-    });
+    const resource = await resourceService.updateResourceStatus(id, status);
     res.json(resource);
   } catch (error: any) {
     res.status(400).json({ message: error.message });

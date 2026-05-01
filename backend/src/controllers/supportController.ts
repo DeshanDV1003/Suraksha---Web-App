@@ -1,22 +1,10 @@
 import { Request, Response } from 'express';
-import prisma from '../utils/prisma';
+import * as supportService from '../services/supportService';
 
 export const createSupportRequest = async (req: any, res: Response) => {
   try {
     const userId = req.user.userId;
-    const { type, description, urgency, anonymous, location, affectedCount } = req.body;
-
-    const request = await prisma.psychologicalSupportRequest.create({
-      data: {
-        userId,
-        type,
-        description,
-        urgency,
-        anonymous,
-        location,
-        affectedCount
-      }
-    });
+    const request = await supportService.createSupportRequest(userId, req.body);
 
     const io = req.app.get('socketio');
     io.emit('new-support-request', request);
@@ -29,18 +17,9 @@ export const createSupportRequest = async (req: any, res: Response) => {
 
 export const getSupportRequests = async (req: Request, res: Response) => {
   try {
-    const requests = await prisma.psychologicalSupportRequest.findMany({
-      include: {
-        user: { 
-          select: { name: true, phone: true } 
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
+    const requests = await supportService.getSupportRequests();
     
-    // Filter out user info if anonymous? Or handle in frontend. 
-    // Here we'll return as is, but could mask if anonymous.
-    const maskedRequests = requests.map(r => {
+    const maskedRequests = requests.map((r: any) => {
       if (r.anonymous) {
         return { ...r, user: { name: 'Anonymous', phone: 'Hidden' } };
       }
@@ -56,17 +35,7 @@ export const getSupportRequests = async (req: Request, res: Response) => {
 export const updateSupportStatus = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
-    const { status, notes, assignedToId } = req.body;
-
-    const request = await prisma.psychologicalSupportRequest.update({
-      where: { id },
-      data: { 
-        status, 
-        notes, 
-        assignedToId 
-      }
-    });
-
+    const request = await supportService.updateSupportStatus(id, req.body);
     res.json(request);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

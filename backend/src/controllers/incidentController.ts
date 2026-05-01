@@ -1,23 +1,10 @@
 import { Request, Response } from 'express';
-import prisma from '../utils/prisma';
+import * as incidentService from '../services/incidentService';
 
 export const createIncident = async (req: any, res: Response) => {
   try {
-    const { title, description, location, latitude, longitude, category, images } = req.body;
     const reporterId = req.user.userId;
-
-    const incident = await prisma.incidentReport.create({
-      data: {
-        title,
-        description,
-        location,
-        latitude,
-        longitude,
-        category,
-        images: images || [],
-        reporterId,
-      },
-    });
+    const incident = await incidentService.createIncident({ ...req.body, reporterId });
 
     // Emit socket event for real-time update
     const io = req.app.get('socketio');
@@ -31,14 +18,7 @@ export const createIncident = async (req: any, res: Response) => {
 
 export const getIncidents = async (req: Request, res: Response) => {
   try {
-    const incidents = await prisma.incidentReport.findMany({
-      include: {
-        reporter: {
-          select: { name: true, email: true },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    const incidents = await incidentService.getAllIncidents();
     res.json(incidents);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
@@ -48,10 +28,7 @@ export const getIncidents = async (req: Request, res: Response) => {
 export const getUserIncidents = async (req: any, res: Response) => {
   try {
     const reporterId = req.user.userId;
-    const incidents = await prisma.incidentReport.findMany({
-      where: { reporterId },
-      orderBy: { createdAt: 'desc' },
-    });
+    const incidents = await incidentService.getIncidentsByUser(reporterId);
     res.json(incidents);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
@@ -62,11 +39,7 @@ export const updateIncidentStatus = async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
     const { status } = req.body;
-
-    const incident = await prisma.incidentReport.update({
-      where: { id },
-      data: { status },
-    });
+    const incident = await incidentService.updateIncidentStatus(id, status);
 
     // Emit socket event for update
     const io = req.app.get('socketio');
@@ -81,9 +54,7 @@ export const updateIncidentStatus = async (req: Request, res: Response) => {
 export const deleteIncident = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.incidentReport.delete({
-      where: { id },
-    });
+    await incidentService.deleteIncident(id);
     res.json({ message: 'Incident deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
@@ -93,14 +64,7 @@ export const deleteIncident = async (req: any, res: Response) => {
 export const getIncidentById = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
-    const incident = await prisma.incidentReport.findUnique({
-      where: { id },
-      include: {
-        reporter: {
-          select: { name: true, email: true, phone: true },
-        },
-      },
-    });
+    const incident = await incidentService.getIncidentById(id);
     res.json(incident);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

@@ -11,6 +11,7 @@ export default function RegisterPage() {
     email: '',
     password: '',
     phone: '',
+    region: '',
     role: 'CITIZEN'
   })
   const [loading, setLoading] = useState(false)
@@ -94,6 +95,17 @@ export default function RegisterPage() {
                 <option value="VOLUNTEER">Volunteer</option>
               </select>
             </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Region / Jurisdiction</label>
+            <input 
+              required
+              type="text" 
+              placeholder="e.g. Region 3 - Colombo" 
+              className="suraksha-input"
+              value={formData.region}
+              onChange={(e) => setFormData({...formData, region: e.target.value})}
+            />
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Password</label>

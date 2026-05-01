@@ -17,8 +17,14 @@ import tokenRoutes from './routes/tokenRoutes';
 import volunteerRoutes from './routes/volunteerRoutes';
 import helpRequestRoutes from './routes/helpRequestRoutes';
 import reliefTokenRoutes from './routes/reliefTokenRoutes';
-import assessmentRoutes from './routes/assessmentRoutes';
+import damageAssessmentRoutes from './routes/damageAssessmentRoutes';
+import missingPersonRoutes from './routes/missingPersonRoutes';
 import supportRoutes from './routes/supportRoutes';
+import dashboardRoutes from './routes/dashboardRoutes';
+import analyticsRoutes from './routes/analyticsRoutes';
+import auditRoutes from './routes/auditRoutes';
+import notificationRoutes from './routes/notificationRoutes';
+import locationRoutes from './routes/locationRoutes';
 
 dotenv.config();
 
@@ -49,8 +55,14 @@ app.use('/api/tokens', tokenRoutes);
 app.use('/api/volunteers', volunteerRoutes);
 app.use('/api/help-requests', helpRequestRoutes);
 app.use('/api/relief-tokens', reliefTokenRoutes);
-app.use('/api/assessments', assessmentRoutes);
+app.use('/api/assessments', damageAssessmentRoutes);
+app.use('/api/missing-persons', missingPersonRoutes);
 app.use('/api/support', supportRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/audit', auditRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/location', locationRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 

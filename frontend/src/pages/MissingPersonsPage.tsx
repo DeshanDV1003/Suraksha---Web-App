@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { UserSearch, Plus, X, MapPin, Clock, Loader2, User, Phone } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { assessmentService } from '@/services/api'
+import { missingPersonService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
 
 export default function MissingPersonsPage() {
@@ -13,7 +13,7 @@ export default function MissingPersonsPage() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await assessmentService.getMissing()
+      const res = await missingPersonService.getMissing()
       setPersons(res.data)
     } catch (error) {
       console.error('Failed to fetch missing persons:', error)
@@ -39,7 +39,7 @@ export default function MissingPersonsPage() {
 
     try {
       setIsSubmitting(true)
-      await assessmentService.reportMissing(data)
+      await missingPersonService.reportMissing(data)
       alert('Missing person reported successfully')
       setShowModal(false)
       fetchData()

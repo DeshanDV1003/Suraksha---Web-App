@@ -5,15 +5,17 @@ import {
   Building2, ChevronRight, Plus, X, Send
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { incidentService, alertService, campService, volunteerService, helpRequestService, assessmentService } from '../services/api'
+import { dashboardService, alertService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
+import { useAppStore } from '@/store/useAppStore'
 
 export default function DashboardPage() {
   const { user } = useAuth()
+  const { searchQuery } = useAppStore()
   const [incidents, setIncidents] = useState<any[]>([])
   const [alerts, setAlerts] = useState<any[]>([])
-  const [camps, setCamps] = useState<any[]>([])
+  const [campsCount, setCampsCount] = useState(0)
   const [volunteersCount, setVolunteersCount] = useState(0)
   const [helpRequestsCount, setHelpRequestsCount] = useState(0)
   const [missingCount, setMissingCount] = useState(0)
@@ -26,20 +28,14 @@ export default function DashboardPage() {
 
   const fetchData = async () => {
     try {
-      const [incRes, alertRes, campRes, volRes, helpRes, missingRes] = await Promise.all([
-        incidentService.getIncidents(),
-        alertService.getAlerts(),
-        campService.getCamps(),
-        volunteerService.listVolunteers(),
-        helpRequestService.getRequests(),
-        assessmentService.getMissing()
-      ])
-      setIncidents(incRes.data)
-      setAlerts(alertRes.data)
-      setCamps(campRes.data)
-      setVolunteersCount(volRes.data.length)
-      setHelpRequestsCount(helpRes.data.length)
-      setMissingCount(missingRes.data.length)
+      const res = await dashboardService.getStats()
+      const data = res.data
+      setIncidents(data.recentIncidents || [])
+      setAlerts(data.recentAlerts || [])
+      setCampsCount(data.reliefCamps || 0)
+      setVolunteersCount(data.volunteersActive || 0)
+      setHelpRequestsCount(data.helpRequests || 0)
+      setMissingCount(data.missingPersons || 0)
     } catch (error) {
       console.error('Failed to fetch dashboard data', error)
     } finally {
@@ -87,7 +83,7 @@ export default function DashboardPage() {
     },
     {
       label: 'Relief Camps',
-      value: camps.length.toString(),
+      value: campsCount.toString(),
       trend: '+2',
       isUp: true,
       icon: Building2,
@@ -232,12 +228,22 @@ export default function DashboardPage() {
           </div>
 
           <div className="space-y-4">
-            {incidents.length === 0 ? (
+            {incidents.filter(i => 
+              i.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+              i.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              i.description?.toLowerCase().includes(searchQuery.toLowerCase())
+            ).length === 0 ? (
               <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
-                <p className="text-slate-400 font-bold">No active incidents reported</p>
+                <p className="text-slate-400 font-bold">No matching incidents found</p>
               </div>
             ) : (
-              incidents.slice(0, 5).map((item, idx) => (
+              incidents
+                .filter(i => 
+                  i.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                  i.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  i.description?.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .slice(0, 5).map((item, idx) => (
                 <div key={idx} className="p-6 border border-slate-100 rounded-[1.5rem] hover:border-[#0061ff]/30 hover:bg-blue-50/10 transition-all group cursor-pointer shadow-sm hover:shadow-md">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
@@ -286,12 +292,22 @@ export default function DashboardPage() {
         <div className="suraksha-card p-8 bg-gradient-to-b from-white to-slate-50/50">
           <h3 className="text-xl font-bold text-[#1e293b] mb-8">Recent Alerts</h3>
           <div className="space-y-4">
-            {alerts.length === 0 ? (
+            {alerts.filter(a => 
+              a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+              a.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              a.message.toLowerCase().includes(searchQuery.toLowerCase())
+            ).length === 0 ? (
               <div className="text-center py-10">
-                <p className="text-slate-400 text-xs font-bold uppercase">No active alerts</p>
+                <p className="text-slate-400 text-xs font-bold uppercase">No matching alerts</p>
               </div>
             ) : (
-              alerts.slice(0, 3).map((alert, idx) => (
+              alerts
+                .filter(a => 
+                  a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                  a.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  a.message.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .slice(0, 3).map((alert, idx) => (
                 <div key={idx} className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-[#0061ff]/30 hover:shadow-md transition-all group">
                   <h4 className="text-[16px] font-bold text-[#1e293b] leading-tight group-hover:text-[#0061ff] transition-colors mb-2">{alert.title}</h4>
 

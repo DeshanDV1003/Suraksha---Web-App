@@ -45,6 +45,7 @@ export const campService = {
 
 export const userService = {
   getUsers: () => api.get('/users'),
+  getMe: () => api.get('/users/me'),
   updateProfile: (data: any) => api.patch('/users/profile', data),
   updateRole: (id: string, role: string) => api.patch(`/users/${id}/role`, { role }),
   deleteUser: (id: string) => api.delete(`/users/${id}`),
@@ -84,18 +85,44 @@ export const reliefTokenService = {
   recordDistribution: (data: any) => api.post('/relief-tokens/distribution', data),
 };
 
-export const assessmentService = {
+export const damageAssessmentService = {
   reportDamage: (data: any) => api.post('/assessments/damage', data),
   getAssessments: () => api.get('/assessments/damage'),
-  reportMissing: (data: any) => api.post('/assessments/missing', data),
-  getMissing: () => api.get('/assessments/missing'),
-  updateMissingStatus: (id: string, status: string) => api.patch(`/assessments/missing/${id}/status`, { status }),
+};
+
+export const missingPersonService = {
+  reportMissing: (data: any) => api.post('/missing-persons', data),
+  getMissing: () => api.get('/missing-persons'),
+  updateStatus: (id: string, status: string) => api.patch(`/missing-persons/${id}/status`, { status }),
+  delete: (id: string) => api.delete(`/missing-persons/${id}`),
 };
 
 export const supportService = {
   createRequest: (data: any) => api.post('/support', data),
   getRequests: () => api.get('/support'),
   updateStatus: (id: string, data: any) => api.patch(`/support/${id}/status`, data),
+};
+
+export const dashboardService = {
+  getStats: () => api.get('/dashboard/stats'),
+};
+
+export const analyticsService = {
+  getOperationalIntelligence: () => api.get('/analytics/operational-intelligence'),
+};
+
+export const auditService = {
+  getLogs: () => api.get('/audit'),
+};
+
+export const notificationService = {
+  getNotifications: () => api.get('/notifications/my'),
+  markAsRead: (id: string) => api.patch(`/notifications/${id}/read`),
+};
+
+export const locationService = {
+  logLocation: (data: any) => api.post('/location/log', data),
+  getUserLocation: (userId: string) => api.get(`/location/user/${userId}`),
 };
 
 export default api;

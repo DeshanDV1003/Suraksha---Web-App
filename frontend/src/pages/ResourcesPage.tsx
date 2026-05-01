@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Package, Eye, Phone, Plus, X, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { resourceService } from '@/services/api'
+import { useAppStore } from '@/store/useAppStore'
 
 interface Resource {
   id: string
@@ -14,6 +15,7 @@ interface Resource {
 }
 
 export default function ResourcesPage() {
+  const { searchQuery } = useAppStore()
   const [resources, setResources] = useState<Resource[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -88,8 +90,8 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Community Resource Management</h1>
-          <p className="text-slate-500 mt-1 font-medium">Crowdsourced resources from local community</p>
+          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Community Resource Management</h1>
+          <p className="text-slate-500 mt-1 font-bold">Crowdsourced resources from local community</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}
@@ -103,9 +105,9 @@ export default function ResourcesPage() {
       {/* Mini Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white border border-slate-100 rounded-[1.25rem] p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
-             <div className={cn("text-3xl font-bold", stat.color)}>{stat.value}</div>
-             <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+          <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
+             <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
+             <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</div>
           </div>
         ))}
       </div>
@@ -116,13 +118,13 @@ export default function ResourcesPage() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-slate-50/50 border-b border-slate-100">
-                <th className="px-8 py-5 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Resource Type</th>
-                <th className="px-8 py-5 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Owner</th>
-                <th className="px-8 py-5 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Location</th>
-                <th className="px-8 py-5 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Capacity</th>
-                <th className="px-8 py-5 text-center text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Status</th>
-                <th className="px-8 py-5 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Contact</th>
-                <th className="px-8 py-5 text-center text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">Actions</th>
+                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Resource Type</th>
+                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Owner</th>
+                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Location</th>
+                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Capacity</th>
+                <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Status</th>
+                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Contact</th>
+                <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -135,14 +137,24 @@ export default function ResourcesPage() {
                     </div>
                   </td>
                 </tr>
-              ) : resources.length === 0 ? (
+              ) : resources.filter(r => 
+                r.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                r.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                r.location.toLowerCase().includes(searchQuery.toLowerCase())
+              ).length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-8 py-20 text-center text-slate-400 font-medium">
-                    No resources found. Add one to get started!
+                    {searchQuery ? `No matching resources found for "${searchQuery}"` : 'No resources found. Add one to get started!'}
                   </td>
                 </tr>
               ) : (
-                resources.map((resource) => (
+                resources
+                  .filter(r => 
+                    r.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    r.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    r.location.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                  .map((resource) => (
                   <tr key={resource.id} className="hover:bg-slate-50/50 transition-colors group">
                     <td className="px-8 py-6">
                       <span className="text-sm font-bold text-[#1e293b] group-hover:text-[#0061ff] transition-colors whitespace-nowrap">{resource.type}</span>
@@ -198,7 +210,7 @@ export default function ResourcesPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-xl font-bold text-[#1e293b]">Add New Resource</h2>
+              <h2 className="text-xl font-black text-[#1e293b]">Add New Resource</h2>
               <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <X className="w-6 h-6" />
               </button>
@@ -210,7 +222,7 @@ export default function ResourcesPage() {
                   type="text" 
                   placeholder="e.g. Boat, Pickup Truck, Generator" 
                   required
-                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                  className="suraksha-input"
                   value={newResource.type}
                   onChange={(e) => setNewResource({...newResource, type: e.target.value})}
                 />
@@ -222,7 +234,7 @@ export default function ResourcesPage() {
                     type="text" 
                     placeholder="Enter full name" 
                     required
-                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    className="suraksha-input"
                     value={newResource.owner}
                     onChange={(e) => setNewResource({...newResource, owner: e.target.value})}
                   />
@@ -233,7 +245,7 @@ export default function ResourcesPage() {
                     type="text" 
                     placeholder="e.g. Colombo 7" 
                     required
-                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    className="suraksha-input"
                     value={newResource.location}
                     onChange={(e) => setNewResource({...newResource, location: e.target.value})}
                   />

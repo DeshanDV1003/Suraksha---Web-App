@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { campService } from '../services/api'
+import { useAppStore } from '@/store/useAppStore'
 
 const servicesList = [
   { name: 'food', icon: Utensils },
@@ -19,6 +20,7 @@ const servicesList = [
 ]
 
 export default function CampsPage() {
+  const { searchQuery } = useAppStore()
   const [camps, setCamps] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -90,8 +92,8 @@ export default function CampsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Relief Camp Management</h1>
-          <p className="text-slate-500 mt-1 font-medium">Service availability and crowd management</p>
+          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Relief Camp Management</h1>
+          <p className="text-slate-500 mt-1 font-bold">Service availability and crowd management</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}
@@ -106,8 +108,8 @@ export default function CampsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
           <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all">
-             <div className={cn("text-3xl font-extrabold", stat.color)}>{stat.value}</div>
-             <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+             <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
+             <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</div>
           </div>
         ))}
       </div>
@@ -115,20 +117,28 @@ export default function CampsPage() {
       {/* Camps Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {loading ? (
-          <div className="lg:col-span-2 flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm space-y-3">
+          <div className="lg:col-span-2 flex flex-col items-center justify-center py-20 bg-white rounded-[1.5rem] border border-slate-100 shadow-sm space-y-3">
             <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading camps...</p>
           </div>
-        ) : camps.length === 0 ? (
-           <div className="lg:col-span-2 text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200">
+        ) : camps.filter(c => 
+            c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            c.location.toLowerCase().includes(searchQuery.toLowerCase())
+          ).length === 0 ? (
+           <div className="lg:col-span-2 text-center py-24 bg-white rounded-[1.5rem] border border-dashed border-slate-200">
              <div className="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Building2 className="w-10 h-10 text-slate-300" />
              </div>
-             <p className="text-slate-400 font-bold uppercase tracking-widest mb-1">No Relief Camps Registered</p>
-             <p className="text-slate-400 text-sm">Add your first camp to start management</p>
+             <p className="text-slate-400 font-bold uppercase tracking-widest mb-1">{searchQuery ? 'No matching camps' : 'No Relief Camps Registered'}</p>
+             <p className="text-slate-400 text-sm">{searchQuery ? `No results for "${searchQuery}"` : 'Add your first camp to start management'}</p>
            </div>
         ) : (
-          camps.map((camp, idx) => {
+          camps
+            .filter(c => 
+              c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+              c.location.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((camp, idx) => {
             const percent = Math.round((camp.currentOccupancy / camp.totalCapacity) * 100)
             const status = percent > 90 ? 'HIGH' : percent > 60 ? 'MODERATE' : 'LOW'
             const statusColor = status === 'HIGH' ? 'bg-red-50 text-red-600 border-red-100' :
@@ -139,7 +149,7 @@ export default function CampsPage() {
                            'bg-green-500'
 
             return (
-              <div key={idx} className="suraksha-card p-7 flex flex-col space-y-6 hover:shadow-xl transition-all relative group">
+              <div key={idx} className="suraksha-card p-7 flex flex-col space-y-6 hover:shadow-lg transition-all relative group rounded-[1.5rem]">
                 {/* Severity Pill */}
                 <div className="absolute top-7 right-7">
                   <span className={cn(
@@ -152,7 +162,7 @@ export default function CampsPage() {
 
                 {/* Camp Name & Location */}
                 <div className="pr-20">
-                  <h3 className="text-xl font-bold text-[#1e293b]">{camp.name}</h3>
+                  <h3 className="text-xl font-black text-[#1e293b]">{camp.name}</h3>
                   <div className="flex items-center gap-2 text-sm text-slate-400 font-bold mt-1">
                     <MapPin className="w-4 h-4 text-slate-300" />
                     {camp.location}
@@ -211,9 +221,9 @@ export default function CampsPage() {
       {/* Add Camp Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
-            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 sticky top-0 bg-white z-10">
-              <h2 className="text-xl font-bold text-[#1e293b]">Add New Relief Camp</h2>
+          <div className="bg-white w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <h2 className="text-xl font-black text-[#1e293b]">Add New Resource</h2>
               <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <X className="w-6 h-6" />
               </button>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Home, Plus, X, BarChart3, Clock, CheckCircle2, Loader2, Camera, Info, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { assessmentService, incidentService } from '@/services/api'
+import { damageAssessmentService, incidentService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
 
 export default function DamageAssessmentPage() {
@@ -15,7 +15,7 @@ export default function DamageAssessmentPage() {
     try {
       setLoading(true)
       const [assessRes, incRes] = await Promise.all([
-        assessmentService.getAssessments(),
+        damageAssessmentService.getAssessments(),
         incidentService.getIncidents()
       ])
       setAssessments(assessRes.data)
@@ -48,7 +48,7 @@ export default function DamageAssessmentPage() {
 
     try {
       setIsSubmitting(true)
-      await assessmentService.reportDamage(data)
+      await damageAssessmentService.reportDamage(data)
       alert('Damage assessment reported successfully')
       setShowModal(false)
       fetchData()

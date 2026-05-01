@@ -99,20 +99,20 @@ export default function TokensPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Digital Token System</h1>
-          <p className="text-slate-500 mt-1 font-medium">QR-based fair distribution and tracking</p>
+          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Digital Token System</h1>
+          <p className="text-slate-500 mt-1 font-bold">QR-based fair distribution and tracking</p>
         </div>
         <div className="flex gap-4">
           <button 
             onClick={() => setShowValModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-semibold shadow-sm hover:bg-slate-50 transition-all"
+            className="suraksha-button bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
           >
             <Search className="w-5 h-5" />
             Validate Token
           </button>
           <button 
             onClick={() => setShowGenModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-[#0061ff] text-white rounded-xl text-sm font-semibold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95"
+            className="suraksha-button bg-[#0061ff] text-white shadow-lg shadow-blue-500/25"
           >
             <QrCode className="w-5 h-5" />
             Issue Token
@@ -123,21 +123,21 @@ export default function TokensPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white border border-slate-100 rounded-[1.25rem] p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
-             <div className={cn("text-3xl font-bold", stat.color)}>{stat.value}</div>
-             <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+          <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
+             <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
+             <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</div>
           </div>
         ))}
       </div>
 
       {/* Distributions List Container */}
-      <div className="bg-white border border-slate-100 rounded-[1.5rem] p-10 space-y-8 shadow-sm">
-        <h3 className="text-xl font-bold text-[#1e293b]">Token History</h3>
+      <div className="suraksha-card p-10 space-y-8 shadow-sm rounded-[1.5rem]">
+        <h3 className="text-xl font-black text-[#1e293b]">Token History</h3>
         <div className="space-y-5">
           {loading ? (
             <div className="text-center py-20 flex flex-col items-center gap-2">
               <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-              <p className="text-slate-400 font-medium">Loading token history...</p>
+              <p className="text-slate-400 font-bold">Loading token history...</p>
             </div>
           ) : tokens.length === 0 ? (
             <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
@@ -149,7 +149,7 @@ export default function TokensPage() {
               <div 
                 key={token.id} 
                 className={cn(
-                  "p-7 rounded-[1.5rem] bg-white border transition-all hover:shadow-md relative group",
+                  "p-7 rounded-[1.5rem] bg-white border transition-all hover:shadow-lg relative group",
                   token.status === 'USED' ? "border-slate-100 bg-slate-50/30" : "border-blue-100/60"
                 )}
               >
@@ -171,15 +171,15 @@ export default function TokensPage() {
                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest font-mono">{token.code}</span>
                   </div>
 
-                  <h4 className={cn("text-xl font-bold", token.status === 'USED' ? "text-slate-400" : "text-[#1e293b]")}>{token.user.name}</h4>
+                  <h4 className={cn("text-xl font-black", token.status === 'USED' ? "text-slate-400" : "text-[#1e293b]")}>{token.user.name}</h4>
 
-                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-500">
+                  <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
                     <span className="bg-slate-100 px-2 py-0.5 rounded uppercase text-[10px]">{token.type}</span>
                     <span className="text-slate-300">•</span>
                     <span>System Generated</span>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-50 flex items-center gap-2 text-[12px] font-semibold text-slate-400">
+                  <div className="pt-4 border-t border-slate-50 flex items-center gap-2 text-[12px] font-bold text-slate-400">
                     <Clock className="w-4 h-4 text-slate-300" />
                     <span>Issued {formatDistanceToNow(new Date(token.createdAt))} ago</span>
                   </div>
@@ -193,9 +193,9 @@ export default function TokensPage() {
       {/* Generate Modal */}
       {showGenModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-xl font-bold text-[#1e293b]">Issue Delivery Token</h2>
+          <div className="bg-white w-full max-w-lg rounded-[1.5rem] shadow-lg overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <h2 className="text-2xl font-black text-[#1e293b]">Request Assistance</h2>
               <button onClick={() => setShowGenModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                 <X className="w-6 h-6" />
               </button>
@@ -205,7 +205,7 @@ export default function TokensPage() {
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Select Resident / Recipient</label>
                 <select 
                   required
-                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none"
+                  className="suraksha-input"
                   value={selectedUserId}
                   onChange={(e) => setSelectedUserId(e.target.value)}
                 >
@@ -218,7 +218,7 @@ export default function TokensPage() {
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Allocation Type</label>
                 <select 
-                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none"
+                  className="suraksha-input"
                   value={tokenType}
                   onChange={(e) => setTokenType(e.target.value)}
                 >
