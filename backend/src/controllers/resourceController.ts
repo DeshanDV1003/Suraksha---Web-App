@@ -16,7 +16,9 @@ export const createResource = async (req: Request, res: Response) => {
 
     // Emit socket event for real-time update
     const io = req.app.get('socketio');
-    io.emit('resource_added', resource);
+    if (io) {
+      io.emit('resource_added', resource);
+    }
 
     res.status(201).json(resource);
   } catch (error: any) {

@@ -5,7 +5,7 @@ import { authMiddleware, officerMiddleware } from '../middleware/auth';
 const router = Router();
 
 router.get('/', getResources);
-router.post('/', authMiddleware, officerMiddleware, createResource);
+router.post('/', authMiddleware, createResource);
 router.patch('/:id/status', authMiddleware, officerMiddleware, updateResourceStatus);
 
 export default router;

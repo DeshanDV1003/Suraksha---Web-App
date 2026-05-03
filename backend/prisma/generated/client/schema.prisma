@@ -7,6 +7,341 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id               String                        @id @default(uuid())
+  email            String                        @unique
+  password         String
+  name             String
+  phone            String?
+  role             Role                          @default(CITIZEN)
+  createdAt        DateTime                      @default(now())
+  updatedAt        DateTime                      @updatedAt
+  region           String?
+  damageReports    DamageAssessment[]            @relation("DamageReports")
+  helpRequests     HelpRequest[]
+  reports          IncidentReport[]
+  localVerifier    LocalVerifier?
+  locationLogs     LocationLog[]
+  notifications    Notification[]
+  supportRequests  PsychologicalSupportRequest[] @relation("SupportRequests")
+  reliefTokens     ReliefToken[]                 @relation("ReliefTokens")
+  verifications    ReportVerification[]
+  createdTasks     Task[]                        @relation("CreatedTasks")
+  assignedTasks    Task[]                        @relation("AssignedTasks")
+  tokens           Token[]
+  volunteerProfile VolunteerProfile?
+}
+
+model IncidentReport {
+  id                String               @id @default(uuid())
+  title             String
+  description       String
+  location          String
+  latitude          Float?
+  longitude         Float?
+  status            Status               @default(PENDING)
+  severity          Severity             @default(MEDIUM)
+  category          String
+  images            String[]
+  reporterId        String
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  damageAssessments DamageAssessment[]
+  history           IncidentHistory[]
+  reporter          User                 @relation(fields: [reporterId], references: [id])
+  verifications     ReportVerification[]
+  tasks             Task[]
+  verifierActions   VerifierAction[]
+}
+
+model Alert {
+  id        String    @id @default(uuid())
+  title     String
+  message   String
+  location  String
+  type      AlertType @default(INFO)
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model ReliefCamp {
+  id               String   @id @default(uuid())
+  name             String
+  location         String
+  latitude         Float?
+  longitude        Float?
+  currentOccupancy Int      @default(0)
+  totalCapacity    Int
+  services         String[]
+  status           String   @default("OPEN")
+  waitTime         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Token {
+  id            String         @id @default(uuid())
+  code          String         @unique
+  userId        String
+  type          String         @default("RELIEF")
+  status        String         @default("ACTIVE")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  distributions Distribution[]
+  user          User           @relation(fields: [userId], references: [id])
+}
+
+model Resource {
+  id        String   @id @default(uuid())
+  type      String
+  owner     String
+  location  String
+  capacity  String
+  status    String   @default("AVAILABLE")
+  contact   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id           String          @id @default(uuid())
+  title        String
+  description  String
+  incidentId   String?
+  assignedToId String?
+  assignedById String?
+  priority     Severity        @default(MEDIUM)
+  status       Status          @default(PENDING)
+  dueDate      DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  assignedBy   User?           @relation("CreatedTasks", fields: [assignedById], references: [id])
+  assignedTo   User?           @relation("AssignedTasks", fields: [assignedToId], references: [id])
+  incident     IncidentReport? @relation(fields: [incidentId], references: [id])
+}
+
+model VolunteerProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  skills         String[]
+  availability   Boolean  @default(true)
+  rating         Float    @default(0)
+  completedTasks Int      @default(0)
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model HelpRequest {
+  id              String           @id @default(uuid())
+  userId          String
+  type            String
+  description     String
+  location        String
+  latitude        Float?
+  longitude       Float?
+  priority        Severity         @default(MEDIUM)
+  status          Status           @default(PENDING)
+  peopleCount     Int?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  user            User             @relation(fields: [userId], references: [id])
+  verifierActions VerifierAction[]
+}
+
+model ReportVerification {
+  id        String         @id @default(uuid())
+  reportId  String
+  userId    String
+  status    String
+  comment   String?
+  createdAt DateTime       @default(now())
+  report    IncidentReport @relation(fields: [reportId], references: [id])
+  user      User           @relation(fields: [userId], references: [id])
+}
+
+model Distribution {
+  id          String   @id @default(uuid())
+  tokenId     String
+  itemType    String
+  quantity    Int
+  deliveredBy String
+  location    String
+  proofImage  String?
+  deliveredAt DateTime @default(now())
+  token       Token    @relation(fields: [tokenId], references: [id])
+}
+
+model MissingPerson {
+  id          String   @id @default(uuid())
+  name        String
+  age         Int?
+  description String
+  lastSeen    String
+  photo       String?
+  reportedBy  String
+  status      String   @default("MISSING")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model MLLog {
+  id           String   @id @default(uuid())
+  inputData    Json
+  prediction   String
+  confidence   Float?
+  modelVersion String
+  createdAt    DateTime @default(now())
+}
+
+model IncidentHistory {
+  id         String         @id @default(uuid())
+  incidentId String
+  status     Status
+  updatedBy  String
+  note       String?
+  createdAt  DateTime       @default(now())
+  incident   IncidentReport @relation(fields: [incidentId], references: [id])
+}
+
+model ResourceRequestMatch {
+  id         String   @id @default(uuid())
+  requestId  String
+  resourceId String
+  matchScore Float
+  status     String
+  createdAt  DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model LocationLog {
+  id        String   @id @default(uuid())
+  userId    String
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ReliefToken {
+  id         String             @id @default(uuid())
+  code       String             @unique
+  qrCodeData String
+  userId     String
+  campId     String?
+  status     TokenStatus        @default(ACTIVE)
+  usageCount Int                @default(0)
+  maxUsage   Int                @default(1)
+  issuedAt   DateTime           @default(now())
+  expiresAt  DateTime?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  user       User               @relation("ReliefTokens", fields: [userId], references: [id])
+  claims     ReliefTokenClaim[]
+}
+
+model ReliefTokenClaim {
+  id         String      @id @default(uuid())
+  tokenId    String
+  claimedAt  DateTime    @default(now())
+  claimedBy  String
+  itemType   String
+  quantity   Int
+  proofImage String?
+  campId     String?
+  notes      String?
+  token      ReliefToken @relation(fields: [tokenId], references: [id])
+}
+
+model DamageAssessment {
+  id               String          @id @default(uuid())
+  reportedById     String
+  incidentId       String?
+  location         String
+  latitude         Float?
+  longitude        Float?
+  category         DamageCategory
+  structuralDamage DamageLevel     @default(NONE)
+  cropDamage       DamageLevel     @default(NONE)
+  utilityDamage    DamageLevel     @default(NONE)
+  roadDamage       DamageLevel     @default(NONE)
+  affectedPersons  Int?
+  estimatedLoss    Float?
+  mediaUrls        String[]
+  status           DamageStatus    @default(PENDING_REVIEW)
+  notes            String?
+  verifiedById     String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  incident         IncidentReport? @relation(fields: [incidentId], references: [id])
+  reportedBy       User            @relation("DamageReports", fields: [reportedById], references: [id])
+}
+
+model LocalVerifier {
+  id                 String           @id @default(uuid())
+  userId             String           @unique
+  verifierRole       VerifierRole
+  jurisdiction       String
+  orgName            String?
+  isApproved         Boolean          @default(false)
+  approvedAt         DateTime?
+  approvedById       String?
+  verificationsCount Int              @default(0)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  user               User             @relation(fields: [userId], references: [id])
+  actions            VerifierAction[]
+}
+
+model VerifierAction {
+  id            String             @id @default(uuid())
+  verifierId    String
+  incidentId    String?
+  helpRequestId String?
+  result        VerificationResult
+  comment       String?
+  createdAt     DateTime           @default(now())
+  helpRequest   HelpRequest?       @relation(fields: [helpRequestId], references: [id])
+  incident      IncidentReport?    @relation(fields: [incidentId], references: [id])
+  verifier      LocalVerifier      @relation(fields: [verifierId], references: [id])
+}
+
+model PsychologicalSupportRequest {
+  id            String         @id @default(uuid())
+  userId        String
+  type          SupportType    @default(GENERAL)
+  description   String?
+  urgency       SupportUrgency @default(MEDIUM)
+  status        SupportStatus  @default(PENDING)
+  anonymous     Boolean        @default(false)
+  location      String?
+  affectedCount Int?
+  assignedToId  String?
+  notes         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation("SupportRequests", fields: [userId], references: [id])
+}
+
 enum Role {
   CITIZEN
   VOLUNTEER
@@ -100,396 +435,4 @@ enum SupportStatus {
   IN_PROGRESS
   RESOLVED
   CLOSED
-}
-
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  phone     String?
-  region    String?
-  role      Role     @default(CITIZEN)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  reports          IncidentReport[]
-  tokens           Token[]
-  assignedTasks    Task[]                        @relation("AssignedTasks")
-  createdTasks     Task[]                        @relation("CreatedTasks")
-  volunteerProfile VolunteerProfile?
-  helpRequests     HelpRequest[]
-  verifications    ReportVerification[]
-  notifications    Notification[]
-  locationLogs     LocationLog[]
-  reliefTokens     ReliefToken[]                 @relation("ReliefTokens")
-  damageReports    DamageAssessment[]            @relation("DamageReports")
-  localVerifier    LocalVerifier?
-  supportRequests  PsychologicalSupportRequest[] @relation("SupportRequests")
-}
-
-model IncidentReport {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  location    String
-  latitude    Float?
-  longitude   Float?
-  status      Status   @default(PENDING)
-  severity    Severity @default(MEDIUM)
-  category    String
-  images      String[]
-  reporterId  String
-  reporter    User     @relation(fields: [reporterId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  tasks             Task[]
-  verifications     ReportVerification[]
-  history           IncidentHistory[]
-  damageAssessments DamageAssessment[]
-  verifierActions   VerifierAction[]
-}
-
-model Alert {
-  id        String    @id @default(uuid())
-  title     String
-  message   String
-  location  String
-  type      AlertType @default(INFO)
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-model ReliefCamp {
-  id               String   @id @default(uuid())
-  name             String
-  location         String
-  latitude         Float?
-  longitude        Float?
-  currentOccupancy Int      @default(0)
-  totalCapacity    Int
-  services         String[] // e.g. ["food", "medical", "water"]
-  status           String   @default("OPEN")
-  waitTime         String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model Token {
-  id        String   @id @default(uuid())
-  code      String   @unique
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  type      String   @default("RELIEF")
-  status    String   @default("ACTIVE") // ACTIVE, USED, EXPIRED
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  distributions Distribution[]
-}
-
-model Resource {
-  id        String   @id @default(uuid())
-  type      String
-  owner     String
-  location  String
-  capacity  String
-  status    String   @default("AVAILABLE")
-  contact   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// ================================
-// TASK & OPERATION MANAGEMENT
-// ================================
-model Task {
-  id           String          @id @default(uuid())
-  title        String
-  description  String
-  incidentId   String?
-  incident     IncidentReport? @relation(fields: [incidentId], references: [id])
-  assignedToId String?
-  assignedTo   User?           @relation("AssignedTasks", fields: [assignedToId], references: [id])
-  assignedById String?
-  assignedBy   User?           @relation("CreatedTasks", fields: [assignedById], references: [id])
-  priority     Severity        @default(MEDIUM)
-  status       Status          @default(PENDING)
-  dueDate      DateTime?
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-}
-
-// ================================
-// VOLUNTEER PROFILE & SKILLS
-// ================================
-model VolunteerProfile {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id])
-  skills         String[]
-  availability   Boolean  @default(true)
-  rating         Float    @default(0)
-  completedTasks Int      @default(0)
-  createdAt      DateTime @default(now())
-}
-
-// ================================
-// HELP REQUESTS
-// ================================
-model HelpRequest {
-  id              String           @id @default(uuid())
-  userId          String
-  user            User             @relation(fields: [userId], references: [id])
-  type            String
-  description     String
-  location        String
-  latitude        Float?
-  longitude       Float?
-  priority        Severity         @default(MEDIUM)
-  status          Status           @default(PENDING)
-  peopleCount     Int?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  verifierActions VerifierAction[]
-}
-
-// ================================
-// REPORT VERIFICATION
-// ================================
-model ReportVerification {
-  id        String         @id @default(uuid())
-  reportId  String
-  report    IncidentReport @relation(fields: [reportId], references: [id])
-  userId    String
-  user      User           @relation(fields: [userId], references: [id])
-  status    String // CONFIRMED / REJECTED
-  comment   String?
-  createdAt DateTime       @default(now())
-}
-
-// ================================
-// RELIEF DISTRIBUTION TRACKING
-// ================================
-model Distribution {
-  id          String   @id @default(uuid())
-  tokenId     String
-  token       Token    @relation(fields: [tokenId], references: [id])
-  itemType    String
-  quantity    Int
-  deliveredBy String
-  location    String
-  proofImage  String?
-  deliveredAt DateTime @default(now())
-}
-
-// ================================
-// MISSING PERSON MANAGEMENT
-// ================================
-model MissingPerson {
-  id          String   @id @default(uuid())
-  name        String
-  age         Int?
-  description String
-  lastSeen    String
-  photo       String?
-  reportedBy  String
-  status      String   @default("MISSING") // MISSING / FOUND
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-// ================================
-// NOTIFICATION SYSTEM
-// ================================
-model Notification {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  title     String
-  message   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-}
-
-// ================================
-// AI / ML LOGGING
-// ================================
-model MLLog {
-  id           String   @id @default(uuid())
-  inputData    Json
-  prediction   String
-  confidence   Float?
-  modelVersion String
-  createdAt    DateTime @default(now())
-}
-
-// ================================
-// INCIDENT STATUS HISTORY
-// ================================
-model IncidentHistory {
-  id         String         @id @default(uuid())
-  incidentId String
-  incident   IncidentReport @relation(fields: [incidentId], references: [id])
-  status     Status
-  updatedBy  String
-  note       String?
-  createdAt  DateTime       @default(now())
-}
-
-// ================================
-// RESOURCE MATCHING (AI SUPPORT)
-// ================================
-model ResourceRequestMatch {
-  id         String   @id @default(uuid())
-  requestId  String
-  resourceId String
-  matchScore Float
-  status     String // PENDING / MATCHED / COMPLETED
-  createdAt  DateTime @default(now())
-}
-
-// ================================
-// AUDIT LOG (SYSTEM TRACKING)
-// ================================
-model AuditLog {
-  id        String   @id @default(uuid())
-  userId    String?
-  action    String
-  entity    String
-  entityId  String
-  metadata  Json?
-  createdAt DateTime @default(now())
-}
-
-// ================================
-// LOCATION TRACKING (ADVANCED)
-// ================================
-model LocationLog {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  latitude  Float
-  longitude Float
-  createdAt DateTime @default(now())
-}
-
-// ================================
-// DIGITAL TOKEN / QR RELIEF SYSTEM
-// ================================
-
-model ReliefToken {
-  id         String      @id @default(uuid())
-  code       String      @unique
-  qrCodeData String
-  userId     String
-  user       User        @relation("ReliefTokens", fields: [userId], references: [id])
-  campId     String?
-  status     TokenStatus @default(ACTIVE)
-  usageCount Int         @default(0)
-  maxUsage   Int         @default(1)
-  issuedAt   DateTime    @default(now())
-  expiresAt  DateTime?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-
-  claims ReliefTokenClaim[]
-}
-
-model ReliefTokenClaim {
-  id         String      @id @default(uuid())
-  tokenId    String
-  token      ReliefToken @relation(fields: [tokenId], references: [id])
-  claimedAt  DateTime    @default(now())
-  claimedBy  String
-  itemType   String
-  quantity   Int
-  proofImage String?
-  campId     String?
-  notes      String?
-}
-
-// ================================
-// POST-DISASTER DAMAGE ASSESSMENT
-// ================================
-
-model DamageAssessment {
-  id               String          @id @default(uuid())
-  reportedById     String
-  reportedBy       User            @relation("DamageReports", fields: [reportedById], references: [id])
-  incidentId       String?
-  incident         IncidentReport? @relation(fields: [incidentId], references: [id])
-  location         String
-  latitude         Float?
-  longitude        Float?
-  category         DamageCategory
-  structuralDamage DamageLevel     @default(NONE)
-  cropDamage       DamageLevel     @default(NONE)
-  utilityDamage    DamageLevel     @default(NONE)
-  roadDamage       DamageLevel     @default(NONE)
-  affectedPersons  Int?
-  estimatedLoss    Float?
-  mediaUrls        String[]
-  status           DamageStatus    @default(PENDING_REVIEW)
-  notes            String?
-  verifiedById     String?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-}
-
-// ================================
-// TRUSTED LOCAL VERIFIER
-// ================================
-
-model LocalVerifier {
-  id                 String       @id @default(uuid())
-  userId             String       @unique
-  user               User         @relation(fields: [userId], references: [id])
-  verifierRole       VerifierRole
-  jurisdiction       String
-  orgName            String?
-  isApproved         Boolean      @default(false)
-  approvedAt         DateTime?
-  approvedById       String?
-  verificationsCount Int          @default(0)
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
-
-  actions VerifierAction[]
-}
-
-model VerifierAction {
-  id            String             @id @default(uuid())
-  verifierId    String
-  verifier      LocalVerifier      @relation(fields: [verifierId], references: [id])
-  incidentId    String?
-  incident      IncidentReport?    @relation(fields: [incidentId], references: [id])
-  helpRequestId String?
-  helpRequest   HelpRequest?       @relation(fields: [helpRequestId], references: [id])
-  result        VerificationResult
-  comment       String?
-  createdAt     DateTime           @default(now())
-}
-
-// ================================
-// PSYCHOLOGICAL SUPPORT REQUESTS
-// ================================
-
-model PsychologicalSupportRequest {
-  id            String         @id @default(uuid())
-  userId        String
-  user          User           @relation("SupportRequests", fields: [userId], references: [id])
-  type          SupportType    @default(GENERAL)
-  description   String?
-  urgency       SupportUrgency @default(MEDIUM)
-  status        SupportStatus  @default(PENDING)
-  anonymous     Boolean        @default(false)
-  location      String?
-  affectedCount Int?
-  assignedToId  String?
-  notes         String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
 }

@@ -3150,31 +3150,31 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    reports: number
-    tokens: number
-    assignedTasks: number
-    createdTasks: number
-    helpRequests: number
-    verifications: number
-    notifications: number
-    locationLogs: number
-    reliefTokens: number
     damageReports: number
+    helpRequests: number
+    reports: number
+    locationLogs: number
+    notifications: number
     supportRequests: number
+    reliefTokens: number
+    verifications: number
+    createdTasks: number
+    assignedTasks: number
+    tokens: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    reports?: boolean | UserCountOutputTypeCountReportsArgs
-    tokens?: boolean | UserCountOutputTypeCountTokensArgs
-    assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
-    createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
-    helpRequests?: boolean | UserCountOutputTypeCountHelpRequestsArgs
-    verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
-    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
-    locationLogs?: boolean | UserCountOutputTypeCountLocationLogsArgs
-    reliefTokens?: boolean | UserCountOutputTypeCountReliefTokensArgs
     damageReports?: boolean | UserCountOutputTypeCountDamageReportsArgs
+    helpRequests?: boolean | UserCountOutputTypeCountHelpRequestsArgs
+    reports?: boolean | UserCountOutputTypeCountReportsArgs
+    locationLogs?: boolean | UserCountOutputTypeCountLocationLogsArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     supportRequests?: boolean | UserCountOutputTypeCountSupportRequestsArgs
+    reliefTokens?: boolean | UserCountOutputTypeCountReliefTokensArgs
+    verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
+    createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
+    assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
+    tokens?: boolean | UserCountOutputTypeCountTokensArgs
   }
 
   // Custom InputTypes
@@ -3191,29 +3191,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: IncidentReportWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TokenWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAssignedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TaskWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCreatedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TaskWhereInput
+  export type UserCountOutputTypeCountDamageReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DamageAssessmentWhereInput
   }
 
   /**
@@ -3226,15 +3205,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReportVerificationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NotificationWhereInput
+  export type UserCountOutputTypeCountReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidentReportWhereInput
   }
 
   /**
@@ -3247,15 +3219,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountReliefTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReliefTokenWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountDamageReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DamageAssessmentWhereInput
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
   /**
@@ -3265,24 +3230,59 @@ export namespace Prisma {
     where?: PsychologicalSupportRequestWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReliefTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReliefTokenWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReportVerificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TokenWhereInput
+  }
+
 
   /**
    * Count Type IncidentReportCountOutputType
    */
 
   export type IncidentReportCountOutputType = {
-    tasks: number
-    verifications: number
-    history: number
     damageAssessments: number
+    history: number
+    verifications: number
+    tasks: number
     verifierActions: number
   }
 
   export type IncidentReportCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tasks?: boolean | IncidentReportCountOutputTypeCountTasksArgs
-    verifications?: boolean | IncidentReportCountOutputTypeCountVerificationsArgs
-    history?: boolean | IncidentReportCountOutputTypeCountHistoryArgs
     damageAssessments?: boolean | IncidentReportCountOutputTypeCountDamageAssessmentsArgs
+    history?: boolean | IncidentReportCountOutputTypeCountHistoryArgs
+    verifications?: boolean | IncidentReportCountOutputTypeCountVerificationsArgs
+    tasks?: boolean | IncidentReportCountOutputTypeCountTasksArgs
     verifierActions?: boolean | IncidentReportCountOutputTypeCountVerifierActionsArgs
   }
 
@@ -3300,15 +3300,8 @@ export namespace Prisma {
   /**
    * IncidentReportCountOutputType without action
    */
-  export type IncidentReportCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TaskWhereInput
-  }
-
-  /**
-   * IncidentReportCountOutputType without action
-   */
-  export type IncidentReportCountOutputTypeCountVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReportVerificationWhereInput
+  export type IncidentReportCountOutputTypeCountDamageAssessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DamageAssessmentWhereInput
   }
 
   /**
@@ -3321,8 +3314,15 @@ export namespace Prisma {
   /**
    * IncidentReportCountOutputType without action
    */
-  export type IncidentReportCountOutputTypeCountDamageAssessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DamageAssessmentWhereInput
+  export type IncidentReportCountOutputTypeCountVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReportVerificationWhereInput
+  }
+
+  /**
+   * IncidentReportCountOutputType without action
+   */
+  export type IncidentReportCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
   }
 
   /**
@@ -3477,10 +3477,10 @@ export namespace Prisma {
     password: string | null
     name: string | null
     phone: string | null
-    region: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
+    region: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3489,10 +3489,10 @@ export namespace Prisma {
     password: string | null
     name: string | null
     phone: string | null
-    region: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
+    region: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3501,10 +3501,10 @@ export namespace Prisma {
     password: number
     name: number
     phone: number
-    region: number
     role: number
     createdAt: number
     updatedAt: number
+    region: number
     _all: number
   }
 
@@ -3515,10 +3515,10 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
-    region?: true
     role?: true
     createdAt?: true
     updatedAt?: true
+    region?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3527,10 +3527,10 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
-    region?: true
     role?: true
     createdAt?: true
     updatedAt?: true
+    region?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3539,10 +3539,10 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
-    region?: true
     role?: true
     createdAt?: true
     updatedAt?: true
+    region?: true
     _all?: true
   }
 
@@ -3624,10 +3624,10 @@ export namespace Prisma {
     password: string
     name: string
     phone: string | null
-    region: string | null
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
+    region: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3653,23 +3653,23 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    region?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    reports?: boolean | User$reportsArgs<ExtArgs>
-    tokens?: boolean | User$tokensArgs<ExtArgs>
-    assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
-    createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
-    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
-    helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
-    verifications?: boolean | User$verificationsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    locationLogs?: boolean | User$locationLogsArgs<ExtArgs>
-    reliefTokens?: boolean | User$reliefTokensArgs<ExtArgs>
+    region?: boolean
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
+    helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
+    reports?: boolean | User$reportsArgs<ExtArgs>
     localVerifier?: boolean | User$localVerifierArgs<ExtArgs>
+    locationLogs?: boolean | User$locationLogsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
     supportRequests?: boolean | User$supportRequestsArgs<ExtArgs>
+    reliefTokens?: boolean | User$reliefTokensArgs<ExtArgs>
+    verifications?: boolean | User$verificationsArgs<ExtArgs>
+    createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
+    assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
+    tokens?: boolean | User$tokensArgs<ExtArgs>
+    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3679,10 +3679,10 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    region?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    region?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3691,10 +3691,10 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    region?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    region?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3703,27 +3703,27 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    region?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    region?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "region" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "role" | "createdAt" | "updatedAt" | "region", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    reports?: boolean | User$reportsArgs<ExtArgs>
-    tokens?: boolean | User$tokensArgs<ExtArgs>
-    assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
-    createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
-    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
-    helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
-    verifications?: boolean | User$verificationsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    locationLogs?: boolean | User$locationLogsArgs<ExtArgs>
-    reliefTokens?: boolean | User$reliefTokensArgs<ExtArgs>
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
+    helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
+    reports?: boolean | User$reportsArgs<ExtArgs>
     localVerifier?: boolean | User$localVerifierArgs<ExtArgs>
+    locationLogs?: boolean | User$locationLogsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
     supportRequests?: boolean | User$supportRequestsArgs<ExtArgs>
+    reliefTokens?: boolean | User$reliefTokensArgs<ExtArgs>
+    verifications?: boolean | User$verificationsArgs<ExtArgs>
+    createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
+    assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
+    tokens?: boolean | User$tokensArgs<ExtArgs>
+    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3732,19 +3732,19 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      reports: Prisma.$IncidentReportPayload<ExtArgs>[]
-      tokens: Prisma.$TokenPayload<ExtArgs>[]
-      assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
-      createdTasks: Prisma.$TaskPayload<ExtArgs>[]
-      volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
-      helpRequests: Prisma.$HelpRequestPayload<ExtArgs>[]
-      verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
-      notifications: Prisma.$NotificationPayload<ExtArgs>[]
-      locationLogs: Prisma.$LocationLogPayload<ExtArgs>[]
-      reliefTokens: Prisma.$ReliefTokenPayload<ExtArgs>[]
       damageReports: Prisma.$DamageAssessmentPayload<ExtArgs>[]
+      helpRequests: Prisma.$HelpRequestPayload<ExtArgs>[]
+      reports: Prisma.$IncidentReportPayload<ExtArgs>[]
       localVerifier: Prisma.$LocalVerifierPayload<ExtArgs> | null
+      locationLogs: Prisma.$LocationLogPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
       supportRequests: Prisma.$PsychologicalSupportRequestPayload<ExtArgs>[]
+      reliefTokens: Prisma.$ReliefTokenPayload<ExtArgs>[]
+      verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
+      createdTasks: Prisma.$TaskPayload<ExtArgs>[]
+      assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
+      tokens: Prisma.$TokenPayload<ExtArgs>[]
+      volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3752,10 +3752,10 @@ export namespace Prisma {
       password: string
       name: string
       phone: string | null
-      region: string | null
       role: $Enums.Role
       createdAt: Date
       updatedAt: Date
+      region: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4150,19 +4150,19 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    reports<T extends User$reportsArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    tokens<T extends User$tokensArgs<ExtArgs> = {}>(args?: Subset<T, User$tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    assignedTasks<T extends User$assignedTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    createdTasks<T extends User$createdTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$createdTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    helpRequests<T extends User$helpRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$helpRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HelpRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    verifications<T extends User$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    locationLogs<T extends User$locationLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$locationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LocationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reliefTokens<T extends User$reliefTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$reliefTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReliefTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     damageReports<T extends User$damageReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$damageReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DamageAssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    helpRequests<T extends User$helpRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$helpRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HelpRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reports<T extends User$reportsArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     localVerifier<T extends User$localVerifierArgs<ExtArgs> = {}>(args?: Subset<T, User$localVerifierArgs<ExtArgs>>): Prisma__LocalVerifierClient<$Result.GetResult<Prisma.$LocalVerifierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    locationLogs<T extends User$locationLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$locationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LocationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     supportRequests<T extends User$supportRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$supportRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PsychologicalSupportRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reliefTokens<T extends User$reliefTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$reliefTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReliefTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    verifications<T extends User$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdTasks<T extends User$createdTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$createdTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assignedTasks<T extends User$assignedTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tokens<T extends User$tokensArgs<ExtArgs> = {}>(args?: Subset<T, User$tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4197,10 +4197,10 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
-    readonly region: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly region: FieldRef<"User", 'String'>
   }
     
 
@@ -4594,118 +4594,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.reports
+   * User.damageReports
    */
-  export type User$reportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$damageReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the IncidentReport
+     * Select specific fields to fetch from the DamageAssessment
      */
-    select?: IncidentReportSelect<ExtArgs> | null
+    select?: DamageAssessmentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the IncidentReport
+     * Omit specific fields from the DamageAssessment
      */
-    omit?: IncidentReportOmit<ExtArgs> | null
+    omit?: DamageAssessmentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentReportInclude<ExtArgs> | null
-    where?: IncidentReportWhereInput
-    orderBy?: IncidentReportOrderByWithRelationInput | IncidentReportOrderByWithRelationInput[]
-    cursor?: IncidentReportWhereUniqueInput
+    include?: DamageAssessmentInclude<ExtArgs> | null
+    where?: DamageAssessmentWhereInput
+    orderBy?: DamageAssessmentOrderByWithRelationInput | DamageAssessmentOrderByWithRelationInput[]
+    cursor?: DamageAssessmentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: IncidentReportScalarFieldEnum | IncidentReportScalarFieldEnum[]
-  }
-
-  /**
-   * User.tokens
-   */
-  export type User$tokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Token
-     */
-    select?: TokenSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Token
-     */
-    omit?: TokenOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TokenInclude<ExtArgs> | null
-    where?: TokenWhereInput
-    orderBy?: TokenOrderByWithRelationInput | TokenOrderByWithRelationInput[]
-    cursor?: TokenWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TokenScalarFieldEnum | TokenScalarFieldEnum[]
-  }
-
-  /**
-   * User.assignedTasks
-   */
-  export type User$assignedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Task
-     */
-    select?: TaskSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Task
-     */
-    omit?: TaskOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TaskInclude<ExtArgs> | null
-    where?: TaskWhereInput
-    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
-    cursor?: TaskWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
-  }
-
-  /**
-   * User.createdTasks
-   */
-  export type User$createdTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Task
-     */
-    select?: TaskSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Task
-     */
-    omit?: TaskOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TaskInclude<ExtArgs> | null
-    where?: TaskWhereInput
-    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
-    cursor?: TaskWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
-  }
-
-  /**
-   * User.volunteerProfile
-   */
-  export type User$volunteerProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VolunteerProfile
-     */
-    select?: VolunteerProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the VolunteerProfile
-     */
-    omit?: VolunteerProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VolunteerProfileInclude<ExtArgs> | null
-    where?: VolunteerProfileWhereInput
+    distinct?: DamageAssessmentScalarFieldEnum | DamageAssessmentScalarFieldEnum[]
   }
 
   /**
@@ -4733,51 +4642,46 @@ export namespace Prisma {
   }
 
   /**
-   * User.verifications
+   * User.reports
    */
-  export type User$verificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$reportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ReportVerification
+     * Select specific fields to fetch from the IncidentReport
      */
-    select?: ReportVerificationSelect<ExtArgs> | null
+    select?: IncidentReportSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ReportVerification
+     * Omit specific fields from the IncidentReport
      */
-    omit?: ReportVerificationOmit<ExtArgs> | null
+    omit?: IncidentReportOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReportVerificationInclude<ExtArgs> | null
-    where?: ReportVerificationWhereInput
-    orderBy?: ReportVerificationOrderByWithRelationInput | ReportVerificationOrderByWithRelationInput[]
-    cursor?: ReportVerificationWhereUniqueInput
+    include?: IncidentReportInclude<ExtArgs> | null
+    where?: IncidentReportWhereInput
+    orderBy?: IncidentReportOrderByWithRelationInput | IncidentReportOrderByWithRelationInput[]
+    cursor?: IncidentReportWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ReportVerificationScalarFieldEnum | ReportVerificationScalarFieldEnum[]
+    distinct?: IncidentReportScalarFieldEnum | IncidentReportScalarFieldEnum[]
   }
 
   /**
-   * User.notifications
+   * User.localVerifier
    */
-  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$localVerifierArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Notification
+     * Select specific fields to fetch from the LocalVerifier
      */
-    select?: NotificationSelect<ExtArgs> | null
+    select?: LocalVerifierSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Notification
+     * Omit specific fields from the LocalVerifier
      */
-    omit?: NotificationOmit<ExtArgs> | null
+    omit?: LocalVerifierOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+    include?: LocalVerifierInclude<ExtArgs> | null
+    where?: LocalVerifierWhereInput
   }
 
   /**
@@ -4805,70 +4709,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.reliefTokens
+   * User.notifications
    */
-  export type User$reliefTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ReliefToken
+     * Select specific fields to fetch from the Notification
      */
-    select?: ReliefTokenSelect<ExtArgs> | null
+    select?: NotificationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ReliefToken
+     * Omit specific fields from the Notification
      */
-    omit?: ReliefTokenOmit<ExtArgs> | null
+    omit?: NotificationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReliefTokenInclude<ExtArgs> | null
-    where?: ReliefTokenWhereInput
-    orderBy?: ReliefTokenOrderByWithRelationInput | ReliefTokenOrderByWithRelationInput[]
-    cursor?: ReliefTokenWhereUniqueInput
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ReliefTokenScalarFieldEnum | ReliefTokenScalarFieldEnum[]
-  }
-
-  /**
-   * User.damageReports
-   */
-  export type User$damageReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DamageAssessment
-     */
-    select?: DamageAssessmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DamageAssessment
-     */
-    omit?: DamageAssessmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DamageAssessmentInclude<ExtArgs> | null
-    where?: DamageAssessmentWhereInput
-    orderBy?: DamageAssessmentOrderByWithRelationInput | DamageAssessmentOrderByWithRelationInput[]
-    cursor?: DamageAssessmentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DamageAssessmentScalarFieldEnum | DamageAssessmentScalarFieldEnum[]
-  }
-
-  /**
-   * User.localVerifier
-   */
-  export type User$localVerifierArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LocalVerifier
-     */
-    select?: LocalVerifierSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LocalVerifier
-     */
-    omit?: LocalVerifierOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LocalVerifierInclude<ExtArgs> | null
-    where?: LocalVerifierWhereInput
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -4893,6 +4754,145 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PsychologicalSupportRequestScalarFieldEnum | PsychologicalSupportRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.reliefTokens
+   */
+  export type User$reliefTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReliefToken
+     */
+    select?: ReliefTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReliefToken
+     */
+    omit?: ReliefTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReliefTokenInclude<ExtArgs> | null
+    where?: ReliefTokenWhereInput
+    orderBy?: ReliefTokenOrderByWithRelationInput | ReliefTokenOrderByWithRelationInput[]
+    cursor?: ReliefTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReliefTokenScalarFieldEnum | ReliefTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.verifications
+   */
+  export type User$verificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportVerification
+     */
+    select?: ReportVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportVerification
+     */
+    omit?: ReportVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReportVerificationInclude<ExtArgs> | null
+    where?: ReportVerificationWhereInput
+    orderBy?: ReportVerificationOrderByWithRelationInput | ReportVerificationOrderByWithRelationInput[]
+    cursor?: ReportVerificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReportVerificationScalarFieldEnum | ReportVerificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdTasks
+   */
+  export type User$createdTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.assignedTasks
+   */
+  export type User$assignedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.tokens
+   */
+  export type User$tokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Token
+     */
+    select?: TokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Token
+     */
+    omit?: TokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TokenInclude<ExtArgs> | null
+    where?: TokenWhereInput
+    orderBy?: TokenOrderByWithRelationInput | TokenOrderByWithRelationInput[]
+    cursor?: TokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TokenScalarFieldEnum | TokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.volunteerProfile
+   */
+  export type User$volunteerProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerProfile
+     */
+    select?: VolunteerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerProfile
+     */
+    omit?: VolunteerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerProfileInclude<ExtArgs> | null
+    where?: VolunteerProfileWhereInput
   }
 
   /**
@@ -5176,11 +5176,11 @@ export namespace Prisma {
     reporterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    reporter?: boolean | UserDefaultArgs<ExtArgs>
-    tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
-    verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
-    history?: boolean | IncidentReport$historyArgs<ExtArgs>
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
+    history?: boolean | IncidentReport$historyArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
+    tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
     verifierActions?: boolean | IncidentReport$verifierActionsArgs<ExtArgs>
     _count?: boolean | IncidentReportCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
@@ -5237,11 +5237,11 @@ export namespace Prisma {
 
   export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt", ExtArgs["result"]["incidentReport"]>
   export type IncidentReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    reporter?: boolean | UserDefaultArgs<ExtArgs>
-    tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
-    verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
-    history?: boolean | IncidentReport$historyArgs<ExtArgs>
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
+    history?: boolean | IncidentReport$historyArgs<ExtArgs>
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
+    tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
     verifierActions?: boolean | IncidentReport$verifierActionsArgs<ExtArgs>
     _count?: boolean | IncidentReportCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5255,11 +5255,11 @@ export namespace Prisma {
   export type $IncidentReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "IncidentReport"
     objects: {
-      reporter: Prisma.$UserPayload<ExtArgs>
-      tasks: Prisma.$TaskPayload<ExtArgs>[]
-      verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
-      history: Prisma.$IncidentHistoryPayload<ExtArgs>[]
       damageAssessments: Prisma.$DamageAssessmentPayload<ExtArgs>[]
+      history: Prisma.$IncidentHistoryPayload<ExtArgs>[]
+      reporter: Prisma.$UserPayload<ExtArgs>
+      verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
+      tasks: Prisma.$TaskPayload<ExtArgs>[]
       verifierActions: Prisma.$VerifierActionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5670,11 +5670,11 @@ export namespace Prisma {
    */
   export interface Prisma__IncidentReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    reporter<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    tasks<T extends IncidentReport$tasksArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    verifications<T extends IncidentReport$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    history<T extends IncidentReport$historyArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     damageAssessments<T extends IncidentReport$damageAssessmentsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$damageAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DamageAssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    history<T extends IncidentReport$historyArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reporter<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    verifications<T extends IncidentReport$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasks<T extends IncidentReport$tasksArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     verifierActions<T extends IncidentReport$verifierActionsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verifierActionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerifierActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6119,51 +6119,27 @@ export namespace Prisma {
   }
 
   /**
-   * IncidentReport.tasks
+   * IncidentReport.damageAssessments
    */
-  export type IncidentReport$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncidentReport$damageAssessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Task
+     * Select specific fields to fetch from the DamageAssessment
      */
-    select?: TaskSelect<ExtArgs> | null
+    select?: DamageAssessmentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Task
+     * Omit specific fields from the DamageAssessment
      */
-    omit?: TaskOmit<ExtArgs> | null
+    omit?: DamageAssessmentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TaskInclude<ExtArgs> | null
-    where?: TaskWhereInput
-    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
-    cursor?: TaskWhereUniqueInput
+    include?: DamageAssessmentInclude<ExtArgs> | null
+    where?: DamageAssessmentWhereInput
+    orderBy?: DamageAssessmentOrderByWithRelationInput | DamageAssessmentOrderByWithRelationInput[]
+    cursor?: DamageAssessmentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
-  }
-
-  /**
-   * IncidentReport.verifications
-   */
-  export type IncidentReport$verificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ReportVerification
-     */
-    select?: ReportVerificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ReportVerification
-     */
-    omit?: ReportVerificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ReportVerificationInclude<ExtArgs> | null
-    where?: ReportVerificationWhereInput
-    orderBy?: ReportVerificationOrderByWithRelationInput | ReportVerificationOrderByWithRelationInput[]
-    cursor?: ReportVerificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ReportVerificationScalarFieldEnum | ReportVerificationScalarFieldEnum[]
+    distinct?: DamageAssessmentScalarFieldEnum | DamageAssessmentScalarFieldEnum[]
   }
 
   /**
@@ -6191,27 +6167,51 @@ export namespace Prisma {
   }
 
   /**
-   * IncidentReport.damageAssessments
+   * IncidentReport.verifications
    */
-  export type IncidentReport$damageAssessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type IncidentReport$verificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DamageAssessment
+     * Select specific fields to fetch from the ReportVerification
      */
-    select?: DamageAssessmentSelect<ExtArgs> | null
+    select?: ReportVerificationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DamageAssessment
+     * Omit specific fields from the ReportVerification
      */
-    omit?: DamageAssessmentOmit<ExtArgs> | null
+    omit?: ReportVerificationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DamageAssessmentInclude<ExtArgs> | null
-    where?: DamageAssessmentWhereInput
-    orderBy?: DamageAssessmentOrderByWithRelationInput | DamageAssessmentOrderByWithRelationInput[]
-    cursor?: DamageAssessmentWhereUniqueInput
+    include?: ReportVerificationInclude<ExtArgs> | null
+    where?: ReportVerificationWhereInput
+    orderBy?: ReportVerificationOrderByWithRelationInput | ReportVerificationOrderByWithRelationInput[]
+    cursor?: ReportVerificationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: DamageAssessmentScalarFieldEnum | DamageAssessmentScalarFieldEnum[]
+    distinct?: ReportVerificationScalarFieldEnum | ReportVerificationScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentReport.tasks
+   */
+  export type IncidentReport$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
   }
 
   /**
@@ -8609,8 +8609,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     distributions?: boolean | Token$distributionsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TokenCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["token"]>
 
@@ -8648,8 +8648,8 @@ export namespace Prisma {
 
   export type TokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "userId" | "type" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["token"]>
   export type TokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     distributions?: boolean | Token$distributionsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TokenCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8662,8 +8662,8 @@ export namespace Prisma {
   export type $TokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Token"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       distributions: Prisma.$DistributionPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9067,8 +9067,8 @@ export namespace Prisma {
    */
   export interface Prisma__TokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     distributions<T extends Token$distributionsArgs<ExtArgs> = {}>(args?: Subset<T, Token$distributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10812,9 +10812,9 @@ export namespace Prisma {
     dueDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    incident?: boolean | Task$incidentArgs<ExtArgs>
-    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
     assignedBy?: boolean | Task$assignedByArgs<ExtArgs>
+    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
+    incident?: boolean | Task$incidentArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10829,9 +10829,9 @@ export namespace Prisma {
     dueDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    incident?: boolean | Task$incidentArgs<ExtArgs>
-    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
     assignedBy?: boolean | Task$assignedByArgs<ExtArgs>
+    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
+    incident?: boolean | Task$incidentArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10846,9 +10846,9 @@ export namespace Prisma {
     dueDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    incident?: boolean | Task$incidentArgs<ExtArgs>
-    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
     assignedBy?: boolean | Task$assignedByArgs<ExtArgs>
+    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
+    incident?: boolean | Task$incidentArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectScalar = {
@@ -10867,27 +10867,27 @@ export namespace Prisma {
 
   export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "incidentId" | "assignedToId" | "assignedById" | "priority" | "status" | "dueDate" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    incident?: boolean | Task$incidentArgs<ExtArgs>
-    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
     assignedBy?: boolean | Task$assignedByArgs<ExtArgs>
+    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
+    incident?: boolean | Task$incidentArgs<ExtArgs>
   }
   export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    incident?: boolean | Task$incidentArgs<ExtArgs>
-    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
     assignedBy?: boolean | Task$assignedByArgs<ExtArgs>
+    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
+    incident?: boolean | Task$incidentArgs<ExtArgs>
   }
   export type TaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    incident?: boolean | Task$incidentArgs<ExtArgs>
-    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
     assignedBy?: boolean | Task$assignedByArgs<ExtArgs>
+    assignedTo?: boolean | Task$assignedToArgs<ExtArgs>
+    incident?: boolean | Task$incidentArgs<ExtArgs>
   }
 
   export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Task"
     objects: {
-      incident: Prisma.$IncidentReportPayload<ExtArgs> | null
-      assignedTo: Prisma.$UserPayload<ExtArgs> | null
       assignedBy: Prisma.$UserPayload<ExtArgs> | null
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      incident: Prisma.$IncidentReportPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11295,9 +11295,9 @@ export namespace Prisma {
    */
   export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    incident<T extends Task$incidentArgs<ExtArgs> = {}>(args?: Subset<T, Task$incidentArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    assignedTo<T extends Task$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, Task$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     assignedBy<T extends Task$assignedByArgs<ExtArgs> = {}>(args?: Subset<T, Task$assignedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    assignedTo<T extends Task$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, Task$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    incident<T extends Task$incidentArgs<ExtArgs> = {}>(args?: Subset<T, Task$incidentArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11739,22 +11739,22 @@ export namespace Prisma {
   }
 
   /**
-   * Task.incident
+   * Task.assignedBy
    */
-  export type Task$incidentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Task$assignedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the IncidentReport
+     * Select specific fields to fetch from the User
      */
-    select?: IncidentReportSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the IncidentReport
+     * Omit specific fields from the User
      */
-    omit?: IncidentReportOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentReportInclude<ExtArgs> | null
-    where?: IncidentReportWhereInput
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -11777,22 +11777,22 @@ export namespace Prisma {
   }
 
   /**
-   * Task.assignedBy
+   * Task.incident
    */
-  export type Task$assignedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Task$incidentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the User
+     * Select specific fields to fetch from the IncidentReport
      */
-    select?: UserSelect<ExtArgs> | null
+    select?: IncidentReportSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
+     * Omit specific fields from the IncidentReport
      */
-    omit?: UserOmit<ExtArgs> | null
+    omit?: IncidentReportOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
+    include?: IncidentReportInclude<ExtArgs> | null
+    where?: IncidentReportWhereInput
   }
 
   /**
@@ -26536,8 +26536,8 @@ export namespace Prisma {
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["damageAssessment"]>
 
   export type DamageAssessmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -26560,8 +26560,8 @@ export namespace Prisma {
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["damageAssessment"]>
 
   export type DamageAssessmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -26584,8 +26584,8 @@ export namespace Prisma {
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["damageAssessment"]>
 
   export type DamageAssessmentSelectScalar = {
@@ -26612,23 +26612,23 @@ export namespace Prisma {
 
   export type DamageAssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reportedById" | "incidentId" | "location" | "latitude" | "longitude" | "category" | "structuralDamage" | "cropDamage" | "utilityDamage" | "roadDamage" | "affectedPersons" | "estimatedLoss" | "mediaUrls" | "status" | "notes" | "verifiedById" | "createdAt" | "updatedAt", ExtArgs["result"]["damageAssessment"]>
   export type DamageAssessmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type DamageAssessmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type DamageAssessmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $DamageAssessmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DamageAssessment"
     objects: {
-      reportedBy: Prisma.$UserPayload<ExtArgs>
       incident: Prisma.$IncidentReportPayload<ExtArgs> | null
+      reportedBy: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27044,8 +27044,8 @@ export namespace Prisma {
    */
   export interface Prisma__DamageAssessmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    reportedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     incident<T extends DamageAssessment$incidentArgs<ExtArgs> = {}>(args?: Subset<T, DamageAssessment$incidentArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    reportedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -28917,9 +28917,9 @@ export namespace Prisma {
     result?: boolean
     comment?: boolean
     createdAt?: boolean
-    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
-    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
     helpRequest?: boolean | VerifierAction$helpRequestArgs<ExtArgs>
+    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
+    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["verifierAction"]>
 
   export type VerifierActionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28930,9 +28930,9 @@ export namespace Prisma {
     result?: boolean
     comment?: boolean
     createdAt?: boolean
-    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
-    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
     helpRequest?: boolean | VerifierAction$helpRequestArgs<ExtArgs>
+    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
+    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["verifierAction"]>
 
   export type VerifierActionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28943,9 +28943,9 @@ export namespace Prisma {
     result?: boolean
     comment?: boolean
     createdAt?: boolean
-    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
-    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
     helpRequest?: boolean | VerifierAction$helpRequestArgs<ExtArgs>
+    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
+    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["verifierAction"]>
 
   export type VerifierActionSelectScalar = {
@@ -28960,27 +28960,27 @@ export namespace Prisma {
 
   export type VerifierActionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "verifierId" | "incidentId" | "helpRequestId" | "result" | "comment" | "createdAt", ExtArgs["result"]["verifierAction"]>
   export type VerifierActionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
-    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
     helpRequest?: boolean | VerifierAction$helpRequestArgs<ExtArgs>
+    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
+    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
   }
   export type VerifierActionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
-    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
     helpRequest?: boolean | VerifierAction$helpRequestArgs<ExtArgs>
+    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
+    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
   }
   export type VerifierActionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
-    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
     helpRequest?: boolean | VerifierAction$helpRequestArgs<ExtArgs>
+    incident?: boolean | VerifierAction$incidentArgs<ExtArgs>
+    verifier?: boolean | LocalVerifierDefaultArgs<ExtArgs>
   }
 
   export type $VerifierActionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VerifierAction"
     objects: {
-      verifier: Prisma.$LocalVerifierPayload<ExtArgs>
-      incident: Prisma.$IncidentReportPayload<ExtArgs> | null
       helpRequest: Prisma.$HelpRequestPayload<ExtArgs> | null
+      incident: Prisma.$IncidentReportPayload<ExtArgs> | null
+      verifier: Prisma.$LocalVerifierPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -29384,9 +29384,9 @@ export namespace Prisma {
    */
   export interface Prisma__VerifierActionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    verifier<T extends LocalVerifierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocalVerifierDefaultArgs<ExtArgs>>): Prisma__LocalVerifierClient<$Result.GetResult<Prisma.$LocalVerifierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    incident<T extends VerifierAction$incidentArgs<ExtArgs> = {}>(args?: Subset<T, VerifierAction$incidentArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     helpRequest<T extends VerifierAction$helpRequestArgs<ExtArgs> = {}>(args?: Subset<T, VerifierAction$helpRequestArgs<ExtArgs>>): Prisma__HelpRequestClient<$Result.GetResult<Prisma.$HelpRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    incident<T extends VerifierAction$incidentArgs<ExtArgs> = {}>(args?: Subset<T, VerifierAction$incidentArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    verifier<T extends LocalVerifierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LocalVerifierDefaultArgs<ExtArgs>>): Prisma__LocalVerifierClient<$Result.GetResult<Prisma.$LocalVerifierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29824,25 +29824,6 @@ export namespace Prisma {
   }
 
   /**
-   * VerifierAction.incident
-   */
-  export type VerifierAction$incidentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the IncidentReport
-     */
-    select?: IncidentReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the IncidentReport
-     */
-    omit?: IncidentReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: IncidentReportInclude<ExtArgs> | null
-    where?: IncidentReportWhereInput
-  }
-
-  /**
    * VerifierAction.helpRequest
    */
   export type VerifierAction$helpRequestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -29859,6 +29840,25 @@ export namespace Prisma {
      */
     include?: HelpRequestInclude<ExtArgs> | null
     where?: HelpRequestWhereInput
+  }
+
+  /**
+   * VerifierAction.incident
+   */
+  export type VerifierAction$incidentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentReport
+     */
+    select?: IncidentReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentReport
+     */
+    omit?: IncidentReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentReportInclude<ExtArgs> | null
+    where?: IncidentReportWhereInput
   }
 
   /**
@@ -31101,10 +31101,10 @@ export namespace Prisma {
     password: 'password',
     name: 'name',
     phone: 'phone',
-    region: 'region',
     role: 'role',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    region: 'region'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -31782,23 +31782,23 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    region?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    reports?: IncidentReportListRelationFilter
-    tokens?: TokenListRelationFilter
-    assignedTasks?: TaskListRelationFilter
-    createdTasks?: TaskListRelationFilter
-    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
-    helpRequests?: HelpRequestListRelationFilter
-    verifications?: ReportVerificationListRelationFilter
-    notifications?: NotificationListRelationFilter
-    locationLogs?: LocationLogListRelationFilter
-    reliefTokens?: ReliefTokenListRelationFilter
+    region?: StringNullableFilter<"User"> | string | null
     damageReports?: DamageAssessmentListRelationFilter
+    helpRequests?: HelpRequestListRelationFilter
+    reports?: IncidentReportListRelationFilter
     localVerifier?: XOR<LocalVerifierNullableScalarRelationFilter, LocalVerifierWhereInput> | null
+    locationLogs?: LocationLogListRelationFilter
+    notifications?: NotificationListRelationFilter
     supportRequests?: PsychologicalSupportRequestListRelationFilter
+    reliefTokens?: ReliefTokenListRelationFilter
+    verifications?: ReportVerificationListRelationFilter
+    createdTasks?: TaskListRelationFilter
+    assignedTasks?: TaskListRelationFilter
+    tokens?: TokenListRelationFilter
+    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -31807,23 +31807,23 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
-    region?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    reports?: IncidentReportOrderByRelationAggregateInput
-    tokens?: TokenOrderByRelationAggregateInput
-    assignedTasks?: TaskOrderByRelationAggregateInput
-    createdTasks?: TaskOrderByRelationAggregateInput
-    volunteerProfile?: VolunteerProfileOrderByWithRelationInput
-    helpRequests?: HelpRequestOrderByRelationAggregateInput
-    verifications?: ReportVerificationOrderByRelationAggregateInput
-    notifications?: NotificationOrderByRelationAggregateInput
-    locationLogs?: LocationLogOrderByRelationAggregateInput
-    reliefTokens?: ReliefTokenOrderByRelationAggregateInput
+    region?: SortOrderInput | SortOrder
     damageReports?: DamageAssessmentOrderByRelationAggregateInput
+    helpRequests?: HelpRequestOrderByRelationAggregateInput
+    reports?: IncidentReportOrderByRelationAggregateInput
     localVerifier?: LocalVerifierOrderByWithRelationInput
+    locationLogs?: LocationLogOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
     supportRequests?: PsychologicalSupportRequestOrderByRelationAggregateInput
+    reliefTokens?: ReliefTokenOrderByRelationAggregateInput
+    verifications?: ReportVerificationOrderByRelationAggregateInput
+    createdTasks?: TaskOrderByRelationAggregateInput
+    assignedTasks?: TaskOrderByRelationAggregateInput
+    tokens?: TokenOrderByRelationAggregateInput
+    volunteerProfile?: VolunteerProfileOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -31835,23 +31835,23 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    region?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    reports?: IncidentReportListRelationFilter
-    tokens?: TokenListRelationFilter
-    assignedTasks?: TaskListRelationFilter
-    createdTasks?: TaskListRelationFilter
-    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
-    helpRequests?: HelpRequestListRelationFilter
-    verifications?: ReportVerificationListRelationFilter
-    notifications?: NotificationListRelationFilter
-    locationLogs?: LocationLogListRelationFilter
-    reliefTokens?: ReliefTokenListRelationFilter
+    region?: StringNullableFilter<"User"> | string | null
     damageReports?: DamageAssessmentListRelationFilter
+    helpRequests?: HelpRequestListRelationFilter
+    reports?: IncidentReportListRelationFilter
     localVerifier?: XOR<LocalVerifierNullableScalarRelationFilter, LocalVerifierWhereInput> | null
+    locationLogs?: LocationLogListRelationFilter
+    notifications?: NotificationListRelationFilter
     supportRequests?: PsychologicalSupportRequestListRelationFilter
+    reliefTokens?: ReliefTokenListRelationFilter
+    verifications?: ReportVerificationListRelationFilter
+    createdTasks?: TaskListRelationFilter
+    assignedTasks?: TaskListRelationFilter
+    tokens?: TokenListRelationFilter
+    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -31860,10 +31860,10 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
-    region?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    region?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -31878,10 +31878,10 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
-    region?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    region?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type IncidentReportWhereInput = {
@@ -31901,11 +31901,11 @@ export namespace Prisma {
     reporterId?: StringFilter<"IncidentReport"> | string
     createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
     updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
-    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
-    tasks?: TaskListRelationFilter
-    verifications?: ReportVerificationListRelationFilter
-    history?: IncidentHistoryListRelationFilter
     damageAssessments?: DamageAssessmentListRelationFilter
+    history?: IncidentHistoryListRelationFilter
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    verifications?: ReportVerificationListRelationFilter
+    tasks?: TaskListRelationFilter
     verifierActions?: VerifierActionListRelationFilter
   }
 
@@ -31923,11 +31923,11 @@ export namespace Prisma {
     reporterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    reporter?: UserOrderByWithRelationInput
-    tasks?: TaskOrderByRelationAggregateInput
-    verifications?: ReportVerificationOrderByRelationAggregateInput
-    history?: IncidentHistoryOrderByRelationAggregateInput
     damageAssessments?: DamageAssessmentOrderByRelationAggregateInput
+    history?: IncidentHistoryOrderByRelationAggregateInput
+    reporter?: UserOrderByWithRelationInput
+    verifications?: ReportVerificationOrderByRelationAggregateInput
+    tasks?: TaskOrderByRelationAggregateInput
     verifierActions?: VerifierActionOrderByRelationAggregateInput
   }
 
@@ -31948,11 +31948,11 @@ export namespace Prisma {
     reporterId?: StringFilter<"IncidentReport"> | string
     createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
     updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
-    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
-    tasks?: TaskListRelationFilter
-    verifications?: ReportVerificationListRelationFilter
-    history?: IncidentHistoryListRelationFilter
     damageAssessments?: DamageAssessmentListRelationFilter
+    history?: IncidentHistoryListRelationFilter
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    verifications?: ReportVerificationListRelationFilter
+    tasks?: TaskListRelationFilter
     verifierActions?: VerifierActionListRelationFilter
   }, "id">
 
@@ -32163,8 +32163,8 @@ export namespace Prisma {
     status?: StringFilter<"Token"> | string
     createdAt?: DateTimeFilter<"Token"> | Date | string
     updatedAt?: DateTimeFilter<"Token"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     distributions?: DistributionListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type TokenOrderByWithRelationInput = {
@@ -32175,8 +32175,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     distributions?: DistributionOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type TokenWhereUniqueInput = Prisma.AtLeast<{
@@ -32190,8 +32190,8 @@ export namespace Prisma {
     status?: StringFilter<"Token"> | string
     createdAt?: DateTimeFilter<"Token"> | Date | string
     updatedAt?: DateTimeFilter<"Token"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     distributions?: DistributionListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "code">
 
   export type TokenOrderByWithAggregationInput = {
@@ -32307,9 +32307,9 @@ export namespace Prisma {
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
-    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
-    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     assignedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
   }
 
   export type TaskOrderByWithRelationInput = {
@@ -32324,9 +32324,9 @@ export namespace Prisma {
     dueDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    incident?: IncidentReportOrderByWithRelationInput
-    assignedTo?: UserOrderByWithRelationInput
     assignedBy?: UserOrderByWithRelationInput
+    assignedTo?: UserOrderByWithRelationInput
+    incident?: IncidentReportOrderByWithRelationInput
   }
 
   export type TaskWhereUniqueInput = Prisma.AtLeast<{
@@ -32344,9 +32344,9 @@ export namespace Prisma {
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
-    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
-    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     assignedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
   }, "id">
 
   export type TaskOrderByWithAggregationInput = {
@@ -33311,8 +33311,8 @@ export namespace Prisma {
     verifiedById?: StringNullableFilter<"DamageAssessment"> | string | null
     createdAt?: DateTimeFilter<"DamageAssessment"> | Date | string
     updatedAt?: DateTimeFilter<"DamageAssessment"> | Date | string
-    reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
+    reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type DamageAssessmentOrderByWithRelationInput = {
@@ -33335,8 +33335,8 @@ export namespace Prisma {
     verifiedById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    reportedBy?: UserOrderByWithRelationInput
     incident?: IncidentReportOrderByWithRelationInput
+    reportedBy?: UserOrderByWithRelationInput
   }
 
   export type DamageAssessmentWhereUniqueInput = Prisma.AtLeast<{
@@ -33362,8 +33362,8 @@ export namespace Prisma {
     verifiedById?: StringNullableFilter<"DamageAssessment"> | string | null
     createdAt?: DateTimeFilter<"DamageAssessment"> | Date | string
     updatedAt?: DateTimeFilter<"DamageAssessment"> | Date | string
-    reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
+    reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type DamageAssessmentOrderByWithAggregationInput = {
@@ -33519,9 +33519,9 @@ export namespace Prisma {
     result?: EnumVerificationResultFilter<"VerifierAction"> | $Enums.VerificationResult
     comment?: StringNullableFilter<"VerifierAction"> | string | null
     createdAt?: DateTimeFilter<"VerifierAction"> | Date | string
-    verifier?: XOR<LocalVerifierScalarRelationFilter, LocalVerifierWhereInput>
-    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
     helpRequest?: XOR<HelpRequestNullableScalarRelationFilter, HelpRequestWhereInput> | null
+    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
+    verifier?: XOR<LocalVerifierScalarRelationFilter, LocalVerifierWhereInput>
   }
 
   export type VerifierActionOrderByWithRelationInput = {
@@ -33532,9 +33532,9 @@ export namespace Prisma {
     result?: SortOrder
     comment?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    verifier?: LocalVerifierOrderByWithRelationInput
-    incident?: IncidentReportOrderByWithRelationInput
     helpRequest?: HelpRequestOrderByWithRelationInput
+    incident?: IncidentReportOrderByWithRelationInput
+    verifier?: LocalVerifierOrderByWithRelationInput
   }
 
   export type VerifierActionWhereUniqueInput = Prisma.AtLeast<{
@@ -33548,9 +33548,9 @@ export namespace Prisma {
     result?: EnumVerificationResultFilter<"VerifierAction"> | $Enums.VerificationResult
     comment?: StringNullableFilter<"VerifierAction"> | string | null
     createdAt?: DateTimeFilter<"VerifierAction"> | Date | string
-    verifier?: XOR<LocalVerifierScalarRelationFilter, LocalVerifierWhereInput>
-    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
     helpRequest?: XOR<HelpRequestNullableScalarRelationFilter, HelpRequestWhereInput> | null
+    incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
+    verifier?: XOR<LocalVerifierScalarRelationFilter, LocalVerifierWhereInput>
   }, "id">
 
   export type VerifierActionOrderByWithAggregationInput = {
@@ -33682,23 +33682,23 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -33707,23 +33707,23 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -33732,23 +33732,23 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -33757,23 +33757,23 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -33782,10 +33782,10 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    region?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -33794,10 +33794,10 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -33806,10 +33806,10 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IncidentReportCreateInput = {
@@ -33825,11 +33825,11 @@ export namespace Prisma {
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-    reporter: UserCreateNestedOneWithoutReportsInput
-    tasks?: TaskCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
+    reporter: UserCreateNestedOneWithoutReportsInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
   }
 
@@ -33847,10 +33847,10 @@ export namespace Prisma {
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
   }
 
@@ -33867,11 +33867,11 @@ export namespace Prisma {
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
-    tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
+    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
   }
 
@@ -33889,10 +33889,10 @@ export namespace Prisma {
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
   }
 
@@ -34132,8 +34132,8 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTokensInput
     distributions?: DistributionCreateNestedManyWithoutTokenInput
+    user: UserCreateNestedOneWithoutTokensInput
   }
 
   export type TokenUncheckedCreateInput = {
@@ -34154,8 +34154,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTokensNestedInput
     distributions?: DistributionUpdateManyWithoutTokenNestedInput
+    user?: UserUpdateOneRequiredWithoutTokensNestedInput
   }
 
   export type TokenUncheckedUpdateInput = {
@@ -34291,9 +34291,9 @@ export namespace Prisma {
     dueDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    incident?: IncidentReportCreateNestedOneWithoutTasksInput
-    assignedTo?: UserCreateNestedOneWithoutAssignedTasksInput
     assignedBy?: UserCreateNestedOneWithoutCreatedTasksInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedTasksInput
+    incident?: IncidentReportCreateNestedOneWithoutTasksInput
   }
 
   export type TaskUncheckedCreateInput = {
@@ -34319,9 +34319,9 @@ export namespace Prisma {
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    incident?: IncidentReportUpdateOneWithoutTasksNestedInput
-    assignedTo?: UserUpdateOneWithoutAssignedTasksNestedInput
     assignedBy?: UserUpdateOneWithoutCreatedTasksNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedTasksNestedInput
+    incident?: IncidentReportUpdateOneWithoutTasksNestedInput
   }
 
   export type TaskUncheckedUpdateInput = {
@@ -35366,8 +35366,8 @@ export namespace Prisma {
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    reportedBy: UserCreateNestedOneWithoutDamageReportsInput
     incident?: IncidentReportCreateNestedOneWithoutDamageAssessmentsInput
+    reportedBy: UserCreateNestedOneWithoutDamageReportsInput
   }
 
   export type DamageAssessmentUncheckedCreateInput = {
@@ -35410,8 +35410,8 @@ export namespace Prisma {
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reportedBy?: UserUpdateOneRequiredWithoutDamageReportsNestedInput
     incident?: IncidentReportUpdateOneWithoutDamageAssessmentsNestedInput
+    reportedBy?: UserUpdateOneRequiredWithoutDamageReportsNestedInput
   }
 
   export type DamageAssessmentUncheckedUpdateInput = {
@@ -35606,9 +35606,9 @@ export namespace Prisma {
     result: $Enums.VerificationResult
     comment?: string | null
     createdAt?: Date | string
-    verifier: LocalVerifierCreateNestedOneWithoutActionsInput
-    incident?: IncidentReportCreateNestedOneWithoutVerifierActionsInput
     helpRequest?: HelpRequestCreateNestedOneWithoutVerifierActionsInput
+    incident?: IncidentReportCreateNestedOneWithoutVerifierActionsInput
+    verifier: LocalVerifierCreateNestedOneWithoutActionsInput
   }
 
   export type VerifierActionUncheckedCreateInput = {
@@ -35626,9 +35626,9 @@ export namespace Prisma {
     result?: EnumVerificationResultFieldUpdateOperationsInput | $Enums.VerificationResult
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifier?: LocalVerifierUpdateOneRequiredWithoutActionsNestedInput
-    incident?: IncidentReportUpdateOneWithoutVerifierActionsNestedInput
     helpRequest?: HelpRequestUpdateOneWithoutVerifierActionsNestedInput
+    incident?: IncidentReportUpdateOneWithoutVerifierActionsNestedInput
+    verifier?: LocalVerifierUpdateOneRequiredWithoutActionsNestedInput
   }
 
   export type VerifierActionUncheckedUpdateInput = {
@@ -35827,27 +35827,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type IncidentReportListRelationFilter = {
-    every?: IncidentReportWhereInput
-    some?: IncidentReportWhereInput
-    none?: IncidentReportWhereInput
-  }
-
-  export type TokenListRelationFilter = {
-    every?: TokenWhereInput
-    some?: TokenWhereInput
-    none?: TokenWhereInput
-  }
-
-  export type TaskListRelationFilter = {
-    every?: TaskWhereInput
-    some?: TaskWhereInput
-    none?: TaskWhereInput
-  }
-
-  export type VolunteerProfileNullableScalarRelationFilter = {
-    is?: VolunteerProfileWhereInput | null
-    isNot?: VolunteerProfileWhereInput | null
+  export type DamageAssessmentListRelationFilter = {
+    every?: DamageAssessmentWhereInput
+    some?: DamageAssessmentWhereInput
+    none?: DamageAssessmentWhereInput
   }
 
   export type HelpRequestListRelationFilter = {
@@ -35856,16 +35839,15 @@ export namespace Prisma {
     none?: HelpRequestWhereInput
   }
 
-  export type ReportVerificationListRelationFilter = {
-    every?: ReportVerificationWhereInput
-    some?: ReportVerificationWhereInput
-    none?: ReportVerificationWhereInput
+  export type IncidentReportListRelationFilter = {
+    every?: IncidentReportWhereInput
+    some?: IncidentReportWhereInput
+    none?: IncidentReportWhereInput
   }
 
-  export type NotificationListRelationFilter = {
-    every?: NotificationWhereInput
-    some?: NotificationWhereInput
-    none?: NotificationWhereInput
+  export type LocalVerifierNullableScalarRelationFilter = {
+    is?: LocalVerifierWhereInput | null
+    isNot?: LocalVerifierWhereInput | null
   }
 
   export type LocationLogListRelationFilter = {
@@ -35874,21 +35856,10 @@ export namespace Prisma {
     none?: LocationLogWhereInput
   }
 
-  export type ReliefTokenListRelationFilter = {
-    every?: ReliefTokenWhereInput
-    some?: ReliefTokenWhereInput
-    none?: ReliefTokenWhereInput
-  }
-
-  export type DamageAssessmentListRelationFilter = {
-    every?: DamageAssessmentWhereInput
-    some?: DamageAssessmentWhereInput
-    none?: DamageAssessmentWhereInput
-  }
-
-  export type LocalVerifierNullableScalarRelationFilter = {
-    is?: LocalVerifierWhereInput | null
-    isNot?: LocalVerifierWhereInput | null
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
   }
 
   export type PsychologicalSupportRequestListRelationFilter = {
@@ -35897,20 +35868,41 @@ export namespace Prisma {
     none?: PsychologicalSupportRequestWhereInput
   }
 
+  export type ReliefTokenListRelationFilter = {
+    every?: ReliefTokenWhereInput
+    some?: ReliefTokenWhereInput
+    none?: ReliefTokenWhereInput
+  }
+
+  export type ReportVerificationListRelationFilter = {
+    every?: ReportVerificationWhereInput
+    some?: ReportVerificationWhereInput
+    none?: ReportVerificationWhereInput
+  }
+
+  export type TaskListRelationFilter = {
+    every?: TaskWhereInput
+    some?: TaskWhereInput
+    none?: TaskWhereInput
+  }
+
+  export type TokenListRelationFilter = {
+    every?: TokenWhereInput
+    some?: TokenWhereInput
+    none?: TokenWhereInput
+  }
+
+  export type VolunteerProfileNullableScalarRelationFilter = {
+    is?: VolunteerProfileWhereInput | null
+    isNot?: VolunteerProfileWhereInput | null
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type IncidentReportOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TokenOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TaskOrderByRelationAggregateInput = {
+  export type DamageAssessmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -35918,11 +35910,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ReportVerificationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type NotificationOrderByRelationAggregateInput = {
+  export type IncidentReportOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -35930,15 +35918,27 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type ReliefTokenOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DamageAssessmentOrderByRelationAggregateInput = {
+  export type NotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PsychologicalSupportRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReliefTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReportVerificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TokenOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -35948,10 +35948,10 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
-    region?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    region?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -35960,10 +35960,10 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
-    region?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    region?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -35972,10 +35972,10 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
-    region?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    region?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -36071,15 +36071,15 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type IncidentHistoryListRelationFilter = {
     every?: IncidentHistoryWhereInput
     some?: IncidentHistoryWhereInput
     none?: IncidentHistoryWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type VerifierActionListRelationFilter = {
@@ -36422,14 +36422,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type IncidentReportNullableScalarRelationFilter = {
-    is?: IncidentReportWhereInput | null
-    isNot?: IncidentReportWhereInput | null
-  }
-
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
+  }
+
+  export type IncidentReportNullableScalarRelationFilter = {
+    is?: IncidentReportWhereInput | null
+    isNot?: IncidentReportWhereInput | null
   }
 
   export type TaskCountOrderByAggregateInput = {
@@ -37378,14 +37378,14 @@ export namespace Prisma {
     not?: NestedEnumVerificationResultFilter<$PrismaModel> | $Enums.VerificationResult
   }
 
-  export type LocalVerifierScalarRelationFilter = {
-    is?: LocalVerifierWhereInput
-    isNot?: LocalVerifierWhereInput
-  }
-
   export type HelpRequestNullableScalarRelationFilter = {
     is?: HelpRequestWhereInput | null
     isNot?: HelpRequestWhereInput | null
+  }
+
+  export type LocalVerifierScalarRelationFilter = {
+    is?: LocalVerifierWhereInput
+    isNot?: LocalVerifierWhereInput
   }
 
   export type VerifierActionCountOrderByAggregateInput = {
@@ -37535,38 +37535,11 @@ export namespace Prisma {
     _max?: NestedEnumSupportStatusFilter<$PrismaModel>
   }
 
-  export type IncidentReportCreateNestedManyWithoutReporterInput = {
-    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
-    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
-    createMany?: IncidentReportCreateManyReporterInputEnvelope
-    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-  }
-
-  export type TokenCreateNestedManyWithoutUserInput = {
-    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
-    createMany?: TokenCreateManyUserInputEnvelope
-    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-  }
-
-  export type TaskCreateNestedManyWithoutAssignedToInput = {
-    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
-    createMany?: TaskCreateManyAssignedToInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type TaskCreateNestedManyWithoutAssignedByInput = {
-    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
-    createMany?: TaskCreateManyAssignedByInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type VolunteerProfileCreateNestedOneWithoutUserInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    connect?: VolunteerProfileWhereUniqueInput
+  export type DamageAssessmentCreateNestedManyWithoutReportedByInput = {
+    create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
+    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
+    createMany?: DamageAssessmentCreateManyReportedByInputEnvelope
+    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
   }
 
   export type HelpRequestCreateNestedManyWithoutUserInput = {
@@ -37576,18 +37549,17 @@ export namespace Prisma {
     connect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
   }
 
-  export type ReportVerificationCreateNestedManyWithoutUserInput = {
-    create?: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput> | ReportVerificationCreateWithoutUserInput[] | ReportVerificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReportVerificationCreateOrConnectWithoutUserInput | ReportVerificationCreateOrConnectWithoutUserInput[]
-    createMany?: ReportVerificationCreateManyUserInputEnvelope
-    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+  export type IncidentReportCreateNestedManyWithoutReporterInput = {
+    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
+    createMany?: IncidentReportCreateManyReporterInputEnvelope
+    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
   }
 
-  export type NotificationCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  export type LocalVerifierCreateNestedOneWithoutUserInput = {
+    create?: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
+    connectOrCreate?: LocalVerifierCreateOrConnectWithoutUserInput
+    connect?: LocalVerifierWhereUniqueInput
   }
 
   export type LocationLogCreateNestedManyWithoutUserInput = {
@@ -37597,24 +37569,11 @@ export namespace Prisma {
     connect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
   }
 
-  export type ReliefTokenCreateNestedManyWithoutUserInput = {
-    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
-    createMany?: ReliefTokenCreateManyUserInputEnvelope
-    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-  }
-
-  export type DamageAssessmentCreateNestedManyWithoutReportedByInput = {
-    create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
-    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
-    createMany?: DamageAssessmentCreateManyReportedByInputEnvelope
-    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-  }
-
-  export type LocalVerifierCreateNestedOneWithoutUserInput = {
-    create?: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
-    connectOrCreate?: LocalVerifierCreateOrConnectWithoutUserInput
-    connect?: LocalVerifierWhereUniqueInput
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type PsychologicalSupportRequestCreateNestedManyWithoutUserInput = {
@@ -37624,73 +37583,45 @@ export namespace Prisma {
     connect?: PsychologicalSupportRequestWhereUniqueInput | PsychologicalSupportRequestWhereUniqueInput[]
   }
 
-  export type IncidentReportUncheckedCreateNestedManyWithoutReporterInput = {
-    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
-    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
-    createMany?: IncidentReportCreateManyReporterInputEnvelope
-    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+  export type ReliefTokenCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
+    createMany?: ReliefTokenCreateManyUserInputEnvelope
+    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
   }
 
-  export type TokenUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
-    createMany?: TokenCreateManyUserInputEnvelope
-    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-  }
-
-  export type TaskUncheckedCreateNestedManyWithoutAssignedToInput = {
-    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
-    createMany?: TaskCreateManyAssignedToInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type TaskUncheckedCreateNestedManyWithoutAssignedByInput = {
-    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
-    createMany?: TaskCreateManyAssignedByInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type VolunteerProfileUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    connect?: VolunteerProfileWhereUniqueInput
-  }
-
-  export type HelpRequestUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput> | HelpRequestCreateWithoutUserInput[] | HelpRequestUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: HelpRequestCreateOrConnectWithoutUserInput | HelpRequestCreateOrConnectWithoutUserInput[]
-    createMany?: HelpRequestCreateManyUserInputEnvelope
-    connect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
-  }
-
-  export type ReportVerificationUncheckedCreateNestedManyWithoutUserInput = {
+  export type ReportVerificationCreateNestedManyWithoutUserInput = {
     create?: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput> | ReportVerificationCreateWithoutUserInput[] | ReportVerificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ReportVerificationCreateOrConnectWithoutUserInput | ReportVerificationCreateOrConnectWithoutUserInput[]
     createMany?: ReportVerificationCreateManyUserInputEnvelope
     connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
   }
 
-  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  export type TaskCreateNestedManyWithoutAssignedByInput = {
+    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
+    createMany?: TaskCreateManyAssignedByInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
-  export type LocationLogUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput> | LocationLogCreateWithoutUserInput[] | LocationLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: LocationLogCreateOrConnectWithoutUserInput | LocationLogCreateOrConnectWithoutUserInput[]
-    createMany?: LocationLogCreateManyUserInputEnvelope
-    connect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
+  export type TaskCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
+    createMany?: TaskCreateManyAssignedToInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
-  export type ReliefTokenUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
-    createMany?: ReliefTokenCreateManyUserInputEnvelope
-    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+  export type TokenCreateNestedManyWithoutUserInput = {
+    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
+    createMany?: TokenCreateManyUserInputEnvelope
+    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+  }
+
+  export type VolunteerProfileCreateNestedOneWithoutUserInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    connect?: VolunteerProfileWhereUniqueInput
   }
 
   export type DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput = {
@@ -37700,10 +37631,38 @@ export namespace Prisma {
     connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
   }
 
+  export type HelpRequestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput> | HelpRequestCreateWithoutUserInput[] | HelpRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HelpRequestCreateOrConnectWithoutUserInput | HelpRequestCreateOrConnectWithoutUserInput[]
+    createMany?: HelpRequestCreateManyUserInputEnvelope
+    connect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
+  }
+
+  export type IncidentReportUncheckedCreateNestedManyWithoutReporterInput = {
+    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
+    createMany?: IncidentReportCreateManyReporterInputEnvelope
+    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+  }
+
   export type LocalVerifierUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
     connectOrCreate?: LocalVerifierCreateOrConnectWithoutUserInput
     connect?: LocalVerifierWhereUniqueInput
+  }
+
+  export type LocationLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput> | LocationLogCreateWithoutUserInput[] | LocationLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LocationLogCreateOrConnectWithoutUserInput | LocationLogCreateOrConnectWithoutUserInput[]
+    createMany?: LocationLogCreateManyUserInputEnvelope
+    connect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput = {
@@ -37711,6 +37670,47 @@ export namespace Prisma {
     connectOrCreate?: PsychologicalSupportRequestCreateOrConnectWithoutUserInput | PsychologicalSupportRequestCreateOrConnectWithoutUserInput[]
     createMany?: PsychologicalSupportRequestCreateManyUserInputEnvelope
     connect?: PsychologicalSupportRequestWhereUniqueInput | PsychologicalSupportRequestWhereUniqueInput[]
+  }
+
+  export type ReliefTokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
+    createMany?: ReliefTokenCreateManyUserInputEnvelope
+    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+  }
+
+  export type ReportVerificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput> | ReportVerificationCreateWithoutUserInput[] | ReportVerificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReportVerificationCreateOrConnectWithoutUserInput | ReportVerificationCreateOrConnectWithoutUserInput[]
+    createMany?: ReportVerificationCreateManyUserInputEnvelope
+    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutAssignedByInput = {
+    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
+    createMany?: TaskCreateManyAssignedByInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
+    createMany?: TaskCreateManyAssignedToInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
+    createMany?: TokenCreateManyUserInputEnvelope
+    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+  }
+
+  export type VolunteerProfileUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    connect?: VolunteerProfileWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -37729,70 +37729,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type IncidentReportUpdateManyWithoutReporterNestedInput = {
-    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
-    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
-    upsert?: IncidentReportUpsertWithWhereUniqueWithoutReporterInput | IncidentReportUpsertWithWhereUniqueWithoutReporterInput[]
-    createMany?: IncidentReportCreateManyReporterInputEnvelope
-    set?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    disconnect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    delete?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    update?: IncidentReportUpdateWithWhereUniqueWithoutReporterInput | IncidentReportUpdateWithWhereUniqueWithoutReporterInput[]
-    updateMany?: IncidentReportUpdateManyWithWhereWithoutReporterInput | IncidentReportUpdateManyWithWhereWithoutReporterInput[]
-    deleteMany?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
-  }
-
-  export type TokenUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
-    upsert?: TokenUpsertWithWhereUniqueWithoutUserInput | TokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TokenCreateManyUserInputEnvelope
-    set?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    disconnect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    delete?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    update?: TokenUpdateWithWhereUniqueWithoutUserInput | TokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TokenUpdateManyWithWhereWithoutUserInput | TokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TokenScalarWhereInput | TokenScalarWhereInput[]
-  }
-
-  export type TaskUpdateManyWithoutAssignedToNestedInput = {
-    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedToInput | TaskUpsertWithWhereUniqueWithoutAssignedToInput[]
-    createMany?: TaskCreateManyAssignedToInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutAssignedToInput | TaskUpdateWithWhereUniqueWithoutAssignedToInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutAssignedToInput | TaskUpdateManyWithWhereWithoutAssignedToInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type TaskUpdateManyWithoutAssignedByNestedInput = {
-    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedByInput | TaskUpsertWithWhereUniqueWithoutAssignedByInput[]
-    createMany?: TaskCreateManyAssignedByInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutAssignedByInput | TaskUpdateWithWhereUniqueWithoutAssignedByInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutAssignedByInput | TaskUpdateManyWithWhereWithoutAssignedByInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type VolunteerProfileUpdateOneWithoutUserNestedInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    upsert?: VolunteerProfileUpsertWithoutUserInput
-    disconnect?: VolunteerProfileWhereInput | boolean
-    delete?: VolunteerProfileWhereInput | boolean
-    connect?: VolunteerProfileWhereUniqueInput
-    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
+  export type DamageAssessmentUpdateManyWithoutReportedByNestedInput = {
+    create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
+    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
+    upsert?: DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput | DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput[]
+    createMany?: DamageAssessmentCreateManyReportedByInputEnvelope
+    set?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    disconnect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    delete?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    update?: DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput | DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput[]
+    updateMany?: DamageAssessmentUpdateManyWithWhereWithoutReportedByInput | DamageAssessmentUpdateManyWithWhereWithoutReportedByInput[]
+    deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
   }
 
   export type HelpRequestUpdateManyWithoutUserNestedInput = {
@@ -37809,32 +37757,28 @@ export namespace Prisma {
     deleteMany?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
   }
 
-  export type ReportVerificationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput> | ReportVerificationCreateWithoutUserInput[] | ReportVerificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReportVerificationCreateOrConnectWithoutUserInput | ReportVerificationCreateOrConnectWithoutUserInput[]
-    upsert?: ReportVerificationUpsertWithWhereUniqueWithoutUserInput | ReportVerificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ReportVerificationCreateManyUserInputEnvelope
-    set?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    disconnect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    delete?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    update?: ReportVerificationUpdateWithWhereUniqueWithoutUserInput | ReportVerificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ReportVerificationUpdateManyWithWhereWithoutUserInput | ReportVerificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+  export type IncidentReportUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
+    upsert?: IncidentReportUpsertWithWhereUniqueWithoutReporterInput | IncidentReportUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: IncidentReportCreateManyReporterInputEnvelope
+    set?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    disconnect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    delete?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    update?: IncidentReportUpdateWithWhereUniqueWithoutReporterInput | IncidentReportUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: IncidentReportUpdateManyWithWhereWithoutReporterInput | IncidentReportUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
   }
 
-  export type NotificationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  export type LocalVerifierUpdateOneWithoutUserNestedInput = {
+    create?: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
+    connectOrCreate?: LocalVerifierCreateOrConnectWithoutUserInput
+    upsert?: LocalVerifierUpsertWithoutUserInput
+    disconnect?: LocalVerifierWhereInput | boolean
+    delete?: LocalVerifierWhereInput | boolean
+    connect?: LocalVerifierWhereUniqueInput
+    update?: XOR<XOR<LocalVerifierUpdateToOneWithWhereWithoutUserInput, LocalVerifierUpdateWithoutUserInput>, LocalVerifierUncheckedUpdateWithoutUserInput>
   }
 
   export type LocationLogUpdateManyWithoutUserNestedInput = {
@@ -37851,42 +37795,18 @@ export namespace Prisma {
     deleteMany?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
   }
 
-  export type ReliefTokenUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
-    upsert?: ReliefTokenUpsertWithWhereUniqueWithoutUserInput | ReliefTokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ReliefTokenCreateManyUserInputEnvelope
-    set?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    disconnect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    delete?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    update?: ReliefTokenUpdateWithWhereUniqueWithoutUserInput | ReliefTokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ReliefTokenUpdateManyWithWhereWithoutUserInput | ReliefTokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
-  }
-
-  export type DamageAssessmentUpdateManyWithoutReportedByNestedInput = {
-    create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
-    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
-    upsert?: DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput | DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput[]
-    createMany?: DamageAssessmentCreateManyReportedByInputEnvelope
-    set?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    disconnect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    delete?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    update?: DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput | DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput[]
-    updateMany?: DamageAssessmentUpdateManyWithWhereWithoutReportedByInput | DamageAssessmentUpdateManyWithWhereWithoutReportedByInput[]
-    deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
-  }
-
-  export type LocalVerifierUpdateOneWithoutUserNestedInput = {
-    create?: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
-    connectOrCreate?: LocalVerifierCreateOrConnectWithoutUserInput
-    upsert?: LocalVerifierUpsertWithoutUserInput
-    disconnect?: LocalVerifierWhereInput | boolean
-    delete?: LocalVerifierWhereInput | boolean
-    connect?: LocalVerifierWhereUniqueInput
-    update?: XOR<XOR<LocalVerifierUpdateToOneWithWhereWithoutUserInput, LocalVerifierUpdateWithoutUserInput>, LocalVerifierUncheckedUpdateWithoutUserInput>
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type PsychologicalSupportRequestUpdateManyWithoutUserNestedInput = {
@@ -37903,87 +37823,21 @@ export namespace Prisma {
     deleteMany?: PsychologicalSupportRequestScalarWhereInput | PsychologicalSupportRequestScalarWhereInput[]
   }
 
-  export type IncidentReportUncheckedUpdateManyWithoutReporterNestedInput = {
-    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
-    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
-    upsert?: IncidentReportUpsertWithWhereUniqueWithoutReporterInput | IncidentReportUpsertWithWhereUniqueWithoutReporterInput[]
-    createMany?: IncidentReportCreateManyReporterInputEnvelope
-    set?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    disconnect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    delete?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
-    update?: IncidentReportUpdateWithWhereUniqueWithoutReporterInput | IncidentReportUpdateWithWhereUniqueWithoutReporterInput[]
-    updateMany?: IncidentReportUpdateManyWithWhereWithoutReporterInput | IncidentReportUpdateManyWithWhereWithoutReporterInput[]
-    deleteMany?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
+  export type ReliefTokenUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
+    upsert?: ReliefTokenUpsertWithWhereUniqueWithoutUserInput | ReliefTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReliefTokenCreateManyUserInputEnvelope
+    set?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    disconnect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    delete?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    update?: ReliefTokenUpdateWithWhereUniqueWithoutUserInput | ReliefTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReliefTokenUpdateManyWithWhereWithoutUserInput | ReliefTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
   }
 
-  export type TokenUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
-    upsert?: TokenUpsertWithWhereUniqueWithoutUserInput | TokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TokenCreateManyUserInputEnvelope
-    set?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    disconnect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    delete?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
-    update?: TokenUpdateWithWhereUniqueWithoutUserInput | TokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TokenUpdateManyWithWhereWithoutUserInput | TokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TokenScalarWhereInput | TokenScalarWhereInput[]
-  }
-
-  export type TaskUncheckedUpdateManyWithoutAssignedToNestedInput = {
-    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedToInput | TaskUpsertWithWhereUniqueWithoutAssignedToInput[]
-    createMany?: TaskCreateManyAssignedToInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutAssignedToInput | TaskUpdateWithWhereUniqueWithoutAssignedToInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutAssignedToInput | TaskUpdateManyWithWhereWithoutAssignedToInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type TaskUncheckedUpdateManyWithoutAssignedByNestedInput = {
-    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedByInput | TaskUpsertWithWhereUniqueWithoutAssignedByInput[]
-    createMany?: TaskCreateManyAssignedByInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutAssignedByInput | TaskUpdateWithWhereUniqueWithoutAssignedByInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutAssignedByInput | TaskUpdateManyWithWhereWithoutAssignedByInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    upsert?: VolunteerProfileUpsertWithoutUserInput
-    disconnect?: VolunteerProfileWhereInput | boolean
-    delete?: VolunteerProfileWhereInput | boolean
-    connect?: VolunteerProfileWhereUniqueInput
-    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
-  }
-
-  export type HelpRequestUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput> | HelpRequestCreateWithoutUserInput[] | HelpRequestUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: HelpRequestCreateOrConnectWithoutUserInput | HelpRequestCreateOrConnectWithoutUserInput[]
-    upsert?: HelpRequestUpsertWithWhereUniqueWithoutUserInput | HelpRequestUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: HelpRequestCreateManyUserInputEnvelope
-    set?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
-    disconnect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
-    delete?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
-    connect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
-    update?: HelpRequestUpdateWithWhereUniqueWithoutUserInput | HelpRequestUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: HelpRequestUpdateManyWithWhereWithoutUserInput | HelpRequestUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
-  }
-
-  export type ReportVerificationUncheckedUpdateManyWithoutUserNestedInput = {
+  export type ReportVerificationUpdateManyWithoutUserNestedInput = {
     create?: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput> | ReportVerificationCreateWithoutUserInput[] | ReportVerificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ReportVerificationCreateOrConnectWithoutUserInput | ReportVerificationCreateOrConnectWithoutUserInput[]
     upsert?: ReportVerificationUpsertWithWhereUniqueWithoutUserInput | ReportVerificationUpsertWithWhereUniqueWithoutUserInput[]
@@ -37997,46 +37851,56 @@ export namespace Prisma {
     deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
   }
 
-  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  export type TaskUpdateManyWithoutAssignedByNestedInput = {
+    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedByInput | TaskUpsertWithWhereUniqueWithoutAssignedByInput[]
+    createMany?: TaskCreateManyAssignedByInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutAssignedByInput | TaskUpdateWithWhereUniqueWithoutAssignedByInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutAssignedByInput | TaskUpdateManyWithWhereWithoutAssignedByInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type LocationLogUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput> | LocationLogCreateWithoutUserInput[] | LocationLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: LocationLogCreateOrConnectWithoutUserInput | LocationLogCreateOrConnectWithoutUserInput[]
-    upsert?: LocationLogUpsertWithWhereUniqueWithoutUserInput | LocationLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: LocationLogCreateManyUserInputEnvelope
-    set?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
-    disconnect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
-    delete?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
-    connect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
-    update?: LocationLogUpdateWithWhereUniqueWithoutUserInput | LocationLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: LocationLogUpdateManyWithWhereWithoutUserInput | LocationLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
+  export type TaskUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedToInput | TaskUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: TaskCreateManyAssignedToInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutAssignedToInput | TaskUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutAssignedToInput | TaskUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type ReliefTokenUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
-    upsert?: ReliefTokenUpsertWithWhereUniqueWithoutUserInput | ReliefTokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ReliefTokenCreateManyUserInputEnvelope
-    set?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    disconnect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    delete?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
-    update?: ReliefTokenUpdateWithWhereUniqueWithoutUserInput | ReliefTokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ReliefTokenUpdateManyWithWhereWithoutUserInput | ReliefTokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
+  export type TokenUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
+    upsert?: TokenUpsertWithWhereUniqueWithoutUserInput | TokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TokenCreateManyUserInputEnvelope
+    set?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    disconnect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    delete?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    update?: TokenUpdateWithWhereUniqueWithoutUserInput | TokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TokenUpdateManyWithWhereWithoutUserInput | TokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TokenScalarWhereInput | TokenScalarWhereInput[]
+  }
+
+  export type VolunteerProfileUpdateOneWithoutUserNestedInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    upsert?: VolunteerProfileUpsertWithoutUserInput
+    disconnect?: VolunteerProfileWhereInput | boolean
+    delete?: VolunteerProfileWhereInput | boolean
+    connect?: VolunteerProfileWhereUniqueInput
+    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
   }
 
   export type DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput = {
@@ -38053,6 +37917,34 @@ export namespace Prisma {
     deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
   }
 
+  export type HelpRequestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput> | HelpRequestCreateWithoutUserInput[] | HelpRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HelpRequestCreateOrConnectWithoutUserInput | HelpRequestCreateOrConnectWithoutUserInput[]
+    upsert?: HelpRequestUpsertWithWhereUniqueWithoutUserInput | HelpRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: HelpRequestCreateManyUserInputEnvelope
+    set?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
+    disconnect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
+    delete?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
+    connect?: HelpRequestWhereUniqueInput | HelpRequestWhereUniqueInput[]
+    update?: HelpRequestUpdateWithWhereUniqueWithoutUserInput | HelpRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: HelpRequestUpdateManyWithWhereWithoutUserInput | HelpRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
+  }
+
+  export type IncidentReportUncheckedUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput> | IncidentReportCreateWithoutReporterInput[] | IncidentReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutReporterInput | IncidentReportCreateOrConnectWithoutReporterInput[]
+    upsert?: IncidentReportUpsertWithWhereUniqueWithoutReporterInput | IncidentReportUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: IncidentReportCreateManyReporterInputEnvelope
+    set?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    disconnect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    delete?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    connect?: IncidentReportWhereUniqueInput | IncidentReportWhereUniqueInput[]
+    update?: IncidentReportUpdateWithWhereUniqueWithoutReporterInput | IncidentReportUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: IncidentReportUpdateManyWithWhereWithoutReporterInput | IncidentReportUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
+  }
+
   export type LocalVerifierUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
     connectOrCreate?: LocalVerifierCreateOrConnectWithoutUserInput
@@ -38061,6 +37953,34 @@ export namespace Prisma {
     delete?: LocalVerifierWhereInput | boolean
     connect?: LocalVerifierWhereUniqueInput
     update?: XOR<XOR<LocalVerifierUpdateToOneWithWhereWithoutUserInput, LocalVerifierUpdateWithoutUserInput>, LocalVerifierUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LocationLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput> | LocationLogCreateWithoutUserInput[] | LocationLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LocationLogCreateOrConnectWithoutUserInput | LocationLogCreateOrConnectWithoutUserInput[]
+    upsert?: LocationLogUpsertWithWhereUniqueWithoutUserInput | LocationLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LocationLogCreateManyUserInputEnvelope
+    set?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
+    disconnect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
+    delete?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
+    connect?: LocationLogWhereUniqueInput | LocationLogWhereUniqueInput[]
+    update?: LocationLogUpdateWithWhereUniqueWithoutUserInput | LocationLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LocationLogUpdateManyWithWhereWithoutUserInput | LocationLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput = {
@@ -38077,35 +37997,88 @@ export namespace Prisma {
     deleteMany?: PsychologicalSupportRequestScalarWhereInput | PsychologicalSupportRequestScalarWhereInput[]
   }
 
+  export type ReliefTokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput> | ReliefTokenCreateWithoutUserInput[] | ReliefTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReliefTokenCreateOrConnectWithoutUserInput | ReliefTokenCreateOrConnectWithoutUserInput[]
+    upsert?: ReliefTokenUpsertWithWhereUniqueWithoutUserInput | ReliefTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReliefTokenCreateManyUserInputEnvelope
+    set?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    disconnect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    delete?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    connect?: ReliefTokenWhereUniqueInput | ReliefTokenWhereUniqueInput[]
+    update?: ReliefTokenUpdateWithWhereUniqueWithoutUserInput | ReliefTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReliefTokenUpdateManyWithWhereWithoutUserInput | ReliefTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
+  }
+
+  export type ReportVerificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput> | ReportVerificationCreateWithoutUserInput[] | ReportVerificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReportVerificationCreateOrConnectWithoutUserInput | ReportVerificationCreateOrConnectWithoutUserInput[]
+    upsert?: ReportVerificationUpsertWithWhereUniqueWithoutUserInput | ReportVerificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReportVerificationCreateManyUserInputEnvelope
+    set?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    disconnect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    delete?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    update?: ReportVerificationUpdateWithWhereUniqueWithoutUserInput | ReportVerificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReportVerificationUpdateManyWithWhereWithoutUserInput | ReportVerificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutAssignedByNestedInput = {
+    create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedByInput | TaskUpsertWithWhereUniqueWithoutAssignedByInput[]
+    createMany?: TaskCreateManyAssignedByInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutAssignedByInput | TaskUpdateWithWhereUniqueWithoutAssignedByInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutAssignedByInput | TaskUpdateManyWithWhereWithoutAssignedByInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput> | TaskCreateWithoutAssignedToInput[] | TaskUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutAssignedToInput | TaskCreateOrConnectWithoutAssignedToInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutAssignedToInput | TaskUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: TaskCreateManyAssignedToInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutAssignedToInput | TaskUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutAssignedToInput | TaskUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type TokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput> | TokenCreateWithoutUserInput[] | TokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TokenCreateOrConnectWithoutUserInput | TokenCreateOrConnectWithoutUserInput[]
+    upsert?: TokenUpsertWithWhereUniqueWithoutUserInput | TokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TokenCreateManyUserInputEnvelope
+    set?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    disconnect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    delete?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    connect?: TokenWhereUniqueInput | TokenWhereUniqueInput[]
+    update?: TokenUpdateWithWhereUniqueWithoutUserInput | TokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TokenUpdateManyWithWhereWithoutUserInput | TokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TokenScalarWhereInput | TokenScalarWhereInput[]
+  }
+
+  export type VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    upsert?: VolunteerProfileUpsertWithoutUserInput
+    disconnect?: VolunteerProfileWhereInput | boolean
+    delete?: VolunteerProfileWhereInput | boolean
+    connect?: VolunteerProfileWhereUniqueInput
+    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
+  }
+
   export type IncidentReportCreateimagesInput = {
     set: string[]
-  }
-
-  export type UserCreateNestedOneWithoutReportsInput = {
-    create?: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReportsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type TaskCreateNestedManyWithoutIncidentInput = {
-    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
-    createMany?: TaskCreateManyIncidentInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type ReportVerificationCreateNestedManyWithoutReportInput = {
-    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
-    createMany?: ReportVerificationCreateManyReportInputEnvelope
-    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-  }
-
-  export type IncidentHistoryCreateNestedManyWithoutIncidentInput = {
-    create?: XOR<IncidentHistoryCreateWithoutIncidentInput, IncidentHistoryUncheckedCreateWithoutIncidentInput> | IncidentHistoryCreateWithoutIncidentInput[] | IncidentHistoryUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: IncidentHistoryCreateOrConnectWithoutIncidentInput | IncidentHistoryCreateOrConnectWithoutIncidentInput[]
-    createMany?: IncidentHistoryCreateManyIncidentInputEnvelope
-    connect?: IncidentHistoryWhereUniqueInput | IncidentHistoryWhereUniqueInput[]
   }
 
   export type DamageAssessmentCreateNestedManyWithoutIncidentInput = {
@@ -38115,6 +38088,33 @@ export namespace Prisma {
     connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
   }
 
+  export type IncidentHistoryCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<IncidentHistoryCreateWithoutIncidentInput, IncidentHistoryUncheckedCreateWithoutIncidentInput> | IncidentHistoryCreateWithoutIncidentInput[] | IncidentHistoryUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: IncidentHistoryCreateOrConnectWithoutIncidentInput | IncidentHistoryCreateOrConnectWithoutIncidentInput[]
+    createMany?: IncidentHistoryCreateManyIncidentInputEnvelope
+    connect?: IncidentHistoryWhereUniqueInput | IncidentHistoryWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutReportsInput = {
+    create?: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ReportVerificationCreateNestedManyWithoutReportInput = {
+    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
+    createMany?: ReportVerificationCreateManyReportInputEnvelope
+    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+  }
+
+  export type TaskCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
+    createMany?: TaskCreateManyIncidentInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
   export type VerifierActionCreateNestedManyWithoutIncidentInput = {
     create?: XOR<VerifierActionCreateWithoutIncidentInput, VerifierActionUncheckedCreateWithoutIncidentInput> | VerifierActionCreateWithoutIncidentInput[] | VerifierActionUncheckedCreateWithoutIncidentInput[]
     connectOrCreate?: VerifierActionCreateOrConnectWithoutIncidentInput | VerifierActionCreateOrConnectWithoutIncidentInput[]
@@ -38122,18 +38122,11 @@ export namespace Prisma {
     connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
   }
 
-  export type TaskUncheckedCreateNestedManyWithoutIncidentInput = {
-    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
-    createMany?: TaskCreateManyIncidentInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type ReportVerificationUncheckedCreateNestedManyWithoutReportInput = {
-    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
-    createMany?: ReportVerificationCreateManyReportInputEnvelope
-    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+  export type DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput> | DamageAssessmentCreateWithoutIncidentInput[] | DamageAssessmentUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutIncidentInput | DamageAssessmentCreateOrConnectWithoutIncidentInput[]
+    createMany?: DamageAssessmentCreateManyIncidentInputEnvelope
+    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
   }
 
   export type IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput = {
@@ -38143,11 +38136,18 @@ export namespace Prisma {
     connect?: IncidentHistoryWhereUniqueInput | IncidentHistoryWhereUniqueInput[]
   }
 
-  export type DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput = {
-    create?: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput> | DamageAssessmentCreateWithoutIncidentInput[] | DamageAssessmentUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutIncidentInput | DamageAssessmentCreateOrConnectWithoutIncidentInput[]
-    createMany?: DamageAssessmentCreateManyIncidentInputEnvelope
-    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+  export type ReportVerificationUncheckedCreateNestedManyWithoutReportInput = {
+    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
+    createMany?: ReportVerificationCreateManyReportInputEnvelope
+    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
+    createMany?: TaskCreateManyIncidentInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
   export type VerifierActionUncheckedCreateNestedManyWithoutIncidentInput = {
@@ -38178,40 +38178,18 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type UserUpdateOneRequiredWithoutReportsNestedInput = {
-    create?: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReportsInput
-    upsert?: UserUpsertWithoutReportsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReportsInput, UserUpdateWithoutReportsInput>, UserUncheckedUpdateWithoutReportsInput>
-  }
-
-  export type TaskUpdateManyWithoutIncidentNestedInput = {
-    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutIncidentInput | TaskUpsertWithWhereUniqueWithoutIncidentInput[]
-    createMany?: TaskCreateManyIncidentInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutIncidentInput | TaskUpdateWithWhereUniqueWithoutIncidentInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutIncidentInput | TaskUpdateManyWithWhereWithoutIncidentInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type ReportVerificationUpdateManyWithoutReportNestedInput = {
-    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
-    upsert?: ReportVerificationUpsertWithWhereUniqueWithoutReportInput | ReportVerificationUpsertWithWhereUniqueWithoutReportInput[]
-    createMany?: ReportVerificationCreateManyReportInputEnvelope
-    set?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    disconnect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    delete?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    update?: ReportVerificationUpdateWithWhereUniqueWithoutReportInput | ReportVerificationUpdateWithWhereUniqueWithoutReportInput[]
-    updateMany?: ReportVerificationUpdateManyWithWhereWithoutReportInput | ReportVerificationUpdateManyWithWhereWithoutReportInput[]
-    deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+  export type DamageAssessmentUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput> | DamageAssessmentCreateWithoutIncidentInput[] | DamageAssessmentUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutIncidentInput | DamageAssessmentCreateOrConnectWithoutIncidentInput[]
+    upsert?: DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: DamageAssessmentCreateManyIncidentInputEnvelope
+    set?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    disconnect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    delete?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    update?: DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: DamageAssessmentUpdateManyWithWhereWithoutIncidentInput | DamageAssessmentUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
   }
 
   export type IncidentHistoryUpdateManyWithoutIncidentNestedInput = {
@@ -38228,18 +38206,40 @@ export namespace Prisma {
     deleteMany?: IncidentHistoryScalarWhereInput | IncidentHistoryScalarWhereInput[]
   }
 
-  export type DamageAssessmentUpdateManyWithoutIncidentNestedInput = {
-    create?: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput> | DamageAssessmentCreateWithoutIncidentInput[] | DamageAssessmentUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutIncidentInput | DamageAssessmentCreateOrConnectWithoutIncidentInput[]
-    upsert?: DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput[]
-    createMany?: DamageAssessmentCreateManyIncidentInputEnvelope
-    set?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    disconnect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    delete?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    update?: DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput[]
-    updateMany?: DamageAssessmentUpdateManyWithWhereWithoutIncidentInput | DamageAssessmentUpdateManyWithWhereWithoutIncidentInput[]
-    deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
+  export type UserUpdateOneRequiredWithoutReportsNestedInput = {
+    create?: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportsInput
+    upsert?: UserUpsertWithoutReportsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReportsInput, UserUpdateWithoutReportsInput>, UserUncheckedUpdateWithoutReportsInput>
+  }
+
+  export type ReportVerificationUpdateManyWithoutReportNestedInput = {
+    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
+    upsert?: ReportVerificationUpsertWithWhereUniqueWithoutReportInput | ReportVerificationUpsertWithWhereUniqueWithoutReportInput[]
+    createMany?: ReportVerificationCreateManyReportInputEnvelope
+    set?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    disconnect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    delete?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    update?: ReportVerificationUpdateWithWhereUniqueWithoutReportInput | ReportVerificationUpdateWithWhereUniqueWithoutReportInput[]
+    updateMany?: ReportVerificationUpdateManyWithWhereWithoutReportInput | ReportVerificationUpdateManyWithWhereWithoutReportInput[]
+    deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+  }
+
+  export type TaskUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutIncidentInput | TaskUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: TaskCreateManyIncidentInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutIncidentInput | TaskUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutIncidentInput | TaskUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
   export type VerifierActionUpdateManyWithoutIncidentNestedInput = {
@@ -38256,32 +38256,18 @@ export namespace Prisma {
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
   }
 
-  export type TaskUncheckedUpdateManyWithoutIncidentNestedInput = {
-    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutIncidentInput | TaskUpsertWithWhereUniqueWithoutIncidentInput[]
-    createMany?: TaskCreateManyIncidentInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutIncidentInput | TaskUpdateWithWhereUniqueWithoutIncidentInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutIncidentInput | TaskUpdateManyWithWhereWithoutIncidentInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type ReportVerificationUncheckedUpdateManyWithoutReportNestedInput = {
-    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
-    upsert?: ReportVerificationUpsertWithWhereUniqueWithoutReportInput | ReportVerificationUpsertWithWhereUniqueWithoutReportInput[]
-    createMany?: ReportVerificationCreateManyReportInputEnvelope
-    set?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    disconnect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    delete?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
-    update?: ReportVerificationUpdateWithWhereUniqueWithoutReportInput | ReportVerificationUpdateWithWhereUniqueWithoutReportInput[]
-    updateMany?: ReportVerificationUpdateManyWithWhereWithoutReportInput | ReportVerificationUpdateManyWithWhereWithoutReportInput[]
-    deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+  export type DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput> | DamageAssessmentCreateWithoutIncidentInput[] | DamageAssessmentUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutIncidentInput | DamageAssessmentCreateOrConnectWithoutIncidentInput[]
+    upsert?: DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: DamageAssessmentCreateManyIncidentInputEnvelope
+    set?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    disconnect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    delete?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+    update?: DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: DamageAssessmentUpdateManyWithWhereWithoutIncidentInput | DamageAssessmentUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
   }
 
   export type IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput = {
@@ -38298,18 +38284,32 @@ export namespace Prisma {
     deleteMany?: IncidentHistoryScalarWhereInput | IncidentHistoryScalarWhereInput[]
   }
 
-  export type DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput = {
-    create?: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput> | DamageAssessmentCreateWithoutIncidentInput[] | DamageAssessmentUncheckedCreateWithoutIncidentInput[]
-    connectOrCreate?: DamageAssessmentCreateOrConnectWithoutIncidentInput | DamageAssessmentCreateOrConnectWithoutIncidentInput[]
-    upsert?: DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput[]
-    createMany?: DamageAssessmentCreateManyIncidentInputEnvelope
-    set?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    disconnect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    delete?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
-    update?: DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput | DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput[]
-    updateMany?: DamageAssessmentUpdateManyWithWhereWithoutIncidentInput | DamageAssessmentUpdateManyWithWhereWithoutIncidentInput[]
-    deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
+  export type ReportVerificationUncheckedUpdateManyWithoutReportNestedInput = {
+    create?: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput> | ReportVerificationCreateWithoutReportInput[] | ReportVerificationUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: ReportVerificationCreateOrConnectWithoutReportInput | ReportVerificationCreateOrConnectWithoutReportInput[]
+    upsert?: ReportVerificationUpsertWithWhereUniqueWithoutReportInput | ReportVerificationUpsertWithWhereUniqueWithoutReportInput[]
+    createMany?: ReportVerificationCreateManyReportInputEnvelope
+    set?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    disconnect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    delete?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
+    update?: ReportVerificationUpdateWithWhereUniqueWithoutReportInput | ReportVerificationUpdateWithWhereUniqueWithoutReportInput[]
+    updateMany?: ReportVerificationUpdateManyWithWhereWithoutReportInput | ReportVerificationUpdateManyWithWhereWithoutReportInput[]
+    deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput> | TaskCreateWithoutIncidentInput[] | TaskUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutIncidentInput | TaskCreateOrConnectWithoutIncidentInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutIncidentInput | TaskUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: TaskCreateManyIncidentInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutIncidentInput | TaskUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutIncidentInput | TaskUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
   export type VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput = {
@@ -38351,12 +38351,6 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type UserCreateNestedOneWithoutTokensInput = {
-    create?: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTokensInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type DistributionCreateNestedManyWithoutTokenInput = {
     create?: XOR<DistributionCreateWithoutTokenInput, DistributionUncheckedCreateWithoutTokenInput> | DistributionCreateWithoutTokenInput[] | DistributionUncheckedCreateWithoutTokenInput[]
     connectOrCreate?: DistributionCreateOrConnectWithoutTokenInput | DistributionCreateOrConnectWithoutTokenInput[]
@@ -38364,19 +38358,17 @@ export namespace Prisma {
     connect?: DistributionWhereUniqueInput | DistributionWhereUniqueInput[]
   }
 
+  export type UserCreateNestedOneWithoutTokensInput = {
+    create?: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTokensInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type DistributionUncheckedCreateNestedManyWithoutTokenInput = {
     create?: XOR<DistributionCreateWithoutTokenInput, DistributionUncheckedCreateWithoutTokenInput> | DistributionCreateWithoutTokenInput[] | DistributionUncheckedCreateWithoutTokenInput[]
     connectOrCreate?: DistributionCreateOrConnectWithoutTokenInput | DistributionCreateOrConnectWithoutTokenInput[]
     createMany?: DistributionCreateManyTokenInputEnvelope
     connect?: DistributionWhereUniqueInput | DistributionWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutTokensNestedInput = {
-    create?: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTokensInput
-    upsert?: UserUpsertWithoutTokensInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTokensInput, UserUpdateWithoutTokensInput>, UserUncheckedUpdateWithoutTokensInput>
   }
 
   export type DistributionUpdateManyWithoutTokenNestedInput = {
@@ -38393,6 +38385,14 @@ export namespace Prisma {
     deleteMany?: DistributionScalarWhereInput | DistributionScalarWhereInput[]
   }
 
+  export type UserUpdateOneRequiredWithoutTokensNestedInput = {
+    create?: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTokensInput
+    upsert?: UserUpsertWithoutTokensInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTokensInput, UserUpdateWithoutTokensInput>, UserUncheckedUpdateWithoutTokensInput>
+  }
+
   export type DistributionUncheckedUpdateManyWithoutTokenNestedInput = {
     create?: XOR<DistributionCreateWithoutTokenInput, DistributionUncheckedCreateWithoutTokenInput> | DistributionCreateWithoutTokenInput[] | DistributionUncheckedCreateWithoutTokenInput[]
     connectOrCreate?: DistributionCreateOrConnectWithoutTokenInput | DistributionCreateOrConnectWithoutTokenInput[]
@@ -38407,10 +38407,10 @@ export namespace Prisma {
     deleteMany?: DistributionScalarWhereInput | DistributionScalarWhereInput[]
   }
 
-  export type IncidentReportCreateNestedOneWithoutTasksInput = {
-    create?: XOR<IncidentReportCreateWithoutTasksInput, IncidentReportUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: IncidentReportCreateOrConnectWithoutTasksInput
-    connect?: IncidentReportWhereUniqueInput
+  export type UserCreateNestedOneWithoutCreatedTasksInput = {
+    create?: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedTasksInput
+    connect?: UserWhereUniqueInput
   }
 
   export type UserCreateNestedOneWithoutAssignedTasksInput = {
@@ -38419,24 +38419,24 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutCreatedTasksInput = {
-    create?: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCreatedTasksInput
-    connect?: UserWhereUniqueInput
+  export type IncidentReportCreateNestedOneWithoutTasksInput = {
+    create?: XOR<IncidentReportCreateWithoutTasksInput, IncidentReportUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutTasksInput
+    connect?: IncidentReportWhereUniqueInput
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
 
-  export type IncidentReportUpdateOneWithoutTasksNestedInput = {
-    create?: XOR<IncidentReportCreateWithoutTasksInput, IncidentReportUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: IncidentReportCreateOrConnectWithoutTasksInput
-    upsert?: IncidentReportUpsertWithoutTasksInput
-    disconnect?: IncidentReportWhereInput | boolean
-    delete?: IncidentReportWhereInput | boolean
-    connect?: IncidentReportWhereUniqueInput
-    update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutTasksInput, IncidentReportUpdateWithoutTasksInput>, IncidentReportUncheckedUpdateWithoutTasksInput>
+  export type UserUpdateOneWithoutCreatedTasksNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedTasksInput
+    upsert?: UserUpsertWithoutCreatedTasksInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedTasksInput, UserUpdateWithoutCreatedTasksInput>, UserUncheckedUpdateWithoutCreatedTasksInput>
   }
 
   export type UserUpdateOneWithoutAssignedTasksNestedInput = {
@@ -38449,14 +38449,14 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedTasksInput, UserUpdateWithoutAssignedTasksInput>, UserUncheckedUpdateWithoutAssignedTasksInput>
   }
 
-  export type UserUpdateOneWithoutCreatedTasksNestedInput = {
-    create?: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCreatedTasksInput
-    upsert?: UserUpsertWithoutCreatedTasksInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedTasksInput, UserUpdateWithoutCreatedTasksInput>, UserUncheckedUpdateWithoutCreatedTasksInput>
+  export type IncidentReportUpdateOneWithoutTasksNestedInput = {
+    create?: XOR<IncidentReportCreateWithoutTasksInput, IncidentReportUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutTasksInput
+    upsert?: IncidentReportUpsertWithoutTasksInput
+    disconnect?: IncidentReportWhereInput | boolean
+    delete?: IncidentReportWhereInput | boolean
+    connect?: IncidentReportWhereUniqueInput
+    update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutTasksInput, IncidentReportUpdateWithoutTasksInput>, IncidentReportUncheckedUpdateWithoutTasksInput>
   }
 
   export type VolunteerProfileCreateskillsInput = {
@@ -38716,16 +38716,16 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type UserCreateNestedOneWithoutDamageReportsInput = {
-    create?: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDamageReportsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type IncidentReportCreateNestedOneWithoutDamageAssessmentsInput = {
     create?: XOR<IncidentReportCreateWithoutDamageAssessmentsInput, IncidentReportUncheckedCreateWithoutDamageAssessmentsInput>
     connectOrCreate?: IncidentReportCreateOrConnectWithoutDamageAssessmentsInput
     connect?: IncidentReportWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDamageReportsInput = {
+    create?: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDamageReportsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type EnumDamageCategoryFieldUpdateOperationsInput = {
@@ -38745,14 +38745,6 @@ export namespace Prisma {
     set?: $Enums.DamageStatus
   }
 
-  export type UserUpdateOneRequiredWithoutDamageReportsNestedInput = {
-    create?: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDamageReportsInput
-    upsert?: UserUpsertWithoutDamageReportsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDamageReportsInput, UserUpdateWithoutDamageReportsInput>, UserUncheckedUpdateWithoutDamageReportsInput>
-  }
-
   export type IncidentReportUpdateOneWithoutDamageAssessmentsNestedInput = {
     create?: XOR<IncidentReportCreateWithoutDamageAssessmentsInput, IncidentReportUncheckedCreateWithoutDamageAssessmentsInput>
     connectOrCreate?: IncidentReportCreateOrConnectWithoutDamageAssessmentsInput
@@ -38761,6 +38753,14 @@ export namespace Prisma {
     delete?: IncidentReportWhereInput | boolean
     connect?: IncidentReportWhereUniqueInput
     update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutDamageAssessmentsInput, IncidentReportUpdateWithoutDamageAssessmentsInput>, IncidentReportUncheckedUpdateWithoutDamageAssessmentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutDamageReportsNestedInput = {
+    create?: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDamageReportsInput
+    upsert?: UserUpsertWithoutDamageReportsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDamageReportsInput, UserUpdateWithoutDamageReportsInput>, UserUncheckedUpdateWithoutDamageReportsInput>
   }
 
   export type UserCreateNestedOneWithoutLocalVerifierInput = {
@@ -38823,10 +38823,10 @@ export namespace Prisma {
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
   }
 
-  export type LocalVerifierCreateNestedOneWithoutActionsInput = {
-    create?: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
-    connectOrCreate?: LocalVerifierCreateOrConnectWithoutActionsInput
-    connect?: LocalVerifierWhereUniqueInput
+  export type HelpRequestCreateNestedOneWithoutVerifierActionsInput = {
+    create?: XOR<HelpRequestCreateWithoutVerifierActionsInput, HelpRequestUncheckedCreateWithoutVerifierActionsInput>
+    connectOrCreate?: HelpRequestCreateOrConnectWithoutVerifierActionsInput
+    connect?: HelpRequestWhereUniqueInput
   }
 
   export type IncidentReportCreateNestedOneWithoutVerifierActionsInput = {
@@ -38835,22 +38835,24 @@ export namespace Prisma {
     connect?: IncidentReportWhereUniqueInput
   }
 
-  export type HelpRequestCreateNestedOneWithoutVerifierActionsInput = {
-    create?: XOR<HelpRequestCreateWithoutVerifierActionsInput, HelpRequestUncheckedCreateWithoutVerifierActionsInput>
-    connectOrCreate?: HelpRequestCreateOrConnectWithoutVerifierActionsInput
-    connect?: HelpRequestWhereUniqueInput
+  export type LocalVerifierCreateNestedOneWithoutActionsInput = {
+    create?: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
+    connectOrCreate?: LocalVerifierCreateOrConnectWithoutActionsInput
+    connect?: LocalVerifierWhereUniqueInput
   }
 
   export type EnumVerificationResultFieldUpdateOperationsInput = {
     set?: $Enums.VerificationResult
   }
 
-  export type LocalVerifierUpdateOneRequiredWithoutActionsNestedInput = {
-    create?: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
-    connectOrCreate?: LocalVerifierCreateOrConnectWithoutActionsInput
-    upsert?: LocalVerifierUpsertWithoutActionsInput
-    connect?: LocalVerifierWhereUniqueInput
-    update?: XOR<XOR<LocalVerifierUpdateToOneWithWhereWithoutActionsInput, LocalVerifierUpdateWithoutActionsInput>, LocalVerifierUncheckedUpdateWithoutActionsInput>
+  export type HelpRequestUpdateOneWithoutVerifierActionsNestedInput = {
+    create?: XOR<HelpRequestCreateWithoutVerifierActionsInput, HelpRequestUncheckedCreateWithoutVerifierActionsInput>
+    connectOrCreate?: HelpRequestCreateOrConnectWithoutVerifierActionsInput
+    upsert?: HelpRequestUpsertWithoutVerifierActionsInput
+    disconnect?: HelpRequestWhereInput | boolean
+    delete?: HelpRequestWhereInput | boolean
+    connect?: HelpRequestWhereUniqueInput
+    update?: XOR<XOR<HelpRequestUpdateToOneWithWhereWithoutVerifierActionsInput, HelpRequestUpdateWithoutVerifierActionsInput>, HelpRequestUncheckedUpdateWithoutVerifierActionsInput>
   }
 
   export type IncidentReportUpdateOneWithoutVerifierActionsNestedInput = {
@@ -38863,14 +38865,12 @@ export namespace Prisma {
     update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutVerifierActionsInput, IncidentReportUpdateWithoutVerifierActionsInput>, IncidentReportUncheckedUpdateWithoutVerifierActionsInput>
   }
 
-  export type HelpRequestUpdateOneWithoutVerifierActionsNestedInput = {
-    create?: XOR<HelpRequestCreateWithoutVerifierActionsInput, HelpRequestUncheckedCreateWithoutVerifierActionsInput>
-    connectOrCreate?: HelpRequestCreateOrConnectWithoutVerifierActionsInput
-    upsert?: HelpRequestUpsertWithoutVerifierActionsInput
-    disconnect?: HelpRequestWhereInput | boolean
-    delete?: HelpRequestWhereInput | boolean
-    connect?: HelpRequestWhereUniqueInput
-    update?: XOR<XOR<HelpRequestUpdateToOneWithWhereWithoutVerifierActionsInput, HelpRequestUpdateWithoutVerifierActionsInput>, HelpRequestUncheckedUpdateWithoutVerifierActionsInput>
+  export type LocalVerifierUpdateOneRequiredWithoutActionsNestedInput = {
+    create?: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
+    connectOrCreate?: LocalVerifierCreateOrConnectWithoutActionsInput
+    upsert?: LocalVerifierUpsertWithoutActionsInput
+    connect?: LocalVerifierWhereUniqueInput
+    update?: XOR<XOR<LocalVerifierUpdateToOneWithWhereWithoutActionsInput, LocalVerifierUpdateWithoutActionsInput>, LocalVerifierUncheckedUpdateWithoutActionsInput>
   }
 
   export type UserCreateNestedOneWithoutSupportRequestsInput = {
@@ -39399,337 +39399,6 @@ export namespace Prisma {
     _max?: NestedEnumSupportStatusFilter<$PrismaModel>
   }
 
-  export type IncidentReportCreateWithoutReporterInput = {
-    id?: string
-    title: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    status?: $Enums.Status
-    severity?: $Enums.Severity
-    category: string
-    images?: IncidentReportCreateimagesInput | string[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tasks?: TaskCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
-    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
-    verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-  }
-
-  export type IncidentReportUncheckedCreateWithoutReporterInput = {
-    id?: string
-    title: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    status?: $Enums.Status
-    severity?: $Enums.Severity
-    category: string
-    images?: IncidentReportCreateimagesInput | string[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
-    damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
-    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-  }
-
-  export type IncidentReportCreateOrConnectWithoutReporterInput = {
-    where: IncidentReportWhereUniqueInput
-    create: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput>
-  }
-
-  export type IncidentReportCreateManyReporterInputEnvelope = {
-    data: IncidentReportCreateManyReporterInput | IncidentReportCreateManyReporterInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TokenCreateWithoutUserInput = {
-    id?: string
-    code: string
-    type?: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    distributions?: DistributionCreateNestedManyWithoutTokenInput
-  }
-
-  export type TokenUncheckedCreateWithoutUserInput = {
-    id?: string
-    code: string
-    type?: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    distributions?: DistributionUncheckedCreateNestedManyWithoutTokenInput
-  }
-
-  export type TokenCreateOrConnectWithoutUserInput = {
-    where: TokenWhereUniqueInput
-    create: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput>
-  }
-
-  export type TokenCreateManyUserInputEnvelope = {
-    data: TokenCreateManyUserInput | TokenCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TaskCreateWithoutAssignedToInput = {
-    id?: string
-    title: string
-    description: string
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    incident?: IncidentReportCreateNestedOneWithoutTasksInput
-    assignedBy?: UserCreateNestedOneWithoutCreatedTasksInput
-  }
-
-  export type TaskUncheckedCreateWithoutAssignedToInput = {
-    id?: string
-    title: string
-    description: string
-    incidentId?: string | null
-    assignedById?: string | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TaskCreateOrConnectWithoutAssignedToInput = {
-    where: TaskWhereUniqueInput
-    create: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput>
-  }
-
-  export type TaskCreateManyAssignedToInputEnvelope = {
-    data: TaskCreateManyAssignedToInput | TaskCreateManyAssignedToInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TaskCreateWithoutAssignedByInput = {
-    id?: string
-    title: string
-    description: string
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    incident?: IncidentReportCreateNestedOneWithoutTasksInput
-    assignedTo?: UserCreateNestedOneWithoutAssignedTasksInput
-  }
-
-  export type TaskUncheckedCreateWithoutAssignedByInput = {
-    id?: string
-    title: string
-    description: string
-    incidentId?: string | null
-    assignedToId?: string | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TaskCreateOrConnectWithoutAssignedByInput = {
-    where: TaskWhereUniqueInput
-    create: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput>
-  }
-
-  export type TaskCreateManyAssignedByInputEnvelope = {
-    data: TaskCreateManyAssignedByInput | TaskCreateManyAssignedByInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type VolunteerProfileCreateWithoutUserInput = {
-    id?: string
-    skills?: VolunteerProfileCreateskillsInput | string[]
-    availability?: boolean
-    rating?: number
-    completedTasks?: number
-    createdAt?: Date | string
-  }
-
-  export type VolunteerProfileUncheckedCreateWithoutUserInput = {
-    id?: string
-    skills?: VolunteerProfileCreateskillsInput | string[]
-    availability?: boolean
-    rating?: number
-    completedTasks?: number
-    createdAt?: Date | string
-  }
-
-  export type VolunteerProfileCreateOrConnectWithoutUserInput = {
-    where: VolunteerProfileWhereUniqueInput
-    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-  }
-
-  export type HelpRequestCreateWithoutUserInput = {
-    id?: string
-    type: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    peopleCount?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
-  }
-
-  export type HelpRequestUncheckedCreateWithoutUserInput = {
-    id?: string
-    type: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    peopleCount?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
-  }
-
-  export type HelpRequestCreateOrConnectWithoutUserInput = {
-    where: HelpRequestWhereUniqueInput
-    create: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput>
-  }
-
-  export type HelpRequestCreateManyUserInputEnvelope = {
-    data: HelpRequestCreateManyUserInput | HelpRequestCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ReportVerificationCreateWithoutUserInput = {
-    id?: string
-    status: string
-    comment?: string | null
-    createdAt?: Date | string
-    report: IncidentReportCreateNestedOneWithoutVerificationsInput
-  }
-
-  export type ReportVerificationUncheckedCreateWithoutUserInput = {
-    id?: string
-    reportId: string
-    status: string
-    comment?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ReportVerificationCreateOrConnectWithoutUserInput = {
-    where: ReportVerificationWhereUniqueInput
-    create: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type ReportVerificationCreateManyUserInputEnvelope = {
-    data: ReportVerificationCreateManyUserInput | ReportVerificationCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type NotificationCreateWithoutUserInput = {
-    id?: string
-    title: string
-    message: string
-    read?: boolean
-    createdAt?: Date | string
-  }
-
-  export type NotificationUncheckedCreateWithoutUserInput = {
-    id?: string
-    title: string
-    message: string
-    read?: boolean
-    createdAt?: Date | string
-  }
-
-  export type NotificationCreateOrConnectWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type NotificationCreateManyUserInputEnvelope = {
-    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type LocationLogCreateWithoutUserInput = {
-    id?: string
-    latitude: number
-    longitude: number
-    createdAt?: Date | string
-  }
-
-  export type LocationLogUncheckedCreateWithoutUserInput = {
-    id?: string
-    latitude: number
-    longitude: number
-    createdAt?: Date | string
-  }
-
-  export type LocationLogCreateOrConnectWithoutUserInput = {
-    where: LocationLogWhereUniqueInput
-    create: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput>
-  }
-
-  export type LocationLogCreateManyUserInputEnvelope = {
-    data: LocationLogCreateManyUserInput | LocationLogCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ReliefTokenCreateWithoutUserInput = {
-    id?: string
-    code: string
-    qrCodeData: string
-    campId?: string | null
-    status?: $Enums.TokenStatus
-    usageCount?: number
-    maxUsage?: number
-    issuedAt?: Date | string
-    expiresAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    claims?: ReliefTokenClaimCreateNestedManyWithoutTokenInput
-  }
-
-  export type ReliefTokenUncheckedCreateWithoutUserInput = {
-    id?: string
-    code: string
-    qrCodeData: string
-    campId?: string | null
-    status?: $Enums.TokenStatus
-    usageCount?: number
-    maxUsage?: number
-    issuedAt?: Date | string
-    expiresAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    claims?: ReliefTokenClaimUncheckedCreateNestedManyWithoutTokenInput
-  }
-
-  export type ReliefTokenCreateOrConnectWithoutUserInput = {
-    where: ReliefTokenWhereUniqueInput
-    create: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput>
-  }
-
-  export type ReliefTokenCreateManyUserInputEnvelope = {
-    data: ReliefTokenCreateManyUserInput | ReliefTokenCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DamageAssessmentCreateWithoutReportedByInput = {
     id?: string
     location: string
@@ -39782,6 +39451,96 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type HelpRequestCreateWithoutUserInput = {
+    id?: string
+    type: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    peopleCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
+  }
+
+  export type HelpRequestUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    peopleCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
+  }
+
+  export type HelpRequestCreateOrConnectWithoutUserInput = {
+    where: HelpRequestWhereUniqueInput
+    create: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type HelpRequestCreateManyUserInputEnvelope = {
+    data: HelpRequestCreateManyUserInput | HelpRequestCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncidentReportCreateWithoutReporterInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
+    verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+  }
+
+  export type IncidentReportUncheckedCreateWithoutReporterInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
+    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+  }
+
+  export type IncidentReportCreateOrConnectWithoutReporterInput = {
+    where: IncidentReportWhereUniqueInput
+    create: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput>
+  }
+
+  export type IncidentReportCreateManyReporterInputEnvelope = {
+    data: IncidentReportCreateManyReporterInput | IncidentReportCreateManyReporterInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LocalVerifierCreateWithoutUserInput = {
     id?: string
     verifierRole: $Enums.VerifierRole
@@ -39813,6 +39572,56 @@ export namespace Prisma {
   export type LocalVerifierCreateOrConnectWithoutUserInput = {
     where: LocalVerifierWhereUniqueInput
     create: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
+  }
+
+  export type LocationLogCreateWithoutUserInput = {
+    id?: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+  }
+
+  export type LocationLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+  }
+
+  export type LocationLogCreateOrConnectWithoutUserInput = {
+    where: LocationLogWhereUniqueInput
+    create: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type LocationLogCreateManyUserInputEnvelope = {
+    data: LocationLogCreateManyUserInput | LocationLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    title: string
+    message: string
+    read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    message: string
+    read?: boolean
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type PsychologicalSupportRequestCreateWithoutUserInput = {
@@ -39855,297 +39664,195 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type IncidentReportUpsertWithWhereUniqueWithoutReporterInput = {
-    where: IncidentReportWhereUniqueInput
-    update: XOR<IncidentReportUpdateWithoutReporterInput, IncidentReportUncheckedUpdateWithoutReporterInput>
-    create: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput>
+  export type ReliefTokenCreateWithoutUserInput = {
+    id?: string
+    code: string
+    qrCodeData: string
+    campId?: string | null
+    status?: $Enums.TokenStatus
+    usageCount?: number
+    maxUsage?: number
+    issuedAt?: Date | string
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: ReliefTokenClaimCreateNestedManyWithoutTokenInput
   }
 
-  export type IncidentReportUpdateWithWhereUniqueWithoutReporterInput = {
-    where: IncidentReportWhereUniqueInput
-    data: XOR<IncidentReportUpdateWithoutReporterInput, IncidentReportUncheckedUpdateWithoutReporterInput>
+  export type ReliefTokenUncheckedCreateWithoutUserInput = {
+    id?: string
+    code: string
+    qrCodeData: string
+    campId?: string | null
+    status?: $Enums.TokenStatus
+    usageCount?: number
+    maxUsage?: number
+    issuedAt?: Date | string
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    claims?: ReliefTokenClaimUncheckedCreateNestedManyWithoutTokenInput
   }
 
-  export type IncidentReportUpdateManyWithWhereWithoutReporterInput = {
-    where: IncidentReportScalarWhereInput
-    data: XOR<IncidentReportUpdateManyMutationInput, IncidentReportUncheckedUpdateManyWithoutReporterInput>
-  }
-
-  export type IncidentReportScalarWhereInput = {
-    AND?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
-    OR?: IncidentReportScalarWhereInput[]
-    NOT?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
-    id?: StringFilter<"IncidentReport"> | string
-    title?: StringFilter<"IncidentReport"> | string
-    description?: StringFilter<"IncidentReport"> | string
-    location?: StringFilter<"IncidentReport"> | string
-    latitude?: FloatNullableFilter<"IncidentReport"> | number | null
-    longitude?: FloatNullableFilter<"IncidentReport"> | number | null
-    status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
-    severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
-    category?: StringFilter<"IncidentReport"> | string
-    images?: StringNullableListFilter<"IncidentReport">
-    reporterId?: StringFilter<"IncidentReport"> | string
-    createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
-    updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
-  }
-
-  export type TokenUpsertWithWhereUniqueWithoutUserInput = {
-    where: TokenWhereUniqueInput
-    update: XOR<TokenUpdateWithoutUserInput, TokenUncheckedUpdateWithoutUserInput>
-    create: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput>
-  }
-
-  export type TokenUpdateWithWhereUniqueWithoutUserInput = {
-    where: TokenWhereUniqueInput
-    data: XOR<TokenUpdateWithoutUserInput, TokenUncheckedUpdateWithoutUserInput>
-  }
-
-  export type TokenUpdateManyWithWhereWithoutUserInput = {
-    where: TokenScalarWhereInput
-    data: XOR<TokenUpdateManyMutationInput, TokenUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type TokenScalarWhereInput = {
-    AND?: TokenScalarWhereInput | TokenScalarWhereInput[]
-    OR?: TokenScalarWhereInput[]
-    NOT?: TokenScalarWhereInput | TokenScalarWhereInput[]
-    id?: StringFilter<"Token"> | string
-    code?: StringFilter<"Token"> | string
-    userId?: StringFilter<"Token"> | string
-    type?: StringFilter<"Token"> | string
-    status?: StringFilter<"Token"> | string
-    createdAt?: DateTimeFilter<"Token"> | Date | string
-    updatedAt?: DateTimeFilter<"Token"> | Date | string
-  }
-
-  export type TaskUpsertWithWhereUniqueWithoutAssignedToInput = {
-    where: TaskWhereUniqueInput
-    update: XOR<TaskUpdateWithoutAssignedToInput, TaskUncheckedUpdateWithoutAssignedToInput>
-    create: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput>
-  }
-
-  export type TaskUpdateWithWhereUniqueWithoutAssignedToInput = {
-    where: TaskWhereUniqueInput
-    data: XOR<TaskUpdateWithoutAssignedToInput, TaskUncheckedUpdateWithoutAssignedToInput>
-  }
-
-  export type TaskUpdateManyWithWhereWithoutAssignedToInput = {
-    where: TaskScalarWhereInput
-    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutAssignedToInput>
-  }
-
-  export type TaskScalarWhereInput = {
-    AND?: TaskScalarWhereInput | TaskScalarWhereInput[]
-    OR?: TaskScalarWhereInput[]
-    NOT?: TaskScalarWhereInput | TaskScalarWhereInput[]
-    id?: StringFilter<"Task"> | string
-    title?: StringFilter<"Task"> | string
-    description?: StringFilter<"Task"> | string
-    incidentId?: StringNullableFilter<"Task"> | string | null
-    assignedToId?: StringNullableFilter<"Task"> | string | null
-    assignedById?: StringNullableFilter<"Task"> | string | null
-    priority?: EnumSeverityFilter<"Task"> | $Enums.Severity
-    status?: EnumStatusFilter<"Task"> | $Enums.Status
-    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
-    createdAt?: DateTimeFilter<"Task"> | Date | string
-    updatedAt?: DateTimeFilter<"Task"> | Date | string
-  }
-
-  export type TaskUpsertWithWhereUniqueWithoutAssignedByInput = {
-    where: TaskWhereUniqueInput
-    update: XOR<TaskUpdateWithoutAssignedByInput, TaskUncheckedUpdateWithoutAssignedByInput>
-    create: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput>
-  }
-
-  export type TaskUpdateWithWhereUniqueWithoutAssignedByInput = {
-    where: TaskWhereUniqueInput
-    data: XOR<TaskUpdateWithoutAssignedByInput, TaskUncheckedUpdateWithoutAssignedByInput>
-  }
-
-  export type TaskUpdateManyWithWhereWithoutAssignedByInput = {
-    where: TaskScalarWhereInput
-    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutAssignedByInput>
-  }
-
-  export type VolunteerProfileUpsertWithoutUserInput = {
-    update: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
-    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    where?: VolunteerProfileWhereInput
-  }
-
-  export type VolunteerProfileUpdateToOneWithWhereWithoutUserInput = {
-    where?: VolunteerProfileWhereInput
-    data: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
-  }
-
-  export type VolunteerProfileUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    skills?: VolunteerProfileUpdateskillsInput | string[]
-    availability?: BoolFieldUpdateOperationsInput | boolean
-    rating?: FloatFieldUpdateOperationsInput | number
-    completedTasks?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VolunteerProfileUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    skills?: VolunteerProfileUpdateskillsInput | string[]
-    availability?: BoolFieldUpdateOperationsInput | boolean
-    rating?: FloatFieldUpdateOperationsInput | number
-    completedTasks?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HelpRequestUpsertWithWhereUniqueWithoutUserInput = {
-    where: HelpRequestWhereUniqueInput
-    update: XOR<HelpRequestUpdateWithoutUserInput, HelpRequestUncheckedUpdateWithoutUserInput>
-    create: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput>
-  }
-
-  export type HelpRequestUpdateWithWhereUniqueWithoutUserInput = {
-    where: HelpRequestWhereUniqueInput
-    data: XOR<HelpRequestUpdateWithoutUserInput, HelpRequestUncheckedUpdateWithoutUserInput>
-  }
-
-  export type HelpRequestUpdateManyWithWhereWithoutUserInput = {
-    where: HelpRequestScalarWhereInput
-    data: XOR<HelpRequestUpdateManyMutationInput, HelpRequestUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type HelpRequestScalarWhereInput = {
-    AND?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
-    OR?: HelpRequestScalarWhereInput[]
-    NOT?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
-    id?: StringFilter<"HelpRequest"> | string
-    userId?: StringFilter<"HelpRequest"> | string
-    type?: StringFilter<"HelpRequest"> | string
-    description?: StringFilter<"HelpRequest"> | string
-    location?: StringFilter<"HelpRequest"> | string
-    latitude?: FloatNullableFilter<"HelpRequest"> | number | null
-    longitude?: FloatNullableFilter<"HelpRequest"> | number | null
-    priority?: EnumSeverityFilter<"HelpRequest"> | $Enums.Severity
-    status?: EnumStatusFilter<"HelpRequest"> | $Enums.Status
-    peopleCount?: IntNullableFilter<"HelpRequest"> | number | null
-    createdAt?: DateTimeFilter<"HelpRequest"> | Date | string
-    updatedAt?: DateTimeFilter<"HelpRequest"> | Date | string
-  }
-
-  export type ReportVerificationUpsertWithWhereUniqueWithoutUserInput = {
-    where: ReportVerificationWhereUniqueInput
-    update: XOR<ReportVerificationUpdateWithoutUserInput, ReportVerificationUncheckedUpdateWithoutUserInput>
-    create: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type ReportVerificationUpdateWithWhereUniqueWithoutUserInput = {
-    where: ReportVerificationWhereUniqueInput
-    data: XOR<ReportVerificationUpdateWithoutUserInput, ReportVerificationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ReportVerificationUpdateManyWithWhereWithoutUserInput = {
-    where: ReportVerificationScalarWhereInput
-    data: XOR<ReportVerificationUpdateManyMutationInput, ReportVerificationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ReportVerificationScalarWhereInput = {
-    AND?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
-    OR?: ReportVerificationScalarWhereInput[]
-    NOT?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
-    id?: StringFilter<"ReportVerification"> | string
-    reportId?: StringFilter<"ReportVerification"> | string
-    userId?: StringFilter<"ReportVerification"> | string
-    status?: StringFilter<"ReportVerification"> | string
-    comment?: StringNullableFilter<"ReportVerification"> | string | null
-    createdAt?: DateTimeFilter<"ReportVerification"> | Date | string
-  }
-
-  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type NotificationUpdateManyWithWhereWithoutUserInput = {
-    where: NotificationScalarWhereInput
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type NotificationScalarWhereInput = {
-    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    OR?: NotificationScalarWhereInput[]
-    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    id?: StringFilter<"Notification"> | string
-    userId?: StringFilter<"Notification"> | string
-    title?: StringFilter<"Notification"> | string
-    message?: StringFilter<"Notification"> | string
-    read?: BoolFilter<"Notification"> | boolean
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
-  }
-
-  export type LocationLogUpsertWithWhereUniqueWithoutUserInput = {
-    where: LocationLogWhereUniqueInput
-    update: XOR<LocationLogUpdateWithoutUserInput, LocationLogUncheckedUpdateWithoutUserInput>
-    create: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput>
-  }
-
-  export type LocationLogUpdateWithWhereUniqueWithoutUserInput = {
-    where: LocationLogWhereUniqueInput
-    data: XOR<LocationLogUpdateWithoutUserInput, LocationLogUncheckedUpdateWithoutUserInput>
-  }
-
-  export type LocationLogUpdateManyWithWhereWithoutUserInput = {
-    where: LocationLogScalarWhereInput
-    data: XOR<LocationLogUpdateManyMutationInput, LocationLogUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type LocationLogScalarWhereInput = {
-    AND?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
-    OR?: LocationLogScalarWhereInput[]
-    NOT?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
-    id?: StringFilter<"LocationLog"> | string
-    userId?: StringFilter<"LocationLog"> | string
-    latitude?: FloatFilter<"LocationLog"> | number
-    longitude?: FloatFilter<"LocationLog"> | number
-    createdAt?: DateTimeFilter<"LocationLog"> | Date | string
-  }
-
-  export type ReliefTokenUpsertWithWhereUniqueWithoutUserInput = {
+  export type ReliefTokenCreateOrConnectWithoutUserInput = {
     where: ReliefTokenWhereUniqueInput
-    update: XOR<ReliefTokenUpdateWithoutUserInput, ReliefTokenUncheckedUpdateWithoutUserInput>
     create: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput>
   }
 
-  export type ReliefTokenUpdateWithWhereUniqueWithoutUserInput = {
-    where: ReliefTokenWhereUniqueInput
-    data: XOR<ReliefTokenUpdateWithoutUserInput, ReliefTokenUncheckedUpdateWithoutUserInput>
+  export type ReliefTokenCreateManyUserInputEnvelope = {
+    data: ReliefTokenCreateManyUserInput | ReliefTokenCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
-  export type ReliefTokenUpdateManyWithWhereWithoutUserInput = {
-    where: ReliefTokenScalarWhereInput
-    data: XOR<ReliefTokenUpdateManyMutationInput, ReliefTokenUncheckedUpdateManyWithoutUserInput>
+  export type ReportVerificationCreateWithoutUserInput = {
+    id?: string
+    status: string
+    comment?: string | null
+    createdAt?: Date | string
+    report: IncidentReportCreateNestedOneWithoutVerificationsInput
   }
 
-  export type ReliefTokenScalarWhereInput = {
-    AND?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
-    OR?: ReliefTokenScalarWhereInput[]
-    NOT?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
-    id?: StringFilter<"ReliefToken"> | string
-    code?: StringFilter<"ReliefToken"> | string
-    qrCodeData?: StringFilter<"ReliefToken"> | string
-    userId?: StringFilter<"ReliefToken"> | string
-    campId?: StringNullableFilter<"ReliefToken"> | string | null
-    status?: EnumTokenStatusFilter<"ReliefToken"> | $Enums.TokenStatus
-    usageCount?: IntFilter<"ReliefToken"> | number
-    maxUsage?: IntFilter<"ReliefToken"> | number
-    issuedAt?: DateTimeFilter<"ReliefToken"> | Date | string
-    expiresAt?: DateTimeNullableFilter<"ReliefToken"> | Date | string | null
-    createdAt?: DateTimeFilter<"ReliefToken"> | Date | string
-    updatedAt?: DateTimeFilter<"ReliefToken"> | Date | string
+  export type ReportVerificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    reportId: string
+    status: string
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReportVerificationCreateOrConnectWithoutUserInput = {
+    where: ReportVerificationWhereUniqueInput
+    create: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReportVerificationCreateManyUserInputEnvelope = {
+    data: ReportVerificationCreateManyUserInput | ReportVerificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskCreateWithoutAssignedByInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedTo?: UserCreateNestedOneWithoutAssignedTasksInput
+    incident?: IncidentReportCreateNestedOneWithoutTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutAssignedByInput = {
+    id?: string
+    title: string
+    description: string
+    incidentId?: string | null
+    assignedToId?: string | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutAssignedByInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput>
+  }
+
+  export type TaskCreateManyAssignedByInputEnvelope = {
+    data: TaskCreateManyAssignedByInput | TaskCreateManyAssignedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskCreateWithoutAssignedToInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedBy?: UserCreateNestedOneWithoutCreatedTasksInput
+    incident?: IncidentReportCreateNestedOneWithoutTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutAssignedToInput = {
+    id?: string
+    title: string
+    description: string
+    incidentId?: string | null
+    assignedById?: string | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutAssignedToInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type TaskCreateManyAssignedToInputEnvelope = {
+    data: TaskCreateManyAssignedToInput | TaskCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TokenCreateWithoutUserInput = {
+    id?: string
+    code: string
+    type?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    distributions?: DistributionCreateNestedManyWithoutTokenInput
+  }
+
+  export type TokenUncheckedCreateWithoutUserInput = {
+    id?: string
+    code: string
+    type?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    distributions?: DistributionUncheckedCreateNestedManyWithoutTokenInput
+  }
+
+  export type TokenCreateOrConnectWithoutUserInput = {
+    where: TokenWhereUniqueInput
+    create: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type TokenCreateManyUserInputEnvelope = {
+    data: TokenCreateManyUserInput | TokenCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VolunteerProfileCreateWithoutUserInput = {
+    id?: string
+    skills?: VolunteerProfileCreateskillsInput | string[]
+    availability?: boolean
+    rating?: number
+    completedTasks?: number
+    createdAt?: Date | string
+  }
+
+  export type VolunteerProfileUncheckedCreateWithoutUserInput = {
+    id?: string
+    skills?: VolunteerProfileCreateskillsInput | string[]
+    availability?: boolean
+    rating?: number
+    completedTasks?: number
+    createdAt?: Date | string
+  }
+
+  export type VolunteerProfileCreateOrConnectWithoutUserInput = {
+    where: VolunteerProfileWhereUniqueInput
+    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
   }
 
   export type DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput = {
@@ -40189,6 +39896,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"DamageAssessment"> | Date | string
   }
 
+  export type HelpRequestUpsertWithWhereUniqueWithoutUserInput = {
+    where: HelpRequestWhereUniqueInput
+    update: XOR<HelpRequestUpdateWithoutUserInput, HelpRequestUncheckedUpdateWithoutUserInput>
+    create: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type HelpRequestUpdateWithWhereUniqueWithoutUserInput = {
+    where: HelpRequestWhereUniqueInput
+    data: XOR<HelpRequestUpdateWithoutUserInput, HelpRequestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type HelpRequestUpdateManyWithWhereWithoutUserInput = {
+    where: HelpRequestScalarWhereInput
+    data: XOR<HelpRequestUpdateManyMutationInput, HelpRequestUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type HelpRequestScalarWhereInput = {
+    AND?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
+    OR?: HelpRequestScalarWhereInput[]
+    NOT?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
+    id?: StringFilter<"HelpRequest"> | string
+    userId?: StringFilter<"HelpRequest"> | string
+    type?: StringFilter<"HelpRequest"> | string
+    description?: StringFilter<"HelpRequest"> | string
+    location?: StringFilter<"HelpRequest"> | string
+    latitude?: FloatNullableFilter<"HelpRequest"> | number | null
+    longitude?: FloatNullableFilter<"HelpRequest"> | number | null
+    priority?: EnumSeverityFilter<"HelpRequest"> | $Enums.Severity
+    status?: EnumStatusFilter<"HelpRequest"> | $Enums.Status
+    peopleCount?: IntNullableFilter<"HelpRequest"> | number | null
+    createdAt?: DateTimeFilter<"HelpRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"HelpRequest"> | Date | string
+  }
+
+  export type IncidentReportUpsertWithWhereUniqueWithoutReporterInput = {
+    where: IncidentReportWhereUniqueInput
+    update: XOR<IncidentReportUpdateWithoutReporterInput, IncidentReportUncheckedUpdateWithoutReporterInput>
+    create: XOR<IncidentReportCreateWithoutReporterInput, IncidentReportUncheckedCreateWithoutReporterInput>
+  }
+
+  export type IncidentReportUpdateWithWhereUniqueWithoutReporterInput = {
+    where: IncidentReportWhereUniqueInput
+    data: XOR<IncidentReportUpdateWithoutReporterInput, IncidentReportUncheckedUpdateWithoutReporterInput>
+  }
+
+  export type IncidentReportUpdateManyWithWhereWithoutReporterInput = {
+    where: IncidentReportScalarWhereInput
+    data: XOR<IncidentReportUpdateManyMutationInput, IncidentReportUncheckedUpdateManyWithoutReporterInput>
+  }
+
+  export type IncidentReportScalarWhereInput = {
+    AND?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
+    OR?: IncidentReportScalarWhereInput[]
+    NOT?: IncidentReportScalarWhereInput | IncidentReportScalarWhereInput[]
+    id?: StringFilter<"IncidentReport"> | string
+    title?: StringFilter<"IncidentReport"> | string
+    description?: StringFilter<"IncidentReport"> | string
+    location?: StringFilter<"IncidentReport"> | string
+    latitude?: FloatNullableFilter<"IncidentReport"> | number | null
+    longitude?: FloatNullableFilter<"IncidentReport"> | number | null
+    status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
+    severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
+    category?: StringFilter<"IncidentReport"> | string
+    images?: StringNullableListFilter<"IncidentReport">
+    reporterId?: StringFilter<"IncidentReport"> | string
+    createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
+    updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
+  }
+
   export type LocalVerifierUpsertWithoutUserInput = {
     update: XOR<LocalVerifierUpdateWithoutUserInput, LocalVerifierUncheckedUpdateWithoutUserInput>
     create: XOR<LocalVerifierCreateWithoutUserInput, LocalVerifierUncheckedCreateWithoutUserInput>
@@ -40228,6 +40004,61 @@ export namespace Prisma {
     actions?: VerifierActionUncheckedUpdateManyWithoutVerifierNestedInput
   }
 
+  export type LocationLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: LocationLogWhereUniqueInput
+    update: XOR<LocationLogUpdateWithoutUserInput, LocationLogUncheckedUpdateWithoutUserInput>
+    create: XOR<LocationLogCreateWithoutUserInput, LocationLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type LocationLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: LocationLogWhereUniqueInput
+    data: XOR<LocationLogUpdateWithoutUserInput, LocationLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LocationLogUpdateManyWithWhereWithoutUserInput = {
+    where: LocationLogScalarWhereInput
+    data: XOR<LocationLogUpdateManyMutationInput, LocationLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type LocationLogScalarWhereInput = {
+    AND?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
+    OR?: LocationLogScalarWhereInput[]
+    NOT?: LocationLogScalarWhereInput | LocationLogScalarWhereInput[]
+    id?: StringFilter<"LocationLog"> | string
+    userId?: StringFilter<"LocationLog"> | string
+    latitude?: FloatFilter<"LocationLog"> | number
+    longitude?: FloatFilter<"LocationLog"> | number
+    createdAt?: DateTimeFilter<"LocationLog"> | Date | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    read?: BoolFilter<"Notification"> | boolean
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
   export type PsychologicalSupportRequestUpsertWithWhereUniqueWithoutUserInput = {
     where: PsychologicalSupportRequestWhereUniqueInput
     update: XOR<PsychologicalSupportRequestUpdateWithoutUserInput, PsychologicalSupportRequestUncheckedUpdateWithoutUserInput>
@@ -40263,145 +40094,173 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
   }
 
-  export type UserCreateWithoutReportsInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+  export type ReliefTokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: ReliefTokenWhereUniqueInput
+    update: XOR<ReliefTokenUpdateWithoutUserInput, ReliefTokenUncheckedUpdateWithoutUserInput>
+    create: XOR<ReliefTokenCreateWithoutUserInput, ReliefTokenUncheckedCreateWithoutUserInput>
   }
 
-  export type UserUncheckedCreateWithoutReportsInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+  export type ReliefTokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: ReliefTokenWhereUniqueInput
+    data: XOR<ReliefTokenUpdateWithoutUserInput, ReliefTokenUncheckedUpdateWithoutUserInput>
   }
 
-  export type UserCreateOrConnectWithoutReportsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
+  export type ReliefTokenUpdateManyWithWhereWithoutUserInput = {
+    where: ReliefTokenScalarWhereInput
+    data: XOR<ReliefTokenUpdateManyMutationInput, ReliefTokenUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type TaskCreateWithoutIncidentInput = {
-    id?: string
-    title: string
-    description: string
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    assignedTo?: UserCreateNestedOneWithoutAssignedTasksInput
-    assignedBy?: UserCreateNestedOneWithoutCreatedTasksInput
+  export type ReliefTokenScalarWhereInput = {
+    AND?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
+    OR?: ReliefTokenScalarWhereInput[]
+    NOT?: ReliefTokenScalarWhereInput | ReliefTokenScalarWhereInput[]
+    id?: StringFilter<"ReliefToken"> | string
+    code?: StringFilter<"ReliefToken"> | string
+    qrCodeData?: StringFilter<"ReliefToken"> | string
+    userId?: StringFilter<"ReliefToken"> | string
+    campId?: StringNullableFilter<"ReliefToken"> | string | null
+    status?: EnumTokenStatusFilter<"ReliefToken"> | $Enums.TokenStatus
+    usageCount?: IntFilter<"ReliefToken"> | number
+    maxUsage?: IntFilter<"ReliefToken"> | number
+    issuedAt?: DateTimeFilter<"ReliefToken"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"ReliefToken"> | Date | string | null
+    createdAt?: DateTimeFilter<"ReliefToken"> | Date | string
+    updatedAt?: DateTimeFilter<"ReliefToken"> | Date | string
   }
 
-  export type TaskUncheckedCreateWithoutIncidentInput = {
-    id?: string
-    title: string
-    description: string
-    assignedToId?: string | null
-    assignedById?: string | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TaskCreateOrConnectWithoutIncidentInput = {
-    where: TaskWhereUniqueInput
-    create: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput>
-  }
-
-  export type TaskCreateManyIncidentInputEnvelope = {
-    data: TaskCreateManyIncidentInput | TaskCreateManyIncidentInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ReportVerificationCreateWithoutReportInput = {
-    id?: string
-    status: string
-    comment?: string | null
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutVerificationsInput
-  }
-
-  export type ReportVerificationUncheckedCreateWithoutReportInput = {
-    id?: string
-    userId: string
-    status: string
-    comment?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ReportVerificationCreateOrConnectWithoutReportInput = {
+  export type ReportVerificationUpsertWithWhereUniqueWithoutUserInput = {
     where: ReportVerificationWhereUniqueInput
-    create: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput>
+    update: XOR<ReportVerificationUpdateWithoutUserInput, ReportVerificationUncheckedUpdateWithoutUserInput>
+    create: XOR<ReportVerificationCreateWithoutUserInput, ReportVerificationUncheckedCreateWithoutUserInput>
   }
 
-  export type ReportVerificationCreateManyReportInputEnvelope = {
-    data: ReportVerificationCreateManyReportInput | ReportVerificationCreateManyReportInput[]
-    skipDuplicates?: boolean
+  export type ReportVerificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: ReportVerificationWhereUniqueInput
+    data: XOR<ReportVerificationUpdateWithoutUserInput, ReportVerificationUncheckedUpdateWithoutUserInput>
   }
 
-  export type IncidentHistoryCreateWithoutIncidentInput = {
-    id?: string
-    status: $Enums.Status
-    updatedBy: string
-    note?: string | null
-    createdAt?: Date | string
+  export type ReportVerificationUpdateManyWithWhereWithoutUserInput = {
+    where: ReportVerificationScalarWhereInput
+    data: XOR<ReportVerificationUpdateManyMutationInput, ReportVerificationUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type IncidentHistoryUncheckedCreateWithoutIncidentInput = {
-    id?: string
-    status: $Enums.Status
-    updatedBy: string
-    note?: string | null
-    createdAt?: Date | string
+  export type ReportVerificationScalarWhereInput = {
+    AND?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+    OR?: ReportVerificationScalarWhereInput[]
+    NOT?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
+    id?: StringFilter<"ReportVerification"> | string
+    reportId?: StringFilter<"ReportVerification"> | string
+    userId?: StringFilter<"ReportVerification"> | string
+    status?: StringFilter<"ReportVerification"> | string
+    comment?: StringNullableFilter<"ReportVerification"> | string | null
+    createdAt?: DateTimeFilter<"ReportVerification"> | Date | string
   }
 
-  export type IncidentHistoryCreateOrConnectWithoutIncidentInput = {
-    where: IncidentHistoryWhereUniqueInput
-    create: XOR<IncidentHistoryCreateWithoutIncidentInput, IncidentHistoryUncheckedCreateWithoutIncidentInput>
+  export type TaskUpsertWithWhereUniqueWithoutAssignedByInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutAssignedByInput, TaskUncheckedUpdateWithoutAssignedByInput>
+    create: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput>
   }
 
-  export type IncidentHistoryCreateManyIncidentInputEnvelope = {
-    data: IncidentHistoryCreateManyIncidentInput | IncidentHistoryCreateManyIncidentInput[]
-    skipDuplicates?: boolean
+  export type TaskUpdateWithWhereUniqueWithoutAssignedByInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutAssignedByInput, TaskUncheckedUpdateWithoutAssignedByInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutAssignedByInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutAssignedByInput>
+  }
+
+  export type TaskScalarWhereInput = {
+    AND?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    OR?: TaskScalarWhereInput[]
+    NOT?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    id?: StringFilter<"Task"> | string
+    title?: StringFilter<"Task"> | string
+    description?: StringFilter<"Task"> | string
+    incidentId?: StringNullableFilter<"Task"> | string | null
+    assignedToId?: StringNullableFilter<"Task"> | string | null
+    assignedById?: StringNullableFilter<"Task"> | string | null
+    priority?: EnumSeverityFilter<"Task"> | $Enums.Severity
+    status?: EnumStatusFilter<"Task"> | $Enums.Status
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+  }
+
+  export type TaskUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutAssignedToInput, TaskUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<TaskCreateWithoutAssignedToInput, TaskUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutAssignedToInput, TaskUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutAssignedToInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
+  export type TokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: TokenWhereUniqueInput
+    update: XOR<TokenUpdateWithoutUserInput, TokenUncheckedUpdateWithoutUserInput>
+    create: XOR<TokenCreateWithoutUserInput, TokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type TokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: TokenWhereUniqueInput
+    data: XOR<TokenUpdateWithoutUserInput, TokenUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TokenUpdateManyWithWhereWithoutUserInput = {
+    where: TokenScalarWhereInput
+    data: XOR<TokenUpdateManyMutationInput, TokenUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TokenScalarWhereInput = {
+    AND?: TokenScalarWhereInput | TokenScalarWhereInput[]
+    OR?: TokenScalarWhereInput[]
+    NOT?: TokenScalarWhereInput | TokenScalarWhereInput[]
+    id?: StringFilter<"Token"> | string
+    code?: StringFilter<"Token"> | string
+    userId?: StringFilter<"Token"> | string
+    type?: StringFilter<"Token"> | string
+    status?: StringFilter<"Token"> | string
+    createdAt?: DateTimeFilter<"Token"> | Date | string
+    updatedAt?: DateTimeFilter<"Token"> | Date | string
+  }
+
+  export type VolunteerProfileUpsertWithoutUserInput = {
+    update: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
+    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    where?: VolunteerProfileWhereInput
+  }
+
+  export type VolunteerProfileUpdateToOneWithWhereWithoutUserInput = {
+    where?: VolunteerProfileWhereInput
+    data: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type VolunteerProfileUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skills?: VolunteerProfileUpdateskillsInput | string[]
+    availability?: BoolFieldUpdateOperationsInput | boolean
+    rating?: FloatFieldUpdateOperationsInput | number
+    completedTasks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerProfileUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skills?: VolunteerProfileUpdateskillsInput | string[]
+    availability?: BoolFieldUpdateOperationsInput | boolean
+    rating?: FloatFieldUpdateOperationsInput | number
+    completedTasks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DamageAssessmentCreateWithoutIncidentInput = {
@@ -40456,13 +40315,154 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type IncidentHistoryCreateWithoutIncidentInput = {
+    id?: string
+    status: $Enums.Status
+    updatedBy: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type IncidentHistoryUncheckedCreateWithoutIncidentInput = {
+    id?: string
+    status: $Enums.Status
+    updatedBy: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type IncidentHistoryCreateOrConnectWithoutIncidentInput = {
+    where: IncidentHistoryWhereUniqueInput
+    create: XOR<IncidentHistoryCreateWithoutIncidentInput, IncidentHistoryUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type IncidentHistoryCreateManyIncidentInputEnvelope = {
+    data: IncidentHistoryCreateManyIncidentInput | IncidentHistoryCreateManyIncidentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutReportsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReportsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReportsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
+  }
+
+  export type ReportVerificationCreateWithoutReportInput = {
+    id?: string
+    status: string
+    comment?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutVerificationsInput
+  }
+
+  export type ReportVerificationUncheckedCreateWithoutReportInput = {
+    id?: string
+    userId: string
+    status: string
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReportVerificationCreateOrConnectWithoutReportInput = {
+    where: ReportVerificationWhereUniqueInput
+    create: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput>
+  }
+
+  export type ReportVerificationCreateManyReportInputEnvelope = {
+    data: ReportVerificationCreateManyReportInput | ReportVerificationCreateManyReportInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskCreateWithoutIncidentInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignedBy?: UserCreateNestedOneWithoutCreatedTasksInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutIncidentInput = {
+    id?: string
+    title: string
+    description: string
+    assignedToId?: string | null
+    assignedById?: string | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutIncidentInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type TaskCreateManyIncidentInputEnvelope = {
+    data: TaskCreateManyIncidentInput | TaskCreateManyIncidentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type VerifierActionCreateWithoutIncidentInput = {
     id?: string
     result: $Enums.VerificationResult
     comment?: string | null
     createdAt?: Date | string
-    verifier: LocalVerifierCreateNestedOneWithoutActionsInput
     helpRequest?: HelpRequestCreateNestedOneWithoutVerifierActionsInput
+    verifier: LocalVerifierCreateNestedOneWithoutActionsInput
   }
 
   export type VerifierActionUncheckedCreateWithoutIncidentInput = {
@@ -40484,95 +40484,20 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutReportsInput = {
-    update: XOR<UserUpdateWithoutReportsInput, UserUncheckedUpdateWithoutReportsInput>
-    create: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
-    where?: UserWhereInput
+  export type DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput = {
+    where: DamageAssessmentWhereUniqueInput
+    update: XOR<DamageAssessmentUpdateWithoutIncidentInput, DamageAssessmentUncheckedUpdateWithoutIncidentInput>
+    create: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput>
   }
 
-  export type UserUpdateToOneWithWhereWithoutReportsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutReportsInput, UserUncheckedUpdateWithoutReportsInput>
+  export type DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput = {
+    where: DamageAssessmentWhereUniqueInput
+    data: XOR<DamageAssessmentUpdateWithoutIncidentInput, DamageAssessmentUncheckedUpdateWithoutIncidentInput>
   }
 
-  export type UserUpdateWithoutReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type TaskUpsertWithWhereUniqueWithoutIncidentInput = {
-    where: TaskWhereUniqueInput
-    update: XOR<TaskUpdateWithoutIncidentInput, TaskUncheckedUpdateWithoutIncidentInput>
-    create: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput>
-  }
-
-  export type TaskUpdateWithWhereUniqueWithoutIncidentInput = {
-    where: TaskWhereUniqueInput
-    data: XOR<TaskUpdateWithoutIncidentInput, TaskUncheckedUpdateWithoutIncidentInput>
-  }
-
-  export type TaskUpdateManyWithWhereWithoutIncidentInput = {
-    where: TaskScalarWhereInput
-    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutIncidentInput>
-  }
-
-  export type ReportVerificationUpsertWithWhereUniqueWithoutReportInput = {
-    where: ReportVerificationWhereUniqueInput
-    update: XOR<ReportVerificationUpdateWithoutReportInput, ReportVerificationUncheckedUpdateWithoutReportInput>
-    create: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput>
-  }
-
-  export type ReportVerificationUpdateWithWhereUniqueWithoutReportInput = {
-    where: ReportVerificationWhereUniqueInput
-    data: XOR<ReportVerificationUpdateWithoutReportInput, ReportVerificationUncheckedUpdateWithoutReportInput>
-  }
-
-  export type ReportVerificationUpdateManyWithWhereWithoutReportInput = {
-    where: ReportVerificationScalarWhereInput
-    data: XOR<ReportVerificationUpdateManyMutationInput, ReportVerificationUncheckedUpdateManyWithoutReportInput>
+  export type DamageAssessmentUpdateManyWithWhereWithoutIncidentInput = {
+    where: DamageAssessmentScalarWhereInput
+    data: XOR<DamageAssessmentUpdateManyMutationInput, DamageAssessmentUncheckedUpdateManyWithoutIncidentInput>
   }
 
   export type IncidentHistoryUpsertWithWhereUniqueWithoutIncidentInput = {
@@ -40603,20 +40528,95 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"IncidentHistory"> | Date | string
   }
 
-  export type DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput = {
-    where: DamageAssessmentWhereUniqueInput
-    update: XOR<DamageAssessmentUpdateWithoutIncidentInput, DamageAssessmentUncheckedUpdateWithoutIncidentInput>
-    create: XOR<DamageAssessmentCreateWithoutIncidentInput, DamageAssessmentUncheckedCreateWithoutIncidentInput>
+  export type UserUpsertWithoutReportsInput = {
+    update: XOR<UserUpdateWithoutReportsInput, UserUncheckedUpdateWithoutReportsInput>
+    create: XOR<UserCreateWithoutReportsInput, UserUncheckedCreateWithoutReportsInput>
+    where?: UserWhereInput
   }
 
-  export type DamageAssessmentUpdateWithWhereUniqueWithoutIncidentInput = {
-    where: DamageAssessmentWhereUniqueInput
-    data: XOR<DamageAssessmentUpdateWithoutIncidentInput, DamageAssessmentUncheckedUpdateWithoutIncidentInput>
+  export type UserUpdateToOneWithWhereWithoutReportsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReportsInput, UserUncheckedUpdateWithoutReportsInput>
   }
 
-  export type DamageAssessmentUpdateManyWithWhereWithoutIncidentInput = {
-    where: DamageAssessmentScalarWhereInput
-    data: XOR<DamageAssessmentUpdateManyMutationInput, DamageAssessmentUncheckedUpdateManyWithoutIncidentInput>
+  export type UserUpdateWithoutReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type ReportVerificationUpsertWithWhereUniqueWithoutReportInput = {
+    where: ReportVerificationWhereUniqueInput
+    update: XOR<ReportVerificationUpdateWithoutReportInput, ReportVerificationUncheckedUpdateWithoutReportInput>
+    create: XOR<ReportVerificationCreateWithoutReportInput, ReportVerificationUncheckedCreateWithoutReportInput>
+  }
+
+  export type ReportVerificationUpdateWithWhereUniqueWithoutReportInput = {
+    where: ReportVerificationWhereUniqueInput
+    data: XOR<ReportVerificationUpdateWithoutReportInput, ReportVerificationUncheckedUpdateWithoutReportInput>
+  }
+
+  export type ReportVerificationUpdateManyWithWhereWithoutReportInput = {
+    where: ReportVerificationScalarWhereInput
+    data: XOR<ReportVerificationUpdateManyMutationInput, ReportVerificationUncheckedUpdateManyWithoutReportInput>
+  }
+
+  export type TaskUpsertWithWhereUniqueWithoutIncidentInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutIncidentInput, TaskUncheckedUpdateWithoutIncidentInput>
+    create: XOR<TaskCreateWithoutIncidentInput, TaskUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutIncidentInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutIncidentInput, TaskUncheckedUpdateWithoutIncidentInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutIncidentInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutIncidentInput>
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutIncidentInput = {
@@ -40646,59 +40646,6 @@ export namespace Prisma {
     result?: EnumVerificationResultFilter<"VerifierAction"> | $Enums.VerificationResult
     comment?: StringNullableFilter<"VerifierAction"> | string | null
     createdAt?: DateTimeFilter<"VerifierAction"> | Date | string
-  }
-
-  export type UserCreateWithoutTokensInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutTokensInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutTokensInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
   }
 
   export type DistributionCreateWithoutTokenInput = {
@@ -40731,63 +40678,57 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutTokensInput = {
-    update: XOR<UserUpdateWithoutTokensInput, UserUncheckedUpdateWithoutTokensInput>
+  export type UserCreateWithoutTokensInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTokensInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTokensInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutTokensInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutTokensInput, UserUncheckedUpdateWithoutTokensInput>
-  }
-
-  export type UserUpdateWithoutTokensInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutTokensInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DistributionUpsertWithWhereUniqueWithoutTokenInput = {
@@ -40820,6 +40761,171 @@ export namespace Prisma {
     deliveredAt?: DateTimeFilter<"Distribution"> | Date | string
   }
 
+  export type UserUpsertWithoutTokensInput = {
+    update: XOR<UserUpdateWithoutTokensInput, UserUncheckedUpdateWithoutTokensInput>
+    create: XOR<UserCreateWithoutTokensInput, UserUncheckedCreateWithoutTokensInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTokensInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTokensInput, UserUncheckedUpdateWithoutTokensInput>
+  }
+
+  export type UserUpdateWithoutTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutCreatedTasksInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedTasksInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+  }
+
+  export type UserCreateWithoutAssignedTasksInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedTasksInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
+  }
+
   export type IncidentReportCreateWithoutTasksInput = {
     id?: string
     title: string
@@ -40833,10 +40939,10 @@ export namespace Prisma {
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
-    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
   }
 
@@ -40854,9 +40960,9 @@ export namespace Prisma {
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
   }
 
@@ -40865,110 +40971,122 @@ export namespace Prisma {
     create: XOR<IncidentReportCreateWithoutTasksInput, IncidentReportUncheckedCreateWithoutTasksInput>
   }
 
-  export type UserCreateWithoutAssignedTasksInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAssignedTasksInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAssignedTasksInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
-  }
-
-  export type UserCreateWithoutCreatedTasksInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutCreatedTasksInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
-    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
-    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutCreatedTasksInput = {
-    where: UserWhereUniqueInput
+  export type UserUpsertWithoutCreatedTasksInput = {
+    update: XOR<UserUpdateWithoutCreatedTasksInput, UserUncheckedUpdateWithoutCreatedTasksInput>
     create: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedTasksInput, UserUncheckedUpdateWithoutCreatedTasksInput>
+  }
+
+  export type UserUpdateWithoutCreatedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutAssignedTasksInput = {
+    update: XOR<UserUpdateWithoutAssignedTasksInput, UserUncheckedUpdateWithoutAssignedTasksInput>
+    create: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedTasksInput, UserUncheckedUpdateWithoutAssignedTasksInput>
+  }
+
+  export type UserUpdateWithoutAssignedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type IncidentReportUpsertWithoutTasksInput = {
@@ -40995,10 +41113,10 @@ export namespace Prisma {
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
-    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
   }
 
@@ -41016,128 +41134,10 @@ export namespace Prisma {
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-  }
-
-  export type UserUpsertWithoutAssignedTasksInput = {
-    update: XOR<UserUpdateWithoutAssignedTasksInput, UserUncheckedUpdateWithoutAssignedTasksInput>
-    create: XOR<UserCreateWithoutAssignedTasksInput, UserUncheckedCreateWithoutAssignedTasksInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAssignedTasksInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAssignedTasksInput, UserUncheckedUpdateWithoutAssignedTasksInput>
-  }
-
-  export type UserUpdateWithoutAssignedTasksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAssignedTasksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUpsertWithoutCreatedTasksInput = {
-    update: XOR<UserUpdateWithoutCreatedTasksInput, UserUncheckedUpdateWithoutCreatedTasksInput>
-    create: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCreatedTasksInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCreatedTasksInput, UserUncheckedUpdateWithoutCreatedTasksInput>
-  }
-
-  export type UserUpdateWithoutCreatedTasksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCreatedTasksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
-    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
-    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutVolunteerProfileInput = {
@@ -41146,22 +41146,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVolunteerProfileInput = {
@@ -41170,22 +41170,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVolunteerProfileInput = {
@@ -41210,22 +41210,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVolunteerProfileInput = {
@@ -41234,22 +41234,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutHelpRequestsInput = {
@@ -41258,22 +41258,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHelpRequestsInput = {
@@ -41282,22 +41282,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHelpRequestsInput = {
@@ -41310,8 +41310,8 @@ export namespace Prisma {
     result: $Enums.VerificationResult
     comment?: string | null
     createdAt?: Date | string
-    verifier: LocalVerifierCreateNestedOneWithoutActionsInput
     incident?: IncidentReportCreateNestedOneWithoutVerifierActionsInput
+    verifier: LocalVerifierCreateNestedOneWithoutActionsInput
   }
 
   export type VerifierActionUncheckedCreateWithoutHelpRequestInput = {
@@ -41350,22 +41350,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHelpRequestsInput = {
@@ -41374,22 +41374,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput = {
@@ -41421,10 +41421,10 @@ export namespace Prisma {
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
-    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
-    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
   }
 
@@ -41442,9 +41442,9 @@ export namespace Prisma {
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
   }
 
@@ -41459,22 +41459,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -41483,22 +41483,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -41530,10 +41530,10 @@ export namespace Prisma {
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
-    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
   }
 
@@ -41551,9 +41551,9 @@ export namespace Prisma {
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
   }
 
@@ -41574,22 +41574,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -41598,22 +41598,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type TokenCreateWithoutDistributionsInput = {
@@ -41678,22 +41678,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -41702,22 +41702,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -41742,22 +41742,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -41766,22 +41766,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type IncidentReportCreateWithoutHistoryInput = {
@@ -41797,10 +41797,10 @@ export namespace Prisma {
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-    reporter: UserCreateNestedOneWithoutReportsInput
-    tasks?: TaskCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    reporter: UserCreateNestedOneWithoutReportsInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
   }
 
@@ -41818,9 +41818,9 @@ export namespace Prisma {
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
   }
 
@@ -41853,10 +41853,10 @@ export namespace Prisma {
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
-    tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
   }
 
@@ -41874,9 +41874,9 @@ export namespace Prisma {
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
   }
 
@@ -41886,22 +41886,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLocationLogsInput = {
@@ -41910,22 +41910,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLocationLogsInput = {
@@ -41950,22 +41950,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocationLogsInput = {
@@ -41974,22 +41974,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReliefTokensInput = {
@@ -41998,22 +41998,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReliefTokensInput = {
@@ -42022,22 +42022,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReliefTokensInput = {
@@ -42094,22 +42094,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReliefTokensInput = {
@@ -42118,22 +42118,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type ReliefTokenClaimUpsertWithWhereUniqueWithoutTokenInput = {
@@ -42243,59 +42243,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateWithoutDamageReportsInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
-    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutDamageReportsInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    region?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
-    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutDamageReportsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
-  }
-
   export type IncidentReportCreateWithoutDamageAssessmentsInput = {
     id?: string
     title: string
@@ -42309,10 +42256,10 @@ export namespace Prisma {
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-    reporter: UserCreateNestedOneWithoutReportsInput
-    tasks?: TaskCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
+    reporter: UserCreateNestedOneWithoutReportsInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
   }
 
@@ -42330,9 +42277,9 @@ export namespace Prisma {
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
   }
 
@@ -42341,63 +42288,57 @@ export namespace Prisma {
     create: XOR<IncidentReportCreateWithoutDamageAssessmentsInput, IncidentReportUncheckedCreateWithoutDamageAssessmentsInput>
   }
 
-  export type UserUpsertWithoutDamageReportsInput = {
-    update: XOR<UserUpdateWithoutDamageReportsInput, UserUncheckedUpdateWithoutDamageReportsInput>
+  export type UserCreateWithoutDamageReportsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDamageReportsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDamageReportsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDamageReportsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDamageReportsInput, UserUncheckedUpdateWithoutDamageReportsInput>
-  }
-
-  export type UserUpdateWithoutDamageReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
-    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDamageReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
-    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type IncidentReportUpsertWithoutDamageAssessmentsInput = {
@@ -42424,10 +42365,10 @@ export namespace Prisma {
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
-    tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
+    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
   }
 
@@ -42445,10 +42386,69 @@ export namespace Prisma {
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type UserUpsertWithoutDamageReportsInput = {
+    update: XOR<UserUpdateWithoutDamageReportsInput, UserUncheckedUpdateWithoutDamageReportsInput>
+    create: XOR<UserCreateWithoutDamageReportsInput, UserUncheckedCreateWithoutDamageReportsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDamageReportsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDamageReportsInput, UserUncheckedUpdateWithoutDamageReportsInput>
+  }
+
+  export type UserUpdateWithoutDamageReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDamageReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLocalVerifierInput = {
@@ -42457,22 +42457,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLocalVerifierInput = {
@@ -42481,22 +42481,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLocalVerifierInput = {
@@ -42509,8 +42509,8 @@ export namespace Prisma {
     result: $Enums.VerificationResult
     comment?: string | null
     createdAt?: Date | string
-    incident?: IncidentReportCreateNestedOneWithoutVerifierActionsInput
     helpRequest?: HelpRequestCreateNestedOneWithoutVerifierActionsInput
+    incident?: IncidentReportCreateNestedOneWithoutVerifierActionsInput
   }
 
   export type VerifierActionUncheckedCreateWithoutVerifierInput = {
@@ -42549,22 +42549,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocalVerifierInput = {
@@ -42573,22 +42573,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutVerifierInput = {
@@ -42605,84 +42605,6 @@ export namespace Prisma {
   export type VerifierActionUpdateManyWithWhereWithoutVerifierInput = {
     where: VerifierActionScalarWhereInput
     data: XOR<VerifierActionUpdateManyMutationInput, VerifierActionUncheckedUpdateManyWithoutVerifierInput>
-  }
-
-  export type LocalVerifierCreateWithoutActionsInput = {
-    id?: string
-    verifierRole: $Enums.VerifierRole
-    jurisdiction: string
-    orgName?: string | null
-    isApproved?: boolean
-    approvedAt?: Date | string | null
-    approvedById?: string | null
-    verificationsCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutLocalVerifierInput
-  }
-
-  export type LocalVerifierUncheckedCreateWithoutActionsInput = {
-    id?: string
-    userId: string
-    verifierRole: $Enums.VerifierRole
-    jurisdiction: string
-    orgName?: string | null
-    isApproved?: boolean
-    approvedAt?: Date | string | null
-    approvedById?: string | null
-    verificationsCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type LocalVerifierCreateOrConnectWithoutActionsInput = {
-    where: LocalVerifierWhereUniqueInput
-    create: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
-  }
-
-  export type IncidentReportCreateWithoutVerifierActionsInput = {
-    id?: string
-    title: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    status?: $Enums.Status
-    severity?: $Enums.Severity
-    category: string
-    images?: IncidentReportCreateimagesInput | string[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reporter: UserCreateNestedOneWithoutReportsInput
-    tasks?: TaskCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
-    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
-  }
-
-  export type IncidentReportUncheckedCreateWithoutVerifierActionsInput = {
-    id?: string
-    title: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    status?: $Enums.Status
-    severity?: $Enums.Severity
-    category: string
-    images?: IncidentReportCreateimagesInput | string[]
-    reporterId: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
-    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
-    damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
-  }
-
-  export type IncidentReportCreateOrConnectWithoutVerifierActionsInput = {
-    where: IncidentReportWhereUniqueInput
-    create: XOR<IncidentReportCreateWithoutVerifierActionsInput, IncidentReportUncheckedCreateWithoutVerifierActionsInput>
   }
 
   export type HelpRequestCreateWithoutVerifierActionsInput = {
@@ -42720,94 +42642,82 @@ export namespace Prisma {
     create: XOR<HelpRequestCreateWithoutVerifierActionsInput, HelpRequestUncheckedCreateWithoutVerifierActionsInput>
   }
 
-  export type LocalVerifierUpsertWithoutActionsInput = {
-    update: XOR<LocalVerifierUpdateWithoutActionsInput, LocalVerifierUncheckedUpdateWithoutActionsInput>
-    create: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
-    where?: LocalVerifierWhereInput
+  export type IncidentReportCreateWithoutVerifierActionsInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
+    reporter: UserCreateNestedOneWithoutReportsInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
   }
 
-  export type LocalVerifierUpdateToOneWithWhereWithoutActionsInput = {
-    where?: LocalVerifierWhereInput
-    data: XOR<LocalVerifierUpdateWithoutActionsInput, LocalVerifierUncheckedUpdateWithoutActionsInput>
+  export type IncidentReportUncheckedCreateWithoutVerifierActionsInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    reporterId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
   }
 
-  export type LocalVerifierUpdateWithoutActionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    verifierRole?: EnumVerifierRoleFieldUpdateOperationsInput | $Enums.VerifierRole
-    jurisdiction?: StringFieldUpdateOperationsInput | string
-    orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    isApproved?: BoolFieldUpdateOperationsInput | boolean
-    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
-    verificationsCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutLocalVerifierNestedInput
-  }
-
-  export type LocalVerifierUncheckedUpdateWithoutActionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    verifierRole?: EnumVerifierRoleFieldUpdateOperationsInput | $Enums.VerifierRole
-    jurisdiction?: StringFieldUpdateOperationsInput | string
-    orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    isApproved?: BoolFieldUpdateOperationsInput | boolean
-    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
-    verificationsCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IncidentReportUpsertWithoutVerifierActionsInput = {
-    update: XOR<IncidentReportUpdateWithoutVerifierActionsInput, IncidentReportUncheckedUpdateWithoutVerifierActionsInput>
+  export type IncidentReportCreateOrConnectWithoutVerifierActionsInput = {
+    where: IncidentReportWhereUniqueInput
     create: XOR<IncidentReportCreateWithoutVerifierActionsInput, IncidentReportUncheckedCreateWithoutVerifierActionsInput>
-    where?: IncidentReportWhereInput
   }
 
-  export type IncidentReportUpdateToOneWithWhereWithoutVerifierActionsInput = {
-    where?: IncidentReportWhereInput
-    data: XOR<IncidentReportUpdateWithoutVerifierActionsInput, IncidentReportUncheckedUpdateWithoutVerifierActionsInput>
+  export type LocalVerifierCreateWithoutActionsInput = {
+    id?: string
+    verifierRole: $Enums.VerifierRole
+    jurisdiction: string
+    orgName?: string | null
+    isApproved?: boolean
+    approvedAt?: Date | string | null
+    approvedById?: string | null
+    verificationsCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutLocalVerifierInput
   }
 
-  export type IncidentReportUpdateWithoutVerifierActionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    category?: StringFieldUpdateOperationsInput | string
-    images?: IncidentReportUpdateimagesInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
-    tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
-    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+  export type LocalVerifierUncheckedCreateWithoutActionsInput = {
+    id?: string
+    userId: string
+    verifierRole: $Enums.VerifierRole
+    jurisdiction: string
+    orgName?: string | null
+    isApproved?: boolean
+    approvedAt?: Date | string | null
+    approvedById?: string | null
+    verificationsCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type IncidentReportUncheckedUpdateWithoutVerifierActionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    category?: StringFieldUpdateOperationsInput | string
-    images?: IncidentReportUpdateimagesInput | string[]
-    reporterId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
-    damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+  export type LocalVerifierCreateOrConnectWithoutActionsInput = {
+    where: LocalVerifierWhereUniqueInput
+    create: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
   }
 
   export type HelpRequestUpsertWithoutVerifierActionsInput = {
@@ -42851,28 +42761,118 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IncidentReportUpsertWithoutVerifierActionsInput = {
+    update: XOR<IncidentReportUpdateWithoutVerifierActionsInput, IncidentReportUncheckedUpdateWithoutVerifierActionsInput>
+    create: XOR<IncidentReportCreateWithoutVerifierActionsInput, IncidentReportUncheckedCreateWithoutVerifierActionsInput>
+    where?: IncidentReportWhereInput
+  }
+
+  export type IncidentReportUpdateToOneWithWhereWithoutVerifierActionsInput = {
+    where?: IncidentReportWhereInput
+    data: XOR<IncidentReportUpdateWithoutVerifierActionsInput, IncidentReportUncheckedUpdateWithoutVerifierActionsInput>
+  }
+
+  export type IncidentReportUpdateWithoutVerifierActionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
+    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type IncidentReportUncheckedUpdateWithoutVerifierActionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    reporterId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type LocalVerifierUpsertWithoutActionsInput = {
+    update: XOR<LocalVerifierUpdateWithoutActionsInput, LocalVerifierUncheckedUpdateWithoutActionsInput>
+    create: XOR<LocalVerifierCreateWithoutActionsInput, LocalVerifierUncheckedCreateWithoutActionsInput>
+    where?: LocalVerifierWhereInput
+  }
+
+  export type LocalVerifierUpdateToOneWithWhereWithoutActionsInput = {
+    where?: LocalVerifierWhereInput
+    data: XOR<LocalVerifierUpdateWithoutActionsInput, LocalVerifierUncheckedUpdateWithoutActionsInput>
+  }
+
+  export type LocalVerifierUpdateWithoutActionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    verifierRole?: EnumVerifierRoleFieldUpdateOperationsInput | $Enums.VerifierRole
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    orgName?: NullableStringFieldUpdateOperationsInput | string | null
+    isApproved?: BoolFieldUpdateOperationsInput | boolean
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationsCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutLocalVerifierNestedInput
+  }
+
+  export type LocalVerifierUncheckedUpdateWithoutActionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    verifierRole?: EnumVerifierRoleFieldUpdateOperationsInput | $Enums.VerifierRole
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    orgName?: NullableStringFieldUpdateOperationsInput | string | null
+    isApproved?: BoolFieldUpdateOperationsInput | boolean
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationsCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutSupportRequestsInput = {
     id?: string
     email: string
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    tokens?: TokenCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSupportRequestsInput = {
@@ -42881,22 +42881,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    region?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    region?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    tokens?: TokenUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSupportRequestsInput = {
@@ -42921,22 +42921,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportRequestsInput = {
@@ -42945,123 +42945,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    region?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type IncidentReportCreateManyReporterInput = {
-    id?: string
-    title: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    status?: $Enums.Status
-    severity?: $Enums.Severity
-    category: string
-    images?: IncidentReportCreateimagesInput | string[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TokenCreateManyUserInput = {
-    id?: string
-    code: string
-    type?: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TaskCreateManyAssignedToInput = {
-    id?: string
-    title: string
-    description: string
-    incidentId?: string | null
-    assignedById?: string | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TaskCreateManyAssignedByInput = {
-    id?: string
-    title: string
-    description: string
-    incidentId?: string | null
-    assignedToId?: string | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type HelpRequestCreateManyUserInput = {
-    id?: string
-    type: string
-    description: string
-    location: string
-    latitude?: number | null
-    longitude?: number | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    peopleCount?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ReportVerificationCreateManyUserInput = {
-    id?: string
-    reportId: string
-    status: string
-    comment?: string | null
-    createdAt?: Date | string
-  }
-
-  export type NotificationCreateManyUserInput = {
-    id?: string
-    title: string
-    message: string
-    read?: boolean
-    createdAt?: Date | string
-  }
-
-  export type LocationLogCreateManyUserInput = {
-    id?: string
-    latitude: number
-    longitude: number
-    createdAt?: Date | string
-  }
-
-  export type ReliefTokenCreateManyUserInput = {
-    id?: string
-    code: string
-    qrCodeData: string
-    campId?: string | null
-    status?: $Enums.TokenStatus
-    usageCount?: number
-    maxUsage?: number
-    issuedAt?: Date | string
-    expiresAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    tokens?: TokenUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type DamageAssessmentCreateManyReportedByInput = {
@@ -43085,6 +42984,50 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type HelpRequestCreateManyUserInput = {
+    id?: string
+    type: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    peopleCount?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncidentReportCreateManyReporterInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LocationLogCreateManyUserInput = {
+    id?: string
+    latitude: number
+    longitude: number
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: string
+    title: string
+    message: string
+    read?: boolean
+    createdAt?: Date | string
+  }
+
   export type PsychologicalSupportRequestCreateManyUserInput = {
     id?: string
     type?: $Enums.SupportType
@@ -43100,323 +43043,61 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type IncidentReportUpdateWithoutReporterInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    category?: StringFieldUpdateOperationsInput | string
-    images?: IncidentReportUpdateimagesInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
-    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
-    verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+  export type ReliefTokenCreateManyUserInput = {
+    id?: string
+    code: string
+    qrCodeData: string
+    campId?: string | null
+    status?: $Enums.TokenStatus
+    usageCount?: number
+    maxUsage?: number
+    issuedAt?: Date | string
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type IncidentReportUncheckedUpdateWithoutReporterInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    category?: StringFieldUpdateOperationsInput | string
-    images?: IncidentReportUpdateimagesInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
-    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
-    damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
-    verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+  export type ReportVerificationCreateManyUserInput = {
+    id?: string
+    reportId: string
+    status: string
+    comment?: string | null
+    createdAt?: Date | string
   }
 
-  export type IncidentReportUncheckedUpdateManyWithoutReporterInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    category?: StringFieldUpdateOperationsInput | string
-    images?: IncidentReportUpdateimagesInput | string[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type TaskCreateManyAssignedByInput = {
+    id?: string
+    title: string
+    description: string
+    incidentId?: string | null
+    assignedToId?: string | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type TokenUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    distributions?: DistributionUpdateManyWithoutTokenNestedInput
+  export type TaskCreateManyAssignedToInput = {
+    id?: string
+    title: string
+    description: string
+    incidentId?: string | null
+    assignedById?: string | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type TokenUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    distributions?: DistributionUncheckedUpdateManyWithoutTokenNestedInput
-  }
-
-  export type TokenUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskUpdateWithoutAssignedToInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    incident?: IncidentReportUpdateOneWithoutTasksNestedInput
-    assignedBy?: UserUpdateOneWithoutCreatedTasksNestedInput
-  }
-
-  export type TaskUncheckedUpdateWithoutAssignedToInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskUncheckedUpdateManyWithoutAssignedToInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskUpdateWithoutAssignedByInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    incident?: IncidentReportUpdateOneWithoutTasksNestedInput
-    assignedTo?: UserUpdateOneWithoutAssignedTasksNestedInput
-  }
-
-  export type TaskUncheckedUpdateWithoutAssignedByInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskUncheckedUpdateManyWithoutAssignedByInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HelpRequestUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
-  }
-
-  export type HelpRequestUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
-  }
-
-  export type HelpRequestUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ReportVerificationUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    report?: IncidentReportUpdateOneRequiredWithoutVerificationsNestedInput
-  }
-
-  export type ReportVerificationUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ReportVerificationUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LocationLogUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    latitude?: FloatFieldUpdateOperationsInput | number
-    longitude?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LocationLogUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    latitude?: FloatFieldUpdateOperationsInput | number
-    longitude?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LocationLogUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    latitude?: FloatFieldUpdateOperationsInput | number
-    longitude?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ReliefTokenUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    qrCodeData?: StringFieldUpdateOperationsInput | string
-    campId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumTokenStatusFieldUpdateOperationsInput | $Enums.TokenStatus
-    usageCount?: IntFieldUpdateOperationsInput | number
-    maxUsage?: IntFieldUpdateOperationsInput | number
-    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    claims?: ReliefTokenClaimUpdateManyWithoutTokenNestedInput
-  }
-
-  export type ReliefTokenUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    qrCodeData?: StringFieldUpdateOperationsInput | string
-    campId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumTokenStatusFieldUpdateOperationsInput | $Enums.TokenStatus
-    usageCount?: IntFieldUpdateOperationsInput | number
-    maxUsage?: IntFieldUpdateOperationsInput | number
-    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    claims?: ReliefTokenClaimUncheckedUpdateManyWithoutTokenNestedInput
-  }
-
-  export type ReliefTokenUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    qrCodeData?: StringFieldUpdateOperationsInput | string
-    campId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumTokenStatusFieldUpdateOperationsInput | $Enums.TokenStatus
-    usageCount?: IntFieldUpdateOperationsInput | number
-    maxUsage?: IntFieldUpdateOperationsInput | number
-    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type TokenCreateManyUserInput = {
+    id?: string
+    code: string
+    type?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DamageAssessmentUpdateWithoutReportedByInput = {
@@ -43482,6 +43163,150 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type HelpRequestUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
+  }
+
+  export type HelpRequestUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
+  }
+
+  export type HelpRequestUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentReportUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
+    verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type IncidentReportUncheckedUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
+    verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type IncidentReportUncheckedUpdateManyWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LocationLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LocationLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LocationLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PsychologicalSupportRequestUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumSupportTypeFieldUpdateOperationsInput | $Enums.SupportType
@@ -43527,33 +43352,179 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TaskCreateManyIncidentInput = {
-    id?: string
-    title: string
-    description: string
-    assignedToId?: string | null
-    assignedById?: string | null
-    priority?: $Enums.Severity
-    status?: $Enums.Status
-    dueDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type ReliefTokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    qrCodeData?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTokenStatusFieldUpdateOperationsInput | $Enums.TokenStatus
+    usageCount?: IntFieldUpdateOperationsInput | number
+    maxUsage?: IntFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: ReliefTokenClaimUpdateManyWithoutTokenNestedInput
   }
 
-  export type ReportVerificationCreateManyReportInput = {
-    id?: string
-    userId: string
-    status: string
-    comment?: string | null
-    createdAt?: Date | string
+  export type ReliefTokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    qrCodeData?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTokenStatusFieldUpdateOperationsInput | $Enums.TokenStatus
+    usageCount?: IntFieldUpdateOperationsInput | number
+    maxUsage?: IntFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claims?: ReliefTokenClaimUncheckedUpdateManyWithoutTokenNestedInput
   }
 
-  export type IncidentHistoryCreateManyIncidentInput = {
-    id?: string
-    status: $Enums.Status
-    updatedBy: string
-    note?: string | null
-    createdAt?: Date | string
+  export type ReliefTokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    qrCodeData?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTokenStatusFieldUpdateOperationsInput | $Enums.TokenStatus
+    usageCount?: IntFieldUpdateOperationsInput | number
+    maxUsage?: IntFieldUpdateOperationsInput | number
+    issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportVerificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    report?: IncidentReportUpdateOneRequiredWithoutVerificationsNestedInput
+  }
+
+  export type ReportVerificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reportId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportVerificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reportId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUpdateWithoutAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedTo?: UserUpdateOneWithoutAssignedTasksNestedInput
+    incident?: IncidentReportUpdateOneWithoutTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedBy?: UserUpdateOneWithoutCreatedTasksNestedInput
+    incident?: IncidentReportUpdateOneWithoutTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    distributions?: DistributionUpdateManyWithoutTokenNestedInput
+  }
+
+  export type TokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    distributions?: DistributionUncheckedUpdateManyWithoutTokenNestedInput
+  }
+
+  export type TokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DamageAssessmentCreateManyIncidentInput = {
@@ -43577,6 +43548,35 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type IncidentHistoryCreateManyIncidentInput = {
+    id?: string
+    status: $Enums.Status
+    updatedBy: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReportVerificationCreateManyReportInput = {
+    id?: string
+    userId: string
+    status: string
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TaskCreateManyIncidentInput = {
+    id?: string
+    title: string
+    description: string
+    assignedToId?: string | null
+    assignedById?: string | null
+    priority?: $Enums.Severity
+    status?: $Enums.Status
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type VerifierActionCreateManyIncidentInput = {
     id?: string
     verifierId: string
@@ -43584,93 +43584,6 @@ export namespace Prisma {
     result: $Enums.VerificationResult
     comment?: string | null
     createdAt?: Date | string
-  }
-
-  export type TaskUpdateWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    assignedTo?: UserUpdateOneWithoutAssignedTasksNestedInput
-    assignedBy?: UserUpdateOneWithoutCreatedTasksNestedInput
-  }
-
-  export type TaskUncheckedUpdateWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskUncheckedUpdateManyWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
-    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ReportVerificationUpdateWithoutReportInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutVerificationsNestedInput
-  }
-
-  export type ReportVerificationUncheckedUpdateWithoutReportInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ReportVerificationUncheckedUpdateManyWithoutReportInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IncidentHistoryUpdateWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    updatedBy?: StringFieldUpdateOperationsInput | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IncidentHistoryUncheckedUpdateWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    updatedBy?: StringFieldUpdateOperationsInput | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IncidentHistoryUncheckedUpdateManyWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    updatedBy?: StringFieldUpdateOperationsInput | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DamageAssessmentUpdateWithoutIncidentInput = {
@@ -43736,13 +43649,100 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IncidentHistoryUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentHistoryUncheckedUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentHistoryUncheckedUpdateManyWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportVerificationUpdateWithoutReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutVerificationsNestedInput
+  }
+
+  export type ReportVerificationUncheckedUpdateWithoutReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportVerificationUncheckedUpdateManyWithoutReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedBy?: UserUpdateOneWithoutCreatedTasksNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type VerifierActionUpdateWithoutIncidentInput = {
     id?: StringFieldUpdateOperationsInput | string
     result?: EnumVerificationResultFieldUpdateOperationsInput | $Enums.VerificationResult
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifier?: LocalVerifierUpdateOneRequiredWithoutActionsNestedInput
     helpRequest?: HelpRequestUpdateOneWithoutVerifierActionsNestedInput
+    verifier?: LocalVerifierUpdateOneRequiredWithoutActionsNestedInput
   }
 
   export type VerifierActionUncheckedUpdateWithoutIncidentInput = {
@@ -43817,8 +43817,8 @@ export namespace Prisma {
     result?: EnumVerificationResultFieldUpdateOperationsInput | $Enums.VerificationResult
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifier?: LocalVerifierUpdateOneRequiredWithoutActionsNestedInput
     incident?: IncidentReportUpdateOneWithoutVerifierActionsNestedInput
+    verifier?: LocalVerifierUpdateOneRequiredWithoutActionsNestedInput
   }
 
   export type VerifierActionUncheckedUpdateWithoutHelpRequestInput = {
@@ -43897,8 +43897,8 @@ export namespace Prisma {
     result?: EnumVerificationResultFieldUpdateOperationsInput | $Enums.VerificationResult
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    incident?: IncidentReportUpdateOneWithoutVerifierActionsNestedInput
     helpRequest?: HelpRequestUpdateOneWithoutVerifierActionsNestedInput
+    incident?: IncidentReportUpdateOneWithoutVerifierActionsNestedInput
   }
 
   export type VerifierActionUncheckedUpdateWithoutVerifierInput = {

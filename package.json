@@ -9,7 +9,14 @@
     "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
     "install-all": "npm install",
     "build": "npm run build --workspaces",
-    "start": "npm run start --workspace=backend"
+    "start": "npm run start --workspace=backend",
+    "db:start": "start-db.bat",
+    "db:stop": "D:\\PostgreSQL\\pgsql\\bin\\pg_ctl -D D:\\OdooData\\pgdata stop",
+    "db:studio": "npm run db:studio --workspace=backend",
+    "db:generate": "npm run db:generate --workspace=backend",
+    "db:migrate": "npm run db:migrate --workspace=backend",
+    "db:push": "npm run db:push --workspace=backend",
+    "db:seed": "npm run db:seed --workspace=backend"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

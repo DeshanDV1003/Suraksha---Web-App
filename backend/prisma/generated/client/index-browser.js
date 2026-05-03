@@ -126,10 +126,10 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   phone: 'phone',
-  region: 'region',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  region: 'region'
 };
 
 exports.Prisma.IncidentReportScalarFieldEnum = {
