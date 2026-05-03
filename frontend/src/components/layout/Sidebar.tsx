@@ -48,28 +48,30 @@ export function Sidebar() {
     return () => clearInterval(interval)
   }, [])
 
+  const role = user?.role || 'CITIZEN'
+
   const mainNavigation = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-    { name: 'Impact Map', href: '/map', icon: MapPin, status: 'LIVE' },
-    { name: 'Incidents', href: '/incidents', icon: AlertTriangle, count: counts.incidents },
-    { name: 'Alerts', href: '/alerts', icon: Radio, count: counts.alerts },
-    { name: 'Analytics', href: '/reports', icon: BarChart3 },
-    { name: 'User Management', href: '/users', icon: Users },
-  ]
+    { name: 'Dashboard', href: '/', icon: LayoutDashboard, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: 'Impact Map', href: '/map', icon: MapPin, status: 'LIVE', roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: 'Incidents', href: '/incidents', icon: AlertTriangle, count: counts.incidents, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: 'Alerts', href: '/alerts', icon: Radio, count: counts.alerts, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: 'Analytics', href: '/reports', icon: BarChart3, roles: ['ADMIN', 'DMC_OFFICER'] },
+    { name: 'User Management', href: '/users', icon: Users, roles: ['ADMIN'] },
+  ].filter(item => item.roles.includes(role))
   
   const resourceNavigation = [
-    { name: 'Resources', href: '/resources', icon: Package },
-    { name: 'Relief Camps', href: '/camps', icon: Building2 },
-    { name: 'Token System', href: '/tokens', icon: QrCode },
-  ]
+    { name: 'Resources', href: '/resources', icon: Package, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
+    { name: 'Relief Camps', href: '/camps', icon: Building2, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: 'Token System', href: '/tokens', icon: QrCode, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+  ].filter(item => item.roles.includes(role))
 
   const safetyNavigation = [
-    { name: 'Volunteers', href: '/volunteers', icon: Shield },
-    { name: 'Help Requests', href: '/help-requests', icon: HandHelping },
-    { name: 'Damage Reports', href: '/damage-assessment', icon: Home },
-    { name: 'Missing Persons', href: '/missing-persons', icon: UserSearch },
-    { name: 'Support Center', href: '/support', icon: HeartPulse },
-  ]
+    { name: 'Volunteers', href: '/volunteers', icon: Shield, roles: ['ADMIN', 'DMC_OFFICER'] },
+    { name: 'Help Requests', href: '/help-requests', icon: HandHelping, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: 'Damage Reports', href: '/damage-assessment', icon: Home, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: 'Missing Persons', href: '/missing-persons', icon: UserSearch, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: 'Support Center', href: '/support', icon: HeartPulse, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+  ].filter(item => item.roles.includes(role))
 
   return (
     <div className="flex flex-col w-72 bg-white border-r h-full shadow-[1px_0_0_0_rgba(0,0,0,0.02)]">

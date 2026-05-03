@@ -9,6 +9,27 @@ import { cn } from '@/lib/utils'
 import { alertService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
+import { useAuth } from '@/hooks/useAuth'
+
+const SRI_LANKA_TOWNS = [
+  'All Island',
+  'Colombo',
+  'Galle',
+  'Kandy',
+  'Matara',
+  'Jaffna',
+  'Negombo',
+  'Anuradhapura',
+  'Ratnapura',
+  'Badulla',
+  'Batticaloa',
+  'Kalutara',
+  'Kurunegala',
+  'Trincomalee',
+  'Gampaha',
+  'Homagama',
+  'Theldeniya'
+]
 
 const categories = [
   { 
@@ -68,11 +89,14 @@ const categories = [
 ]
 
 export default function AlertsPage() {
+  const { user } = useAuth()
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [alerts, setAlerts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [newAlert, setNewAlert] = useState({ title: '', message: '', location: '', type: 'INFO' })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  const canBroadcast = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
   
   // Filter State
   const [filterType, setFilterType] = useState('ALL')
@@ -158,157 +182,169 @@ export default function AlertsPage() {
       </div>
 
       {/* Smart Categories Box */}
-      <div className="p-10 border-4 border-[#0061ff]/10 rounded-[3.5rem] bg-gradient-to-br from-blue-50/30 to-white space-y-8 backdrop-blur-xl">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 text-[#0061ff]">
-             <div className="p-3 bg-[#0061ff] rounded-2xl text-white shadow-lg shadow-blue-500/20">
-               <Bell className="w-6 h-6" />
-             </div>
-             <div>
-               <h3 className="text-xl font-black uppercase tracking-tighter">Smart Templates</h3>
-               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Rapid directive deployment</p>
-             </div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
-          {categories.map((cat, i) => (
-            <div key={i} 
-              onClick={() => setNewAlert({
-                title: cat.label, 
-                type: cat.type, 
-                message: cat.defaultMsg, 
-                location: cat.defaultLoc
-              })}
-              className="suraksha-card p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-[#0061ff]/30 hover:scale-[1.05] transition-all bg-white group"
-            >
-              <div className={cn("p-4 rounded-2xl mb-4 group-hover:scale-110 transition-transform bg-slate-50", cat.color)}>
-                <cat.icon className="w-7 h-7" />
-              </div>
-              <span className="text-[13px] font-black text-[#1e293b] leading-tight mb-1">{cat.label}</span>
-              <span className="text-[9px] font-black text-[#0061ff] bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-tighter italic">{cat.type}</span>
+      {canBroadcast && (
+        <div className="p-10 border-4 border-[#0061ff]/10 rounded-[3.5rem] bg-gradient-to-br from-blue-50/30 to-white space-y-8 backdrop-blur-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4 text-[#0061ff]">
+               <div className="p-3 bg-[#0061ff] rounded-2xl text-white shadow-lg shadow-blue-500/20">
+                 <Bell className="w-6 h-6" />
+               </div>
+               <div>
+                 <h3 className="text-xl font-black uppercase tracking-tighter">Smart Templates</h3>
+                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Rapid directive deployment</p>
+               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
-        {/* Creator Form */}
-        <div className="xl:col-span-7 suraksha-card p-10 bg-white">
-          <div className="flex items-center gap-3 mb-10 text-[#1e293b]">
-             <Send className="w-6 h-6" />
-             <h3 className="text-2xl font-black">Transmit Directive</h3>
           </div>
           
-          <form onSubmit={handleBroadcast} className="space-y-10">
-            <div className="space-y-8">
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Directive Headline</label>
-                <input 
-                  required
-                  type="text"
-                  placeholder="e.g. Flash Flood Emergency Protocol"
-                  className="suraksha-input"
-                  value={newAlert.title}
-                  onChange={(e) => setNewAlert({...newAlert, title: e.target.value})}
-                />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+            {categories.map((cat, i) => (
+              <div key={i} 
+                onClick={() => setNewAlert({
+                  title: cat.label, 
+                  type: cat.type, 
+                  message: cat.defaultMsg, 
+                  location: cat.defaultLoc
+                })}
+                className="suraksha-card p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-[#0061ff]/30 hover:scale-[1.05] transition-all bg-white group"
+              >
+                <div className={cn("p-4 rounded-2xl mb-4 group-hover:scale-110 transition-transform bg-slate-50", cat.color)}>
+                  <cat.icon className="w-7 h-7" />
+                </div>
+                <span className="text-[13px] font-black text-[#1e293b] leading-tight mb-1">{cat.label}</span>
+                <span className="text-[9px] font-black text-[#0061ff] bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-tighter italic">{cat.type}</span>
               </div>
-
-              <div className="grid grid-cols-2 gap-8">
-                 <div className="space-y-3">
-                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Affected Geo-Sector</label>
-                   <input 
-                     required
-                     type="text"
-                     placeholder="e.g. Western Province"
-                     className="suraksha-input"
-                     value={newAlert.location}
-                     onChange={(e) => setNewAlert({...newAlert, location: e.target.value})}
-                   />
-                 </div>
-                 <div className="space-y-3">
-                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Severity Level</label>
-                   <select 
-                     className="suraksha-input appearance-none bg-slate-50 font-black text-[11px] uppercase tracking-widest"
-                     value={newAlert.type}
-                     onChange={(e) => setNewAlert({...newAlert, type: e.target.value})}
-                   >
-                     <option value="INFO">Information (Blue)</option>
-                     <option value="WARNING">Warning (Amber)</option>
-                     <option value="EMERGENCY">Emergency (Red)</option>
-                   </select>
-                 </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Detailed Instructions</label>
-                <textarea 
-                  required
-                  rows={5}
-                  placeholder="Provide precise evacuation steps or resource allocation info..."
-                  className="suraksha-input h-40 py-5 resize-none leading-relaxed font-bold"
-                  value={newAlert.message}
-                  onChange={(e) => setNewAlert({...newAlert, message: e.target.value})}
-                />
-              </div>
-            </div>
-
-            <button 
-              disabled={isSubmitting}
-              className="suraksha-button w-full h-20 text-lg flex items-center justify-center gap-4 transition-all uppercase tracking-widest font-black"
-            >
-               {isSubmitting ? (
-                 <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-               ) : (
-                 <>
-                   <div className="p-2 bg-white/20 rounded-xl">
-                      <Radio className="w-6 h-6" />
-                   </div>
-                   Execute Critical Broadcast
-                 </>
-               )}
-            </button>
-          </form>
+            ))}
+          </div>
         </div>
+      )}
+
+      <div className={cn("grid grid-cols-1 gap-10", canBroadcast ? "xl:grid-cols-12" : "")}>
+        {/* Creator Form */}
+        {canBroadcast && (
+          <div className="xl:col-span-7 suraksha-card p-10 bg-white">
+            <div className="flex items-center gap-3 mb-10 text-[#1e293b]">
+               <Send className="w-6 h-6" />
+               <h3 className="text-2xl font-black">Transmit Directive</h3>
+            </div>
+            
+            <form onSubmit={handleBroadcast} className="space-y-10">
+              <div className="space-y-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Directive Headline</label>
+                  <input 
+                    required
+                    type="text"
+                    placeholder="e.g. Flash Flood Emergency Protocol"
+                    className="suraksha-input"
+                    value={newAlert.title}
+                    onChange={(e) => setNewAlert({...newAlert, title: e.target.value})}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Targeted Town / Sector</label>
+                      <div className="relative group">
+                        <select 
+                          required
+                          className="suraksha-input appearance-none bg-slate-50 font-black text-[11px] uppercase tracking-widest"
+                          value={newAlert.location}
+                          onChange={(e) => setNewAlert({...newAlert, location: e.target.value})}
+                        >
+                          <option value="">Select Target Area</option>
+                          {SRI_LANKA_TOWNS.map(town => (
+                            <option key={town} value={town}>{town}</option>
+                          ))}
+                        </select>
+                        <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none rotate-90" />
+                      </div>
+                    </div>
+                   <div className="space-y-3">
+                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Severity Level</label>
+                     <select 
+                       className="suraksha-input appearance-none bg-slate-50 font-black text-[11px] uppercase tracking-widest"
+                       value={newAlert.type}
+                       onChange={(e) => setNewAlert({...newAlert, type: e.target.value})}
+                     >
+                       <option value="INFO">Information (Blue)</option>
+                       <option value="WARNING">Warning (Amber)</option>
+                       <option value="EMERGENCY">Emergency (Red)</option>
+                     </select>
+                   </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Detailed Instructions</label>
+                  <textarea 
+                    required
+                    rows={5}
+                    placeholder="Provide precise evacuation steps or resource allocation info..."
+                    className="suraksha-input h-40 py-5 resize-none leading-relaxed font-bold"
+                    value={newAlert.message}
+                    onChange={(e) => setNewAlert({...newAlert, message: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <button 
+                disabled={isSubmitting}
+                className="suraksha-button w-full h-20 text-lg flex items-center justify-center gap-4 transition-all uppercase tracking-widest font-black"
+              >
+                 {isSubmitting ? (
+                   <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                 ) : (
+                   <>
+                     <div className="p-2 bg-white/20 rounded-xl">
+                        <Radio className="w-6 h-6" />
+                     </div>
+                     Execute Critical Broadcast
+                   </>
+                 )}
+              </button>
+            </form>
+          </div>
+        )}
 
         {/* Live Preview Side */}
-        <div className="xl:col-span-5 flex flex-col gap-8">
-           <div className="p-8 bg-slate-900 rounded-[3rem] shadow-2xl relative overflow-hidden flex-1 flex flex-col justify-center min-h-[500px]">
-              <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_#0061ff_0%,_transparent_70%)] animate-pulse" />
-              <div className="relative z-10 space-y-6">
-                 <div className="text-center space-y-2 mb-10">
-                    <span className="text-[10px] font-black text-[#0061ff] uppercase tracking-[0.3em]">Mobile Sync Preview</span>
-                    <div className="w-20 h-1 bg-[#0061ff] mx-auto rounded-full" />
-                 </div>
+        {canBroadcast && (
+          <div className="xl:col-span-5 flex flex-col gap-8">
+             <div className="p-8 bg-slate-900 rounded-[3rem] shadow-2xl relative overflow-hidden flex-1 flex flex-col justify-center min-h-[500px]">
+                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_#0061ff_0%,_transparent_70%)] animate-pulse" />
+                <div className="relative z-10 space-y-6">
+                   <div className="text-center space-y-2 mb-10">
+                      <span className="text-[10px] font-black text-[#0061ff] uppercase tracking-[0.3em]">Mobile Sync Preview</span>
+                      <div className="w-20 h-1 bg-[#0061ff] mx-auto rounded-full" />
+                   </div>
 
-                 <div className="max-w-sm mx-auto w-full bg-white p-8 rounded-[2.5rem] shadow-[0_40px_60px_-15px_rgba(0,0,0,0.5)] border border-slate-100 animate-in zoom-in-95 duration-500">
-                    <div className="flex items-center gap-4 mb-6">
-                       <div className={cn(
-                         "w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-xl transition-colors duration-500",
-                         newAlert.type === 'EMERGENCY' ? 'bg-red-500 shadow-red-500/30' : 
-                         newAlert.type === 'WARNING' ? 'bg-amber-500 shadow-amber-500/30' :
-                         'bg-[#0061ff] shadow-blue-500/30'
-                       )}>
-                         <Bell className="w-6 h-6" />
-                       </div>
-                       <div>
-                         <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Suraksha Cloud</div>
-                         <div className="text-base font-black text-[#1e293b] leading-tight break-words">{newAlert.title || 'Broadcast Title'}</div>
-                       </div>
-                    </div>
-                    <p className="text-sm font-bold text-slate-500 leading-relaxed mb-6 font-sans">
-                      {newAlert.message || 'The detailed emergency broadcast text will synchronize across all citizen and responder mobile nodes in real-time...'}
-                    </p>
-                    <div className="flex items-center justify-between pt-5 border-t border-slate-50">
-                       <div className="flex items-center gap-2 text-slate-400">
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span className="text-[11px] font-black uppercase tracking-tight">{newAlert.location || 'All Geo-Sectors'}</span>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
+                   <div className="max-w-sm mx-auto w-full bg-white p-8 rounded-[2.5rem] shadow-[0_40px_60px_-15px_rgba(0,0,0,0.5)] border border-slate-100 animate-in zoom-in-95 duration-500">
+                      <div className="flex items-center gap-4 mb-6">
+                         <div className={cn(
+                           "w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-xl transition-colors duration-500",
+                           newAlert.type === 'EMERGENCY' ? 'bg-red-500 shadow-red-500/30' : 
+                           newAlert.type === 'WARNING' ? 'bg-amber-500 shadow-amber-500/30' :
+                           'bg-[#0061ff] shadow-blue-500/30'
+                         )}>
+                           <Bell className="w-6 h-6" />
+                         </div>
+                         <div>
+                           <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Suraksha Cloud</div>
+                           <div className="text-base font-black text-[#1e293b] leading-tight break-words">{newAlert.title || 'Broadcast Title'}</div>
+                         </div>
+                      </div>
+                      <p className="text-sm font-bold text-slate-500 leading-relaxed mb-6 font-sans">
+                        {newAlert.message || 'The detailed emergency broadcast text will synchronize across all citizen and responder mobile nodes in real-time...'}
+                      </p>
+                      <div className="flex items-center justify-between pt-5 border-t border-slate-50">
+                         <div className="flex items-center gap-2 text-slate-400">
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span className="text-[11px] font-black uppercase tracking-tight">{newAlert.location || 'All Geo-Sectors'}</span>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        )}
       </div>
 
       {/* List Area */}
@@ -402,21 +438,23 @@ export default function AlertsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 mt-8 md:mt-0 md:ml-10 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
-                   <button 
-                     onClick={() => handleDeactivate(alert.id)}
-                     disabled={!alert.active}
-                     className="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all disabled:opacity-20"
-                   >
-                     End
-                   </button>
-                   <button 
-                     onClick={() => handleDeleteAlert(alert.id)}
-                     className="p-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors"
-                   >
-                     <Trash2 className="w-5 h-5" />
-                   </button>
-                </div>
+                {canBroadcast && (
+                  <div className="flex items-center gap-3 mt-8 md:mt-0 md:ml-10 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+                    <button 
+                      onClick={() => handleDeactivate(alert.id)}
+                      disabled={!alert.active}
+                      className="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all disabled:opacity-20"
+                    >
+                      End
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteAlert(alert.id)}
+                      className="p-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           )}

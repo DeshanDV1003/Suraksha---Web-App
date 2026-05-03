@@ -4,16 +4,22 @@ import { cn } from '@/lib/utils'
 import { incidentService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
+import { useAuth } from '@/hooks/useAuth'
 
 const severities = ['All Severities', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
 const statuses = ['All Status', 'PENDING', 'IN_PROGRESS', 'ASSIGNED', 'RESOLVED']
 
 export default function IncidentsPage() {
+  const { user } = useAuth()
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [incidents, setIncidents] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [severityFilter, setSeverityFilter] = useState('All Severities')
   const [statusFilter, setStatusFilter] = useState('All Status')
+  const [showOnlyMine, setShowOnlyMine] = useState(false)
+
+  const isOfficer = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
+  const isAdmin = user?.role === 'ADMIN'
 
   // Modal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -60,7 +66,8 @@ export default function IncidentsPage() {
       i.id.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesSeverity = severityFilter === 'All Severities' || i.severity === severityFilter
     const matchesStatus = statusFilter === 'All Status' || i.status === statusFilter
-    return matchesSearch && matchesSeverity && matchesStatus
+    const matchesMine = !showOnlyMine || i.reporterId === user?.id
+    return matchesSearch && matchesSeverity && matchesStatus && matchesMine
   })
 
   return (
@@ -104,6 +111,17 @@ export default function IncidentsPage() {
             </select>
             <LucideChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
+          {user?.role === 'CITIZEN' && (
+            <button 
+              onClick={() => setShowOnlyMine(!showOnlyMine)}
+              className={cn(
+                "px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border",
+                showOnlyMine ? "bg-blue-600 text-white border-blue-600" : "bg-white text-slate-400 border-slate-100 hover:bg-slate-50"
+              )}
+            >
+              {showOnlyMine ? 'Showing My Reports' : 'Show All Reports'}
+            </button>
+          )}
         </div>
         <div className="ml-auto relative w-80">
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
@@ -175,19 +193,31 @@ export default function IncidentsPage() {
                       </span>
                     </td>
                     <td className="px-8 py-8 text-center">
-                      <select
-                        value={incident.status}
-                        onChange={(e) => handleUpdateStatus(incident.id, e.target.value)}
-                        className={cn(
-                          "px-4 py-2 rounded-xl text-[9px] font-black tracking-[0.1em] uppercase border cursor-pointer outline-none transition-all shadow-sm",
+                      {isOfficer ? (
+                        <select
+                          value={incident.status}
+                          onChange={(e) => handleUpdateStatus(incident.id, e.target.value)}
+                          className={cn(
+                            "px-4 py-2 rounded-xl text-[9px] font-black tracking-[0.1em] uppercase border cursor-pointer outline-none transition-all shadow-sm",
+                            incident.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border-amber-100' :
+                              incident.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-600 border-blue-100' :
+                                incident.status === 'ASSIGNED' ? 'bg-teal-50 text-teal-700 border-teal-100' :
+                                  'bg-green-50 text-green-700 border-green-100'
+                          )}
+                        >
+                          {statuses.filter(s => s !== 'All Status').map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
+                        </select>
+                      ) : (
+                        <span className={cn(
+                          "px-4 py-2 rounded-xl text-[9px] font-black tracking-[0.1em] uppercase border shadow-sm",
                           incident.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border-amber-100' :
                             incident.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-600 border-blue-100' :
                               incident.status === 'ASSIGNED' ? 'bg-teal-50 text-teal-700 border-teal-100' :
                                 'bg-green-50 text-green-700 border-green-100'
-                        )}
-                      >
-                        {statuses.filter(s => s !== 'All Status').map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
-                      </select>
+                        )}>
+                          {incident.status}
+                        </span>
+                      )}
                     </td>
                     <td className="px-8 py-8 text-center text-sm font-black text-blue-600 tracking-tighter">98.4%</td>
                     <td className="px-8 py-8 text-center text-[10px] font-black text-slate-400 whitespace-nowrap uppercase tracking-widest">
@@ -201,19 +231,23 @@ export default function IncidentsPage() {
                         >
                           <Eye className="w-5 h-5" />
                         </button>
-                        <button
-                          onClick={() => handleDeleteIncident(incident.id)}
-                          className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-red-400 hover:bg-red-100 transition-all border border-transparent"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleUpdateStatus(incident.id, 'RESOLVED')}
-                          disabled={incident.status === 'RESOLVED'}
-                          className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-500 hover:bg-green-100 transition-all border border-transparent disabled:opacity-20"
-                        >
-                          <CheckCircle2 className="w-5 h-5" />
-                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => handleDeleteIncident(incident.id)}
+                            className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-red-400 hover:bg-red-100 transition-all border border-transparent"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        )}
+                        {isOfficer && (
+                          <button
+                            onClick={() => handleUpdateStatus(incident.id, 'RESOLVED')}
+                            disabled={incident.status === 'RESOLVED'}
+                            className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-500 hover:bg-green-100 transition-all border border-transparent disabled:opacity-20"
+                          >
+                            <CheckCircle2 className="w-5 h-5" />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -265,6 +299,33 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
     longitude: 79.8612
   })
   const [loading, setLoading] = useState(false)
+  const [isGeocoding, setIsGeocoding] = useState(false)
+
+  // Auto-geocoding logic
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (formData.location.length > 3) {
+        try {
+          setIsGeocoding(true)
+          const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(formData.location + ', Sri Lanka')}&limit=1`)
+          const data = await response.json()
+          if (data && data.length > 0) {
+            setFormData(prev => ({
+              ...prev,
+              latitude: parseFloat(data[0].lat),
+              longitude: parseFloat(data[0].lon)
+            }))
+          }
+        } catch (error) {
+          console.error('Geocoding failed', error)
+        } finally {
+          setIsGeocoding(false)
+        }
+      }
+    }, 1000) // 1 second debounce
+
+    return () => clearTimeout(timer)
+  }, [formData.location])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -309,15 +370,22 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Incident Geo-Location</label>
-              <input
-                required
-                className="suraksha-input"
-                placeholder="Galle Road, Colombo"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  required
+                  className="suraksha-input pr-12"
+                  placeholder="Galle Road, Colombo"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                />
+                {isGeocoding && (
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
+                  </div>
+                )}
+              </div>
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Category Classification</label>
@@ -332,6 +400,30 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 <option value="MEDICAL">Medical emergency</option>
                 <option value="FIRE">Fire hazard</option>
               </select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Latitude</label>
+              <input
+                type="number"
+                step="any"
+                required
+                className="suraksha-input"
+                placeholder="6.9271"
+                value={formData.latitude}
+                onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) })}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Longitude</label>
+              <input
+                type="number"
+                step="any"
+                required
+                className="suraksha-input"
+                placeholder="79.8612"
+                value={formData.longitude}
+                onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) })}
+              />
             </div>
             <div className="col-span-2 space-y-2">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Operational Briefing</label>
