@@ -9,8 +9,10 @@ import { dashboardService, alertService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppStore } from '@/store/useAppStore'
+import { useTranslation } from 'react-i18next'
 
 export default function DashboardPage() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { searchQuery } = useAppStore()
   const [incidents, setIncidents] = useState<any[]>([])
@@ -64,7 +66,7 @@ export default function DashboardPage() {
 
   const mainStats = [
     {
-      label: 'Active Incidents',
+      label: t('dashboard.active_incidents'),
       value: incidents.filter(i => i.status !== 'RESOLVED').length.toString(),
       trend: '+3',
       isUp: true,
@@ -73,7 +75,7 @@ export default function DashboardPage() {
       blob: 'bg-red-400'
     },
     {
-      label: 'Volunteers Active',
+      label: t('dashboard.volunteers_active'),
       value: volunteersCount.toString(),
       trend: '+12',
       isUp: true,
@@ -82,7 +84,7 @@ export default function DashboardPage() {
       blob: 'bg-green-400'
     },
     {
-      label: 'Relief Camps',
+      label: t('dashboard.relief_camps'),
       value: campsCount.toString(),
       trend: '+2',
       isUp: true,
@@ -91,7 +93,7 @@ export default function DashboardPage() {
       blob: 'bg-purple-400'
     },
     {
-      label: 'Help Requests',
+      label: t('dashboard.help_requests'),
       value: helpRequestsCount.toString(),
       trend: '+5',
       isUp: true,
@@ -100,7 +102,7 @@ export default function DashboardPage() {
       blob: 'bg-pink-400'
     },
     {
-      label: 'Avg Response Time',
+      label: t('dashboard.avg_response_time'),
       value: '14m',
       trend: '-3m',
       isUp: false,
@@ -121,7 +123,7 @@ export default function DashboardPage() {
       footerColor: 'text-pink-600'
     },
     {
-      label: 'Community Resources',
+      label: t('nav.resources'),
       value: '80',
       subtext: '23 boats, 15 vehicles available',
       icon: Package,
@@ -153,20 +155,20 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Dashboard</h1>
-          <p className="text-slate-500 mt-1 font-medium">Real-time disaster management overview</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('dashboard.title')}</h1>
+          <p className="text-slate-500 mt-1 font-medium">{t('dashboard.overview')}</p>
         </div>
         <div className="flex gap-3">
           <button className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-all active:scale-95 shadow-sm">
             <Download className="w-4 h-4" />
-            Export Report
+            {t('dashboard.export_report')}
           </button>
           <button
             onClick={() => setIsAlertModalOpen(true)}
             className="flex items-center gap-2 px-6 py-2.5 bg-[#0061ff] text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95"
           >
             <Plus className="w-4 h-4" />
-            New Broadcast
+            {t('dashboard.new_broadcast')}
           </button>
         </div>
       </div>
@@ -220,10 +222,10 @@ export default function DashboardPage() {
         {/* ML Priority Queue */}
         <div className="lg:col-span-2 suraksha-card p-8">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-bold text-[#1e293b]">ML-Sorted Priority Queue</h3>
+            <h3 className="text-xl font-bold text-[#1e293b]">{t('dashboard.priority_queue')}</h3>
             <button className="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-slate-50 transition-colors text-slate-600 font-bold text-xs uppercase tracking-wider border border-slate-100">
               <Filter className="w-4 h-4" />
-              Filter Results
+              {t('dashboard.filter_results')}
             </button>
           </div>
 
@@ -234,7 +236,7 @@ export default function DashboardPage() {
               i.description?.toLowerCase().includes(searchQuery.toLowerCase())
             ).length === 0 ? (
               <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
-                <p className="text-slate-400 font-bold">No matching incidents found</p>
+                <p className="text-slate-400 font-bold">{t('dashboard.no_incidents')}</p>
               </div>
             ) : (
               incidents
@@ -290,7 +292,7 @@ export default function DashboardPage() {
 
         {/* Recent Alerts Widget */}
         <div className="suraksha-card p-8 bg-gradient-to-b from-white to-slate-50/50">
-          <h3 className="text-xl font-bold text-[#1e293b] mb-8">Recent Alerts</h3>
+          <h3 className="text-xl font-bold text-[#1e293b] mb-8">{t('dashboard.recent_alerts')}</h3>
           <div className="space-y-4">
             {alerts.filter(a => 
               a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -298,7 +300,7 @@ export default function DashboardPage() {
               a.message.toLowerCase().includes(searchQuery.toLowerCase())
             ).length === 0 ? (
               <div className="text-center py-10">
-                <p className="text-slate-400 text-xs font-bold uppercase">No matching alerts</p>
+                <p className="text-slate-400 text-xs font-bold uppercase">{t('dashboard.no_alerts')}</p>
               </div>
             ) : (
               alerts
@@ -331,7 +333,7 @@ export default function DashboardPage() {
             )}
           </div>
           <button className="suraksha-button-outline w-full mt-8 py-4 text-xs font-bold uppercase tracking-[0.2em]">
-            View All Broadcasts
+            {t('dashboard.view_all')}
           </button>
         </div>
       </div>
@@ -339,9 +341,9 @@ export default function DashboardPage() {
       {/* GIS Impact Map Preview */}
       <div className="suraksha-card p-8">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-xl font-bold text-[#1e293b]">GIS Impact Map Preview</h3>
+          <h3 className="text-xl font-bold text-[#1e293b]">{t('dashboard.gis_map')}</h3>
           <button className="flex items-center gap-2 text-[#0061ff] font-bold text-sm group">
-            Open Full Map
+            {t('dashboard.open_full_map')}
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>

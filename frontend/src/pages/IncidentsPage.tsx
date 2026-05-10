@@ -5,11 +5,10 @@ import { incidentService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
-
-const severities = ['All Severities', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
-const statuses = ['All Status', 'PENDING', 'IN_PROGRESS', 'ASSIGNED', 'RESOLVED']
+import { useTranslation } from 'react-i18next'
 
 export default function IncidentsPage() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [incidents, setIncidents] = useState<any[]>([])
@@ -20,6 +19,9 @@ export default function IncidentsPage() {
 
   const isOfficer = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
   const isAdmin = user?.role === 'ADMIN'
+
+  const severities = [t('incidents.all_severities'), 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
+  const statuses = [t('incidents.all_status'), 'PENDING', 'IN_PROGRESS', 'ASSIGNED', 'RESOLVED']
 
   // Modal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -64,8 +66,8 @@ export default function IncidentsPage() {
     const matchesSearch = i.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       i.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       i.id.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesSeverity = severityFilter === 'All Severities' || i.severity === severityFilter
-    const matchesStatus = statusFilter === 'All Status' || i.status === statusFilter
+    const matchesSeverity = severityFilter === t('incidents.all_severities') || i.severity === severityFilter
+    const matchesStatus = statusFilter === t('incidents.all_status') || i.status === statusFilter
     const matchesMine = !showOnlyMine || i.reporterId === user?.id
     return matchesSearch && matchesSeverity && matchesStatus && matchesMine
   })
@@ -74,8 +76,8 @@ export default function IncidentsPage() {
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-[#1e293b]">Incident Management</h1>
-          <p className="text-slate-500 mt-1 font-medium italic">Command Center response pipeline</p>
+          <h1 className="text-3xl font-black text-[#1e293b]">{t('incidents.title')}</h1>
+          <p className="text-slate-500 mt-1 font-medium italic">{t('incidents.pipeline')}</p>
         </div>
         <button
           onClick={() => setIsCreateModalOpen(true)}
@@ -84,7 +86,7 @@ export default function IncidentsPage() {
           <div className="bg-white/20 p-1.5 rounded-lg group-hover:bg-white/30 transition-colors">
             <Plus className="w-4 h-4" />
           </div>
-          Register New Incident
+          {t('incidents.register_new')}
         </button>
       </div>
 
@@ -112,7 +114,7 @@ export default function IncidentsPage() {
             <LucideChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
           {user?.role === 'CITIZEN' && (
-            <button 
+            <button
               onClick={() => setShowOnlyMine(!showOnlyMine)}
               className={cn(
                 "px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border",
@@ -127,7 +129,7 @@ export default function IncidentsPage() {
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
           <input
             type="text"
-            placeholder="Search by title, location or ID..."
+            placeholder={t('incidents.search_placeholder')}
             className="suraksha-input pl-14"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -140,13 +142,13 @@ export default function IncidentsPage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50/50 border-b border-slate-100/50">
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Tracker ID</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Incident Details</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">Priority</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">Review Status</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">ML Confidence</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">Age</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right">Operations</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('incidents.tracker_id')}</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('incidents.details')}</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.priority')}</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.review_status')}</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.ml_confidence')}</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.age')}</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right">{t('incidents.operations')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50/50 font-bold">
@@ -155,7 +157,7 @@ export default function IncidentsPage() {
                   <td colSpan={7} className="px-8 py-20 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <div className="w-8 h-8 border-4 border-[#0061ff]/20 border-t-[#0061ff] rounded-full animate-spin" />
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Synchronizing Encrypted Data...</span>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('incidents.syncing')}</span>
                     </div>
                   </td>
                 </tr>
@@ -164,7 +166,7 @@ export default function IncidentsPage() {
                   <td colSpan={7} className="px-8 py-20 text-center text-slate-400 uppercase tracking-widest text-[11px] font-black italic">
                     <div className="flex flex-col items-center gap-4 opacity-30">
                       <AlertCircle className="w-12 h-12" />
-                      Zero Incident Records on Current Pipeline
+                      {t('incidents.no_records')}
                     </div>
                   </td>
                 </tr>
@@ -205,7 +207,7 @@ export default function IncidentsPage() {
                                   'bg-green-50 text-green-700 border-green-100'
                           )}
                         >
-                          {statuses.filter(s => s !== 'All Status').map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
+                          {statuses.filter(s => s !== t('incidents.all_status')).map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
                         </select>
                       ) : (
                         <span className={cn(
@@ -289,6 +291,7 @@ export default function IncidentsPage() {
 }
 
 function CreateIncidentModal({ onClose, onSuccess }: any) {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -341,15 +344,15 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="suraksha-card w-full max-w-xl bg-white p-10 space-y-8 animate-in slide-in-from-bottom-8 duration-500 shadow-2xl">
+    <div className="fixed inset-0 z-[100] flex justify-center overflow-y-auto p-4 py-8 sm:py-20 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+      <div className="suraksha-card w-full max-w-xl bg-white p-8 sm:p-10 space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-8 duration-500 shadow-2xl my-auto">
         <div className="flex items-center justify-between border-b border-slate-50 pb-6">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#0061ff]">
               <Shield className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-[#1e293b]">New Field Directive</h2>
+              <h2 className="text-2xl font-black text-[#1e293b]">{t('incidents.modals.new_directive')}</h2>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-0.5 italic">Emergency Resource Protocol #SR-99</p>
             </div>
           </div>
@@ -359,9 +362,9 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-2 gap-6">
-            <div className="col-span-2 space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Directive Title</label>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+            <div className="col-span-2 space-y-1.5">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.directive_title')}</label>
               <input
                 required
                 className="suraksha-input"
@@ -370,8 +373,9 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
             </div>
-            <div className="space-y-2 relative">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Incident Geo-Location</label>
+            
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.geo_location')}</label>
               <div className="relative">
                 <input
                   required
@@ -387,21 +391,26 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 )}
               </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Category Classification</label>
-              <select
-                className="suraksha-input"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              >
-                <option value="FLOOD">Flood response</option>
-                <option value="LANDSLIDE">Landslide alert</option>
-                <option value="STORM">Storm management</option>
-                <option value="MEDICAL">Medical emergency</option>
-                <option value="FIRE">Fire hazard</option>
-              </select>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.category')}</label>
+              <div className="relative">
+                <select
+                  className="suraksha-input appearance-none cursor-pointer pr-10"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                >
+                  <option value="FLOOD">Flood response</option>
+                  <option value="LANDSLIDE">Landslide alert</option>
+                  <option value="STORM">Storm management</option>
+                  <option value="MEDICAL">Medical emergency</option>
+                  <option value="FIRE">Fire hazard</option>
+                </select>
+                <LucideChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+              </div>
             </div>
-            <div className="space-y-2">
+
+            <div className="space-y-1.5">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Latitude</label>
               <input
                 type="number"
@@ -413,7 +422,8 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) })}
               />
             </div>
-            <div className="space-y-2">
+
+            <div className="space-y-1.5">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Longitude</label>
               <input
                 type="number"
@@ -425,8 +435,9 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) })}
               />
             </div>
-            <div className="col-span-2 space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Operational Briefing</label>
+
+            <div className="col-span-2 space-y-1.5">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.briefing')}</label>
               <textarea
                 required
                 className="suraksha-input min-h-[120px] py-4"
@@ -440,9 +451,9 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
           <button
             type="submit"
             disabled={loading}
-            className="suraksha-button w-full h-14 uppercase tracking-widest text-[11px] font-black shadow-blue-500/30"
+            className="suraksha-button w-full h-14 uppercase tracking-widest text-[11px] font-black shadow-blue-500/30 mt-4"
           >
-            {loading ? 'Transmitting Directive...' : 'Execute Field Directive'}
+            {loading ? t('incidents.modals.transmitting') : t('incidents.modals.execute')}
           </button>
         </form>
       </div>
@@ -451,6 +462,7 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
 }
 
 function IncidentDetailsModal({ incident, onClose }: any) {
+  const { t } = useTranslation()
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
       <div className="suraksha-card w-full max-w-4xl bg-white p-0 overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl rounded-[3rem]">
@@ -485,7 +497,7 @@ function IncidentDetailsModal({ incident, onClose }: any) {
             </div>
 
             <div className="space-y-3 flex-1 overflow-y-auto pr-4">
-              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Operational Briefing</div>
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{t('incidents.modals.briefing')}</div>
               <p className="text-slate-600 leading-relaxed font-bold text-sm bg-slate-50 p-6 rounded-3xl border border-dashed border-slate-200">
                 {incident.description || 'No detailed briefing provided for this incident record. Please coordinate with field officers for live updates.'}
               </p>

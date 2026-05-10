@@ -7,6 +7,7 @@ import {
 import { cn } from '@/lib/utils'
 import { campService } from '../services/api'
 import { useAppStore } from '@/store/useAppStore'
+import { useTranslation } from 'react-i18next'
 
 const servicesList = [
   { name: 'food', icon: Utensils },
@@ -20,6 +21,7 @@ const servicesList = [
 ]
 
 export default function CampsPage() {
+  const { t } = useTranslation()
   const { searchQuery } = useAppStore()
   const [camps, setCamps] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -92,15 +94,15 @@ export default function CampsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Relief Camp Management</h1>
-          <p className="text-slate-500 mt-1 font-bold">Service availability and crowd management</p>
+          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">{t('camps.title')}</h1>
+          <p className="text-slate-500 mt-1 font-bold">{t('camps.subtitle')}</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}
           className="suraksha-button flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
-          Add Camp
+          {t('camps.new_camp')}
         </button>
       </div>
 

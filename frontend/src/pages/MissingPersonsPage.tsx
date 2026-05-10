@@ -160,8 +160,8 @@ export default function MissingPersonsPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
             <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <h2 className="text-2xl font-black text-slate-900">Report Missing Person</h2>
               <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all">
@@ -169,35 +169,35 @@ export default function MissingPersonsPage() {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-10 space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Full Name</label>
-                  <input name="name" type="text" placeholder="Legal name" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all outline-none" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Full Name</label>
+                  <input name="name" type="text" placeholder="Legal name" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Age</label>
-                  <input name="age" type="number" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all outline-none" />
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Age</label>
+                  <input name="age" type="number" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Last Seen Location</label>
-                <input name="lastSeen" type="text" placeholder="City, Street, or Landmark" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all outline-none" />
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Last Seen Location</label>
+                <input name="lastSeen" type="text" placeholder="City, Street, or Landmark" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Description (Appearance, Clothes)</label>
-                <textarea name="description" rows={3} required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all outline-none resize-none"></textarea>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Description (Appearance, Clothes)</label>
+                <textarea name="description" rows={3} required className="suraksha-input min-h-[100px] py-4 focus:ring-red-500/20 focus:border-red-500/40 resize-none"></textarea>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Upload Recent Photo</label>
-                <div className="flex items-center gap-4">
-                  <div className="relative w-20 h-20 bg-slate-100 rounded-2xl overflow-hidden flex items-center justify-center border border-dashed border-slate-300">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Upload Recent Photo</label>
+                <div className="flex items-center gap-6 p-4 bg-slate-50 border border-slate-100 rounded-3xl">
+                  <div className="relative w-20 h-20 bg-white rounded-2xl overflow-hidden flex items-center justify-center border-2 border-dashed border-slate-200 hover:border-red-200 transition-colors group">
                     {selectedImage ? (
                       <img src={selectedImage} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                      <Plus className="w-6 h-6 text-slate-300" />
+                      <Plus className="w-6 h-6 text-slate-300 group-hover:text-red-400 transition-colors" />
                     )}
                     <input 
                       type="file" 
@@ -207,7 +207,7 @@ export default function MissingPersonsPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <p className="text-[10px] text-slate-400 font-medium leading-relaxed">
+                    <p className="text-[10px] text-slate-400 font-bold leading-relaxed uppercase tracking-tight">
                       Please upload a clear, front-facing photo of the individual for better identification.
                     </p>
                   </div>

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
-import { HandHelping, Plus, X, MapPin, Users, Clock, CheckCircle2, Loader2, ShieldCheck } from 'lucide-react'
+import { HandHelping, Plus, X, MapPin, Users, Clock, CheckCircle2, Loader2, ShieldCheck, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { helpRequestService, userService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 export default function HelpRequestsPage() {
+  const { t } = useTranslation()
   const [requests, setRequests] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -55,8 +57,8 @@ export default function HelpRequestsPage() {
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-[#1e293b] tracking-tight">Help Requests</h1>
-          <p className="text-slate-500 font-bold">Coordinate emergency assistance and resources</p>
+          <h1 className="text-3xl font-black text-[#1e293b] tracking-tight">{t('help.title')}</h1>
+          <p className="text-slate-500 font-bold">{t('help.subtitle')}</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -140,8 +142,8 @@ export default function HelpRequestsPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
             <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <h2 className="text-2xl font-black text-[#1e293b]">Request Assistance</h2>
               <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all">
@@ -149,49 +151,55 @@ export default function HelpRequestsPage() {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-10 space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Request Category</label>
-                  <select name="type" required className="suraksha-input">
-                    <option value="Rescue">Rescue</option>
-                    <option value="Medical">Medical</option>
-                    <option value="Food/Water">Food/Water</option>
-                    <option value="Shelter">Shelter</option>
-                    <option value="Supplies">Supplies</option>
-                  </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Request Category</label>
+                  <div className="relative">
+                    <select name="type" required className="suraksha-input appearance-none cursor-pointer pr-10">
+                      <option value="Rescue">Rescue</option>
+                      <option value="Medical">Medical</option>
+                      <option value="Food/Water">Food/Water</option>
+                      <option value="Shelter">Shelter</option>
+                      <option value="Supplies">Supplies</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Priority Level</label>
-                  <select name="priority" required className="suraksha-input">
-                    <option value="MEDIUM">Medium</option>
-                    <option value="HIGH">High</option>
-                    <option value="CRITICAL">Critical</option>
-                  </select>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Priority Level</label>
+                  <div className="relative">
+                    <select name="priority" required className="suraksha-input appearance-none cursor-pointer pr-10">
+                      <option value="MEDIUM">Medium</option>
+                      <option value="HIGH">High</option>
+                      <option value="CRITICAL">Critical</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Location Details</label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Location Details</label>
                 <div className="relative">
                   <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" />
                   <input name="location" type="text" placeholder="Building, street, or GPS" required className="suraksha-input pl-14" />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Affected Persons</label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Affected Persons</label>
                 <input name="peopleCount" type="number" defaultValue="1" min="1" required className="suraksha-input" />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Describe the Situation</label>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Describe the Situation</label>
                 <textarea name="description" rows={3} required placeholder="What kind of help is needed immediately?" className="suraksha-input min-h-[100px] py-4 resize-none"></textarea>
               </div>
 
               <div className="pt-4">
                 <button
                   disabled={isSubmitting}
-                  className="w-full py-5 bg-[#0061ff] text-white rounded-2xl font-bold shadow-xl shadow-blue-500/25 hover:scale-[1.01] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="suraksha-button w-full h-14 uppercase tracking-widest text-[11px] font-black shadow-blue-500/30"
                 >
                   {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : "Submit Help Request"}
                 </button>

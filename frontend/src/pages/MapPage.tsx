@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import { incidentService, campService } from '../services/api'
 import L from 'leaflet'
 import { useEffect as useLayoutEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // Fix Leaflet icon issue
 import icon from 'leaflet/dist/images/marker-icon.png'
@@ -83,6 +84,7 @@ function SetBounds({ incidents, camps, showCamps }: { incidents: any[], camps: a
 }
 
 export default function MapPage() {
+  const { t } = useTranslation()
   const [incidents, setIncidents] = useState<any[]>([])
   const [camps, setCamps] = useState<any[]>([])
   const [layers, setLayers] = useState({
@@ -320,4 +322,3 @@ export default function MapPage() {
     </div>
   )
 }
-

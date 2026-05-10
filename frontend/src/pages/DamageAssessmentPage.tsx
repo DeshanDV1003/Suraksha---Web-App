@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Home, Plus, X, BarChart3, Clock, CheckCircle2, Loader2, Camera, Info, TrendingUp } from 'lucide-react'
+import { Home, Plus, X, BarChart3, Clock, CheckCircle2, Loader2, Camera, Info, TrendingUp, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { damageAssessmentService, incidentService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
@@ -203,75 +203,87 @@ export default function DamageAssessmentPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
             <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <h2 className="text-2xl font-black text-slate-900">Report Damage</h2>
               <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all">
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="p-10 grid grid-cols-2 gap-x-8 gap-y-6">
-              <div className="space-y-2 col-span-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Related Incident</label>
-                <select name="incidentId" className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
-                  <option value="">Select Incident (Optional)</option>
-                  {incidents.map(inc => <option key={inc.id} value={inc.id}>{inc.title}</option>)}
-                </select>
+            <form onSubmit={handleSubmit} className="p-10 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="space-y-1.5 sm:col-span-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Related Incident</label>
+                <div className="relative">
+                  <select name="incidentId" className="suraksha-input appearance-none cursor-pointer pr-10">
+                    <option value="">Select Incident (Optional)</option>
+                    {incidents.map(inc => <option key={inc.id} value={inc.id}>{inc.title}</option>)}
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Category</label>
-                <select name="category" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
-                  <option value="RESIDENTIAL">Residential</option>
-                  <option value="AGRICULTURAL">Agricultural</option>
-                  <option value="COMMERCIAL">Commercial</option>
-                  <option value="INFRASTRUCTURE">Infrastructure</option>
-                  <option value="UTILITY">Utility</option>
-                </select>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Category</label>
+                <div className="relative">
+                  <select name="category" required className="suraksha-input appearance-none cursor-pointer pr-10">
+                    <option value="RESIDENTIAL">Residential</option>
+                    <option value="AGRICULTURAL">Agricultural</option>
+                    <option value="COMMERCIAL">Commercial</option>
+                    <option value="INFRASTRUCTURE">Infrastructure</option>
+                    <option value="UTILITY">Utility</option>
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Location</label>
-                <input name="location" type="text" placeholder="Address or Area" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none" />
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Location</label>
+                <input name="location" type="text" placeholder="Address or Area" required className="suraksha-input" />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Structural Damage</label>
-                <select name="structuralDamage" className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
-                  <option value="NONE">None</option>
-                  <option value="MINOR">Minor</option>
-                  <option value="MODERATE">Moderate</option>
-                  <option value="MAJOR">Major</option>
-                  <option value="TOTAL_LOSS">Total Loss</option>
-                </select>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Structural Damage</label>
+                <div className="relative">
+                  <select name="structuralDamage" className="suraksha-input appearance-none cursor-pointer pr-10">
+                    <option value="NONE">None</option>
+                    <option value="MINOR">Minor</option>
+                    <option value="MODERATE">Moderate</option>
+                    <option value="MAJOR">Major</option>
+                    <option value="TOTAL_LOSS">Total Loss</option>
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Agricultural Damage</label>
-                <select name="cropDamage" className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
-                  <option value="NONE">None</option>
-                  <option value="MINOR">Minor</option>
-                  <option value="MODERATE">Moderate</option>
-                  <option value="MAJOR">Major</option>
-                  <option value="TOTAL_LOSS">Total Loss</option>
-                </select>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Agricultural Damage</label>
+                <div className="relative">
+                  <select name="cropDamage" className="suraksha-input appearance-none cursor-pointer pr-10">
+                    <option value="NONE">None</option>
+                    <option value="MINOR">Minor</option>
+                    <option value="MODERATE">Moderate</option>
+                    <option value="MAJOR">Major</option>
+                    <option value="TOTAL_LOSS">Total Loss</option>
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Affected Persons</label>
-                <input name="affectedPersons" type="number" defaultValue="0" className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none" />
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Affected Persons</label>
+                <input name="affectedPersons" type="number" defaultValue="0" className="suraksha-input" />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Estimated Loss ($)</label>
-                <input name="estimatedLoss" type="number" step="0.01" defaultValue="0" className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none" />
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Estimated Loss ($)</label>
+                <input name="estimatedLoss" type="number" step="0.01" defaultValue="0" className="suraksha-input" />
               </div>
 
-              <div className="space-y-2 col-span-2 pt-4">
+              <div className="space-y-1.5 sm:col-span-2 pt-4">
                 <button 
                   disabled={isSubmitting}
-                  className="w-full py-5 bg-[#0061ff] text-white rounded-2xl font-bold shadow-xl shadow-blue-500/25 hover:scale-[1.01] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="suraksha-button w-full h-14 uppercase tracking-widest text-[11px] font-black shadow-blue-500/30"
                 >
                   {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : "Submit Assessment"}
                 </button>

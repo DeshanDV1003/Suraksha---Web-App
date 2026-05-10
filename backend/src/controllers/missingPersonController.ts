@@ -1,6 +1,41 @@
 import { Request, Response } from 'express';
 import * as missingPersonService from '../services/missingPersonService';
 
+/**
+ * @swagger
+ * tags:
+ *   name: MissingPersons
+ *   description: Missing person reporting and tracking
+ */
+
+/**
+ * @swagger
+ * /api/missing-persons:
+ *   post:
+ *     summary: Report a missing person
+ *     tags: [MissingPersons]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *               - lastSeen
+ *             properties:
+ *               name: { type: string }
+ *               age: { type: integer }
+ *               description: { type: string }
+ *               lastSeen: { type: string }
+ *               photo: { type: string }
+ *     responses:
+ *       201:
+ *         description: Missing person reported successfully
+ */
 export const reportMissingPerson = async (req: any, res: Response) => {
   try {
     const userId = req.user.userId;
@@ -15,6 +50,16 @@ export const reportMissingPerson = async (req: any, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/missing-persons:
+ *   get:
+ *     summary: Get all missing persons
+ *     tags: [MissingPersons]
+ *     responses:
+ *       200:
+ *         description: List of missing persons
+ */
 export const getMissingPersons = async (req: Request, res: Response) => {
   try {
     const persons = await missingPersonService.getMissingPersons();
@@ -24,6 +69,34 @@ export const getMissingPersons = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/missing-persons/{id}/status:
+ *   patch:
+ *     summary: Update missing person status
+ *     tags: [MissingPersons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status: { type: string, enum: [MISSING, FOUND, DECEASED] }
+ *     responses:
+ *       200:
+ *         description: Status updated
+ */
 export const updateMissingPersonStatus = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
@@ -35,6 +108,24 @@ export const updateMissingPersonStatus = async (req: any, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/missing-persons/{id}:
+ *   delete:
+ *     summary: Delete a missing person record
+ *     tags: [MissingPersons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Record deleted
+ */
 export const deleteMissingPerson = async (req: any, res: Response) => {
   try {
     const { id } = req.params;

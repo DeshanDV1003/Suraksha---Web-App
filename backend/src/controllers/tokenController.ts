@@ -1,6 +1,25 @@
 import { Request, Response } from 'express';
 import * as tokenService from '../services/tokenService';
 
+/**
+ * @swagger
+ * tags:
+ *   name: Tokens
+ *   description: Legacy token management (See ReliefTokens for newer system)
+ */
+
+/**
+ * @swagger
+ * /api/tokens:
+ *   get:
+ *     summary: List all tokens
+ *     tags: [Tokens]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of tokens
+ */
 export const getTokens = async (req: Request, res: Response) => {
   try {
     const tokens = await tokenService.listTokens();
@@ -10,6 +29,29 @@ export const getTokens = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/tokens:
+ *   post:
+ *     summary: Create a new token for a user
+ *     tags: [Tokens]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *             properties:
+ *               userId: { type: string }
+ *               type: { type: string }
+ *     responses:
+ *       201:
+ *         description: Token created successfully
+ */
 export const createToken = async (req: Request, res: Response) => {
   try {
     const { userId, type } = req.body;
@@ -20,6 +62,28 @@ export const createToken = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/tokens/use:
+ *   post:
+ *     summary: Use a token by code
+ *     tags: [Tokens]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - code
+ *             properties:
+ *               code: { type: string }
+ *     responses:
+ *       200:
+ *         description: Token used successfully
+ */
 export const useToken = async (req: Request, res: Response) => {
   try {
     const { code } = req.body;

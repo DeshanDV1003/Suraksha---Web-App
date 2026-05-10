@@ -10,6 +10,7 @@ import { alertService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const SRI_LANKA_TOWNS = [
   'All Island',
@@ -89,6 +90,7 @@ const categories = [
 ]
 
 export default function AlertsPage() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [alerts, setAlerts] = useState<any[]>([])
@@ -172,8 +174,8 @@ export default function AlertsPage() {
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black tracking-tight text-[#1e293b]">Alert Broadcasting</h1>
-          <p className="text-slate-500 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70 italic">Emergency multi-channel communications hub</p>
+          <h1 className="text-4xl font-black tracking-tight text-[#1e293b]">{t('alerts.title')}</h1>
+          <p className="text-slate-500 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70 italic">{t('alerts.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3 px-6 py-3 bg-red-50 text-red-600 rounded-2xl border border-red-100 shadow-sm">
            <Radio className="w-5 h-5 animate-pulse" />
@@ -297,7 +299,7 @@ export default function AlertsPage() {
                      <div className="p-2 bg-white/20 rounded-xl">
                         <Radio className="w-6 h-6" />
                      </div>
-                     Execute Critical Broadcast
+                     {t('alerts.new_alert')}
                    </>
                  )}
               </button>

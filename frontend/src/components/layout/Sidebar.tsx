@@ -20,10 +20,12 @@ import {
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { incidentService, alertService } from '../../services/api'
 import logo from '@/pictures/Full logo.png'
 
 export function Sidebar() {
+  const { t } = useTranslation()
   const location = useLocation()
   const { logout, user } = useAuth()
   const [counts, setCounts] = useState({ incidents: 0, alerts: 0 })
@@ -51,26 +53,26 @@ export function Sidebar() {
   const role = user?.role || 'CITIZEN'
 
   const mainNavigation = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
-    { name: 'Impact Map', href: '/map', icon: MapPin, status: 'LIVE', roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
-    { name: 'Incidents', href: '/incidents', icon: AlertTriangle, count: counts.incidents, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
-    { name: 'Alerts', href: '/alerts', icon: Radio, count: counts.alerts, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
-    { name: 'Analytics', href: '/reports', icon: BarChart3, roles: ['ADMIN', 'DMC_OFFICER'] },
-    { name: 'User Management', href: '/users', icon: Users, roles: ['ADMIN'] },
+    { name: t('nav.dashboard'), href: '/', icon: LayoutDashboard, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.map'), href: '/map', icon: MapPin, status: 'LIVE', roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.incidents'), href: '/incidents', icon: AlertTriangle, count: counts.incidents, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.alerts'), href: '/alerts', icon: Radio, count: counts.alerts, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.analytics'), href: '/reports', icon: BarChart3, roles: ['ADMIN', 'DMC_OFFICER'] },
+    { name: t('nav.user_management'), href: '/users', icon: Users, roles: ['ADMIN'] },
   ].filter(item => item.roles.includes(role))
   
   const resourceNavigation = [
-    { name: 'Resources', href: '/resources', icon: Package, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
-    { name: 'Relief Camps', href: '/camps', icon: Building2, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
-    { name: 'Token System', href: '/tokens', icon: QrCode, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.resources'), href: '/resources', icon: Package, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
+    { name: t('nav.camps'), href: '/camps', icon: Building2, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.tokens'), href: '/tokens', icon: QrCode, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
   ].filter(item => item.roles.includes(role))
 
   const safetyNavigation = [
-    { name: 'Volunteers', href: '/volunteers', icon: Shield, roles: ['ADMIN', 'DMC_OFFICER'] },
-    { name: 'Help Requests', href: '/help-requests', icon: HandHelping, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
-    { name: 'Damage Reports', href: '/damage-assessment', icon: Home, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
-    { name: 'Missing Persons', href: '/missing-persons', icon: UserSearch, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
-    { name: 'Support Center', href: '/support', icon: HeartPulse, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: t('nav.volunteers'), href: '/volunteers', icon: Shield, roles: ['ADMIN', 'DMC_OFFICER'] },
+    { name: t('nav.help_requests'), href: '/help-requests', icon: HandHelping, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: t('nav.damage_assessment'), href: '/damage-assessment', icon: Home, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: t('nav.missing_persons'), href: '/missing-persons', icon: UserSearch, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: t('nav.support'), href: '/support', icon: HeartPulse, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
   ].filter(item => item.roles.includes(role))
 
   return (
@@ -125,7 +127,7 @@ export function Sidebar() {
         })}
 
         <div className="pt-10 mb-2">
-          <h2 className="px-5 mb-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] opacity-60">Resources</h2>
+          <h2 className="px-5 mb-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] opacity-60">{t('nav.resources')}</h2>
           
           <div className="space-y-1">
             {resourceNavigation.map((item) => {
@@ -186,7 +188,7 @@ export function Sidebar() {
             )}
           >
             <Settings className="w-5 h-5 text-slate-400" />
-            Settings
+            {t('nav.settings')}
           </Link>
           
           <button 

@@ -7,9 +7,11 @@ import {
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 import { userService, authService } from '@/services/api'
+import { useTranslation } from 'react-i18next'
 
 export default function SettingsPage() {
-  const { user } = useAuth()
+  const { t, i18n } = useTranslation()
+  const { user, updateUser } = useAuth()
   const [activeTab, setActiveTab] = useState('profile')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
@@ -45,7 +47,8 @@ export default function SettingsPage() {
     try {
       setIsSubmitting(true)
       await userService.updateProfile({ name, phone })
-      alert('Profile updated successfully! Refresh to see changes.')
+      updateUser({ name, phone })
+      alert('Profile updated successfully!')
     } catch (error) {
       console.error('Update failed:', error)
       alert('Failed to update profile')
@@ -75,18 +78,24 @@ export default function SettingsPage() {
     }
   }
 
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang)
+  }
+
   const tabs = [
-    { id: 'profile', name: 'Profile Information', icon: User },
-    { id: 'notifications', name: 'Notifications', icon: Bell },
-    { id: 'security', name: 'Security & Privacy', icon: Shield },
-    { id: 'preferences', name: 'App Preferences', icon: Palette },
+    { id: 'profile', name: t('profile_info'), icon: User },
+    { id: 'notifications', name: t('notifications'), icon: Bell },
+    { id: 'security', name: t('security_privacy'), icon: Shield },
+    { id: 'preferences', name: t('app_preferences'), icon: Palette },
   ]
+
+  const PRIMARY_COLOR = "#0061ff"
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
       <div>
-        <h1 className="text-3xl font-black tracking-tight text-[#1e293b] dark:text-white transition-colors">Settings</h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70">Manage your command center account</p>
+        <h1 className="text-3xl font-black tracking-tight text-[#1e293b] dark:text-white transition-colors">{t('settings')}</h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70">{t('manage_account')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -99,9 +108,10 @@ export default function SettingsPage() {
               className={cn(
                 "w-full flex items-center gap-3.5 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300",
                 activeTab === tab.id 
-                  ? "bg-[#0061ff] text-white shadow-lg shadow-blue-500/20" 
+                  ? `bg-[${PRIMARY_COLOR}] text-white shadow-lg shadow-blue-500/20` 
                   : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-[#0061ff] dark:hover:text-blue-400"
               )}
+              style={activeTab === tab.id ? { backgroundColor: PRIMARY_COLOR } : {}}
             >
               <tab.icon className="w-5 h-5 flex-shrink-0" />
               <span className="tracking-tight">{tab.name}</span>
@@ -117,7 +127,7 @@ export default function SettingsPage() {
                {/* Profile Header */}
                <div className="flex items-center gap-8 pb-10 border-b border-slate-50 dark:border-slate-800">
                   <div className="relative group">
-                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-[#0061ff] to-[#00c6ff] flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-blue-500/20">
+                    <div className="w-24 h-24 rounded-3xl flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-blue-500/20" style={{ backgroundColor: PRIMARY_COLOR }}>
                       {user?.name?.slice(0, 2).toUpperCase() || 'AD'}
                     </div>
                     <button className="absolute -bottom-2 -right-2 p-2.5 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 text-[#0061ff] hover:scale-110 transition-all active:scale-95 group-hover:bg-[#0061ff] group-hover:text-white">
@@ -143,13 +153,14 @@ export default function SettingsPage() {
                  </div>
 
                  <div className="pt-6">
-                   <button 
-                    disabled={isSubmitting}
-                    className="suraksha-button flex items-center justify-center gap-2 h-12 px-8 min-w-[160px]"
-                   >
-                     {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                     Save Changes
-                   </button>
+                    <button 
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="suraksha-button flex items-center justify-center gap-2 h-12 px-8 min-w-[160px]"
+                    >
+                      {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                      {t('save_changes')}
+                    </button>
                  </div>
                </form>
             </div>
@@ -157,7 +168,7 @@ export default function SettingsPage() {
 
           {activeTab === 'notifications' && (
             <div className="p-10 space-y-8">
-               <h3 className="text-xl font-black text-[#1e293b] dark:text-white mb-8">Notification Preferences</h3>
+               <h3 className="text-xl font-black text-[#1e293b] dark:text-white mb-8">{t('notifications')}</h3>
                <div className="space-y-4">
                   <ToggleItem title="Critical Incident Alerts" desc="Immediate SMS and Push notifications for severity 5+ events" checked />
                   <ToggleItem title="Volunteer Dispatches" desc="Notify when new volunteers are assigned to your sector" checked />
@@ -169,7 +180,7 @@ export default function SettingsPage() {
 
           {activeTab === 'security' && (
             <div className="p-10 space-y-10">
-               <h3 className="text-xl font-black text-[#1e293b] dark:text-white">Security Settings</h3>
+               <h3 className="text-xl font-black text-[#1e293b] dark:text-white">{t('security_privacy')}</h3>
                
                <form onSubmit={handleChangePassword} className="space-y-10">
                  <div className="max-w-md space-y-6">
@@ -214,13 +225,14 @@ export default function SettingsPage() {
                  </div>
 
                  <div className="pt-6">
-                   <button 
-                    disabled={isSubmitting}
-                    className="suraksha-button flex items-center justify-center gap-2 h-12 px-8 min-w-[180px]"
-                   >
-                     {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                     Update Password
-                   </button>
+                    <button 
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="suraksha-button flex items-center justify-center gap-2 h-12 px-8 min-w-[180px]"
+                    >
+                      {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                      Update Password
+                    </button>
                  </div>
                </form>
             </div>
@@ -228,11 +240,11 @@ export default function SettingsPage() {
 
           {activeTab === 'preferences' && (
             <div className="p-10 space-y-10">
-               <h3 className="text-xl font-black text-[#1e293b] dark:text-white">Personalization</h3>
+               <h3 className="text-xl font-black text-[#1e293b] dark:text-white">{t('personalization')}</h3>
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   <div className="space-y-4">
-                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Display Mode</label>
+                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('display_mode')}</label>
                      <div className="grid grid-cols-2 gap-4">
                         <button 
                           onClick={() => setTheme('light')}
@@ -244,7 +256,7 @@ export default function SettingsPage() {
                           )}
                         >
                            <Sun className="w-4 h-4" />
-                           <span className="text-sm font-black">Light</span>
+                           <span className="text-sm font-black">{t('light')}</span>
                         </button>
                         <button 
                           onClick={() => setTheme('dark')}
@@ -256,22 +268,23 @@ export default function SettingsPage() {
                           )}
                         >
                            <Moon className="w-4 h-4" />
-                           <span className="text-sm font-black">Dark</span>
+                           <span className="text-sm font-black">{t('dark')}</span>
                         </button>
                      </div>
                   </div>
 
                   <div className="space-y-4">
-                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Primary Language</label>
+                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('primary_language')}</label>
                      <div className="relative">
                        <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
                        <select 
-                          onChange={(e) => alert(`Language changed to ${e.target.value}`)}
+                          value={i18n.language}
+                          onChange={(e) => handleLanguageChange(e.target.value)}
                           className="suraksha-input pl-11 appearance-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
                         >
-                          <option value="English">English (US)</option>
-                          <option value="Sinhala">Sinhala (සිංහල)</option>
-                          <option value="Tamil">Tamil (தமிழ்)</option>
+                          <option value="en">English (US)</option>
+                          <option value="si">Sinhala (සිංහල)</option>
+                          <option value="ta">Tamil (தமிழ்)</option>
                        </select>
                      </div>
                   </div>
@@ -283,8 +296,8 @@ export default function SettingsPage() {
                         <Palette className="w-6 h-6 text-[#0061ff]" />
                      </div>
                      <div>
-                        <h4 className="text-sm font-black text-[#1e293b] dark:text-white uppercase tracking-tight">Appearance Sync</h4>
-                        <p className="text-[11px] font-bold text-slate-400">Settings are applied instantly to your local device</p>
+                        <h4 className="text-sm font-black text-[#1e293b] dark:text-white uppercase tracking-tight">{t('appearance_sync')}</h4>
+                        <p className="text-[11px] font-bold text-slate-400">{t('settings_applied')}</p>
                      </div>
                   </div>
                </div>

@@ -1,0 +1,111 @@
+{
+  "settings": "Settings",
+  "manage_account": "Manage your command center account",
+  "profile_info": "Profile Information",
+  "notifications": "Notifications",
+  "security_privacy": "Security & Privacy",
+  "app_preferences": "App Preferences",
+  "personalization": "Personalization",
+  "display_mode": "Display Mode",
+  "primary_language": "Primary Language",
+  "save_changes": "Save Changes",
+  "light": "Light",
+  "dark": "Dark",
+  "appearance_sync": "Appearance Sync",
+  "settings_applied": "Settings are applied instantly to your local device",
+  "nav": {
+    "dashboard": "Dashboard",
+    "incidents": "Incidents",
+    "alerts": "Alerts",
+    "camps": "Relief Camps",
+    "resources": "Resources",
+    "volunteers": "Volunteers",
+    "help_requests": "Help Requests",
+    "map": "Live Map",
+    "reports": "Reports",
+    "settings": "Settings",
+    "missing_persons": "Missing Persons",
+    "tokens": "Tokens",
+    "relief_tokens": "Relief Tokens",
+    "damage_assessment": "Damage Assessment",
+    "support": "Psychological Support",
+    "user_management": "User Management",
+    "analytics": "Analytics",
+    "audit": "Audit Logs"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Real-time disaster management overview",
+    "export_report": "Export Report",
+    "new_broadcast": "New Broadcast",
+    "active_incidents": "Active Incidents",
+    "volunteers_active": "Volunteers Active",
+    "relief_camps": "Relief Camps",
+    "help_requests": "Help Requests",
+    "avg_response_time": "Avg Response Time",
+    "priority_queue": "ML-Sorted Priority Queue",
+    "filter_results": "Filter Results",
+    "recent_alerts": "Recent Alerts",
+    "view_all": "View All Broadcasts",
+    "gis_map": "GIS Impact Map Preview",
+    "open_full_map": "Open Full Map",
+    "no_incidents": "No matching incidents found",
+    "no_alerts": "No matching alerts"
+  },
+  "incidents": {
+    "title": "Incident Management",
+    "pipeline": "Command Center response pipeline",
+    "register_new": "Register New Incident",
+    "all_severities": "All Severities",
+    "all_status": "All Status",
+    "search_placeholder": "Search by title, location or ID...",
+    "tracker_id": "Tracker ID",
+    "details": "Incident Details",
+    "priority": "Priority",
+    "review_status": "Review Status",
+    "ml_confidence": "ML Confidence",
+    "age": "Age",
+    "operations": "Operations",
+    "syncing": "Synchronizing Encrypted Data...",
+    "no_records": "Zero Incident Records on Current Pipeline",
+    "modals": {
+      "new_directive": "New Field Directive",
+      "directive_title": "Directive Title",
+      "geo_location": "Incident Geo-Location",
+      "category": "Category Classification",
+      "briefing": "Operational Briefing",
+      "execute": "Execute Field Directive",
+      "transmitting": "Transmitting Directive..."
+    }
+  },
+  "alerts": {
+    "title": "Emergency Broadcasts",
+    "subtitle": "System-wide warning & alert management",
+    "new_alert": "New Broadcast"
+  },
+  "camps": {
+    "title": "Relief Camps",
+    "subtitle": "Shelter capacity & services tracking",
+    "new_camp": "Register Camp"
+  },
+  "resources": {
+    "title": "Resource Inventory",
+    "subtitle": "Equipment & supply distribution tracking"
+  },
+  "volunteers": {
+    "title": "Volunteer Force",
+    "subtitle": "Mobilization & task assignment"
+  },
+  "help": {
+    "title": "Help Requests",
+    "subtitle": "Community assistance & verification"
+  },
+  "header": {
+    "search_placeholder": "Search incidents, alerts, volunteers...",
+    "alerts_title": "Operational Alerts",
+    "node_profile": "Node Profile",
+    "system_config": "System Config",
+    "terminate_session": "Terminate Session",
+    "clear_all": "Clear All"
+  }
+}

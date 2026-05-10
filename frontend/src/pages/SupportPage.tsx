@@ -3,8 +3,10 @@ import { HeartPulse, Plus, X, Shield, Users, Clock, Loader2, MessageSquare, Spar
 import { cn } from '@/lib/utils'
 import { supportService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 export default function SupportPage() {
+  const { t } = useTranslation()
   const [requests, setRequests] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -198,7 +200,7 @@ export default function SupportPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xl p-4 animate-in fade-in duration-500">
-          <div className="bg-white w-full max-w-2xl rounded-[3.5rem] shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 duration-500">
+          <div className="bg-white w-full max-w-2xl rounded-[3.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500">
             <div className="px-12 py-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <h2 className="text-3xl font-black text-slate-900">Request Counseling</h2>
               <button onClick={() => setShowModal(false)} className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all hover:scale-110">

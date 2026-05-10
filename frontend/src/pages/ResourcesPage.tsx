@@ -3,6 +3,7 @@ import { Package, Eye, Phone, Plus, X, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { resourceService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
+import { useTranslation } from 'react-i18next'
 
 interface Resource {
   id: string
@@ -15,6 +16,7 @@ interface Resource {
 }
 
 export default function ResourcesPage() {
+  const { t } = useTranslation()
   const { searchQuery } = useAppStore()
   const [resources, setResources] = useState<Resource[]>([])
   const [loading, setLoading] = useState(true)
@@ -90,8 +92,8 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Community Resource Management</h1>
-          <p className="text-slate-500 mt-1 font-bold">Crowdsourced resources from local community</p>
+          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">{t('resources.title')}</h1>
+          <p className="text-slate-500 mt-1 font-bold">{t('resources.subtitle')}</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}

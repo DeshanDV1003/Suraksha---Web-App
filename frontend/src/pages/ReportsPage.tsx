@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { analyticsService } from '../services/api'
+import { useTranslation } from 'react-i18next'
 
 const weeklyData = [
   { name: 'Mon', value: 12 },
@@ -49,6 +50,7 @@ const ML_STATS = [
 ]
 
 export default function ReportsPage() {
+  const { t } = useTranslation()
   const [counts, setCounts] = useState({
     totalIncidents: 0,
     critical: 0,
@@ -109,8 +111,6 @@ export default function ReportsPage() {
       { name: 'Medium', value: counts.medium, color: '#eab308' },
       { name: 'Low', value: Math.max(0, counts.totalIncidents - (counts.critical + counts.high + counts.medium)), color: '#94a3b8' },
     ]
-    // Filter out 0 value items to prevent Recharts pie crash if all values are 0, 
-    // but Pie needs at least one value usually, so we'll handle fallback in render
     return data
   }, [counts])
 

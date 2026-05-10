@@ -1,6 +1,41 @@
 import { Request, Response } from 'express';
 import * as authService from '../services/authService';
 
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Authentication and user management
+ */
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - name
+ *             properties:
+ *               email: { type: string }
+ *               password: { type: string }
+ *               name: { type: string }
+ *               phone: { type: string }
+ *               region: { type: string }
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Registration failed
+ */
 export const register = async (req: Request, res: Response) => {
   try {
     const user = await authService.registerUser(req.body);
@@ -10,6 +45,37 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login and get a JWT token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email: { type: string }
+ *               password: { type: string }
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token: { type: string }
+ *                 user: { type: object }
+ *       401:
+ *         description: Invalid credentials
+ */
 export const login = async (req: Request, res: Response) => {
   try {
     const result = await authService.loginUser(req.body);
@@ -19,6 +85,30 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/auth/change-password:
+ *   post:
+ *     summary: Change user password
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - currentPassword
+ *               - newPassword
+ *             properties:
+ *               currentPassword: { type: string }
+ *               newPassword: { type: string }
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ */
 export const changePassword = async (req: any, res: Response) => {
   try {
     const userId = req.user.userId;

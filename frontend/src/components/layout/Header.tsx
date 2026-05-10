@@ -4,8 +4,10 @@ import { useAppStore } from '@/store/useAppStore'
 import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export function Header() {
+  const { t } = useTranslation()
   const { searchQuery, setSearchQuery, notifications, clearNotifications, markAsRead } = useAppStore()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -44,7 +46,7 @@ export function Header() {
           <Search className="w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <input
             type="text"
-            placeholder="Search incidents, alerts, volunteers..."
+            placeholder={t('header.search_placeholder')}
             className="bg-transparent border-none outline-none text-sm w-full placeholder:text-muted-foreground/70"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -71,14 +73,14 @@ export function Header() {
           <div className="absolute top-14 right-0 w-96 bg-card border rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-[100]">
             <div className="p-6 border-b flex items-center justify-between bg-muted/30">
               <div>
-                <h3 className="text-lg font-black text-foreground">Operational Alerts</h3>
+                <h3 className="text-lg font-black text-foreground">{t('header.alerts_title')}</h3>
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">Live Sync active</p>
               </div>
               <button 
                 onClick={clearNotifications}
                 className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline"
               >
-                Clear All
+                {t('header.clear_all')}
               </button>
             </div>
             
@@ -181,7 +183,7 @@ export function Header() {
                   <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                     <User className="w-4 h-4 text-slate-400 group-hover:text-primary" />
                   </div>
-                  <span className="text-xs font-black text-muted-foreground group-hover:text-foreground">Node Profile</span>
+                  <span className="text-xs font-black text-muted-foreground group-hover:text-foreground">{t('header.node_profile')}</span>
                 </button>
                 <button 
                    onClick={() => { setIsUserOpen(false); navigate('/settings'); }}
@@ -190,7 +192,7 @@ export function Header() {
                   <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                     <Settings className="w-4 h-4 text-slate-400 group-hover:text-primary" />
                   </div>
-                  <span className="text-xs font-black text-muted-foreground group-hover:text-foreground">System Config</span>
+                  <span className="text-xs font-black text-muted-foreground group-hover:text-foreground">{t('header.system_config')}</span>
                 </button>
                 
                 <div className="my-2 border-t border-border/50" />
@@ -202,7 +204,7 @@ export function Header() {
                   <div className="p-2 bg-red-50 rounded-lg group-hover:bg-red-100 transition-colors">
                     <LogOut className="w-4 h-4 text-red-400 group-hover:text-red-600" />
                   </div>
-                  <span className="text-xs font-black text-red-400 group-hover:text-red-600">Terminate Session</span>
+                  <span className="text-xs font-black text-red-400 group-hover:text-red-600">{t('header.terminate_session')}</span>
                 </button>
               </div>
             </div>

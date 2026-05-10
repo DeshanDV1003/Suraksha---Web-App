@@ -1,0 +1,111 @@
+{
+  "settings": "සැකසුම්",
+  "manage_account": "ඔබේ විධාන මධ්‍යස්ථාන ගිණුම කළමනාකරණය කරන්න",
+  "profile_info": "පැතිකඩ තොරතුරු",
+  "notifications": "දැනුම්දීම්",
+  "security_privacy": "ආරක්ෂාව සහ පෞද්ගලිකත්වය",
+  "app_preferences": "යෙදුම් මනාප",
+  "personalization": "පුද්ගලීකරණය",
+  "display_mode": "දර්ශන මාදිලිය",
+  "primary_language": "ප්‍රධාන භාෂාව",
+  "save_changes": "වෙනස්කම් සුරකින්න",
+  "light": "ආලෝකය",
+  "dark": "අඳුරු",
+  "appearance_sync": "පෙනුම සමමුහුර්ත කිරීම",
+  "settings_applied": "සැකසුම් ඔබගේ උපාංගයට ක්ෂණිකව යොදනු ලැබේ",
+  "nav": {
+    "dashboard": "පුවරුව",
+    "incidents": "සිදුවීම්",
+    "alerts": "ඇඟවීම්",
+    "camps": "සහන කඳවුරු",
+    "resources": "සම්පත්",
+    "volunteers": "ස්වේච්ඡා සේවකයන්",
+    "help_requests": "උදව් ඉල්ලීම්",
+    "map": "සජීවී සිතියම",
+    "reports": "වාර්තා",
+    "settings": "සැකසුම්",
+    "missing_persons": "අතුරුදහන් වූවන්",
+    "tokens": "ටෝකන",
+    "relief_tokens": "සහන ටෝකන",
+    "damage_assessment": "හානි ඇගයීම",
+    "support": "මනෝවිද්‍යාත්මක සහාය",
+    "user_management": "පරිශීලක කළමනාකරණය",
+    "analytics": "විශ්ලේෂණ",
+    "audit": "විගණන ලොග"
+  },
+  "dashboard": {
+    "title": "පුවරුව",
+    "overview": "සජීවී ආපදා කළමනාකරණ දළ විශ්ලේෂණය",
+    "export_report": "වාර්තාව අපනයනය",
+    "new_broadcast": "නව විකාශනය",
+    "active_incidents": "සක්‍රීය සිදුවීම්",
+    "volunteers_active": "සක්‍රීය ස්වේච්ඡා සේවකයන්",
+    "relief_camps": "සහන කඳවුරු",
+    "help_requests": "උදව් ඉල්ලීම්",
+    "avg_response_time": "සාමාන්‍ය ප්‍රතිචාර කාලය",
+    "priority_queue": "ML-මගින් වර්ග කළ ප්‍රමුඛතා පෝලිම",
+    "filter_results": "ප්‍රතිඵල පෙරන්න",
+    "recent_alerts": "මෑත කාලීන ඇඟවීම්",
+    "view_all": "සියලුම විකාශනයන් බලන්න",
+    "gis_map": "GIS බලපෑම් සිතියම් පෙරදසුන",
+    "open_full_map": "සම්පූර්ණ සිතියම විවෘත කරන්න",
+    "no_incidents": "ගැලපෙන සිදුවීම් හමු නොවීය",
+    "no_alerts": "ගැලපෙන ඇඟවීම් හමු නොවීය"
+  },
+  "incidents": {
+    "title": "සිදුවීම් කළමනාකරණය",
+    "pipeline": "විධාන මධ්‍යස්ථාන ප්‍රතිචාර නල මාර්ගය",
+    "register_new": "නව සිදුවීමක් ලියාපදිංචි කරන්න",
+    "all_severities": "සියලුම බරපතලකම්",
+    "all_status": "සියලුම තත්වයන්",
+    "search_placeholder": "මාතෘකාව, ස්ථානය හෝ හැඳුනුම්පත මගින් සොයන්න...",
+    "tracker_id": "ට්‍රැකර් හැඳුනුම්පත",
+    "details": "සිදුවීම් විස්තර",
+    "priority": "ප්‍රමුඛතාවය",
+    "review_status": "සමාලෝචන තත්ත්වය",
+    "ml_confidence": "ML විශ්වාසය",
+    "age": "කාලය",
+    "operations": "මෙහෙයුම්",
+    "syncing": "සංකේතනය කළ දත්ත සමමුහුර්ත කරමින්...",
+    "no_records": "වත්මන් නල මාර්ගයේ සිදුවීම් වාර්තා නොමැත",
+    "modals": {
+      "new_directive": "නව ක්ෂේත්‍ර නියෝගය",
+      "directive_title": "නියෝග මාතෘකාව",
+      "geo_location": "සිදුවීම් භූ-ස්ථානය",
+      "category": "ප්‍රවර්ග වර්ගීකරණය",
+      "briefing": "මෙහෙයුම් සංක්ෂිප්තය",
+      "execute": "ක්ෂේත්‍ර නියෝගය ක්‍රියාත්මක කරන්න",
+      "transmitting": "නියෝගය සම්ප්‍රේෂණය කරමින්..."
+    }
+  },
+  "alerts": {
+    "title": "හදිසි විකාශනයන්",
+    "subtitle": "පද්ධතිය පුරා අනතුරු ඇඟවීම් සහ ඇඟවීම් කළමනාකරණය",
+    "new_alert": "නව විකාශනය"
+  },
+  "camps": {
+    "title": "සහන කඳවුරු",
+    "subtitle": "නවාතැන් ධාරිතාව සහ සේවා ලුහුබැඳීම",
+    "new_camp": "කඳවුර ලියාපදිංචි කරන්න"
+  },
+  "resources": {
+    "title": "සම්පත් ඉන්වෙන්ටරි",
+    "subtitle": "උපකරණ සහ සැපයුම් බෙදා හැරීම ලුහුබැඳීම"
+  },
+  "volunteers": {
+    "title": "ස්වේච්ඡා බලකාය",
+    "subtitle": "බලමුලු ගැන්වීම සහ පැවරුම් ලබා දීම"
+  },
+  "help": {
+    "title": "උදව් ඉල්ලීම්",
+    "subtitle": "ප්‍රජා සහාය සහ සත්‍යාපනය"
+  },
+  "header": {
+    "search_placeholder": "සිදුවීම්, ඇඟවීම්, ස්වේච්ඡා සේවකයන් සොයන්න...",
+    "alerts_title": "මෙහෙයුම් ඇඟවීම්",
+    "node_profile": "නෝඩ් පැතිකඩ",
+    "system_config": "පද්ධති වින්‍යාසය",
+    "terminate_session": "සැසිය අවසන් කරන්න",
+    "clear_all": "සියල්ල මකන්න"
+  }
+}
