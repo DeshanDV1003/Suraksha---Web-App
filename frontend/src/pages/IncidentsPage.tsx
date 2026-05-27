@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Plus, Eye, FileEdit, Search, Clock, CheckCircle2, AlertCircle, X, MapPin, AlertTriangle, Shield, Trash2, ChevronDown as LucideChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { IncidentLocationPicker } from '../components/map/IncidentLocationPicker'
 import { incidentService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
@@ -302,33 +303,6 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
     longitude: 79.8612
   })
   const [loading, setLoading] = useState(false)
-  const [isGeocoding, setIsGeocoding] = useState(false)
-
-  // Auto-geocoding logic
-  useEffect(() => {
-    const timer = setTimeout(async () => {
-      if (formData.location.length > 3) {
-        try {
-          setIsGeocoding(true)
-          const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(formData.location + ', Sri Lanka')}&limit=1`)
-          const data = await response.json()
-          if (data && data.length > 0) {
-            setFormData(prev => ({
-              ...prev,
-              latitude: parseFloat(data[0].lat),
-              longitude: parseFloat(data[0].lon)
-            }))
-          }
-        } catch (error) {
-          console.error('Geocoding failed', error)
-        } finally {
-          setIsGeocoding(false)
-        }
-      }
-    }, 1000) // 1 second debounce
-
-    return () => clearTimeout(timer)
-  }, [formData.location])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -373,26 +347,26 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
             </div>
-            
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.geo_location')}</label>
-              <div className="relative">
-                <input
-                  required
-                  className="suraksha-input pr-12"
-                  placeholder="Galle Road, Colombo"
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                />
-                {isGeocoding && (
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                    <div className="w-4 h-4 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
-                  </div>
-                )}
-              </div>
+
+            <div className="col-span-2 space-y-1.5">
+              <IncidentLocationPicker
+                value={{
+                  address: formData.location,
+                  latitude: formData.latitude,
+                  longitude: formData.longitude
+                }}
+                onChange={(loc) => {
+                  setFormData(prev => ({
+                    ...prev,
+                    location: loc.address,
+                    latitude: loc.latitude,
+                    longitude: loc.longitude
+                  }));
+                }}
+              />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="col-span-2 space-y-1.5">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.category')}</label>
               <div className="relative">
                 <select
@@ -410,31 +384,7 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Latitude</label>
-              <input
-                type="number"
-                step="any"
-                required
-                className="suraksha-input"
-                placeholder="6.9271"
-                value={formData.latitude}
-                onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) })}
-              />
-            </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">Longitude</label>
-              <input
-                type="number"
-                step="any"
-                required
-                className="suraksha-input"
-                placeholder="79.8612"
-                value={formData.longitude}
-                onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) })}
-              />
-            </div>
 
             <div className="col-span-2 space-y-1.5">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.briefing')}</label>

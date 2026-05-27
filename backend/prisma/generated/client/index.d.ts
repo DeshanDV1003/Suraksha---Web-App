@@ -4943,6 +4943,9 @@ export namespace Prisma {
     location: string | null
     latitude: number | null
     longitude: number | null
+    zoneId: string | null
+    zoneName: string | null
+    province: string | null
     status: $Enums.Status | null
     severity: $Enums.Severity | null
     category: string | null
@@ -4958,6 +4961,9 @@ export namespace Prisma {
     location: string | null
     latitude: number | null
     longitude: number | null
+    zoneId: string | null
+    zoneName: string | null
+    province: string | null
     status: $Enums.Status | null
     severity: $Enums.Severity | null
     category: string | null
@@ -4973,6 +4979,9 @@ export namespace Prisma {
     location: number
     latitude: number
     longitude: number
+    zoneId: number
+    zoneName: number
+    province: number
     status: number
     severity: number
     category: number
@@ -5001,6 +5010,9 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
+    zoneId?: true
+    zoneName?: true
+    province?: true
     status?: true
     severity?: true
     category?: true
@@ -5016,6 +5028,9 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
+    zoneId?: true
+    zoneName?: true
+    province?: true
     status?: true
     severity?: true
     category?: true
@@ -5031,6 +5046,9 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
+    zoneId?: true
+    zoneName?: true
+    province?: true
     status?: true
     severity?: true
     category?: true
@@ -5134,6 +5152,9 @@ export namespace Prisma {
     location: string
     latitude: number | null
     longitude: number | null
+    zoneId: string | null
+    zoneName: string | null
+    province: string | null
     status: $Enums.Status
     severity: $Enums.Severity
     category: string
@@ -5169,6 +5190,9 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    province?: boolean
     status?: boolean
     severity?: boolean
     category?: boolean
@@ -5192,6 +5216,9 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    province?: boolean
     status?: boolean
     severity?: boolean
     category?: boolean
@@ -5209,6 +5236,9 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    province?: boolean
     status?: boolean
     severity?: boolean
     category?: boolean
@@ -5226,6 +5256,9 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    province?: boolean
     status?: boolean
     severity?: boolean
     category?: boolean
@@ -5235,7 +5268,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt", ExtArgs["result"]["incidentReport"]>
+  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "zoneId" | "zoneName" | "province" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt", ExtArgs["result"]["incidentReport"]>
   export type IncidentReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
     history?: boolean | IncidentReport$historyArgs<ExtArgs>
@@ -5269,6 +5302,9 @@ export namespace Prisma {
       location: string
       latitude: number | null
       longitude: number | null
+      zoneId: string | null
+      zoneName: string | null
+      province: string | null
       status: $Enums.Status
       severity: $Enums.Severity
       category: string
@@ -5711,6 +5747,9 @@ export namespace Prisma {
     readonly location: FieldRef<"IncidentReport", 'String'>
     readonly latitude: FieldRef<"IncidentReport", 'Float'>
     readonly longitude: FieldRef<"IncidentReport", 'Float'>
+    readonly zoneId: FieldRef<"IncidentReport", 'String'>
+    readonly zoneName: FieldRef<"IncidentReport", 'String'>
+    readonly province: FieldRef<"IncidentReport", 'String'>
     readonly status: FieldRef<"IncidentReport", 'Status'>
     readonly severity: FieldRef<"IncidentReport", 'Severity'>
     readonly category: FieldRef<"IncidentReport", 'String'>
@@ -31117,6 +31156,9 @@ export namespace Prisma {
     location: 'location',
     latitude: 'latitude',
     longitude: 'longitude',
+    zoneId: 'zoneId',
+    zoneName: 'zoneName',
+    province: 'province',
     status: 'status',
     severity: 'severity',
     category: 'category',
@@ -31894,6 +31936,9 @@ export namespace Prisma {
     location?: StringFilter<"IncidentReport"> | string
     latitude?: FloatNullableFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableFilter<"IncidentReport"> | number | null
+    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
+    province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
     category?: StringFilter<"IncidentReport"> | string
@@ -31916,6 +31961,9 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
+    zoneId?: SortOrderInput | SortOrder
+    zoneName?: SortOrderInput | SortOrder
+    province?: SortOrderInput | SortOrder
     status?: SortOrder
     severity?: SortOrder
     category?: SortOrder
@@ -31941,6 +31989,9 @@ export namespace Prisma {
     location?: StringFilter<"IncidentReport"> | string
     latitude?: FloatNullableFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableFilter<"IncidentReport"> | number | null
+    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
+    province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
     category?: StringFilter<"IncidentReport"> | string
@@ -31963,6 +32014,9 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
+    zoneId?: SortOrderInput | SortOrder
+    zoneName?: SortOrderInput | SortOrder
+    province?: SortOrderInput | SortOrder
     status?: SortOrder
     severity?: SortOrder
     category?: SortOrder
@@ -31987,6 +32041,9 @@ export namespace Prisma {
     location?: StringWithAggregatesFilter<"IncidentReport"> | string
     latitude?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
+    zoneId?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    province?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
     status?: EnumStatusWithAggregatesFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityWithAggregatesFilter<"IncidentReport"> | $Enums.Severity
     category?: StringWithAggregatesFilter<"IncidentReport"> | string
@@ -33819,6 +33876,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -33840,6 +33900,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -33861,6 +33924,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -33882,6 +33948,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -33903,6 +33972,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -33919,6 +33991,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -33934,6 +34009,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -36103,6 +36181,9 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    zoneId?: SortOrder
+    zoneName?: SortOrder
+    province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
     category?: SortOrder
@@ -36124,6 +36205,9 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    zoneId?: SortOrder
+    zoneName?: SortOrder
+    province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
     category?: SortOrder
@@ -36139,6 +36223,9 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    zoneId?: SortOrder
+    zoneName?: SortOrder
+    province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
     category?: SortOrder
@@ -39498,6 +39585,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -39518,6 +39608,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -39956,6 +40049,9 @@ export namespace Prisma {
     location?: StringFilter<"IncidentReport"> | string
     latitude?: FloatNullableFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableFilter<"IncidentReport"> | number | null
+    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
+    province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
     category?: StringFilter<"IncidentReport"> | string
@@ -40933,6 +41029,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -40953,6 +41052,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -41107,6 +41209,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -41127,6 +41232,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -41415,6 +41523,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -41435,6 +41546,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -41524,6 +41638,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -41544,6 +41661,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -41791,6 +41911,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -41811,6 +41934,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -41847,6 +41973,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -41867,6 +41996,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -42250,6 +42382,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -42270,6 +42405,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -42359,6 +42497,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -42379,6 +42520,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -42649,6 +42793,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -42669,6 +42816,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -42779,6 +42929,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -42799,6 +42952,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -43005,6 +43161,9 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
+    zoneId?: string | null
+    zoneName?: string | null
+    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
     category: string
@@ -43214,6 +43373,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -43234,6 +43396,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string
@@ -43254,6 +43419,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     category?: StringFieldUpdateOperationsInput | string

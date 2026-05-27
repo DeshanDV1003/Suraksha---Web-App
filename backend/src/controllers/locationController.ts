@@ -70,3 +70,59 @@ export const getUserLastLocation = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+// Newly added geocoding services
+import { geocodeAddress, reverseGeocode } from '../services/geocodingService';
+import { findZoneForCoordinates } from '../services/zoneService';
+
+export const geocodeAddressHandler = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { address } = req.body;
+    if (!address) {
+      return res.status(400).json({ error: 'Address query is required' });
+    }
+
+    const result = await geocodeAddress(address);
+    if (!result.success || !result.latitude || !result.longitude) {
+      return res.status(422).json({
+        error: 'Could not locate this address in Sri Lanka',
+        suggestion: 'Try adding more context, such as the district name (e.g. "Galle Road, Colombo")'
+      });
+    }
+
+    const zone = findZoneForCoordinates(result.latitude, result.longitude);
+
+    return res.json({
+      latitude: result.latitude,
+      longitude: result.longitude,
+      displayName: result.displayName,
+      confidence: result.confidence,
+      zone
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error during geocoding', error });
+  }
+};
+
+export const reverseGeocodeHandler = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { latitude, longitude } = req.body;
+    if (latitude === undefined || longitude === undefined) {
+      return res.status(400).json({ error: 'Latitude and Longitude coordinates are required' });
+    }
+
+    const lat = parseFloat(latitude);
+    const lng = parseFloat(longitude);
+
+    const address = await reverseGeocode(lat, lng);
+    const zone = findZoneForCoordinates(lat, lng);
+
+    return res.json({
+      address,
+      zone
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error during reverse geocoding', error });
+  }
+};
+

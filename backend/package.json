@@ -19,6 +19,8 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "@turf/turf": "^7.3.5",
+    "axios": "^1.16.1",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -28,12 +30,15 @@
     "prisma": "^7.7.0",
     "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "@turf/turf": "^7.1.0",
+    "axios": "^1.7.9"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/geojson": "^7946.0.15",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.9.0",
     "@types/pg": "^8.20.0",

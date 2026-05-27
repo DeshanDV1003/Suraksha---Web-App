@@ -39,6 +39,9 @@ model IncidentReport {
   location          String
   latitude          Float?
   longitude         Float?
+  zoneId            String?
+  zoneName          String?
+  province          String?
   status            Status               @default(PENDING)
   severity          Severity             @default(MEDIUM)
   category          String

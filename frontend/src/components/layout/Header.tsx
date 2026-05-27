@@ -5,10 +5,11 @@ import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import axios from 'axios'
 
 export function Header() {
   const { t } = useTranslation()
-  const { searchQuery, setSearchQuery, notifications, clearNotifications, markAsRead } = useAppStore()
+  const { searchQuery, setSearchQuery, notifications, setNotifications, clearNotifications, markAsRead } = useAppStore()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   
@@ -18,7 +19,32 @@ export function Header() {
   const notifDropdownRef = useRef<HTMLDivElement>(null)
   const userDropdownRef = useRef<HTMLDivElement>(null)
   
-  const unreadCount = notifications.filter(n => n.unread).length
+  const unreadCount = notifications.filter(n => n.unread || (n.read === false)).length
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) return
+        
+        const res = await axios.get('http://localhost:3001/api/notifications/my', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        
+        const formatted = res.data.map((n: any) => ({
+          ...n,
+          unread: !n.read,
+          time: new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          type: n.title.toLowerCase().includes('alert') ? 'alert' : 
+                n.title.toLowerCase().includes('task') ? 'task' : 'incident'
+        }))
+        setNotifications(formatted)
+      } catch (error) {
+        console.error('Failed to fetch notifications', error)
+      }
+    }
+    fetchNotifications()
+  }, [setNotifications])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,7 +68,7 @@ export function Header() {
     <header className="h-16 border-b bg-card px-8 flex items-center justify-between sticky top-0 z-50">
       <div className="flex items-center gap-8">
 
-        <div className="hidden md:flex items-center gap-3 bg-muted/50 px-4 py-2 rounded-xl w-96 border border-transparent focus-within:border-primary/20 focus-within:bg-card transition-all group">
+        <div className="hidden md:flex items-center gap-3 bg-muted/50 px-4 py-2 rounded-xl w-96 border border-transparent focus-within:border-primary/20 focus-within:bg-card transition-all group relative">
           <Search className="w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <input
             type="text"
@@ -51,6 +77,63 @@ export function Header() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          
+          {searchQuery.trim().length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-card border rounded-2xl shadow-xl overflow-hidden z-[110] animate-in fade-in slide-in-from-top-2">
+              <div className="p-2">
+                <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-3 mb-2">
+                  System Functions & Pages
+                </div>
+                {(() => {
+                  const searchItems = [
+                    { title: 'Dashboard', path: '/', icon: '📊', keywords: 'home main overview' },
+                    { title: 'Incidents Management', path: '/incidents', icon: '🚨', keywords: 'emergencies disasters reports' },
+                    { title: 'Live Map', path: '/map', icon: '🗺️', keywords: 'gis location tracking' },
+                    { title: 'Emergency Alerts', path: '/alerts', icon: '⚠️', keywords: 'broadcasts warnings notifications' },
+                    { title: 'Relief Camps', path: '/camps', icon: '🏕️', keywords: 'shelters safety hubs' },
+                    { title: 'Resources', path: '/resources', icon: '📦', keywords: 'inventory supplies' },
+                    { title: 'Volunteers', path: '/volunteers', icon: '🤝', keywords: 'people community force' },
+                    { title: 'Help Requests', path: '/help-requests', icon: '🆘', keywords: 'assistance support' },
+                    { title: 'Missing Persons', path: '/missing-persons', icon: '👤', keywords: 'lost found people' },
+                    { title: 'Damage Assessment', path: '/damage-assessment', icon: '🏗️', keywords: 'buildings infrastructure' },
+                    { title: 'Tokens', path: '/tokens', icon: '🎫', keywords: 'relief access' },
+                    { title: 'Settings', path: '/settings', icon: '⚙️', keywords: 'preferences config account profile' }
+                  ];
+                  
+                  const query = searchQuery.toLowerCase();
+                  const results = searchItems.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    item.keywords.includes(query)
+                  );
+
+                  if (results.length === 0) {
+                    return (
+                      <div className="px-3 py-4 text-center text-sm font-bold text-muted-foreground">
+                        No matches found for "{searchQuery}"
+                      </div>
+                    );
+                  }
+
+                  return results.map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        navigate(item.path);
+                        setSearchQuery('');
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted/50 rounded-xl transition-colors text-left"
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <div>
+                        <div className="text-sm font-black text-foreground">{item.title}</div>
+                        <div className="text-[10px] font-bold text-muted-foreground">{item.path}</div>
+                      </div>
+                    </button>
+                  ));
+                })()}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

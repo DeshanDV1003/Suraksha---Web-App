@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import * as incidentService from '../services/incidentService';
 import { processReport } from '../services/mlService';
 import prisma from '../utils/prisma';
+import { geocodeAddress } from '../services/geocodingService';
+import { findZoneForCoordinates } from '../services/zoneService';
 
 /**
  * @swagger
@@ -59,7 +61,48 @@ import prisma from '../utils/prisma';
 export const createIncident = async (req: any, res: Response) => {
   try {
     const reporterId = req.user.userId;
-    const incident = await incidentService.createIncident({ ...req.body, reporterId });
+    let { latitude, longitude, location, ...rest } = req.body;
+    let zoneId: string | null = null;
+    let zoneName: string | null = null;
+    let province: string | null = null;
+
+    // 1. If lat/lng are missing but location/address is provided, geocode it
+    if ((latitude === undefined || longitude === undefined || latitude === null || longitude === null) && location) {
+      try {
+        console.log(`🔍 Auto-geocoding location: "${location}" for new incident...`);
+        const geoResult = await geocodeAddress(location);
+        console.log('🗺️ Geocoding result:', geoResult);
+        if (geoResult.success && geoResult.latitude && geoResult.longitude) {
+          latitude = geoResult.latitude;
+          longitude = geoResult.longitude;
+        }
+      } catch (err: any) {
+        console.warn('Auto-geocoding failed during creation:', err.message);
+      }
+    }
+
+    // 2. If lat/lng exist (either provided or geocoded), perform zone lookup
+    if (latitude !== undefined && longitude !== undefined && latitude !== null && longitude !== null) {
+      try {
+        const zoneDetails = findZoneForCoordinates(parseFloat(latitude), parseFloat(longitude));
+        zoneId = zoneDetails.zoneId;
+        zoneName = zoneDetails.zoneName;
+        province = zoneDetails.province;
+      } catch (err: any) {
+        console.warn('Zone geofencing failed during creation:', err.message);
+      }
+    }
+
+    const incident = await incidentService.createIncident({
+      ...rest,
+      location,
+      latitude: latitude !== undefined ? parseFloat(latitude) : null,
+      longitude: longitude !== undefined ? parseFloat(longitude) : null,
+      zoneId,
+      zoneName,
+      province,
+      reporterId
+    });
 
     // Run ML/NLP asynchronously — don't make the user wait
     processReport({ ...req.body, images: incident.images }).then(async (mlResult) => {

@@ -21,6 +21,7 @@ interface AppState {
   searchQuery: string
   setSearchQuery: (query: string) => void
   notifications: any[]
+  setNotifications: (notifications: any[]) => void
   addNotification: (notification: any) => void
   markAsRead: (id: string) => void
   clearNotifications: () => void
@@ -40,16 +41,13 @@ export const useAppStore = create<AppState>((set) => ({
 
   searchQuery: '',
   setSearchQuery: (searchQuery) => set({ searchQuery }),
-  notifications: [
-    { id: '1', title: 'New Incident', message: 'Major flooding reported in Colombo 7', time: '2 mins ago', type: 'incident', unread: true },
-    { id: '2', title: 'Alert Broadcast', message: 'Red alert issued for Western Province', time: '15 mins ago', type: 'alert', unread: true },
-    { id: '3', title: 'Task Assigned', message: 'New rescue task assigned to you', time: '1 hour ago', type: 'task', unread: false },
-  ],
+  notifications: [],
+  setNotifications: (notifications) => set({ notifications }),
   addNotification: (notification) => set((state) => ({ 
     notifications: [notification, ...state.notifications] 
   })),
   markAsRead: (id) => set((state) => ({
-    notifications: state.notifications.map(n => n.id === id ? { ...n, unread: false } : n)
+    notifications: state.notifications.map(n => n.id === id ? { ...n, unread: false, read: true } : n)
   })),
   clearNotifications: () => set({ notifications: [] }),
 }))
