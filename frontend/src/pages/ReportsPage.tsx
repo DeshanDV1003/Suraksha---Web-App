@@ -150,8 +150,8 @@ export default function ReportsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tighter text-[#1e293b]">Operational Intelligence</h1>
-          <p className="text-[10px] font-black text-[#0061ff] uppercase tracking-[0.3em] mt-1 italic">Real-time Command Hub Sector Analytics</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Operational Intelligence</h1>
+          <p className="text-slate-500 mt-1 font-medium">Real-time Command Hub Sector Analytics</p>
         </div>
         <button
           onClick={handleExport}

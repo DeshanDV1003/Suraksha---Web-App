@@ -63,8 +63,8 @@ export default function SupportPage() {
                <Sparkles className="w-4 h-4 text-yellow-300" />
                Mental Well-being Support
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.1]">You are not <br/> alone in this.</h1>
-            <p className="text-white/80 text-lg md:text-xl font-medium leading-relaxed">
+            <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">You are not <br/> alone in this.</h1>
+            <p className="text-slate-500 mt-1 font-medium">
                Disasters are overwhelming. Our certified trauma counselors and grief support teams are available 24/7 to help you navigate through these difficult times.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">

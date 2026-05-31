@@ -1,14 +1,41 @@
 import prisma from '../utils/prisma';
+import { geocodeAddress } from './geocodingService';
 
 export const createAlert = async (data: any) => {
-  const alert = await prisma.alert.create({ data });
+  const locations: string[] = data.locations || [];
+  const latitudes: number[] = data.latitudes || [];
+  const longitudes: number[] = data.longitudes || [];
+  
+  // If no predefined coords but we have locations, geocode each of them
+  if (latitudes.length === 0 && longitudes.length === 0 && locations.length > 0) {
+    for (const loc of locations) {
+      if (loc !== 'All Island') {
+        const geoResult = await geocodeAddress(loc);
+        if (geoResult.success && geoResult.latitude && geoResult.longitude) {
+          latitudes.push(geoResult.latitude);
+          longitudes.push(geoResult.longitude);
+        }
+      }
+    }
+  }
+
+  const alertData = {
+    title: data.title,
+    message: data.message,
+    type: data.type,
+    locations,
+    latitudes,
+    longitudes
+  };
+
+  const alert = await prisma.alert.create({ data: alertData });
 
   // Targeted Notification Logic
-  const targetLocation = data.location;
+  const targetLocations = locations;
   
-  // Find users to notify
+  // Find users to notify (Legacy notification logic, kept for fallback)
   const usersToNotify = await prisma.user.findMany({
-    where: targetLocation === 'All Island' ? {} : { region: targetLocation },
+    where: targetLocations.includes('All Island') ? {} : { region: { in: targetLocations } },
     select: { id: true }
   });
 

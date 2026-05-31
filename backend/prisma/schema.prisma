@@ -44,6 +44,7 @@ model IncidentReport {
   province          String?
   status            Status               @default(PENDING)
   severity          Severity             @default(MEDIUM)
+  mlConfidence      Float?
   category          String
   images            String[]
   reporterId        String
@@ -58,14 +59,16 @@ model IncidentReport {
 }
 
 model Alert {
-  id        String    @id @default(uuid())
-  title     String
-  message   String
-  location  String
-  type      AlertType @default(INFO)
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         String    @id @default(uuid())
+  title      String
+  message    String
+  locations  String[]
+  latitudes  Float[]
+  longitudes Float[]
+  type       AlertType @default(INFO)
+  active     Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model ReliefCamp {

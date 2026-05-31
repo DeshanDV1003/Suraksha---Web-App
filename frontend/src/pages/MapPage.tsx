@@ -364,8 +364,8 @@ export default function MapPage() {
       {/* GIS Map Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Sri Lanka GIS Coordinate Dashboard</h1>
-          <p className="text-sm font-semibold text-slate-400 mt-1 uppercase tracking-wider">
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Sri Lanka GIS Coordinate Dashboard</h1>
+          <p className="text-slate-500 mt-1 font-medium">
             Administrative Boundaries & Real-time Threat Tracking
           </p>
         </div>

@@ -57,8 +57,8 @@ export default function HelpRequestsPage() {
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-[#1e293b] tracking-tight">{t('help.title')}</h1>
-          <p className="text-slate-500 font-bold">{t('help.subtitle')}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('help.title')}</h1>
+          <p className="text-slate-500 mt-1 font-medium">{t('help.subtitle')}</p>
         </div>
         <button
           onClick={() => setShowModal(true)}

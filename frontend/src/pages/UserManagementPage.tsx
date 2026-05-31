@@ -67,8 +67,8 @@ export default function UserManagementPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tight text-[#1e293b]">Personnel Directory</h1>
-          <p className="text-slate-500 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70 italic">Command chain & authority management</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Personnel Directory</h1>
+          <p className="text-slate-500 mt-1 font-medium">Command chain & authority management</p>
         </div>
         <button 
           onClick={() => setIsOnboardModalOpen(true)}

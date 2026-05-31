@@ -44,6 +44,7 @@ model IncidentReport {
   province          String?
   status            Status               @default(PENDING)
   severity          Severity             @default(MEDIUM)
+  mlConfidence      Float?
   category          String
   images            String[]
   reporterId        String

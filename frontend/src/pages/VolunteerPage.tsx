@@ -94,8 +94,8 @@ export default function VolunteerPage() {
             <Shield className="w-12 h-12 text-white" />
           </div>
           <div className="text-center md:text-left flex-1">
-            <h1 className="text-4xl font-black text-[#1e293b] tracking-tight">{t('volunteers.title')}</h1>
-            <p className="text-slate-500 mt-2 font-bold">{t('volunteers.subtitle')}</p>
+            <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('volunteers.title')}</h1>
+            <p className="text-slate-500 mt-1 font-medium">{t('volunteers.subtitle')}</p>
           </div>
           <div className="flex gap-2 p-1.5 bg-slate-100 rounded-2xl">
             <button 

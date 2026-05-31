@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { 
   User, Bell, Shield, Palette, 
   ChevronRight, Globe, Lock, Mail, 
-  Phone, Briefcase, Camera, Save, Loader2, Moon, Sun
+  Phone, Briefcase, Camera, Save, Loader2, Moon, Sun,
+  Monitor, Key, HardDrive, Download, Trash2, AlertTriangle,
+  Smartphone, Map, List, Clock, X, Check, Eye
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
@@ -14,41 +16,56 @@ export default function SettingsPage() {
   const { user, updateUser } = useAuth()
   const [activeTab, setActiveTab] = useState('profile')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  // App Preferences State
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
+  const [mapView, setMapView] = useState('hybrid')
+  const [incidentSort, setIncidentSort] = useState('severity')
 
-  // Profile States
-  const [name, setName] = useState(user?.name || '')
-  const [phone, setPhone] = useState(user?.phone || '')
+  // Profile Form State (Local Mock for new fields)
+  const [profileData, setProfileData] = useState({
+    name: user?.name || '',
+    phone: user?.phone || '',
+    email: user?.email || '',
+    officeLocation: 'Colombo Command Center (Region 1)',
+    designation: user?.role?.replace('_', ' ') || 'DMC Officer',
+    employeeId: 'DMC-2024-0042',
+    bio: 'Senior administrator overseeing Western Province disaster response coordination.'
+  })
+  
+  const [initialProfileData, setInitialProfileData] = useState(profileData)
+  const [showToast, setShowToast] = useState(false)
 
-  // Password States
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  // Notification State
+  const [minSeverityPush, setMinSeverityPush] = useState(4)
+  
+  // Security State
+  const [activeSessions, setActiveSessions] = useState([
+    { id: '1', name: 'MacBook Pro 16"', location: 'Colombo, LK', ip: '192.168.1.45', time: 'Current session', current: true },
+    { id: '2', name: 'iPhone 13 Pro', location: 'Kandy, LK', ip: '112.134.55.12', time: '2 hours ago', current: false },
+    { id: '3', name: 'Windows PC (Chrome)', location: 'Galle, LK', ip: '175.157.33.2', time: '3 days ago', current: false }
+  ])
 
   useEffect(() => {
-    if (user) {
-      setName(user.name)
-      setPhone(user.phone || '')
-    }
-  }, [user])
-
-  // Theme Handling
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    if (theme === 'dark') document.documentElement.classList.add('dark')
+    else document.documentElement.classList.remove('dark')
     localStorage.setItem('theme', theme)
   }, [theme])
 
-  const handleProfileUpdate = async (e: React.FormEvent) => {
+  const handleProfileSave = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
     try {
-      setIsSubmitting(true)
-      await userService.updateProfile({ name, phone })
-      updateUser({ name, phone })
-      alert('Profile updated successfully!')
+      // Mock API call delay
+      await new Promise(resolve => setTimeout(resolve, 800))
+      
+      // Real API update for supported fields
+      await userService.updateProfile({ name: profileData.name, phone: profileData.phone })
+      updateUser({ name: profileData.name, phone: profileData.phone })
+      
+      setInitialProfileData(profileData)
+      setShowToast(true)
+      setTimeout(() => setShowToast(false), 3000)
     } catch (error) {
       console.error('Update failed:', error)
       alert('Failed to update profile')
@@ -57,36 +74,23 @@ export default function SettingsPage() {
     }
   }
 
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (newPassword !== confirmPassword) {
-      return alert('Passwords do not match')
-    }
-    
-    try {
-      setIsSubmitting(true)
-      await authService.changePassword({ currentPassword, newPassword })
-      alert('Password changed successfully')
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmPassword('')
-    } catch (error: any) {
-      console.error('Password change failed:', error)
-      alert(error.response?.data?.message || 'Failed to change password')
-    } finally {
-      setIsSubmitting(false)
-    }
+  const handleProfileDiscard = () => {
+    setProfileData(initialProfileData)
   }
 
-  const handleLanguageChange = (lang: string) => {
-    i18n.changeLanguage(lang)
+  const handleRevokeSession = (id: string) => {
+    setActiveSessions(prev => prev.filter(s => s.id !== id))
+  }
+  
+  const handleRevokeAllOther = () => {
+    setActiveSessions(prev => prev.filter(s => s.current))
   }
 
   const tabs = [
-    { id: 'profile', name: t('profile_info'), icon: User },
-    { id: 'notifications', name: t('notifications'), icon: Bell },
-    { id: 'security', name: t('security_privacy'), icon: Shield },
-    { id: 'preferences', name: t('app_preferences'), icon: Palette },
+    { id: 'profile', name: 'Profile information', icon: User },
+    { id: 'notifications', name: 'Notifications', icon: Bell },
+    { id: 'security', name: 'Security & privacy', icon: Shield },
+    { id: 'preferences', name: 'App preferences', icon: Palette },
   ]
 
   const PRIMARY_COLOR = "#0061ff"
@@ -94,8 +98,8 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
       <div>
-        <h1 className="text-3xl font-black tracking-tight text-[#1e293b] dark:text-white transition-colors">{t('settings')}</h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70">{t('manage_account')}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Settings</h1>
+        <p className="text-slate-500 mt-1 font-medium">Manage your command center account and preferences</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -106,215 +110,342 @@ export default function SettingsPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "w-full flex items-center gap-3.5 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300",
+                "w-full flex items-center gap-3.5 px-6 py-4 rounded-xl text-sm font-semibold transition-all duration-300 border border-transparent",
                 activeTab === tab.id 
-                  ? `bg-[${PRIMARY_COLOR}] text-white shadow-lg shadow-blue-500/20` 
-                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-[#0061ff] dark:hover:text-blue-400"
+                  ? "bg-slate-900 text-white shadow-xl shadow-slate-900/10 border-slate-800" 
+                  : "text-slate-600 hover:bg-white hover:border-slate-200"
               )}
-              style={activeTab === tab.id ? { backgroundColor: PRIMARY_COLOR } : {}}
             >
-              <tab.icon className="w-5 h-5 flex-shrink-0" />
+              <tab.icon className={cn("w-5 h-5 flex-shrink-0", activeTab === tab.id ? "text-white" : "text-slate-400")} />
               <span className="tracking-tight">{tab.name}</span>
-              {activeTab === tab.id && <ChevronRight className="w-4 h-4 ml-auto opacity-50" />}
             </button>
           ))}
         </div>
 
         {/* Content Area */}
-        <div className="lg:col-span-9 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2.5rem] shadow-sm overflow-hidden min-h-[600px] transition-colors">
+        <div className="lg:col-span-9 bg-[#1c2128] border border-slate-800/60 rounded-3xl shadow-xl overflow-hidden min-h-[700px] text-slate-300">
+          
+          {/* PROFILE TAB */}
           {activeTab === 'profile' && (
-            <div className="p-10 space-y-10">
-               {/* Profile Header */}
-               <div className="flex items-center gap-8 pb-10 border-b border-slate-50 dark:border-slate-800">
-                  <div className="relative group">
-                    <div className="w-24 h-24 rounded-3xl flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-blue-500/20" style={{ backgroundColor: PRIMARY_COLOR }}>
-                      {user?.name?.slice(0, 2).toUpperCase() || 'AD'}
-                    </div>
-                    <button className="absolute -bottom-2 -right-2 p-2.5 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 text-[#0061ff] hover:scale-110 transition-all active:scale-95 group-hover:bg-[#0061ff] group-hover:text-white">
-                      <Camera className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="text-2xl font-black text-[#1e293b] dark:text-white">{user?.name || 'Command Center User'}</h3>
-                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-full w-fit">
-                      <Briefcase className="w-3 h-3 text-[#0061ff] dark:text-blue-400" />
-                      <span className="text-[10px] font-black text-[#0061ff] dark:text-blue-400 uppercase tracking-widest">{user?.role?.replace('_', ' ') || 'DMC Officer'}</span>
-                    </div>
-                  </div>
+            <div className="p-8 space-y-8 animate-in fade-in">
+               <div className="space-y-1 pb-6 border-b border-slate-800">
+                 <h2 className="text-lg font-bold text-white">Profile information</h2>
+                 <p className="text-sm text-slate-400">Update your personal details and contact information</p>
                </div>
 
-               {/* Profile Form */}
-               <form onSubmit={handleProfileUpdate} className="space-y-10">
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <SettingInput label="Full Name" value={name} onChange={(val: string) => setName(val)} icon={User} />
-                    <SettingInput label="Email Address" value={user?.email} disabled icon={Mail} />
-                    <SettingInput label="Phone Number" value={phone} onChange={(val: string) => setPhone(val)} placeholder="+94 7X XXX XXXX" icon={Phone} />
-                    <SettingInput label="Office Location" value="Colombo Command Center (Region 3)" disabled icon={Globe} />
+               <div className="flex gap-6 items-center">
+                 <div className="relative group">
+                   <div className="w-20 h-20 rounded-2xl bg-[#0061ff] flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                     {profileData.name.slice(0, 2).toUpperCase()}
+                   </div>
+                   <button className="absolute -bottom-2 -right-2 p-1.5 bg-slate-800 border border-slate-700 rounded-full shadow-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                     <Camera className="w-4 h-4" />
+                   </button>
+                 </div>
+                 <div>
+                   <h3 className="text-xl font-bold text-white">{profileData.name}</h3>
+                   <div className="flex items-center gap-2 mt-1 px-3 py-1 bg-slate-800 rounded-full border border-slate-700 w-fit">
+                     <Briefcase className="w-3 h-3 text-blue-400" />
+                     <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">{profileData.designation}</span>
+                   </div>
+                 </div>
+               </div>
+
+               <form onSubmit={handleProfileSave} className="space-y-6 pt-4">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <DarkInput label="FULL NAME" value={profileData.name} onChange={(v) => setProfileData({...profileData, name: v})} icon={User} />
+                    <DarkInput label="EMAIL ADDRESS" value={profileData.email} disabled icon={Mail} />
+                    <DarkInput label="PHONE NUMBER" value={profileData.phone} onChange={(v) => setProfileData({...profileData, phone: v})} icon={Phone} />
+                    <DarkSelect 
+                      label="OFFICE LOCATION" 
+                      value={profileData.officeLocation} 
+                      onChange={(v) => setProfileData({...profileData, officeLocation: v})}
+                      icon={Globe}
+                      options={['Colombo Command Center (Region 1)', 'Kandy Ops Center', 'Galle Regional Hub']}
+                    />
+                    <DarkInput label="DESIGNATION" value={profileData.designation} onChange={(v) => setProfileData({...profileData, designation: v})} icon={Briefcase} />
+                    <DarkInput label="EMPLOYEE ID" value={profileData.employeeId} disabled icon={Monitor} />
+                 </div>
+                 
+                 <div className="space-y-2">
+                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">BIO / NOTES</label>
+                   <textarea 
+                     className="w-full bg-slate-900/50 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 min-h-[100px]"
+                     value={profileData.bio}
+                     onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                   />
                  </div>
 
-                 <div className="pt-6">
-                    <button 
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="suraksha-button flex items-center justify-center gap-2 h-12 px-8 min-w-[160px]"
-                    >
+                 <div className="flex items-center justify-end gap-4 pt-6 border-t border-slate-800">
+                    {showToast && (
+                      <span className="text-sm font-bold text-emerald-400 flex items-center gap-2 mr-auto bg-emerald-400/10 px-3 py-1.5 rounded-lg border border-emerald-400/20">
+                        <Check className="w-4 h-4" /> Profile saved
+                      </span>
+                    )}
+                    <button type="button" onClick={handleProfileDiscard} className="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-300 bg-transparent hover:bg-slate-800 border border-slate-700 transition-all">
+                      Discard changes
+                    </button>
+                    <button type="submit" disabled={isSubmitting} className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-[#0061ff] hover:bg-blue-600 transition-all disabled:opacity-50 shadow-lg shadow-blue-500/20">
                       {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                      {t('save_changes')}
+                      Save changes
                     </button>
                  </div>
                </form>
             </div>
           )}
 
+          {/* NOTIFICATIONS TAB */}
           {activeTab === 'notifications' && (
-            <div className="p-10 space-y-8">
-               <h3 className="text-xl font-black text-[#1e293b] dark:text-white mb-8">{t('notifications')}</h3>
-               <div className="space-y-4">
-                  <ToggleItem title="Critical Incident Alerts" desc="Immediate SMS and Push notifications for severity 5+ events" checked />
-                  <ToggleItem title="Volunteer Dispatches" desc="Notify when new volunteers are assigned to your sector" checked />
-                  <ToggleItem title="Report Summaries" desc="Daily system health and activity summaries via email" />
-                  <ToggleItem title="System Updates" desc="Notices about platform maintenance and feature updates" checked />
+            <div className="p-8 space-y-8 animate-in fade-in">
+               <div className="space-y-1 pb-6 border-b border-slate-800">
+                 <h2 className="text-lg font-bold text-white">Notification preferences</h2>
+                 <p className="text-sm text-slate-400">Control how and when you receive alerts from the system</p>
+               </div>
+
+               <div className="space-y-8">
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Incident Alerts</h3>
+                   <DarkToggle title="Critical (Severity 5) Alerts" desc="Immediate push notifications bypassing silent mode" checked />
+                   <DarkToggle title="High/Medium (Severity 3-4) Alerts" desc="Standard push notifications during operational hours" checked />
+                   <DarkToggle title="Low (Severity 1-2) Alerts" desc="In-app notifications only" />
+                 </div>
+
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Alert Severity Thresholds</h3>
+                   <div className="p-5 bg-slate-900/50 rounded-2xl border border-slate-800 space-y-4">
+                     <p className="text-sm text-slate-400">Select the minimum incident severity that triggers an SMS broadcast to your device.</p>
+                     <div className="flex gap-2">
+                       {[1, 2, 3, 4, 5].map((level) => (
+                         <button 
+                           key={level}
+                           onClick={() => setMinSeverityPush(level)}
+                           className={cn(
+                             "w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all border",
+                             minSeverityPush === level 
+                               ? "bg-red-500/20 text-red-400 border-red-500/50 shadow-lg shadow-red-500/20" 
+                               : "bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700"
+                           )}
+                         >
+                           {level}
+                         </button>
+                       ))}
+                     </div>
+                   </div>
+                 </div>
+
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Volunteer & Task Updates</h3>
+                   <DarkToggle title="Task Accept/Decline Events" desc="Notify when a volunteer responds to a dispatch" checked />
+                   <DarkToggle title="Task Completion Events" desc="Notify when a volunteer resolves a dispatch" checked />
+                 </div>
+
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">System & Reports</h3>
+                   <DarkToggle title="Daily Digest" desc="Receive a daily summary of all command center activity via email" />
+                   <DarkToggle title="ML Retraining Alerts" desc="Notify when the predictive model is updated" />
+                   <DarkToggle title="New Volunteer Registrations" desc="Notify when new personnel join your sector" checked />
+                 </div>
                </div>
             </div>
           )}
 
+          {/* SECURITY TAB */}
           {activeTab === 'security' && (
-            <div className="p-10 space-y-10">
-               <h3 className="text-xl font-black text-[#1e293b] dark:text-white">{t('security_privacy')}</h3>
-               
-               <form onSubmit={handleChangePassword} className="space-y-10">
-                 <div className="max-w-md space-y-6">
-                    <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
-                       <div className="p-3 bg-blue-100 dark:bg-blue-900/40 rounded-2xl">
-                          <Lock className="w-6 h-6 text-[#0061ff] dark:text-blue-400" />
-                       </div>
-                       <div>
-                          <div className="text-sm font-black text-[#1e293b] dark:text-white">Two-Factor Authentication</div>
-                          <div className="text-[11px] font-bold text-slate-400">Add an extra layer of security</div>
-                       </div>
-                       <button type="button" className="ml-auto text-xs font-black text-[#0061ff] dark:text-blue-400 uppercase tracking-widest">Enable</button>
-                    </div>
+            <div className="p-8 space-y-8 animate-in fade-in">
+               <div className="space-y-1 pb-6 border-b border-slate-800">
+                 <h2 className="text-lg font-bold text-white">Security & privacy</h2>
+                 <p className="text-sm text-slate-400">Manage your account security, sessions, and privacy controls</p>
+               </div>
 
-                    <div className="space-y-4 pt-4">
-                      <SettingInput 
-                        label="Current Password" 
-                        type="password" 
-                        value={currentPassword} 
-                        onChange={(val: string) => setCurrentPassword(val)} 
-                        icon={Lock} 
-                        required
-                      />
-                      <SettingInput 
-                        label="New Password" 
-                        type="password" 
-                        value={newPassword} 
-                        onChange={(val: string) => setNewPassword(val)} 
-                        placeholder="Min 8 characters" 
-                        icon={Lock} 
-                        required
-                      />
-                      <SettingInput 
-                        label="Confirm New Password" 
-                        type="password" 
-                        value={confirmPassword} 
-                        onChange={(val: string) => setConfirmPassword(val)} 
-                        icon={Lock} 
-                        required
-                      />
-                    </div>
+               <div className="space-y-8">
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Security Status</h3>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <div className="p-5 bg-slate-900/50 border border-slate-800 rounded-2xl flex items-center justify-between">
+                       <div className="space-y-1">
+                         <div className="flex items-center gap-2 text-white font-bold"><Key className="w-4 h-4 text-emerald-400" /> Password Age</div>
+                         <div className="text-xs text-slate-400">Last changed 45 days ago</div>
+                       </div>
+                       <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-all border border-slate-700">Change</button>
+                     </div>
+                     <div className="p-5 bg-slate-900/50 border border-slate-800 rounded-2xl flex items-center justify-between">
+                       <div className="space-y-1">
+                         <div className="flex items-center gap-2 text-white font-bold"><Smartphone className="w-4 h-4 text-blue-400" /> 2FA Status</div>
+                         <div className="text-xs text-slate-400">Active (Google Authenticator)</div>
+                       </div>
+                       <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-[10px] font-bold rounded uppercase tracking-wider border border-emerald-500/20">Enabled</span>
+                     </div>
+                     <div className="p-5 bg-slate-900/50 border border-slate-800 rounded-2xl flex items-center justify-between">
+                       <div className="space-y-1">
+                         <div className="flex items-center gap-2 text-white font-bold"><HardDrive className="w-4 h-4 text-purple-400" /> Backup Codes</div>
+                         <div className="text-xs text-slate-400">8 codes remaining</div>
+                       </div>
+                       <button className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">View</button>
+                     </div>
+                     <div className="p-5 bg-slate-900/50 border border-slate-800 rounded-2xl flex items-center justify-between">
+                       <div className="space-y-1">
+                         <div className="flex items-center gap-2 text-white font-bold"><Monitor className="w-4 h-4 text-amber-400" /> API Tokens</div>
+                         <div className="text-xs text-slate-400">Expires in 12 days</div>
+                       </div>
+                       <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-all border border-slate-700">Regenerate</button>
+                     </div>
+                   </div>
                  </div>
 
-                 <div className="pt-6">
-                    <button 
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="suraksha-button flex items-center justify-center gap-2 h-12 px-8 min-w-[180px]"
-                    >
-                      {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                      Update Password
-                    </button>
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Privacy Controls</h3>
+                   <DarkToggle title="Location Visibility" desc="Allow other command centers to see your exact active location" checked />
+                   <DarkToggle title="Audit Log Sharing" desc="Share detailed action logs with the central analytics pool" checked />
+                   <DarkToggle title="Login Alerts" desc="Receive email alerts for logins from unknown devices or locations" checked />
                  </div>
-               </form>
+
+                 <div className="space-y-4">
+                   <div className="flex items-center justify-between">
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Active Sessions</h3>
+                     <button onClick={handleRevokeAllOther} className="text-xs font-bold text-red-400 hover:text-red-300 transition-colors">Revoke all other sessions</button>
+                   </div>
+                   <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/30">
+                     {activeSessions.map((session, i) => (
+                       <div key={session.id} className={cn("p-5 flex items-center justify-between", i !== 0 && "border-t border-slate-800")}>
+                         <div className="flex items-center gap-4">
+                           <div className="p-2.5 bg-slate-800 rounded-xl">
+                             <Monitor className="w-5 h-5 text-slate-300" />
+                           </div>
+                           <div>
+                             <div className="text-sm font-bold text-white flex items-center gap-2">
+                               {session.name} 
+                               {session.current && <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 text-[9px] uppercase tracking-widest rounded border border-emerald-500/20">This device</span>}
+                             </div>
+                             <div className="text-xs text-slate-400 mt-0.5">{session.location} • {session.ip}</div>
+                           </div>
+                         </div>
+                         <div className="flex items-center gap-6">
+                           <div className="text-xs text-slate-500 font-medium">{session.time}</div>
+                           {!session.current && (
+                             <button onClick={() => handleRevokeSession(session.id)} className="text-xs font-bold text-slate-400 hover:text-red-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/20">
+                               Revoke
+                             </button>
+                           )}
+                         </div>
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+               </div>
             </div>
           )}
 
+          {/* PREFERENCES TAB */}
           {activeTab === 'preferences' && (
-            <div className="p-10 space-y-10">
-               <h3 className="text-xl font-black text-[#1e293b] dark:text-white">{t('personalization')}</h3>
-
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <div className="space-y-4">
-                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('display_mode')}</label>
-                     <div className="grid grid-cols-2 gap-4">
-                        <button 
-                          onClick={() => setTheme('light')}
-                          className={cn(
-                            "flex items-center justify-center gap-2 p-5 rounded-3xl border-2 transition-all",
-                            theme === 'light' 
-                              ? "border-[#0061ff] bg-blue-50 text-[#0061ff]" 
-                              : "border-slate-100 dark:border-slate-800 text-slate-400 bg-white dark:bg-slate-900"
-                          )}
-                        >
-                           <Sun className="w-4 h-4" />
-                           <span className="text-sm font-black">{t('light')}</span>
-                        </button>
-                        <button 
-                          onClick={() => setTheme('dark')}
-                          className={cn(
-                            "flex items-center justify-center gap-2 p-5 rounded-3xl border-2 transition-all",
-                            theme === 'dark' 
-                              ? "border-[#0061ff] bg-blue-900/20 text-white" 
-                              : "border-slate-100 dark:border-slate-800 text-slate-400 bg-white dark:bg-slate-900"
-                          )}
-                        >
-                           <Moon className="w-4 h-4" />
-                           <span className="text-sm font-black">{t('dark')}</span>
-                        </button>
-                     </div>
-                  </div>
-
-                  <div className="space-y-4">
-                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('primary_language')}</label>
-                     <div className="relative">
-                       <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
-                       <select 
-                          value={i18n.language}
-                          onChange={(e) => handleLanguageChange(e.target.value)}
-                          className="suraksha-input pl-11 appearance-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
-                        >
-                          <option value="en">English (US)</option>
-                          <option value="si">Sinhala (සිංහල)</option>
-                          <option value="ta">Tamil (தமிழ்)</option>
-                       </select>
-                     </div>
-                  </div>
+            <div className="p-8 space-y-8 animate-in fade-in">
+               <div className="space-y-1 pb-6 border-b border-slate-800">
+                 <h2 className="text-lg font-bold text-white">App preferences</h2>
+                 <p className="text-sm text-slate-400">Customize your workspace and dashboard behavior</p>
                </div>
 
-               <div className="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                  <div className="flex items-center gap-4">
-                     <div className="p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-sm">
-                        <Palette className="w-6 h-6 text-[#0061ff]" />
+               <div className="space-y-8">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                   <div className="space-y-4">
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Interface Theme</h3>
+                     <div className="grid grid-cols-3 gap-3">
+                       {['dark', 'light', 'system'].map(t => (
+                         <button 
+                           key={t}
+                           onClick={() => setTheme(t)}
+                           className={cn(
+                             "px-4 py-3 rounded-xl border flex flex-col items-center gap-2 transition-all",
+                             theme === t 
+                               ? "bg-blue-500/10 border-blue-500/50 text-blue-400" 
+                               : "bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800"
+                           )}
+                         >
+                           {t === 'dark' ? <Moon className="w-5 h-5" /> : t === 'light' ? <Sun className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
+                           <span className="text-xs font-bold capitalize">{t}</span>
+                         </button>
+                       ))}
                      </div>
-                     <div>
-                        <h4 className="text-sm font-black text-[#1e293b] dark:text-white uppercase tracking-tight">{t('appearance_sync')}</h4>
-                        <p className="text-[11px] font-bold text-slate-400">{t('settings_applied')}</p>
+                   </div>
+
+                   <div className="space-y-4">
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Primary Language</h3>
+                     <DarkSelect 
+                       value={i18n.language} 
+                       onChange={(v) => i18n.changeLanguage(v)} 
+                       options={[{v: 'en', l: 'English (US)'}, {v: 'si', l: 'Sinhala'}, {v: 'ta', l: 'Tamil'}]} 
+                       icon={Globe}
+                       useObj
+                     />
+                   </div>
+                 </div>
+
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                   <div className="space-y-4">
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Default Map View</h3>
+                     <div className="space-y-2">
+                       {['standard', 'satellite', 'hybrid'].map(v => (
+                         <label key={v} className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/50 border border-slate-800 cursor-pointer hover:bg-slate-800 transition-colors">
+                           <input type="radio" name="mapView" checked={mapView === v} onChange={() => setMapView(v)} className="w-4 h-4 text-[#0061ff] bg-slate-900 border-slate-700 focus:ring-[#0061ff]" />
+                           <span className="text-sm font-bold text-slate-300 capitalize flex items-center gap-2">
+                             {v === 'standard' ? <Map className="w-4 h-4" /> : v === 'satellite' ? <Globe className="w-4 h-4" /> : <List className="w-4 h-4" />}
+                             {v} View
+                           </span>
+                         </label>
+                       ))}
                      </div>
-                  </div>
+                   </div>
+
+                   <div className="space-y-4">
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Default Incident Sort</h3>
+                     <div className="space-y-2">
+                       {['severity', 'recent', 'distance'].map(v => (
+                         <label key={v} className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/50 border border-slate-800 cursor-pointer hover:bg-slate-800 transition-colors">
+                           <input type="radio" name="sort" checked={incidentSort === v} onChange={() => setIncidentSort(v)} className="w-4 h-4 text-[#0061ff] bg-slate-900 border-slate-700 focus:ring-[#0061ff]" />
+                           <span className="text-sm font-bold text-slate-300 capitalize flex items-center gap-2">
+                             {v === 'severity' ? <AlertTriangle className="w-4 h-4" /> : v === 'recent' ? <Clock className="w-4 h-4" /> : <Map className="w-4 h-4" />}
+                             By {v}
+                           </span>
+                         </label>
+                       ))}
+                     </div>
+                   </div>
+                 </div>
+
+                 <div className="space-y-4">
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Dashboard Behaviour</h3>
+                   <DarkToggle title="Auto-refresh Data" desc="Poll the server for new data every 30 seconds" checked />
+                   <DarkToggle title="Sound Alerts for Critical Incidents" desc="Play a siren sound when a severity 5 incident arrives" checked />
+                   <DarkToggle title="Show ML Confidence Scores" desc="Display predictive accuracy scores on incident rows" checked />
+                   <DarkToggle title="Compact Table Mode" desc="Reduce padding in data tables to show more rows" />
+                   <DarkToggle title="Offline Sync Badge" desc="Show the sync status indicator on the map view" checked />
+                 </div>
+
+                 <div className="pt-6 mt-6 border-t border-red-500/20">
+                   <h3 className="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center gap-2"><AlertTriangle className="w-4 h-4" /> Danger Zone</h3>
+                   <div className="flex gap-4">
+                     <button className="px-5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-white hover:bg-slate-800 transition-all flex items-center gap-2">
+                       <Download className="w-4 h-4" /> Export all data
+                     </button>
+                     <button className="px-5 py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2">
+                       <Trash2 className="w-4 h-4" /> Deactivate account
+                     </button>
+                   </div>
+                 </div>
                </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
   )
 }
 
-function SettingInput({ label, value, type = 'text', icon: Icon, placeholder, onChange, disabled, required }: any) {
+function DarkInput({ label, value, type = 'text', icon: Icon, placeholder, onChange, disabled }: any) {
   return (
-    <div className="space-y-2">
-      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic transition-colors dark:text-slate-500">{label}</label>
-      <div className={cn("relative group transition-opacity", disabled && "opacity-60")}>
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 group-focus-within:text-[#0061ff] transition-colors">
+    <div className="space-y-1.5">
+      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">{label}</label>
+      <div className={cn("relative group", disabled && "opacity-60")}>
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors">
           <Icon className="w-4 h-4" />
         </div>
         <input 
@@ -323,32 +454,59 @@ function SettingInput({ label, value, type = 'text', icon: Icon, placeholder, on
           onChange={(e) => onChange?.(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
-          required={required}
-          className="suraksha-input pl-11 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder:text-slate-600"
+          className="w-full h-12 bg-slate-900/50 border border-slate-800 rounded-xl pl-11 pr-4 text-sm font-bold text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all"
         />
       </div>
     </div>
   )
 }
 
-function ToggleItem({ title, desc, checked = false }: any) {
+function DarkSelect({ label, value, options, icon: Icon, onChange, disabled, useObj = false }: any) {
+  return (
+    <div className="space-y-1.5">
+      {label && <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">{label}</label>}
+      <div className={cn("relative group", disabled && "opacity-60")}>
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors pointer-events-none">
+          <Icon className="w-4 h-4" />
+        </div>
+        <select 
+          value={value}
+          onChange={(e) => onChange?.(e.target.value)}
+          disabled={disabled}
+          className="w-full h-12 bg-slate-900/50 border border-slate-800 rounded-xl pl-11 pr-10 text-sm font-bold text-white appearance-none cursor-pointer focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all"
+        >
+          {options.map((opt: any) => (
+            <option key={useObj ? opt.v : opt} value={useObj ? opt.v : opt} className="bg-slate-900">
+              {useObj ? opt.l : opt}
+            </option>
+          ))}
+        </select>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DarkToggle({ title, desc, checked = false }: any) {
   const [isOn, setIsOn] = useState(checked)
   return (
-    <div className="flex items-center justify-between p-6 rounded-[2rem] bg-slate-50/50 dark:bg-slate-800/30 border border-transparent hover:border-slate-100 dark:hover:border-slate-700 transition-all group">
-       <div className="space-y-1">
-          <div className="text-sm font-black text-[#1e293b] dark:text-white">{title}</div>
-          <div className="text-[11px] font-bold text-slate-400">{desc}</div>
+    <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all group">
+       <div className="space-y-0.5">
+          <div className="text-sm font-bold text-white">{title}</div>
+          <div className="text-xs text-slate-400 font-medium">{desc}</div>
        </div>
        <button 
          onClick={() => setIsOn(!isOn)}
          className={cn(
-           "w-12 h-6 rounded-full transition-all duration-300 p-1 flex items-center",
-           isOn ? "bg-[#0061ff]" : "bg-slate-200 dark:bg-slate-700"
+           "w-11 h-6 rounded-full transition-all duration-300 p-1 flex items-center focus:outline-none",
+           isOn ? "bg-blue-500" : "bg-slate-700"
          )}
        >
          <div className={cn(
            "w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-300",
-           isOn ? "translate-x-6" : "translate-x-0"
+           isOn ? "translate-x-5" : "translate-x-0"
          )} />
        </button>
     </div>

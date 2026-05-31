@@ -11,26 +11,8 @@ import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
+import { AreaMultiSelect } from '../components/map/AreaMultiSelect'
 
-const SRI_LANKA_TOWNS = [
-  'All Island',
-  'Colombo',
-  'Galle',
-  'Kandy',
-  'Matara',
-  'Jaffna',
-  'Negombo',
-  'Anuradhapura',
-  'Ratnapura',
-  'Badulla',
-  'Batticaloa',
-  'Kalutara',
-  'Kurunegala',
-  'Trincomalee',
-  'Gampaha',
-  'Homagama',
-  'Theldeniya'
-]
 
 const categories = [
   { 
@@ -95,7 +77,7 @@ export default function AlertsPage() {
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [alerts, setAlerts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [newAlert, setNewAlert] = useState({ title: '', message: '', location: '', type: 'INFO' })
+  const [newAlert, setNewAlert] = useState<{ title: string, message: string, locations: string[], type: string }>({ title: '', message: '', locations: [], type: 'INFO' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   
   const canBroadcast = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
@@ -128,13 +110,13 @@ export default function AlertsPage() {
       addNotification({
         id: Date.now().toString(),
         title: 'Directive Broadcasted',
-        message: `New alert: ${newAlert.title} in ${newAlert.location}`,
+        message: `New alert: ${newAlert.title} in ${newAlert.locations.join(', ')}`,
         time: 'Just now',
         type: 'alert',
         unread: true
       })
 
-      setNewAlert({ title: '', message: '', location: '', type: 'INFO' })
+      setNewAlert({ title: '', message: '', locations: [], type: 'INFO' })
       fetchAlerts()
     } catch (err) {
       console.error('Failed to broadcast alert', err)
@@ -163,8 +145,9 @@ export default function AlertsPage() {
   }
 
   const filteredAlerts = alerts.filter(alert => {
+    const locationsString = alert.locations ? alert.locations.join(', ') : ''
     const matchesSearch = alert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          alert.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          locationsString.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           alert.message.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesType = filterType === 'ALL' || alert.type === filterType
     return matchesSearch && matchesType
@@ -174,8 +157,8 @@ export default function AlertsPage() {
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black tracking-tight text-[#1e293b]">{t('alerts.title')}</h1>
-          <p className="text-slate-500 mt-1 font-bold uppercase text-[10px] tracking-[0.2em] opacity-70 italic">{t('alerts.subtitle')}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('alerts.title')}</h1>
+          <p className="text-slate-500 mt-1 font-medium">{t('alerts.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3 px-6 py-3 bg-red-50 text-red-600 rounded-2xl border border-red-100 shadow-sm">
            <Radio className="w-5 h-5 animate-pulse" />
@@ -205,7 +188,7 @@ export default function AlertsPage() {
                   title: cat.label, 
                   type: cat.type, 
                   message: cat.defaultMsg, 
-                  location: cat.defaultLoc
+                  locations: [cat.defaultLoc]
                 })}
                 className="suraksha-card p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-[#0061ff]/30 hover:scale-[1.05] transition-all bg-white group"
               >
@@ -245,21 +228,11 @@ export default function AlertsPage() {
 
                 <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Targeted Town / Sector</label>
-                      <div className="relative group">
-                        <select 
-                          required
-                          className="suraksha-input appearance-none bg-slate-50 font-black text-[11px] uppercase tracking-widest"
-                          value={newAlert.location}
-                          onChange={(e) => setNewAlert({...newAlert, location: e.target.value})}
-                        >
-                          <option value="">Select Target Area</option>
-                          {SRI_LANKA_TOWNS.map(town => (
-                            <option key={town} value={town}>{town}</option>
-                          ))}
-                        </select>
-                        <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none rotate-90" />
-                      </div>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Targeted Areas</label>
+                      <AreaMultiSelect 
+                        selectedLocations={newAlert.locations}
+                        onChange={(locations) => setNewAlert({ ...newAlert, locations })}
+                      />
                     </div>
                    <div className="space-y-3">
                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1 italic">Severity Level</label>
@@ -336,10 +309,10 @@ export default function AlertsPage() {
                       <p className="text-sm font-bold text-slate-500 leading-relaxed mb-6 font-sans">
                         {newAlert.message || 'The detailed emergency broadcast text will synchronize across all citizen and responder mobile nodes in real-time...'}
                       </p>
-                      <div className="flex items-center justify-between pt-5 border-t border-slate-50">
+                       <div className="flex items-center justify-between pt-5 border-t border-slate-50">
                          <div className="flex items-center gap-2 text-slate-400">
                             <MapPin className="w-3.5 h-3.5" />
-                            <span className="text-[11px] font-black uppercase tracking-tight">{newAlert.location || 'All Geo-Sectors'}</span>
+                            <span className="text-[11px] font-black uppercase tracking-tight line-clamp-1">{newAlert.locations?.length > 0 ? newAlert.locations.join(', ') : 'All Geo-Sectors'}</span>
                          </div>
                       </div>
                    </div>
@@ -423,9 +396,9 @@ export default function AlertsPage() {
                   </div>
                   <p className="text-sm font-bold text-slate-400 max-w-2xl line-clamp-1">{alert.message}</p>
                   <div className="flex flex-wrap items-center gap-6 pt-2">
-                    <div className="flex items-center gap-2 text-[11px] font-black text-slate-400 uppercase tracking-tight">
-                       <MapPin className="w-3.5 h-3.5 text-slate-300" />
-                       {alert.location}
+                    <div className="flex items-center gap-2 text-[11px] font-black text-slate-400 uppercase tracking-tight max-w-[200px]">
+                       <MapPin className="w-3.5 h-3.5 text-slate-300 shrink-0" />
+                       <span className="truncate">{alert.locations?.join(', ') || 'All Island'}</span>
                     </div>
                     <div className="flex items-center gap-2 text-[11px] font-black text-slate-400 uppercase tracking-tight">
                        <Clock className="w-3.5 h-3.5 text-slate-300" />

@@ -55,8 +55,8 @@ export default function LoginPage() {
           <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6">
             <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#1e293b]">Suraksha</h1>
-          <p className="text-slate-500 font-medium">Disaster Management Coordination</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Suraksha</h1>
+          <p className="text-slate-500 mt-1 font-medium">Disaster Management Coordination</p>
         </div>
 
         {error && (

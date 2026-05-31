@@ -144,6 +144,7 @@ exports.Prisma.IncidentReportScalarFieldEnum = {
   province: 'province',
   status: 'status',
   severity: 'severity',
+  mlConfidence: 'mlConfidence',
   category: 'category',
   images: 'images',
   reporterId: 'reporterId',

@@ -38,8 +38,8 @@ export default function RegisterPage() {
           <div className="w-20 h-20 flex items-center justify-center mx-auto mb-4">
             <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Create Account</h1>
-          <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Join the Response Team</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Create Account</h1>
+          <p className="text-slate-500 mt-1 font-medium">Join the Response Team</p>
         </div>
 
         {error && (

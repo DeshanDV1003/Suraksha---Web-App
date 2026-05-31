@@ -4929,11 +4929,13 @@ export namespace Prisma {
   export type IncidentReportAvgAggregateOutputType = {
     latitude: number | null
     longitude: number | null
+    mlConfidence: number | null
   }
 
   export type IncidentReportSumAggregateOutputType = {
     latitude: number | null
     longitude: number | null
+    mlConfidence: number | null
   }
 
   export type IncidentReportMinAggregateOutputType = {
@@ -4948,6 +4950,7 @@ export namespace Prisma {
     province: string | null
     status: $Enums.Status | null
     severity: $Enums.Severity | null
+    mlConfidence: number | null
     category: string | null
     reporterId: string | null
     createdAt: Date | null
@@ -4966,6 +4969,7 @@ export namespace Prisma {
     province: string | null
     status: $Enums.Status | null
     severity: $Enums.Severity | null
+    mlConfidence: number | null
     category: string | null
     reporterId: string | null
     createdAt: Date | null
@@ -4984,6 +4988,7 @@ export namespace Prisma {
     province: number
     status: number
     severity: number
+    mlConfidence: number
     category: number
     images: number
     reporterId: number
@@ -4996,11 +5001,13 @@ export namespace Prisma {
   export type IncidentReportAvgAggregateInputType = {
     latitude?: true
     longitude?: true
+    mlConfidence?: true
   }
 
   export type IncidentReportSumAggregateInputType = {
     latitude?: true
     longitude?: true
+    mlConfidence?: true
   }
 
   export type IncidentReportMinAggregateInputType = {
@@ -5015,6 +5022,7 @@ export namespace Prisma {
     province?: true
     status?: true
     severity?: true
+    mlConfidence?: true
     category?: true
     reporterId?: true
     createdAt?: true
@@ -5033,6 +5041,7 @@ export namespace Prisma {
     province?: true
     status?: true
     severity?: true
+    mlConfidence?: true
     category?: true
     reporterId?: true
     createdAt?: true
@@ -5051,6 +5060,7 @@ export namespace Prisma {
     province?: true
     status?: true
     severity?: true
+    mlConfidence?: true
     category?: true
     images?: true
     reporterId?: true
@@ -5157,6 +5167,7 @@ export namespace Prisma {
     province: string | null
     status: $Enums.Status
     severity: $Enums.Severity
+    mlConfidence: number | null
     category: string
     images: string[]
     reporterId: string
@@ -5195,6 +5206,7 @@ export namespace Prisma {
     province?: boolean
     status?: boolean
     severity?: boolean
+    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
@@ -5221,6 +5233,7 @@ export namespace Prisma {
     province?: boolean
     status?: boolean
     severity?: boolean
+    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
@@ -5241,6 +5254,7 @@ export namespace Prisma {
     province?: boolean
     status?: boolean
     severity?: boolean
+    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
@@ -5261,6 +5275,7 @@ export namespace Prisma {
     province?: boolean
     status?: boolean
     severity?: boolean
+    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
@@ -5268,7 +5283,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "zoneId" | "zoneName" | "province" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt", ExtArgs["result"]["incidentReport"]>
+  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "zoneId" | "zoneName" | "province" | "status" | "severity" | "mlConfidence" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt", ExtArgs["result"]["incidentReport"]>
   export type IncidentReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
     history?: boolean | IncidentReport$historyArgs<ExtArgs>
@@ -5307,6 +5322,7 @@ export namespace Prisma {
       province: string | null
       status: $Enums.Status
       severity: $Enums.Severity
+      mlConfidence: number | null
       category: string
       images: string[]
       reporterId: string
@@ -5752,6 +5768,7 @@ export namespace Prisma {
     readonly province: FieldRef<"IncidentReport", 'String'>
     readonly status: FieldRef<"IncidentReport", 'Status'>
     readonly severity: FieldRef<"IncidentReport", 'Severity'>
+    readonly mlConfidence: FieldRef<"IncidentReport", 'Float'>
     readonly category: FieldRef<"IncidentReport", 'String'>
     readonly images: FieldRef<"IncidentReport", 'String[]'>
     readonly reporterId: FieldRef<"IncidentReport", 'String'>
@@ -31161,6 +31178,7 @@ export namespace Prisma {
     province: 'province',
     status: 'status',
     severity: 'severity',
+    mlConfidence: 'mlConfidence',
     category: 'category',
     images: 'images',
     reporterId: 'reporterId',
@@ -31941,6 +31959,7 @@ export namespace Prisma {
     province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
+    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
     category?: StringFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringFilter<"IncidentReport"> | string
@@ -31966,6 +31985,7 @@ export namespace Prisma {
     province?: SortOrderInput | SortOrder
     status?: SortOrder
     severity?: SortOrder
+    mlConfidence?: SortOrderInput | SortOrder
     category?: SortOrder
     images?: SortOrder
     reporterId?: SortOrder
@@ -31994,6 +32014,7 @@ export namespace Prisma {
     province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
+    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
     category?: StringFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringFilter<"IncidentReport"> | string
@@ -32019,6 +32040,7 @@ export namespace Prisma {
     province?: SortOrderInput | SortOrder
     status?: SortOrder
     severity?: SortOrder
+    mlConfidence?: SortOrderInput | SortOrder
     category?: SortOrder
     images?: SortOrder
     reporterId?: SortOrder
@@ -32046,6 +32068,7 @@ export namespace Prisma {
     province?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
     status?: EnumStatusWithAggregatesFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityWithAggregatesFilter<"IncidentReport"> | $Enums.Severity
+    mlConfidence?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
     category?: StringWithAggregatesFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringWithAggregatesFilter<"IncidentReport"> | string
@@ -33881,6 +33904,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -33905,6 +33929,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -33929,6 +33954,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33953,6 +33979,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -33977,6 +34004,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -33996,6 +34024,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34014,6 +34043,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -36186,6 +36216,7 @@ export namespace Prisma {
     province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
+    mlConfidence?: SortOrder
     category?: SortOrder
     images?: SortOrder
     reporterId?: SortOrder
@@ -36196,6 +36227,7 @@ export namespace Prisma {
   export type IncidentReportAvgOrderByAggregateInput = {
     latitude?: SortOrder
     longitude?: SortOrder
+    mlConfidence?: SortOrder
   }
 
   export type IncidentReportMaxOrderByAggregateInput = {
@@ -36210,6 +36242,7 @@ export namespace Prisma {
     province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
+    mlConfidence?: SortOrder
     category?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
@@ -36228,6 +36261,7 @@ export namespace Prisma {
     province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
+    mlConfidence?: SortOrder
     category?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
@@ -36237,6 +36271,7 @@ export namespace Prisma {
   export type IncidentReportSumOrderByAggregateInput = {
     latitude?: SortOrder
     longitude?: SortOrder
+    mlConfidence?: SortOrder
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -39590,6 +39625,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -39613,6 +39649,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -40054,6 +40091,7 @@ export namespace Prisma {
     province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
+    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
     category?: StringFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringFilter<"IncidentReport"> | string
@@ -41034,6 +41072,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -41057,6 +41096,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -41214,6 +41254,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41237,6 +41278,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -41528,6 +41570,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -41551,6 +41594,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -41643,6 +41687,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41666,6 +41711,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -41916,6 +41962,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -41939,6 +41986,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -41978,6 +42026,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42001,6 +42050,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -42387,6 +42437,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -42410,6 +42461,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -42502,6 +42554,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42525,6 +42578,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -42798,6 +42852,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -42821,6 +42876,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
@@ -42934,6 +42990,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42957,6 +43014,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
@@ -43166,6 +43224,7 @@ export namespace Prisma {
     province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
+    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
@@ -43378,6 +43437,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43401,6 +43461,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43424,6 +43485,7 @@ export namespace Prisma {
     province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

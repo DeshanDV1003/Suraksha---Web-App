@@ -74,8 +74,8 @@ export default function DamageAssessmentPage() {
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Damage Assessment</h1>
-          <p className="text-slate-500 font-medium">Post-disaster recovery and loss estimation</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Damage Assessment</h1>
+          <p className="text-slate-500 mt-1 font-medium">Post-disaster recovery and loss estimation</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}

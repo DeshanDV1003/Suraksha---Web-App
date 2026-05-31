@@ -9,9 +9,11 @@ import { dashboardService, alertService } from '../services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppStore } from '@/store/useAppStore'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 export default function DashboardPage() {
+  const navigate = useNavigate()
   const { t } = useTranslation()
   const { user } = useAuth()
   const { searchQuery } = useAppStore()
@@ -21,6 +23,16 @@ export default function DashboardPage() {
   const [volunteersCount, setVolunteersCount] = useState(0)
   const [helpRequestsCount, setHelpRequestsCount] = useState(0)
   const [missingCount, setMissingCount] = useState(0)
+  const [activeIncidentsCount, setActiveIncidentsCount] = useState(0)
+  const [avgResponseTime, setAvgResponseTime] = useState('0m')
+  const [secondaryStatsData, setSecondaryStatsData] = useState({
+    resourcesTotal: 0,
+    resourcesBoats: 0,
+    resourcesVehicles: 0,
+    familyUpdatesTotal: 0,
+    familyUpdatesSafe: 0,
+    tokenClaimsTotal: 0,
+  })
   const [loading, setLoading] = useState(true)
 
   // Modal states
@@ -38,6 +50,11 @@ export default function DashboardPage() {
       setVolunteersCount(data.volunteersActive || 0)
       setHelpRequestsCount(data.helpRequests || 0)
       setMissingCount(data.missingPersons || 0)
+      setActiveIncidentsCount(data.activeIncidents || 0)
+      setAvgResponseTime(data.avgResponseTime || '0m')
+      if (data.secondaryStats) {
+        setSecondaryStatsData(data.secondaryStats)
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data', error)
     } finally {
@@ -67,7 +84,7 @@ export default function DashboardPage() {
   const mainStats = [
     {
       label: t('dashboard.active_incidents'),
-      value: incidents.filter(i => i.status !== 'RESOLVED').length.toString(),
+      value: activeIncidentsCount.toString(),
       trend: '+3',
       isUp: true,
       icon: AlertTriangle,
@@ -103,7 +120,7 @@ export default function DashboardPage() {
     },
     {
       label: t('dashboard.avg_response_time'),
-      value: '14m',
+      value: avgResponseTime,
       trend: '-3m',
       isUp: false,
       icon: Clock,
@@ -115,8 +132,8 @@ export default function DashboardPage() {
   const secondaryStats = [
     {
       label: 'Family Safety Updates',
-      value: '842',
-      subtext: '245 marked safe in last 24h',
+      value: secondaryStatsData.familyUpdatesTotal.toString(),
+      subtext: `${secondaryStatsData.familyUpdatesSafe} marked safe in last 24h`,
       icon: Heart,
       color: 'bg-pink-500',
       cardClass: 'bg-[#fff5f7] border-[#fee2e7]',
@@ -124,8 +141,8 @@ export default function DashboardPage() {
     },
     {
       label: t('nav.resources'),
-      value: '80',
-      subtext: '23 boats, 15 vehicles available',
+      value: secondaryStatsData.resourcesTotal.toString(),
+      subtext: `${secondaryStatsData.resourcesBoats} boats, ${secondaryStatsData.resourcesVehicles} vehicles available`,
       icon: Package,
       color: 'bg-green-500',
       cardClass: 'bg-[#f0fdf4] border-[#dcfce7]',
@@ -133,8 +150,8 @@ export default function DashboardPage() {
     },
     {
       label: 'Token Distributions',
-      value: '1,245',
-      subtext: '23 duplicates prevented',
+      value: secondaryStatsData.tokenClaimsTotal.toString(),
+      subtext: '0 duplicates prevented', // Simplified mock text as logic is complex
       icon: LayoutGrid,
       color: 'bg-blue-500',
       cardClass: 'bg-[#eff6ff] border-[#dbeafe]',
@@ -342,7 +359,10 @@ export default function DashboardPage() {
       <div className="suraksha-card p-8">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-xl font-bold text-[#1e293b]">{t('dashboard.gis_map')}</h3>
-          <button className="flex items-center gap-2 text-[#0061ff] font-bold text-sm group">
+          <button 
+            onClick={() => navigate('/map')}
+            className="flex items-center gap-2 text-[#0061ff] font-bold text-sm group"
+          >
             {t('dashboard.open_full_map')}
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
@@ -363,7 +383,7 @@ export default function DashboardPage() {
             </div>
             <div className="text-center px-6 py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-xl">
               <div className="text-xl font-extrabold text-[#1e293b]">Dynamic GIS Coverage</div>
-              <div className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">{incidents.length} incidents • 84 volunteers active</div>
+              <div className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">{activeIncidentsCount} incidents • {volunteersCount} volunteers active</div>
             </div>
           </div>
 

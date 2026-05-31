@@ -92,8 +92,8 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">{t('resources.title')}</h1>
-          <p className="text-slate-500 mt-1 font-bold">{t('resources.subtitle')}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('resources.title')}</h1>
+          <p className="text-slate-500 mt-1 font-medium">{t('resources.subtitle')}</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}

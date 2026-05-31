@@ -28,6 +28,7 @@ export default function IncidentsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [selectedIncident, setSelectedIncident] = useState<any>(null)
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
+  const [incidentToDelete, setIncidentToDelete] = useState<string | null>(null)
 
   useEffect(() => {
     fetchIncidents()
@@ -53,13 +54,19 @@ export default function IncidentsPage() {
     }
   }
 
-  const handleDeleteIncident = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this incident report?')) return
+  const handleDeleteIncident = (id: string) => {
+    setIncidentToDelete(id)
+  }
+
+  const confirmDelete = async () => {
+    if (!incidentToDelete) return
     try {
-      await incidentService.deleteIncident(id)
+      await incidentService.deleteIncident(incidentToDelete)
       fetchIncidents()
     } catch (err) {
       console.error('Failed to delete incident', err)
+    } finally {
+      setIncidentToDelete(null)
     }
   }
 
@@ -77,8 +84,8 @@ export default function IncidentsPage() {
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-[#1e293b]">{t('incidents.title')}</h1>
-          <p className="text-slate-500 mt-1 font-medium italic">{t('incidents.pipeline')}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('incidents.title')}</h1>
+          <p className="text-slate-500 mt-1 font-medium">{t('incidents.pipeline')}</p>
         </div>
         <button
           onClick={() => setIsCreateModalOpen(true)}
@@ -222,7 +229,13 @@ export default function IncidentsPage() {
                         </span>
                       )}
                     </td>
-                    <td className="px-8 py-8 text-center text-sm font-black text-blue-600 tracking-tighter">98.4%</td>
+                    <td className="px-8 py-8 text-center text-sm font-black tracking-tighter">
+                      {incident.mlConfidence != null ? (
+                        <span className="text-blue-600">{(incident.mlConfidence * 100).toFixed(1)}%</span>
+                      ) : (
+                        <span className="text-slate-300">N/A</span>
+                      )}
+                    </td>
                     <td className="px-8 py-8 text-center text-[10px] font-black text-slate-400 whitespace-nowrap uppercase tracking-widest">
                       {formatDistanceToNow(new Date(incident.createdAt))}
                     </td>
@@ -284,8 +297,44 @@ export default function IncidentsPage() {
       {isDetailsModalOpen && selectedIncident && (
         <IncidentDetailsModal
           incident={selectedIncident}
-          onClose={() => setIsDetailsModalOpen(false)}
+          onClose={() => {
+            setIsDetailsModalOpen(false)
+            setSelectedIncident(null)
+          }}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {incidentToDelete && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setIncidentToDelete(null)}
+          />
+          <div className="relative w-full max-w-sm bg-white rounded-[2.5rem] shadow-2xl overflow-hidden p-8 text-center border border-white">
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Trash2 className="w-8 h-8 text-red-500" />
+            </div>
+            <h3 className="text-2xl font-black text-slate-800 mb-2">Delete Report?</h3>
+            <p className="text-sm font-bold text-slate-500 mb-8 px-2">
+              This action cannot be undone. This incident report will be permanently removed from the system.
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setIncidentToDelete(null)}
+                className="flex-1 px-6 py-4 rounded-2xl bg-slate-50 text-slate-600 font-bold text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 px-6 py-4 rounded-2xl bg-red-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-red-600 shadow-lg shadow-red-500/25 transition-all"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

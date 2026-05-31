@@ -111,6 +111,7 @@ export const createIncident = async (req: any, res: Response) => {
         where: { id: incident.id },
         data: {
           severity: mlResult.priority as any,
+          mlConfidence: mlResult.priority_confidence,
         }
       });
 
@@ -135,8 +136,8 @@ export const createIncident = async (req: any, res: Response) => {
         });
       }
       
-      // Also emit regular update for the new incident with updated severity
-      io.emit('incident-updated', { ...incident, severity: mlResult.priority });
+      // Also emit regular update for the new incident with updated severity and confidence
+      io.emit('incident-updated', { ...incident, severity: mlResult.priority, mlConfidence: mlResult.priority_confidence });
 
     }).catch(err => console.error('Async ML processing failed:', err));
 

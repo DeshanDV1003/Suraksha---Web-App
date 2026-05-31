@@ -39,9 +39,9 @@ export const createAlert = async (req: Request, res: Response) => {
   try {
     const alert = await alertService.createAlert(req.body);
 
-    // Emit socket event for real-time alert
+    // Emit socket event for real-time alert with broadcast radius (in km)
     const io = req.app.get('socketio');
-    io.emit('new-alert', alert);
+    io.emit('new-alert', { ...alert, broadcastRadiusKm: 20 });
 
     res.status(201).json(alert);
   } catch (error) {

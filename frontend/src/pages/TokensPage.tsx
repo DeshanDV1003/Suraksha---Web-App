@@ -112,8 +112,8 @@ export default function TokensPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">Digital Token System</h1>
-          <p className="text-slate-500 mt-1 font-bold">QR-based fair distribution and tracking</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Digital Token System</h1>
+          <p className="text-slate-500 mt-1 font-medium">QR-based fair distribution and tracking</p>
         </div>
         <div className="flex gap-4">
           <button 
