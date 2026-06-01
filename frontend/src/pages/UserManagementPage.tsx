@@ -6,7 +6,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 
 export default function UserManagementPage() {
-  const { searchQuery, setSearchQuery } = useAppStore()
+  const [localSearch, setLocalSearch] = useState('')
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [roleFilter, setRoleFilter] = useState('All Roles')
@@ -48,9 +48,11 @@ export default function UserManagementPage() {
   }
 
   const filteredUsers = users.filter(u => {
-    const matchesSearch = u.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          u.id.toLowerCase().includes(searchQuery.toLowerCase())
+    const searchStr = localSearch.toLowerCase().trim()
+    const matchesSearch = !searchStr || 
+                          (u.name && u.name.toLowerCase().includes(searchStr)) || 
+                          (u.email && u.email.toLowerCase().includes(searchStr)) ||
+                          (u.id && u.id.toLowerCase().includes(searchStr))
     const matchesRole = roleFilter === 'All Roles' || u.role === roleFilter
     return matchesSearch && matchesRole
   })
@@ -124,8 +126,8 @@ export default function UserManagementPage() {
                 type="text" 
                 placeholder="Search by identity name or secure email..." 
                 className="suraksha-input pl-16 h-16 bg-slate-50 border-none font-bold placeholder:italic"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
               />
             </div>
          </div>

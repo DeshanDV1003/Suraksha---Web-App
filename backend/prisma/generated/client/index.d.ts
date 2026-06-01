@@ -6319,15 +6319,26 @@ export namespace Prisma {
 
   export type AggregateAlert = {
     _count: AlertCountAggregateOutputType | null
+    _avg: AlertAvgAggregateOutputType | null
+    _sum: AlertSumAggregateOutputType | null
     _min: AlertMinAggregateOutputType | null
     _max: AlertMaxAggregateOutputType | null
+  }
+
+  export type AlertAvgAggregateOutputType = {
+    latitudes: number | null
+    longitudes: number | null
+  }
+
+  export type AlertSumAggregateOutputType = {
+    latitudes: number[]
+    longitudes: number[]
   }
 
   export type AlertMinAggregateOutputType = {
     id: string | null
     title: string | null
     message: string | null
-    location: string | null
     type: $Enums.AlertType | null
     active: boolean | null
     createdAt: Date | null
@@ -6338,7 +6349,6 @@ export namespace Prisma {
     id: string | null
     title: string | null
     message: string | null
-    location: string | null
     type: $Enums.AlertType | null
     active: boolean | null
     createdAt: Date | null
@@ -6349,7 +6359,9 @@ export namespace Prisma {
     id: number
     title: number
     message: number
-    location: number
+    locations: number
+    latitudes: number
+    longitudes: number
     type: number
     active: number
     createdAt: number
@@ -6358,11 +6370,20 @@ export namespace Prisma {
   }
 
 
+  export type AlertAvgAggregateInputType = {
+    latitudes?: true
+    longitudes?: true
+  }
+
+  export type AlertSumAggregateInputType = {
+    latitudes?: true
+    longitudes?: true
+  }
+
   export type AlertMinAggregateInputType = {
     id?: true
     title?: true
     message?: true
-    location?: true
     type?: true
     active?: true
     createdAt?: true
@@ -6373,7 +6394,6 @@ export namespace Prisma {
     id?: true
     title?: true
     message?: true
-    location?: true
     type?: true
     active?: true
     createdAt?: true
@@ -6384,7 +6404,9 @@ export namespace Prisma {
     id?: true
     title?: true
     message?: true
-    location?: true
+    locations?: true
+    latitudes?: true
+    longitudes?: true
     type?: true
     active?: true
     createdAt?: true
@@ -6430,6 +6452,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AlertAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AlertSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AlertMinAggregateInputType
@@ -6460,6 +6494,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AlertCountAggregateInputType | true
+    _avg?: AlertAvgAggregateInputType
+    _sum?: AlertSumAggregateInputType
     _min?: AlertMinAggregateInputType
     _max?: AlertMaxAggregateInputType
   }
@@ -6468,12 +6504,16 @@ export namespace Prisma {
     id: string
     title: string
     message: string
-    location: string
+    locations: string[]
+    latitudes: number[]
+    longitudes: number[]
     type: $Enums.AlertType
     active: boolean
     createdAt: Date
     updatedAt: Date
     _count: AlertCountAggregateOutputType | null
+    _avg: AlertAvgAggregateOutputType | null
+    _sum: AlertSumAggregateOutputType | null
     _min: AlertMinAggregateOutputType | null
     _max: AlertMaxAggregateOutputType | null
   }
@@ -6496,7 +6536,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    location?: boolean
+    locations?: boolean
+    latitudes?: boolean
+    longitudes?: boolean
     type?: boolean
     active?: boolean
     createdAt?: boolean
@@ -6507,7 +6549,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    location?: boolean
+    locations?: boolean
+    latitudes?: boolean
+    longitudes?: boolean
     type?: boolean
     active?: boolean
     createdAt?: boolean
@@ -6518,7 +6562,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    location?: boolean
+    locations?: boolean
+    latitudes?: boolean
+    longitudes?: boolean
     type?: boolean
     active?: boolean
     createdAt?: boolean
@@ -6529,14 +6575,16 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    location?: boolean
+    locations?: boolean
+    latitudes?: boolean
+    longitudes?: boolean
     type?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "location" | "type" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["alert"]>
+  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "locations" | "latitudes" | "longitudes" | "type" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["alert"]>
 
   export type $AlertPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Alert"
@@ -6545,7 +6593,9 @@ export namespace Prisma {
       id: string
       title: string
       message: string
-      location: string
+      locations: string[]
+      latitudes: number[]
+      longitudes: number[]
       type: $Enums.AlertType
       active: boolean
       createdAt: Date
@@ -6976,7 +7026,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Alert", 'String'>
     readonly title: FieldRef<"Alert", 'String'>
     readonly message: FieldRef<"Alert", 'String'>
-    readonly location: FieldRef<"Alert", 'String'>
+    readonly locations: FieldRef<"Alert", 'String[]'>
+    readonly latitudes: FieldRef<"Alert", 'Float[]'>
+    readonly longitudes: FieldRef<"Alert", 'Float[]'>
     readonly type: FieldRef<"Alert", 'AlertType'>
     readonly active: FieldRef<"Alert", 'Boolean'>
     readonly createdAt: FieldRef<"Alert", 'DateTime'>
@@ -31193,7 +31245,9 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     message: 'message',
-    location: 'location',
+    locations: 'locations',
+    latitudes: 'latitudes',
+    longitudes: 'longitudes',
     type: 'type',
     active: 'active',
     createdAt: 'createdAt',
@@ -32083,7 +32137,9 @@ export namespace Prisma {
     id?: StringFilter<"Alert"> | string
     title?: StringFilter<"Alert"> | string
     message?: StringFilter<"Alert"> | string
-    location?: StringFilter<"Alert"> | string
+    locations?: StringNullableListFilter<"Alert">
+    latitudes?: FloatNullableListFilter<"Alert">
+    longitudes?: FloatNullableListFilter<"Alert">
     type?: EnumAlertTypeFilter<"Alert"> | $Enums.AlertType
     active?: BoolFilter<"Alert"> | boolean
     createdAt?: DateTimeFilter<"Alert"> | Date | string
@@ -32094,7 +32150,9 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    location?: SortOrder
+    locations?: SortOrder
+    latitudes?: SortOrder
+    longitudes?: SortOrder
     type?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -32108,7 +32166,9 @@ export namespace Prisma {
     NOT?: AlertWhereInput | AlertWhereInput[]
     title?: StringFilter<"Alert"> | string
     message?: StringFilter<"Alert"> | string
-    location?: StringFilter<"Alert"> | string
+    locations?: StringNullableListFilter<"Alert">
+    latitudes?: FloatNullableListFilter<"Alert">
+    longitudes?: FloatNullableListFilter<"Alert">
     type?: EnumAlertTypeFilter<"Alert"> | $Enums.AlertType
     active?: BoolFilter<"Alert"> | boolean
     createdAt?: DateTimeFilter<"Alert"> | Date | string
@@ -32119,14 +32179,18 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    location?: SortOrder
+    locations?: SortOrder
+    latitudes?: SortOrder
+    longitudes?: SortOrder
     type?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AlertCountOrderByAggregateInput
+    _avg?: AlertAvgOrderByAggregateInput
     _max?: AlertMaxOrderByAggregateInput
     _min?: AlertMinOrderByAggregateInput
+    _sum?: AlertSumOrderByAggregateInput
   }
 
   export type AlertScalarWhereWithAggregatesInput = {
@@ -32136,7 +32200,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Alert"> | string
     title?: StringWithAggregatesFilter<"Alert"> | string
     message?: StringWithAggregatesFilter<"Alert"> | string
-    location?: StringWithAggregatesFilter<"Alert"> | string
+    locations?: StringNullableListFilter<"Alert">
+    latitudes?: FloatNullableListFilter<"Alert">
+    longitudes?: FloatNullableListFilter<"Alert">
     type?: EnumAlertTypeWithAggregatesFilter<"Alert"> | $Enums.AlertType
     active?: BoolWithAggregatesFilter<"Alert"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
@@ -34055,7 +34121,9 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    location: string
+    locations?: AlertCreatelocationsInput | string[]
+    latitudes?: AlertCreatelatitudesInput | number[]
+    longitudes?: AlertCreatelongitudesInput | number[]
     type?: $Enums.AlertType
     active?: boolean
     createdAt?: Date | string
@@ -34066,7 +34134,9 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    location: string
+    locations?: AlertCreatelocationsInput | string[]
+    latitudes?: AlertCreatelatitudesInput | number[]
+    longitudes?: AlertCreatelongitudesInput | number[]
     type?: $Enums.AlertType
     active?: boolean
     createdAt?: Date | string
@@ -34077,7 +34147,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
+    locations?: AlertUpdatelocationsInput | string[]
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34088,7 +34160,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
+    locations?: AlertUpdatelocationsInput | string[]
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34099,7 +34173,9 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    location: string
+    locations?: AlertCreatelocationsInput | string[]
+    latitudes?: AlertCreatelatitudesInput | number[]
+    longitudes?: AlertCreatelongitudesInput | number[]
     type?: $Enums.AlertType
     active?: boolean
     createdAt?: Date | string
@@ -34110,7 +34186,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
+    locations?: AlertUpdatelocationsInput | string[]
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34121,7 +34199,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
+    locations?: AlertUpdatelocationsInput | string[]
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36310,6 +36390,14 @@ export namespace Prisma {
     _max?: NestedEnumSeverityFilter<$PrismaModel>
   }
 
+  export type FloatNullableListFilter<$PrismaModel = never> = {
+    equals?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    has?: number | FloatFieldRefInput<$PrismaModel> | null
+    hasEvery?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    hasSome?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type EnumAlertTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
     in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
@@ -36326,18 +36414,24 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    location?: SortOrder
+    locations?: SortOrder
+    latitudes?: SortOrder
+    longitudes?: SortOrder
     type?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
+  export type AlertAvgOrderByAggregateInput = {
+    latitudes?: SortOrder
+    longitudes?: SortOrder
+  }
+
   export type AlertMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    location?: SortOrder
     type?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -36348,11 +36442,15 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    location?: SortOrder
     type?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type AlertSumOrderByAggregateInput = {
+    latitudes?: SortOrder
+    longitudes?: SortOrder
   }
 
   export type EnumAlertTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -38446,6 +38544,33 @@ export namespace Prisma {
     update?: VerifierActionUpdateWithWhereUniqueWithoutIncidentInput | VerifierActionUpdateWithWhereUniqueWithoutIncidentInput[]
     updateMany?: VerifierActionUpdateManyWithWhereWithoutIncidentInput | VerifierActionUpdateManyWithWhereWithoutIncidentInput[]
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
+  }
+
+  export type AlertCreatelocationsInput = {
+    set: string[]
+  }
+
+  export type AlertCreatelatitudesInput = {
+    set: number[]
+  }
+
+  export type AlertCreatelongitudesInput = {
+    set: number[]
+  }
+
+  export type AlertUpdatelocationsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type AlertUpdatelatitudesInput = {
+    set?: number[]
+    push?: number | number[]
+  }
+
+  export type AlertUpdatelongitudesInput = {
+    set?: number[]
+    push?: number | number[]
   }
 
   export type EnumAlertTypeFieldUpdateOperationsInput = {

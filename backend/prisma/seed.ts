@@ -38,7 +38,7 @@ async function main() {
       data: {
         title: `Emergency Alert ${i}`,
         message: `This is a public safety message regarding alert ${i}. Please follow evacuation orders.`,
-        location: `Zone ${String.fromCharCode(65 + i)}`,
+        locations: [`Zone ${String.fromCharCode(65 + i)}`],
         type: [AlertType.INFO, AlertType.WARNING, AlertType.EMERGENCY][i % 3],
         active: i % 2 === 0,
       },

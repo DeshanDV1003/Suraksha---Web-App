@@ -10,6 +10,7 @@ export default function SupportPage() {
   const [requests, setRequests] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const fetchData = async () => {
@@ -56,25 +57,25 @@ export default function SupportPage() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-12 animate-in fade-in duration-1000 pb-20">
-      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-[3rem] p-12 md:p-20 text-white shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#0061ff] to-blue-500 rounded-[3rem] p-12 md:p-20 text-white shadow-2xl shadow-blue-500/20">
          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48 animate-pulse" />
          <div className="relative z-10 max-w-2xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-xs font-black uppercase tracking-widest border border-white/10">
-               <Sparkles className="w-4 h-4 text-yellow-300" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-xs font-black uppercase tracking-widest border border-white/20">
+               <Sparkles className="w-4 h-4 text-white" />
                Mental Well-being Support
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">You are not <br/> alone in this.</h1>
-            <p className="text-slate-500 mt-1 font-medium">
+            <h1 className="text-4xl font-black tracking-tight text-white leading-tight">You are not <br/> alone in this.</h1>
+            <p className="text-blue-100 text-lg mt-4 font-medium max-w-xl leading-relaxed">
                Disasters are overwhelming. Our certified trauma counselors and grief support teams are available 24/7 to help you navigate through these difficult times.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
                <button 
                  onClick={() => setShowModal(true)}
-                 className="px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-lg shadow-xl hover:scale-[1.02] transition-all active:scale-95"
+                 className="px-10 py-5 bg-white text-[#0061ff] rounded-2xl font-black text-lg shadow-xl hover:scale-[1.02] transition-all active:scale-95"
                >
                  Talk to a Counselor
                </button>
-               <button className="px-10 py-5 bg-indigo-500/30 backdrop-blur-md border border-white/20 text-white rounded-2xl font-black text-lg hover:bg-indigo-500/40 transition-all">
+               <button className="px-10 py-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-black text-lg hover:bg-white/20 transition-all">
                  Browse Resources
                </button>
             </div>
@@ -140,7 +141,10 @@ export default function SupportPage() {
                            </div>
                         </div>
                         <div className="flex md:flex-col justify-end gap-3">
-                           <button className="px-8 py-4 bg-indigo-50 text-indigo-600 rounded-2xl font-black text-sm hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                           <button 
+                             onClick={() => setSelectedRequest(request)}
+                             className="px-8 py-4 bg-blue-50 text-[#0061ff] rounded-2xl font-black text-sm hover:bg-[#0061ff] hover:text-white transition-all shadow-sm"
+                           >
                               View Details
                            </button>
                            <button className={cn(
@@ -200,27 +204,27 @@ export default function SupportPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xl p-4 animate-in fade-in duration-500">
-          <div className="bg-white w-full max-w-2xl rounded-[3.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500">
-            <div className="px-12 py-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-3xl font-black text-slate-900">Request Counseling</h2>
-              <button onClick={() => setShowModal(false)} className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all hover:scale-110">
-                <X className="w-8 h-8" />
+          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500 flex flex-col max-h-[90vh]">
+            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
+              <h2 className="text-2xl font-black text-slate-900">Request Counseling</h2>
+              <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all hover:scale-110">
+                <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="p-12 space-y-8">
-              <div className="grid grid-cols-2 gap-8">
-                <div className="space-y-3">
+            <form onSubmit={handleSubmit} className="p-10 space-y-6 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">Support Type</label>
-                  <select name="type" required className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none">
+                  <select name="type" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold focus:ring-2 focus:ring-[#0061ff]/20 focus:border-[#0061ff] transition-all outline-none">
                     <option value="TRAUMA_CARE">Trauma Care</option>
                     <option value="GRIEF_SUPPORT">Grief Support</option>
                     <option value="COUNSELING">General Counseling</option>
                     <option value="CHILD_SUPPORT">Child Support</option>
                   </select>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">Urgency Level</label>
-                  <select name="urgency" required className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none">
+                  <select name="urgency" required className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold focus:ring-2 focus:ring-[#0061ff]/20 focus:border-[#0061ff] transition-all outline-none">
                     <option value="LOW">Routine</option>
                     <option value="MEDIUM">Immediate</option>
                     <option value="HIGH">Urgent</option>
@@ -229,32 +233,98 @@ export default function SupportPage() {
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">How can we help?</label>
-                <textarea name="description" rows={3} required placeholder="Feel free to share what's on your mind..." className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none resize-none"></textarea>
+                <textarea name="description" rows={3} required placeholder="Feel free to share what's on your mind..." className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-bold focus:ring-2 focus:ring-[#0061ff]/20 focus:border-[#0061ff] transition-all outline-none resize-none"></textarea>
               </div>
 
-              <div className="flex items-center gap-4 p-6 bg-slate-50 rounded-3xl border border-slate-100">
+              <div className="flex items-center gap-4 p-5 bg-slate-50 rounded-3xl border border-slate-100">
                 <input 
                   name="anonymous"
                   type="checkbox"
-                  className="w-8 h-8 rounded-xl text-indigo-600 focus:ring-indigo-500 border-slate-200 transition-all cursor-pointer"
+                  className="w-6 h-6 rounded-lg text-[#0061ff] focus:ring-[#0061ff] border-slate-200 transition-all cursor-pointer"
                 />
                 <div className="flex-1">
                    <div className="text-sm font-black text-slate-900 uppercase tracking-tight">Stay Anonymous</div>
-                   <p className="text-xs text-slate-400 font-medium">Your session will be identified only by a secure ID</p>
+                   <p className="text-[11px] text-slate-400 font-medium mt-0.5">Your session will be identified only by a secure ID</p>
                 </div>
               </div>
 
-              <div className="pt-6">
+              <div className="pt-2">
                 <button 
                   disabled={isSubmitting}
-                  className="w-full py-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-[2rem] font-black text-lg shadow-2xl shadow-indigo-500/30 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
+                  className="w-full py-5 bg-[#0061ff] text-white rounded-[1.5rem] font-black text-lg shadow-xl shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
                 >
-                  {isSubmitting ? <Loader2 className="w-7 h-7 animate-spin" /> : "Request Session Now"}
+                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : "Request Session Now"}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Details Modal */}
+      {selectedRequest && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xl p-4 animate-in fade-in duration-500">
+          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500 flex flex-col max-h-[90vh]">
+            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
+              <h2 className="text-2xl font-black text-slate-900">Session Details</h2>
+              <button onClick={() => setSelectedRequest(null)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all hover:scale-110">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-10 space-y-8 overflow-y-auto">
+              <div>
+                 <div className="flex items-center gap-3 mb-4">
+                    <span className={cn(
+                      "px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest",
+                      selectedRequest.urgency === 'CRITICAL' ? "bg-red-50 text-red-600 border border-red-100" : 
+                      selectedRequest.urgency === 'HIGH' ? "bg-orange-50 text-orange-600 border border-orange-100" : "bg-blue-50 text-[#0061ff] border border-blue-100"
+                    )}>
+                      {selectedRequest.urgency} Priority
+                    </span>
+                    <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 border border-slate-200">
+                      {selectedRequest.type}
+                    </span>
+                 </div>
+                 <h3 className="text-3xl font-black text-slate-900 leading-tight">
+                    {selectedRequest.anonymous ? 'Anonymous Support Request' : `Session for ${selectedRequest.user?.name}`}
+                 </h3>
+                 {selectedRequest.location && (
+                    <p className="text-sm font-bold text-slate-400 mt-2">📍 {selectedRequest.location}</p>
+                 )}
+              </div>
+
+              <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100 space-y-3">
+                 <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Case Description</h4>
+                 <p className="text-slate-700 font-medium leading-relaxed">{selectedRequest.description}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                 <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col gap-1">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Affected Persons</span>
+                    <span className="text-2xl font-black text-slate-900">{selectedRequest.affectedCount} <span className="text-sm font-bold text-slate-400">people</span></span>
+                 </div>
+                 <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col gap-1">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</span>
+                    <span className={cn(
+                      "text-xl font-black",
+                      selectedRequest.status === 'PENDING' ? "text-slate-500" : "text-green-600"
+                    )}>
+                      {selectedRequest.status}
+                    </span>
+                 </div>
+              </div>
+
+              <div className="pt-2 flex gap-4">
+                 <button onClick={() => setSelectedRequest(null)} className="flex-1 py-5 bg-slate-100 text-slate-600 rounded-[1.5rem] font-black text-sm hover:bg-slate-200 transition-all">
+                    Close Details
+                 </button>
+                 <button className="flex-1 py-5 bg-[#0061ff] text-white rounded-[1.5rem] font-black text-sm shadow-xl shadow-blue-500/25 hover:scale-[1.02] transition-all">
+                    Assign Counselor
+                 </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

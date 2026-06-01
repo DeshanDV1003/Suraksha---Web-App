@@ -13,65 +13,19 @@ import { cn } from '@/lib/utils'
 import { analyticsService } from '../services/api'
 import { useTranslation } from 'react-i18next'
 
-const weeklyData = [
-  { name: 'Mon', value: 12 },
-  { name: 'Tue', value: 18 },
-  { name: 'Wed', value: 22 },
-  { name: 'Thu', value: 14 },
-  { name: 'Fri', value: 16 },
-  { name: 'Sat', value: 19 },
-  { name: 'Sun', value: 12 },
-]
-
-const responseTimeData = [
-  { name: 'Mon', value: 18 },
-  { name: 'Tue', value: 14 },
-  { name: 'Wed', value: 12 },
-  { name: 'Thu', value: 15 },
-  { name: 'Fri', value: 13 },
-  { name: 'Sat', value: 11 },
-  { name: 'Sun', value: 14 },
-]
-
-const specialNeeds = [
-  { label: 'Elderly', value: '142', icon: Heart, color: 'text-red-500', bg: 'bg-red-50' },
-  { label: 'Infants', value: '68', icon: Baby, color: 'text-blue-500', bg: 'bg-blue-50' },
-  { label: 'Disabled', value: '31', icon: Accessibility, color: 'text-purple-500', bg: 'bg-purple-50' },
-  { label: 'Pets', value: '45', icon: PawPrint, color: 'text-orange-500', bg: 'bg-orange-50' },
-  { label: 'Chronic', value: '29', icon: Stethoscope, color: 'text-pink-500', bg: 'bg-pink-50' },
-  { label: 'Total', value: '315', icon: Users, color: 'text-slate-600', bg: 'bg-slate-50' },
-]
-
-const ML_STATS = [
-  { label: 'Precision', value: '98.4%', sub: 'Flood Detection', color: 'text-blue-600', bg: 'bg-blue-50' },
-  { label: 'Recall', value: '92.1%', sub: 'Object Identify', color: 'text-green-600', bg: 'bg-green-50' },
-  { label: 'F1 Score', value: '95.2', sub: 'Threat Assessment', color: 'text-purple-600', bg: 'bg-purple-50' },
-  { label: 'Latency', value: '45ms', sub: 'Visual Nodes', color: 'text-orange-600', bg: 'bg-orange-50' },
-]
-
 export default function ReportsPage() {
   const { t } = useTranslation()
-  const [counts, setCounts] = useState({
-    totalIncidents: 0,
-    critical: 0,
-    high: 0,
-    medium: 0,
-    alerts: 0
-  })
+  const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const handleExport = () => {
-    const data = {
+    if (!data) return
+    const exportData = {
       timestamp: new Date().toISOString(),
-      stats: counts,
-      summary: {
-        total: counts.totalIncidents,
-        critical: counts.critical,
-        distribution: dynamicPriorityData
-      }
+      stats: data,
     }
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
@@ -85,15 +39,7 @@ export default function ReportsPage() {
     const fetchStats = async () => {
       try {
         const res = await analyticsService.getOperationalIntelligence()
-        const data = res.data
-
-        setCounts({
-          totalIncidents: data.incidents.total,
-          critical: data.incidents.critical,
-          high: data.incidents.high,
-          medium: data.incidents.medium,
-          alerts: data.alerts.total
-        })
+        setData(res.data)
       } catch (err) {
         console.error('Failed to fetch stats', err)
         setError('Operational Intelligence Sync Failed')
@@ -105,23 +51,16 @@ export default function ReportsPage() {
   }, [])
 
   const dynamicPriorityData = useMemo(() => {
-    const data = [
-      { name: 'Critical', value: counts.critical, color: '#ef4444' },
-      { name: 'High', value: counts.high, color: '#f97316' },
-      { name: 'Medium', value: counts.medium, color: '#eab308' },
-      { name: 'Low', value: Math.max(0, counts.totalIncidents - (counts.critical + counts.high + counts.medium)), color: '#94a3b8' },
+    if (!data) return []
+    return [
+      { name: 'Critical', value: data.incidents.critical, color: '#ef4444' },
+      { name: 'High', value: data.incidents.high, color: '#f97316' },
+      { name: 'Medium', value: data.incidents.medium, color: '#eab308' },
+      { name: 'Low', value: data.incidents.low, color: '#94a3b8' },
     ]
-    return data
-  }, [counts])
+  }, [data])
 
-  const kpis = [
-    { label: 'Total Incidents', value: counts.totalIncidents.toString(), trend: '+12%', isUp: true },
-    { label: 'Avg Response Time', value: '14m', trend: '-18%', isUp: false },
-    { label: 'Volunteer Utilization', value: '76%', trend: '+8%', isUp: true },
-    { label: 'Alert Delivery Rate', value: '98.2%', trend: '+1.2%', isUp: true },
-  ]
-
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <div className="w-12 h-12 border-4 border-blue-100 border-t-[#0061ff] rounded-full animate-spin" />
@@ -144,6 +83,29 @@ export default function ReportsPage() {
       </div>
     )
   }
+
+  const kpis = [
+    { label: 'Total Incidents', value: data.incidents.total.toString(), trend: '+12%', isUp: true },
+    { label: 'Avg Response Time', value: data.kpis.avgResponseTime, trend: '-18%', isUp: false },
+    { label: 'Volunteer Utilization', value: data.kpis.volunteerUtilization, trend: '+8%', isUp: true },
+    { label: 'Alert Delivery Rate', value: data.kpis.alertDeliveryRate, trend: '+1.2%', isUp: true },
+  ]
+
+  const specialNeedsItems = [
+    { label: 'Elderly', value: data.specialNeeds.elderly, icon: Heart, color: 'text-red-500', bg: 'bg-red-50' },
+    { label: 'Infants', value: data.specialNeeds.infants, icon: Baby, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: 'Disabled', value: data.specialNeeds.disabled, icon: Accessibility, color: 'text-purple-500', bg: 'bg-purple-50' },
+    { label: 'Pets', value: data.specialNeeds.pets, icon: PawPrint, color: 'text-orange-500', bg: 'bg-orange-50' },
+    { label: 'Chronic', value: data.specialNeeds.chronic, icon: Stethoscope, color: 'text-pink-500', bg: 'bg-pink-50' },
+    { label: 'Total', value: data.specialNeeds.total, icon: Users, color: 'text-slate-600', bg: 'bg-slate-50' },
+  ]
+
+  const ML_STATS = [
+    { label: 'Precision', value: data.mlStats.precision, sub: 'Flood Detection', color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Recall', value: data.mlStats.recall, sub: 'Object Identify', color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'F1 Score', value: data.mlStats.f1Score, sub: 'Threat Assessment', color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'Latency', value: data.mlStats.latency, sub: 'Visual Nodes', color: 'text-orange-600', bg: 'bg-orange-50' },
+  ]
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700 font-sans pb-20">
@@ -194,10 +156,10 @@ export default function ReportsPage() {
 
           <div className="space-y-8">
             {[
-              { label: 'Verified Safe', val: '687 (82%)', color: 'text-green-500', barColor: 'bg-green-500', percent: '82' },
-              { label: 'Critical Response', val: '98 (12%)', color: 'text-red-500', barColor: 'bg-red-500', percent: '12' },
-              { label: 'Location Tracking', val: '34 (4%)', color: 'text-orange-500', barColor: 'bg-orange-500', percent: '4' },
-              { label: 'In-Transit to Camp', val: '23 (3%)', color: 'text-blue-500', barColor: 'bg-blue-500', percent: '3' },
+              { label: 'Verified Safe', val: `${data.citizenStatus.verifiedSafe.value} (${data.citizenStatus.verifiedSafe.percent}%)`, color: 'text-green-500', barColor: 'bg-green-500', percent: data.citizenStatus.verifiedSafe.percent },
+              { label: 'Critical Response', val: `${data.citizenStatus.criticalResponse.value} (${data.citizenStatus.criticalResponse.percent}%)`, color: 'text-red-500', barColor: 'bg-red-500', percent: data.citizenStatus.criticalResponse.percent },
+              { label: 'Location Tracking', val: `${data.citizenStatus.locationTracking.value} (${data.citizenStatus.locationTracking.percent}%)`, color: 'text-orange-500', barColor: 'bg-orange-500', percent: data.citizenStatus.locationTracking.percent },
+              { label: 'In-Transit to Camp', val: `${data.citizenStatus.inTransit.value} (${data.citizenStatus.inTransit.percent}%)`, color: 'text-blue-500', barColor: 'bg-blue-500', percent: data.citizenStatus.inTransit.percent },
             ].map((item, i) => (
               <div key={i} className="space-y-4">
                 <div className="flex justify-between items-end text-[10px] font-black uppercase tracking-widest pl-1">
@@ -221,10 +183,10 @@ export default function ReportsPage() {
           </div>
           <div className="space-y-8 flex-1">
             {[
-              { label: 'Rescue Boats', value: '23', icon: Send, color: 'text-blue-600', rotate: true },
-              { label: 'Logistics Vehicles', value: '15', icon: Box, color: 'text-green-600' },
-              { label: 'Power Nodes', value: '8', icon: Zap, color: 'text-orange-500' },
-              { label: 'Shelter Hubs', value: '34', icon: Building2, color: 'text-purple-600' },
+              { label: 'Rescue Boats', value: data.fieldInventory.rescueBoats, icon: Send, color: 'text-blue-600', rotate: true },
+              { label: 'Logistics Vehicles', value: data.fieldInventory.logisticsVehicles, icon: Box, color: 'text-green-600' },
+              { label: 'Power Nodes', value: data.fieldInventory.powerNodes, icon: Zap, color: 'text-orange-500' },
+              { label: 'Shelter Hubs', value: data.fieldInventory.shelterHubs, icon: Building2, color: 'text-purple-600' },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between group cursor-default">
                 <div className="flex items-center gap-5">
@@ -242,14 +204,14 @@ export default function ReportsPage() {
         <div className="suraksha-card p-12 space-y-10 bg-[#1e293b] text-white">
           <h3 className="text-xl font-black uppercase tracking-widest text-[#0061ff]">Crisis Fund Meter</h3>
           <div className="flex flex-col items-center justify-center py-6 text-center">
-            <div className="text-5xl font-black text-white tracking-tighter mb-4">LKR 2.4M</div>
+            <div className="text-5xl font-black text-white tracking-tighter mb-4">{data.crisisFund.total}</div>
             <div className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">Citizen Micro-Donations</div>
           </div>
           <div className="space-y-6 pt-10 border-t border-white/5">
             {[
-              { label: 'Active Support Nodes', value: '456', color: 'text-white' },
-              { label: 'Unique Contribution IDs', value: '1,234', color: 'text-white' },
-              { label: 'Fulfillment Efficiency', value: '98.2%', color: 'text-green-400' },
+              { label: 'Active Support Nodes', value: data.crisisFund.activeNodes, color: 'text-white' },
+              { label: 'Unique Contribution IDs', value: data.crisisFund.uniqueContributors, color: 'text-white' },
+              { label: 'Fulfillment Efficiency', value: data.crisisFund.efficiency, color: 'text-green-400' },
             ].map((item, i) => (
               <div key={i} className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest leading-none">
                 <span className="text-white/40">{item.label}</span>
@@ -266,7 +228,7 @@ export default function ReportsPage() {
           <h3 className="text-2xl font-black text-[#1e293b]">High-Intensity Cases</h3>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
-          {specialNeeds.map((item, i) => (
+          {specialNeedsItems.map((item, i) => (
             <div key={i} className={cn("p-10 rounded-[3rem] flex flex-col items-center text-center gap-4 group hover:scale-[1.05] hover:shadow-2xl transition-all cursor-default border-2 border-transparent", item.bg, "hover:border-white/50")}>
               <div className="p-4 bg-white rounded-3xl shadow-sm">
                 <item.icon className={cn("w-8 h-8", item.color)} />
@@ -287,7 +249,7 @@ export default function ReportsPage() {
           </div>
           <div className="flex-1 h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weeklyData}>
+              <BarChart data={data.weeklyTrends}>
                 <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="#f8fafc" />
                 <XAxis
                   dataKey="name"
@@ -337,7 +299,7 @@ export default function ReportsPage() {
               </PieChart>
             </ResponsiveContainer>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-              <div className="text-6xl font-black text-[#1e293b] tracking-tighter">{counts.totalIncidents}</div>
+              <div className="text-6xl font-black text-[#1e293b] tracking-tighter">{data.incidents.total}</div>
               <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mt-2">Total Dossiers</div>
             </div>
           </div>

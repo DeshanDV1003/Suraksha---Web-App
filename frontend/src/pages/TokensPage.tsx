@@ -23,6 +23,12 @@ export default function TokensPage() {
   const [showGenModal, setShowGenModal] = useState(false)
   const [showValModal, setShowValModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null)
+  
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  }
   
   // Form States
   const [selectedUserId, setSelectedUserId] = useState('')
@@ -49,7 +55,7 @@ export default function TokensPage() {
       }
     } catch (error) {
       console.error('Failed to fetch token data:', error)
-      alert('Failed to load token information')
+      showToast('Failed to load token information', 'error')
     } finally {
       setLoading(false)
     }
@@ -61,18 +67,18 @@ export default function TokensPage() {
 
   const handleGenerateToken = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedUserId) return alert('Please select a user')
+    if (!selectedUserId) return showToast('Please select a user', 'error')
     
     try {
       setIsSubmitting(true)
       await tokenService.createToken({ userId: selectedUserId, type: tokenType })
-      alert('Token generated successfully')
+      showToast('Token generated successfully', 'success')
       setShowGenModal(false)
       setSelectedUserId('')
       fetchData()
     } catch (error) {
       console.error('Generation failed:', error)
-      alert('Failed to generate token')
+      showToast('Failed to generate token', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -85,13 +91,13 @@ export default function TokensPage() {
     try {
       setIsSubmitting(true)
       await tokenService.useToken(validateCode)
-      alert('Token validated and marked as USED')
+      showToast('Token validated and marked as USED', 'success')
       setShowValModal(false)
       setValidateCode('')
       fetchData()
     } catch (error: any) {
       console.error('Validation failed:', error)
-      alert(error.response?.data?.message || 'Invalid or expired token')
+      showToast(error.response?.data?.message || 'Invalid or expired token', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -317,6 +323,17 @@ export default function TokensPage() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className={cn(
+          "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
+        )}>
+          {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
         </div>
       )}
     </div>

@@ -8,6 +8,9 @@ import { cn } from '@/lib/utils'
 import { campService } from '../services/api'
 import { useAppStore } from '@/store/useAppStore'
 import { useTranslation } from 'react-i18next'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
 const servicesList = [
   { name: 'food', icon: Utensils },
@@ -20,12 +23,42 @@ const servicesList = [
   { name: 'disability', icon: Accessibility },
 ]
 
+const createCampIcon = () => {
+  return L.divIcon({
+    className: '',
+    html: `
+      <div style="
+        background-color: #10b981;
+        width: 34px; height: 34px;
+        border-radius: 10px;
+        border: 2.5px solid white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(45deg);
+      ">
+        <div style="
+          transform: rotate(-45deg);
+          font-size: 14px;
+          color: white;
+          font-weight: bold;
+        ">🏕️</div>
+      </div>
+    `,
+    iconSize: [34, 34],
+    iconAnchor: [17, 17],
+    popupAnchor: [0, -18]
+  });
+};
+
 export default function CampsPage() {
   const { t } = useTranslation()
   const { searchQuery } = useAppStore()
   const [camps, setCamps] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [selectedCamp, setSelectedCamp] = useState<any>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [newCamp, setNewCamp] = useState({
     name: '',
@@ -208,7 +241,7 @@ export default function CampsPage() {
                       <span className="text-sm font-bold">Wait time: <span className="text-[#1e293b] font-extrabold">{camp.waitTime || 'N/A'}</span></span>
                   </div>
                   <button 
-                    onClick={() => alert(`Camp: ${camp.name}\nLocation: ${camp.location}\nOccupancy: ${camp.currentOccupancy}/${camp.totalCapacity}\nServices: ${camp.services.join(', ') || 'None'}`)}
+                    onClick={() => setSelectedCamp(camp)}
                     className="text-sm font-bold text-[#0061ff] hover:underline"
                   >
                     View Details
@@ -219,6 +252,115 @@ export default function CampsPage() {
           })
         )}
       </div>
+
+      {/* Camp Details Modal */}
+      {selectedCamp && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-4xl rounded-[1.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh] animate-in zoom-in-95 duration-200">
+            
+            {/* Left Info Panel */}
+            <div className="p-8 md:w-1/2 flex flex-col overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-[#1e293b] leading-tight">{selectedCamp.name}</h2>
+                  <div className="flex items-center gap-1.5 text-sm text-slate-400 font-bold mt-1">
+                    <MapPin className="w-4 h-4" />
+                    {selectedCamp.location}
+                  </div>
+                </div>
+                <button onClick={() => setSelectedCamp(null)} className="md:hidden text-slate-400 hover:text-slate-600 transition-colors bg-slate-100 p-2 rounded-full">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-6 flex-1">
+                {/* Occupancy */}
+                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                  <div className="flex justify-between items-end mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Current Occupancy</span>
+                    <span className="text-xl font-black text-[#1e293b]">{selectedCamp.currentOccupancy} <span className="text-sm text-slate-400">/ {selectedCamp.totalCapacity}</span></span>
+                  </div>
+                  <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div 
+                      className={cn("h-full rounded-full", 
+                        (selectedCamp.currentOccupancy / selectedCamp.totalCapacity) > 0.9 ? 'bg-red-500' : 
+                        (selectedCamp.currentOccupancy / selectedCamp.totalCapacity) > 0.6 ? 'bg-yellow-500' : 'bg-green-500'
+                      )} 
+                      style={{ width: `${Math.round((selectedCamp.currentOccupancy / selectedCamp.totalCapacity) * 100)}%` }} 
+                    />
+                  </div>
+                </div>
+
+                {/* Services */}
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-3">Available Services</span>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedCamp.services && selectedCamp.services.length > 0 ? selectedCamp.services.map((sName: string) => {
+                      const s = servicesList.find(t => t.name === sName);
+                      if (!s) return null;
+                      return (
+                        <div key={sName} className="flex items-center gap-1.5 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-xl border border-blue-100 shadow-sm">
+                          <s.icon className="w-4 h-4" />
+                          <span className="text-xs font-bold capitalize">{sName}</span>
+                        </div>
+                      );
+                    }) : (
+                      <span className="text-xs text-slate-400 italic">No specific services listed</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Details list */}
+                <div className="space-y-3 pt-4 border-t border-slate-100">
+                   <div className="flex justify-between items-center text-sm font-bold">
+                     <span className="text-slate-400">Status</span>
+                     <span className="text-[#1e293b] bg-slate-100 px-2 py-0.5 rounded">{selectedCamp.status || 'OPEN'}</span>
+                   </div>
+                   <div className="flex justify-between items-center text-sm font-bold">
+                     <span className="text-slate-400">Est. Wait Time</span>
+                     <span className="text-[#1e293b]">{selectedCamp.waitTime || 'N/A'}</span>
+                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Map Panel */}
+            <div className="md:w-1/2 h-64 md:h-auto bg-slate-100 relative min-h-[300px]">
+              <button onClick={() => setSelectedCamp(null)} className="hidden md:flex absolute top-4 right-4 z-[2000] bg-white/90 backdrop-blur shadow-xl w-10 h-10 rounded-full items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
+                  <X className="w-5 h-5" />
+              </button>
+              {selectedCamp.latitude && selectedCamp.longitude ? (
+                <MapContainer
+                  center={[selectedCamp.latitude, selectedCamp.longitude]}
+                  zoom={15}
+                  style={{ height: '100%', width: '100%' }}
+                  zoomControl={false}
+                >
+                  <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+                  <Marker position={[selectedCamp.latitude, selectedCamp.longitude]} icon={createCampIcon()}>
+                     <Popup className="suraksha-popup" minWidth={200}>
+                        <div className="font-sans">
+                          <div className="flex items-center gap-2 mb-2">
+                             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                             <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Active Safety Hub</span>
+                          </div>
+                          <h4 className="font-black text-slate-900 text-sm">{selectedCamp.name}</h4>
+                        </div>
+                     </Popup>
+                  </Marker>
+                </MapContainer>
+              ) : (
+                <div className="h-full w-full flex flex-col items-center justify-center text-slate-400 p-8 text-center bg-slate-50 border-l border-slate-100">
+                  <MapPin className="w-12 h-12 mb-4 opacity-50" />
+                  <span className="text-sm font-bold">GPS Coordinates Unavailable</span>
+                  <span className="text-[10px] uppercase tracking-widest mt-2">Location mapping disabled for this camp</span>
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* Add Camp Modal */}
       {showModal && (

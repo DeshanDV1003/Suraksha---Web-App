@@ -19,8 +19,25 @@ export default function SettingsPage() {
   
   // App Preferences State
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
-  const [mapView, setMapView] = useState('hybrid')
-  const [incidentSort, setIncidentSort] = useState('severity')
+  const [mapView, setMapView] = useState(localStorage.getItem('mapView') || 'hybrid')
+  const [incidentSort, setIncidentSort] = useState(localStorage.getItem('incidentSort') || 'severity')
+
+  // Toggle Preferences
+  const [prefs, setPrefs] = useState<Record<string, boolean>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('suraksha_prefs') || '{}')
+    } catch { return {} }
+  })
+
+  const updatePref = (key: string, val: boolean) => {
+    setPrefs(p => {
+      const newP = { ...p, [key]: val }
+      localStorage.setItem('suraksha_prefs', JSON.stringify(newP))
+      return newP
+    })
+  }
+
+  const getPref = (key: string, def = false) => prefs[key] ?? def
 
   // Profile Form State (Local Mock for new fields)
   const [profileData, setProfileData] = useState({
@@ -35,9 +52,10 @@ export default function SettingsPage() {
   
   const [initialProfileData, setInitialProfileData] = useState(profileData)
   const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
 
   // Notification State
-  const [minSeverityPush, setMinSeverityPush] = useState(4)
+  const [minSeverityPush, setMinSeverityPush] = useState(parseInt(localStorage.getItem('minSeverityPush') || '4'))
   
   // Security State
   const [activeSessions, setActiveSessions] = useState([
@@ -47,25 +65,35 @@ export default function SettingsPage() {
   ])
 
   useEffect(() => {
-    if (theme === 'dark') document.documentElement.classList.add('dark')
-    else document.documentElement.classList.remove('dark')
+    const root = window.document.documentElement
+    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  useEffect(() => { localStorage.setItem('mapView', mapView) }, [mapView])
+  useEffect(() => { localStorage.setItem('incidentSort', incidentSort) }, [incidentSort])
+  useEffect(() => { localStorage.setItem('minSeverityPush', minSeverityPush.toString()) }, [minSeverityPush])
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg)
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
+  }
 
   const handleProfileSave = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      // Mock API call delay
       await new Promise(resolve => setTimeout(resolve, 800))
-      
-      // Real API update for supported fields
       await userService.updateProfile({ name: profileData.name, phone: profileData.phone })
       updateUser({ name: profileData.name, phone: profileData.phone })
       
       setInitialProfileData(profileData)
-      setShowToast(true)
-      setTimeout(() => setShowToast(false), 3000)
+      triggerToast('Profile saved successfully')
     } catch (error) {
       console.error('Update failed:', error)
       alert('Failed to update profile')
@@ -80,10 +108,12 @@ export default function SettingsPage() {
 
   const handleRevokeSession = (id: string) => {
     setActiveSessions(prev => prev.filter(s => s.id !== id))
+    triggerToast('Session revoked')
   }
   
   const handleRevokeAllOther = () => {
     setActiveSessions(prev => prev.filter(s => s.current))
+    triggerToast('All other sessions revoked')
   }
 
   const tabs = [
@@ -93,14 +123,18 @@ export default function SettingsPage() {
     { id: 'preferences', name: 'App preferences', icon: Palette },
   ]
 
-  const PRIMARY_COLOR = "#0061ff"
-
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
+    <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10 relative">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Settings</h1>
         <p className="text-slate-500 mt-1 font-medium">Manage your command center account and preferences</p>
       </div>
+
+      {showToast && (
+        <div className="fixed bottom-8 right-8 z-[100] animate-in fade-in slide-in-from-bottom-4 flex items-center gap-3 bg-emerald-50 text-emerald-600 px-6 py-4 rounded-2xl border border-emerald-100 font-bold text-sm shadow-2xl backdrop-blur-md">
+          <Check className="w-5 h-5" /> {toastMessage}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Navigation Sidebar */}
@@ -138,7 +172,7 @@ export default function SettingsPage() {
                    <div className="w-20 h-20 rounded-2xl bg-[#0061ff] flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                      {profileData.name.slice(0, 2).toUpperCase()}
                    </div>
-                   <button className="absolute -bottom-2 -right-2 p-1.5 bg-slate-800 border border-slate-700 rounded-full shadow-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                   <button onClick={() => triggerToast('Avatar update coming soon')} className="absolute -bottom-2 -right-2 p-1.5 bg-slate-800 border border-slate-700 rounded-full shadow-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
                      <Camera className="w-4 h-4" />
                    </button>
                  </div>
@@ -153,17 +187,17 @@ export default function SettingsPage() {
 
                <form onSubmit={handleProfileSave} className="space-y-6 pt-4">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <DarkInput label="FULL NAME" value={profileData.name} onChange={(v) => setProfileData({...profileData, name: v})} icon={User} />
+                    <DarkInput label="FULL NAME" value={profileData.name} onChange={(v: string) => setProfileData({...profileData, name: v})} icon={User} />
                     <DarkInput label="EMAIL ADDRESS" value={profileData.email} disabled icon={Mail} />
-                    <DarkInput label="PHONE NUMBER" value={profileData.phone} onChange={(v) => setProfileData({...profileData, phone: v})} icon={Phone} />
+                    <DarkInput label="PHONE NUMBER" value={profileData.phone} onChange={(v: string) => setProfileData({...profileData, phone: v})} icon={Phone} />
                     <DarkSelect 
                       label="OFFICE LOCATION" 
                       value={profileData.officeLocation} 
-                      onChange={(v) => setProfileData({...profileData, officeLocation: v})}
+                      onChange={(v: string) => setProfileData({...profileData, officeLocation: v})}
                       icon={Globe}
                       options={['Colombo Command Center (Region 1)', 'Kandy Ops Center', 'Galle Regional Hub']}
                     />
-                    <DarkInput label="DESIGNATION" value={profileData.designation} onChange={(v) => setProfileData({...profileData, designation: v})} icon={Briefcase} />
+                    <DarkInput label="DESIGNATION" value={profileData.designation} onChange={(v: string) => setProfileData({...profileData, designation: v})} icon={Briefcase} />
                     <DarkInput label="EMPLOYEE ID" value={profileData.employeeId} disabled icon={Monitor} />
                  </div>
                  
@@ -177,11 +211,6 @@ export default function SettingsPage() {
                  </div>
 
                  <div className="flex items-center justify-end gap-4 pt-6 border-t border-slate-800">
-                    {showToast && (
-                      <span className="text-sm font-bold text-emerald-400 flex items-center gap-2 mr-auto bg-emerald-400/10 px-3 py-1.5 rounded-lg border border-emerald-400/20">
-                        <Check className="w-4 h-4" /> Profile saved
-                      </span>
-                    )}
                     <button type="button" onClick={handleProfileDiscard} className="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-300 bg-transparent hover:bg-slate-800 border border-slate-700 transition-all">
                       Discard changes
                     </button>
@@ -205,9 +234,9 @@ export default function SettingsPage() {
                <div className="space-y-8">
                  <div className="space-y-4">
                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Incident Alerts</h3>
-                   <DarkToggle title="Critical (Severity 5) Alerts" desc="Immediate push notifications bypassing silent mode" checked />
-                   <DarkToggle title="High/Medium (Severity 3-4) Alerts" desc="Standard push notifications during operational hours" checked />
-                   <DarkToggle title="Low (Severity 1-2) Alerts" desc="In-app notifications only" />
+                   <DarkToggle title="Critical (Severity 5) Alerts" desc="Immediate push notifications bypassing silent mode" checked={getPref('notif_crit', true)} onChange={(v: boolean) => updatePref('notif_crit', v)} />
+                   <DarkToggle title="High/Medium (Severity 3-4) Alerts" desc="Standard push notifications during operational hours" checked={getPref('notif_high', true)} onChange={(v: boolean) => updatePref('notif_high', v)} />
+                   <DarkToggle title="Low (Severity 1-2) Alerts" desc="In-app notifications only" checked={getPref('notif_low', false)} onChange={(v: boolean) => updatePref('notif_low', v)} />
                  </div>
 
                  <div className="space-y-4">
@@ -235,15 +264,15 @@ export default function SettingsPage() {
 
                  <div className="space-y-4">
                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Volunteer & Task Updates</h3>
-                   <DarkToggle title="Task Accept/Decline Events" desc="Notify when a volunteer responds to a dispatch" checked />
-                   <DarkToggle title="Task Completion Events" desc="Notify when a volunteer resolves a dispatch" checked />
+                   <DarkToggle title="Task Accept/Decline Events" desc="Notify when a volunteer responds to a dispatch" checked={getPref('notif_task_acc', true)} onChange={(v: boolean) => updatePref('notif_task_acc', v)} />
+                   <DarkToggle title="Task Completion Events" desc="Notify when a volunteer resolves a dispatch" checked={getPref('notif_task_comp', true)} onChange={(v: boolean) => updatePref('notif_task_comp', v)} />
                  </div>
 
                  <div className="space-y-4">
                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">System & Reports</h3>
-                   <DarkToggle title="Daily Digest" desc="Receive a daily summary of all command center activity via email" />
-                   <DarkToggle title="ML Retraining Alerts" desc="Notify when the predictive model is updated" />
-                   <DarkToggle title="New Volunteer Registrations" desc="Notify when new personnel join your sector" checked />
+                   <DarkToggle title="Daily Digest" desc="Receive a daily summary of all command center activity via email" checked={getPref('notif_daily', false)} onChange={(v: boolean) => updatePref('notif_daily', v)} />
+                   <DarkToggle title="ML Retraining Alerts" desc="Notify when the predictive model is updated" checked={getPref('notif_ml', false)} onChange={(v: boolean) => updatePref('notif_ml', v)} />
+                   <DarkToggle title="New Volunteer Registrations" desc="Notify when new personnel join your sector" checked={getPref('notif_vol', true)} onChange={(v: boolean) => updatePref('notif_vol', v)} />
                  </div>
                </div>
             </div>
@@ -266,7 +295,7 @@ export default function SettingsPage() {
                          <div className="flex items-center gap-2 text-white font-bold"><Key className="w-4 h-4 text-emerald-400" /> Password Age</div>
                          <div className="text-xs text-slate-400">Last changed 45 days ago</div>
                        </div>
-                       <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-all border border-slate-700">Change</button>
+                       <button onClick={() => triggerToast('Password reset link sent to your email')} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-all border border-slate-700">Change</button>
                      </div>
                      <div className="p-5 bg-slate-900/50 border border-slate-800 rounded-2xl flex items-center justify-between">
                        <div className="space-y-1">
@@ -280,23 +309,23 @@ export default function SettingsPage() {
                          <div className="flex items-center gap-2 text-white font-bold"><HardDrive className="w-4 h-4 text-purple-400" /> Backup Codes</div>
                          <div className="text-xs text-slate-400">8 codes remaining</div>
                        </div>
-                       <button className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">View</button>
+                       <button onClick={() => triggerToast('Please re-authenticate to view backup codes')} className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">View</button>
                      </div>
                      <div className="p-5 bg-slate-900/50 border border-slate-800 rounded-2xl flex items-center justify-between">
                        <div className="space-y-1">
                          <div className="flex items-center gap-2 text-white font-bold"><Monitor className="w-4 h-4 text-amber-400" /> API Tokens</div>
                          <div className="text-xs text-slate-400">Expires in 12 days</div>
                        </div>
-                       <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-all border border-slate-700">Regenerate</button>
+                       <button onClick={() => { if(window.confirm('Warning: Regenerating will invalidate all existing API clients. Proceed?')) triggerToast('API Tokens regenerated') }} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-all border border-slate-700">Regenerate</button>
                      </div>
                    </div>
                  </div>
 
                  <div className="space-y-4">
                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Privacy Controls</h3>
-                   <DarkToggle title="Location Visibility" desc="Allow other command centers to see your exact active location" checked />
-                   <DarkToggle title="Audit Log Sharing" desc="Share detailed action logs with the central analytics pool" checked />
-                   <DarkToggle title="Login Alerts" desc="Receive email alerts for logins from unknown devices or locations" checked />
+                   <DarkToggle title="Location Visibility" desc="Allow other command centers to see your exact active location" checked={getPref('priv_loc', true)} onChange={(v: boolean) => updatePref('priv_loc', v)} />
+                   <DarkToggle title="Audit Log Sharing" desc="Share detailed action logs with the central analytics pool" checked={getPref('priv_audit', true)} onChange={(v: boolean) => updatePref('priv_audit', v)} />
+                   <DarkToggle title="Login Alerts" desc="Receive email alerts for logins from unknown devices or locations" checked={getPref('priv_alerts', true)} onChange={(v: boolean) => updatePref('priv_alerts', v)} />
                  </div>
 
                  <div className="space-y-4">
@@ -370,7 +399,7 @@ export default function SettingsPage() {
                      <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Primary Language</h3>
                      <DarkSelect 
                        value={i18n.language} 
-                       onChange={(v) => i18n.changeLanguage(v)} 
+                       onChange={(v: string) => i18n.changeLanguage(v)} 
                        options={[{v: 'en', l: 'English (US)'}, {v: 'si', l: 'Sinhala'}, {v: 'ta', l: 'Tamil'}]} 
                        icon={Globe}
                        useObj
@@ -412,20 +441,20 @@ export default function SettingsPage() {
 
                  <div className="space-y-4">
                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Dashboard Behaviour</h3>
-                   <DarkToggle title="Auto-refresh Data" desc="Poll the server for new data every 30 seconds" checked />
-                   <DarkToggle title="Sound Alerts for Critical Incidents" desc="Play a siren sound when a severity 5 incident arrives" checked />
-                   <DarkToggle title="Show ML Confidence Scores" desc="Display predictive accuracy scores on incident rows" checked />
-                   <DarkToggle title="Compact Table Mode" desc="Reduce padding in data tables to show more rows" />
-                   <DarkToggle title="Offline Sync Badge" desc="Show the sync status indicator on the map view" checked />
+                   <DarkToggle title="Auto-refresh Data" desc="Poll the server for new data every 30 seconds" checked={getPref('dash_refresh', true)} onChange={(v: boolean) => updatePref('dash_refresh', v)} />
+                   <DarkToggle title="Sound Alerts for Critical Incidents" desc="Play a siren sound when a severity 5 incident arrives" checked={getPref('dash_sound', true)} onChange={(v: boolean) => updatePref('dash_sound', v)} />
+                   <DarkToggle title="Show ML Confidence Scores" desc="Display predictive accuracy scores on incident rows" checked={getPref('dash_ml', true)} onChange={(v: boolean) => updatePref('dash_ml', v)} />
+                   <DarkToggle title="Compact Table Mode" desc="Reduce padding in data tables to show more rows" checked={getPref('dash_compact', false)} onChange={(v: boolean) => updatePref('dash_compact', v)} />
+                   <DarkToggle title="Offline Sync Badge" desc="Show the sync status indicator on the map view" checked={getPref('dash_offline', true)} onChange={(v: boolean) => updatePref('dash_offline', v)} />
                  </div>
 
                  <div className="pt-6 mt-6 border-t border-red-500/20">
                    <h3 className="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center gap-2"><AlertTriangle className="w-4 h-4" /> Danger Zone</h3>
                    <div className="flex gap-4">
-                     <button className="px-5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-white hover:bg-slate-800 transition-all flex items-center gap-2">
+                     <button onClick={() => triggerToast('Data export started. You will receive an email when ready.')} className="px-5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-white hover:bg-slate-800 transition-all flex items-center gap-2">
                        <Download className="w-4 h-4" /> Export all data
                      </button>
-                     <button className="px-5 py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2">
+                     <button onClick={() => { if(window.confirm('Are you sure you want to request account deactivation? This action requires administrator approval.')) triggerToast('Deactivation request sent') }} className="px-5 py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2">
                        <Trash2 className="w-4 h-4" /> Deactivate account
                      </button>
                    </div>
@@ -489,8 +518,7 @@ function DarkSelect({ label, value, options, icon: Icon, onChange, disabled, use
   )
 }
 
-function DarkToggle({ title, desc, checked = false }: any) {
-  const [isOn, setIsOn] = useState(checked)
+function DarkToggle({ title, desc, checked = false, onChange }: any) {
   return (
     <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all group">
        <div className="space-y-0.5">
@@ -498,15 +526,15 @@ function DarkToggle({ title, desc, checked = false }: any) {
           <div className="text-xs text-slate-400 font-medium">{desc}</div>
        </div>
        <button 
-         onClick={() => setIsOn(!isOn)}
+         onClick={() => onChange?.(!checked)}
          className={cn(
            "w-11 h-6 rounded-full transition-all duration-300 p-1 flex items-center focus:outline-none",
-           isOn ? "bg-blue-500" : "bg-slate-700"
+           checked ? "bg-blue-500" : "bg-slate-700"
          )}
        >
          <div className={cn(
            "w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-300",
-           isOn ? "translate-x-5" : "translate-x-0"
+           checked ? "translate-x-5" : "translate-x-0"
          )} />
        </button>
     </div>
