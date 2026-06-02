@@ -1,42 +1,40 @@
 import { useState, useEffect } from 'react'
-import { User, ClipboardList, CheckCircle2, Clock, Shield, Star, Award, Phone, Loader2, Plus, ArrowRight } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Loader2, Award, Clock, MapPin, HeartPulse, BookOpen, ShieldAlert, Navigation } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { volunteerService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
-import { useTranslation } from 'react-i18next'
-
-interface Task {
-  id: string
-  title: string
-  description: string
-  status: string
-  priority: string
-  dueDate: string
-  createdAt: string
-  incident?: { title: string }
-  assignedBy?: { name: string }
-}
 
 export default function VolunteerPage() {
-  const { t } = useTranslation()
-  const { searchQuery } = useAppStore()
-  const [profile, setProfile] = useState<any>(null)
-  const [tasks, setTasks] = useState<Task[]>([])
+  const { user } = useAppStore()
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'tasks' | 'profile'>('tasks')
-  const [isUpdating, setIsUpdating] = useState(false)
+  const [profile, setProfile] = useState<any>(null)
+  const [incidents, setIncidents] = useState<any[]>([])
+  
+  const [activeTab, setActiveTab] = useState('duty') // profile, duty, training, wellbeing, gamification
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null)
+
+  // Forms
+  const [skillName, setSkillName] = useState('')
+  const [trainingData, setTrainingData] = useState({ trainingName: '', completedAt: '' })
+  const [wellbeingData, setWellbeingData] = useState({ physicalRating: 5, mentalRating: 5, needsResources: false })
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [profileRes, tasksRes] = await Promise.all([
-        volunteerService.getProfile(),
-        volunteerService.getMyTasks()
-      ])
-      setProfile(profileRes.data)
-      setTasks(tasksRes.data)
+      const res = await volunteerService.getProfile()
+      setProfile(res.data)
+
+      const incRes = await volunteerService.getRecommendedIncidents()
+      setIncidents(incRes.data)
     } catch (error) {
-      console.error('Failed to fetch volunteer data:', error)
+      console.error('Failed to load profile:', error)
+      showToast('Failed to load your volunteer profile.', 'error')
     } finally {
       setLoading(false)
     }
@@ -46,307 +44,379 @@ export default function VolunteerPage() {
     fetchData()
   }, [])
 
-  const handleUpdateStatus = async (taskId: string, status: string) => {
-    try {
-      await volunteerService.updateTaskStatus(taskId, status)
-      fetchData()
-    } catch (error) {
-      console.error('Failed to update task status:', error)
-      alert('Failed to update status')
-    }
-  }
-
-  const handleUpdateProfile = async (e: React.FormEvent) => {
+  const handleAddSkill = async (e: React.FormEvent) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget as HTMLFormElement)
-    const skills = (formData.get('skills') as string).split(',').map(s => s.trim())
-    const availability = formData.get('availability') === 'on'
-
+    if (!skillName) return
     try {
-      setIsUpdating(true)
-      await volunteerService.upsertProfile({ skills, availability })
-      alert('Profile updated successfully')
+      setIsSubmitting(true)
+      await volunteerService.addSkill({ skillName })
+      showToast('Skill added successfully')
+      setSkillName('')
       fetchData()
-    } catch (error) {
-      console.error('Failed to update profile:', error)
-      alert('Failed to update profile')
-    } finally {
-      setIsUpdating(false)
-    }
+    } catch {
+      showToast('Failed to add skill', 'error')
+    } finally { setIsSubmitting(false) }
   }
 
-  if (loading) {
-    return (
-      <div className="h-[80vh] flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
-        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Initializing Volunteer Portal</p>
-      </div>
+  const handleAddTraining = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!trainingData.trainingName || !trainingData.completedAt) return
+    try {
+      setIsSubmitting(true)
+      await volunteerService.addTraining(trainingData)
+      showToast('Training logged successfully')
+      setTrainingData({ trainingName: '', completedAt: '' })
+      fetchData()
+    } catch {
+      showToast('Failed to add training', 'error')
+    } finally { setIsSubmitting(false) }
+  }
+
+  const handleCheckIn = () => {
+    if (!navigator.geolocation) {
+      return showToast('Geolocation is not supported by your browser', 'error')
+    }
+    
+    setIsSubmitting(true)
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          await volunteerService.checkIn({ latitude: pos.coords.latitude, longitude: pos.coords.longitude })
+          showToast('Checked in successfully. Stay safe!')
+          fetchData()
+        } catch {
+          showToast('Check-in failed', 'error')
+        } finally { setIsSubmitting(false) }
+      },
+      (err) => {
+        showToast('Failed to get GPS location.', 'error')
+        setIsSubmitting(false)
+      }
     )
   }
 
+  const handleCheckOut = async (checkInId: string) => {
+    try {
+      setIsSubmitting(true)
+      await volunteerService.checkOut(checkInId)
+      showToast('Checked out successfully. Thank you for your service!')
+      fetchData()
+    } catch {
+      showToast('Failed to check out', 'error')
+    } finally { setIsSubmitting(false) }
+  }
+
+  const handleWellbeingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      setIsSubmitting(true)
+      await volunteerService.submitWellbeing(wellbeingData)
+      showToast('Wellbeing survey submitted. Support team notified if necessary.')
+      fetchData()
+    } catch {
+      showToast('Failed to submit survey', 'error')
+    } finally { setIsSubmitting(false) }
+  }
+
+  if (loading) {
+    return <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-blue-500" /></div>
+  }
+
+  if (!profile) return <div>Could not load profile.</div>
+
+  const activeCheckIn = profile.checkIns?.find((c: any) => !c.checkOutTime)
+
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-      {/* Header Card */}
-      <div className="relative overflow-hidden bg-white border border-slate-100 rounded-[2rem] p-10 shadow-sm">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/20">
-            <Shield className="w-12 h-12 text-white" />
-          </div>
-          <div className="text-center md:text-left flex-1">
-            <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('volunteers.title')}</h1>
-            <p className="text-slate-500 mt-1 font-medium">{t('volunteers.subtitle')}</p>
-          </div>
-          <div className="flex gap-2 p-1.5 bg-slate-100 rounded-2xl">
-            <button 
-              onClick={() => setActiveTab('tasks')}
-              className={cn(
-                "px-6 py-3 rounded-xl text-sm font-bold transition-all",
-                activeTab === 'tasks' ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
-              )}
-            >
-              Assignments
-            </button>
-            <button 
-              onClick={() => setActiveTab('profile')}
-              className={cn(
-                "px-6 py-3 rounded-xl text-sm font-bold transition-all",
-                activeTab === 'profile' ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
-              )}
-            >
-              My Profile
-            </button>
-          </div>
-        </div>
+    <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-[#1e293b]">Volunteer Headquarters</h1>
+        <p className="text-slate-500 mt-1 font-medium">Welcome back, {user?.name}. Manage your deployments and skills.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Main Content Area */}
-        <div className="lg:col-span-8 space-y-8">
-          {activeTab === 'tasks' ? (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-black text-[#1e293b] flex items-center gap-3">
-                  <ClipboardList className="w-6 h-6 text-[#0061ff]" />
-                  Assigned Tasks
-                </h2>
-                <span className="bg-[#eff6ff] text-[#0061ff] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider">
-                  {tasks.length} Active Assignments
-                </span>
-              </div>
+      {/* Tabs */}
+      <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+        {[
+          { id: 'duty', label: 'Field Duty', icon: Navigation },
+          { id: 'profile', label: 'My Skills & Matching', icon: BookOpen },
+          { id: 'training', label: 'Certifications', icon: Award },
+          { id: 'wellbeing', label: 'Wellbeing', icon: HeartPulse },
+          { id: 'gamification', label: 'Achievements', icon: Award },
+        ].map(tab => (
+          <button
+            key={tab.id} onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
+              activeTab === tab.id ? "bg-slate-900 text-white shadow-md shadow-slate-900/20" : "text-slate-500 hover:bg-slate-50"
+            )}
+          >
+            <tab.icon className="w-4 h-4" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-              {tasks.filter(t => 
-                t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                t.incident?.title?.toLowerCase().includes(searchQuery.toLowerCase())
-              ).length === 0 ? (
-                <div className="suraksha-card bg-white border border-dashed border-slate-200 rounded-[2.5rem] p-20 text-center space-y-4">
-                  <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-10 h-10 text-slate-200" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-[#1e293b]">{searchQuery ? 'No matching tasks' : 'All caught up!'}</h3>
-                    <p className="text-slate-400 mt-1 font-bold italic">{searchQuery ? `No results for "${searchQuery}"` : 'No tasks assigned to you at the moment.'}</p>
-                  </div>
+      {/* DUTY & CHECK-IN */}
+      {activeTab === 'duty' && (
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="suraksha-card p-8 rounded-[1.5rem] flex flex-col items-center justify-center text-center">
+            {activeCheckIn ? (
+              <div className="space-y-6">
+                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                  <Navigation className="w-10 h-10 text-green-600" />
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {tasks
-                    .filter(t => 
-                      t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                      t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      t.incident?.title?.toLowerCase().includes(searchQuery.toLowerCase())
-                    )
-                    .map((task) => (
-                    <div key={task.id} className="group bg-white border border-slate-100 rounded-[1.5rem] p-8 hover:shadow-xl hover:shadow-blue-500/5 transition-all relative overflow-hidden">
-                      <div className={cn(
-                        "absolute top-0 left-0 w-1.5 h-full",
-                        task.priority === 'CRITICAL' ? "bg-red-500" : 
-                        task.priority === 'HIGH' ? "bg-orange-500" : "bg-blue-500"
-                      )} />
-                      
-                      <div className="flex justify-between items-start mb-6">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-3 mb-2">
-                             <span className={cn(
-                               "text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider",
-                               task.priority === 'CRITICAL' ? "bg-red-50 text-red-600" : 
-                               task.priority === 'HIGH' ? "bg-orange-50 text-orange-600" : "bg-blue-50 text-blue-600"
-                             )}>
-                               {task.priority}
-                             </span>
-                             <span className="text-slate-300 text-xs">•</span>
-                             <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">{task.incident?.title || 'General Operation'}</span>
-                          </div>
-                          <h3 className="text-xl font-black text-[#1e293b] group-hover:text-[#0061ff] transition-colors">{task.title}</h3>
-                          <p className="text-slate-500 text-sm font-bold leading-relaxed">{task.description}</p>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Due Date</div>
-                          <div className="flex items-center gap-2 text-slate-700 font-bold justify-end">
-                            <Clock className="w-4 h-4 text-slate-300" />
-                            {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'N/A'}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
-                            <User className="w-4 h-4 text-slate-400" />
-                          </div>
-                          <div className="text-xs">
-                            <div className="text-slate-400 font-medium">Assigned by</div>
-                            <div className="text-slate-700 font-bold">{task.assignedBy?.name || 'Admin'}</div>
-                          </div>
-                        </div>
-
-                        <div className="flex gap-2">
-                          {task.status !== 'RESOLVED' ? (
-                            <>
-                              <button 
-                                onClick={() => handleUpdateStatus(task.id, 'IN_PROGRESS')}
-                                className={cn(
-                                  "px-5 py-2.5 rounded-xl text-xs font-bold transition-all",
-                                  task.status === 'IN_PROGRESS' ? "bg-blue-50 text-blue-600" : "bg-slate-50 text-slate-500 hover:bg-blue-50 hover:text-blue-600"
-                                )}
-                              >
-                                {task.status === 'IN_PROGRESS' ? 'In Progress' : 'Start Task'}
-                              </button>
-                              <button 
-                                onClick={() => handleUpdateStatus(task.id, 'RESOLVED')}
-                                className="px-5 py-2.5 bg-green-50 text-green-600 rounded-xl text-xs font-bold hover:bg-green-600 hover:text-white transition-all"
-                              >
-                                Complete
-                              </button>
-                            </>
-                          ) : (
-                            <div className="flex items-center gap-2 text-green-600 font-bold text-sm">
-                              <CheckCircle2 className="w-5 h-5" />
-                              Completed
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="suraksha-card p-10 space-y-10">
-              <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-black text-[#1e293b]">Volunteer Profile</h2>
-                  <p className="text-slate-500 font-bold">Keep your skills and availability updated</p>
+                  <h3 className="text-2xl font-black text-slate-800">You are On Duty</h3>
+                  <p className="text-slate-500 mt-2 text-sm">Checked in at {new Date(activeCheckIn.checkInTime).toLocaleTimeString()}</p>
                 </div>
-                <div className={cn(
-                  "px-4 py-2 rounded-2xl flex items-center gap-2 text-[10px] font-black uppercase tracking-widest",
-                  profile?.availability ? "bg-green-50 text-green-600" : "bg-slate-100 text-slate-500"
-                )}>
-                  <div className={cn("w-2 h-2 rounded-full", profile?.availability ? "bg-green-500 animate-pulse" : "bg-slate-400")} />
-                  {profile?.availability ? 'Available' : 'Offline'}
-                </div>
+                <button 
+                  onClick={() => handleCheckOut(activeCheckIn.id)} disabled={isSubmitting}
+                  className="bg-red-600 text-white font-bold py-4 px-10 rounded-xl hover:bg-red-700 transition-all flex items-center gap-2"
+                >
+                  {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <Clock className="w-5 h-5"/>}
+                  End Shift & Check Out
+                </button>
               </div>
-
-              <form onSubmit={handleUpdateProfile} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Skills (comma separated)</label>
-                    <input 
-                      name="skills"
-                      type="text"
-                      defaultValue={profile?.skills?.join(', ') || ''}
-                      placeholder="e.g. First Aid, Swimming, Cooking, Driving"
-                      className="suraksha-input"
-                    />
+            ) : (
+              <div className="space-y-6">
+                <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
+                  <MapPin className="w-10 h-10 text-slate-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-slate-800">You are Off Duty</h3>
+                  <p className="text-slate-500 mt-2 text-sm">Ready to deploy? Capture your GPS location to start tracking your active hours.</p>
+                </div>
+                <button 
+                  onClick={handleCheckIn} disabled={isSubmitting}
+                  className="bg-[#0061ff] text-white font-bold py-4 px-10 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center gap-2 mx-auto"
+                >
+                  {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <Navigation className="w-5 h-5"/>}
+                  Start Shift & Check In
+                </button>
+              </div>
+            )}
+          </div>
+          
+          <div className="suraksha-card p-8 rounded-[1.5rem]">
+            <h3 className="text-xl font-black text-[#1e293b] mb-4">Check-In History</h3>
+            <div className="space-y-3">
+              {profile.checkIns?.length === 0 && <p className="text-slate-500 text-sm">No duty history yet.</p>}
+              {profile.checkIns?.map((ci: any) => (
+                <div key={ci.id} className="p-4 border border-slate-100 rounded-xl flex justify-between items-center bg-slate-50">
+                  <div>
+                    <p className="font-bold text-sm text-slate-700">{new Date(ci.checkInTime).toLocaleDateString()}</p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      {new Date(ci.checkInTime).toLocaleTimeString()} - {ci.checkOutTime ? new Date(ci.checkOutTime).toLocaleTimeString() : 'Active Now'}
+                    </p>
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Status</label>
-                    <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                      <input 
-                        name="availability"
-                        type="checkbox"
-                        defaultChecked={profile?.availability}
-                        className="w-6 h-6 rounded-lg text-blue-600 focus:ring-blue-500 border-slate-200 transition-all cursor-pointer"
-                      />
-                      <span className="text-slate-600 font-bold">Active and Available for Tasks</span>
-                    </div>
+                  <div className="text-right">
+                    <span className="bg-blue-100 text-blue-700 font-bold px-3 py-1 rounded text-xs">
+                      {ci.activeHours ? `${ci.activeHours.toFixed(1)} hrs` : '...'}
+                    </span>
                   </div>
                 </div>
-
-                <div className="pt-4">
-                  <button 
-                    disabled={isUpdating}
-                    className="suraksha-button w-full md:w-auto px-10 py-4 h-14 flex items-center justify-center gap-2"
-                  >
-                    {isUpdating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
-                    Update Volunteer Status
-                  </button>
-                </div>
-              </form>
+              ))}
             </div>
-          )}
+          </div>
         </div>
+      )}
 
-        {/* Sidebar */}
-        <div className="lg:col-span-4 space-y-8">
-          {/* Volunteer Stats */}
-          <div className="bg-white border border-slate-100 rounded-[2rem] p-8 shadow-sm space-y-6">
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-              <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-              Impact Summary
-            </h3>
+      {/* SKILLS & MATCHING */}
+      {activeTab === 'profile' && (
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
+            <h3 className="text-xl font-black text-[#1e293b] mb-6">My Skills</h3>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {profile.skills?.length === 0 && <span className="text-slate-400 text-sm">No skills added yet.</span>}
+              {profile.skills?.map((s: any) => (
+                <span key={s.id} className="bg-slate-100 border border-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-sm">
+                  {s.skillName}
+                </span>
+              ))}
+            </div>
+            <form onSubmit={handleAddSkill} className="flex gap-2">
+              <input 
+                type="text" placeholder="e.g. First Aid, Boat Op, Sinhala" required
+                className="suraksha-input flex-1"
+                value={skillName} onChange={e => setSkillName(e.target.value)}
+              />
+              <button type="submit" disabled={isSubmitting} className="bg-slate-900 text-white px-4 rounded-xl font-bold text-sm hover:bg-slate-800 transition-all">Add</button>
+            </form>
+          </div>
+
+          <div className="suraksha-card p-8 rounded-[1.5rem]">
+            <h3 className="text-xl font-black text-[#1e293b] mb-2">Recommended Incidents</h3>
+            <p className="text-slate-500 text-sm mb-6">Auto-matched based on your skills and last known location.</p>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-5 bg-blue-50 rounded-3xl text-center space-y-1">
-                <div className="text-2xl font-black text-blue-600">{profile?.completedTasks || 0}</div>
-                <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Tasks Done</div>
-              </div>
-              <div className="p-5 bg-indigo-50 rounded-3xl text-center space-y-1">
-                <div className="text-2xl font-black text-indigo-600">{profile?.rating?.toFixed(1) || '5.0'}</div>
-                <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Rating</div>
-              </div>
+            <div className="space-y-4">
+              {incidents.length === 0 && <p className="text-slate-500 text-sm text-center py-4 bg-slate-50 rounded-xl">No active matches found.</p>}
+              {incidents.map((inc: any) => (
+                <div key={inc.id} className="p-4 border border-slate-100 rounded-xl hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start">
+                    <h4 className="font-bold text-slate-800">{inc.title}</h4>
+                    <span className="bg-emerald-100 text-emerald-700 font-black text-xs px-2 py-1 rounded">Score: {inc.matchScore}</span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2 line-clamp-2">{inc.description}</p>
+                  <div className="mt-3 flex items-center gap-4 text-xs font-bold text-slate-400">
+                    {inc.distance !== null && <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/> {inc.distance.toFixed(1)}km away</span>}
+                    {inc.matchedSkills > 0 && <span className="flex items-center gap-1 text-blue-500"><BookOpen className="w-3 h-3"/> {inc.matchedSkills} skill matches</span>}
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <div className="space-y-4 pt-2">
-               <div className="flex items-center gap-4 text-slate-600">
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center">
-                    <Award className="w-5 h-5 text-slate-400" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Rank</div>
-                    <div className="text-sm font-bold">Community Guardian</div>
-                  </div>
-               </div>
-               <div className="flex items-center gap-4 text-slate-600">
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-slate-400" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Support Line</div>
-                    <div className="text-sm font-bold">Emergency HQ: 1919</div>
-                  </div>
-               </div>
-            </div>
-          </div>
-
-          {/* Tips/Safety Section */}
-          <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-[2rem] p-8 text-white space-y-6 shadow-xl">
-             <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
-                <Shield className="w-6 h-6 text-blue-400" />
-             </div>
-             <div>
-                <h3 className="text-xl font-bold">Safety Protocol</h3>
-                <p className="text-slate-400 text-sm mt-2 leading-relaxed">Always wear your volunteer ID and safety gear when on duty. Report any hazardous conditions immediately.</p>
-             </div>
-             <button className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-sm font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2 group">
-                View Guidelines
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-             </button>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* TRAINING & CERTS */}
+      {activeTab === 'training' && (
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
+             <h3 className="text-xl font-black text-[#1e293b] mb-6">Log New Certification</h3>
+             <form onSubmit={handleAddTraining} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Training / Course Name</label>
+                  <input 
+                    type="text" required className="suraksha-input w-full"
+                    value={trainingData.trainingName} onChange={e => setTrainingData({...trainingData, trainingName: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Completion Date</label>
+                  <input 
+                    type="date" required className="suraksha-input w-full"
+                    value={trainingData.completedAt} onChange={e => setTrainingData({...trainingData, completedAt: e.target.value})}
+                  />
+                </div>
+                <button type="submit" disabled={isSubmitting} className="w-full bg-[#0061ff] text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-500/25">
+                  Save Training Record
+                </button>
+             </form>
+          </div>
+          <div className="suraksha-card p-8 rounded-[1.5rem]">
+            <h3 className="text-xl font-black text-[#1e293b] mb-6">My Certifications</h3>
+            <div className="space-y-3">
+              {profile.trainings?.length === 0 && <p className="text-slate-500 text-sm">No trainings logged yet.</p>}
+              {profile.trainings?.map((t: any) => (
+                <div key={t.id} className="p-4 border border-slate-100 rounded-xl bg-slate-50 flex items-center justify-between">
+                  <div>
+                    <h4 className="font-bold text-slate-700">{t.trainingName}</h4>
+                    <p className="text-xs text-slate-500 mt-1">Completed: {new Date(t.completedAt).toLocaleDateString()}</p>
+                  </div>
+                  <Award className="w-6 h-6 text-yellow-500" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* WELLBEING */}
+      {activeTab === 'wellbeing' && (
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
+            <div className="flex items-center gap-3 mb-6">
+               <HeartPulse className="w-8 h-8 text-rose-500" />
+               <h3 className="text-xl font-black text-[#1e293b]">Daily Wellbeing Check</h3>
+            </div>
+            <p className="text-sm text-slate-500 mb-6">It takes 30 seconds. Your mental and physical health is our top priority during deployments.</p>
+            <form onSubmit={handleWellbeingSubmit} className="space-y-6">
+              <div>
+                <label className="block font-bold text-slate-700 mb-2">Physical Condition (1=Exhausted, 5=Excellent)</label>
+                <input 
+                  type="range" min="1" max="5" 
+                  className="w-full accent-rose-500"
+                  value={wellbeingData.physicalRating} onChange={e => setWellbeingData({...wellbeingData, physicalRating: parseInt(e.target.value)})}
+                />
+                <div className="text-center font-black text-rose-600 mt-1">{wellbeingData.physicalRating} / 5</div>
+              </div>
+              <div>
+                <label className="block font-bold text-slate-700 mb-2">Mental State (1=Struggling, 5=Great)</label>
+                <input 
+                  type="range" min="1" max="5" 
+                  className="w-full accent-blue-500"
+                  value={wellbeingData.mentalRating} onChange={e => setWellbeingData({...wellbeingData, mentalRating: parseInt(e.target.value)})}
+                />
+                <div className="text-center font-black text-blue-600 mt-1">{wellbeingData.mentalRating} / 5</div>
+              </div>
+              <div className="flex items-center gap-3 p-4 bg-amber-50 rounded-xl border border-amber-100">
+                <input 
+                  type="checkbox" id="res"
+                  className="w-5 h-5 rounded text-amber-600"
+                  checked={wellbeingData.needsResources} onChange={e => setWellbeingData({...wellbeingData, needsResources: e.target.checked})}
+                />
+                <label htmlFor="res" className="font-bold text-amber-900 text-sm">I urgently need supplies, backup, or support.</label>
+              </div>
+              <button type="submit" disabled={isSubmitting} className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold">
+                Submit Survey
+              </button>
+            </form>
+          </div>
+
+          <div className="suraksha-card p-8 rounded-[1.5rem]">
+            <h3 className="text-xl font-black text-[#1e293b] mb-4">Past Check-ins</h3>
+            <div className="space-y-3">
+              {profile.wellbeingLogs?.map((log: any) => (
+                <div key={log.id} className="p-4 border border-slate-100 rounded-xl bg-slate-50 flex items-center justify-between">
+                  <div>
+                     <p className="font-bold text-sm text-slate-700">{new Date(log.recordedAt).toLocaleDateString()}</p>
+                     <div className="flex gap-3 mt-1">
+                       <span className="text-xs font-bold text-slate-500">Physical: {log.physicalRating}</span>
+                       <span className="text-xs font-bold text-slate-500">Mental: {log.mentalRating}</span>
+                     </div>
+                  </div>
+                  {log.distressFlag && <ShieldAlert className="w-5 h-5 text-red-500" />}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* GAMIFICATION */}
+      {activeTab === 'gamification' && (
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
+              <div className="text-4xl font-black text-blue-600 mb-1">{profile.totalHours.toFixed(0)}</div>
+              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Total Active Hours</div>
+            </div>
+            <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
+              <div className="text-4xl font-black text-emerald-600 mb-1">{profile.incidentsJoined}</div>
+              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Incidents Responded To</div>
+            </div>
+            <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
+              <div className="text-4xl font-black text-purple-600 mb-1">{profile.readinessScore}%</div>
+              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Readiness Score</div>
+            </div>
+          </div>
+
+          <div className="suraksha-card p-8 rounded-[1.5rem]">
+            <h3 className="text-xl font-black text-[#1e293b] mb-6">Earned Badges</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {profile.badges?.length === 0 && <p className="text-slate-500 text-sm col-span-full">No badges earned yet. Complete deployments and log training to start earning!</p>}
+              
+              {profile.badges?.map((b: any) => (
+                <div key={b.id} className="p-6 bg-gradient-to-br from-amber-100 to-amber-50 border border-amber-200 rounded-2xl flex flex-col items-center justify-center text-center shadow-sm">
+                   <Award className="w-10 h-10 text-amber-600 mb-3" />
+                   <div className="font-black text-sm text-amber-900">{b.badgeType.replace('_', ' ')}</div>
+                   <div className="text-[10px] font-bold text-amber-700/60 mt-1 uppercase">Earned {new Date(b.earnedAt).toLocaleDateString()}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {toast && (
+        <div className={cn(
+          "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
+        )}>
+          {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
+        </div>
+      )}
     </div>
   )
 }

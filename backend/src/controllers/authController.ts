@@ -78,7 +78,9 @@ export const register = async (req: Request, res: Response) => {
  */
 export const login = async (req: Request, res: Response) => {
   try {
-    const result = await authService.loginUser(req.body);
+    const ipAddress = req.ip || req.socket.remoteAddress;
+    const device = req.headers['user-agent'];
+    const result = await authService.loginUser({ ...req.body, ipAddress, device });
     res.json(result);
   } catch (error: any) {
     res.status(401).json({ message: error.message || 'Invalid credentials' });
@@ -115,6 +117,27 @@ export const changePassword = async (req: any, res: Response) => {
     const { currentPassword, newPassword } = req.body;
     await authService.updatePassword(userId, currentPassword, newPassword);
     res.json({ message: 'Password updated successfully' });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message || 'Internal server error' });
+  }
+};
+
+export const setup2FA = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const result = await authService.setup2FA(userId);
+    res.json(result);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message || 'Internal server error' });
+  }
+};
+
+export const verify2FA = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { token } = req.body;
+    const result = await authService.verify2FA(userId, token);
+    res.json(result);
   } catch (error: any) {
     res.status(400).json({ message: error.message || 'Internal server error' });
   }

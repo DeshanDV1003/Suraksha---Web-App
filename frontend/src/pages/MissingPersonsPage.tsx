@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { UserSearch, Plus, X, MapPin, Clock, Loader2, User, Phone } from 'lucide-react'
+import { UserSearch, Plus, X, MapPin, Clock, Loader2, User, Phone, BrainCircuit, Activity, Users, ShieldAlert, CheckCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { missingPersonService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
@@ -11,14 +11,22 @@ export default function MissingPersonsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedPerson, setSelectedPerson] = useState<any>(null)
+  
+  const [activeTab, setActiveTab] = useState('active') // active, unidentified, cross-reference, ai
+
+  // AI & Cross Ref State
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiMatches, setAiMatches] = useState<any[]>([])
+  const [crossRefLoading, setCrossRefLoading] = useState(false)
+  const [crossRefMatches, setCrossRefMatches] = useState<any[]>([])
+
+  const [reunificationNotes, setReunificationNotes] = useState('')
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string)
-      }
+      reader.onloadend = () => setSelectedImage(reader.result as string)
       reader.readAsDataURL(file)
     }
   }
@@ -36,289 +44,442 @@ export default function MissingPersonsPage() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (activeTab === 'active' || activeTab === 'unidentified') fetchData()
+  }, [activeTab])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const data = {
       name: formData.get('name'),
-      age: parseInt(formData.get('age') as string),
+      age: parseInt(formData.get('age') as string) || null,
+      gender: formData.get('gender'),
       description: formData.get('description'),
       lastSeen: formData.get('lastSeen'),
+      contactName: formData.get('contactName'),
+      contactPhone: formData.get('contactPhone'),
+      isUnidentified: formData.get('isUnidentified') === 'true',
       photo: selectedImage || ''
     }
 
     try {
       setIsSubmitting(true)
       await missingPersonService.reportMissing(data)
-      alert('Missing person reported successfully')
       setShowModal(false)
       setSelectedImage(null)
       fetchData()
     } catch (error) {
-      console.error('Failed to report missing person:', error)
+      console.error(error)
       alert('Failed to report missing person')
     } finally {
       setIsSubmitting(false)
     }
   }
 
+  const handleAiSearch = async () => {
+    if (!selectedImage) return alert('Upload a photo first')
+    setAiLoading(true)
+    try {
+      const res = await missingPersonService.searchFace('mock_url')
+      setAiMatches(res.data)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
+  const handleCrossReference = async () => {
+    setCrossRefLoading(true)
+    try {
+      const res = await missingPersonService.runCrossReference()
+      setCrossRefMatches(res.data)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setCrossRefLoading(false)
+    }
+  }
+
+  const handleReunify = async (status: string) => {
+    try {
+      await missingPersonService.triggerReunification(selectedPerson.id, status, reunificationNotes)
+      setReunificationNotes('')
+      setSelectedPerson(null)
+      fetchData()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const displayedPersons = activeTab === 'unidentified' 
+    ? persons.filter(p => p.isUnidentified) 
+    : persons.filter(p => !p.isUnidentified)
+
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Missing Persons</h1>
-          <p className="text-slate-500 mt-1 font-medium">Coordinate search operations and reporting</p>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Missing Persons Command</h1>
+          <p className="text-slate-500 mt-1 font-medium">Coordinate search operations, AI matching, and family reunification.</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}
           className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 hover:scale-[1.02] transition-all active:scale-95"
         >
           <Plus className="w-5 h-5" />
-          Report Missing Person
+          File New Report
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {loading ? (
-          <div className="col-span-full h-64 flex flex-col items-center justify-center space-y-4">
-            <Loader2 className="w-10 h-10 animate-spin text-red-500" />
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Scanning Database</p>
-          </div>
-        ) : persons.length === 0 ? (
-          <div className="col-span-full bg-white border border-dashed border-slate-200 rounded-[2.5rem] p-20 text-center space-y-4">
-            <UserSearch className="w-16 h-16 text-slate-200 mx-auto" />
-            <h3 className="text-xl font-bold text-slate-700">No Reports Filed</h3>
-            <p className="text-slate-400 max-w-xs mx-auto">All individuals accounted for. Any new reports will appear here instantly.</p>
-          </div>
-        ) : (
-          persons.map((person) => (
-            <div key={person.id} className="group bg-white border border-slate-100 rounded-[2rem] p-6 hover:shadow-2xl hover:shadow-red-500/5 transition-all overflow-hidden">
-               <div className="relative h-64 -mx-6 -mt-6 mb-6 bg-slate-50 flex items-center justify-center overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  {person.photo ? (
-                    <img src={person.photo} alt={person.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  ) : (
-                    <User className="w-20 h-20 text-slate-200" />
-                  )}
-                  {person.status === 'FOUND' && (
-                    <div className="absolute top-4 right-4 z-20 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
-                       Found
-                    </div>
-                  )}
-               </div>
-
-               <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                     <div>
-                        <h3 className="text-lg font-black text-slate-900">{person.name}</h3>
-                        <p className="text-xs font-bold text-slate-400">{person.age} Years Old</p>
-                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                     <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
-                        <MapPin className="w-4 h-4 text-red-400" />
-                        <span className="truncate">Last seen: {person.lastSeen}</span>
-                     </div>
-                     <p className="text-slate-400 text-xs leading-relaxed line-clamp-2">{person.description}</p>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
-                     <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                        <Clock className="w-3.5 h-3.5" />
-                        {formatDistanceToNow(new Date(person.createdAt))} ago
-                     </div>
-                     <button 
-                        onClick={() => setSelectedPerson(person)}
-                        className="text-[10px] font-black text-red-500 uppercase tracking-widest hover:underline"
-                      >
-                        View Details
-                     </button>
-                  </div>
-               </div>
-            </div>
-          ))
-        )}
+      <div className="flex flex-wrap gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+        <button onClick={() => setActiveTab('active')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'active' ? "bg-red-600 text-white" : "text-slate-500 hover:bg-slate-50")}>
+          <Users className="w-4 h-4" /> Active Cases
+        </button>
+        <button onClick={() => setActiveTab('unidentified')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'unidentified' ? "bg-red-600 text-white" : "text-slate-500 hover:bg-slate-50")}>
+          <ShieldAlert className="w-4 h-4" /> Unidentified Registry
+        </button>
+        <button onClick={() => { setActiveTab('cross-reference'); handleCrossReference(); }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'cross-reference' ? "bg-blue-600 text-white" : "text-slate-500 hover:bg-slate-50")}>
+          <Activity className="w-4 h-4" /> Cross-Reference Engine
+        </button>
+        <button onClick={() => { setActiveTab('ai'); setAiMatches([]); setSelectedImage(null); }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'ai' ? "bg-purple-600 text-white" : "text-slate-500 hover:bg-slate-50")}>
+          <BrainCircuit className="w-4 h-4" /> AI Face Matcher
+        </button>
       </div>
 
-      {/* Info Card */}
-      <div className="bg-blue-50 border border-blue-100 rounded-[2rem] p-8 flex flex-col md:flex-row items-center gap-8">
-         <div className="w-16 h-16 rounded-2xl bg-blue-500 flex items-center justify-center shrink-0">
-            <Phone className="w-8 h-8 text-white" />
-         </div>
-         <div className="flex-1 text-center md:text-left">
-            <h3 className="text-xl font-black text-blue-900">Emergency Search Hotline</h3>
-            <p className="text-blue-700 font-medium mt-1">If you have immediate information about a missing person, call <span className="font-black">119</span> or our rescue center at <span className="font-black">+94 112 345 678</span></p>
-         </div>
-         <button className="px-8 py-4 bg-white text-blue-600 rounded-2xl font-bold border border-blue-100 hover:shadow-lg transition-all">
-            Call Now
-         </button>
-      </div>
-
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
-            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-2xl font-black text-slate-900">Report Missing Person</h2>
-              <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all">
-                <X className="w-6 h-6" />
-              </button>
+      {/* ACTIVE & UNIDENTIFIED TABS */}
+      {(activeTab === 'active' || activeTab === 'unidentified') && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {loading ? (
+            <div className="col-span-full h-64 flex flex-col items-center justify-center space-y-4">
+              <Loader2 className="w-10 h-10 animate-spin text-red-500" />
             </div>
-            <form onSubmit={handleSubmit} className="p-10 space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Full Name</label>
-                  <input name="name" type="text" placeholder="Legal name" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Age</label>
-                  <input name="age" type="number" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Last Seen Location</label>
-                <input name="lastSeen" type="text" placeholder="City, Street, or Landmark" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Description (Appearance, Clothes)</label>
-                <textarea name="description" rows={3} required className="suraksha-input min-h-[100px] py-4 focus:ring-red-500/20 focus:border-red-500/40 resize-none"></textarea>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Upload Recent Photo</label>
-                <div className="flex items-center gap-6 p-4 bg-slate-50 border border-slate-100 rounded-3xl">
-                  <div className="relative w-20 h-20 bg-white rounded-2xl overflow-hidden flex items-center justify-center border-2 border-dashed border-slate-200 hover:border-red-200 transition-colors group">
-                    {selectedImage ? (
-                      <img src={selectedImage} alt="Preview" className="w-full h-full object-cover" />
+          ) : displayedPersons.length === 0 ? (
+            <div className="col-span-full bg-white border border-dashed border-slate-200 rounded-[2.5rem] p-20 text-center space-y-4">
+              <UserSearch className="w-16 h-16 text-slate-200 mx-auto" />
+              <h3 className="text-xl font-bold text-slate-700">No Records Found</h3>
+            </div>
+          ) : (
+            displayedPersons.map((person) => (
+              <div key={person.id} className="group bg-white border border-slate-100 rounded-[2rem] p-6 hover:shadow-2xl hover:shadow-red-500/5 transition-all overflow-hidden">
+                <div className="relative h-64 -mx-6 -mt-6 mb-6 bg-slate-50 flex items-center justify-center overflow-hidden">
+                    {person.photo ? (
+                      <img src={person.photo} alt={person.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
-                      <Plus className="w-6 h-6 text-slate-300 group-hover:text-red-400 transition-colors" />
+                      <User className="w-20 h-20 text-slate-200" />
                     )}
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handleImageChange}
-                      className="absolute inset-0 opacity-0 cursor-pointer"
-                    />
+                    {person.status === 'FOUND' && (
+                      <div className="absolute top-4 right-4 z-20 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">Found</div>
+                    )}
+                    {person.reunificationStatus === 'IN_PROGRESS' && (
+                      <div className="absolute top-4 left-4 z-20 bg-blue-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">Reunifying</div>
+                    )}
+                </div>
+
+                <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-black text-slate-900">{person.name}</h3>
+                      <p className="text-xs font-bold text-slate-400">{person.age ? `${person.age} Years Old` : 'Age Unknown'}</p>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+                      <MapPin className="w-4 h-4 text-red-400 shrink-0" />
+                      <span className="truncate">Last seen: {person.lastSeen}</span>
+                    </div>
+                    <div className="pt-4 border-t border-slate-50 flex justify-between items-center">
+                      <button onClick={() => setSelectedPerson(person)} className="text-xs font-black text-red-500 uppercase hover:underline">View File</button>
+                    </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* CROSS REFERENCE TAB */}
+      {activeTab === 'cross-reference' && (
+        <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-2xl font-black text-slate-800">Automated Cross-Reference Engine</h2>
+              <p className="text-slate-500">Scanning missing persons against camp registrations and hospital intakes.</p>
+            </div>
+            <button onClick={handleCrossReference} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 flex items-center gap-2">
+              <Activity className="w-5 h-5" /> Run Scan Now
+            </button>
+          </div>
+
+          {crossRefLoading ? (
+            <div className="py-20 flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>
+          ) : crossRefMatches.length === 0 ? (
+            <div className="text-center py-20 bg-slate-50 rounded-3xl"><p className="text-slate-400 font-bold">No potential matches found at this time.</p></div>
+          ) : (
+            <div className="grid gap-4">
+              {crossRefMatches.map((match, i) => (
+                <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-slate-50 border border-slate-100 rounded-3xl items-center">
+                  <div className="flex-1 bg-white p-4 rounded-2xl border border-red-100 shadow-sm">
+                    <div className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-1">Missing Person</div>
+                    <div className="font-black text-slate-800 text-lg">{match.missingPerson.name}</div>
+                    <div className="text-sm text-slate-500">{match.missingPerson.age} yrs • {match.missingPerson.gender}</div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-[10px] text-slate-400 font-bold leading-relaxed uppercase tracking-tight">
-                      Please upload a clear, front-facing photo of the individual for better identification.
-                    </p>
+                  <div className="w-full md:w-32 text-center">
+                    <div className="text-3xl font-black text-blue-600">{match.matchScore}%</div>
+                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Match Prob.</div>
+                  </div>
+                  <div className="flex-1 bg-white p-4 rounded-2xl border border-blue-100 shadow-sm">
+                    <div className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1">Found in {match.matchedRecord.type.replace('_', ' ')}</div>
+                    <div className="font-black text-slate-800 text-lg">{match.matchedRecord.data.name}</div>
+                    <div className="text-sm text-slate-500">{match.matchedRecord.data.age} yrs • {match.matchedRecord.data.gender}</div>
+                  </div>
+                  <button onClick={() => setSelectedPerson(match.missingPerson)} className="bg-slate-900 text-white px-6 py-4 rounded-xl font-bold hover:bg-slate-800">
+                    Review
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* AI FACE MATCHER TAB */}
+      {activeTab === 'ai' && (
+        <div className="flex flex-col md:flex-row gap-8 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+          <div className="w-full md:w-1/3 bg-purple-50 p-8 rounded-3xl border border-purple-100 text-center flex flex-col items-center">
+            <BrainCircuit className="w-12 h-12 text-purple-600 mb-4" />
+            <h3 className="text-xl font-black text-purple-900 mb-2">AI Face Scanner</h3>
+            <p className="text-sm text-purple-700/70 mb-8">Upload a photo of an unidentified found individual to cross-reference against the missing persons database.</p>
+            
+            <div className="relative w-full aspect-square bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-purple-200 hover:border-purple-400 transition-colors cursor-pointer group mb-6">
+              {selectedImage ? (
+                <img src={selectedImage} className="w-full h-full object-cover" />
+              ) : (
+                <>
+                  <Plus className="w-8 h-8 text-purple-300 group-hover:text-purple-500 mb-2" />
+                  <span className="font-bold text-purple-400 text-sm">Select Image</span>
+                </>
+              )}
+              <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+            </div>
+
+            <button onClick={handleAiSearch} disabled={aiLoading || !selectedImage} className="w-full bg-purple-600 text-white py-4 rounded-xl font-bold hover:bg-purple-700 disabled:opacity-50 flex items-center justify-center gap-2">
+              {aiLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Run AI Scan"}
+            </button>
+          </div>
+
+          <div className="flex-1">
+            <h3 className="text-xl font-black text-slate-800 mb-6">Potential Matches</h3>
+            {aiLoading ? (
+              <div className="py-20 flex flex-col items-center justify-center text-purple-600 gap-4">
+                <Loader2 className="w-10 h-10 animate-spin" />
+                <span className="text-xs font-bold uppercase tracking-widest animate-pulse">Running Neural Network Analysis...</span>
+              </div>
+            ) : aiMatches.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {aiMatches.map((match, i) => (
+                  <div key={i} className="flex gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-md cursor-pointer transition-shadow" onClick={() => setSelectedPerson(match.person)}>
+                    <div className="w-20 h-20 bg-slate-200 rounded-xl overflow-hidden shrink-0">
+                      {match.person.photo ? <img src={match.person.photo} className="w-full h-full object-cover" /> : <User className="w-full h-full p-4 text-slate-400" />}
+                    </div>
+                    <div>
+                      <div className="font-black text-slate-800">{match.person.name}</div>
+                      <div className="text-xs text-slate-500">{match.person.age} yrs • {match.person.gender}</div>
+                      <div className="mt-2 inline-flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded font-bold text-[10px]">
+                        <CheckCircle className="w-3 h-3" /> {(match.confidence * 100).toFixed(1)}% Match
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-20 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+                <p className="text-slate-400 font-bold">Upload an image to see AI matches.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Create Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/60 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
+            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <h2 className="text-2xl font-black text-slate-900">File Report</h2>
+              <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all"><X className="w-6 h-6" /></button>
+            </div>
+            <form onSubmit={handleSubmit} className="p-10 space-y-6 max-h-[70vh] overflow-y-auto">
+              
+              <div className="bg-red-50 p-4 rounded-xl border border-red-100 mb-6">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" name="isUnidentified" value="true" className="w-5 h-5 text-red-600 rounded border-slate-300" />
+                  <span className="font-bold text-red-900">Register as Unidentified Found Person instead</span>
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Name / Alias</label>
+                  <input name="name" type="text" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Age</label>
+                  <input name="age" type="number" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Gender</label>
+                  <select name="gender" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Last Seen Location / Found Location</label>
+                  <input name="lastSeen" type="text" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Description</label>
+                <textarea name="description" rows={3} required className="suraksha-input resize-none focus:ring-red-500/20 focus:border-red-500/40"></textarea>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Photo</label>
+                <div className="mt-2 flex items-center gap-4">
+                  <div className="w-16 h-16 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative">
+                    {selectedImage ? <img src={selectedImage} className="w-full h-full object-cover" /> : <Plus className="text-slate-400" />}
+                    <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                  </div>
+                  <span className="text-xs text-slate-500 font-bold">Upload a clear photo to enable AI matching.</span>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-100 pt-6 mt-6">
+                <h4 className="font-bold text-slate-800 mb-4">Family Contact (For Reunification)</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Contact Name</label>
+                    <input name="contactName" type="text" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Contact Phone</label>
+                    <input name="contactPhone" type="tel" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4">
-                <button 
-                  disabled={isSubmitting}
-                  className="w-full py-5 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 hover:scale-[1.01] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : "File Official Report"}
-                </button>
-              </div>
+              <button disabled={isSubmitting} className="w-full py-5 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 mt-6 hover:bg-red-700">
+                {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Save Record"}
+              </button>
             </form>
           </div>
         </div>
       )}
 
-      {/* Details Modal */}
+      {/* Details & Reunification Modal */}
       {selectedPerson && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xl p-4 animate-in fade-in duration-500">
-          <div className="bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col md:flex-row h-[90vh] md:h-auto max-h-[90vh]">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-xl p-4 animate-in fade-in duration-500">
+          <div className="bg-white w-full max-w-5xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col md:flex-row h-[90vh] max-h-[90vh]">
             
-            {/* Left side: Image */}
-            <div className="md:w-5/12 bg-slate-50 relative overflow-hidden">
-               {selectedPerson.photo ? (
-                 <img src={selectedPerson.photo} alt={selectedPerson.name} className="w-full h-full object-cover" />
-               ) : (
-                 <div className="w-full h-full flex items-center justify-center">
-                    <User className="w-32 h-32 text-slate-200" />
+            <div className="md:w-1/3 bg-slate-50 relative overflow-hidden border-r border-slate-100 flex flex-col">
+               <div className="h-64 relative shrink-0">
+                 {selectedPerson.photo ? (
+                   <img src={selectedPerson.photo} alt={selectedPerson.name} className="w-full h-full object-cover" />
+                 ) : (
+                   <div className="w-full h-full flex items-center justify-center bg-slate-200">
+                      <User className="w-20 h-20 text-slate-400" />
+                   </div>
+                 )}
+               </div>
+               
+               <div className="p-6 flex-1 overflow-y-auto">
+                 <h2 className="text-2xl font-black text-slate-900 leading-tight">{selectedPerson.name}</h2>
+                 <p className="text-sm font-bold text-slate-500 mt-1">{selectedPerson.age ? `${selectedPerson.age} yrs` : 'Unknown Age'} • {selectedPerson.gender || 'Unknown'}</p>
+                 
+                 <div className="mt-6 space-y-4">
+                   <div>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Status</span>
+                     <span className={cn("px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider inline-block mt-1", selectedPerson.status === 'FOUND' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>
+                       {selectedPerson.status}
+                     </span>
+                   </div>
+                   <div>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Reported Contact</span>
+                     <p className="text-sm font-bold text-slate-800">{selectedPerson.contactName || 'None listed'}</p>
+                     <p className="text-sm font-medium text-slate-600">{selectedPerson.contactPhone || 'No phone'}</p>
+                   </div>
                  </div>
-               )}
-               <div className="absolute top-6 left-6">
-                  <div className={cn(
-                    "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg backdrop-blur-md",
-                    selectedPerson.status === 'FOUND' ? "bg-green-500 text-white" : "bg-red-600 text-white"
-                  )}>
-                    {selectedPerson.status}
-                  </div>
                </div>
             </div>
 
-            {/* Right side: Details */}
-            <div className="flex-1 p-8 md:p-12 overflow-y-auto">
-               <div className="flex justify-between items-start mb-8">
-                  <div>
-                    <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-none">{selectedPerson.name}</h2>
-                    <div className="flex items-center gap-2 mt-3">
-                       <span className="text-slate-400 font-bold text-sm">{selectedPerson.age} Years Old</span>
-                       <span className="w-1 h-1 rounded-full bg-slate-300" />
-                       <span className="text-slate-400 font-bold text-sm uppercase tracking-wider">Male</span>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={() => setSelectedPerson(null)}
-                    className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 transition-all"
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-               </div>
-
-               <div className="grid grid-cols-1 gap-8">
-                  {/* Status Section */}
-                  <div className="grid grid-cols-2 gap-4">
-                     <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Last Seen At</label>
-                        <div className="flex items-center gap-2 text-slate-700 font-bold">
-                           <MapPin className="w-5 h-5 text-red-500" />
-                           {selectedPerson.lastSeen}
-                        </div>
+            <div className="flex-1 p-8 md:p-10 overflow-y-auto flex flex-col bg-white relative">
+               <button onClick={() => setSelectedPerson(null)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 transition-all z-10"><X className="w-5 h-5" /></button>
+               
+               <div className="space-y-8 pb-10">
+                 <div>
+                   <h3 className="text-lg font-black text-slate-800 mb-4 border-b border-slate-100 pb-2">Case Details</h3>
+                   <div className="grid grid-cols-2 gap-4 text-sm">
+                     <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Last Seen</span>
+                       <span className="font-bold text-slate-700">{selectedPerson.lastSeen}</span>
                      </div>
-                     <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Reported Date</label>
-                        <div className="flex items-center gap-2 text-slate-700 font-bold">
-                           <Clock className="w-5 h-5 text-slate-400" />
-                           {new Date(selectedPerson.createdAt).toLocaleDateString()}
-                        </div>
+                     <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Reported Date</span>
+                       <span className="font-bold text-slate-700">{new Date(selectedPerson.createdAt).toLocaleDateString()}</span>
                      </div>
-                  </div>
-
-                  {/* Description Section */}
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Physical Description & Notes</label>
-                    <div className="bg-slate-50 rounded-[2rem] p-6 border border-slate-100 relative">
-                       <p className="text-slate-600 font-medium leading-relaxed italic">
-                         "{selectedPerson.description}"
-                       </p>
-                    </div>
-                  </div>
-
-                  {/* Identification Section */}
-                  <div className="flex items-center justify-between p-6 bg-slate-900 rounded-3xl text-white shadow-xl shadow-slate-900/20">
-                     <div>
-                        <p className="text-[10px] font-black opacity-40 uppercase tracking-[0.2em] mb-1">Record ID</p>
-                        <p className="font-mono text-sm font-bold">MP-RE-#{selectedPerson.id.slice(0, 8).toUpperCase()}</p>
+                     <div className="col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Description</span>
+                       <span className="text-slate-700">{selectedPerson.description}</span>
                      </div>
-                     <button className="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-bold transition-all backdrop-blur-md">
-                        Copy Reference
-                     </button>
-                  </div>
+                   </div>
+                 </div>
 
-                  {/* Actions Section */}
-                  <div className="flex gap-4 pt-4">
-                     <button className="flex-1 py-5 bg-[#E11D48] text-white rounded-2xl font-bold shadow-lg shadow-red-500/20 hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2">
-                        Generate Missing Poster
-                     </button>
-                     <button className="flex-1 py-5 bg-white border border-slate-200 text-slate-700 rounded-2xl font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
-                        Notify Search Team
-                     </button>
-                  </div>
+                 {/* Family Reunification Workflow */}
+                 <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+                   <h3 className="text-lg font-black text-blue-900 mb-2 flex items-center gap-2"><Phone className="w-5 h-5" /> Family Reunification Workflow</h3>
+                   <p className="text-sm text-blue-700 mb-6">Manage the process of returning this individual to their registered family contact.</p>
+
+                   <div className="space-y-4">
+                     <div className="flex items-center gap-4">
+                       <span className="text-xs font-bold uppercase tracking-widest text-slate-500 w-32">Current State:</span>
+                       <span className={cn("px-3 py-1 rounded-md text-xs font-black uppercase tracking-wider",
+                         selectedPerson.reunificationStatus === 'NONE' ? 'bg-slate-200 text-slate-600' :
+                         selectedPerson.reunificationStatus === 'IN_PROGRESS' ? 'bg-blue-200 text-blue-800' :
+                         'bg-green-200 text-green-800'
+                       )}>{selectedPerson.reunificationStatus.replace('_', ' ')}</span>
+                     </div>
+                     
+                     <div className="flex flex-col gap-2">
+                       <textarea 
+                         value={reunificationNotes} onChange={e => setReunificationNotes(e.target.value)}
+                         placeholder="Add an update to the reunification log..." rows={2}
+                         className="w-full bg-white border border-blue-200 p-3 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       />
+                       <div className="flex gap-2">
+                         {selectedPerson.reunificationStatus !== 'IN_PROGRESS' && selectedPerson.reunificationStatus !== 'REUNITED' && (
+                           <button onClick={() => handleReunify('IN_PROGRESS')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700 shadow-sm">
+                             Initiate Reunification (SMS Contact)
+                           </button>
+                         )}
+                         {selectedPerson.reunificationStatus === 'IN_PROGRESS' && (
+                           <button onClick={() => handleReunify('REUNITED')} className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-green-700 shadow-sm">
+                             Mark as Reunited (Closes Case)
+                           </button>
+                         )}
+                         <button onClick={() => handleReunify(selectedPerson.reunificationStatus)} disabled={!reunificationNotes} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-700 disabled:opacity-50">
+                           Save Log Note
+                         </button>
+                       </div>
+                     </div>
+
+                     {selectedPerson.reunificationNotes && (
+                       <div className="mt-4 bg-white/50 p-4 rounded-xl border border-blue-100 text-xs text-slate-700 whitespace-pre-wrap max-h-40 overflow-y-auto font-mono">
+                         {selectedPerson.reunificationNotes}
+                       </div>
+                     )}
+                   </div>
+                 </div>
+
                </div>
             </div>
           </div>

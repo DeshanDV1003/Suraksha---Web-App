@@ -170,6 +170,62 @@ export const getOperationalIntelligence = async () => {
       activeNodes: camps.length + Math.floor(volunteers.length / 2),
       uniqueContributors: Math.max(152, Math.floor(tokenClaims.length * 1.5) + 100),
       efficiency: (95 + Math.random() * 4).toFixed(1) + '%'
-    }
+    },
+    districtRiskHeatmap: [
+      { id: 'LK-11', value: 85 }, // Colombo
+      { id: 'LK-12', value: 65 }, // Gampaha
+      { id: 'LK-13', value: 40 }, // Kalutara
+      { id: 'LK-21', value: 90 }, // Kandy
+      { id: 'LK-31', value: 70 }, // Galle
+    ],
+    resourceUtilization: [
+      { name: 'Rescue Boats', used: rescueBoats * 0.8, available: rescueBoats * 0.2 },
+      { name: 'Vehicles', used: logisticsVehicles * 0.9, available: logisticsVehicles * 0.1 },
+      { name: 'Generators', used: powerNodes * 0.6, available: powerNodes * 0.4 },
+    ],
+    volunteerHours: [
+      { date: 'Mon', hours: 120 }, { date: 'Tue', hours: 150 },
+      { date: 'Wed', hours: 180 }, { date: 'Thu', hours: 130 },
+      { date: 'Fri', hours: 210 }, { date: 'Sat', hours: 250 },
+      { date: 'Sun', hours: 190 },
+    ]
   };
+};
+
+export const generateAAR = async (incidentId: string) => {
+  let aar = await prisma.afterActionReport.findUnique({ where: { incidentId } });
+  if (!aar) {
+    const incident = await prisma.incidentReport.findUnique({ where: { id: incidentId } });
+    if (!incident) throw new Error('Incident not found');
+    
+    aar = await prisma.afterActionReport.create({
+      data: {
+        incidentId,
+        timeline: JSON.stringify([{ time: incident.createdAt, event: 'Incident Reported' }, { time: new Date(), event: 'AAR Generated' }]),
+        resourcesUsed: JSON.stringify(['2x Rescue Boats', '5x Medics']),
+        costEstimate: Math.floor(Math.random() * 100000) + 50000,
+        peopleAffected: Math.floor(Math.random() * 50) + 10,
+        resolutionTime: 120, // minutes
+        lessonsLearned: 'Rapid deployment saved lives. Need better comms.'
+      }
+    });
+  }
+  return aar;
+};
+
+export const getKPIBenchmarks = async (month: string) => {
+  return await prisma.kPIBenchmark.findMany({ where: { month } });
+};
+
+export const getVulnerabilityIndex = async () => {
+  // Mock data for vulnerability index
+  return [
+    { district: 'Colombo', elderly: 1500, infants: 800, disabled: 400, chronic: 1200, riskScore: 85 },
+    { district: 'Gampaha', elderly: 1200, infants: 600, disabled: 300, chronic: 900, riskScore: 72 },
+    { district: 'Kandy', elderly: 2000, infants: 900, disabled: 500, chronic: 1500, riskScore: 92 },
+  ];
+};
+
+export const getDisasterBudgets = async () => {
+  return await prisma.disasterBudget.findMany({ include: { expenditures: { include: { resourceCost: true } } } });
 };

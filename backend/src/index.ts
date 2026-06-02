@@ -20,11 +20,13 @@ import reliefTokenRoutes from './routes/reliefTokenRoutes';
 import damageAssessmentRoutes from './routes/damageAssessmentRoutes';
 import missingPersonRoutes from './routes/missingPersonRoutes';
 import supportRoutes from './routes/supportRoutes';
+import psychologicalSupportRoutes from './routes/psychologicalSupportRoutes';
 import dashboardRoutes from './routes/dashboardRoutes';
 import analyticsRoutes from './routes/analyticsRoutes';
 import auditRoutes from './routes/auditRoutes';
 import notificationRoutes from './routes/notificationRoutes';
 import locationRoutes from './routes/locationRoutes';
+import mapRoutes from './routes/mapRoutes';
 
 dotenv.config();
 
@@ -58,11 +60,13 @@ app.use('/api/relief-tokens', reliefTokenRoutes);
 app.use('/api/assessments', damageAssessmentRoutes);
 app.use('/api/missing-persons', missingPersonRoutes);
 app.use('/api/support', supportRoutes);
+app.use('/api/psych-support', psychologicalSupportRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/location', locationRoutes);
+app.use('/api/map', mapRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -75,6 +79,19 @@ app.get('/api/health', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
   
+  // Chat feature WebSockets
+  socket.on('join_chat', (sessionId) => {
+    socket.join(sessionId);
+    console.log(`Socket ${socket.id} joined chat session ${sessionId}`);
+  });
+
+  socket.on('send_message', async (data) => {
+    // data should contain { sessionId, senderId, content }
+    // we would normally save to DB here, but we can also just save in the HTTP endpoint and emit here, or save here directly.
+    // For simplicity, let's just broadcast to the room. The actual DB save will be done via HTTP, or we can just emit it back.
+    io.to(data.sessionId).emit('receive_message', data);
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
   });

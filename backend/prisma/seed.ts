@@ -166,6 +166,35 @@ async function main() {
     });
   }
 
+  // 11. ThreatForecast
+  console.log('Seeding ThreatForecasts...');
+  for (let i = 1; i <= 5; i++) {
+    await prisma.threatForecast.create({
+      data: {
+        district: ['Colombo', 'Gampaha', 'Kalutara', 'Galle', 'Matara'][i % 5],
+        threatType: ['Flood', 'Landslide', 'Cyclone'][i % 3],
+        confidence: 0.7 + (Math.random() * 0.25),
+        severity: [Severity.MEDIUM, Severity.HIGH, Severity.CRITICAL][i % 3],
+        forecastTime: new Date(Date.now() + i * 24 * 60 * 60 * 1000),
+      },
+    });
+  }
+
+  // 12. ShiftHandover
+  console.log('Seeding ShiftHandovers...');
+  for (let i = 1; i <= 3; i++) {
+    await prisma.shiftHandover.create({
+      data: {
+        shiftTime: new Date(Date.now() - i * 8 * 60 * 60 * 1000),
+        incidentsOpened: 5 + i,
+        incidentsClosed: 3 + i,
+        resourcesDeployed: 10 + i * 2,
+        volunteersActive: 20 + i * 5,
+        criticalItems: `Need more ${['boats', 'medical kits', 'food rations'][i % 3]} in sector ${i}`,
+      },
+    });
+  }
+
   console.log('Seeding completed successfully!');
 }
 

@@ -149,3 +149,63 @@ export const getMe = async (req: any, res: Response) => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+export const getRBACMatrix = async (req: any, res: Response) => {
+  try {
+    const matrix = await userService.getRBACMatrix();
+    res.json(matrix);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const updateRBACMatrix = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const permissions = req.body;
+    await userService.updateRBACMatrix(permissions, userId);
+    res.json({ message: 'Permissions updated' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const bulkImportUsers = async (req: any, res: Response) => {
+  try {
+    const users = req.body;
+    const result = await userService.bulkImportUsers(users);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getAuditLogs = async (req: any, res: Response) => {
+  try {
+    const logs = await userService.getAuditLogs();
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const toggleFieldResponderApp = async (req: any, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { hasApp } = req.body;
+    await userService.toggleFieldResponderApp(id, hasApp);
+    res.json({ message: 'Field app status updated' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const sendAppLink = async (req: any, res: Response) => {
+  try {
+    const { id } = req.params;
+    await userService.sendAppLink(id);
+    res.json({ message: 'App link sent' });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message || 'Internal server error' });
+  }
+};

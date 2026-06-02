@@ -14,22 +14,29 @@ model User {
   name             String
   phone            String?
   role             Role                          @default(CITIZEN)
-  createdAt        DateTime                      @default(now())
-  updatedAt        DateTime                      @updatedAt
-  region           String?
-  damageReports    DamageAssessment[]            @relation("DamageReports")
-  helpRequests     HelpRequest[]
-  reports          IncidentReport[]
-  localVerifier    LocalVerifier?
-  locationLogs     LocationLog[]
-  notifications    Notification[]
-  supportRequests  PsychologicalSupportRequest[] @relation("SupportRequests")
-  reliefTokens     ReliefToken[]                 @relation("ReliefTokens")
-  verifications    ReportVerification[]
-  createdTasks     Task[]                        @relation("CreatedTasks")
-  assignedTasks    Task[]                        @relation("AssignedTasks")
-  tokens           Token[]
-  volunteerProfile VolunteerProfile?
+  createdAt                DateTime                      @default(now())
+  updatedAt                DateTime                      @updatedAt
+  region                   String?
+  nic                      String?                       @unique
+  twoFactorEnabled         Boolean                       @default(false)
+  twoFactorSecret          String?
+  twoFactorGracePeriodEnds DateTime?
+  hasMobileApp             Boolean                       @default(false)
+  lastCheckInTime          DateTime?
+  isFieldActive            Boolean                       @default(false)
+  damageReports            DamageAssessment[]            @relation("DamageReports")
+  helpRequests             HelpRequest[]
+  reports                  IncidentReport[]
+  localVerifier            LocalVerifier?
+  locationLogs             LocationLog[]
+  notifications            Notification[]
+  supportRequests          PsychologicalSupportRequest[] @relation("SupportRequests")
+  reliefTokens             ReliefToken[]                 @relation("ReliefTokens")
+  verifications            ReportVerification[]
+  createdTasks             Task[]                        @relation("CreatedTasks")
+  assignedTasks            Task[]                        @relation("AssignedTasks")
+  volunteerProfile         VolunteerProfile?
+  sessionLogs              UserSessionLog[]
 }
 
 model IncidentReport {
@@ -56,19 +63,25 @@ model IncidentReport {
   verifications     ReportVerification[]
   tasks             Task[]
   verifierActions   VerifierAction[]
+  aar               AfterActionReport?
 }
 
 model Alert {
-  id         String    @id @default(uuid())
-  title      String
-  message    String
-  locations  String[]
-  latitudes  Float[]
-  longitudes Float[]
-  type       AlertType @default(INFO)
-  active     Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id                   String    @id @default(uuid())
+  title                String
+  message              String
+  locations            String[]
+  latitudes            Float[]
+  longitudes           Float[]
+  type                 AlertType @default(INFO)
+  active               Boolean   @default(true)
+  channels             Json?
+  scheduledTime        DateTime?
+  translatedMsgSinhala String?
+  translatedMsgTamil   String?
+  acknowledgementRate  Float?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 }
 
 model ReliefCamp {
@@ -84,18 +97,12 @@ model ReliefCamp {
   waitTime         String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-}
-
-model Token {
-  id            String         @id @default(uuid())
-  code          String         @unique
-  userId        String
-  type          String         @default("RELIEF")
-  status        String         @default("ACTIVE")
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  distributions Distribution[]
-  user          User           @relation(fields: [userId], references: [id])
+  residents        CampResident[]
+  inventory        CampInventory[]
+  schedules        CampSchedule[]
+  referrals        HospitalReferral[]
+  transfersOut     CampTransferRequest[] @relation("TransfersOut")
+  transfersIn      CampTransferRequest[] @relation("TransfersIn")
 }
 
 model Resource {
@@ -128,31 +135,49 @@ model Task {
 }
 
 model VolunteerProfile {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  skills         String[]
-  availability   Boolean  @default(true)
-  rating         Float    @default(0)
-  completedTasks Int      @default(0)
-  createdAt      DateTime @default(now())
-  user           User     @relation(fields: [userId], references: [id])
+  id              String               @id @default(uuid())
+  userId          String               @unique
+  totalHours      Float                @default(0)
+  incidentsJoined Int                  @default(0)
+  readinessScore  Float                @default(100.0)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  user            User                 @relation(fields: [userId], references: [id])
+  skills          VolunteerSkill[]
+  trainings       VolunteerTraining[]
+  checkIns        VolunteerCheckIn[]
+  wellbeingLogs   VolunteerWellbeing[]
+  badges          VolunteerBadge[]
 }
 
 model HelpRequest {
-  id              String           @id @default(uuid())
-  userId          String
-  type            String
-  description     String
-  location        String
-  latitude        Float?
-  longitude       Float?
-  priority        Severity         @default(MEDIUM)
-  status          Status           @default(PENDING)
-  peopleCount     Int?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  user            User             @relation(fields: [userId], references: [id])
-  verifierActions VerifierAction[]
+  id                  String                  @id @default(uuid())
+  userId              String?
+  phone               String?
+  type                String
+  description         String
+  location            String
+  latitude            Float?
+  longitude           Float?
+  priority            Severity                @default(MEDIUM)
+  status              Status                  @default(PENDING)
+  peopleCount         Int?
+  assignedVolunteerId String?
+  escalationLevel     String                  @default("NONE") // NONE, HIGH, CRITICAL
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  user                User?                   @relation(fields: [userId], references: [id])
+  verifierActions     VerifierAction[]
+  escalations         HelpRequestEscalation[]
+}
+
+model HelpRequestEscalation {
+  id            String      @id @default(uuid())
+  helpRequestId String
+  level         String      // HIGH, CRITICAL
+  message       String
+  triggeredAt   DateTime    @default(now())
+  helpRequest   HelpRequest @relation(fields: [helpRequestId], references: [id])
 }
 
 model ReportVerification {
@@ -166,28 +191,23 @@ model ReportVerification {
   user      User           @relation(fields: [userId], references: [id])
 }
 
-model Distribution {
-  id          String   @id @default(uuid())
-  tokenId     String
-  itemType    String
-  quantity    Int
-  deliveredBy String
-  location    String
-  proofImage  String?
-  deliveredAt DateTime @default(now())
-  token       Token    @relation(fields: [tokenId], references: [id])
-}
-
 model MissingPerson {
-  id          String   @id @default(uuid())
-  name        String
-  age         Int?
-  description String
-  lastSeen    String
-  photo       String?
-  reportedBy  String
-  status      String   @default("MISSING")
-  createdAt   DateTime @default(now())
+  id                  String   @id @default(uuid())
+  name                String
+  nic                 String?
+  age                 Int?
+  gender              String?
+  description         String
+  lastSeen            String
+  photo               String?
+  reportedBy          String?
+  contactName         String?
+  contactPhone        String?
+  status              String   @default("MISSING")
+  isUnidentified      Boolean  @default(false)
+  reunificationStatus String   @default("NONE") // NONE, IN_PROGRESS, REUNITED
+  reunificationNotes  String?
+  createdAt           DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
@@ -249,57 +269,79 @@ model LocationLog {
 }
 
 model ReliefToken {
-  id         String             @id @default(uuid())
-  code       String             @unique
-  qrCodeData String
-  userId     String
-  campId     String?
-  status     TokenStatus        @default(ACTIVE)
-  usageCount Int                @default(0)
-  maxUsage   Int                @default(1)
-  issuedAt   DateTime           @default(now())
-  expiresAt  DateTime?
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
-  user       User               @relation("ReliefTokens", fields: [userId], references: [id])
-  claims     ReliefTokenClaim[]
+  id                String             @id @default(uuid())
+  code              String             @unique
+  qrCodeData        String
+  userId            String
+  campId            String?
+  status            TokenStatus        @default(ACTIVE)
+  usageCount        Int                @default(0)
+  maxUsage          Int                @default(1)
+  issuedAt          DateTime           @default(now())
+  expiresAt         DateTime?
+  categories        TokenCategory[]
+  isHouseholdBundle Boolean            @default(false)
+  householdId       String?
+  donorId           String?
+  fraudRiskScore    Float              @default(0.0)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  user              User               @relation("ReliefTokens", fields: [userId], references: [id])
+  claims            ReliefTokenClaim[]
+  donor             DonorCampaign?     @relation(fields: [donorId], references: [id])
 }
 
 model ReliefTokenClaim {
-  id         String      @id @default(uuid())
-  tokenId    String
-  claimedAt  DateTime    @default(now())
-  claimedBy  String
-  itemType   String
-  quantity   Int
-  proofImage String?
-  campId     String?
-  notes      String?
-  token      ReliefToken @relation(fields: [tokenId], references: [id])
+  id          String      @id @default(uuid())
+  tokenId     String
+  claimedAt   DateTime    @default(now())
+  claimedBy   String
+  itemType    String
+  quantity    Int
+  proofImage  String?
+  campId      String?
+  notes       String?
+  locationLat Float?
+  locationLng Float?
+  token       ReliefToken @relation(fields: [tokenId], references: [id])
 }
 
 model DamageAssessment {
-  id               String          @id @default(uuid())
-  reportedById     String
-  incidentId       String?
-  location         String
-  latitude         Float?
-  longitude        Float?
-  category         DamageCategory
-  structuralDamage DamageLevel     @default(NONE)
-  cropDamage       DamageLevel     @default(NONE)
-  utilityDamage    DamageLevel     @default(NONE)
-  roadDamage       DamageLevel     @default(NONE)
-  affectedPersons  Int?
-  estimatedLoss    Float?
-  mediaUrls        String[]
-  status           DamageStatus    @default(PENDING_REVIEW)
-  notes            String?
-  verifiedById     String?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  incident         IncidentReport? @relation(fields: [incidentId], references: [id])
-  reportedBy       User            @relation("DamageReports", fields: [reportedById], references: [id])
+  id                           String          @id @default(uuid())
+  reportedById                 String
+  incidentId                   String?
+  location                     String
+  latitude                     Float?
+  longitude                    Float?
+  polygonData                  Json?
+  category                     DamageCategory
+  structuralDamage             DamageLevel     @default(NONE)
+  cropDamage                   DamageLevel     @default(NONE)
+  utilityDamage                DamageLevel     @default(NONE)
+  roadDamage                   DamageLevel     @default(NONE)
+  affectedPersons              Int?
+  estimatedLoss                Float?
+  
+  // AI Assistance
+  aiEstimatedDamage            String?
+  aiEstimatedCost              Float?
+  
+  // Compensation
+  propertyOwnershipStatus      String?         // Owned, Rented, Squatter
+  familyVulnerabilityScore     Int?            // 1-10
+  incomeBracket                String?
+  compensationEligibilityScore Float?
+  compensationEligible         Boolean         @default(false)
+  
+  mediaUrls                    String[]
+  status                       DamageStatus    @default(PENDING_REVIEW)
+  notes                        String?
+  reviewerNotes                String?
+  verifiedById                 String?
+  createdAt                    DateTime        @default(now())
+  updatedAt                    DateTime        @updatedAt
+  incident                     IncidentReport? @relation(fields: [incidentId], references: [id])
+  reportedBy                   User            @relation("DamageReports", fields: [reportedById], references: [id])
 }
 
 model LocalVerifier {
@@ -343,6 +385,8 @@ model PsychologicalSupportRequest {
   affectedCount Int?
   assignedToId  String?
   notes         String?
+  nextCheckInDate DateTime?
+  checkInStatus   String?   @default("PENDING") // PENDING, COMPLETED, OVERDUE, ESCALATED
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   user          User           @relation("SupportRequests", fields: [userId], references: [id])
@@ -353,11 +397,14 @@ enum Role {
   VOLUNTEER
   ADMIN
   DMC_OFFICER
+  FIELD_RESPONDER
 }
 
 enum Status {
   PENDING
   ASSIGNED
+  EN_ROUTE
+  ON_SITE
   IN_PROGRESS
   RESOLVED
 }
@@ -402,6 +449,8 @@ enum DamageLevel {
 
 enum DamageStatus {
   PENDING_REVIEW
+  SENIOR_REVIEW
+  APPROVED
   VERIFIED
   REJECTED
 }
@@ -442,3 +491,321 @@ enum SupportStatus {
   RESOLVED
   CLOSED
 }
+
+enum InventoryItemType {
+  FOOD
+  WATER
+  MEDICAL
+  BLANKETS
+  HYGIENE
+}
+
+enum ReferralStatus {
+  PENDING
+  IN_TRANSIT
+  ADMITTED
+  DISCHARGED
+}
+
+enum TokenCategory {
+  MEDICAL
+  FOOD
+  CLOTHING
+  SHELTER
+  TRANSPORT
+  EDUCATION
+  MENTAL_HEALTH
+}
+
+model ThreatForecast {
+  id           String   @id @default(uuid())
+  district     String
+  threatType   String
+  confidence   Float
+  severity     Severity @default(MEDIUM)
+  forecastTime DateTime
+  createdAt    DateTime @default(now())
+}
+
+model ShiftHandover {
+  id                 String   @id @default(uuid())
+  shiftTime          DateTime
+  incidentsOpened    Int      @default(0)
+  incidentsClosed    Int      @default(0)
+  resourcesDeployed  Int      @default(0)
+  volunteersActive   Int      @default(0)
+  criticalItems      String?
+  createdAt          DateTime @default(now())
+}
+
+model EvacuationRoute {
+  id          String   @id @default(uuid())
+  name        String
+  type        String
+  coordinates Json
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VolunteerLocation {
+  id          String   @id @default(uuid())
+  volunteerId String
+  latitude    Float
+  longitude   Float
+  status      String   @default("ACTIVE")
+  skill       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ThreatProjection {
+  id             String   @id @default(uuid())
+  name           String
+  type           String
+  polygonCoords  Json
+  riskLevel      Severity @default(HIGH)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AfterActionReport {
+  id             String   @id @default(uuid())
+  incidentId     String   @unique
+  timeline       Json
+  resourcesUsed  Json
+  costEstimate   Float
+  peopleAffected Int
+  resolutionTime Int
+  lessonsLearned String?
+  createdAt      DateTime @default(now())
+  incident       IncidentReport @relation(fields: [incidentId], references: [id])
+}
+
+model KPIBenchmark {
+  id                String   @id @default(uuid())
+  month             String
+  targetAvgResponse Int
+  targetOccupancy   Float
+  targetVolunteer   Float
+  createdAt         DateTime @default(now())
+}
+
+model ResourceCost {
+  id           String   @id @default(uuid())
+  resourceType String   @unique
+  unitCost     Float
+  unitType     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  expenditures ResourceExpenditure[]
+}
+
+model DisasterBudget {
+  id               String   @id @default(uuid())
+  eventName        String
+  allocatedBudget  Float
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  expenditures     ResourceExpenditure[]
+}
+
+model ResourceExpenditure {
+  id             String   @id @default(uuid())
+  resourceCostId String
+  quantity       Float
+  totalCost      Float
+  budgetId       String
+  createdAt      DateTime @default(now())
+  resourceCost   ResourceCost @relation(fields: [resourceCostId], references: [id])
+  budget         DisasterBudget @relation(fields: [budgetId], references: [id])
+}
+
+model RolePermission {
+  id        String   @id @default(uuid())
+  role      Role
+  module    String
+  canView   Boolean  @default(false)
+  canEdit   Boolean  @default(false)
+  canDelete Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+}
+
+model UserSessionLog {
+  id         String   @id @default(uuid())
+  userId     String
+  ipAddress  String?
+  device     String?
+  location   String?
+  loginTime  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model CampResident {
+  id           String     @id @default(uuid())
+  campId       String
+  name         String
+  nic          String?
+  familySize   Int        @default(1)
+  checkInTime  DateTime   @default(now())
+  checkOutTime DateTime?
+  status       String     @default("ACTIVE") // ACTIVE, CHECKED_OUT
+  camp         ReliefCamp @relation(fields: [campId], references: [id])
+}
+
+model CampInventory {
+  id           String            @id @default(uuid())
+  campId       String
+  itemType     InventoryItemType
+  quantity     Int
+  threshold    Int
+  lastUpdated  DateTime          @default(now())
+  camp         ReliefCamp        @relation(fields: [campId], references: [id])
+}
+
+model CampSchedule {
+  id           String     @id @default(uuid())
+  campId       String
+  activityName String
+  startTime    String
+  endTime      String
+  type         String     // MEAL, MEDICAL, COUNSELING, ACTIVITY
+  camp         ReliefCamp @relation(fields: [campId], references: [id])
+}
+
+model HospitalReferral {
+  id                String         @id @default(uuid())
+  campId            String
+  patientName       String
+  conditionSeverity Severity       @default(MEDIUM)
+  hospitalAssigned  String
+  transportMethod   String?
+  outcome           String?
+  status            ReferralStatus @default(PENDING)
+  createdAt         DateTime       @default(now())
+  camp              ReliefCamp     @relation(fields: [campId], references: [id])
+}
+
+model CampTransferRequest {
+  id          String     @id @default(uuid())
+  fromCampId  String
+  toCampId    String
+  peopleCount Int
+  status      String     @default("PENDING") // PENDING, APPROVED, REJECTED, SUGGESTED
+  requestDate DateTime   @default(now())
+  fromCamp    ReliefCamp @relation("TransfersOut", fields: [fromCampId], references: [id])
+  toCamp      ReliefCamp @relation("TransfersIn", fields: [toCampId], references: [id])
+}
+
+model DonorCampaign {
+  id                 String           @id @default(uuid())
+  donorName          String
+  contributionAmount Float
+  targetCategories   TokenCategory[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  tokens             ReliefToken[]
+}
+
+
+model VolunteerSkill {
+  id               String           @id @default(uuid())
+  volunteerId      String
+  skillName        String           // e.g. First Aid, Medical, Boat Operation
+  certificationUrl String?
+  volunteer        VolunteerProfile @relation(fields: [volunteerId], references: [id])
+}
+
+model VolunteerTraining {
+  id           String           @id @default(uuid())
+  volunteerId  String
+  trainingName String
+  completedAt  DateTime
+  expiresAt    DateTime?
+  volunteer    VolunteerProfile @relation(fields: [volunteerId], references: [id])
+}
+
+model VolunteerCheckIn {
+  id          String           @id @default(uuid())
+  volunteerId String
+  checkInTime DateTime         @default(now())
+  checkOutTime DateTime?
+  latitude    Float
+  longitude   Float
+  zone        String?
+  activeHours Float            @default(0)
+  volunteer   VolunteerProfile @relation(fields: [volunteerId], references: [id])
+}
+
+model VolunteerWellbeing {
+  id               String           @id @default(uuid())
+  volunteerId      String
+  recordedAt       DateTime         @default(now())
+  physicalRating   Int              // 1-5
+  mentalRating     Int              // 1-5
+  needsResources   Boolean          @default(false)
+  distressFlag     Boolean          @default(false)
+  volunteer        VolunteerProfile @relation(fields: [volunteerId], references: [id])
+}
+
+model VolunteerBadge {
+  id          String           @id @default(uuid())
+  volunteerId String
+  badgeType   String           // e.g. 50_HOURS, 3_INCIDENTS, CERTIFIED
+  earnedAt    DateTime         @default(now())
+  volunteer   VolunteerProfile @relation(fields: [volunteerId], references: [id])
+}
+
+model ChatSession {
+  id          String   @id @default(uuid())
+  requestId   String
+  counselorId String?
+  userId      String   @default("anonymous")
+  status      String   @default("WAITING") // WAITING, ACTIVE, COMPLETED
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  moodAfter   String?
+  messages    ChatMessage[]
+}
+
+model ChatMessage {
+  id          String   @id @default(uuid())
+  sessionId   String
+  session     ChatSession @relation(fields: [sessionId], references: [id])
+  senderId    String
+  content     String
+  createdAt   DateTime @default(now())
+}
+
+model GroupTherapySession {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  campId          String?
+  counselorId     String
+  scheduledFor    DateTime
+  maxParticipants Int      @default(20)
+  status          String   @default("SCHEDULED")
+  participants    GroupTherapyParticipant[]
+}
+
+model GroupTherapyParticipant {
+  id               String   @id @default(uuid())
+  sessionId        String
+  session          GroupTherapySession @relation(fields: [sessionId], references: [id])
+  userId           String
+  attendanceStatus String   @default("REGISTERED")
+  notes            String?
+}
+
+model MentalHealthGuide {
+  id                 String   @id @default(uuid())
+  title              String
+  content            String
+  tags               String
+  isOfflineAvailable Boolean  @default(true)
+  createdAt          DateTime @default(now())
+}
+

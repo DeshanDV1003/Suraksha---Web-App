@@ -4,7 +4,7 @@ import { authService } from '../services/api'
 
 interface AuthContextType {
   user: any
-  login: (credentials: any) => Promise<void>
+  login: (credentials: any) => Promise<any>
   logout: () => void
   updateUser: (userData: any) => void
 }
@@ -26,6 +26,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (credentials: any) => {
     try {
       const res = await authService.login(credentials)
+      
+      if (res.data.requires2FA) {
+        return res.data;
+      }
+
       const { token, user: userData } = res.data
       
       localStorage.setItem('token', token)

@@ -21,6 +21,8 @@ import HelpRequestsPage from './pages/HelpRequestsPage'
 import DamageAssessmentPage from './pages/DamageAssessmentPage'
 import MissingPersonsPage from './pages/MissingPersonsPage'
 import SupportPage from './pages/SupportPage'
+import PublicRequestPortal from '@/pages/PublicRequestPortal'
+import PublicMissingPortal from '@/pages/PublicMissingPortal'
 
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
@@ -149,6 +151,8 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/request-help" element={<PublicRequestPortal />} />
+            <Route path="/missing-portal" element={<PublicMissingPortal />} />
             <Route path="/*" element={<ProtectedRoutes />} />
           </Routes>
         </BrowserRouter>

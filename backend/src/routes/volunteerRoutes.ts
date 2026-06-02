@@ -1,22 +1,40 @@
 import { Router } from 'express';
 import { 
-  upsertVolunteerProfile, 
-  getVolunteerProfile, 
-  listVolunteers, 
-  createTask, 
-  getMyTasks, 
-  updateTaskStatus 
+  getVolunteerProfile,
+  addSkill,
+  addTraining,
+  checkIn,
+  checkOut,
+  submitWellbeing,
+  getRecommendedIncidents,
+  listVolunteers,
+  createTask,
+  getMyTasks,
+  updateTaskStatus
 } from '../controllers/volunteerController';
 import { authMiddleware, officerMiddleware } from '../middleware/auth';
 
 const router = Router();
 
 // Profile
-router.post('/profile', authMiddleware, upsertVolunteerProfile);
 router.get('/profile', authMiddleware, getVolunteerProfile);
-router.get('/list', authMiddleware, officerMiddleware, listVolunteers);
+router.post('/skills', authMiddleware, addSkill);
+router.post('/trainings', authMiddleware, addTraining);
 
-// Tasks
+// Check-ins
+router.post('/checkin', authMiddleware, checkIn);
+router.post('/checkin/:checkInId/checkout', authMiddleware, checkOut);
+
+// Wellbeing
+router.post('/wellbeing', authMiddleware, submitWellbeing);
+
+// Auto-matching
+router.get('/recommended-incidents', authMiddleware, getRecommendedIncidents);
+
+// Admin/Officer specific
+router.get('/', authMiddleware, officerMiddleware, listVolunteers);
+
+// Legacy Tasks
 router.post('/tasks', authMiddleware, officerMiddleware, createTask);
 router.get('/tasks/my', authMiddleware, getMyTasks);
 router.patch('/tasks/:id/status', authMiddleware, updateTaskStatus);

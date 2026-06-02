@@ -1,60 +1,88 @@
 import { useState, useEffect } from 'react'
-import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2, BarChart2, ShieldAlert, HeartHandshake, List } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { tokenService, userService } from '@/services/api'
+import { reliefTokenService, userService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
 import { formatDistanceToNow } from 'date-fns'
 
 interface Token {
   id: string
   code: string
-  type: string
+  qrCodeData: string
+  categories: string[]
   status: string
+  isHouseholdBundle: boolean
+  fraudRiskScore: number
   createdAt: string
   user: {
     name: string
   }
+  donor?: {
+    donorName: string
+  }
+  claims: any[]
 }
 
 export default function TokensPage() {
   const [tokens, setTokens] = useState<Token[]>([])
   const [users, setUsers] = useState<any[]>([])
+  const [donors, setDonors] = useState<any[]>([])
+  const [fraudAnalytics, setFraudAnalytics] = useState<any[]>([])
+  
   const [loading, setLoading] = useState(true)
-  const [showGenModal, setShowGenModal] = useState(false)
-  const [showValModal, setShowValModal] = useState(false)
+  const [activeTab, setActiveTab] = useState('directory') // directory, issue, scanner, analytics, donors
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null)
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error' | 'warning'} | null>(null)
   
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+  // Issue Token Form
+  const [issueData, setIssueData] = useState({
+    userId: '',
+    categories: [] as string[],
+    isHouseholdBundle: false,
+    householdId: '',
+    donorId: '',
+    maxUsage: 1
+  })
+  const [generatedToken, setGeneratedToken] = useState<Token | null>(null)
+
+  // Scanner Form
+  const [scanData, setScanData] = useState({
+    code: '',
+    itemType: '',
+    quantity: 1,
+    locationLat: '',
+    locationLng: '',
+    notes: ''
+  })
+
+  // Donor Form
+  const [donorData, setDonorData] = useState({
+    donorName: '',
+    contributionAmount: '',
+    targetCategories: [] as string[]
+  })
+
+  const showToast = (message: string, type: 'success' | 'error' | 'warning' = 'success') => {
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3500);
+    setTimeout(() => setToast(null), 4000);
   }
-  
-  // Form States
-  const [selectedUserId, setSelectedUserId] = useState('')
-  const [tokenType, setTokenType] = useState('RELIEF')
-  const [validateCode, setValidateCode] = useState('')
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      
-      // Fetch tokens (everyone authenticated can see history, or restricted to officers?)
-      const tokensRes = await tokenService.getTokens()
+      const tokensRes = await reliefTokenService.getTokens()
       setTokens(tokensRes.data)
 
-      // Only fetch users if the current user is an admin or officer (to populate the "Issue Token" dropdown)
-      const user = useAppStore.getState().user;
-      if (user && (user.role === 'ADMIN' || user.role === 'DMC_OFFICER')) {
-        try {
-          const usersRes = await userService.getUsers()
-          setUsers(usersRes.data)
-        } catch (uErr) {
-          console.warn('Failed to fetch users list (likely permission restricted):', uErr)
-        }
-      }
+      const usersRes = await userService.getUsers()
+      setUsers(usersRes.data)
+
+      const donorsRes = await reliefTokenService.getDonorCampaigns()
+      setDonors(donorsRes.data)
+
+      const fraudRes = await reliefTokenService.getFraudAnalytics()
+      setFraudAnalytics(fraudRes.data)
     } catch (error) {
-      console.error('Failed to fetch token data:', error)
+      console.error('Failed to fetch data:', error)
       showToast('Failed to load token information', 'error')
     } finally {
       setLoading(false)
@@ -65,272 +93,479 @@ export default function TokensPage() {
     fetchData()
   }, [])
 
-  const handleGenerateToken = async (e: React.FormEvent) => {
+  const handleIssueToken = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedUserId) return showToast('Please select a user', 'error')
+    if (!issueData.userId) return showToast('Please select a recipient', 'error')
+    if (issueData.categories.length === 0) return showToast('Select at least one category', 'error')
     
     try {
       setIsSubmitting(true)
-      await tokenService.createToken({ userId: selectedUserId, type: tokenType })
+      const res = await reliefTokenService.issueToken(issueData)
+      setGeneratedToken(res.data)
       showToast('Token generated successfully', 'success')
-      setShowGenModal(false)
-      setSelectedUserId('')
       fetchData()
+      setIssueData({ userId: '', categories: [], isHouseholdBundle: false, householdId: '', donorId: '', maxUsage: 1 })
     } catch (error) {
-      console.error('Generation failed:', error)
       showToast('Failed to generate token', 'error')
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleValidateToken = async (e: React.FormEvent) => {
+  const handleScanToken = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validateCode) return
+    if (!scanData.code) return
     
     try {
       setIsSubmitting(true)
-      await tokenService.useToken(validateCode)
-      showToast('Token validated and marked as USED', 'success')
-      setShowValModal(false)
-      setValidateCode('')
+      const claimRes = await reliefTokenService.claimToken({
+        ...scanData,
+        quantity: Number(scanData.quantity),
+      })
+      
+      showToast('Token verified and items claimed', 'success')
+      setScanData({ code: '', itemType: '', quantity: 1, locationLat: '', locationLng: '', notes: '' })
       fetchData()
     } catch (error: any) {
-      console.error('Validation failed:', error)
-      showToast(error.response?.data?.message || 'Invalid or expired token', 'error')
+      const msg = error.response?.data?.message || 'Invalid or expired token'
+      showToast(msg, 'error')
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const stats = [
-    { label: 'Tokens Issued', value: tokens.length.toString(), color: 'text-blue-600' },
-    { label: 'Active Tokens', value: tokens.filter(t => t.status === 'ACTIVE').length.toString(), color: 'text-green-600' },
-    { label: 'Used Tokens', value: tokens.filter(t => t.status === 'USED').length.toString(), color: 'text-orange-600' },
-    { label: 'Success Rate', value: tokens.length > 0 ? `${Math.round((tokens.filter(t => t.status === 'USED').length / tokens.length) * 100)}%` : '0%', color: 'text-purple-600' },
-  ]
+  const handleCreateDonor = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      setIsSubmitting(true)
+      await reliefTokenService.createDonorCampaign(donorData)
+      showToast('Donor campaign created', 'success')
+      setDonorData({ donorName: '', contributionAmount: '', targetCategories: [] })
+      fetchData()
+    } catch (error) {
+      showToast('Failed to create campaign', 'error')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
-  const user = useAppStore(state => state.user)
-  const isStaff = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
+  const toggleCategory = (cat: string, type: 'issue' | 'donor') => {
+    if (type === 'issue') {
+      const cats = issueData.categories.includes(cat)
+        ? issueData.categories.filter(c => c !== cat)
+        : [...issueData.categories, cat]
+      setIssueData({ ...issueData, categories: cats })
+    } else {
+      const cats = donorData.targetCategories.includes(cat)
+        ? donorData.targetCategories.filter(c => c !== cat)
+        : [...donorData.targetCategories, cat]
+      setDonorData({ ...donorData, targetCategories: cats })
+    }
+  }
+
+  const AVAILABLE_CATEGORIES = ['MEDICAL', 'FOOD', 'CLOTHING', 'SHELTER', 'TRANSPORT', 'EDUCATION', 'MENTAL_HEALTH']
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Digital Token System</h1>
-          <p className="text-slate-500 mt-1 font-medium">QR-based fair distribution and tracking</p>
-        </div>
-        <div className="flex gap-4">
-          <button 
-            onClick={() => setShowValModal(true)}
-            className="suraksha-button bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
-          >
-            <Search className="w-5 h-5" />
-            Validate Token
-          </button>
-          <button 
-            onClick={() => setShowGenModal(true)}
-            className="suraksha-button bg-[#0061ff] text-white shadow-lg shadow-blue-500/25"
-          >
-            <QrCode className="w-5 h-5" />
-            Generate New Token
-          </button>
+          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Relief Tokens Hub</h1>
+          <p className="text-slate-500 mt-1 font-medium">Advanced distribution, tracking, and fraud prevention</p>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
-             <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
-             <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</div>
-          </div>
+      {/* Navigation Tabs */}
+      <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+        {[
+          { id: 'directory', label: 'Token Directory', icon: List },
+          { id: 'issue', label: 'Issue Token', icon: Plus },
+          { id: 'scanner', label: 'QR Scanner', icon: QrCode },
+          { id: 'analytics', label: 'Fraud Analytics', icon: ShieldAlert },
+          { id: 'donors', label: 'Donor Campaigns', icon: HeartHandshake },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
+              activeTab === tab.id 
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20" 
+                : "text-slate-500 hover:bg-slate-50"
+            )}
+          >
+            <tab.icon className="w-4 h-4" />
+            {tab.label}
+          </button>
         ))}
       </div>
 
-      {/* Distributions List Container */}
-      <div className="suraksha-card p-10 space-y-8 shadow-sm rounded-[1.5rem]">
-        <h3 className="text-xl font-black text-[#1e293b]">Token History</h3>
-        <div className="space-y-5">
-          {loading ? (
-            <div className="text-center py-20 flex flex-col items-center gap-2">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-              <p className="text-slate-400 font-bold">Loading token history...</p>
-            </div>
-          ) : tokens.length === 0 ? (
-            <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
-               <QrCode className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-               <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No Tokens Issued Yet</p>
-            </div>
-          ) : (
-            tokens.map((token) => (
-              <div 
-                key={token.id} 
-                className={cn(
-                  "p-7 rounded-[1.5rem] bg-white border transition-all hover:shadow-lg relative group",
-                  token.status === 'USED' ? "border-slate-100 bg-slate-50/30" : "border-blue-100/60"
-                )}
-              >
-                {/* Status Badge */}
-                <div className="absolute top-7 right-7">
-                  <span className={cn(
-                    "text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide uppercase",
-                    token.status === 'ACTIVE' ? "bg-blue-50 text-blue-600" : 
-                    token.status === 'USED' ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
-                  )}>
-                    {token.status}
-                  </span>
-                </div>
-
-                {/* Card Content */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <QrCode className={cn("w-4 h-4", token.status === 'USED' ? "text-slate-300" : "text-blue-400")} />
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest font-mono">{token.code}</span>
-                  </div>
-
-                  <h4 className={cn("text-xl font-black", token.status === 'USED' ? "text-slate-400" : "text-[#1e293b]")}>{token.user.name}</h4>
-
-                  <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
-                    <span className="bg-slate-100 px-2 py-0.5 rounded uppercase text-[10px]">{token.type}</span>
-                    <span className="text-slate-300">•</span>
-                    <span>System Generated</span>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-50 flex items-center gap-2 text-[12px] font-bold text-slate-400">
-                    <Clock className="w-4 h-4 text-slate-300" />
-                    <span>Issued {formatDistanceToNow(new Date(token.createdAt))} ago</span>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
         </div>
-      </div>
+      )}
 
-      {/* Generate Modal */}
-      {showGenModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-lg rounded-[1.5rem] shadow-lg overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-2xl font-black text-[#1e293b]">Generate New Token</h2>
-              <button onClick={() => setShowGenModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <form onSubmit={handleGenerateToken} className="p-8 space-y-5">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Select Resident / Recipient</label>
-                <select 
-                  required
-                  className="suraksha-input"
-                  value={selectedUserId}
-                  onChange={(e) => setSelectedUserId(e.target.value)}
-                >
-                  <option value="">Choose a person...</option>
-                  {users.map(u => (
-                    <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
-                  ))}
-                </select>
+      {!loading && activeTab === 'directory' && (
+        <div className="suraksha-card p-8 rounded-[1.5rem]">
+          <h3 className="text-xl font-black text-[#1e293b] mb-6">Recent Tokens</h3>
+          <div className="space-y-4">
+            {tokens.length === 0 ? (
+              <p className="text-center text-slate-500 py-10">No tokens issued yet.</p>
+            ) : tokens.map(token => (
+              <div key={token.id} className="p-6 border border-slate-100 rounded-2xl hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="font-mono text-sm font-bold text-slate-500">{token.code}</span>
+                    <span className={cn(
+                      "text-[10px] font-bold px-2 py-1 rounded-md tracking-wider uppercase",
+                      token.status === 'ACTIVE' ? "bg-blue-100 text-blue-700" :
+                      token.status === 'PARTIALLY_USED' ? "bg-amber-100 text-amber-700" :
+                      "bg-slate-100 text-slate-600"
+                    )}>{token.status}</span>
+                    {token.isHouseholdBundle && (
+                       <span className="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase">Household Bundle</span>
+                    )}
+                  </div>
+                  <h4 className="font-bold text-lg">{token.user?.name || 'Unknown Recipient'}</h4>
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {token.categories.map(c => (
+                      <span key={c} className="bg-slate-50 border border-slate-200 text-slate-600 text-[10px] font-bold px-2 py-1 rounded-full">{c}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-bold text-slate-500 flex items-center justify-end gap-1">
+                    <Clock className="w-3 h-3" />
+                    {formatDistanceToNow(new Date(token.createdAt))} ago
+                  </div>
+                  {token.donor && (
+                    <div className="text-xs font-bold text-emerald-600 mt-2 bg-emerald-50 inline-block px-2 py-1 rounded">
+                      Sponsored by {token.donor.donorName}
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Allocation Type</label>
-                <select 
-                  className="suraksha-input"
-                  value={tokenType}
-                  onChange={(e) => setTokenType(e.target.value)}
-                >
-                  <option value="RELIEF">General Relief Package</option>
-                  <option value="FOOD">Standard Food Ration</option>
-                  <option value="MEDICAL">Medical Supplies</option>
-                  <option value="WATER">Drinking Water (20L)</option>
-                </select>
-              </div>
-              <div className="bg-blue-50/50 rounded-2xl p-4 flex items-start gap-3">
-                 <QrCode className="w-5 h-5 text-blue-500 mt-1" />
-                 <p className="text-xs text-blue-700 font-medium leading-relaxed">
-                   Generating this token will create a unique QR code for the recipient. They must present this code at a distribution center for verification.
-                 </p>
-              </div>
-              <div className="pt-4 flex gap-4">
-                <button 
-                  type="button"
-                  onClick={() => setShowGenModal(false)}
-                  className="flex-1 px-6 py-4 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 px-6 py-4 bg-[#0061ff] text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
-                  Generate New Token
-                </button>
-              </div>
-            </form>
+            ))}
           </div>
         </div>
       )}
 
-      {/* Validate Modal */}
-      {showValModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-xl font-bold text-[#1e293b]">Validate Delivery Token</h2>
-              <button onClick={() => setShowValModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <form onSubmit={handleValidateToken} className="p-8 space-y-5">
-              <div className="space-y-2 text-center pb-4">
-                 <div className="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <QrCode className="w-10 h-10 text-blue-500" />
-                 </div>
-                 <p className="text-slate-500 text-sm font-medium">Enter the token code presented by the recipient to verify eligibility and confirm distribution.</p>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Token Code</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. SRK-2024-XXXX" 
+      {!loading && activeTab === 'issue' && (
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="suraksha-card p-8 rounded-[1.5rem]">
+            <h3 className="text-xl font-black text-[#1e293b] mb-6">Issue New Token</h3>
+            <form onSubmit={handleIssueToken} className="space-y-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Recipient</label>
+                <select 
                   required
-                  autoFocus
-                  className="w-full px-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl text-xl font-mono text-center tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all uppercase"
-                  value={validateCode}
-                  onChange={(e) => setValidateCode(e.target.value)}
+                  className="suraksha-input w-full"
+                  value={issueData.userId}
+                  onChange={(e) => setIssueData({...issueData, userId: e.target.value})}
+                >
+                  <option value="">Select a user...</option>
+                  {users.map(u => <option key={u.id} value={u.id}>{u.name} ({u.email})</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Token Categories (Multi-select)</label>
+                <div className="flex flex-wrap gap-2">
+                  {AVAILABLE_CATEGORIES.map(cat => (
+                    <button
+                      type="button"
+                      key={cat}
+                      onClick={() => toggleCategory(cat, 'issue')}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-bold transition-all border",
+                        issueData.categories.includes(cat) 
+                          ? "bg-blue-600 text-white border-blue-600 shadow-md" 
+                          : "bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100"
+                      )}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-4 bg-purple-50 rounded-xl border border-purple-100 space-y-4">
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    id="bundle"
+                    checked={issueData.isHouseholdBundle}
+                    onChange={(e) => setIssueData({...issueData, isHouseholdBundle: e.target.checked})}
+                    className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500"
+                  />
+                  <label htmlFor="bundle" className="font-bold text-sm text-purple-900">Issue as Household Bundle</label>
+                </div>
+                {issueData.isHouseholdBundle && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-purple-700 uppercase mb-1">Max Usages</label>
+                      <input 
+                        type="number" min="1"
+                        className="suraksha-input w-full py-2"
+                        value={issueData.maxUsage}
+                        onChange={(e) => setIssueData({...issueData, maxUsage: parseInt(e.target.value)})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-purple-700 uppercase mb-1">Household ID (Optional)</label>
+                      <input 
+                        type="text"
+                        className="suraksha-input w-full py-2"
+                        placeholder="Ref ID"
+                        value={issueData.householdId}
+                        onChange={(e) => setIssueData({...issueData, householdId: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Donor Sponsorship (Optional)</label>
+                <select 
+                  className="suraksha-input w-full"
+                  value={issueData.donorId}
+                  onChange={(e) => setIssueData({...issueData, donorId: e.target.value})}
+                >
+                  <option value="">None</option>
+                  {donors.map(d => <option key={d.id} value={d.id}>{d.donorName} - {d.targetCategories.join(', ')}</option>)}
+                </select>
+              </div>
+
+              <button 
+                type="submit" disabled={isSubmitting}
+                className="w-full bg-[#0061ff] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-blue-500/30 transition-all disabled:opacity-50"
+              >
+                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <QrCode className="w-5 h-5"/>}
+                Generate QR Token
+              </button>
+            </form>
+          </div>
+
+          {/* QR Code Display Area */}
+          <div className="suraksha-card p-8 rounded-[1.5rem] flex flex-col items-center justify-center bg-slate-50 border-dashed border-2 border-slate-200">
+            {generatedToken ? (
+              <div className="text-center space-y-4 animate-in zoom-in">
+                <h4 className="font-black text-xl text-green-600">Token Generated!</h4>
+                <div className="bg-white p-4 rounded-2xl shadow-sm inline-block">
+                  <img src={generatedToken.qrCodeData} alt="QR Code" className="w-48 h-48" />
+                </div>
+                <div className="font-mono font-bold text-slate-500">{generatedToken.code}</div>
+                <p className="text-sm text-slate-500 max-w-xs mx-auto">Have the recipient screenshot or print this QR code to claim their items at any distribution center.</p>
+              </div>
+            ) : (
+              <div className="text-center text-slate-400">
+                <QrCode className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                <p className="font-bold">Generated token QR code will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {!loading && activeTab === 'scanner' && (
+        <div className="max-w-2xl mx-auto suraksha-card p-8 rounded-[1.5rem]">
+           <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                 <Search className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-black text-[#1e293b]">Field Scanner Simulator</h3>
+              <p className="text-slate-500 mt-2">Enter token code and coordinates to simulate a field scan</p>
+           </div>
+           
+           <form onSubmit={handleScanToken} className="space-y-5">
+             <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Token Code / SRK Number</label>
+                <input 
+                  type="text" required autoFocus
+                  placeholder="SRK-..."
+                  className="suraksha-input w-full text-center text-lg font-mono tracking-widest py-4"
+                  value={scanData.code}
+                  onChange={(e) => setScanData({...scanData, code: e.target.value.toUpperCase()})}
+                />
+             </div>
+             
+             <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Item Type Provided</label>
+                  <input 
+                    type="text" required
+                    placeholder="e.g. Rice 5kg"
+                    className="suraksha-input w-full"
+                    value={scanData.itemType}
+                    onChange={(e) => setScanData({...scanData, itemType: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Quantity</label>
+                  <input 
+                    type="number" min="1" required
+                    className="suraksha-input w-full"
+                    value={scanData.quantity}
+                    onChange={(e) => setScanData({...scanData, quantity: parseInt(e.target.value)})}
+                  />
+                </div>
+             </div>
+
+             <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 space-y-4">
+                <h4 className="font-bold text-amber-800 flex items-center gap-2"><AlertCircle className="w-4 h-4"/> Location Data (for Fraud Detection)</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <input 
+                    type="number" step="any" placeholder="Latitude"
+                    className="suraksha-input w-full py-2 bg-white"
+                    value={scanData.locationLat}
+                    onChange={(e) => setScanData({...scanData, locationLat: e.target.value})}
+                  />
+                  <input 
+                    type="number" step="any" placeholder="Longitude"
+                    className="suraksha-input w-full py-2 bg-white"
+                    value={scanData.locationLng}
+                    onChange={(e) => setScanData({...scanData, locationLng: e.target.value})}
+                  />
+                </div>
+             </div>
+
+             <button 
+                type="submit" disabled={isSubmitting}
+                className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all disabled:opacity-50"
+              >
+                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <CheckCircle2 className="w-5 h-5"/>}
+                Verify & Submit Claim
+              </button>
+           </form>
+        </div>
+      )}
+
+      {!loading && activeTab === 'analytics' && (
+        <div className="space-y-6">
+          <div className="bg-red-50 border border-red-200 p-6 rounded-2xl flex items-start gap-4">
+            <ShieldAlert className="w-8 h-8 text-red-500 mt-1" />
+            <div>
+              <h3 className="text-red-800 font-black text-lg">Fraud Risk Dashboard</h3>
+              <p className="text-red-600/80 text-sm mt-1">Tokens listed below have triggered security heuristics (e.g., rapid consecutive scans, massive location jumps). Please verify recipients manually.</p>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            {fraudAnalytics.length === 0 ? (
+              <div className="suraksha-card p-10 text-center text-emerald-600 font-bold flex flex-col items-center">
+                 <CheckCircle2 className="w-12 h-12 mb-2 opacity-50" />
+                 No high-risk tokens detected.
+              </div>
+            ) : fraudAnalytics.map((token: any) => (
+              <div key={token.id} className="suraksha-card p-6 border-l-4 border-l-red-500 flex flex-col md:flex-row justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <h4 className="font-black text-lg text-slate-800">{token.code}</h4>
+                    <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded">Risk Score: {(token.fraudRiskScore * 100).toFixed(0)}%</span>
+                  </div>
+                  <p className="text-sm font-bold text-slate-500 mt-1">User: {token.user?.name}</p>
+                  <div className="mt-3 text-xs text-slate-400 font-medium space-y-1">
+                    <p>Total Claims: {token.claims?.length}</p>
+                    <p>Last Claim: {token.claims?.[token.claims.length-1]?.claimedAt ? new Date(token.claims[token.claims.length-1].claimedAt).toLocaleString() : 'N/A'}</p>
+                  </div>
+                </div>
+                <div className="md:text-right">
+                  <button className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-lg text-sm transition-all">
+                    Freeze Token
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!loading && activeTab === 'donors' && (
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-1 suraksha-card p-6 rounded-[1.5rem] h-fit">
+            <h3 className="text-lg font-black text-[#1e293b] mb-4">Create Campaign</h3>
+            <form onSubmit={handleCreateDonor} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Donor Name / Org</label>
+                <input 
+                  type="text" required
+                  className="suraksha-input w-full"
+                  value={donorData.donorName}
+                  onChange={(e) => setDonorData({...donorData, donorName: e.target.value})}
                 />
               </div>
-              <div className="pt-4 flex gap-4">
-                <button 
-                  type="button"
-                  onClick={() => setShowValModal(false)}
-                  className="flex-1 px-6 py-4 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all"
-                >
-                  Close
-                </button>
-                <button 
-                  type="submit"
-                  disabled={isSubmitting || !validateCode}
-                  className="flex-1 px-6 py-4 bg-green-600 text-white rounded-2xl text-sm font-bold shadow-lg shadow-green-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
-                  Verify & Complete
-                </button>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Contribution (LKR)</label>
+                <input 
+                  type="number" required
+                  className="suraksha-input w-full"
+                  value={donorData.contributionAmount}
+                  onChange={(e) => setDonorData({...donorData, contributionAmount: e.target.value})}
+                />
               </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Targeted Impact Areas</label>
+                <div className="flex flex-wrap gap-2">
+                  {AVAILABLE_CATEGORIES.map(cat => (
+                    <button
+                      type="button" key={cat}
+                      onClick={() => toggleCategory(cat, 'donor')}
+                      className={cn(
+                        "px-2 py-1 rounded border text-[10px] font-bold transition-all",
+                        donorData.targetCategories.includes(cat) 
+                          ? "bg-emerald-600 text-white border-emerald-600" 
+                          : "bg-slate-50 text-slate-500 border-slate-200"
+                      )}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button 
+                type="submit" disabled={isSubmitting}
+                className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-emerald-700 transition-all disabled:opacity-50"
+              >
+                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin"/> : <Plus className="w-4 h-4"/>}
+                Create Campaign
+              </button>
             </form>
+          </div>
+
+          <div className="lg:col-span-2 space-y-4">
+             {donors.length === 0 ? (
+               <div className="text-center text-slate-500 py-10 suraksha-card rounded-2xl">No campaigns yet.</div>
+             ) : donors.map((donor: any) => (
+               <div key={donor.id} className="suraksha-card p-6 rounded-[1.5rem] flex flex-col sm:flex-row justify-between gap-4">
+                 <div>
+                   <h4 className="font-black text-xl text-slate-800">{donor.donorName}</h4>
+                   <p className="text-emerald-600 font-bold mb-3">LKR {donor.contributionAmount.toLocaleString()}</p>
+                   <div className="flex flex-wrap gap-2">
+                     {donor.targetCategories.map((c: string) => <span key={c} className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">{c}</span>)}
+                   </div>
+                 </div>
+                 <div className="sm:text-right flex flex-col justify-between">
+                   <div className="text-slate-500 text-sm font-bold">
+                     Tokens Issued: {donor.tokens?.length || 0}
+                   </div>
+                   <div className="text-xs text-slate-400 mt-2 bg-slate-50 px-3 py-2 rounded-lg inline-block">
+                     Impact: {donor.tokens?.reduce((acc: number, t: any) => acc + (t.claims?.length || 0), 0) || 0} successful claims
+                   </div>
+                 </div>
+               </div>
+             ))}
           </div>
         </div>
       )}
 
-      {/* Toast Notification */}
       {toast && (
         <div className={cn(
           "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
-          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
+          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : 
+          toast.type === 'error' ? "bg-red-50 text-red-600 border border-red-100" :
+          "bg-amber-50 text-amber-600 border border-amber-100"
         )}>
           {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
           <span className="font-bold text-sm tracking-wide">{toast.message}</span>

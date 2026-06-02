@@ -129,7 +129,14 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  region: 'region'
+  region: 'region',
+  nic: 'nic',
+  twoFactorEnabled: 'twoFactorEnabled',
+  twoFactorSecret: 'twoFactorSecret',
+  twoFactorGracePeriodEnds: 'twoFactorGracePeriodEnds',
+  hasMobileApp: 'hasMobileApp',
+  lastCheckInTime: 'lastCheckInTime',
+  isFieldActive: 'isFieldActive'
 };
 
 exports.Prisma.IncidentReportScalarFieldEnum = {
@@ -161,6 +168,11 @@ exports.Prisma.AlertScalarFieldEnum = {
   longitudes: 'longitudes',
   type: 'type',
   active: 'active',
+  channels: 'channels',
+  scheduledTime: 'scheduledTime',
+  translatedMsgSinhala: 'translatedMsgSinhala',
+  translatedMsgTamil: 'translatedMsgTamil',
+  acknowledgementRate: 'acknowledgementRate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -176,16 +188,6 @@ exports.Prisma.ReliefCampScalarFieldEnum = {
   services: 'services',
   status: 'status',
   waitTime: 'waitTime',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.TokenScalarFieldEnum = {
-  id: 'id',
-  code: 'code',
-  userId: 'userId',
-  type: 'type',
-  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -219,16 +221,17 @@ exports.Prisma.TaskScalarFieldEnum = {
 exports.Prisma.VolunteerProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  skills: 'skills',
-  availability: 'availability',
-  rating: 'rating',
-  completedTasks: 'completedTasks',
-  createdAt: 'createdAt'
+  totalHours: 'totalHours',
+  incidentsJoined: 'incidentsJoined',
+  readinessScore: 'readinessScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.HelpRequestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  phone: 'phone',
   type: 'type',
   description: 'description',
   location: 'location',
@@ -237,8 +240,18 @@ exports.Prisma.HelpRequestScalarFieldEnum = {
   priority: 'priority',
   status: 'status',
   peopleCount: 'peopleCount',
+  assignedVolunteerId: 'assignedVolunteerId',
+  escalationLevel: 'escalationLevel',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.HelpRequestEscalationScalarFieldEnum = {
+  id: 'id',
+  helpRequestId: 'helpRequestId',
+  level: 'level',
+  message: 'message',
+  triggeredAt: 'triggeredAt'
 };
 
 exports.Prisma.ReportVerificationScalarFieldEnum = {
@@ -250,26 +263,22 @@ exports.Prisma.ReportVerificationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.DistributionScalarFieldEnum = {
-  id: 'id',
-  tokenId: 'tokenId',
-  itemType: 'itemType',
-  quantity: 'quantity',
-  deliveredBy: 'deliveredBy',
-  location: 'location',
-  proofImage: 'proofImage',
-  deliveredAt: 'deliveredAt'
-};
-
 exports.Prisma.MissingPersonScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  nic: 'nic',
   age: 'age',
+  gender: 'gender',
   description: 'description',
   lastSeen: 'lastSeen',
   photo: 'photo',
   reportedBy: 'reportedBy',
+  contactName: 'contactName',
+  contactPhone: 'contactPhone',
   status: 'status',
+  isUnidentified: 'isUnidentified',
+  reunificationStatus: 'reunificationStatus',
+  reunificationNotes: 'reunificationNotes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -339,6 +348,11 @@ exports.Prisma.ReliefTokenScalarFieldEnum = {
   maxUsage: 'maxUsage',
   issuedAt: 'issuedAt',
   expiresAt: 'expiresAt',
+  categories: 'categories',
+  isHouseholdBundle: 'isHouseholdBundle',
+  householdId: 'householdId',
+  donorId: 'donorId',
+  fraudRiskScore: 'fraudRiskScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -352,7 +366,9 @@ exports.Prisma.ReliefTokenClaimScalarFieldEnum = {
   quantity: 'quantity',
   proofImage: 'proofImage',
   campId: 'campId',
-  notes: 'notes'
+  notes: 'notes',
+  locationLat: 'locationLat',
+  locationLng: 'locationLng'
 };
 
 exports.Prisma.DamageAssessmentScalarFieldEnum = {
@@ -362,6 +378,7 @@ exports.Prisma.DamageAssessmentScalarFieldEnum = {
   location: 'location',
   latitude: 'latitude',
   longitude: 'longitude',
+  polygonData: 'polygonData',
   category: 'category',
   structuralDamage: 'structuralDamage',
   cropDamage: 'cropDamage',
@@ -369,9 +386,17 @@ exports.Prisma.DamageAssessmentScalarFieldEnum = {
   roadDamage: 'roadDamage',
   affectedPersons: 'affectedPersons',
   estimatedLoss: 'estimatedLoss',
+  aiEstimatedDamage: 'aiEstimatedDamage',
+  aiEstimatedCost: 'aiEstimatedCost',
+  propertyOwnershipStatus: 'propertyOwnershipStatus',
+  familyVulnerabilityScore: 'familyVulnerabilityScore',
+  incomeBracket: 'incomeBracket',
+  compensationEligibilityScore: 'compensationEligibilityScore',
+  compensationEligible: 'compensationEligible',
   mediaUrls: 'mediaUrls',
   status: 'status',
   notes: 'notes',
+  reviewerNotes: 'reviewerNotes',
   verifiedById: 'verifiedById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -413,8 +438,279 @@ exports.Prisma.PsychologicalSupportRequestScalarFieldEnum = {
   affectedCount: 'affectedCount',
   assignedToId: 'assignedToId',
   notes: 'notes',
+  nextCheckInDate: 'nextCheckInDate',
+  checkInStatus: 'checkInStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ThreatForecastScalarFieldEnum = {
+  id: 'id',
+  district: 'district',
+  threatType: 'threatType',
+  confidence: 'confidence',
+  severity: 'severity',
+  forecastTime: 'forecastTime',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ShiftHandoverScalarFieldEnum = {
+  id: 'id',
+  shiftTime: 'shiftTime',
+  incidentsOpened: 'incidentsOpened',
+  incidentsClosed: 'incidentsClosed',
+  resourcesDeployed: 'resourcesDeployed',
+  volunteersActive: 'volunteersActive',
+  criticalItems: 'criticalItems',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EvacuationRouteScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  coordinates: 'coordinates',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VolunteerLocationScalarFieldEnum = {
+  id: 'id',
+  volunteerId: 'volunteerId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  status: 'status',
+  skill: 'skill',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ThreatProjectionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  polygonCoords: 'polygonCoords',
+  riskLevel: 'riskLevel',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AfterActionReportScalarFieldEnum = {
+  id: 'id',
+  incidentId: 'incidentId',
+  timeline: 'timeline',
+  resourcesUsed: 'resourcesUsed',
+  costEstimate: 'costEstimate',
+  peopleAffected: 'peopleAffected',
+  resolutionTime: 'resolutionTime',
+  lessonsLearned: 'lessonsLearned',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.KPIBenchmarkScalarFieldEnum = {
+  id: 'id',
+  month: 'month',
+  targetAvgResponse: 'targetAvgResponse',
+  targetOccupancy: 'targetOccupancy',
+  targetVolunteer: 'targetVolunteer',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ResourceCostScalarFieldEnum = {
+  id: 'id',
+  resourceType: 'resourceType',
+  unitCost: 'unitCost',
+  unitType: 'unitType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DisasterBudgetScalarFieldEnum = {
+  id: 'id',
+  eventName: 'eventName',
+  allocatedBudget: 'allocatedBudget',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ResourceExpenditureScalarFieldEnum = {
+  id: 'id',
+  resourceCostId: 'resourceCostId',
+  quantity: 'quantity',
+  totalCost: 'totalCost',
+  budgetId: 'budgetId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RolePermissionScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  module: 'module',
+  canView: 'canView',
+  canEdit: 'canEdit',
+  canDelete: 'canDelete',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
+exports.Prisma.UserSessionLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ipAddress: 'ipAddress',
+  device: 'device',
+  location: 'location',
+  loginTime: 'loginTime'
+};
+
+exports.Prisma.CampResidentScalarFieldEnum = {
+  id: 'id',
+  campId: 'campId',
+  name: 'name',
+  nic: 'nic',
+  familySize: 'familySize',
+  checkInTime: 'checkInTime',
+  checkOutTime: 'checkOutTime',
+  status: 'status'
+};
+
+exports.Prisma.CampInventoryScalarFieldEnum = {
+  id: 'id',
+  campId: 'campId',
+  itemType: 'itemType',
+  quantity: 'quantity',
+  threshold: 'threshold',
+  lastUpdated: 'lastUpdated'
+};
+
+exports.Prisma.CampScheduleScalarFieldEnum = {
+  id: 'id',
+  campId: 'campId',
+  activityName: 'activityName',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  type: 'type'
+};
+
+exports.Prisma.HospitalReferralScalarFieldEnum = {
+  id: 'id',
+  campId: 'campId',
+  patientName: 'patientName',
+  conditionSeverity: 'conditionSeverity',
+  hospitalAssigned: 'hospitalAssigned',
+  transportMethod: 'transportMethod',
+  outcome: 'outcome',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CampTransferRequestScalarFieldEnum = {
+  id: 'id',
+  fromCampId: 'fromCampId',
+  toCampId: 'toCampId',
+  peopleCount: 'peopleCount',
+  status: 'status',
+  requestDate: 'requestDate'
+};
+
+exports.Prisma.DonorCampaignScalarFieldEnum = {
+  id: 'id',
+  donorName: 'donorName',
+  contributionAmount: 'contributionAmount',
+  targetCategories: 'targetCategories',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VolunteerSkillScalarFieldEnum = {
+  id: 'id',
+  volunteerId: 'volunteerId',
+  skillName: 'skillName',
+  certificationUrl: 'certificationUrl'
+};
+
+exports.Prisma.VolunteerTrainingScalarFieldEnum = {
+  id: 'id',
+  volunteerId: 'volunteerId',
+  trainingName: 'trainingName',
+  completedAt: 'completedAt',
+  expiresAt: 'expiresAt'
+};
+
+exports.Prisma.VolunteerCheckInScalarFieldEnum = {
+  id: 'id',
+  volunteerId: 'volunteerId',
+  checkInTime: 'checkInTime',
+  checkOutTime: 'checkOutTime',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  zone: 'zone',
+  activeHours: 'activeHours'
+};
+
+exports.Prisma.VolunteerWellbeingScalarFieldEnum = {
+  id: 'id',
+  volunteerId: 'volunteerId',
+  recordedAt: 'recordedAt',
+  physicalRating: 'physicalRating',
+  mentalRating: 'mentalRating',
+  needsResources: 'needsResources',
+  distressFlag: 'distressFlag'
+};
+
+exports.Prisma.VolunteerBadgeScalarFieldEnum = {
+  id: 'id',
+  volunteerId: 'volunteerId',
+  badgeType: 'badgeType',
+  earnedAt: 'earnedAt'
+};
+
+exports.Prisma.ChatSessionScalarFieldEnum = {
+  id: 'id',
+  requestId: 'requestId',
+  counselorId: 'counselorId',
+  userId: 'userId',
+  status: 'status',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  moodAfter: 'moodAfter'
+};
+
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  senderId: 'senderId',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.GroupTherapySessionScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  campId: 'campId',
+  counselorId: 'counselorId',
+  scheduledFor: 'scheduledFor',
+  maxParticipants: 'maxParticipants',
+  status: 'status'
+};
+
+exports.Prisma.GroupTherapyParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  userId: 'userId',
+  attendanceStatus: 'attendanceStatus',
+  notes: 'notes'
+};
+
+exports.Prisma.MentalHealthGuideScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  tags: 'tags',
+  isOfflineAvailable: 'isOfflineAvailable',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -422,12 +718,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -450,12 +746,15 @@ exports.Role = exports.$Enums.Role = {
   CITIZEN: 'CITIZEN',
   VOLUNTEER: 'VOLUNTEER',
   ADMIN: 'ADMIN',
-  DMC_OFFICER: 'DMC_OFFICER'
+  DMC_OFFICER: 'DMC_OFFICER',
+  FIELD_RESPONDER: 'FIELD_RESPONDER'
 };
 
 exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
   ASSIGNED: 'ASSIGNED',
+  EN_ROUTE: 'EN_ROUTE',
+  ON_SITE: 'ON_SITE',
   IN_PROGRESS: 'IN_PROGRESS',
   RESOLVED: 'RESOLVED'
 };
@@ -481,6 +780,16 @@ exports.TokenStatus = exports.$Enums.TokenStatus = {
   REVOKED: 'REVOKED'
 };
 
+exports.TokenCategory = exports.$Enums.TokenCategory = {
+  MEDICAL: 'MEDICAL',
+  FOOD: 'FOOD',
+  CLOTHING: 'CLOTHING',
+  SHELTER: 'SHELTER',
+  TRANSPORT: 'TRANSPORT',
+  EDUCATION: 'EDUCATION',
+  MENTAL_HEALTH: 'MENTAL_HEALTH'
+};
+
 exports.DamageCategory = exports.$Enums.DamageCategory = {
   RESIDENTIAL: 'RESIDENTIAL',
   AGRICULTURAL: 'AGRICULTURAL',
@@ -500,6 +809,8 @@ exports.DamageLevel = exports.$Enums.DamageLevel = {
 
 exports.DamageStatus = exports.$Enums.DamageStatus = {
   PENDING_REVIEW: 'PENDING_REVIEW',
+  SENIOR_REVIEW: 'SENIOR_REVIEW',
+  APPROVED: 'APPROVED',
   VERIFIED: 'VERIFIED',
   REJECTED: 'REJECTED'
 };
@@ -541,18 +852,32 @@ exports.SupportStatus = exports.$Enums.SupportStatus = {
   CLOSED: 'CLOSED'
 };
 
+exports.InventoryItemType = exports.$Enums.InventoryItemType = {
+  FOOD: 'FOOD',
+  WATER: 'WATER',
+  MEDICAL: 'MEDICAL',
+  BLANKETS: 'BLANKETS',
+  HYGIENE: 'HYGIENE'
+};
+
+exports.ReferralStatus = exports.$Enums.ReferralStatus = {
+  PENDING: 'PENDING',
+  IN_TRANSIT: 'IN_TRANSIT',
+  ADMITTED: 'ADMITTED',
+  DISCHARGED: 'DISCHARGED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   IncidentReport: 'IncidentReport',
   Alert: 'Alert',
   ReliefCamp: 'ReliefCamp',
-  Token: 'Token',
   Resource: 'Resource',
   Task: 'Task',
   VolunteerProfile: 'VolunteerProfile',
   HelpRequest: 'HelpRequest',
+  HelpRequestEscalation: 'HelpRequestEscalation',
   ReportVerification: 'ReportVerification',
-  Distribution: 'Distribution',
   MissingPerson: 'MissingPerson',
   Notification: 'Notification',
   MLLog: 'MLLog',
@@ -565,7 +890,35 @@ exports.Prisma.ModelName = {
   DamageAssessment: 'DamageAssessment',
   LocalVerifier: 'LocalVerifier',
   VerifierAction: 'VerifierAction',
-  PsychologicalSupportRequest: 'PsychologicalSupportRequest'
+  PsychologicalSupportRequest: 'PsychologicalSupportRequest',
+  ThreatForecast: 'ThreatForecast',
+  ShiftHandover: 'ShiftHandover',
+  EvacuationRoute: 'EvacuationRoute',
+  VolunteerLocation: 'VolunteerLocation',
+  ThreatProjection: 'ThreatProjection',
+  AfterActionReport: 'AfterActionReport',
+  KPIBenchmark: 'KPIBenchmark',
+  ResourceCost: 'ResourceCost',
+  DisasterBudget: 'DisasterBudget',
+  ResourceExpenditure: 'ResourceExpenditure',
+  RolePermission: 'RolePermission',
+  UserSessionLog: 'UserSessionLog',
+  CampResident: 'CampResident',
+  CampInventory: 'CampInventory',
+  CampSchedule: 'CampSchedule',
+  HospitalReferral: 'HospitalReferral',
+  CampTransferRequest: 'CampTransferRequest',
+  DonorCampaign: 'DonorCampaign',
+  VolunteerSkill: 'VolunteerSkill',
+  VolunteerTraining: 'VolunteerTraining',
+  VolunteerCheckIn: 'VolunteerCheckIn',
+  VolunteerWellbeing: 'VolunteerWellbeing',
+  VolunteerBadge: 'VolunteerBadge',
+  ChatSession: 'ChatSession',
+  ChatMessage: 'ChatMessage',
+  GroupTherapySession: 'GroupTherapySession',
+  GroupTherapyParticipant: 'GroupTherapyParticipant',
+  MentalHealthGuide: 'MentalHealthGuide'
 };
 
 /**

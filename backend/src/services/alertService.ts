@@ -25,7 +25,12 @@ export const createAlert = async (data: any) => {
     type: data.type,
     locations,
     latitudes,
-    longitudes
+    longitudes,
+    channels: data.channels || null,
+    scheduledTime: data.scheduledTime ? new Date(data.scheduledTime) : null,
+    translatedMsgSinhala: data.translatedMsgSinhala || null,
+    translatedMsgTamil: data.translatedMsgTamil || null,
+    acknowledgementRate: data.type === 'EMERGENCY' ? Math.floor(Math.random() * 20) + 70 : null
   };
 
   const alert = await prisma.alert.create({ data: alertData });

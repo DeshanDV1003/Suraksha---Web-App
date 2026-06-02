@@ -1,13 +1,13 @@
 import { useMemo, useEffect, useState } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell
+  PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts'
 import {
   Download, TrendingUp, TrendingDown,
   Users, Heart, Baby, Accessibility,
   PawPrint, Box, Building2, Zap, Brain, Send, Stethoscope, AlertCircle,
-  Radio
+  Radio, FileText, CheckCircle, Activity, MapPin, DollarSign
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { analyticsService } from '../services/api'
@@ -18,12 +18,25 @@ export default function ReportsPage() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  
+  // AAR State
+  const [aarIncidentId, setAarIncidentId] = useState('')
+  const [aarGenerating, setAarGenerating] = useState(false)
+  const [aarData, setAarData] = useState<any>(null)
+  
+  // Vulnerability & KPIs State
+  const [kpis, setKpis] = useState<any[]>([])
+  const [vulnerability, setVulnerability] = useState<any[]>([])
+  const [budgets, setBudgets] = useState<any[]>([])
 
   const handleExport = () => {
     if (!data) return
     const exportData = {
       timestamp: new Date().toISOString(),
       stats: data,
+      vulnerability,
+      kpis,
+      budgets
     }
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -38,8 +51,16 @@ export default function ReportsPage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await analyticsService.getOperationalIntelligence()
+        const [res, kpiRes, vulnRes, budgetRes] = await Promise.all([
+          analyticsService.getOperationalIntelligence(),
+          analyticsService.getKPIBenchmarks('2026-06'),
+          analyticsService.getVulnerabilityIndex(),
+          analyticsService.getDisasterBudgets()
+        ])
         setData(res.data)
+        setKpis(kpiRes.data)
+        setVulnerability(vulnRes.data)
+        setBudgets(budgetRes.data)
       } catch (err) {
         console.error('Failed to fetch stats', err)
         setError('Operational Intelligence Sync Failed')
@@ -49,6 +70,19 @@ export default function ReportsPage() {
     }
     fetchStats()
   }, [])
+
+  const handleGenerateAAR = async () => {
+    if (!aarIncidentId) return;
+    setAarGenerating(true);
+    try {
+      const res = await analyticsService.generateAAR(aarIncidentId);
+      setAarData(res.data);
+    } catch (err) {
+      alert("Failed to generate AAR. Make sure Incident ID is valid.");
+    } finally {
+      setAarGenerating(false);
+    }
+  }
 
   const dynamicPriorityData = useMemo(() => {
     if (!data) return []
@@ -84,7 +118,7 @@ export default function ReportsPage() {
     )
   }
 
-  const kpis = [
+  const topKpis = [
     { label: 'Total Incidents', value: data.incidents.total.toString(), trend: '+12%', isUp: true },
     { label: 'Avg Response Time', value: data.kpis.avgResponseTime, trend: '-18%', isUp: false },
     { label: 'Volunteer Utilization', value: data.kpis.volunteerUtilization, trend: '+8%', isUp: true },
@@ -98,13 +132,6 @@ export default function ReportsPage() {
     { label: 'Pets', value: data.specialNeeds.pets, icon: PawPrint, color: 'text-orange-500', bg: 'bg-orange-50' },
     { label: 'Chronic', value: data.specialNeeds.chronic, icon: Stethoscope, color: 'text-pink-500', bg: 'bg-pink-50' },
     { label: 'Total', value: data.specialNeeds.total, icon: Users, color: 'text-slate-600', bg: 'bg-slate-50' },
-  ]
-
-  const ML_STATS = [
-    { label: 'Precision', value: data.mlStats.precision, sub: 'Flood Detection', color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Recall', value: data.mlStats.recall, sub: 'Object Identify', color: 'text-green-600', bg: 'bg-green-50' },
-    { label: 'F1 Score', value: data.mlStats.f1Score, sub: 'Threat Assessment', color: 'text-purple-600', bg: 'bg-purple-50' },
-    { label: 'Latency', value: data.mlStats.latency, sub: 'Visual Nodes', color: 'text-orange-600', bg: 'bg-orange-50' },
   ]
 
   return (
@@ -126,7 +153,7 @@ export default function ReportsPage() {
 
       {/* KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {kpis.map((kpi, i) => (
+        {topKpis.map((kpi, i) => (
           <div key={i} className="suraksha-card p-10 bg-white hover:border-blue-100 transition-all group overflow-hidden">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[#0061ff]/5 rounded-full blur-3xl group-hover:bg-[#0061ff]/10 transition-colors" />
             <div className="flex items-center justify-between mb-10 relative z-10">
@@ -144,63 +171,28 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      {/* Distribution Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="suraksha-card p-12 space-y-10 bg-white">
-          <div className="flex items-center gap-3 border-b border-slate-50 pb-6">
-            <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text-[#0061ff]">
-              <Brain className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-black text-[#1e293b]">Citizen Status Matrix</h3>
+        {/* Resource Utilization (Bar Chart) */}
+        <div className="suraksha-card p-10 space-y-10 bg-white col-span-1 lg:col-span-2">
+           <div className="flex items-center gap-3 border-b border-slate-50 pb-6">
+            <Activity className="w-6 h-6 text-[#0061ff]" />
+            <h3 className="text-xl font-black text-[#1e293b]">Resource Utilization</h3>
           </div>
-
-          <div className="space-y-8">
-            {[
-              { label: 'Verified Safe', val: `${data.citizenStatus.verifiedSafe.value} (${data.citizenStatus.verifiedSafe.percent}%)`, color: 'text-green-500', barColor: 'bg-green-500', percent: data.citizenStatus.verifiedSafe.percent },
-              { label: 'Critical Response', val: `${data.citizenStatus.criticalResponse.value} (${data.citizenStatus.criticalResponse.percent}%)`, color: 'text-red-500', barColor: 'bg-red-500', percent: data.citizenStatus.criticalResponse.percent },
-              { label: 'Location Tracking', val: `${data.citizenStatus.locationTracking.value} (${data.citizenStatus.locationTracking.percent}%)`, color: 'text-orange-500', barColor: 'bg-orange-500', percent: data.citizenStatus.locationTracking.percent },
-              { label: 'In-Transit to Camp', val: `${data.citizenStatus.inTransit.value} (${data.citizenStatus.inTransit.percent}%)`, color: 'text-blue-500', barColor: 'bg-blue-500', percent: data.citizenStatus.inTransit.percent },
-            ].map((item, i) => (
-              <div key={i} className="space-y-4">
-                <div className="flex justify-between items-end text-[10px] font-black uppercase tracking-widest pl-1">
-                  <span className="text-slate-400">{item.label}</span>
-                  <span className={cn("font-black", item.color)}>{item.val}</span>
-                </div>
-                <div className="h-3 w-full bg-slate-50 border border-slate-100/50 rounded-full overflow-hidden">
-                  <div className={cn("h-full rounded-full transition-all duration-1000", item.barColor)} style={{ width: `${item.percent}%` }} />
-                </div>
-              </div>
-            ))}
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data.resourceUtilization || []} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9"/>
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12, fontWeight: 700}} width={120} />
+                <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
+                <Bar dataKey="used" stackId="a" fill="#0061ff" radius={[4, 0, 0, 4]} barSize={20} />
+                <Bar dataKey="available" stackId="a" fill="#cbd5e1" radius={[0, 4, 4, 0]} barSize={20} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="suraksha-card p-12 space-y-10 bg-white">
-          <div className="flex items-center gap-3 border-b border-slate-50 pb-6">
-            <div className="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600">
-              <Box className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-black text-[#1e293b]">Field Inventory</h3>
-          </div>
-          <div className="space-y-8 flex-1">
-            {[
-              { label: 'Rescue Boats', value: data.fieldInventory.rescueBoats, icon: Send, color: 'text-blue-600', rotate: true },
-              { label: 'Logistics Vehicles', value: data.fieldInventory.logisticsVehicles, icon: Box, color: 'text-green-600' },
-              { label: 'Power Nodes', value: data.fieldInventory.powerNodes, icon: Zap, color: 'text-orange-500' },
-              { label: 'Shelter Hubs', value: data.fieldInventory.shelterHubs, icon: Building2, color: 'text-purple-600' },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between group cursor-default">
-                <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center border border-slate-100 group-hover:bg-white group-hover:shadow-xl group-hover:shadow-slate-200/50 transition-all">
-                    <item.icon className={cn("w-6 h-6", item.color, item.rotate && "rotate-[30deg]")} />
-                  </div>
-                  <span className="text-[13px] font-black text-slate-500 uppercase tracking-widest group-hover:text-[#1e293b] transition-colors">{item.label}</span>
-                </div>
-                <span className="text-3xl font-black text-[#1e293b]">{item.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
+        {/* Crisis Fund */}
         <div className="suraksha-card p-12 space-y-10 bg-[#1e293b] text-white">
           <h3 className="text-xl font-black uppercase tracking-widest text-[#0061ff]">Crisis Fund Meter</h3>
           <div className="flex flex-col items-center justify-center py-6 text-center">
@@ -222,10 +214,231 @@ export default function ReportsPage() {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* Volunteer Hours Area Chart */}
+        <div className="suraksha-card p-12 bg-white min-h-[400px] flex flex-col">
+          <div className="flex items-center justify-between mb-16">
+            <h3 className="text-xl font-black text-[#1e293b] uppercase tracking-tighter">Volunteer Hours</h3>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">7-Day Analysis</span>
+          </div>
+          <div className="flex-1 h-full w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data.volunteerHours || []}>
+                <defs>
+                  <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} dy={10} />
+                <YAxis hide />
+                <Tooltip contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
+                <Area type="monotone" dataKey="hours" stroke="#10b981" strokeWidth={4} fillOpacity={1} fill="url(#colorHours)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        
+        {/* Incident Frequency Bar Chart */}
+        <div className="suraksha-card p-12 bg-white min-h-[400px] flex flex-col">
+          <div className="flex items-center justify-between mb-16">
+            <h3 className="text-xl font-black text-[#1e293b] uppercase tracking-tighter">Incident Frequency Timeline</h3>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">7-Day Analysis</span>
+          </div>
+          <div className="flex-1 h-full w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data.weeklyTrends}>
+                <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="#f8fafc" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} dy={20} />
+                <YAxis hide domain={[0, 25]} />
+                <Tooltip cursor={{ fill: '#f1f5f9' }} content={<CustomTooltip />} />
+                <Bar dataKey="value" fill="#0061ff" radius={[12, 12, 0, 0]} barSize={40} isAnimationActive={true} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* Vulnerability Index Heatmap Table */}
+        <div className="suraksha-card p-12 bg-white flex flex-col">
+          <div className="flex items-center gap-3 mb-10 border-b border-slate-50 pb-6">
+            <MapPin className="w-6 h-6 text-orange-500" />
+            <div>
+              <h3 className="text-xl font-black text-[#1e293b]">Vulnerability Heat Index</h3>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">District Level Demographic Risk Overlay</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-5 text-[10px] font-black text-slate-400 uppercase tracking-widest px-4">
+              <div className="col-span-2">District</div>
+              <div>Elderly</div>
+              <div>Infants</div>
+              <div className="text-right">Risk Score</div>
+            </div>
+            {vulnerability.map((v: any, idx: number) => (
+              <div key={idx} className="grid grid-cols-5 items-center p-4 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all border border-transparent hover:border-slate-100">
+                <div className="col-span-2 font-black text-[#1e293b]">{v.district}</div>
+                <div className="text-slate-500 font-bold">{v.elderly}</div>
+                <div className="text-slate-500 font-bold">{v.infants}</div>
+                <div className="flex justify-end items-center gap-2">
+                  <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div className={cn("h-full rounded-full", v.riskScore > 80 ? 'bg-red-500' : (v.riskScore > 60 ? 'bg-orange-500' : 'bg-green-500'))} style={{width: `${v.riskScore}%`}} />
+                  </div>
+                  <span className={cn("text-[11px] font-black w-8 text-right", v.riskScore > 80 ? 'text-red-500' : (v.riskScore > 60 ? 'text-orange-500' : 'text-green-500'))}>{v.riskScore}</span>
+                </div>
+              </div>
+            ))}
+            {vulnerability.length === 0 && (
+              <div className="text-center p-10 text-slate-400 text-sm font-bold">No vulnerability data available</div>
+            )}
+          </div>
+        </div>
+
+        {/* Budget Tracker */}
+        <div className="suraksha-card p-12 bg-white flex flex-col">
+          <div className="flex items-center gap-3 mb-10 border-b border-slate-50 pb-6">
+            <DollarSign className="w-6 h-6 text-green-500" />
+            <div>
+              <h3 className="text-xl font-black text-[#1e293b]">Resource & Budget Tracker</h3>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Disaster Response Expenditure vs Allocation</p>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {budgets.length > 0 ? budgets.map((b: any, idx: number) => {
+              const spent = b.expenditures?.reduce((sum: number, exp: any) => sum + exp.totalCost, 0) || 0;
+              const percent = Math.min(100, Math.round((spent / b.allocatedBudget) * 100));
+              return (
+                <div key={idx} className="space-y-4">
+                  <div className="flex justify-between items-end">
+                    <div className="font-black text-[#1e293b]">{b.eventName}</div>
+                    <div className="text-[12px] font-black text-slate-500">LKR {spent.toLocaleString()} / <span className="text-[#1e293b]">LKR {b.allocatedBudget.toLocaleString()}</span></div>
+                  </div>
+                  <div className="h-4 w-full bg-slate-100 rounded-full overflow-hidden relative">
+                    <div className={cn("absolute top-0 left-0 h-full rounded-full transition-all duration-1000", percent > 90 ? 'bg-red-500' : (percent > 70 ? 'bg-orange-500' : 'bg-green-500'))} style={{ width: `${percent}%` }} />
+                  </div>
+                </div>
+              )
+            }) : (
+              <div className="p-8 bg-slate-50 rounded-2xl border border-slate-100 text-center space-y-2">
+                <div className="font-black text-[#1e293b]">No Active Budgets</div>
+                <div className="text-[11px] font-bold text-slate-400 uppercase">Awaiting finance module sync</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* KPI Benchmarks RAG */}
+        <div className="suraksha-card p-12 bg-white">
+          <div className="flex items-center gap-3 mb-10 border-b border-slate-50 pb-6">
+            <CheckCircle className="w-6 h-6 text-blue-500" />
+            <div>
+              <h3 className="text-xl font-black text-[#1e293b]">KPI Benchmarks & Targets</h3>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Actuals vs Targets RAG Status</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-4 text-[10px] font-black text-slate-400 uppercase tracking-widest px-4">
+              <div className="col-span-2">Metric</div>
+              <div>Target</div>
+              <div className="text-right">Status</div>
+            </div>
+            
+            <div className="grid grid-cols-4 items-center p-4 rounded-2xl bg-slate-50">
+              <div className="col-span-2 font-black text-[#1e293b] text-sm">Response Time</div>
+              <div className="text-slate-500 font-bold text-sm">{'< 45m'}</div>
+              <div className="flex justify-end">
+                <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase rounded-full">On Track</span>
+              </div>
+            </div>
+            
+             <div className="grid grid-cols-4 items-center p-4 rounded-2xl bg-slate-50">
+              <div className="col-span-2 font-black text-[#1e293b] text-sm">Shelter Capacity</div>
+              <div className="text-slate-500 font-bold text-sm">{'< 80%'}</div>
+              <div className="flex justify-end">
+                <span className="px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-black uppercase rounded-full">Warning</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 items-center p-4 rounded-2xl bg-slate-50">
+              <div className="col-span-2 font-black text-[#1e293b] text-sm">Volunteer Deployment</div>
+              <div className="text-slate-500 font-bold text-sm">{'> 50%'}</div>
+              <div className="flex justify-end">
+                <span className="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-black uppercase rounded-full">Critical</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* After Action Report Generator */}
+        <div className="suraksha-card p-12 bg-white flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-6 border-b border-slate-50 pb-6">
+              <FileText className="w-6 h-6 text-purple-500" />
+              <div>
+                <h3 className="text-xl font-black text-[#1e293b]">After-Action Report (AAR)</h3>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Post-Incident Automated Briefing</p>
+              </div>
+            </div>
+            <p className="text-sm font-medium text-slate-500 leading-relaxed mb-6">
+              Generate a comprehensive after-action report detailing timelines, resource expenditure, and post-incident analysis for any resolved event.
+            </p>
+            
+            <div className="flex gap-4 mb-6">
+              <input 
+                type="text" 
+                placeholder="Enter Incident ID..." 
+                className="suraksha-input flex-1"
+                value={aarIncidentId}
+                onChange={(e) => setAarIncidentId(e.target.value)}
+              />
+              <button 
+                onClick={handleGenerateAAR}
+                disabled={!aarIncidentId || aarGenerating}
+                className="suraksha-button px-8 whitespace-nowrap bg-purple-600 hover:bg-purple-700"
+              >
+                {aarGenerating ? 'Generating...' : 'Generate AAR'}
+              </button>
+            </div>
+          </div>
+
+          {aarData && (
+            <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100 animate-in fade-in slide-in-from-bottom-4">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-black text-[#1e293b]">AAR Generated Successfully</h4>
+                <button className="text-xs font-bold text-[#0061ff] bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors flex items-center gap-2">
+                  <Download className="w-3.5 h-3.5" /> PDF
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-slate-400 text-[10px] uppercase font-black tracking-widest block mb-1">Resolution Time</span>
+                  <span className="font-bold text-[#1e293b]">{aarData.resolutionTime} minutes</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 text-[10px] uppercase font-black tracking-widest block mb-1">Cost Estimate</span>
+                  <span className="font-bold text-[#1e293b]">LKR {aarData.costEstimate.toLocaleString()}</span>
+                </div>
+                <div className="col-span-2 pt-2 border-t border-slate-200/50 mt-2">
+                  <span className="text-slate-400 text-[10px] uppercase font-black tracking-widest block mb-1">Lessons Learned</span>
+                  <p className="font-medium text-slate-600">{aarData.lessonsLearned || 'No data available'}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="suraksha-card p-10 space-y-10 bg-white">
         <div className="flex items-center gap-3">
           <Users className="w-6 h-6 text-[#0061ff]" />
-          <h3 className="text-2xl font-black text-[#1e293b]">High-Intensity Cases</h3>
+          <h3 className="text-2xl font-black text-[#1e293b]">High-Intensity Cases Demographics</h3>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
           {specialNeedsItems.map((item, i) => (
@@ -240,103 +453,6 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* Incident Frequency */}
-        <div className="suraksha-card p-12 bg-white min-h-[500px] flex flex-col">
-          <div className="flex items-center justify-between mb-16">
-            <h3 className="text-xl font-black text-[#1e293b] uppercase tracking-tighter">Frequency Timeline</h3>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">7-Day Analysis</span>
-          </div>
-          <div className="flex-1 h-full w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.weeklyTrends}>
-                <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="#f8fafc" />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }}
-                  dy={20}
-                />
-                <YAxis hide domain={[0, 25]} />
-                <Tooltip cursor={{ fill: '#f1f5f9' }} content={<CustomTooltip />} />
-                <Bar
-                  dataKey="value"
-                  fill="#0061ff"
-                  radius={[12, 12, 0, 0]}
-                  barSize={40}
-                  isAnimationActive={true}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Priority Distribution */}
-        <div className="suraksha-card p-12 bg-white min-h-[500px] flex flex-col items-center">
-          <div className="w-full flex items-center justify-between mb-16">
-            <h3 className="text-xl font-black text-[#1e293b] uppercase tracking-tighter">Priority Matrix</h3>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sector Concentration</span>
-          </div>
-
-          <div className="relative w-full h-[320px] mb-10">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={dynamicPriorityData.some(d => d.value > 0) ? dynamicPriorityData : [{ name: 'Empty', value: 1, color: '#f1f5f9' }]}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={100}
-                  outerRadius={140}
-                  paddingAngle={8}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {dynamicPriorityData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-              <div className="text-6xl font-black text-[#1e293b] tracking-tighter">{data.incidents.total}</div>
-              <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mt-2">Total Dossiers</div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-x-16 gap-y-6 w-full px-10">
-            {dynamicPriorityData.map((item) => (
-              <div key={item.name} className="flex items-center gap-4">
-                <div className="w-3 h-3 rounded-full shadow-lg" style={{ backgroundColor: item.color }} />
-                <div className="flex flex-col">
-                  <span className="text-[12px] font-black text-[#1e293b] leading-none uppercase tracking-tighter">{item.name}</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase">{item.value} Reports</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ML Performance Row */}
-      <div className="suraksha-card p-12 space-y-10 bg-white">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-black text-[#1e293b] uppercase tracking-tighter">AI Node Health Matrix</h3>
-          <div className="flex items-center gap-2 text-[9px] font-black text-green-500 uppercase tracking-[0.2em] bg-green-50 px-4 py-1.5 rounded-full">
-            <Radio className="w-3 h-3" />
-            Processing Live Visual Feed
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {ML_STATS.map((card, i) => (
-            <div key={i} className={cn("p-10 rounded-[2.5rem] flex flex-col items-center text-center transition-all hover:scale-[1.05] hover:shadow-xl cursor-default border-none", card.bg)}>
-              <div className={cn("text-5xl font-black mb-4 tracking-tighter", card.color)}>{card.value}</div>
-              <div className="text-[13px] font-black text-slate-700 uppercase tracking-widest opacity-80">{card.label}</div>
-              <div className="text-[10px] font-bold text-slate-400 mt-2 uppercase italic">{card.sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }

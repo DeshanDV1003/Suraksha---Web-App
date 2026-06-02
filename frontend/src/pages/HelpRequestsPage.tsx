@@ -1,24 +1,40 @@
 import { useState, useEffect } from 'react'
-import { HandHelping, Plus, X, MapPin, Users, Clock, CheckCircle2, Loader2, ShieldCheck, ChevronDown } from 'lucide-react'
+import { AlertTriangle, Clock, MapPin, Users, Loader2, Navigation, MessageSquare, CheckCircle, Smartphone } from 'lucide-react'
+import { helpRequestService, volunteerService } from '@/services/api'
 import { cn } from '@/lib/utils'
-import { helpRequestService, userService } from '@/services/api'
-import { formatDistanceToNow } from 'date-fns'
-import { useTranslation } from 'react-i18next'
 
 export default function HelpRequestsPage() {
-  const { t } = useTranslation()
-  const [requests, setRequests] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [showModal, setShowModal] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [requests, setRequests] = useState<any[]>([])
+  const [clusters, setClusters] = useState<any[]>([])
+  const [volunteers, setVolunteers] = useState<any[]>([])
+  
+  const [activeTab, setActiveTab] = useState('dispatch') // dispatch, map, sms
+  
+  // Assigning states
+  const [assigningId, setAssigningId] = useState<string | null>(null)
+  
+  // SMS Simulator state
+  const [smsPayload, setSmsPayload] = useState('HELP Rescue Flooded house near Main St 4')
+  const [smsResponse, setSmsResponse] = useState('')
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await helpRequestService.getRequests()
-      setRequests(res.data)
+      // Check escalations first
+      await helpRequestService.checkEscalations()
+      
+      const [reqRes, clusRes, volRes] = await Promise.all([
+        helpRequestService.getRequests(),
+        helpRequestService.getClusters(),
+        volunteerService.listVolunteers()
+      ])
+      
+      setRequests(reqRes.data)
+      setClusters(clusRes.data)
+      setVolunteers(volRes.data.filter((v:any) => v.volunteerProfile?.checkIns?.some((c:any) => !c.checkOutTime)))
     } catch (error) {
-      console.error('Failed to fetch help requests:', error)
+      console.error('Failed to load data:', error)
     } finally {
       setLoading(false)
     }
@@ -26,186 +42,285 @@ export default function HelpRequestsPage() {
 
   useEffect(() => {
     fetchData()
+    const interval = setInterval(fetchData, 30000) // Poll every 30s
+    return () => clearInterval(interval)
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget as HTMLFormElement)
-    const data = {
-      type: formData.get('type'),
-      description: formData.get('description'),
-      location: formData.get('location'),
-      peopleCount: parseInt(formData.get('peopleCount') as string),
-      priority: formData.get('priority')
-    }
-
+  const handleAssign = async (reqId: string, volId: string) => {
     try {
-      setIsSubmitting(true)
-      await helpRequestService.createRequest(data)
-      alert('Help request submitted successfully')
-      setShowModal(false)
+      setAssigningId(reqId)
+      await helpRequestService.assignResponder(reqId, volId)
       fetchData()
-    } catch (error) {
-      console.error('Failed to submit request:', error)
-      alert('Failed to submit request')
     } finally {
-      setIsSubmitting(false)
+      setAssigningId(null)
     }
   }
 
+  const handleStatusUpdate = async (reqId: string, status: string) => {
+    try {
+      await helpRequestService.updateStatus(reqId, status)
+      fetchData()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const simulateSms = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      setSmsResponse('Sending...')
+      const res = await helpRequestService.mockSmsWebhook({ From: '+94770000000', Body: smsPayload })
+      setSmsResponse(res.data)
+      fetchData()
+    } catch {
+      setSmsResponse('Failed to send SMS.')
+    }
+  }
+
+  if (loading && requests.length === 0) {
+    return <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-red-500" /></div>
+  }
+
   return (
-    <div className="space-y-8 animate-in fade-in duration-700 pb-10">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('help.title')}</h1>
-          <p className="text-slate-500 mt-1 font-medium">{t('help.subtitle')}</p>
-        </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="suraksha-button flex items-center justify-center gap-2 h-14"
-        >
-          <Plus className="w-5 h-5" />
-          Request Help
-        </button>
+    <div className="space-y-8 animate-in fade-in duration-500 pb-10">
+      <div>
+        <h1 className="text-3xl font-bold text-[#1e293b]">SOS Command Center</h1>
+        <p className="text-slate-500 mt-1 font-medium">Manage distress signals, dispatch responders, and monitor active operations.</p>
       </div>
 
-      {loading ? (
-        <div className="h-64 flex flex-col items-center justify-center space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
-          <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading Help Requests</p>
-        </div>
-      ) : requests.length === 0 ? (
-        <div className="bg-white border border-dashed border-slate-200 rounded-[2.5rem] p-20 text-center space-y-4">
-          <HandHelping className="w-16 h-16 text-slate-200 mx-auto" />
-          <h3 className="text-xl font-bold text-slate-700">No Active Help Requests</h3>
-          <p className="text-slate-400 max-w-xs mx-auto">All systems clear. No emergency requests reported in your area.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {requests.map((request) => (
-            <div key={request.id} className="suraksha-card p-8 hover:shadow-2xl hover:shadow-blue-500/5 transition-all relative overflow-hidden group">
-              <div className={cn(
-                "absolute top-0 right-0 px-6 py-2 rounded-bl-3xl text-[10px] font-black uppercase tracking-widest",
-                request.priority === 'CRITICAL' ? "bg-red-500 text-white" : "bg-blue-500 text-white"
+      <div className="flex gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+        {[
+          { id: 'dispatch', label: 'Dispatch Queue', icon: Navigation },
+          { id: 'map', label: 'Clustered Hotspots', icon: MapPin },
+          { id: 'sms', label: 'SMS Intake Simulator', icon: Smartphone }
+        ].map(tab => (
+          <button
+            key={tab.id} onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all",
+              activeTab === tab.id ? "bg-red-600 text-white shadow-md" : "text-slate-500 hover:bg-slate-50"
+            )}
+          >
+            <tab.icon className="w-4 h-4" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === 'dispatch' && (
+        <div className="grid lg:grid-cols-3 gap-8">
+          
+          {/* Queue */}
+          <div className="lg:col-span-2 space-y-4">
+            <h2 className="text-xl font-black text-slate-800">Pending Requests</h2>
+            
+            {requests.filter(r => r.status === 'PENDING').length === 0 && (
+               <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-100 text-slate-500">
+                 No pending SOS signals.
+               </div>
+            )}
+
+            {requests.filter(r => r.status === 'PENDING').map(req => (
+              <div key={req.id} className={cn(
+                "suraksha-card p-6 rounded-[1.5rem] relative overflow-hidden transition-all",
+                req.escalationLevel === 'CRITICAL' ? 'border-2 border-red-500 ring-4 ring-red-500/20' : 
+                req.escalationLevel === 'HIGH' ? 'border-2 border-orange-500 ring-4 ring-orange-500/20' : ''
               )}>
-                {request.priority}
-              </div>
-
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center">
-                    <HandHelping className="w-6 h-6 text-blue-500" />
+                {req.escalationLevel !== 'NONE' && (
+                  <div className="absolute top-0 left-0 right-0 bg-red-600 text-white text-xs font-black text-center py-1 animate-pulse uppercase tracking-widest">
+                    Escalated: Supervisor Notification Sent
                   </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Request Type</div>
-                    <div className="text-lg font-bold text-slate-900">{request.type}</div>
-                  </div>
-                </div>
-
-                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">{request.description}</p>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2 text-slate-600">
-                    <MapPin className="w-4 h-4 text-slate-300" />
-                    <span className="text-xs font-bold truncate">{request.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-600">
-                    <Users className="w-4 h-4 text-slate-300" />
-                    <span className="text-xs font-bold">{request.peopleCount} People</span>
-                  </div>
-                </div>
-
-                <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest">{formatDistanceToNow(new Date(request.createdAt))} ago</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {request.verifierActions?.length > 0 ? (
-                      <div className="flex items-center gap-1.5 text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        <span className="text-[10px] font-black uppercase">Verified</span>
+                )}
+                
+                <div className={cn("flex justify-between items-start", req.escalationLevel !== 'NONE' ? 'mt-4' : '')}>
+                  <div className="flex gap-4">
+                    <div className={cn(
+                      "w-12 h-12 rounded-full flex items-center justify-center",
+                      req.priority === 'CRITICAL' ? 'bg-red-100 text-red-600' :
+                      req.priority === 'HIGH' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'
+                    )}>
+                      <AlertTriangle className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-black text-lg text-slate-800">{req.type}</h3>
+                        <span className={cn(
+                          "text-[10px] px-2 py-0.5 rounded font-black uppercase tracking-wider",
+                          req.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
+                          req.priority === 'HIGH' ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'
+                        )}>
+                          {req.priority}
+                        </span>
                       </div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 text-orange-500 bg-orange-50 px-3 py-1 rounded-full">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span className="text-[10px] font-black uppercase">Pending</span>
-                      </div>
-                    )}
+                      <p className="text-slate-500 font-medium mt-1">{req.description}</p>
+                    </div>
                   </div>
                 </div>
+
+                <div className="grid grid-cols-3 gap-4 mt-6 p-4 bg-slate-50 rounded-xl">
+                  <div className="flex items-center gap-2 text-slate-600 text-sm font-bold">
+                    <MapPin className="w-4 h-4 text-slate-400" />
+                    {req.location}
+                  </div>
+                  <div className="flex items-center gap-2 text-slate-600 text-sm font-bold">
+                    <Users className="w-4 h-4 text-slate-400" />
+                    {req.peopleCount || 1} people
+                  </div>
+                  <div className="flex items-center gap-2 text-slate-600 text-sm font-bold">
+                    <Clock className="w-4 h-4 text-slate-400" />
+                    {Math.floor((new Date().getTime() - new Date(req.createdAt).getTime()) / 60000)} mins ago
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center gap-3">
+                  <select 
+                    className="flex-1 bg-slate-100 border-none p-3 rounded-xl font-bold text-sm outline-none cursor-pointer"
+                    id={`assign-${req.id}`}
+                  >
+                    <option value="">Select Active Responder...</option>
+                    {volunteers.map(v => (
+                       <option key={v.id} value={v.id}>{v.name} (Active: {v.volunteerProfile?.checkIns[0]?.zone || 'Unknown'})</option>
+                    ))}
+                  </select>
+                  <button 
+                    disabled={assigningId === req.id}
+                    onClick={() => {
+                      const sel = document.getElementById(`assign-${req.id}`) as HTMLSelectElement;
+                      if(sel.value) handleAssign(req.id, sel.value);
+                    }}
+                    className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-800 transition-all flex items-center gap-2"
+                  >
+                    {assigningId === req.id ? <Loader2 className="w-4 h-4 animate-spin"/> : 'Dispatch'}
+                  </button>
+                </div>
+
+                {/* Audit Trail */}
+                {req.escalations?.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-red-100 space-y-2">
+                    <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Escalation Audit Log</p>
+                    {req.escalations.map((esc:any) => (
+                       <p key={esc.id} className="text-xs font-medium text-red-500 bg-red-50 p-2 rounded-lg">
+                         <span className="font-bold opacity-70">[{new Date(esc.triggeredAt).toLocaleTimeString()}]</span> {esc.message}
+                       </p>
+                    ))}
+                  </div>
+                )}
               </div>
+            ))}
+          </div>
+
+          {/* Active Operations Sidebar */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-black text-slate-800">Active Operations</h2>
+            <div className="bg-slate-900 rounded-[1.5rem] p-6 space-y-4 shadow-xl">
+               {requests.filter(r => ['ASSIGNED', 'EN_ROUTE', 'ON_SITE'].includes(r.status)).length === 0 && (
+                 <p className="text-slate-400 text-sm text-center">No active operations.</p>
+               )}
+               {requests.filter(r => ['ASSIGNED', 'EN_ROUTE', 'ON_SITE'].includes(r.status)).map(req => (
+                 <div key={req.id} className="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                    <h4 className="font-bold text-white mb-1">{req.type} - {req.location}</h4>
+                    <p className="text-xs text-slate-400 mb-4">Priority: {req.priority}</p>
+                    
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => handleStatusUpdate(req.id, 'EN_ROUTE')}
+                        className={cn("flex-1 text-[10px] font-bold py-2 rounded uppercase tracking-wider", req.status === 'EN_ROUTE' ? "bg-blue-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600")}
+                      >
+                        En Route
+                      </button>
+                      <button 
+                        onClick={() => handleStatusUpdate(req.id, 'ON_SITE')}
+                        className={cn("flex-1 text-[10px] font-bold py-2 rounded uppercase tracking-wider", req.status === 'ON_SITE' ? "bg-amber-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600")}
+                      >
+                        On Site
+                      </button>
+                      <button 
+                        onClick={() => handleStatusUpdate(req.id, 'RESOLVED')}
+                        className="flex-1 text-[10px] font-bold py-2 rounded uppercase tracking-wider bg-slate-700 text-emerald-400 hover:bg-emerald-500 hover:text-white"
+                      >
+                        Resolve
+                      </button>
+                    </div>
+                 </div>
+               ))}
             </div>
-          ))}
+          </div>
         </div>
       )}
 
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
-            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-2xl font-black text-[#1e293b]">Request Assistance</h2>
-              <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <form onSubmit={handleSubmit} className="p-10 space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Request Category</label>
-                  <div className="relative">
-                    <select name="type" required className="suraksha-input appearance-none cursor-pointer pr-10">
-                      <option value="Rescue">Rescue</option>
-                      <option value="Medical">Medical</option>
-                      <option value="Food/Water">Food/Water</option>
-                      <option value="Shelter">Shelter</option>
-                      <option value="Supplies">Supplies</option>
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                  </div>
+      {activeTab === 'map' && (
+        <div className="suraksha-card p-8 rounded-[1.5rem]">
+           <h3 className="text-xl font-black text-[#1e293b] mb-2">Clustered Request Density</h3>
+           <p className="text-slate-500 text-sm mb-6">Pending requests grouped by 1km grids for optimal responder routing.</p>
+           
+           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {clusters.length === 0 && <p className="text-slate-500">No geo-tagged pending requests.</p>}
+              {clusters.map((cluster: any, idx: number) => (
+                <div key={idx} className="bg-slate-50 border border-slate-100 p-6 rounded-2xl relative overflow-hidden">
+                   <div className="absolute -right-6 -top-6 w-24 h-24 bg-red-100 rounded-full flex items-center justify-center opacity-50 pointer-events-none">
+                     <span className="text-red-500 font-black text-3xl">{cluster.requestCount}</span>
+                   </div>
+                   <MapPin className="w-8 h-8 text-red-500 mb-4 relative z-10" />
+                   <h4 className="font-black text-slate-800 text-lg relative z-10">Cluster #{idx + 1}</h4>
+                   <p className="text-xs text-slate-500 font-bold mb-4 relative z-10">Grid: {cluster.centerLat}, {cluster.centerLng}</p>
+                   
+                   <div className="space-y-2 relative z-10">
+                     {cluster.requests.slice(0, 3).map((r:any) => (
+                       <div key={r.id} className="text-xs font-bold text-slate-700 flex justify-between bg-white p-2 rounded border border-slate-100">
+                         <span>{r.type}</span>
+                         <span className={r.priority === 'CRITICAL' ? 'text-red-500' : ''}>{r.priority}</span>
+                       </div>
+                     ))}
+                     {cluster.requests.length > 3 && (
+                       <p className="text-xs text-slate-400 font-bold mt-2">+{cluster.requests.length - 3} more requests</p>
+                     )}
+                   </div>
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Priority Level</label>
-                  <div className="relative">
-                    <select name="priority" required className="suraksha-input appearance-none cursor-pointer pr-10">
-                      <option value="MEDIUM">Medium</option>
-                      <option value="HIGH">High</option>
-                      <option value="CRITICAL">Critical</option>
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                  </div>
-                </div>
-              </div>
+              ))}
+           </div>
+        </div>
+      )}
 
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Location Details</label>
-                <div className="relative">
-                  <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" />
-                  <input name="location" type="text" placeholder="Building, street, or GPS" required className="suraksha-input pl-14" />
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Affected Persons</label>
-                <input name="peopleCount" type="number" defaultValue="1" min="1" required className="suraksha-input" />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 italic">Describe the Situation</label>
-                <textarea name="description" rows={3} required placeholder="What kind of help is needed immediately?" className="suraksha-input min-h-[100px] py-4 resize-none"></textarea>
-              </div>
-
-              <div className="pt-4">
-                <button
-                  disabled={isSubmitting}
-                  className="suraksha-button w-full h-14 uppercase tracking-widest text-[11px] font-black shadow-blue-500/30"
-                >
-                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : "Submit Help Request"}
-                </button>
-              </div>
-            </form>
+      {activeTab === 'sms' && (
+        <div className="max-w-2xl mx-auto suraksha-card p-8 rounded-[1.5rem]">
+          <div className="flex items-center gap-4 mb-6">
+             <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center">
+               <MessageSquare className="w-7 h-7 text-green-600" />
+             </div>
+             <div>
+               <h3 className="text-2xl font-black text-[#1e293b]">SMS & WhatsApp Intake</h3>
+               <p className="text-slate-500 text-sm font-medium">Test the public webhook endpoint used by our Twilio integration.</p>
+             </div>
           </div>
+
+          <div className="bg-slate-900 p-6 rounded-2xl space-y-4 mb-6 shadow-inner">
+             <div className="flex gap-2 items-end">
+               <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs font-bold shrink-0">CIT</div>
+               <div className="bg-slate-800 p-3 rounded-2xl rounded-bl-none text-slate-200 text-sm max-w-[80%] border border-slate-700">
+                 Send <strong className="text-white">HELP [Type] [Location] [Count]</strong> to 1919.
+               </div>
+             </div>
+
+             <form onSubmit={simulateSms} className="flex gap-2 items-end justify-end mt-4">
+                <input 
+                  type="text" value={smsPayload} onChange={e => setSmsPayload(e.target.value)} required
+                  className="bg-emerald-900/50 border border-emerald-500/50 text-emerald-100 p-3 rounded-2xl rounded-br-none text-sm w-[80%] focus:outline-none focus:border-emerald-400"
+                />
+                <button type="submit" className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 hover:bg-emerald-400 transition-colors">
+                  <Navigation className="w-4 h-4 -rotate-45 ml-1" />
+                </button>
+             </form>
+
+             {smsResponse && (
+               <div className="flex gap-2 items-end mt-4">
+                 <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">SYS</div>
+                 <div className="bg-slate-800 p-3 rounded-2xl rounded-bl-none text-blue-300 text-sm max-w-[80%] border border-slate-700 font-mono">
+                   {smsResponse}
+                 </div>
+               </div>
+             )}
+          </div>
+          <p className="text-xs text-slate-400 text-center font-medium">Submitting this form triggers the same backend logic as an incoming Twilio webhook.</p>
         </div>
       )}
     </div>

@@ -1,69 +1,29 @@
 import { Request, Response } from 'express';
 import * as helpRequestService from '../services/helpRequestService';
 
-/**
- * @swagger
- * tags:
- *   name: HelpRequests
- *   description: Help request management and verification
- */
-
-/**
- * @swagger
- * /api/help-requests:
- *   post:
- *     summary: Create a new help request
- *     tags: [HelpRequests]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - type
- *               - description
- *               - location
- *             properties:
- *               type: { type: string }
- *               description: { type: string }
- *               location: { type: string }
- *               latitude: { type: number }
- *               longitude: { type: number }
- *               peopleCount: { type: number }
- *               priority: { type: string, enum: [LOW, MEDIUM, HIGH, CRITICAL] }
- *     responses:
- *       201:
- *         description: Help request created successfully
- */
-export const createHelpRequest = async (req: any, res: Response) => {
+export const submitPublicRequest = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.userId;
-    const helpRequest = await helpRequestService.createHelpRequest(userId, req.body);
-
+    const request = await helpRequestService.submitPublicRequest(req.body);
     const io = req.app.get('socketio');
-    io.emit('new-help-request', helpRequest);
-
-    res.status(201).json(helpRequest);
+    if (io) io.emit('new-help-request', request);
+    res.status(201).json(request);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
 
-/**
- * @swagger
- * /api/help-requests:
- *   get:
- *     summary: Get all help requests
- *     tags: [HelpRequests]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of help requests
- */
+export const createHelpRequest = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const request = await helpRequestService.createHelpRequest(userId, req.body);
+    const io = req.app.get('socketio');
+    if (io) io.emit('new-help-request', request);
+    res.status(201).json(request);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 export const getHelpRequests = async (req: Request, res: Response) => {
   try {
     const requests = await helpRequestService.getHelpRequests();
@@ -73,31 +33,69 @@ export const getHelpRequests = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * @swagger
- * /api/help-requests/register-verifier:
- *   post:
- *     summary: Register as a local verifier
- *     tags: [HelpRequests]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - verifierRole
- *               - jurisdiction
- *             properties:
- *               verifierRole: { type: string }
- *               jurisdiction: { type: string }
- *               orgName: { type: string }
- *     responses:
- *       201:
- *         description: Verifier registered successfully
- */
+export const handleSMSWebhook = async (req: Request, res: Response) => {
+  try {
+    const responseMessage = await helpRequestService.handleSMSWebhook(req.body);
+    const io = req.app.get('socketio');
+    if (io) io.emit('new-help-request', { message: 'New SMS request arrived' });
+    
+    // Simulate Twilio TwiML response
+    res.type('text/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>${responseMessage}</Message></Response>`);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const assignResponder = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { volunteerId } = req.body;
+    const request = await helpRequestService.assignResponder(id as string, volunteerId);
+    
+    const io = req.app.get('socketio');
+    if (io) io.emit('help-request-updated', request);
+
+    res.json(request);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const updateRequestStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const request = await helpRequestService.updateRequestStatus(id as string, status);
+    
+    const io = req.app.get('socketio');
+    if (io) io.emit('help-request-updated', request);
+
+    res.json(request);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getClusteredRequests = async (req: Request, res: Response) => {
+  try {
+    const clusters = await helpRequestService.getClusteredRequests();
+    res.json(clusters);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const checkEscalations = async (req: Request, res: Response) => {
+  try {
+    const result = await helpRequestService.checkEscalations();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+// Legacy Verifier code
 export const registerAsVerifier = async (req: any, res: Response) => {
   try {
     const userId = req.user.userId;
@@ -108,31 +106,6 @@ export const registerAsVerifier = async (req: any, res: Response) => {
   }
 };
 
-/**
- * @swagger
- * /api/help-requests/verify:
- *   post:
- *     summary: Submit a verification action for an incident or help request
- *     tags: [HelpRequests]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - result
- *             properties:
- *               incidentId: { type: string }
- *               helpRequestId: { type: string }
- *               result: { type: string, enum: [CONFIRMED, REJECTED, NEEDS_INVESTIGATION] }
- *               comment: { type: string }
- *     responses:
- *       201:
- *         description: Verification action recorded successfully
- */
 export const verifyAction = async (req: any, res: Response) => {
   try {
     const userId = req.user.userId;

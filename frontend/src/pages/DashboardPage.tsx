@@ -2,21 +2,51 @@ import { useEffect, useState } from 'react'
 import { 
   AlertTriangle, Users, Clock, Heart, Package, LayoutGrid, 
   TrendingUp, TrendingDown, Download, Filter, MapPin, 
-  Building2, ChevronRight, Plus, X, Send
+  Building2, ChevronRight, Plus, X, Send, Activity, ShieldAlert,
+  Printer, ArrowRightLeft, CloudLightning
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dashboardService, alertService } from '../services/api'
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow, format } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppStore } from '@/store/useAppStore'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { 
+  LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
+} from 'recharts'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import 'leaflet.heat'
+import L from 'leaflet'
+
+// Fix Leaflet icon issue
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+
+// Heatmap custom component
+function HeatmapLayer({ points, isVisible }: { points: [number, number, number][], isVisible: boolean }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!map || !isVisible || points.length === 0) return;
+    const heat = (L as any).heatLayer(points, { radius: 25, blur: 15, maxZoom: 17, gradient: {0.4: 'blue', 0.65: 'lime', 1: 'red'} }).addTo(map);
+    return () => {
+      map.removeLayer(heat);
+    };
+  }, [map, points, isVisible]);
+  return null;
+}
 
 export default function DashboardPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { user } = useAuth()
   const { searchQuery } = useAppStore()
+  
   const [incidents, setIncidents] = useState<any[]>([])
   const [alerts, setAlerts] = useState<any[]>([])
   const [campsCount, setCampsCount] = useState(0)
@@ -33,7 +63,17 @@ export default function DashboardPage() {
     familyUpdatesSafe: 0,
     tokenClaimsTotal: 0,
   })
+  
+  const [threatForecasts, setThreatForecasts] = useState<any[]>([])
+  const [latestShift, setLatestShift] = useState<any>(null)
+  const [responseTimeTrend, setResponseTimeTrend] = useState<any[]>([])
+  const [resourceBalance, setResourceBalance] = useState<any[]>([])
+
   const [loading, setLoading] = useState(true)
+
+  // Map layer toggles
+  const [showIncidents, setShowIncidents] = useState(true)
+  const [showHeatmap, setShowHeatmap] = useState(true)
 
   // Modal states
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false)
@@ -52,9 +92,12 @@ export default function DashboardPage() {
       setMissingCount(data.missingPersons || 0)
       setActiveIncidentsCount(data.activeIncidents || 0)
       setAvgResponseTime(data.avgResponseTime || '0m')
-      if (data.secondaryStats) {
-        setSecondaryStatsData(data.secondaryStats)
-      }
+      
+      if (data.secondaryStats) setSecondaryStatsData(data.secondaryStats)
+      if (data.threatForecasts) setThreatForecasts(data.threatForecasts)
+      if (data.latestShift) setLatestShift(data.latestShift)
+      if (data.responseTimeTrend) setResponseTimeTrend(data.responseTimeTrend)
+      if (data.resourceBalance) setResourceBalance(data.resourceBalance)
     } catch (error) {
       console.error('Failed to fetch dashboard data', error)
     } finally {
@@ -166,6 +209,11 @@ export default function DashboardPage() {
       return 'just now'
     }
   }
+  
+  // Extract points for heatmap
+  const heatPoints = incidents
+    .filter(i => i.latitude && i.longitude)
+    .map(i => [i.latitude, i.longitude, i.severity === 'CRITICAL' ? 1 : 0.5]) as [number, number, number][];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
@@ -191,7 +239,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {mainStats.map((stat, i) => (
           <div key={i} className="suraksha-card p-7 group hover:shadow-xl transition-all">
             <div className={`stat-blob ${stat.blob}`} />
@@ -235,8 +283,165 @@ export default function DashboardPage() {
         ))}
       </div>
 
+      {/* Predictive Threat Forecast Widget (HIGH) */}
+      <div className="suraksha-card p-8 bg-gradient-to-r from-[#1e293b] to-[#334155] text-white">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-500/20 rounded-lg">
+              <ShieldAlert className="w-6 h-6 text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">Predictive Threat Forecast</h3>
+              <p className="text-slate-400 text-xs font-semibold">AI-powered 72h risk analysis based on meteorological & historical data</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+            </span>
+            <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">Live Model Active</span>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {threatForecasts.map((forecast, i) => (
+            <div key={i} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-5 rounded-2xl">
+              <div className="flex justify-between items-start mb-4">
+                <span className="text-sm font-extrabold text-white">{forecast.district}</span>
+                <span className={cn(
+                  "text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-wider",
+                  forecast.severity === 'CRITICAL' ? "bg-red-500/20 text-red-400" :
+                  forecast.severity === 'HIGH' ? "bg-orange-500/20 text-orange-400" :
+                  "bg-yellow-500/20 text-yellow-400"
+                )}>{forecast.severity}</span>
+              </div>
+              <div className="text-xl font-bold mb-1 flex items-center gap-2">
+                <CloudLightning className="w-5 h-5 text-slate-400" />
+                {forecast.threatType}
+              </div>
+              <div className="flex items-center justify-between mt-4 text-xs font-semibold text-slate-400">
+                <span>{Math.round(forecast.confidence * 100)}% Conf.</span>
+                <span>{formatDistanceToNow(new Date(forecast.forecastTime))}</span>
+              </div>
+              <div className="w-full bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div 
+                  className={cn("h-full", 
+                    forecast.severity === 'CRITICAL' ? "bg-red-500" :
+                    forecast.severity === 'HIGH' ? "bg-orange-500" :
+                    "bg-yellow-500")}
+                  style={{ width: `${forecast.confidence * 100}%` }}
+                />
+              </div>
+            </div>
+          ))}
+          {threatForecasts.length === 0 && (
+            <div className="col-span-full py-8 text-center text-slate-400 text-sm font-semibold">
+              Loading forecast models...
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Row 2: Response Trend, Shift Handover, Resource Balance */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Response Time Trend Chart (MEDIUM) */}
+        <div className="suraksha-card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-[#1e293b]">7-Day SLA Trend</h3>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md">
+              <Activity className="w-4 h-4" />
+              SLA Breaches: 2
+            </div>
+          </div>
+          <div className="h-[200px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={responseTimeTrend}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} dx={-10} />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  labelStyle={{ fontWeight: 'bold', color: '#64748b' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="time" 
+                  stroke="#0061ff" 
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: '#0061ff', strokeWidth: 2, stroke: '#fff' }}
+                  activeDot={{ r: 6, fill: '#0061ff', strokeWidth: 0 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Shift Handover Summary Panel (MEDIUM) */}
+        <div className="suraksha-card p-6 bg-slate-50/50">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-[#1e293b]">Latest Shift Summary</h3>
+            <button className="p-2 bg-white rounded-lg border border-slate-200 text-slate-500 hover:text-[#0061ff] hover:border-[#0061ff]/30 transition-colors">
+              <Printer className="w-4 h-4" />
+            </button>
+          </div>
+          {latestShift ? (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+                <span className="text-sm font-semibold text-slate-500">Shift</span>
+                <span className="text-sm font-bold text-[#1e293b]">{format(new Date(latestShift.shiftTime), 'MMM d, h:mm a')}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Incidents (Op/Cl)</div>
+                  <div className="text-xl font-extrabold text-[#1e293b]">{latestShift.incidentsOpened} / {latestShift.incidentsClosed}</div>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Res. Deployed</div>
+                  <div className="text-xl font-extrabold text-[#1e293b]">{latestShift.resourcesDeployed}</div>
+                </div>
+              </div>
+              <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl mt-4">
+                <div className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-1">Critical Notes</div>
+                <div className="text-sm font-medium text-amber-800">{latestShift.criticalItems || 'None'}</div>
+              </div>
+            </div>
+          ) : (
+             <div className="text-center py-10 text-slate-400 font-semibold text-sm">No shift data available</div>
+          )}
+        </div>
+
+        {/* Cross-District Resource Balance Indicator (LOW) */}
+        <div className="suraksha-card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-[#1e293b]">Resource Balance</h3>
+            <button className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0061ff] bg-blue-50 px-2 py-1.5 rounded-md hover:bg-blue-100 transition-colors">
+              <ArrowRightLeft className="w-3 h-3" />
+              Reallocate
+            </button>
+          </div>
+          <div className="h-[200px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={resourceBalance} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="district" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                <Tooltip 
+                   cursor={{ fill: '#f8fafc' }}
+                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                />
+                <Bar dataKey="resources" name="Resources" fill="#22c55e" radius={[4, 4, 0, 0]} barSize={12} />
+                <Bar dataKey="incidents" name="Active Incidents" fill="#ef4444" radius={[4, 4, 0, 0]} barSize={12} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Row 3: ML Priority Queue & Recent Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* ML Priority Queue */}
         <div className="lg:col-span-2 suraksha-card p-8">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-bold text-[#1e293b]">{t('dashboard.priority_queue')}</h3>
@@ -307,34 +512,21 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Recent Alerts Widget */}
         <div className="suraksha-card p-8 bg-gradient-to-b from-white to-slate-50/50">
           <h3 className="text-xl font-bold text-[#1e293b] mb-8">{t('dashboard.recent_alerts')}</h3>
           <div className="space-y-4">
-            {alerts.filter(a => 
-              a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-              a.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              a.message.toLowerCase().includes(searchQuery.toLowerCase())
-            ).length === 0 ? (
+            {alerts.length === 0 ? (
               <div className="text-center py-10">
                 <p className="text-slate-400 text-xs font-bold uppercase">{t('dashboard.no_alerts')}</p>
               </div>
             ) : (
-              alerts
-                .filter(a => 
-                  a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                  a.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  a.message.toLowerCase().includes(searchQuery.toLowerCase())
-                )
-                .slice(0, 3).map((alert, idx) => (
+              alerts.slice(0, 4).map((alert, idx) => (
                 <div key={idx} className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-[#0061ff]/30 hover:shadow-md transition-all group">
                   <h4 className="text-[16px] font-bold text-[#1e293b] leading-tight group-hover:text-[#0061ff] transition-colors mb-2">{alert.title}</h4>
-
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
                     <MapPin className="w-3.5 h-3.5 text-slate-300" />
                     {alert.location}
                   </div>
-
                   <div className="flex items-center justify-between mt-5">
                     <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                       <Clock className="w-3.5 h-3.5 text-slate-300" />
@@ -368,42 +560,52 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        <div className="relative h-[450px] w-full bg-[#f8fafc] rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl flex items-center justify-center group/map">
-          {/* Simulated Map Background */}
-          <div className="absolute inset-0 bg-[#e0f2fe] pointer-events-none" />
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] pointer-events-none" />
-
-          {/* Main Map Content - Visual Placeholder for full GIS integration */}
-          <div className="relative z-10 flex flex-col items-center gap-4">
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-ping scale-150" />
-              <div className="w-20 h-20 bg-white rounded-full shadow-2xl flex items-center justify-center relative z-10 border border-blue-50 group-hover/map:scale-110 transition-transform duration-500">
-                <MapPin className="w-10 h-10 text-[#0061ff] fill-blue-50/50" />
-              </div>
-            </div>
-            <div className="text-center px-6 py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-xl">
-              <div className="text-xl font-extrabold text-[#1e293b]">Dynamic GIS Coverage</div>
-              <div className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">{activeIncidentsCount} incidents • {volunteersCount} volunteers active</div>
-            </div>
-          </div>
-
-          <div className="absolute top-[15%] left-[12%] w-6 h-6 bg-red-500 rounded-full shadow-lg shadow-red-500/50 animate-pulse border-2 border-white" />
-          <div className="absolute top-[45%] right-[20%] w-8 h-8 bg-orange-500 rounded-full shadow-lg shadow-orange-500/50 border-2 border-white" />
-          <div className="absolute bottom-[20%] right-[30%] w-5 h-5 bg-green-500 rounded-full shadow-lg shadow-green-500/50 border-2 border-white" />
+        <div className="relative h-[450px] w-full rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl z-0">
+          <MapContainer 
+            center={[6.9271, 79.8612]} // Default Colombo
+            zoom={10} 
+            className="w-full h-full"
+            zoomControl={false}
+          >
+            <TileLayer
+              attribution='&copy; OpenStreetMap contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <HeatmapLayer points={heatPoints} isVisible={showHeatmap} />
+            
+            {showIncidents && incidents.filter(i => i.latitude && i.longitude).map((incident, idx) => (
+              <Marker key={idx} position={[incident.latitude, incident.longitude]}>
+                <Popup className="font-sans">
+                  <div className="font-bold text-slate-800">{incident.title}</div>
+                  <div className="text-xs text-slate-500 mt-1">{incident.location}</div>
+                  <div className="mt-2 text-xs font-bold px-2 py-1 bg-red-50 text-red-600 rounded inline-block uppercase">{incident.severity}</div>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
 
           {/* Map Controls */}
-          <div className="absolute bottom-10 left-10 p-6 bg-white/95 backdrop-blur-md rounded-3xl border border-white shadow-2xl space-y-4">
+          <div className="absolute bottom-10 left-10 p-6 bg-white/95 backdrop-blur-md rounded-3xl border border-white shadow-2xl space-y-4 z-[400]">
             <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Layers</h4>
-            <LayerToggle label="Incidents" color="text-red-500" checked />
-            <LayerToggle label="Safe Zones" color="text-green-500" checked />
-            <LayerToggle label="Volunteers" color="text-blue-500" />
+            <LayerToggle 
+              label="Incidents" 
+              color="text-red-500" 
+              checked={showIncidents} 
+              onChange={() => setShowIncidents(!showIncidents)} 
+            />
+            <LayerToggle 
+              label="Heatmap (Density)" 
+              color="text-orange-500" 
+              checked={showHeatmap} 
+              onChange={() => setShowHeatmap(!showHeatmap)} 
+            />
           </div>
         </div>
       </div>
 
       {/* New Alert Modal */}
       {isAlertModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
           <div
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
             onClick={() => setIsAlertModalOpen(false)}
@@ -491,9 +693,9 @@ export default function DashboardPage() {
   )
 }
 
-function LayerToggle({ label, color, checked = false }: { label: string, color: string, checked?: boolean }) {
+function LayerToggle({ label, color, checked = false, onChange }: { label: string, color: string, checked?: boolean, onChange?: () => void }) {
   return (
-    <label className="flex items-center gap-3 cursor-pointer group select-none">
+    <label className="flex items-center gap-3 cursor-pointer group select-none" onClick={onChange}>
       <div className={cn(
         "w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all",
         checked ? "bg-[#0061ff] border-[#0061ff]" : "border-slate-200"

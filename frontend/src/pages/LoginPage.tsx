@@ -10,6 +10,9 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [token2fa, setToken2fa] = useState('')
+  const [requires2FA, setRequires2FA] = useState(false)
+  const [userIdFor2FA, setUserIdFor2FA] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -24,7 +27,12 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
     try {
-      await login({ email, password })
+      const res = await login({ email, password, token2fa: requires2FA ? token2fa : undefined })
+      if (res?.requires2FA) {
+        setRequires2FA(true);
+        setUserIdFor2FA(res.userId);
+        return;
+      }
     } catch (err: any) {
       const message = err.response?.data?.message || 'Login failed. Please check your credentials.';
       const details = err.response?.data?.details ? ` (${err.response.data.details})` : '';
@@ -66,28 +74,45 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Email Address</label>
-            <input
-              required
-              type="email"
-              placeholder="officer@dmc.gov.lk"
-              className="suraksha-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Password</label>
-            <input
-              required
-              type="password"
-              placeholder="••••••••"
-              className="suraksha-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          {!requires2FA ? (
+            <>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Email Address</label>
+                <input
+                  required
+                  type="email"
+                  placeholder="officer@dmc.gov.lk"
+                  className="suraksha-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Password</label>
+                <input
+                  required
+                  type="password"
+                  placeholder="••••••••"
+                  className="suraksha-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Authenticator Code (2FA)</label>
+              <input
+                required
+                type="text"
+                placeholder="000000"
+                maxLength={6}
+                className="suraksha-input text-center text-2xl tracking-[0.5em]"
+                value={token2fa}
+                onChange={(e) => setToken2fa(e.target.value)}
+              />
+            </div>
+          )}
           <button
             type="submit"
             disabled={loading}
@@ -95,10 +120,21 @@ export default function LoginPage() {
           >
             {loading ? (
               <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : requires2FA ? (
+              "Verify Code"
             ) : (
               "Sign In to Account"
             )}
           </button>
+          {requires2FA && (
+            <button
+              type="button"
+              onClick={() => { setRequires2FA(false); setToken2fa(''); }}
+              className="w-full text-center text-xs font-bold text-slate-400 hover:text-slate-600 mt-4"
+            >
+              Cancel
+            </button>
+          )}
         </form>
 
         <div className="text-center pt-4 space-y-4">
