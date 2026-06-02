@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { 
   User, Bell, Shield, Palette, 
   ChevronRight, Globe, Lock, Mail, 
@@ -47,12 +47,28 @@ export default function SettingsPage() {
     officeLocation: 'Colombo Command Center (Region 1)',
     designation: user?.role?.replace('_', ' ') || 'DMC Officer',
     employeeId: 'DMC-2024-0042',
-    bio: 'Senior administrator overseeing Western Province disaster response coordination.'
+    bio: 'Senior administrator overseeing Western Province disaster response coordination.',
+    profilePicture: (user as any)?.profilePicture || null
   })
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setProfileData(prev => ({ ...prev, profilePicture: reader.result as string }))
+        triggerToast('Profile picture ready to be saved')
+      }
+      reader.readAsDataURL(file)
+    }
+  }
   
   const [initialProfileData, setInitialProfileData] = useState(profileData)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
+  const [toastType, setToastType] = useState<'success' | 'error'>('success')
 
   // Notification State
   const [minSeverityPush, setMinSeverityPush] = useState(parseInt(localStorage.getItem('minSeverityPush') || '4'))
@@ -78,8 +94,9 @@ export default function SettingsPage() {
   useEffect(() => { localStorage.setItem('incidentSort', incidentSort) }, [incidentSort])
   useEffect(() => { localStorage.setItem('minSeverityPush', minSeverityPush.toString()) }, [minSeverityPush])
 
-  const triggerToast = (msg: string) => {
+  const triggerToast = (msg: string, type: 'success' | 'error' = 'success') => {
     setToastMessage(msg)
+    setToastType(type)
     setShowToast(true)
     setTimeout(() => setShowToast(false), 3000)
   }
@@ -89,14 +106,14 @@ export default function SettingsPage() {
     setIsSubmitting(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 800))
-      await userService.updateProfile({ name: profileData.name, phone: profileData.phone })
-      updateUser({ name: profileData.name, phone: profileData.phone })
+      await userService.updateProfile({ name: profileData.name, phone: profileData.phone, profilePicture: profileData.profilePicture })
+      updateUser({ name: profileData.name, phone: profileData.phone, profilePicture: profileData.profilePicture })
       
       setInitialProfileData(profileData)
       triggerToast('Profile saved successfully')
     } catch (error) {
       console.error('Update failed:', error)
-      alert('Failed to update profile')
+      triggerToast('Failed to update profile', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -117,10 +134,10 @@ export default function SettingsPage() {
   }
 
   const tabs = [
-    { id: 'profile', name: 'Profile information', icon: User },
-    { id: 'notifications', name: 'Notifications', icon: Bell },
-    { id: 'security', name: 'Security & privacy', icon: Shield },
-    { id: 'preferences', name: 'App preferences', icon: Palette },
+    { id: 'profile', name: t('profile_info'), icon: User },
+    { id: 'notifications', name: t('notifications'), icon: Bell },
+    { id: 'security', name: t('security_privacy'), icon: Shield },
+    { id: 'preferences', name: t('app_preferences'), icon: Palette },
   ]
 
   return (
@@ -131,8 +148,12 @@ export default function SettingsPage() {
       </div>
 
       {showToast && (
-        <div className="fixed bottom-8 right-8 z-[100] animate-in fade-in slide-in-from-bottom-4 flex items-center gap-3 bg-emerald-50 text-emerald-600 px-6 py-4 rounded-2xl border border-emerald-100 font-bold text-sm shadow-2xl backdrop-blur-md">
-          <Check className="w-5 h-5" /> {toastMessage}
+        <div className={cn(
+          "fixed bottom-8 right-8 z-[100] animate-in fade-in slide-in-from-bottom-4 flex items-center gap-3 px-6 py-4 rounded-2xl border font-bold text-sm shadow-2xl backdrop-blur-md",
+          toastType === 'success' ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-red-50 text-red-600 border-red-100"
+        )}>
+          {toastType === 'success' ? <Check className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />} 
+          {toastMessage}
         </div>
       )}
 
@@ -168,14 +189,19 @@ export default function SettingsPage() {
                </div>
 
                <div className="flex gap-6 items-center">
-                 <div className="relative group">
-                   <div className="w-20 h-20 rounded-2xl bg-[#0061ff] flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                     {profileData.name.slice(0, 2).toUpperCase()}
-                   </div>
-                   <button onClick={() => triggerToast('Avatar update coming soon')} className="absolute -bottom-2 -right-2 p-1.5 bg-slate-800 border border-slate-700 rounded-full shadow-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
-                     <Camera className="w-4 h-4" />
-                   </button>
-                 </div>
+                  <div className="relative group">
+                    {profileData.profilePicture ? (
+                      <img src={profileData.profilePicture} alt="Profile" className="w-20 h-20 rounded-2xl object-cover shadow-lg border border-slate-700" />
+                    ) : (
+                      <div className="w-20 h-20 rounded-2xl bg-[#0061ff] flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                        {profileData.name.slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                    <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+                    <button type="button" onClick={() => fileInputRef.current?.click()} className="absolute -bottom-2 -right-2 p-1.5 bg-slate-800 border border-slate-700 rounded-full shadow-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                      <Camera className="w-4 h-4" />
+                    </button>
+                  </div>
                  <div>
                    <h3 className="text-xl font-bold text-white">{profileData.name}</h3>
                    <div className="flex items-center gap-2 mt-1 px-3 py-1 bg-slate-800 rounded-full border border-slate-700 w-fit">
@@ -368,35 +394,35 @@ export default function SettingsPage() {
           {activeTab === 'preferences' && (
             <div className="p-8 space-y-8 animate-in fade-in">
                <div className="space-y-1 pb-6 border-b border-slate-800">
-                 <h2 className="text-lg font-bold text-white">App preferences</h2>
-                 <p className="text-sm text-slate-400">Customize your workspace and dashboard behavior</p>
+                 <h2 className="text-lg font-bold text-white">{t('app_preferences')}</h2>
+                 <p className="text-sm text-slate-400">{t('settings_page.customize_workspace')}</p>
                </div>
 
                <div className="space-y-8">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    <div className="space-y-4">
-                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Interface Theme</h3>
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t('settings_page.interface_theme')}</h3>
                      <div className="grid grid-cols-3 gap-3">
-                       {['dark', 'light', 'system'].map(t => (
+                       {['dark', 'light', 'system'].map(t_theme => (
                          <button 
-                           key={t}
-                           onClick={() => setTheme(t)}
+                           key={t_theme}
+                           onClick={() => setTheme(t_theme)}
                            className={cn(
                              "px-4 py-3 rounded-xl border flex flex-col items-center gap-2 transition-all",
-                             theme === t 
+                             theme === t_theme 
                                ? "bg-blue-500/10 border-blue-500/50 text-blue-400" 
                                : "bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800"
                            )}
                          >
-                           {t === 'dark' ? <Moon className="w-5 h-5" /> : t === 'light' ? <Sun className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
-                           <span className="text-xs font-bold capitalize">{t}</span>
+                           {t_theme === 'dark' ? <Moon className="w-5 h-5" /> : t_theme === 'light' ? <Sun className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
+                           <span className="text-xs font-bold capitalize">{t_theme === 'system' ? t('settings_page.system') : t(t_theme)}</span>
                          </button>
                        ))}
                      </div>
                    </div>
 
                    <div className="space-y-4">
-                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Primary Language</h3>
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t('settings_page.primary_language')}</h3>
                      <DarkSelect 
                        value={i18n.language} 
                        onChange={(v: string) => i18n.changeLanguage(v)} 
@@ -409,14 +435,14 @@ export default function SettingsPage() {
 
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    <div className="space-y-4">
-                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Default Map View</h3>
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t('settings_page.default_map_view')}</h3>
                      <div className="space-y-2">
                        {['standard', 'satellite', 'hybrid'].map(v => (
                          <label key={v} className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/50 border border-slate-800 cursor-pointer hover:bg-slate-800 transition-colors">
                            <input type="radio" name="mapView" checked={mapView === v} onChange={() => setMapView(v)} className="w-4 h-4 text-[#0061ff] bg-slate-900 border-slate-700 focus:ring-[#0061ff]" />
                            <span className="text-sm font-bold text-slate-300 capitalize flex items-center gap-2">
                              {v === 'standard' ? <Map className="w-4 h-4" /> : v === 'satellite' ? <Globe className="w-4 h-4" /> : <List className="w-4 h-4" />}
-                             {v} View
+                             {t(`settings_page.${v}_view`)}
                            </span>
                          </label>
                        ))}
@@ -424,14 +450,14 @@ export default function SettingsPage() {
                    </div>
 
                    <div className="space-y-4">
-                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Default Incident Sort</h3>
+                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t('settings_page.default_incident_sort')}</h3>
                      <div className="space-y-2">
                        {['severity', 'recent', 'distance'].map(v => (
                          <label key={v} className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/50 border border-slate-800 cursor-pointer hover:bg-slate-800 transition-colors">
                            <input type="radio" name="sort" checked={incidentSort === v} onChange={() => setIncidentSort(v)} className="w-4 h-4 text-[#0061ff] bg-slate-900 border-slate-700 focus:ring-[#0061ff]" />
                            <span className="text-sm font-bold text-slate-300 capitalize flex items-center gap-2">
                              {v === 'severity' ? <AlertTriangle className="w-4 h-4" /> : v === 'recent' ? <Clock className="w-4 h-4" /> : <Map className="w-4 h-4" />}
-                             By {v}
+                             {t(`settings_page.by_${v}`)}
                            </span>
                          </label>
                        ))}
@@ -440,8 +466,8 @@ export default function SettingsPage() {
                  </div>
 
                  <div className="space-y-4">
-                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Dashboard Behaviour</h3>
-                   <DarkToggle title="Auto-refresh Data" desc="Poll the server for new data every 30 seconds" checked={getPref('dash_refresh', true)} onChange={(v: boolean) => updatePref('dash_refresh', v)} />
+                   <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">{t('settings_page.dashboard_behavior')}</h3>
+                   <DarkToggle title={t('settings_page.auto_refresh')} desc="Poll the server for new data every 30 seconds" checked={getPref('dash_refresh', true)} onChange={(v: boolean) => updatePref('dash_refresh', v)} />
                    <DarkToggle title="Sound Alerts for Critical Incidents" desc="Play a siren sound when a severity 5 incident arrives" checked={getPref('dash_sound', true)} onChange={(v: boolean) => updatePref('dash_sound', v)} />
                    <DarkToggle title="Show ML Confidence Scores" desc="Display predictive accuracy scores on incident rows" checked={getPref('dash_ml', true)} onChange={(v: boolean) => updatePref('dash_ml', v)} />
                    <DarkToggle title="Compact Table Mode" desc="Reduce padding in data tables to show more rows" checked={getPref('dash_compact', false)} onChange={(v: boolean) => updatePref('dash_compact', v)} />

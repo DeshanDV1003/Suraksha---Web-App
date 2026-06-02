@@ -447,9 +447,9 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-center overflow-y-auto p-4 py-8 sm:py-20 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="suraksha-card w-full max-w-xl bg-white p-8 sm:p-10 space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-8 duration-500 shadow-2xl my-auto">
-        <div className="flex items-center justify-between border-b border-slate-50 pb-6">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+      <div className="suraksha-card w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar bg-white p-8 sm:p-10 space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-8 duration-500 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-50 pb-6 shrink-0">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#0061ff]">
               <Shield className="w-6 h-6" />

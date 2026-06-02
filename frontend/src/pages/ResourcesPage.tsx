@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Package, Eye, Phone, Plus, X, Loader2 } from 'lucide-react'
+import { Package, Eye, Phone, Plus, X, Loader2, CheckCircle2, AlertCircle, Copy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { resourceService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
@@ -21,7 +21,25 @@ export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
+  const [contactModal, setContactModal] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null)
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
+
+  const handleCopyContact = async (phone: string) => {
+    try {
+      await navigator.clipboard.writeText(phone)
+      showToast('Phone number copied to clipboard', 'success')
+      setContactModal(null)
+    } catch(e) {
+      showToast('Failed to copy', 'error')
+    }
+  }
   const [newResource, setNewResource] = useState({
     type: '',
     owner: '',
@@ -41,7 +59,7 @@ export default function ResourcesPage() {
       setResources(response.data)
     } catch (error) {
       console.error('Failed to fetch resources:', error)
-      alert('Failed to load resources')
+      showToast('Failed to load resources', 'error')
     } finally {
       setLoading(false)
     }
@@ -52,13 +70,13 @@ export default function ResourcesPage() {
     try {
       setIsSubmitting(true)
       await resourceService.createResource(newResource)
-      alert('Resource added successfully')
+      showToast('Resource added successfully')
       setShowModal(false)
       setNewResource({ type: '', owner: '', location: '', capacity: '', contact: '' })
       fetchResources()
     } catch (error) {
       console.error('Failed to add resource:', error)
-      alert('Failed to add resource')
+      showToast('Failed to add resource', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -184,19 +202,19 @@ export default function ResourcesPage() {
                     <td className="px-8 py-6">
                       <div className="flex items-center justify-center gap-5">
                         <button 
-                          onClick={() => alert(`Resource Details:\nType: ${resource.type}\nOwner: ${resource.owner}\nLocation: ${resource.location}\nCapacity: ${resource.capacity}\nContact: ${resource.contact}`)}
+                          onClick={() => setSelectedResource(resource)}
                           className="text-blue-500 hover:scale-110 transition-transform" 
                           title="View details"
                         >
                           <Eye className="w-5 h-5" />
                         </button>
-                        <a 
-                          href={`tel:${resource.contact}`}
+                        <button 
+                          onClick={() => setContactModal(resource.contact)}
                           className="text-[#00AEEF] hover:scale-110 transition-transform" 
-                          title="Call owner"
+                          title="Contact options"
                         >
                           <Phone className="w-5 h-5" />
-                        </a>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -302,6 +320,112 @@ export default function ResourcesPage() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {selectedResource && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <Package className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-black text-[#1e293b]">Resource Info</h2>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
+                </div>
+              </div>
+              <button onClick={() => setSelectedResource(null)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Type</p>
+                <p className="font-semibold text-slate-800">{selectedResource.type}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Owner</p>
+                <p className="font-semibold text-slate-800">{selectedResource.owner}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Location</p>
+                <p className="font-semibold text-slate-800">{selectedResource.location}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Capacity</p>
+                <p className="font-semibold text-slate-800">{selectedResource.capacity}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contact</p>
+                <p className="font-semibold text-slate-800">{selectedResource.contact}</p>
+              </div>
+            </div>
+            <div className="p-6 pt-0 flex gap-3">
+              <button 
+                onClick={() => setContactModal(selectedResource.contact)}
+                className="flex-1 bg-[#00AEEF] hover:bg-[#009bd6] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/25"
+              >
+                <Phone className="w-4 h-4" />
+                Contact Options
+              </button>
+              <button 
+                onClick={() => setSelectedResource(null)}
+                className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {contactModal && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-8 text-center space-y-6">
+              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-[#0061ff]">
+                <Phone className="w-8 h-8" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-[#1e293b] mb-2">Contact Resource</h3>
+                <p className="text-2xl font-bold tracking-widest text-slate-500 bg-slate-50 py-3 rounded-xl">{contactModal}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <button 
+                  onClick={() => handleCopyContact(contactModal)}
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all"
+                >
+                  <Copy className="w-5 h-5" />
+                  <span className="text-xs">Copy</span>
+                </button>
+                <a 
+                  href={`tel:${contactModal}`}
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-[#00AEEF] hover:bg-[#009bd6] text-white rounded-2xl font-bold transition-all shadow-lg shadow-cyan-500/25"
+                >
+                  <Phone className="w-5 h-5" />
+                  <span className="text-xs">Dial</span>
+                </a>
+              </div>
+              <button 
+                onClick={() => setContactModal(null)}
+                className="w-full py-3 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {toast && (
+        <div className={cn(
+          "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
+        )}>
+          {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
         </div>
       )}
     </div>

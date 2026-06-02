@@ -31,7 +31,12 @@
     "support": "Psychological Support",
     "user_management": "User Management",
     "analytics": "Analytics",
-    "audit": "Audit Logs"
+    "audit": "Audit Logs",
+    "public_help_portal": "Public Help Portal",
+    "public_missing_portal": "Public Missing Portal",
+    "command_center": "Command Center",
+    "safety_support": "Safety & Support",
+    "logout": "Logout"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -107,5 +112,24 @@
     "system_config": "System Config",
     "terminate_session": "Terminate Session",
     "clear_all": "Clear All"
+  },
+  "settings_page": {
+    "customize_workspace": "Customize your workspace and dashboard behavior",
+    "interface_theme": "INTERFACE THEME",
+    "primary_language": "PRIMARY LANGUAGE",
+    "default_map_view": "DEFAULT MAP VIEW",
+    "default_incident_sort": "DEFAULT INCIDENT SORT",
+    "dashboard_behavior": "DASHBOARD BEHAVIOR",
+    "auto_refresh": "Auto-refresh Data",
+    "sound_alerts": "Sound Alerts",
+    "browser_push": "Browser Push Notifications",
+    "min_severity": "Min Severity for Push",
+    "standard_view": "Standard View",
+    "satellite_view": "Satellite View",
+    "hybrid_view": "Hybrid View",
+    "by_severity": "By Severity",
+    "by_recent": "By Recent",
+    "by_distance": "By Distance",
+    "system": "System"
   }
 }

@@ -1,4 +1,4 @@
-import { Search, UserPlus, Eye, Trash2, ChevronDown, UserCheck, X, Shield, ShieldAlert, User, UserCog, Upload, AlertCircle, Phone, Smartphone, Check, ShieldCheck, FileText, Activity } from 'lucide-react'
+import { Search, UserPlus, Eye, Trash2, ChevronDown, UserCheck, X, Shield, ShieldAlert, User, UserCog, Upload, AlertCircle, Phone, Smartphone, Check, ShieldCheck, FileText, Activity, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { userService, authService } from '../services/api'
@@ -15,6 +15,13 @@ export default function UserManagementPage() {
   
   const [isOnboardModalOpen, setIsOnboardModalOpen] = useState(false)
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false)
+
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null)
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
 
   useEffect(() => {
     fetchUsers()
@@ -36,8 +43,9 @@ export default function UserManagementPage() {
     try {
       await userService.updateRole(id, role)
       fetchUsers()
+      showToast('Role updated successfully')
     } catch (err) {
-      alert('Failed to update role')
+      showToast('Failed to update role', 'error')
     }
   }
 
@@ -46,8 +54,9 @@ export default function UserManagementPage() {
     try {
       await userService.deleteUser(id)
       fetchUsers()
+      showToast('User deleted successfully')
     } catch (err) {
-      alert('Failed to delete user')
+      showToast('Failed to delete user', 'error')
     }
   }
 
@@ -55,17 +64,18 @@ export default function UserManagementPage() {
     try {
       await userService.toggleFieldResponderApp(id, !currentStatus)
       fetchUsers()
+      showToast('App status updated successfully')
     } catch (err) {
-      alert('Failed to update app status')
+      showToast('Failed to update app status', 'error')
     }
   }
 
   const handleSendAppLink = async (id: string) => {
     try {
       await userService.sendAppLink(id)
-      alert('App link sent via SMS successfully.')
+      showToast('App link sent via SMS successfully.')
     } catch (err) {
-      alert('Failed to send app link. Ensure user has a valid phone number.')
+      showToast('Failed to send app link. Ensure user has a valid phone number.', 'error')
     }
   }
 
@@ -298,29 +308,41 @@ export default function UserManagementPage() {
           </div>
         )}
 
-        {activeTab === 'RBAC' && <RBACMatrixTab />}
+        {activeTab === 'RBAC' && <RBACMatrixTab showToast={showToast} />}
         {activeTab === 'AUDIT' && <AuditLogsTab />}
-        {activeTab === 'SECURITY' && <SecurityTab />}
+        {activeTab === 'SECURITY' && <SecurityTab showToast={showToast} />}
       </div>
 
       {isOnboardModalOpen && (
         <OnboardSpecialistModal 
           onClose={() => setIsOnboardModalOpen(false)} 
           onSuccess={() => { setIsOnboardModalOpen(false); fetchUsers(); }}
+          showToast={showToast}
         />
       )}
 
       {isBulkImportOpen && (
         <BulkImportModal 
           onClose={() => setIsBulkImportOpen(false)}
-          onSuccess={() => { setIsBulkImportOpen(false); fetchUsers(); }}
+          onSuccess={() => { setIsBulkImportOpen(false); fetchUsers(); showToast('Users imported successfully'); }}
+          showToast={showToast}
         />
+      )}
+
+      {toast && (
+        <div className={cn(
+          "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
+        )}>
+          {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
+        </div>
       )}
     </div>
   )
 }
 
-function RBACMatrixTab() {
+function RBACMatrixTab({ showToast }: any) {
   const [matrix, setMatrix] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -362,10 +384,10 @@ function RBACMatrixTab() {
   const saveMatrix = async () => {
     try {
       await userService.updateRBACMatrix(matrix)
-      alert('RBAC Matrix updated successfully')
+      showToast('RBAC Matrix updated successfully')
       fetchMatrix()
     } catch (err) {
-      alert('Failed to save matrix')
+      showToast('Failed to save matrix', 'error')
     }
   }
 
@@ -491,7 +513,7 @@ function AuditLogsTab() {
   )
 }
 
-function SecurityTab() {
+function SecurityTab({ showToast }: any) {
   const [setupData, setSetupData] = useState<any>(null)
   const [token, setToken] = useState('')
   const [verifying, setVerifying] = useState(false)
@@ -501,7 +523,7 @@ function SecurityTab() {
       const res = await authService.setup2FA()
       setSetupData(res.data)
     } catch(e) {
-      alert('Failed to initiate 2FA setup')
+      showToast('Failed to initiate 2FA setup', 'error')
     }
   }
 
@@ -509,11 +531,11 @@ function SecurityTab() {
     setVerifying(true)
     try {
       await authService.verify2FA(token)
-      alert('2FA Enabled Successfully')
+      showToast('2FA Enabled Successfully')
       setSetupData(null)
       // refresh user state if needed
     } catch(e) {
-      alert('Invalid Token')
+      showToast('Invalid Token', 'error')
     } finally {
       setVerifying(false)
     }
@@ -564,7 +586,7 @@ function SecurityTab() {
   )
 }
 
-function BulkImportModal({ onClose, onSuccess }: any) {
+function BulkImportModal({ onClose, onSuccess, showToast }: any) {
   const [csvData, setCsvData] = useState<any[]>([])
   const [uploading, setUploading] = useState(false)
 
@@ -592,10 +614,9 @@ function BulkImportModal({ onClose, onSuccess }: any) {
         role: row.Role || row.role || 'CITIZEN'
       }))
       await userService.bulkImport(payload)
-      alert('Bulk import completed. Users without errors have been saved.')
       onSuccess()
     } catch(e) {
-      alert('Failed to import')
+      showToast('Failed to import', 'error')
     } finally {
       setUploading(false)
     }
@@ -657,7 +678,7 @@ function BulkImportModal({ onClose, onSuccess }: any) {
   )
 }
 
-function OnboardSpecialistModal({ onClose, onSuccess }: any) {
+function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -675,7 +696,7 @@ function OnboardSpecialistModal({ onClose, onSuccess }: any) {
       onSuccess()
     } catch (err: any) {
       const msg = err.response?.data?.message || 'Failure'
-      alert(`Onboarding Interrupted: ${msg}`)
+      showToast(`Onboarding Interrupted: ${msg}`, 'error')
     } finally {
       setLoading(false)
     }

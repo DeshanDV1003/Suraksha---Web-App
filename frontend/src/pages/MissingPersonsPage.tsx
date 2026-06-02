@@ -300,13 +300,13 @@ export default function MissingPersonsPage() {
 
       {/* Create Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-slate-900/60 backdrop-blur-md p-4 py-8 sm:py-20 animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto">
-            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar rounded-[3rem] shadow-2xl flex flex-col animate-in zoom-in-95 duration-300">
+            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
               <h2 className="text-2xl font-black text-slate-900">File Report</h2>
               <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 text-slate-400 hover:text-slate-600 transition-all"><X className="w-6 h-6" /></button>
             </div>
-            <form onSubmit={handleSubmit} className="p-10 space-y-6 max-h-[70vh] overflow-y-auto">
+            <form onSubmit={handleSubmit} className="p-10 space-y-6 flex-1">
               
               <div className="bg-red-50 p-4 rounded-xl border border-red-100 mb-6">
                 <label className="flex items-center gap-3 cursor-pointer">

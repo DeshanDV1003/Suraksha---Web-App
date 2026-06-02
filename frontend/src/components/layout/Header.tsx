@@ -234,9 +234,17 @@ export function Header() {
               <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-0.5">{user?.region || user?.role?.replace('_', ' ') || 'Region 3 - Colombo'}</p>
             </div>
             <div className="relative">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-black text-sm shadow-lg shadow-primary/20 border-2 border-transparent group-hover:border-primary/20 transition-all">
-                {user?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'DO'}
-              </div>
+              {(user as any)?.profilePicture ? (
+                <img 
+                  src={(user as any).profilePicture} 
+                  alt="Profile" 
+                  className="w-10 h-10 rounded-full object-cover shadow-lg border-2 border-transparent group-hover:border-primary/20 transition-all" 
+                />
+              ) : (
+                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-black text-sm shadow-lg shadow-primary/20 border-2 border-transparent group-hover:border-primary/20 transition-all">
+                  {user?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'DO'}
+                </div>
+              )}
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-card rounded-full flex items-center justify-center shadow-sm border border-border">
                 <ChevronDown className={cn("w-2.5 h-2.5 text-muted-foreground transition-transform", isUserOpen && "rotate-180")} />
               </div>
@@ -248,8 +256,12 @@ export function Header() {
             <div className="absolute top-14 right-0 w-64 bg-card border rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-[100]">
               <div className="p-6 border-b bg-muted/30">
                 <div className="flex items-center gap-3">
-                   <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
-                     <Shield className="w-6 h-6" />
+                   <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary overflow-hidden">
+                     {(user as any)?.profilePicture ? (
+                       <img src={(user as any).profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                     ) : (
+                       <Shield className="w-6 h-6" />
+                     )}
                    </div>
                    <div>
                      <p className="text-sm font-black text-foreground truncate">{user?.name || 'Officer Account'}</p>

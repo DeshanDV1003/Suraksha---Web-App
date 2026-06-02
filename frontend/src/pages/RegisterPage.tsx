@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { authService } from '../services/api'
-import logo from '@/pictures/Full logo.png'
+import logo from '@/pictures/Half logo.png'
+import backgroundVideo from '@/videos/Cinematic_Disaster_Response_Tech_Background.mp4'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -32,8 +33,22 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] p-4 font-sans focus:outline-none">
-      <div className="max-w-[480px] w-full bg-white border border-slate-100 rounded-[2.5rem] shadow-2xl p-10 space-y-8 animate-in fade-in zoom-in duration-300">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden p-4 font-sans focus:outline-none">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={backgroundVideo} type="video/mp4" />
+      </video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-[#1e293b]/60 backdrop-blur-[2px]" />
+
+      <div className="max-w-[480px] w-full bg-white/95 backdrop-blur-xl border-none rounded-[2.5rem] shadow-2xl p-10 space-y-8 animate-in fade-in zoom-in duration-700 relative z-10">
         <div className="text-center space-y-3">
           <div className="w-20 h-20 flex items-center justify-center mx-auto mb-4">
             <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
@@ -51,44 +66,44 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Full Name</label>
-            <input 
+            <input
               required
-              type="text" 
-              placeholder="Deshan Silva" 
+              type="text"
+              placeholder="Deshan Silva"
               className="suraksha-input"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Email Address</label>
-            <input 
+            <input
               required
-              type="email" 
-              placeholder="officer@dmc.gov.lk" 
+              type="email"
+              placeholder="officer@dmc.gov.lk"
               className="suraksha-input"
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
-             <div className="space-y-2">
+            <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Phone Number</label>
-              <input 
+              <input
                 required
-                type="tel" 
-                placeholder="+94 7X XXX XXXX" 
+                type="tel"
+                placeholder="+94 7X XXX XXXX"
                 className="suraksha-input"
                 value={formData.phone}
-                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Assign Role</label>
-              <select 
+              <select
                 className="suraksha-input appearance-none"
                 value={formData.role}
-                onChange={(e) => setFormData({...formData, role: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
               >
                 <option value="CITIZEN">Citizen</option>
                 <option value="DMC_OFFICER">DMC Officer</option>
@@ -98,28 +113,28 @@ export default function RegisterPage() {
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Region / Jurisdiction</label>
-            <input 
+            <input
               required
-              type="text" 
-              placeholder="e.g. Region 3 - Colombo" 
+              type="text"
+              placeholder="e.g. Region 3 - Colombo"
               className="suraksha-input"
               value={formData.region}
-              onChange={(e) => setFormData({...formData, region: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, region: e.target.value })}
             />
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] pl-1">Password</label>
-            <input 
+            <input
               required
-              type="password" 
-              placeholder="••••••••" 
+              type="password"
+              placeholder="••••••••"
               className="suraksha-input"
               value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={loading}
             className="suraksha-button w-full h-14 flex items-center justify-center group"
@@ -136,10 +151,10 @@ export default function RegisterPage() {
         </form>
 
         <div className="text-center pt-2">
-           <p className="text-sm font-bold text-slate-400">
-             Already have an account?{' '}
-             <Link to="/login" className="text-[#0061ff] hover:underline">Sign In</Link>
-           </p>
+          <p className="text-sm font-bold text-slate-400">
+            Already have an account?{' '}
+            <Link to="/login" className="text-[#0061ff] hover:underline">Sign In</Link>
+          </p>
         </div>
       </div>
     </div>

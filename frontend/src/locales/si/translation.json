@@ -31,7 +31,12 @@
     "support": "මනෝවිද්‍යාත්මක සහාය",
     "user_management": "පරිශීලක කළමනාකරණය",
     "analytics": "විශ්ලේෂණ",
-    "audit": "විගණන ලොග"
+    "audit": "විගණන ලොග",
+    "public_help_portal": "මහජන උපකාරක ද්වාරය",
+    "public_missing_portal": "අතුරුදහන් වූවන්ගේ ද්වාරය",
+    "command_center": "විධාන මධ්‍යස්ථානය",
+    "safety_support": "ආරක්ෂාව සහ සහාය",
+    "logout": "ඉවත් වන්න"
   },
   "dashboard": {
     "title": "පුවරුව",
@@ -107,5 +112,24 @@
     "system_config": "පද්ධති වින්‍යාසය",
     "terminate_session": "සැසිය අවසන් කරන්න",
     "clear_all": "සියල්ල මකන්න"
+  },
+  "settings_page": {
+    "customize_workspace": "ඔබගේ සේවා ස්ථානය සහ පුවරුව අභිරුචිකරණය කරන්න",
+    "interface_theme": "අතුරු මුහුණත් තේමාව",
+    "primary_language": "ප්‍රධාන භාෂාව",
+    "default_map_view": "පෙරනිමි සිතියම් දසුන",
+    "default_incident_sort": "පෙරනිමි සිදුවීම් වර්ග කිරීම",
+    "dashboard_behavior": "උපකරණ පුවරුවේ හැසිරීම",
+    "auto_refresh": "දත්ත ස්වයංක්‍රීයව නැවුම් කරන්න",
+    "sound_alerts": "ශබ්ද ඇඟවීම්",
+    "browser_push": "බ්‍රව්සර් දැනුම්දීම්",
+    "min_severity": "තල්ලු කිරීම සඳහා අවම බරපතලකම",
+    "standard_view": "සම්මත දසුන",
+    "satellite_view": "චන්ද්‍රිකා දසුන",
+    "hybrid_view": "දෙමුහුන් දසුන",
+    "by_severity": "බරපතලකම අනුව",
+    "by_recent": "මෑත අනුව",
+    "by_distance": "දුර අනුව",
+    "system": "පද්ධතිය"
   }
 }

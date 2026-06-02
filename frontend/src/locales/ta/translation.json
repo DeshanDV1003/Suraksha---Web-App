@@ -31,7 +31,12 @@
     "support": "உளவியல் ஆதரவு",
     "user_management": "பயனர் மேலாண்மை",
     "analytics": "பகுப்பாய்வு",
-    "audit": "தணிக்கை பதிவுகள்"
+    "audit": "தணிக்கை பதிவுகள்",
+    "public_help_portal": "பொது உதவி போர்ட்டல்",
+    "public_missing_portal": "பொது காணாமல் போனோர் போர்ட்டல்",
+    "command_center": "கட்டளை மையம்",
+    "safety_support": "பாதுகாப்பு மற்றும் ஆதரவு",
+    "logout": "வெளியேறு"
   },
   "dashboard": {
     "title": "டாஷ்போர்டு",
@@ -107,5 +112,24 @@
     "system_config": "கணினி கட்டமைப்பு",
     "terminate_session": "அமர்வை முடிக்கவும்",
     "clear_all": "அனைத்தையும் அழி"
+  },
+  "settings_page": {
+    "customize_workspace": "உங்கள் பணியிடத்தை தனிப்பயனாக்குங்கள்",
+    "interface_theme": "இடைமுக தீம்",
+    "primary_language": "முதன்மை மொழி",
+    "default_map_view": "இயல்புநிலை வரைபட காட்சி",
+    "default_incident_sort": "இயல்புநிலை நிகழ்வு வகைப்பாடு",
+    "dashboard_behavior": "டாஷ்போர்டு நடத்தை",
+    "auto_refresh": "தரவை தானாக புதுப்பிக்கவும்",
+    "sound_alerts": "ஒலி விழிப்பூட்டல்கள்",
+    "browser_push": "உலாவி புஷ் அறிவிப்புகள்",
+    "min_severity": "குறைந்தபட்ச தீவிரம்",
+    "standard_view": "நிலையான காட்சி",
+    "satellite_view": "செயற்கைக்கோள் காட்சி",
+    "hybrid_view": "கலப்பின காட்சி",
+    "by_severity": "தீவிரத்தின் படி",
+    "by_recent": "சமீபத்திய படி",
+    "by_distance": "தூரத்தின் படி",
+    "system": "கணினி"
   }
 }
