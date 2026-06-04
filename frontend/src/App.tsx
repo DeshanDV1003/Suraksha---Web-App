@@ -21,6 +21,8 @@ import HelpRequestsPage from './pages/HelpRequestsPage'
 import DamageAssessmentPage from './pages/DamageAssessmentPage'
 import MissingPersonsPage from './pages/MissingPersonsPage'
 import SupportPage from './pages/SupportPage'
+import { DonationsPage } from './pages/DonationsPage'
+import { FamilySafetyPage } from './pages/FamilySafetyPage'
 import PublicRequestPortal from '@/pages/PublicRequestPortal'
 import PublicMissingPortal from '@/pages/PublicMissingPortal'
 
@@ -136,6 +138,8 @@ const ProtectedRoutes = () => {
         <Route path="/damage-assessment" element={<DamageAssessmentPage />} />
         <Route path="/missing-persons" element={<MissingPersonsPage />} />
         <Route path="/support" element={<SupportPage />} />
+        <Route path="/donations" element={<DonationsPage />} />
+        <Route path="/family-safety" element={<FamilySafetyPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </DashboardLayout>

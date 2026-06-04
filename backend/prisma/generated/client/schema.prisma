@@ -38,6 +38,11 @@ model User {
   assignedTasks            Task[]                        @relation("AssignedTasks")
   volunteerProfile         VolunteerProfile?
   sessionLogs              UserSessionLog[]
+  currentSectorId          String?
+  currentSector            Sector?                       @relation(fields: [currentSectorId], references: [id])
+  donations                Donation[]
+  safetyCheckIns           SafetyCheckIn[]
+  familyMembers            FamilyMember[]
 }
 
 model IncidentReport {
@@ -83,6 +88,17 @@ model Alert {
   acknowledgementRate  Float?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
+  targetSectors        String[]  @default([])
+}
+
+model Sector {
+  id          String  @id // Geohash string (e.g., 'tc0xw') or GN Division code
+  name        String? // Optional friendly name if GN Division
+  type        String  @default("GRID") // "GRID" or "ADMINISTRATIVE"
+  polygonData Json? // The GeoJSON boundaries of this sector (mainly for GN Divisions)
+  district    String?
+  province    String?
+  users       User[] // Users currently in this sector
 }
 
 model ReliefCamp {
@@ -104,6 +120,7 @@ model ReliefCamp {
   referrals        HospitalReferral[]
   transfersOut     CampTransferRequest[] @relation("TransfersOut")
   transfersIn      CampTransferRequest[] @relation("TransfersIn")
+  donations        Donation[]
 }
 
 model Resource {
@@ -789,6 +806,68 @@ model GroupTherapySession {
   maxParticipants Int                       @default(20)
   status          String                    @default("SCHEDULED")
   participants    GroupTherapyParticipant[]
+}
+
+model Donation {
+  id               String         @id @default(uuid())
+  donorId          String?
+  donorName        String
+  type             DonationType
+  amount           Float?
+  itemsDescription String?
+  transactionId    String? // For tracking payment gateway transactions
+  paymentGateway   String? // e.g., 'STRIPE', 'PAYPAL', 'SURAKSHA_PAY'
+  transactionDate  DateTime?
+  status           DonationStatus @default(PENDING)
+  campId           String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  donor            User?          @relation(fields: [donorId], references: [id])
+  camp             ReliefCamp?    @relation(fields: [campId], references: [id])
+}
+
+enum DonationType {
+  MONETARY
+  MATERIAL
+}
+
+enum DonationStatus {
+  PENDING
+  RECEIVED
+  ALLOCATED
+}
+
+model SafetyCheckIn {
+  id        String       @id @default(uuid())
+  userId    String
+  status    SafetyStatus
+  message   String?
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime     @default(now())
+  user      User         @relation(fields: [userId], references: [id])
+}
+
+model FamilyMember {
+  id            String       @id @default(uuid())
+  primaryUserId String
+  name          String
+  relation      String
+  status        SafetyStatus
+  notes         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  primaryUser   User         @relation(fields: [primaryUserId], references: [id])
+}
+
+enum SafetyStatus {
+  SAFE
+  NEEDS_HELP
+  UNKNOWN
+  INJURED
+  EVACUATED
+  TRAPPED
+  SHELTERED
 }
 
 model GroupTherapyParticipant {

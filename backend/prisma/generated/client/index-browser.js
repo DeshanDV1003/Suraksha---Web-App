@@ -137,7 +137,8 @@ exports.Prisma.UserScalarFieldEnum = {
   twoFactorGracePeriodEnds: 'twoFactorGracePeriodEnds',
   hasMobileApp: 'hasMobileApp',
   lastCheckInTime: 'lastCheckInTime',
-  isFieldActive: 'isFieldActive'
+  isFieldActive: 'isFieldActive',
+  currentSectorId: 'currentSectorId'
 };
 
 exports.Prisma.IncidentReportScalarFieldEnum = {
@@ -175,7 +176,17 @@ exports.Prisma.AlertScalarFieldEnum = {
   translatedMsgTamil: 'translatedMsgTamil',
   acknowledgementRate: 'acknowledgementRate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  targetSectors: 'targetSectors'
+};
+
+exports.Prisma.SectorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  polygonData: 'polygonData',
+  district: 'district',
+  province: 'province'
 };
 
 exports.Prisma.ReliefCampScalarFieldEnum = {
@@ -697,6 +708,43 @@ exports.Prisma.GroupTherapySessionScalarFieldEnum = {
   status: 'status'
 };
 
+exports.Prisma.DonationScalarFieldEnum = {
+  id: 'id',
+  donorId: 'donorId',
+  donorName: 'donorName',
+  type: 'type',
+  amount: 'amount',
+  itemsDescription: 'itemsDescription',
+  transactionId: 'transactionId',
+  paymentGateway: 'paymentGateway',
+  transactionDate: 'transactionDate',
+  status: 'status',
+  campId: 'campId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SafetyCheckInScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  message: 'message',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FamilyMemberScalarFieldEnum = {
+  id: 'id',
+  primaryUserId: 'primaryUserId',
+  name: 'name',
+  relation: 'relation',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.GroupTherapyParticipantScalarFieldEnum = {
   id: 'id',
   sessionId: 'sessionId',
@@ -868,10 +916,32 @@ exports.ReferralStatus = exports.$Enums.ReferralStatus = {
   DISCHARGED: 'DISCHARGED'
 };
 
+exports.DonationType = exports.$Enums.DonationType = {
+  MONETARY: 'MONETARY',
+  MATERIAL: 'MATERIAL'
+};
+
+exports.DonationStatus = exports.$Enums.DonationStatus = {
+  PENDING: 'PENDING',
+  RECEIVED: 'RECEIVED',
+  ALLOCATED: 'ALLOCATED'
+};
+
+exports.SafetyStatus = exports.$Enums.SafetyStatus = {
+  SAFE: 'SAFE',
+  NEEDS_HELP: 'NEEDS_HELP',
+  UNKNOWN: 'UNKNOWN',
+  INJURED: 'INJURED',
+  EVACUATED: 'EVACUATED',
+  TRAPPED: 'TRAPPED',
+  SHELTERED: 'SHELTERED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   IncidentReport: 'IncidentReport',
   Alert: 'Alert',
+  Sector: 'Sector',
   ReliefCamp: 'ReliefCamp',
   Resource: 'Resource',
   Task: 'Task',
@@ -918,6 +988,9 @@ exports.Prisma.ModelName = {
   ChatSession: 'ChatSession',
   ChatMessage: 'ChatMessage',
   GroupTherapySession: 'GroupTherapySession',
+  Donation: 'Donation',
+  SafetyCheckIn: 'SafetyCheckIn',
+  FamilyMember: 'FamilyMember',
   GroupTherapyParticipant: 'GroupTherapyParticipant',
   MentalHealthGuide: 'MentalHealthGuide'
 };

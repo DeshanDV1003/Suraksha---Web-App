@@ -16,7 +16,9 @@ import {
   Home,
   UserSearch,
   HandHelping,
-  ExternalLink
+  ExternalLink,
+  CreditCard,
+  ShieldCheck
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -66,6 +68,7 @@ export function Sidebar() {
     { name: t('nav.resources'), href: '/resources', icon: Package, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
     { name: t('nav.camps'), href: '/camps', icon: Building2, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
     { name: t('nav.tokens'), href: '/tokens', icon: QrCode, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: 'Donations', href: '/donations', icon: CreditCard, roles: ['ADMIN', 'DMC_OFFICER'] },
   ].filter(item => item.roles.includes(role))
 
   const safetyNavigation = [
@@ -73,6 +76,7 @@ export function Sidebar() {
     { name: t('nav.help_requests'), href: '/help-requests', icon: HandHelping, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
     { name: t('nav.damage_assessment'), href: '/damage-assessment', icon: Home, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
     { name: t('nav.missing_persons'), href: '/missing-persons', icon: UserSearch, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
+    { name: 'Safety Roster', href: '/family-safety', icon: ShieldCheck, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN', 'VOLUNTEER'] },
     { name: t('nav.support'), href: '/support', icon: HeartPulse, roles: ['ADMIN', 'DMC_OFFICER', 'CITIZEN'] },
     { name: t('nav.public_help_portal'), href: '/request-help', icon: ExternalLink, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
     { name: t('nav.public_missing_portal'), href: '/missing-portal', icon: ExternalLink, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },

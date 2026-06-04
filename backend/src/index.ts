@@ -27,6 +27,8 @@ import auditRoutes from './routes/auditRoutes';
 import notificationRoutes from './routes/notificationRoutes';
 import locationRoutes from './routes/locationRoutes';
 import mapRoutes from './routes/mapRoutes';
+import donationRoutes from './routes/donationRoutes';
+import familyRoutes from './routes/familyRoutes';
 
 dotenv.config();
 
@@ -68,6 +70,8 @@ app.use('/api/audit', auditRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/location', locationRoutes);
 app.use('/api/map', mapRoutes);
+app.use('/api/donations', donationRoutes);
+app.use('/api/family', familyRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -84,6 +88,12 @@ io.on('connection', (socket) => {
   socket.on('join_chat', (sessionId) => {
     socket.join(sessionId);
     console.log(`Socket ${socket.id} joined chat session ${sessionId}`);
+  });
+
+  // Location/Alert feature WebSockets
+  socket.on('join_sector', (sectorId) => {
+    socket.join(`sector_${sectorId}`);
+    console.log(`Socket ${socket.id} subscribed to alerts for sector ${sectorId}`);
   });
 
   socket.on('send_message', async (data) => {

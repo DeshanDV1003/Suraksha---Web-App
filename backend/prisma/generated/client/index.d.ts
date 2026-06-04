@@ -29,6 +29,11 @@ export type IncidentReport = $Result.DefaultSelection<Prisma.$IncidentReportPayl
  */
 export type Alert = $Result.DefaultSelection<Prisma.$AlertPayload>
 /**
+ * Model Sector
+ * 
+ */
+export type Sector = $Result.DefaultSelection<Prisma.$SectorPayload>
+/**
  * Model ReliefCamp
  * 
  */
@@ -259,6 +264,21 @@ export type ChatMessage = $Result.DefaultSelection<Prisma.$ChatMessagePayload>
  */
 export type GroupTherapySession = $Result.DefaultSelection<Prisma.$GroupTherapySessionPayload>
 /**
+ * Model Donation
+ * 
+ */
+export type Donation = $Result.DefaultSelection<Prisma.$DonationPayload>
+/**
+ * Model SafetyCheckIn
+ * 
+ */
+export type SafetyCheckIn = $Result.DefaultSelection<Prisma.$SafetyCheckInPayload>
+/**
+ * Model FamilyMember
+ * 
+ */
+export type FamilyMember = $Result.DefaultSelection<Prisma.$FamilyMemberPayload>
+/**
  * Model GroupTherapyParticipant
  * 
  */
@@ -445,6 +465,36 @@ export const TokenCategory: {
 
 export type TokenCategory = (typeof TokenCategory)[keyof typeof TokenCategory]
 
+
+export const DonationType: {
+  MONETARY: 'MONETARY',
+  MATERIAL: 'MATERIAL'
+};
+
+export type DonationType = (typeof DonationType)[keyof typeof DonationType]
+
+
+export const DonationStatus: {
+  PENDING: 'PENDING',
+  RECEIVED: 'RECEIVED',
+  ALLOCATED: 'ALLOCATED'
+};
+
+export type DonationStatus = (typeof DonationStatus)[keyof typeof DonationStatus]
+
+
+export const SafetyStatus: {
+  SAFE: 'SAFE',
+  NEEDS_HELP: 'NEEDS_HELP',
+  UNKNOWN: 'UNKNOWN',
+  INJURED: 'INJURED',
+  EVACUATED: 'EVACUATED',
+  TRAPPED: 'TRAPPED',
+  SHELTERED: 'SHELTERED'
+};
+
+export type SafetyStatus = (typeof SafetyStatus)[keyof typeof SafetyStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -510,6 +560,18 @@ export const ReferralStatus: typeof $Enums.ReferralStatus
 export type TokenCategory = $Enums.TokenCategory
 
 export const TokenCategory: typeof $Enums.TokenCategory
+
+export type DonationType = $Enums.DonationType
+
+export const DonationType: typeof $Enums.DonationType
+
+export type DonationStatus = $Enums.DonationStatus
+
+export const DonationStatus: typeof $Enums.DonationStatus
+
+export type SafetyStatus = $Enums.SafetyStatus
+
+export const SafetyStatus: typeof $Enums.SafetyStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -661,6 +723,16 @@ export class PrismaClient<
     * ```
     */
   get alert(): Prisma.AlertDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sector`: Exposes CRUD operations for the **Sector** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sectors
+    * const sectors = await prisma.sector.findMany()
+    * ```
+    */
+  get sector(): Prisma.SectorDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.reliefCamp`: Exposes CRUD operations for the **ReliefCamp** model.
@@ -1123,6 +1195,36 @@ export class PrismaClient<
   get groupTherapySession(): Prisma.GroupTherapySessionDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.donation`: Exposes CRUD operations for the **Donation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Donations
+    * const donations = await prisma.donation.findMany()
+    * ```
+    */
+  get donation(): Prisma.DonationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.safetyCheckIn`: Exposes CRUD operations for the **SafetyCheckIn** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SafetyCheckIns
+    * const safetyCheckIns = await prisma.safetyCheckIn.findMany()
+    * ```
+    */
+  get safetyCheckIn(): Prisma.SafetyCheckInDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.familyMember`: Exposes CRUD operations for the **FamilyMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FamilyMembers
+    * const familyMembers = await prisma.familyMember.findMany()
+    * ```
+    */
+  get familyMember(): Prisma.FamilyMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.groupTherapyParticipant`: Exposes CRUD operations for the **GroupTherapyParticipant** model.
     * Example usage:
     * ```ts
@@ -1578,6 +1680,7 @@ export namespace Prisma {
     User: 'User',
     IncidentReport: 'IncidentReport',
     Alert: 'Alert',
+    Sector: 'Sector',
     ReliefCamp: 'ReliefCamp',
     Resource: 'Resource',
     Task: 'Task',
@@ -1624,6 +1727,9 @@ export namespace Prisma {
     ChatSession: 'ChatSession',
     ChatMessage: 'ChatMessage',
     GroupTherapySession: 'GroupTherapySession',
+    Donation: 'Donation',
+    SafetyCheckIn: 'SafetyCheckIn',
+    FamilyMember: 'FamilyMember',
     GroupTherapyParticipant: 'GroupTherapyParticipant',
     MentalHealthGuide: 'MentalHealthGuide'
   };
@@ -1641,7 +1747,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "groupTherapyParticipant" | "mentalHealthGuide"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1864,6 +1970,80 @@ export namespace Prisma {
           count: {
             args: Prisma.AlertCountArgs<ExtArgs>
             result: $Utils.Optional<AlertCountAggregateOutputType> | number
+          }
+        }
+      }
+      Sector: {
+        payload: Prisma.$SectorPayload<ExtArgs>
+        fields: Prisma.SectorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SectorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SectorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>
+          }
+          findFirst: {
+            args: Prisma.SectorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SectorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>
+          }
+          findMany: {
+            args: Prisma.SectorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>[]
+          }
+          create: {
+            args: Prisma.SectorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>
+          }
+          createMany: {
+            args: Prisma.SectorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SectorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>[]
+          }
+          delete: {
+            args: Prisma.SectorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>
+          }
+          update: {
+            args: Prisma.SectorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>
+          }
+          deleteMany: {
+            args: Prisma.SectorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SectorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SectorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>[]
+          }
+          upsert: {
+            args: Prisma.SectorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SectorPayload>
+          }
+          aggregate: {
+            args: Prisma.SectorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSector>
+          }
+          groupBy: {
+            args: Prisma.SectorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SectorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SectorCountArgs<ExtArgs>
+            result: $Utils.Optional<SectorCountAggregateOutputType> | number
           }
         }
       }
@@ -5271,6 +5451,228 @@ export namespace Prisma {
           }
         }
       }
+      Donation: {
+        payload: Prisma.$DonationPayload<ExtArgs>
+        fields: Prisma.DonationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DonationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DonationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>
+          }
+          findFirst: {
+            args: Prisma.DonationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DonationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>
+          }
+          findMany: {
+            args: Prisma.DonationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>[]
+          }
+          create: {
+            args: Prisma.DonationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>
+          }
+          createMany: {
+            args: Prisma.DonationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DonationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>[]
+          }
+          delete: {
+            args: Prisma.DonationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>
+          }
+          update: {
+            args: Prisma.DonationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>
+          }
+          deleteMany: {
+            args: Prisma.DonationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DonationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DonationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>[]
+          }
+          upsert: {
+            args: Prisma.DonationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DonationPayload>
+          }
+          aggregate: {
+            args: Prisma.DonationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDonation>
+          }
+          groupBy: {
+            args: Prisma.DonationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DonationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DonationCountArgs<ExtArgs>
+            result: $Utils.Optional<DonationCountAggregateOutputType> | number
+          }
+        }
+      }
+      SafetyCheckIn: {
+        payload: Prisma.$SafetyCheckInPayload<ExtArgs>
+        fields: Prisma.SafetyCheckInFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SafetyCheckInFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SafetyCheckInFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>
+          }
+          findFirst: {
+            args: Prisma.SafetyCheckInFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SafetyCheckInFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>
+          }
+          findMany: {
+            args: Prisma.SafetyCheckInFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>[]
+          }
+          create: {
+            args: Prisma.SafetyCheckInCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>
+          }
+          createMany: {
+            args: Prisma.SafetyCheckInCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SafetyCheckInCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>[]
+          }
+          delete: {
+            args: Prisma.SafetyCheckInDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>
+          }
+          update: {
+            args: Prisma.SafetyCheckInUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>
+          }
+          deleteMany: {
+            args: Prisma.SafetyCheckInDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SafetyCheckInUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SafetyCheckInUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>[]
+          }
+          upsert: {
+            args: Prisma.SafetyCheckInUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafetyCheckInPayload>
+          }
+          aggregate: {
+            args: Prisma.SafetyCheckInAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSafetyCheckIn>
+          }
+          groupBy: {
+            args: Prisma.SafetyCheckInGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SafetyCheckInGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SafetyCheckInCountArgs<ExtArgs>
+            result: $Utils.Optional<SafetyCheckInCountAggregateOutputType> | number
+          }
+        }
+      }
+      FamilyMember: {
+        payload: Prisma.$FamilyMemberPayload<ExtArgs>
+        fields: Prisma.FamilyMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FamilyMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FamilyMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.FamilyMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FamilyMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>
+          }
+          findMany: {
+            args: Prisma.FamilyMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>[]
+          }
+          create: {
+            args: Prisma.FamilyMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>
+          }
+          createMany: {
+            args: Prisma.FamilyMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FamilyMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.FamilyMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>
+          }
+          update: {
+            args: Prisma.FamilyMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.FamilyMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FamilyMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FamilyMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.FamilyMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FamilyMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.FamilyMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFamilyMember>
+          }
+          groupBy: {
+            args: Prisma.FamilyMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FamilyMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FamilyMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<FamilyMemberCountAggregateOutputType> | number
+          }
+        }
+      }
       GroupTherapyParticipant: {
         payload: Prisma.$GroupTherapyParticipantPayload<ExtArgs>
         fields: Prisma.GroupTherapyParticipantFieldRefs
@@ -5530,6 +5932,7 @@ export namespace Prisma {
     user?: UserOmit
     incidentReport?: IncidentReportOmit
     alert?: AlertOmit
+    sector?: SectorOmit
     reliefCamp?: ReliefCampOmit
     resource?: ResourceOmit
     task?: TaskOmit
@@ -5576,6 +5979,9 @@ export namespace Prisma {
     chatSession?: ChatSessionOmit
     chatMessage?: ChatMessageOmit
     groupTherapySession?: GroupTherapySessionOmit
+    donation?: DonationOmit
+    safetyCheckIn?: SafetyCheckInOmit
+    familyMember?: FamilyMemberOmit
     groupTherapyParticipant?: GroupTherapyParticipantOmit
     mentalHealthGuide?: MentalHealthGuideOmit
   }
@@ -5669,6 +6075,9 @@ export namespace Prisma {
     createdTasks: number
     assignedTasks: number
     sessionLogs: number
+    donations: number
+    safetyCheckIns: number
+    familyMembers: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5683,6 +6092,9 @@ export namespace Prisma {
     createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
     assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
     sessionLogs?: boolean | UserCountOutputTypeCountSessionLogsArgs
+    donations?: boolean | UserCountOutputTypeCountDonationsArgs
+    safetyCheckIns?: boolean | UserCountOutputTypeCountSafetyCheckInsArgs
+    familyMembers?: boolean | UserCountOutputTypeCountFamilyMembersArgs
   }
 
   // Custom InputTypes
@@ -5773,6 +6185,27 @@ export namespace Prisma {
     where?: UserSessionLogWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DonationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSafetyCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SafetyCheckInWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFamilyMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FamilyMemberWhereInput
+  }
+
 
   /**
    * Count Type IncidentReportCountOutputType
@@ -5842,6 +6275,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type SectorCountOutputType
+   */
+
+  export type SectorCountOutputType = {
+    users: number
+  }
+
+  export type SectorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | SectorCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SectorCountOutputType without action
+   */
+  export type SectorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SectorCountOutputType
+     */
+    select?: SectorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SectorCountOutputType without action
+   */
+  export type SectorCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+
+  /**
    * Count Type ReliefCampCountOutputType
    */
 
@@ -5852,6 +6316,7 @@ export namespace Prisma {
     referrals: number
     transfersOut: number
     transfersIn: number
+    donations: number
   }
 
   export type ReliefCampCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5861,6 +6326,7 @@ export namespace Prisma {
     referrals?: boolean | ReliefCampCountOutputTypeCountReferralsArgs
     transfersOut?: boolean | ReliefCampCountOutputTypeCountTransfersOutArgs
     transfersIn?: boolean | ReliefCampCountOutputTypeCountTransfersInArgs
+    donations?: boolean | ReliefCampCountOutputTypeCountDonationsArgs
   }
 
   // Custom InputTypes
@@ -5914,6 +6380,13 @@ export namespace Prisma {
    */
   export type ReliefCampCountOutputTypeCountTransfersInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CampTransferRequestWhereInput
+  }
+
+  /**
+   * ReliefCampCountOutputType without action
+   */
+  export type ReliefCampCountOutputTypeCountDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DonationWhereInput
   }
 
 
@@ -6273,6 +6746,7 @@ export namespace Prisma {
     hasMobileApp: boolean | null
     lastCheckInTime: Date | null
     isFieldActive: boolean | null
+    currentSectorId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -6293,6 +6767,7 @@ export namespace Prisma {
     hasMobileApp: boolean | null
     lastCheckInTime: Date | null
     isFieldActive: boolean | null
+    currentSectorId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -6313,6 +6788,7 @@ export namespace Prisma {
     hasMobileApp: number
     lastCheckInTime: number
     isFieldActive: number
+    currentSectorId: number
     _all: number
   }
 
@@ -6335,6 +6811,7 @@ export namespace Prisma {
     hasMobileApp?: true
     lastCheckInTime?: true
     isFieldActive?: true
+    currentSectorId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -6355,6 +6832,7 @@ export namespace Prisma {
     hasMobileApp?: true
     lastCheckInTime?: true
     isFieldActive?: true
+    currentSectorId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -6375,6 +6853,7 @@ export namespace Prisma {
     hasMobileApp?: true
     lastCheckInTime?: true
     isFieldActive?: true
+    currentSectorId?: true
     _all?: true
   }
 
@@ -6468,6 +6947,7 @@ export namespace Prisma {
     hasMobileApp: boolean
     lastCheckInTime: Date | null
     isFieldActive: boolean
+    currentSectorId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -6505,6 +6985,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: boolean
     isFieldActive?: boolean
+    currentSectorId?: boolean
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
     helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
     reports?: boolean | User$reportsArgs<ExtArgs>
@@ -6518,6 +6999,10 @@ export namespace Prisma {
     assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
     volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
+    currentSector?: boolean | User$currentSectorArgs<ExtArgs>
+    donations?: boolean | User$donationsArgs<ExtArgs>
+    safetyCheckIns?: boolean | User$safetyCheckInsArgs<ExtArgs>
+    familyMembers?: boolean | User$familyMembersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6539,6 +7024,8 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: boolean
     isFieldActive?: boolean
+    currentSectorId?: boolean
+    currentSector?: boolean | User$currentSectorArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6559,6 +7046,8 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: boolean
     isFieldActive?: boolean
+    currentSectorId?: boolean
+    currentSector?: boolean | User$currentSectorArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -6579,9 +7068,10 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: boolean
     isFieldActive?: boolean
+    currentSectorId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "profilePicture" | "role" | "createdAt" | "updatedAt" | "region" | "nic" | "twoFactorEnabled" | "twoFactorSecret" | "twoFactorGracePeriodEnds" | "hasMobileApp" | "lastCheckInTime" | "isFieldActive", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "profilePicture" | "role" | "createdAt" | "updatedAt" | "region" | "nic" | "twoFactorEnabled" | "twoFactorSecret" | "twoFactorGracePeriodEnds" | "hasMobileApp" | "lastCheckInTime" | "isFieldActive" | "currentSectorId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
     helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
@@ -6596,10 +7086,18 @@ export namespace Prisma {
     assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
     volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
+    currentSector?: boolean | User$currentSectorArgs<ExtArgs>
+    donations?: boolean | User$donationsArgs<ExtArgs>
+    safetyCheckIns?: boolean | User$safetyCheckInsArgs<ExtArgs>
+    familyMembers?: boolean | User$familyMembersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    currentSector?: boolean | User$currentSectorArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    currentSector?: boolean | User$currentSectorArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -6617,6 +7115,10 @@ export namespace Prisma {
       assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
       volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
       sessionLogs: Prisma.$UserSessionLogPayload<ExtArgs>[]
+      currentSector: Prisma.$SectorPayload<ExtArgs> | null
+      donations: Prisma.$DonationPayload<ExtArgs>[]
+      safetyCheckIns: Prisma.$SafetyCheckInPayload<ExtArgs>[]
+      familyMembers: Prisma.$FamilyMemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6636,6 +7138,7 @@ export namespace Prisma {
       hasMobileApp: boolean
       lastCheckInTime: Date | null
       isFieldActive: boolean
+      currentSectorId: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -7043,6 +7546,10 @@ export namespace Prisma {
     assignedTasks<T extends User$assignedTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sessionLogs<T extends User$sessionLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSessionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    currentSector<T extends User$currentSectorArgs<ExtArgs> = {}>(args?: Subset<T, User$currentSectorArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    donations<T extends User$donationsArgs<ExtArgs> = {}>(args?: Subset<T, User$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    safetyCheckIns<T extends User$safetyCheckInsArgs<ExtArgs> = {}>(args?: Subset<T, User$safetyCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    familyMembers<T extends User$familyMembersArgs<ExtArgs> = {}>(args?: Subset<T, User$familyMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7089,6 +7596,7 @@ export namespace Prisma {
     readonly hasMobileApp: FieldRef<"User", 'Boolean'>
     readonly lastCheckInTime: FieldRef<"User", 'DateTime'>
     readonly isFieldActive: FieldRef<"User", 'Boolean'>
+    readonly currentSectorId: FieldRef<"User", 'String'>
   }
     
 
@@ -7343,6 +7851,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7413,6 +7925,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7781,6 +8297,97 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserSessionLogScalarFieldEnum | UserSessionLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.currentSector
+   */
+  export type User$currentSectorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    where?: SectorWhereInput
+  }
+
+  /**
+   * User.donations
+   */
+  export type User$donationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    where?: DonationWhereInput
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    cursor?: DonationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
+  }
+
+  /**
+   * User.safetyCheckIns
+   */
+  export type User$safetyCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    where?: SafetyCheckInWhereInput
+    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
+    cursor?: SafetyCheckInWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SafetyCheckInScalarFieldEnum | SafetyCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * User.familyMembers
+   */
+  export type User$familyMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    where?: FamilyMemberWhereInput
+    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
+    cursor?: FamilyMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FamilyMemberScalarFieldEnum | FamilyMemberScalarFieldEnum[]
   }
 
   /**
@@ -9292,6 +9899,7 @@ export namespace Prisma {
     acknowledgementRate: number
     createdAt: number
     updatedAt: number
+    targetSectors: number
     _all: number
   }
 
@@ -9352,6 +9960,7 @@ export namespace Prisma {
     acknowledgementRate?: true
     createdAt?: true
     updatedAt?: true
+    targetSectors?: true
     _all?: true
   }
 
@@ -9457,6 +10066,7 @@ export namespace Prisma {
     acknowledgementRate: number | null
     createdAt: Date
     updatedAt: Date
+    targetSectors: string[]
     _count: AlertCountAggregateOutputType | null
     _avg: AlertAvgAggregateOutputType | null
     _sum: AlertSumAggregateOutputType | null
@@ -9494,6 +10104,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetSectors?: boolean
   }, ExtArgs["result"]["alert"]>
 
   export type AlertSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9512,6 +10123,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetSectors?: boolean
   }, ExtArgs["result"]["alert"]>
 
   export type AlertSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9530,6 +10142,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetSectors?: boolean
   }, ExtArgs["result"]["alert"]>
 
   export type AlertSelectScalar = {
@@ -9548,9 +10161,10 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetSectors?: boolean
   }
 
-  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "locations" | "latitudes" | "longitudes" | "type" | "active" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "acknowledgementRate" | "createdAt" | "updatedAt", ExtArgs["result"]["alert"]>
+  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "locations" | "latitudes" | "longitudes" | "type" | "active" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "acknowledgementRate" | "createdAt" | "updatedAt" | "targetSectors", ExtArgs["result"]["alert"]>
 
   export type $AlertPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Alert"
@@ -9571,6 +10185,7 @@ export namespace Prisma {
       acknowledgementRate: number | null
       createdAt: Date
       updatedAt: Date
+      targetSectors: string[]
     }, ExtArgs["result"]["alert"]>
     composites: {}
   }
@@ -10009,6 +10624,7 @@ export namespace Prisma {
     readonly acknowledgementRate: FieldRef<"Alert", 'Float'>
     readonly createdAt: FieldRef<"Alert", 'DateTime'>
     readonly updatedAt: FieldRef<"Alert", 'DateTime'>
+    readonly targetSectors: FieldRef<"Alert", 'String[]'>
   }
     
 
@@ -10381,6 +10997,1090 @@ export namespace Prisma {
 
 
   /**
+   * Model Sector
+   */
+
+  export type AggregateSector = {
+    _count: SectorCountAggregateOutputType | null
+    _min: SectorMinAggregateOutputType | null
+    _max: SectorMaxAggregateOutputType | null
+  }
+
+  export type SectorMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    type: string | null
+    district: string | null
+    province: string | null
+  }
+
+  export type SectorMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    type: string | null
+    district: string | null
+    province: string | null
+  }
+
+  export type SectorCountAggregateOutputType = {
+    id: number
+    name: number
+    type: number
+    polygonData: number
+    district: number
+    province: number
+    _all: number
+  }
+
+
+  export type SectorMinAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    district?: true
+    province?: true
+  }
+
+  export type SectorMaxAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    district?: true
+    province?: true
+  }
+
+  export type SectorCountAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    polygonData?: true
+    district?: true
+    province?: true
+    _all?: true
+  }
+
+  export type SectorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sector to aggregate.
+     */
+    where?: SectorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sectors to fetch.
+     */
+    orderBy?: SectorOrderByWithRelationInput | SectorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SectorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sectors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sectors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sectors
+    **/
+    _count?: true | SectorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SectorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SectorMaxAggregateInputType
+  }
+
+  export type GetSectorAggregateType<T extends SectorAggregateArgs> = {
+        [P in keyof T & keyof AggregateSector]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSector[P]>
+      : GetScalarType<T[P], AggregateSector[P]>
+  }
+
+
+
+
+  export type SectorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SectorWhereInput
+    orderBy?: SectorOrderByWithAggregationInput | SectorOrderByWithAggregationInput[]
+    by: SectorScalarFieldEnum[] | SectorScalarFieldEnum
+    having?: SectorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SectorCountAggregateInputType | true
+    _min?: SectorMinAggregateInputType
+    _max?: SectorMaxAggregateInputType
+  }
+
+  export type SectorGroupByOutputType = {
+    id: string
+    name: string | null
+    type: string
+    polygonData: JsonValue | null
+    district: string | null
+    province: string | null
+    _count: SectorCountAggregateOutputType | null
+    _min: SectorMinAggregateOutputType | null
+    _max: SectorMaxAggregateOutputType | null
+  }
+
+  type GetSectorGroupByPayload<T extends SectorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SectorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SectorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SectorGroupByOutputType[P]>
+            : GetScalarType<T[P], SectorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SectorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    polygonData?: boolean
+    district?: boolean
+    province?: boolean
+    users?: boolean | Sector$usersArgs<ExtArgs>
+    _count?: boolean | SectorCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sector"]>
+
+  export type SectorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    polygonData?: boolean
+    district?: boolean
+    province?: boolean
+  }, ExtArgs["result"]["sector"]>
+
+  export type SectorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    polygonData?: boolean
+    district?: boolean
+    province?: boolean
+  }, ExtArgs["result"]["sector"]>
+
+  export type SectorSelectScalar = {
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    polygonData?: boolean
+    district?: boolean
+    province?: boolean
+  }
+
+  export type SectorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "polygonData" | "district" | "province", ExtArgs["result"]["sector"]>
+  export type SectorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | Sector$usersArgs<ExtArgs>
+    _count?: boolean | SectorCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SectorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SectorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $SectorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Sector"
+    objects: {
+      users: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string | null
+      type: string
+      polygonData: Prisma.JsonValue | null
+      district: string | null
+      province: string | null
+    }, ExtArgs["result"]["sector"]>
+    composites: {}
+  }
+
+  type SectorGetPayload<S extends boolean | null | undefined | SectorDefaultArgs> = $Result.GetResult<Prisma.$SectorPayload, S>
+
+  type SectorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SectorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SectorCountAggregateInputType | true
+    }
+
+  export interface SectorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Sector'], meta: { name: 'Sector' } }
+    /**
+     * Find zero or one Sector that matches the filter.
+     * @param {SectorFindUniqueArgs} args - Arguments to find a Sector
+     * @example
+     * // Get one Sector
+     * const sector = await prisma.sector.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SectorFindUniqueArgs>(args: SelectSubset<T, SectorFindUniqueArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Sector that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SectorFindUniqueOrThrowArgs} args - Arguments to find a Sector
+     * @example
+     * // Get one Sector
+     * const sector = await prisma.sector.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SectorFindUniqueOrThrowArgs>(args: SelectSubset<T, SectorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Sector that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorFindFirstArgs} args - Arguments to find a Sector
+     * @example
+     * // Get one Sector
+     * const sector = await prisma.sector.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SectorFindFirstArgs>(args?: SelectSubset<T, SectorFindFirstArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Sector that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorFindFirstOrThrowArgs} args - Arguments to find a Sector
+     * @example
+     * // Get one Sector
+     * const sector = await prisma.sector.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SectorFindFirstOrThrowArgs>(args?: SelectSubset<T, SectorFindFirstOrThrowArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sectors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sectors
+     * const sectors = await prisma.sector.findMany()
+     * 
+     * // Get first 10 Sectors
+     * const sectors = await prisma.sector.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sectorWithIdOnly = await prisma.sector.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SectorFindManyArgs>(args?: SelectSubset<T, SectorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Sector.
+     * @param {SectorCreateArgs} args - Arguments to create a Sector.
+     * @example
+     * // Create one Sector
+     * const Sector = await prisma.sector.create({
+     *   data: {
+     *     // ... data to create a Sector
+     *   }
+     * })
+     * 
+     */
+    create<T extends SectorCreateArgs>(args: SelectSubset<T, SectorCreateArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sectors.
+     * @param {SectorCreateManyArgs} args - Arguments to create many Sectors.
+     * @example
+     * // Create many Sectors
+     * const sector = await prisma.sector.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SectorCreateManyArgs>(args?: SelectSubset<T, SectorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sectors and returns the data saved in the database.
+     * @param {SectorCreateManyAndReturnArgs} args - Arguments to create many Sectors.
+     * @example
+     * // Create many Sectors
+     * const sector = await prisma.sector.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sectors and only return the `id`
+     * const sectorWithIdOnly = await prisma.sector.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SectorCreateManyAndReturnArgs>(args?: SelectSubset<T, SectorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Sector.
+     * @param {SectorDeleteArgs} args - Arguments to delete one Sector.
+     * @example
+     * // Delete one Sector
+     * const Sector = await prisma.sector.delete({
+     *   where: {
+     *     // ... filter to delete one Sector
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SectorDeleteArgs>(args: SelectSubset<T, SectorDeleteArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Sector.
+     * @param {SectorUpdateArgs} args - Arguments to update one Sector.
+     * @example
+     * // Update one Sector
+     * const sector = await prisma.sector.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SectorUpdateArgs>(args: SelectSubset<T, SectorUpdateArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sectors.
+     * @param {SectorDeleteManyArgs} args - Arguments to filter Sectors to delete.
+     * @example
+     * // Delete a few Sectors
+     * const { count } = await prisma.sector.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SectorDeleteManyArgs>(args?: SelectSubset<T, SectorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sectors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sectors
+     * const sector = await prisma.sector.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SectorUpdateManyArgs>(args: SelectSubset<T, SectorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sectors and returns the data updated in the database.
+     * @param {SectorUpdateManyAndReturnArgs} args - Arguments to update many Sectors.
+     * @example
+     * // Update many Sectors
+     * const sector = await prisma.sector.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sectors and only return the `id`
+     * const sectorWithIdOnly = await prisma.sector.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SectorUpdateManyAndReturnArgs>(args: SelectSubset<T, SectorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Sector.
+     * @param {SectorUpsertArgs} args - Arguments to update or create a Sector.
+     * @example
+     * // Update or create a Sector
+     * const sector = await prisma.sector.upsert({
+     *   create: {
+     *     // ... data to create a Sector
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Sector we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SectorUpsertArgs>(args: SelectSubset<T, SectorUpsertArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sectors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorCountArgs} args - Arguments to filter Sectors to count.
+     * @example
+     * // Count the number of Sectors
+     * const count = await prisma.sector.count({
+     *   where: {
+     *     // ... the filter for the Sectors we want to count
+     *   }
+     * })
+    **/
+    count<T extends SectorCountArgs>(
+      args?: Subset<T, SectorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SectorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Sector.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SectorAggregateArgs>(args: Subset<T, SectorAggregateArgs>): Prisma.PrismaPromise<GetSectorAggregateType<T>>
+
+    /**
+     * Group by Sector.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SectorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SectorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SectorGroupByArgs['orderBy'] }
+        : { orderBy?: SectorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SectorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSectorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Sector model
+   */
+  readonly fields: SectorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Sector.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SectorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    users<T extends Sector$usersArgs<ExtArgs> = {}>(args?: Subset<T, Sector$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Sector model
+   */
+  interface SectorFieldRefs {
+    readonly id: FieldRef<"Sector", 'String'>
+    readonly name: FieldRef<"Sector", 'String'>
+    readonly type: FieldRef<"Sector", 'String'>
+    readonly polygonData: FieldRef<"Sector", 'Json'>
+    readonly district: FieldRef<"Sector", 'String'>
+    readonly province: FieldRef<"Sector", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Sector findUnique
+   */
+  export type SectorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sector to fetch.
+     */
+    where: SectorWhereUniqueInput
+  }
+
+  /**
+   * Sector findUniqueOrThrow
+   */
+  export type SectorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sector to fetch.
+     */
+    where: SectorWhereUniqueInput
+  }
+
+  /**
+   * Sector findFirst
+   */
+  export type SectorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sector to fetch.
+     */
+    where?: SectorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sectors to fetch.
+     */
+    orderBy?: SectorOrderByWithRelationInput | SectorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sectors.
+     */
+    cursor?: SectorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sectors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sectors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sectors.
+     */
+    distinct?: SectorScalarFieldEnum | SectorScalarFieldEnum[]
+  }
+
+  /**
+   * Sector findFirstOrThrow
+   */
+  export type SectorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sector to fetch.
+     */
+    where?: SectorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sectors to fetch.
+     */
+    orderBy?: SectorOrderByWithRelationInput | SectorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sectors.
+     */
+    cursor?: SectorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sectors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sectors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sectors.
+     */
+    distinct?: SectorScalarFieldEnum | SectorScalarFieldEnum[]
+  }
+
+  /**
+   * Sector findMany
+   */
+  export type SectorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sectors to fetch.
+     */
+    where?: SectorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sectors to fetch.
+     */
+    orderBy?: SectorOrderByWithRelationInput | SectorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sectors.
+     */
+    cursor?: SectorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sectors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sectors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sectors.
+     */
+    distinct?: SectorScalarFieldEnum | SectorScalarFieldEnum[]
+  }
+
+  /**
+   * Sector create
+   */
+  export type SectorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Sector.
+     */
+    data: XOR<SectorCreateInput, SectorUncheckedCreateInput>
+  }
+
+  /**
+   * Sector createMany
+   */
+  export type SectorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sectors.
+     */
+    data: SectorCreateManyInput | SectorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Sector createManyAndReturn
+   */
+  export type SectorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sectors.
+     */
+    data: SectorCreateManyInput | SectorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Sector update
+   */
+  export type SectorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Sector.
+     */
+    data: XOR<SectorUpdateInput, SectorUncheckedUpdateInput>
+    /**
+     * Choose, which Sector to update.
+     */
+    where: SectorWhereUniqueInput
+  }
+
+  /**
+   * Sector updateMany
+   */
+  export type SectorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sectors.
+     */
+    data: XOR<SectorUpdateManyMutationInput, SectorUncheckedUpdateManyInput>
+    /**
+     * Filter which Sectors to update
+     */
+    where?: SectorWhereInput
+    /**
+     * Limit how many Sectors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sector updateManyAndReturn
+   */
+  export type SectorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * The data used to update Sectors.
+     */
+    data: XOR<SectorUpdateManyMutationInput, SectorUncheckedUpdateManyInput>
+    /**
+     * Filter which Sectors to update
+     */
+    where?: SectorWhereInput
+    /**
+     * Limit how many Sectors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sector upsert
+   */
+  export type SectorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Sector to update in case it exists.
+     */
+    where: SectorWhereUniqueInput
+    /**
+     * In case the Sector found by the `where` argument doesn't exist, create a new Sector with this data.
+     */
+    create: XOR<SectorCreateInput, SectorUncheckedCreateInput>
+    /**
+     * In case the Sector was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SectorUpdateInput, SectorUncheckedUpdateInput>
+  }
+
+  /**
+   * Sector delete
+   */
+  export type SectorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+    /**
+     * Filter which Sector to delete.
+     */
+    where: SectorWhereUniqueInput
+  }
+
+  /**
+   * Sector deleteMany
+   */
+  export type SectorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sectors to delete
+     */
+    where?: SectorWhereInput
+    /**
+     * Limit how many Sectors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sector.users
+   */
+  export type Sector$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * Sector without action
+   */
+  export type SectorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sector
+     */
+    select?: SectorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sector
+     */
+    omit?: SectorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SectorInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model ReliefCamp
    */
 
@@ -10648,6 +12348,7 @@ export namespace Prisma {
     referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
     transfersOut?: boolean | ReliefCamp$transfersOutArgs<ExtArgs>
     transfersIn?: boolean | ReliefCamp$transfersInArgs<ExtArgs>
+    donations?: boolean | ReliefCamp$donationsArgs<ExtArgs>
     _count?: boolean | ReliefCampCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["reliefCamp"]>
 
@@ -10704,6 +12405,7 @@ export namespace Prisma {
     referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
     transfersOut?: boolean | ReliefCamp$transfersOutArgs<ExtArgs>
     transfersIn?: boolean | ReliefCamp$transfersInArgs<ExtArgs>
+    donations?: boolean | ReliefCamp$donationsArgs<ExtArgs>
     _count?: boolean | ReliefCampCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ReliefCampIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -10718,6 +12420,7 @@ export namespace Prisma {
       referrals: Prisma.$HospitalReferralPayload<ExtArgs>[]
       transfersOut: Prisma.$CampTransferRequestPayload<ExtArgs>[]
       transfersIn: Prisma.$CampTransferRequestPayload<ExtArgs>[]
+      donations: Prisma.$DonationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11132,6 +12835,7 @@ export namespace Prisma {
     referrals<T extends ReliefCamp$referralsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$referralsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HospitalReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transfersOut<T extends ReliefCamp$transfersOutArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$transfersOutArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transfersIn<T extends ReliefCamp$transfersInArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$transfersInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    donations<T extends ReliefCamp$donationsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11707,6 +13411,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CampTransferRequestScalarFieldEnum | CampTransferRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ReliefCamp.donations
+   */
+  export type ReliefCamp$donationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    where?: DonationWhereInput
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    cursor?: DonationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
   }
 
   /**
@@ -62180,6 +63908,3482 @@ export namespace Prisma {
 
 
   /**
+   * Model Donation
+   */
+
+  export type AggregateDonation = {
+    _count: DonationCountAggregateOutputType | null
+    _avg: DonationAvgAggregateOutputType | null
+    _sum: DonationSumAggregateOutputType | null
+    _min: DonationMinAggregateOutputType | null
+    _max: DonationMaxAggregateOutputType | null
+  }
+
+  export type DonationAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type DonationSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type DonationMinAggregateOutputType = {
+    id: string | null
+    donorId: string | null
+    donorName: string | null
+    type: $Enums.DonationType | null
+    amount: number | null
+    itemsDescription: string | null
+    transactionId: string | null
+    paymentGateway: string | null
+    transactionDate: Date | null
+    status: $Enums.DonationStatus | null
+    campId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DonationMaxAggregateOutputType = {
+    id: string | null
+    donorId: string | null
+    donorName: string | null
+    type: $Enums.DonationType | null
+    amount: number | null
+    itemsDescription: string | null
+    transactionId: string | null
+    paymentGateway: string | null
+    transactionDate: Date | null
+    status: $Enums.DonationStatus | null
+    campId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DonationCountAggregateOutputType = {
+    id: number
+    donorId: number
+    donorName: number
+    type: number
+    amount: number
+    itemsDescription: number
+    transactionId: number
+    paymentGateway: number
+    transactionDate: number
+    status: number
+    campId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DonationAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type DonationSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type DonationMinAggregateInputType = {
+    id?: true
+    donorId?: true
+    donorName?: true
+    type?: true
+    amount?: true
+    itemsDescription?: true
+    transactionId?: true
+    paymentGateway?: true
+    transactionDate?: true
+    status?: true
+    campId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DonationMaxAggregateInputType = {
+    id?: true
+    donorId?: true
+    donorName?: true
+    type?: true
+    amount?: true
+    itemsDescription?: true
+    transactionId?: true
+    paymentGateway?: true
+    transactionDate?: true
+    status?: true
+    campId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DonationCountAggregateInputType = {
+    id?: true
+    donorId?: true
+    donorName?: true
+    type?: true
+    amount?: true
+    itemsDescription?: true
+    transactionId?: true
+    paymentGateway?: true
+    transactionDate?: true
+    status?: true
+    campId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DonationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Donation to aggregate.
+     */
+    where?: DonationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Donations to fetch.
+     */
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DonationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Donations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Donations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Donations
+    **/
+    _count?: true | DonationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DonationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DonationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DonationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DonationMaxAggregateInputType
+  }
+
+  export type GetDonationAggregateType<T extends DonationAggregateArgs> = {
+        [P in keyof T & keyof AggregateDonation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDonation[P]>
+      : GetScalarType<T[P], AggregateDonation[P]>
+  }
+
+
+
+
+  export type DonationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DonationWhereInput
+    orderBy?: DonationOrderByWithAggregationInput | DonationOrderByWithAggregationInput[]
+    by: DonationScalarFieldEnum[] | DonationScalarFieldEnum
+    having?: DonationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DonationCountAggregateInputType | true
+    _avg?: DonationAvgAggregateInputType
+    _sum?: DonationSumAggregateInputType
+    _min?: DonationMinAggregateInputType
+    _max?: DonationMaxAggregateInputType
+  }
+
+  export type DonationGroupByOutputType = {
+    id: string
+    donorId: string | null
+    donorName: string
+    type: $Enums.DonationType
+    amount: number | null
+    itemsDescription: string | null
+    transactionId: string | null
+    paymentGateway: string | null
+    transactionDate: Date | null
+    status: $Enums.DonationStatus
+    campId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DonationCountAggregateOutputType | null
+    _avg: DonationAvgAggregateOutputType | null
+    _sum: DonationSumAggregateOutputType | null
+    _min: DonationMinAggregateOutputType | null
+    _max: DonationMaxAggregateOutputType | null
+  }
+
+  type GetDonationGroupByPayload<T extends DonationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DonationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DonationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DonationGroupByOutputType[P]>
+            : GetScalarType<T[P], DonationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DonationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    donorId?: boolean
+    donorName?: boolean
+    type?: boolean
+    amount?: boolean
+    itemsDescription?: boolean
+    transactionId?: boolean
+    paymentGateway?: boolean
+    transactionDate?: boolean
+    status?: boolean
+    campId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    donor?: boolean | Donation$donorArgs<ExtArgs>
+    camp?: boolean | Donation$campArgs<ExtArgs>
+  }, ExtArgs["result"]["donation"]>
+
+  export type DonationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    donorId?: boolean
+    donorName?: boolean
+    type?: boolean
+    amount?: boolean
+    itemsDescription?: boolean
+    transactionId?: boolean
+    paymentGateway?: boolean
+    transactionDate?: boolean
+    status?: boolean
+    campId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    donor?: boolean | Donation$donorArgs<ExtArgs>
+    camp?: boolean | Donation$campArgs<ExtArgs>
+  }, ExtArgs["result"]["donation"]>
+
+  export type DonationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    donorId?: boolean
+    donorName?: boolean
+    type?: boolean
+    amount?: boolean
+    itemsDescription?: boolean
+    transactionId?: boolean
+    paymentGateway?: boolean
+    transactionDate?: boolean
+    status?: boolean
+    campId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    donor?: boolean | Donation$donorArgs<ExtArgs>
+    camp?: boolean | Donation$campArgs<ExtArgs>
+  }, ExtArgs["result"]["donation"]>
+
+  export type DonationSelectScalar = {
+    id?: boolean
+    donorId?: boolean
+    donorName?: boolean
+    type?: boolean
+    amount?: boolean
+    itemsDescription?: boolean
+    transactionId?: boolean
+    paymentGateway?: boolean
+    transactionDate?: boolean
+    status?: boolean
+    campId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DonationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "donorId" | "donorName" | "type" | "amount" | "itemsDescription" | "transactionId" | "paymentGateway" | "transactionDate" | "status" | "campId" | "createdAt" | "updatedAt", ExtArgs["result"]["donation"]>
+  export type DonationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | Donation$donorArgs<ExtArgs>
+    camp?: boolean | Donation$campArgs<ExtArgs>
+  }
+  export type DonationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | Donation$donorArgs<ExtArgs>
+    camp?: boolean | Donation$campArgs<ExtArgs>
+  }
+  export type DonationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | Donation$donorArgs<ExtArgs>
+    camp?: boolean | Donation$campArgs<ExtArgs>
+  }
+
+  export type $DonationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Donation"
+    objects: {
+      donor: Prisma.$UserPayload<ExtArgs> | null
+      camp: Prisma.$ReliefCampPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      donorId: string | null
+      donorName: string
+      type: $Enums.DonationType
+      amount: number | null
+      itemsDescription: string | null
+      transactionId: string | null
+      paymentGateway: string | null
+      transactionDate: Date | null
+      status: $Enums.DonationStatus
+      campId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["donation"]>
+    composites: {}
+  }
+
+  type DonationGetPayload<S extends boolean | null | undefined | DonationDefaultArgs> = $Result.GetResult<Prisma.$DonationPayload, S>
+
+  type DonationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DonationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DonationCountAggregateInputType | true
+    }
+
+  export interface DonationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Donation'], meta: { name: 'Donation' } }
+    /**
+     * Find zero or one Donation that matches the filter.
+     * @param {DonationFindUniqueArgs} args - Arguments to find a Donation
+     * @example
+     * // Get one Donation
+     * const donation = await prisma.donation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DonationFindUniqueArgs>(args: SelectSubset<T, DonationFindUniqueArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Donation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DonationFindUniqueOrThrowArgs} args - Arguments to find a Donation
+     * @example
+     * // Get one Donation
+     * const donation = await prisma.donation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DonationFindUniqueOrThrowArgs>(args: SelectSubset<T, DonationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Donation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationFindFirstArgs} args - Arguments to find a Donation
+     * @example
+     * // Get one Donation
+     * const donation = await prisma.donation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DonationFindFirstArgs>(args?: SelectSubset<T, DonationFindFirstArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Donation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationFindFirstOrThrowArgs} args - Arguments to find a Donation
+     * @example
+     * // Get one Donation
+     * const donation = await prisma.donation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DonationFindFirstOrThrowArgs>(args?: SelectSubset<T, DonationFindFirstOrThrowArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Donations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Donations
+     * const donations = await prisma.donation.findMany()
+     * 
+     * // Get first 10 Donations
+     * const donations = await prisma.donation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const donationWithIdOnly = await prisma.donation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DonationFindManyArgs>(args?: SelectSubset<T, DonationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Donation.
+     * @param {DonationCreateArgs} args - Arguments to create a Donation.
+     * @example
+     * // Create one Donation
+     * const Donation = await prisma.donation.create({
+     *   data: {
+     *     // ... data to create a Donation
+     *   }
+     * })
+     * 
+     */
+    create<T extends DonationCreateArgs>(args: SelectSubset<T, DonationCreateArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Donations.
+     * @param {DonationCreateManyArgs} args - Arguments to create many Donations.
+     * @example
+     * // Create many Donations
+     * const donation = await prisma.donation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DonationCreateManyArgs>(args?: SelectSubset<T, DonationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Donations and returns the data saved in the database.
+     * @param {DonationCreateManyAndReturnArgs} args - Arguments to create many Donations.
+     * @example
+     * // Create many Donations
+     * const donation = await prisma.donation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Donations and only return the `id`
+     * const donationWithIdOnly = await prisma.donation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DonationCreateManyAndReturnArgs>(args?: SelectSubset<T, DonationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Donation.
+     * @param {DonationDeleteArgs} args - Arguments to delete one Donation.
+     * @example
+     * // Delete one Donation
+     * const Donation = await prisma.donation.delete({
+     *   where: {
+     *     // ... filter to delete one Donation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DonationDeleteArgs>(args: SelectSubset<T, DonationDeleteArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Donation.
+     * @param {DonationUpdateArgs} args - Arguments to update one Donation.
+     * @example
+     * // Update one Donation
+     * const donation = await prisma.donation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DonationUpdateArgs>(args: SelectSubset<T, DonationUpdateArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Donations.
+     * @param {DonationDeleteManyArgs} args - Arguments to filter Donations to delete.
+     * @example
+     * // Delete a few Donations
+     * const { count } = await prisma.donation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DonationDeleteManyArgs>(args?: SelectSubset<T, DonationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Donations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Donations
+     * const donation = await prisma.donation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DonationUpdateManyArgs>(args: SelectSubset<T, DonationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Donations and returns the data updated in the database.
+     * @param {DonationUpdateManyAndReturnArgs} args - Arguments to update many Donations.
+     * @example
+     * // Update many Donations
+     * const donation = await prisma.donation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Donations and only return the `id`
+     * const donationWithIdOnly = await prisma.donation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DonationUpdateManyAndReturnArgs>(args: SelectSubset<T, DonationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Donation.
+     * @param {DonationUpsertArgs} args - Arguments to update or create a Donation.
+     * @example
+     * // Update or create a Donation
+     * const donation = await prisma.donation.upsert({
+     *   create: {
+     *     // ... data to create a Donation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Donation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DonationUpsertArgs>(args: SelectSubset<T, DonationUpsertArgs<ExtArgs>>): Prisma__DonationClient<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Donations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationCountArgs} args - Arguments to filter Donations to count.
+     * @example
+     * // Count the number of Donations
+     * const count = await prisma.donation.count({
+     *   where: {
+     *     // ... the filter for the Donations we want to count
+     *   }
+     * })
+    **/
+    count<T extends DonationCountArgs>(
+      args?: Subset<T, DonationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DonationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Donation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DonationAggregateArgs>(args: Subset<T, DonationAggregateArgs>): Prisma.PrismaPromise<GetDonationAggregateType<T>>
+
+    /**
+     * Group by Donation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DonationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DonationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DonationGroupByArgs['orderBy'] }
+        : { orderBy?: DonationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DonationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDonationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Donation model
+   */
+  readonly fields: DonationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Donation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DonationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    donor<T extends Donation$donorArgs<ExtArgs> = {}>(args?: Subset<T, Donation$donorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    camp<T extends Donation$campArgs<ExtArgs> = {}>(args?: Subset<T, Donation$campArgs<ExtArgs>>): Prisma__ReliefCampClient<$Result.GetResult<Prisma.$ReliefCampPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Donation model
+   */
+  interface DonationFieldRefs {
+    readonly id: FieldRef<"Donation", 'String'>
+    readonly donorId: FieldRef<"Donation", 'String'>
+    readonly donorName: FieldRef<"Donation", 'String'>
+    readonly type: FieldRef<"Donation", 'DonationType'>
+    readonly amount: FieldRef<"Donation", 'Float'>
+    readonly itemsDescription: FieldRef<"Donation", 'String'>
+    readonly transactionId: FieldRef<"Donation", 'String'>
+    readonly paymentGateway: FieldRef<"Donation", 'String'>
+    readonly transactionDate: FieldRef<"Donation", 'DateTime'>
+    readonly status: FieldRef<"Donation", 'DonationStatus'>
+    readonly campId: FieldRef<"Donation", 'String'>
+    readonly createdAt: FieldRef<"Donation", 'DateTime'>
+    readonly updatedAt: FieldRef<"Donation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Donation findUnique
+   */
+  export type DonationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * Filter, which Donation to fetch.
+     */
+    where: DonationWhereUniqueInput
+  }
+
+  /**
+   * Donation findUniqueOrThrow
+   */
+  export type DonationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * Filter, which Donation to fetch.
+     */
+    where: DonationWhereUniqueInput
+  }
+
+  /**
+   * Donation findFirst
+   */
+  export type DonationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * Filter, which Donation to fetch.
+     */
+    where?: DonationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Donations to fetch.
+     */
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Donations.
+     */
+    cursor?: DonationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Donations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Donations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Donations.
+     */
+    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
+  }
+
+  /**
+   * Donation findFirstOrThrow
+   */
+  export type DonationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * Filter, which Donation to fetch.
+     */
+    where?: DonationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Donations to fetch.
+     */
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Donations.
+     */
+    cursor?: DonationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Donations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Donations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Donations.
+     */
+    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
+  }
+
+  /**
+   * Donation findMany
+   */
+  export type DonationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * Filter, which Donations to fetch.
+     */
+    where?: DonationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Donations to fetch.
+     */
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Donations.
+     */
+    cursor?: DonationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Donations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Donations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Donations.
+     */
+    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
+  }
+
+  /**
+   * Donation create
+   */
+  export type DonationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Donation.
+     */
+    data: XOR<DonationCreateInput, DonationUncheckedCreateInput>
+  }
+
+  /**
+   * Donation createMany
+   */
+  export type DonationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Donations.
+     */
+    data: DonationCreateManyInput | DonationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Donation createManyAndReturn
+   */
+  export type DonationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Donations.
+     */
+    data: DonationCreateManyInput | DonationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Donation update
+   */
+  export type DonationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Donation.
+     */
+    data: XOR<DonationUpdateInput, DonationUncheckedUpdateInput>
+    /**
+     * Choose, which Donation to update.
+     */
+    where: DonationWhereUniqueInput
+  }
+
+  /**
+   * Donation updateMany
+   */
+  export type DonationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Donations.
+     */
+    data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyInput>
+    /**
+     * Filter which Donations to update
+     */
+    where?: DonationWhereInput
+    /**
+     * Limit how many Donations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Donation updateManyAndReturn
+   */
+  export type DonationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * The data used to update Donations.
+     */
+    data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyInput>
+    /**
+     * Filter which Donations to update
+     */
+    where?: DonationWhereInput
+    /**
+     * Limit how many Donations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Donation upsert
+   */
+  export type DonationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Donation to update in case it exists.
+     */
+    where: DonationWhereUniqueInput
+    /**
+     * In case the Donation found by the `where` argument doesn't exist, create a new Donation with this data.
+     */
+    create: XOR<DonationCreateInput, DonationUncheckedCreateInput>
+    /**
+     * In case the Donation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DonationUpdateInput, DonationUncheckedUpdateInput>
+  }
+
+  /**
+   * Donation delete
+   */
+  export type DonationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    /**
+     * Filter which Donation to delete.
+     */
+    where: DonationWhereUniqueInput
+  }
+
+  /**
+   * Donation deleteMany
+   */
+  export type DonationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Donations to delete
+     */
+    where?: DonationWhereInput
+    /**
+     * Limit how many Donations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Donation.donor
+   */
+  export type Donation$donorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Donation.camp
+   */
+  export type Donation$campArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReliefCamp
+     */
+    select?: ReliefCampSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReliefCamp
+     */
+    omit?: ReliefCampOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReliefCampInclude<ExtArgs> | null
+    where?: ReliefCampWhereInput
+  }
+
+  /**
+   * Donation without action
+   */
+  export type DonationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SafetyCheckIn
+   */
+
+  export type AggregateSafetyCheckIn = {
+    _count: SafetyCheckInCountAggregateOutputType | null
+    _avg: SafetyCheckInAvgAggregateOutputType | null
+    _sum: SafetyCheckInSumAggregateOutputType | null
+    _min: SafetyCheckInMinAggregateOutputType | null
+    _max: SafetyCheckInMaxAggregateOutputType | null
+  }
+
+  export type SafetyCheckInAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type SafetyCheckInSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type SafetyCheckInMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    status: $Enums.SafetyStatus | null
+    message: string | null
+    latitude: number | null
+    longitude: number | null
+    createdAt: Date | null
+  }
+
+  export type SafetyCheckInMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    status: $Enums.SafetyStatus | null
+    message: string | null
+    latitude: number | null
+    longitude: number | null
+    createdAt: Date | null
+  }
+
+  export type SafetyCheckInCountAggregateOutputType = {
+    id: number
+    userId: number
+    status: number
+    message: number
+    latitude: number
+    longitude: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SafetyCheckInAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+  }
+
+  export type SafetyCheckInSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+  }
+
+  export type SafetyCheckInMinAggregateInputType = {
+    id?: true
+    userId?: true
+    status?: true
+    message?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+  }
+
+  export type SafetyCheckInMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    status?: true
+    message?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+  }
+
+  export type SafetyCheckInCountAggregateInputType = {
+    id?: true
+    userId?: true
+    status?: true
+    message?: true
+    latitude?: true
+    longitude?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SafetyCheckInAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SafetyCheckIn to aggregate.
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafetyCheckIns to fetch.
+     */
+    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SafetyCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafetyCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafetyCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SafetyCheckIns
+    **/
+    _count?: true | SafetyCheckInCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SafetyCheckInAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SafetyCheckInSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SafetyCheckInMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SafetyCheckInMaxAggregateInputType
+  }
+
+  export type GetSafetyCheckInAggregateType<T extends SafetyCheckInAggregateArgs> = {
+        [P in keyof T & keyof AggregateSafetyCheckIn]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSafetyCheckIn[P]>
+      : GetScalarType<T[P], AggregateSafetyCheckIn[P]>
+  }
+
+
+
+
+  export type SafetyCheckInGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SafetyCheckInWhereInput
+    orderBy?: SafetyCheckInOrderByWithAggregationInput | SafetyCheckInOrderByWithAggregationInput[]
+    by: SafetyCheckInScalarFieldEnum[] | SafetyCheckInScalarFieldEnum
+    having?: SafetyCheckInScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SafetyCheckInCountAggregateInputType | true
+    _avg?: SafetyCheckInAvgAggregateInputType
+    _sum?: SafetyCheckInSumAggregateInputType
+    _min?: SafetyCheckInMinAggregateInputType
+    _max?: SafetyCheckInMaxAggregateInputType
+  }
+
+  export type SafetyCheckInGroupByOutputType = {
+    id: string
+    userId: string
+    status: $Enums.SafetyStatus
+    message: string | null
+    latitude: number | null
+    longitude: number | null
+    createdAt: Date
+    _count: SafetyCheckInCountAggregateOutputType | null
+    _avg: SafetyCheckInAvgAggregateOutputType | null
+    _sum: SafetyCheckInSumAggregateOutputType | null
+    _min: SafetyCheckInMinAggregateOutputType | null
+    _max: SafetyCheckInMaxAggregateOutputType | null
+  }
+
+  type GetSafetyCheckInGroupByPayload<T extends SafetyCheckInGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SafetyCheckInGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SafetyCheckInGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SafetyCheckInGroupByOutputType[P]>
+            : GetScalarType<T[P], SafetyCheckInGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SafetyCheckInSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    message?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["safetyCheckIn"]>
+
+  export type SafetyCheckInSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    message?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["safetyCheckIn"]>
+
+  export type SafetyCheckInSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    message?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["safetyCheckIn"]>
+
+  export type SafetyCheckInSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    message?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    createdAt?: boolean
+  }
+
+  export type SafetyCheckInOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "message" | "latitude" | "longitude" | "createdAt", ExtArgs["result"]["safetyCheckIn"]>
+  export type SafetyCheckInInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SafetyCheckInIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SafetyCheckInIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SafetyCheckInPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SafetyCheckIn"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      status: $Enums.SafetyStatus
+      message: string | null
+      latitude: number | null
+      longitude: number | null
+      createdAt: Date
+    }, ExtArgs["result"]["safetyCheckIn"]>
+    composites: {}
+  }
+
+  type SafetyCheckInGetPayload<S extends boolean | null | undefined | SafetyCheckInDefaultArgs> = $Result.GetResult<Prisma.$SafetyCheckInPayload, S>
+
+  type SafetyCheckInCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SafetyCheckInFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SafetyCheckInCountAggregateInputType | true
+    }
+
+  export interface SafetyCheckInDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SafetyCheckIn'], meta: { name: 'SafetyCheckIn' } }
+    /**
+     * Find zero or one SafetyCheckIn that matches the filter.
+     * @param {SafetyCheckInFindUniqueArgs} args - Arguments to find a SafetyCheckIn
+     * @example
+     * // Get one SafetyCheckIn
+     * const safetyCheckIn = await prisma.safetyCheckIn.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SafetyCheckInFindUniqueArgs>(args: SelectSubset<T, SafetyCheckInFindUniqueArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SafetyCheckIn that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SafetyCheckInFindUniqueOrThrowArgs} args - Arguments to find a SafetyCheckIn
+     * @example
+     * // Get one SafetyCheckIn
+     * const safetyCheckIn = await prisma.safetyCheckIn.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SafetyCheckInFindUniqueOrThrowArgs>(args: SelectSubset<T, SafetyCheckInFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SafetyCheckIn that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInFindFirstArgs} args - Arguments to find a SafetyCheckIn
+     * @example
+     * // Get one SafetyCheckIn
+     * const safetyCheckIn = await prisma.safetyCheckIn.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SafetyCheckInFindFirstArgs>(args?: SelectSubset<T, SafetyCheckInFindFirstArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SafetyCheckIn that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInFindFirstOrThrowArgs} args - Arguments to find a SafetyCheckIn
+     * @example
+     * // Get one SafetyCheckIn
+     * const safetyCheckIn = await prisma.safetyCheckIn.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SafetyCheckInFindFirstOrThrowArgs>(args?: SelectSubset<T, SafetyCheckInFindFirstOrThrowArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SafetyCheckIns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SafetyCheckIns
+     * const safetyCheckIns = await prisma.safetyCheckIn.findMany()
+     * 
+     * // Get first 10 SafetyCheckIns
+     * const safetyCheckIns = await prisma.safetyCheckIn.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const safetyCheckInWithIdOnly = await prisma.safetyCheckIn.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SafetyCheckInFindManyArgs>(args?: SelectSubset<T, SafetyCheckInFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SafetyCheckIn.
+     * @param {SafetyCheckInCreateArgs} args - Arguments to create a SafetyCheckIn.
+     * @example
+     * // Create one SafetyCheckIn
+     * const SafetyCheckIn = await prisma.safetyCheckIn.create({
+     *   data: {
+     *     // ... data to create a SafetyCheckIn
+     *   }
+     * })
+     * 
+     */
+    create<T extends SafetyCheckInCreateArgs>(args: SelectSubset<T, SafetyCheckInCreateArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SafetyCheckIns.
+     * @param {SafetyCheckInCreateManyArgs} args - Arguments to create many SafetyCheckIns.
+     * @example
+     * // Create many SafetyCheckIns
+     * const safetyCheckIn = await prisma.safetyCheckIn.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SafetyCheckInCreateManyArgs>(args?: SelectSubset<T, SafetyCheckInCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SafetyCheckIns and returns the data saved in the database.
+     * @param {SafetyCheckInCreateManyAndReturnArgs} args - Arguments to create many SafetyCheckIns.
+     * @example
+     * // Create many SafetyCheckIns
+     * const safetyCheckIn = await prisma.safetyCheckIn.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SafetyCheckIns and only return the `id`
+     * const safetyCheckInWithIdOnly = await prisma.safetyCheckIn.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SafetyCheckInCreateManyAndReturnArgs>(args?: SelectSubset<T, SafetyCheckInCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SafetyCheckIn.
+     * @param {SafetyCheckInDeleteArgs} args - Arguments to delete one SafetyCheckIn.
+     * @example
+     * // Delete one SafetyCheckIn
+     * const SafetyCheckIn = await prisma.safetyCheckIn.delete({
+     *   where: {
+     *     // ... filter to delete one SafetyCheckIn
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SafetyCheckInDeleteArgs>(args: SelectSubset<T, SafetyCheckInDeleteArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SafetyCheckIn.
+     * @param {SafetyCheckInUpdateArgs} args - Arguments to update one SafetyCheckIn.
+     * @example
+     * // Update one SafetyCheckIn
+     * const safetyCheckIn = await prisma.safetyCheckIn.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SafetyCheckInUpdateArgs>(args: SelectSubset<T, SafetyCheckInUpdateArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SafetyCheckIns.
+     * @param {SafetyCheckInDeleteManyArgs} args - Arguments to filter SafetyCheckIns to delete.
+     * @example
+     * // Delete a few SafetyCheckIns
+     * const { count } = await prisma.safetyCheckIn.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SafetyCheckInDeleteManyArgs>(args?: SelectSubset<T, SafetyCheckInDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SafetyCheckIns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SafetyCheckIns
+     * const safetyCheckIn = await prisma.safetyCheckIn.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SafetyCheckInUpdateManyArgs>(args: SelectSubset<T, SafetyCheckInUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SafetyCheckIns and returns the data updated in the database.
+     * @param {SafetyCheckInUpdateManyAndReturnArgs} args - Arguments to update many SafetyCheckIns.
+     * @example
+     * // Update many SafetyCheckIns
+     * const safetyCheckIn = await prisma.safetyCheckIn.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SafetyCheckIns and only return the `id`
+     * const safetyCheckInWithIdOnly = await prisma.safetyCheckIn.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SafetyCheckInUpdateManyAndReturnArgs>(args: SelectSubset<T, SafetyCheckInUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SafetyCheckIn.
+     * @param {SafetyCheckInUpsertArgs} args - Arguments to update or create a SafetyCheckIn.
+     * @example
+     * // Update or create a SafetyCheckIn
+     * const safetyCheckIn = await prisma.safetyCheckIn.upsert({
+     *   create: {
+     *     // ... data to create a SafetyCheckIn
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SafetyCheckIn we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SafetyCheckInUpsertArgs>(args: SelectSubset<T, SafetyCheckInUpsertArgs<ExtArgs>>): Prisma__SafetyCheckInClient<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SafetyCheckIns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInCountArgs} args - Arguments to filter SafetyCheckIns to count.
+     * @example
+     * // Count the number of SafetyCheckIns
+     * const count = await prisma.safetyCheckIn.count({
+     *   where: {
+     *     // ... the filter for the SafetyCheckIns we want to count
+     *   }
+     * })
+    **/
+    count<T extends SafetyCheckInCountArgs>(
+      args?: Subset<T, SafetyCheckInCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SafetyCheckInCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SafetyCheckIn.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SafetyCheckInAggregateArgs>(args: Subset<T, SafetyCheckInAggregateArgs>): Prisma.PrismaPromise<GetSafetyCheckInAggregateType<T>>
+
+    /**
+     * Group by SafetyCheckIn.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafetyCheckInGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SafetyCheckInGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SafetyCheckInGroupByArgs['orderBy'] }
+        : { orderBy?: SafetyCheckInGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SafetyCheckInGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSafetyCheckInGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SafetyCheckIn model
+   */
+  readonly fields: SafetyCheckInFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SafetyCheckIn.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SafetyCheckInClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SafetyCheckIn model
+   */
+  interface SafetyCheckInFieldRefs {
+    readonly id: FieldRef<"SafetyCheckIn", 'String'>
+    readonly userId: FieldRef<"SafetyCheckIn", 'String'>
+    readonly status: FieldRef<"SafetyCheckIn", 'SafetyStatus'>
+    readonly message: FieldRef<"SafetyCheckIn", 'String'>
+    readonly latitude: FieldRef<"SafetyCheckIn", 'Float'>
+    readonly longitude: FieldRef<"SafetyCheckIn", 'Float'>
+    readonly createdAt: FieldRef<"SafetyCheckIn", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SafetyCheckIn findUnique
+   */
+  export type SafetyCheckInFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafetyCheckIn to fetch.
+     */
+    where: SafetyCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafetyCheckIn findUniqueOrThrow
+   */
+  export type SafetyCheckInFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafetyCheckIn to fetch.
+     */
+    where: SafetyCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafetyCheckIn findFirst
+   */
+  export type SafetyCheckInFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafetyCheckIn to fetch.
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafetyCheckIns to fetch.
+     */
+    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SafetyCheckIns.
+     */
+    cursor?: SafetyCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafetyCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafetyCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SafetyCheckIns.
+     */
+    distinct?: SafetyCheckInScalarFieldEnum | SafetyCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * SafetyCheckIn findFirstOrThrow
+   */
+  export type SafetyCheckInFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafetyCheckIn to fetch.
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafetyCheckIns to fetch.
+     */
+    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SafetyCheckIns.
+     */
+    cursor?: SafetyCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafetyCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafetyCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SafetyCheckIns.
+     */
+    distinct?: SafetyCheckInScalarFieldEnum | SafetyCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * SafetyCheckIn findMany
+   */
+  export type SafetyCheckInFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafetyCheckIns to fetch.
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafetyCheckIns to fetch.
+     */
+    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SafetyCheckIns.
+     */
+    cursor?: SafetyCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafetyCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafetyCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SafetyCheckIns.
+     */
+    distinct?: SafetyCheckInScalarFieldEnum | SafetyCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * SafetyCheckIn create
+   */
+  export type SafetyCheckInCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SafetyCheckIn.
+     */
+    data: XOR<SafetyCheckInCreateInput, SafetyCheckInUncheckedCreateInput>
+  }
+
+  /**
+   * SafetyCheckIn createMany
+   */
+  export type SafetyCheckInCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SafetyCheckIns.
+     */
+    data: SafetyCheckInCreateManyInput | SafetyCheckInCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SafetyCheckIn createManyAndReturn
+   */
+  export type SafetyCheckInCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * The data used to create many SafetyCheckIns.
+     */
+    data: SafetyCheckInCreateManyInput | SafetyCheckInCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SafetyCheckIn update
+   */
+  export type SafetyCheckInUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SafetyCheckIn.
+     */
+    data: XOR<SafetyCheckInUpdateInput, SafetyCheckInUncheckedUpdateInput>
+    /**
+     * Choose, which SafetyCheckIn to update.
+     */
+    where: SafetyCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafetyCheckIn updateMany
+   */
+  export type SafetyCheckInUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SafetyCheckIns.
+     */
+    data: XOR<SafetyCheckInUpdateManyMutationInput, SafetyCheckInUncheckedUpdateManyInput>
+    /**
+     * Filter which SafetyCheckIns to update
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * Limit how many SafetyCheckIns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SafetyCheckIn updateManyAndReturn
+   */
+  export type SafetyCheckInUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * The data used to update SafetyCheckIns.
+     */
+    data: XOR<SafetyCheckInUpdateManyMutationInput, SafetyCheckInUncheckedUpdateManyInput>
+    /**
+     * Filter which SafetyCheckIns to update
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * Limit how many SafetyCheckIns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SafetyCheckIn upsert
+   */
+  export type SafetyCheckInUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SafetyCheckIn to update in case it exists.
+     */
+    where: SafetyCheckInWhereUniqueInput
+    /**
+     * In case the SafetyCheckIn found by the `where` argument doesn't exist, create a new SafetyCheckIn with this data.
+     */
+    create: XOR<SafetyCheckInCreateInput, SafetyCheckInUncheckedCreateInput>
+    /**
+     * In case the SafetyCheckIn was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SafetyCheckInUpdateInput, SafetyCheckInUncheckedUpdateInput>
+  }
+
+  /**
+   * SafetyCheckIn delete
+   */
+  export type SafetyCheckInDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    /**
+     * Filter which SafetyCheckIn to delete.
+     */
+    where: SafetyCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafetyCheckIn deleteMany
+   */
+  export type SafetyCheckInDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SafetyCheckIns to delete
+     */
+    where?: SafetyCheckInWhereInput
+    /**
+     * Limit how many SafetyCheckIns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SafetyCheckIn without action
+   */
+  export type SafetyCheckInDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FamilyMember
+   */
+
+  export type AggregateFamilyMember = {
+    _count: FamilyMemberCountAggregateOutputType | null
+    _min: FamilyMemberMinAggregateOutputType | null
+    _max: FamilyMemberMaxAggregateOutputType | null
+  }
+
+  export type FamilyMemberMinAggregateOutputType = {
+    id: string | null
+    primaryUserId: string | null
+    name: string | null
+    relation: string | null
+    status: $Enums.SafetyStatus | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FamilyMemberMaxAggregateOutputType = {
+    id: string | null
+    primaryUserId: string | null
+    name: string | null
+    relation: string | null
+    status: $Enums.SafetyStatus | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FamilyMemberCountAggregateOutputType = {
+    id: number
+    primaryUserId: number
+    name: number
+    relation: number
+    status: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FamilyMemberMinAggregateInputType = {
+    id?: true
+    primaryUserId?: true
+    name?: true
+    relation?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FamilyMemberMaxAggregateInputType = {
+    id?: true
+    primaryUserId?: true
+    name?: true
+    relation?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FamilyMemberCountAggregateInputType = {
+    id?: true
+    primaryUserId?: true
+    name?: true
+    relation?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FamilyMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FamilyMember to aggregate.
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FamilyMembers to fetch.
+     */
+    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FamilyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FamilyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FamilyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FamilyMembers
+    **/
+    _count?: true | FamilyMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FamilyMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FamilyMemberMaxAggregateInputType
+  }
+
+  export type GetFamilyMemberAggregateType<T extends FamilyMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateFamilyMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFamilyMember[P]>
+      : GetScalarType<T[P], AggregateFamilyMember[P]>
+  }
+
+
+
+
+  export type FamilyMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FamilyMemberWhereInput
+    orderBy?: FamilyMemberOrderByWithAggregationInput | FamilyMemberOrderByWithAggregationInput[]
+    by: FamilyMemberScalarFieldEnum[] | FamilyMemberScalarFieldEnum
+    having?: FamilyMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FamilyMemberCountAggregateInputType | true
+    _min?: FamilyMemberMinAggregateInputType
+    _max?: FamilyMemberMaxAggregateInputType
+  }
+
+  export type FamilyMemberGroupByOutputType = {
+    id: string
+    primaryUserId: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FamilyMemberCountAggregateOutputType | null
+    _min: FamilyMemberMinAggregateOutputType | null
+    _max: FamilyMemberMaxAggregateOutputType | null
+  }
+
+  type GetFamilyMemberGroupByPayload<T extends FamilyMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FamilyMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FamilyMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FamilyMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], FamilyMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FamilyMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    primaryUserId?: boolean
+    name?: boolean
+    relation?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["familyMember"]>
+
+  export type FamilyMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    primaryUserId?: boolean
+    name?: boolean
+    relation?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["familyMember"]>
+
+  export type FamilyMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    primaryUserId?: boolean
+    name?: boolean
+    relation?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    primaryUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["familyMember"]>
+
+  export type FamilyMemberSelectScalar = {
+    id?: boolean
+    primaryUserId?: boolean
+    name?: boolean
+    relation?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FamilyMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "primaryUserId" | "name" | "relation" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["familyMember"]>
+  export type FamilyMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    primaryUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FamilyMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    primaryUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FamilyMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    primaryUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FamilyMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FamilyMember"
+    objects: {
+      primaryUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      primaryUserId: string
+      name: string
+      relation: string
+      status: $Enums.SafetyStatus
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["familyMember"]>
+    composites: {}
+  }
+
+  type FamilyMemberGetPayload<S extends boolean | null | undefined | FamilyMemberDefaultArgs> = $Result.GetResult<Prisma.$FamilyMemberPayload, S>
+
+  type FamilyMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FamilyMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FamilyMemberCountAggregateInputType | true
+    }
+
+  export interface FamilyMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FamilyMember'], meta: { name: 'FamilyMember' } }
+    /**
+     * Find zero or one FamilyMember that matches the filter.
+     * @param {FamilyMemberFindUniqueArgs} args - Arguments to find a FamilyMember
+     * @example
+     * // Get one FamilyMember
+     * const familyMember = await prisma.familyMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FamilyMemberFindUniqueArgs>(args: SelectSubset<T, FamilyMemberFindUniqueArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FamilyMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FamilyMemberFindUniqueOrThrowArgs} args - Arguments to find a FamilyMember
+     * @example
+     * // Get one FamilyMember
+     * const familyMember = await prisma.familyMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FamilyMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, FamilyMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FamilyMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberFindFirstArgs} args - Arguments to find a FamilyMember
+     * @example
+     * // Get one FamilyMember
+     * const familyMember = await prisma.familyMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FamilyMemberFindFirstArgs>(args?: SelectSubset<T, FamilyMemberFindFirstArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FamilyMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberFindFirstOrThrowArgs} args - Arguments to find a FamilyMember
+     * @example
+     * // Get one FamilyMember
+     * const familyMember = await prisma.familyMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FamilyMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, FamilyMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FamilyMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FamilyMembers
+     * const familyMembers = await prisma.familyMember.findMany()
+     * 
+     * // Get first 10 FamilyMembers
+     * const familyMembers = await prisma.familyMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const familyMemberWithIdOnly = await prisma.familyMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FamilyMemberFindManyArgs>(args?: SelectSubset<T, FamilyMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FamilyMember.
+     * @param {FamilyMemberCreateArgs} args - Arguments to create a FamilyMember.
+     * @example
+     * // Create one FamilyMember
+     * const FamilyMember = await prisma.familyMember.create({
+     *   data: {
+     *     // ... data to create a FamilyMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends FamilyMemberCreateArgs>(args: SelectSubset<T, FamilyMemberCreateArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FamilyMembers.
+     * @param {FamilyMemberCreateManyArgs} args - Arguments to create many FamilyMembers.
+     * @example
+     * // Create many FamilyMembers
+     * const familyMember = await prisma.familyMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FamilyMemberCreateManyArgs>(args?: SelectSubset<T, FamilyMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FamilyMembers and returns the data saved in the database.
+     * @param {FamilyMemberCreateManyAndReturnArgs} args - Arguments to create many FamilyMembers.
+     * @example
+     * // Create many FamilyMembers
+     * const familyMember = await prisma.familyMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FamilyMembers and only return the `id`
+     * const familyMemberWithIdOnly = await prisma.familyMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FamilyMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, FamilyMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FamilyMember.
+     * @param {FamilyMemberDeleteArgs} args - Arguments to delete one FamilyMember.
+     * @example
+     * // Delete one FamilyMember
+     * const FamilyMember = await prisma.familyMember.delete({
+     *   where: {
+     *     // ... filter to delete one FamilyMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FamilyMemberDeleteArgs>(args: SelectSubset<T, FamilyMemberDeleteArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FamilyMember.
+     * @param {FamilyMemberUpdateArgs} args - Arguments to update one FamilyMember.
+     * @example
+     * // Update one FamilyMember
+     * const familyMember = await prisma.familyMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FamilyMemberUpdateArgs>(args: SelectSubset<T, FamilyMemberUpdateArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FamilyMembers.
+     * @param {FamilyMemberDeleteManyArgs} args - Arguments to filter FamilyMembers to delete.
+     * @example
+     * // Delete a few FamilyMembers
+     * const { count } = await prisma.familyMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FamilyMemberDeleteManyArgs>(args?: SelectSubset<T, FamilyMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FamilyMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FamilyMembers
+     * const familyMember = await prisma.familyMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FamilyMemberUpdateManyArgs>(args: SelectSubset<T, FamilyMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FamilyMembers and returns the data updated in the database.
+     * @param {FamilyMemberUpdateManyAndReturnArgs} args - Arguments to update many FamilyMembers.
+     * @example
+     * // Update many FamilyMembers
+     * const familyMember = await prisma.familyMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FamilyMembers and only return the `id`
+     * const familyMemberWithIdOnly = await prisma.familyMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FamilyMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, FamilyMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FamilyMember.
+     * @param {FamilyMemberUpsertArgs} args - Arguments to update or create a FamilyMember.
+     * @example
+     * // Update or create a FamilyMember
+     * const familyMember = await prisma.familyMember.upsert({
+     *   create: {
+     *     // ... data to create a FamilyMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FamilyMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FamilyMemberUpsertArgs>(args: SelectSubset<T, FamilyMemberUpsertArgs<ExtArgs>>): Prisma__FamilyMemberClient<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FamilyMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberCountArgs} args - Arguments to filter FamilyMembers to count.
+     * @example
+     * // Count the number of FamilyMembers
+     * const count = await prisma.familyMember.count({
+     *   where: {
+     *     // ... the filter for the FamilyMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends FamilyMemberCountArgs>(
+      args?: Subset<T, FamilyMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FamilyMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FamilyMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FamilyMemberAggregateArgs>(args: Subset<T, FamilyMemberAggregateArgs>): Prisma.PrismaPromise<GetFamilyMemberAggregateType<T>>
+
+    /**
+     * Group by FamilyMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FamilyMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FamilyMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FamilyMemberGroupByArgs['orderBy'] }
+        : { orderBy?: FamilyMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FamilyMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFamilyMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FamilyMember model
+   */
+  readonly fields: FamilyMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FamilyMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FamilyMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    primaryUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FamilyMember model
+   */
+  interface FamilyMemberFieldRefs {
+    readonly id: FieldRef<"FamilyMember", 'String'>
+    readonly primaryUserId: FieldRef<"FamilyMember", 'String'>
+    readonly name: FieldRef<"FamilyMember", 'String'>
+    readonly relation: FieldRef<"FamilyMember", 'String'>
+    readonly status: FieldRef<"FamilyMember", 'SafetyStatus'>
+    readonly notes: FieldRef<"FamilyMember", 'String'>
+    readonly createdAt: FieldRef<"FamilyMember", 'DateTime'>
+    readonly updatedAt: FieldRef<"FamilyMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FamilyMember findUnique
+   */
+  export type FamilyMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which FamilyMember to fetch.
+     */
+    where: FamilyMemberWhereUniqueInput
+  }
+
+  /**
+   * FamilyMember findUniqueOrThrow
+   */
+  export type FamilyMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which FamilyMember to fetch.
+     */
+    where: FamilyMemberWhereUniqueInput
+  }
+
+  /**
+   * FamilyMember findFirst
+   */
+  export type FamilyMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which FamilyMember to fetch.
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FamilyMembers to fetch.
+     */
+    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FamilyMembers.
+     */
+    cursor?: FamilyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FamilyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FamilyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FamilyMembers.
+     */
+    distinct?: FamilyMemberScalarFieldEnum | FamilyMemberScalarFieldEnum[]
+  }
+
+  /**
+   * FamilyMember findFirstOrThrow
+   */
+  export type FamilyMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which FamilyMember to fetch.
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FamilyMembers to fetch.
+     */
+    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FamilyMembers.
+     */
+    cursor?: FamilyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FamilyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FamilyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FamilyMembers.
+     */
+    distinct?: FamilyMemberScalarFieldEnum | FamilyMemberScalarFieldEnum[]
+  }
+
+  /**
+   * FamilyMember findMany
+   */
+  export type FamilyMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which FamilyMembers to fetch.
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FamilyMembers to fetch.
+     */
+    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FamilyMembers.
+     */
+    cursor?: FamilyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FamilyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FamilyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FamilyMembers.
+     */
+    distinct?: FamilyMemberScalarFieldEnum | FamilyMemberScalarFieldEnum[]
+  }
+
+  /**
+   * FamilyMember create
+   */
+  export type FamilyMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FamilyMember.
+     */
+    data: XOR<FamilyMemberCreateInput, FamilyMemberUncheckedCreateInput>
+  }
+
+  /**
+   * FamilyMember createMany
+   */
+  export type FamilyMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FamilyMembers.
+     */
+    data: FamilyMemberCreateManyInput | FamilyMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FamilyMember createManyAndReturn
+   */
+  export type FamilyMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many FamilyMembers.
+     */
+    data: FamilyMemberCreateManyInput | FamilyMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FamilyMember update
+   */
+  export type FamilyMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FamilyMember.
+     */
+    data: XOR<FamilyMemberUpdateInput, FamilyMemberUncheckedUpdateInput>
+    /**
+     * Choose, which FamilyMember to update.
+     */
+    where: FamilyMemberWhereUniqueInput
+  }
+
+  /**
+   * FamilyMember updateMany
+   */
+  export type FamilyMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FamilyMembers.
+     */
+    data: XOR<FamilyMemberUpdateManyMutationInput, FamilyMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which FamilyMembers to update
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * Limit how many FamilyMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FamilyMember updateManyAndReturn
+   */
+  export type FamilyMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update FamilyMembers.
+     */
+    data: XOR<FamilyMemberUpdateManyMutationInput, FamilyMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which FamilyMembers to update
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * Limit how many FamilyMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FamilyMember upsert
+   */
+  export type FamilyMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FamilyMember to update in case it exists.
+     */
+    where: FamilyMemberWhereUniqueInput
+    /**
+     * In case the FamilyMember found by the `where` argument doesn't exist, create a new FamilyMember with this data.
+     */
+    create: XOR<FamilyMemberCreateInput, FamilyMemberUncheckedCreateInput>
+    /**
+     * In case the FamilyMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FamilyMemberUpdateInput, FamilyMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * FamilyMember delete
+   */
+  export type FamilyMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    /**
+     * Filter which FamilyMember to delete.
+     */
+    where: FamilyMemberWhereUniqueInput
+  }
+
+  /**
+   * FamilyMember deleteMany
+   */
+  export type FamilyMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FamilyMembers to delete
+     */
+    where?: FamilyMemberWhereInput
+    /**
+     * Limit how many FamilyMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FamilyMember without action
+   */
+  export type FamilyMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model GroupTherapyParticipant
    */
 
@@ -64286,7 +69490,8 @@ export namespace Prisma {
     twoFactorGracePeriodEnds: 'twoFactorGracePeriodEnds',
     hasMobileApp: 'hasMobileApp',
     lastCheckInTime: 'lastCheckInTime',
-    isFieldActive: 'isFieldActive'
+    isFieldActive: 'isFieldActive',
+    currentSectorId: 'currentSectorId'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -64330,10 +69535,23 @@ export namespace Prisma {
     translatedMsgTamil: 'translatedMsgTamil',
     acknowledgementRate: 'acknowledgementRate',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    targetSectors: 'targetSectors'
   };
 
   export type AlertScalarFieldEnum = (typeof AlertScalarFieldEnum)[keyof typeof AlertScalarFieldEnum]
+
+
+  export const SectorScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    type: 'type',
+    polygonData: 'polygonData',
+    district: 'district',
+    province: 'province'
+  };
+
+  export type SectorScalarFieldEnum = (typeof SectorScalarFieldEnum)[keyof typeof SectorScalarFieldEnum]
 
 
   export const ReliefCampScalarFieldEnum: {
@@ -64993,6 +70211,52 @@ export namespace Prisma {
   export type GroupTherapySessionScalarFieldEnum = (typeof GroupTherapySessionScalarFieldEnum)[keyof typeof GroupTherapySessionScalarFieldEnum]
 
 
+  export const DonationScalarFieldEnum: {
+    id: 'id',
+    donorId: 'donorId',
+    donorName: 'donorName',
+    type: 'type',
+    amount: 'amount',
+    itemsDescription: 'itemsDescription',
+    transactionId: 'transactionId',
+    paymentGateway: 'paymentGateway',
+    transactionDate: 'transactionDate',
+    status: 'status',
+    campId: 'campId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DonationScalarFieldEnum = (typeof DonationScalarFieldEnum)[keyof typeof DonationScalarFieldEnum]
+
+
+  export const SafetyCheckInScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    status: 'status',
+    message: 'message',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    createdAt: 'createdAt'
+  };
+
+  export type SafetyCheckInScalarFieldEnum = (typeof SafetyCheckInScalarFieldEnum)[keyof typeof SafetyCheckInScalarFieldEnum]
+
+
+  export const FamilyMemberScalarFieldEnum: {
+    id: 'id',
+    primaryUserId: 'primaryUserId',
+    name: 'name',
+    relation: 'relation',
+    status: 'status',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FamilyMemberScalarFieldEnum = (typeof FamilyMemberScalarFieldEnum)[keyof typeof FamilyMemberScalarFieldEnum]
+
+
   export const GroupTherapyParticipantScalarFieldEnum: {
     id: 'id',
     sessionId: 'sessionId',
@@ -65368,6 +70632,48 @@ export namespace Prisma {
    */
   export type ListEnumReferralStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReferralStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'DonationType'
+   */
+  export type EnumDonationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DonationType[]'
+   */
+  export type ListEnumDonationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DonationStatus'
+   */
+  export type EnumDonationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DonationStatus[]'
+   */
+  export type ListEnumDonationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SafetyStatus'
+   */
+  export type EnumSafetyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SafetyStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SafetyStatus[]'
+   */
+  export type ListEnumSafetyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SafetyStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -65394,6 +70700,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFilter<"User"> | boolean
     lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
     isFieldActive?: BoolFilter<"User"> | boolean
+    currentSectorId?: StringNullableFilter<"User"> | string | null
     damageReports?: DamageAssessmentListRelationFilter
     helpRequests?: HelpRequestListRelationFilter
     reports?: IncidentReportListRelationFilter
@@ -65407,6 +70714,10 @@ export namespace Prisma {
     assignedTasks?: TaskListRelationFilter
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
     sessionLogs?: UserSessionLogListRelationFilter
+    currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
+    donations?: DonationListRelationFilter
+    safetyCheckIns?: SafetyCheckInListRelationFilter
+    familyMembers?: FamilyMemberListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -65427,6 +70738,7 @@ export namespace Prisma {
     hasMobileApp?: SortOrder
     lastCheckInTime?: SortOrderInput | SortOrder
     isFieldActive?: SortOrder
+    currentSectorId?: SortOrderInput | SortOrder
     damageReports?: DamageAssessmentOrderByRelationAggregateInput
     helpRequests?: HelpRequestOrderByRelationAggregateInput
     reports?: IncidentReportOrderByRelationAggregateInput
@@ -65440,6 +70752,10 @@ export namespace Prisma {
     assignedTasks?: TaskOrderByRelationAggregateInput
     volunteerProfile?: VolunteerProfileOrderByWithRelationInput
     sessionLogs?: UserSessionLogOrderByRelationAggregateInput
+    currentSector?: SectorOrderByWithRelationInput
+    donations?: DonationOrderByRelationAggregateInput
+    safetyCheckIns?: SafetyCheckInOrderByRelationAggregateInput
+    familyMembers?: FamilyMemberOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -65463,6 +70779,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFilter<"User"> | boolean
     lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
     isFieldActive?: BoolFilter<"User"> | boolean
+    currentSectorId?: StringNullableFilter<"User"> | string | null
     damageReports?: DamageAssessmentListRelationFilter
     helpRequests?: HelpRequestListRelationFilter
     reports?: IncidentReportListRelationFilter
@@ -65476,6 +70793,10 @@ export namespace Prisma {
     assignedTasks?: TaskListRelationFilter
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
     sessionLogs?: UserSessionLogListRelationFilter
+    currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
+    donations?: DonationListRelationFilter
+    safetyCheckIns?: SafetyCheckInListRelationFilter
+    familyMembers?: FamilyMemberListRelationFilter
   }, "id" | "email" | "nic">
 
   export type UserOrderByWithAggregationInput = {
@@ -65496,6 +70817,7 @@ export namespace Prisma {
     hasMobileApp?: SortOrder
     lastCheckInTime?: SortOrderInput | SortOrder
     isFieldActive?: SortOrder
+    currentSectorId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -65522,6 +70844,7 @@ export namespace Prisma {
     hasMobileApp?: BoolWithAggregatesFilter<"User"> | boolean
     lastCheckInTime?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     isFieldActive?: BoolWithAggregatesFilter<"User"> | boolean
+    currentSectorId?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type IncidentReportWhereInput = {
@@ -65678,6 +71001,7 @@ export namespace Prisma {
     acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
     createdAt?: DateTimeFilter<"Alert"> | Date | string
     updatedAt?: DateTimeFilter<"Alert"> | Date | string
+    targetSectors?: StringNullableListFilter<"Alert">
   }
 
   export type AlertOrderByWithRelationInput = {
@@ -65696,6 +71020,7 @@ export namespace Prisma {
     acknowledgementRate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetSectors?: SortOrder
   }
 
   export type AlertWhereUniqueInput = Prisma.AtLeast<{
@@ -65717,6 +71042,7 @@ export namespace Prisma {
     acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
     createdAt?: DateTimeFilter<"Alert"> | Date | string
     updatedAt?: DateTimeFilter<"Alert"> | Date | string
+    targetSectors?: StringNullableListFilter<"Alert">
   }, "id">
 
   export type AlertOrderByWithAggregationInput = {
@@ -65735,6 +71061,7 @@ export namespace Prisma {
     acknowledgementRate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetSectors?: SortOrder
     _count?: AlertCountOrderByAggregateInput
     _avg?: AlertAvgOrderByAggregateInput
     _max?: AlertMaxOrderByAggregateInput
@@ -65761,6 +71088,67 @@ export namespace Prisma {
     acknowledgementRate?: FloatNullableWithAggregatesFilter<"Alert"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
+    targetSectors?: StringNullableListFilter<"Alert">
+  }
+
+  export type SectorWhereInput = {
+    AND?: SectorWhereInput | SectorWhereInput[]
+    OR?: SectorWhereInput[]
+    NOT?: SectorWhereInput | SectorWhereInput[]
+    id?: StringFilter<"Sector"> | string
+    name?: StringNullableFilter<"Sector"> | string | null
+    type?: StringFilter<"Sector"> | string
+    polygonData?: JsonNullableFilter<"Sector">
+    district?: StringNullableFilter<"Sector"> | string | null
+    province?: StringNullableFilter<"Sector"> | string | null
+    users?: UserListRelationFilter
+  }
+
+  export type SectorOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    type?: SortOrder
+    polygonData?: SortOrderInput | SortOrder
+    district?: SortOrderInput | SortOrder
+    province?: SortOrderInput | SortOrder
+    users?: UserOrderByRelationAggregateInput
+  }
+
+  export type SectorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SectorWhereInput | SectorWhereInput[]
+    OR?: SectorWhereInput[]
+    NOT?: SectorWhereInput | SectorWhereInput[]
+    name?: StringNullableFilter<"Sector"> | string | null
+    type?: StringFilter<"Sector"> | string
+    polygonData?: JsonNullableFilter<"Sector">
+    district?: StringNullableFilter<"Sector"> | string | null
+    province?: StringNullableFilter<"Sector"> | string | null
+    users?: UserListRelationFilter
+  }, "id">
+
+  export type SectorOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    type?: SortOrder
+    polygonData?: SortOrderInput | SortOrder
+    district?: SortOrderInput | SortOrder
+    province?: SortOrderInput | SortOrder
+    _count?: SectorCountOrderByAggregateInput
+    _max?: SectorMaxOrderByAggregateInput
+    _min?: SectorMinOrderByAggregateInput
+  }
+
+  export type SectorScalarWhereWithAggregatesInput = {
+    AND?: SectorScalarWhereWithAggregatesInput | SectorScalarWhereWithAggregatesInput[]
+    OR?: SectorScalarWhereWithAggregatesInput[]
+    NOT?: SectorScalarWhereWithAggregatesInput | SectorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Sector"> | string
+    name?: StringNullableWithAggregatesFilter<"Sector"> | string | null
+    type?: StringWithAggregatesFilter<"Sector"> | string
+    polygonData?: JsonNullableWithAggregatesFilter<"Sector">
+    district?: StringNullableWithAggregatesFilter<"Sector"> | string | null
+    province?: StringNullableWithAggregatesFilter<"Sector"> | string | null
   }
 
   export type ReliefCampWhereInput = {
@@ -65785,6 +71173,7 @@ export namespace Prisma {
     referrals?: HospitalReferralListRelationFilter
     transfersOut?: CampTransferRequestListRelationFilter
     transfersIn?: CampTransferRequestListRelationFilter
+    donations?: DonationListRelationFilter
   }
 
   export type ReliefCampOrderByWithRelationInput = {
@@ -65806,6 +71195,7 @@ export namespace Prisma {
     referrals?: HospitalReferralOrderByRelationAggregateInput
     transfersOut?: CampTransferRequestOrderByRelationAggregateInput
     transfersIn?: CampTransferRequestOrderByRelationAggregateInput
+    donations?: DonationOrderByRelationAggregateInput
   }
 
   export type ReliefCampWhereUniqueInput = Prisma.AtLeast<{
@@ -65830,6 +71220,7 @@ export namespace Prisma {
     referrals?: HospitalReferralListRelationFilter
     transfersOut?: CampTransferRequestListRelationFilter
     transfersIn?: CampTransferRequestListRelationFilter
+    donations?: DonationListRelationFilter
   }, "id">
 
   export type ReliefCampOrderByWithAggregationInput = {
@@ -69135,6 +74526,243 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"GroupTherapySession"> | string
   }
 
+  export type DonationWhereInput = {
+    AND?: DonationWhereInput | DonationWhereInput[]
+    OR?: DonationWhereInput[]
+    NOT?: DonationWhereInput | DonationWhereInput[]
+    id?: StringFilter<"Donation"> | string
+    donorId?: StringNullableFilter<"Donation"> | string | null
+    donorName?: StringFilter<"Donation"> | string
+    type?: EnumDonationTypeFilter<"Donation"> | $Enums.DonationType
+    amount?: FloatNullableFilter<"Donation"> | number | null
+    itemsDescription?: StringNullableFilter<"Donation"> | string | null
+    transactionId?: StringNullableFilter<"Donation"> | string | null
+    paymentGateway?: StringNullableFilter<"Donation"> | string | null
+    transactionDate?: DateTimeNullableFilter<"Donation"> | Date | string | null
+    status?: EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
+    campId?: StringNullableFilter<"Donation"> | string | null
+    createdAt?: DateTimeFilter<"Donation"> | Date | string
+    updatedAt?: DateTimeFilter<"Donation"> | Date | string
+    donor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    camp?: XOR<ReliefCampNullableScalarRelationFilter, ReliefCampWhereInput> | null
+  }
+
+  export type DonationOrderByWithRelationInput = {
+    id?: SortOrder
+    donorId?: SortOrderInput | SortOrder
+    donorName?: SortOrder
+    type?: SortOrder
+    amount?: SortOrderInput | SortOrder
+    itemsDescription?: SortOrderInput | SortOrder
+    transactionId?: SortOrderInput | SortOrder
+    paymentGateway?: SortOrderInput | SortOrder
+    transactionDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    campId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    donor?: UserOrderByWithRelationInput
+    camp?: ReliefCampOrderByWithRelationInput
+  }
+
+  export type DonationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DonationWhereInput | DonationWhereInput[]
+    OR?: DonationWhereInput[]
+    NOT?: DonationWhereInput | DonationWhereInput[]
+    donorId?: StringNullableFilter<"Donation"> | string | null
+    donorName?: StringFilter<"Donation"> | string
+    type?: EnumDonationTypeFilter<"Donation"> | $Enums.DonationType
+    amount?: FloatNullableFilter<"Donation"> | number | null
+    itemsDescription?: StringNullableFilter<"Donation"> | string | null
+    transactionId?: StringNullableFilter<"Donation"> | string | null
+    paymentGateway?: StringNullableFilter<"Donation"> | string | null
+    transactionDate?: DateTimeNullableFilter<"Donation"> | Date | string | null
+    status?: EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
+    campId?: StringNullableFilter<"Donation"> | string | null
+    createdAt?: DateTimeFilter<"Donation"> | Date | string
+    updatedAt?: DateTimeFilter<"Donation"> | Date | string
+    donor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    camp?: XOR<ReliefCampNullableScalarRelationFilter, ReliefCampWhereInput> | null
+  }, "id">
+
+  export type DonationOrderByWithAggregationInput = {
+    id?: SortOrder
+    donorId?: SortOrderInput | SortOrder
+    donorName?: SortOrder
+    type?: SortOrder
+    amount?: SortOrderInput | SortOrder
+    itemsDescription?: SortOrderInput | SortOrder
+    transactionId?: SortOrderInput | SortOrder
+    paymentGateway?: SortOrderInput | SortOrder
+    transactionDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    campId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DonationCountOrderByAggregateInput
+    _avg?: DonationAvgOrderByAggregateInput
+    _max?: DonationMaxOrderByAggregateInput
+    _min?: DonationMinOrderByAggregateInput
+    _sum?: DonationSumOrderByAggregateInput
+  }
+
+  export type DonationScalarWhereWithAggregatesInput = {
+    AND?: DonationScalarWhereWithAggregatesInput | DonationScalarWhereWithAggregatesInput[]
+    OR?: DonationScalarWhereWithAggregatesInput[]
+    NOT?: DonationScalarWhereWithAggregatesInput | DonationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Donation"> | string
+    donorId?: StringNullableWithAggregatesFilter<"Donation"> | string | null
+    donorName?: StringWithAggregatesFilter<"Donation"> | string
+    type?: EnumDonationTypeWithAggregatesFilter<"Donation"> | $Enums.DonationType
+    amount?: FloatNullableWithAggregatesFilter<"Donation"> | number | null
+    itemsDescription?: StringNullableWithAggregatesFilter<"Donation"> | string | null
+    transactionId?: StringNullableWithAggregatesFilter<"Donation"> | string | null
+    paymentGateway?: StringNullableWithAggregatesFilter<"Donation"> | string | null
+    transactionDate?: DateTimeNullableWithAggregatesFilter<"Donation"> | Date | string | null
+    status?: EnumDonationStatusWithAggregatesFilter<"Donation"> | $Enums.DonationStatus
+    campId?: StringNullableWithAggregatesFilter<"Donation"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Donation"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Donation"> | Date | string
+  }
+
+  export type SafetyCheckInWhereInput = {
+    AND?: SafetyCheckInWhereInput | SafetyCheckInWhereInput[]
+    OR?: SafetyCheckInWhereInput[]
+    NOT?: SafetyCheckInWhereInput | SafetyCheckInWhereInput[]
+    id?: StringFilter<"SafetyCheckIn"> | string
+    userId?: StringFilter<"SafetyCheckIn"> | string
+    status?: EnumSafetyStatusFilter<"SafetyCheckIn"> | $Enums.SafetyStatus
+    message?: StringNullableFilter<"SafetyCheckIn"> | string | null
+    latitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    longitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    createdAt?: DateTimeFilter<"SafetyCheckIn"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SafetyCheckInOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    message?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SafetyCheckInWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SafetyCheckInWhereInput | SafetyCheckInWhereInput[]
+    OR?: SafetyCheckInWhereInput[]
+    NOT?: SafetyCheckInWhereInput | SafetyCheckInWhereInput[]
+    userId?: StringFilter<"SafetyCheckIn"> | string
+    status?: EnumSafetyStatusFilter<"SafetyCheckIn"> | $Enums.SafetyStatus
+    message?: StringNullableFilter<"SafetyCheckIn"> | string | null
+    latitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    longitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    createdAt?: DateTimeFilter<"SafetyCheckIn"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type SafetyCheckInOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    message?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SafetyCheckInCountOrderByAggregateInput
+    _avg?: SafetyCheckInAvgOrderByAggregateInput
+    _max?: SafetyCheckInMaxOrderByAggregateInput
+    _min?: SafetyCheckInMinOrderByAggregateInput
+    _sum?: SafetyCheckInSumOrderByAggregateInput
+  }
+
+  export type SafetyCheckInScalarWhereWithAggregatesInput = {
+    AND?: SafetyCheckInScalarWhereWithAggregatesInput | SafetyCheckInScalarWhereWithAggregatesInput[]
+    OR?: SafetyCheckInScalarWhereWithAggregatesInput[]
+    NOT?: SafetyCheckInScalarWhereWithAggregatesInput | SafetyCheckInScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SafetyCheckIn"> | string
+    userId?: StringWithAggregatesFilter<"SafetyCheckIn"> | string
+    status?: EnumSafetyStatusWithAggregatesFilter<"SafetyCheckIn"> | $Enums.SafetyStatus
+    message?: StringNullableWithAggregatesFilter<"SafetyCheckIn"> | string | null
+    latitude?: FloatNullableWithAggregatesFilter<"SafetyCheckIn"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"SafetyCheckIn"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"SafetyCheckIn"> | Date | string
+  }
+
+  export type FamilyMemberWhereInput = {
+    AND?: FamilyMemberWhereInput | FamilyMemberWhereInput[]
+    OR?: FamilyMemberWhereInput[]
+    NOT?: FamilyMemberWhereInput | FamilyMemberWhereInput[]
+    id?: StringFilter<"FamilyMember"> | string
+    primaryUserId?: StringFilter<"FamilyMember"> | string
+    name?: StringFilter<"FamilyMember"> | string
+    relation?: StringFilter<"FamilyMember"> | string
+    status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
+    notes?: StringNullableFilter<"FamilyMember"> | string | null
+    createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
+    updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
+    primaryUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FamilyMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    primaryUserId?: SortOrder
+    name?: SortOrder
+    relation?: SortOrder
+    status?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    primaryUser?: UserOrderByWithRelationInput
+  }
+
+  export type FamilyMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FamilyMemberWhereInput | FamilyMemberWhereInput[]
+    OR?: FamilyMemberWhereInput[]
+    NOT?: FamilyMemberWhereInput | FamilyMemberWhereInput[]
+    primaryUserId?: StringFilter<"FamilyMember"> | string
+    name?: StringFilter<"FamilyMember"> | string
+    relation?: StringFilter<"FamilyMember"> | string
+    status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
+    notes?: StringNullableFilter<"FamilyMember"> | string | null
+    createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
+    updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
+    primaryUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type FamilyMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    primaryUserId?: SortOrder
+    name?: SortOrder
+    relation?: SortOrder
+    status?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FamilyMemberCountOrderByAggregateInput
+    _max?: FamilyMemberMaxOrderByAggregateInput
+    _min?: FamilyMemberMinOrderByAggregateInput
+  }
+
+  export type FamilyMemberScalarWhereWithAggregatesInput = {
+    AND?: FamilyMemberScalarWhereWithAggregatesInput | FamilyMemberScalarWhereWithAggregatesInput[]
+    OR?: FamilyMemberScalarWhereWithAggregatesInput[]
+    NOT?: FamilyMemberScalarWhereWithAggregatesInput | FamilyMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FamilyMember"> | string
+    primaryUserId?: StringWithAggregatesFilter<"FamilyMember"> | string
+    name?: StringWithAggregatesFilter<"FamilyMember"> | string
+    relation?: StringWithAggregatesFilter<"FamilyMember"> | string
+    status?: EnumSafetyStatusWithAggregatesFilter<"FamilyMember"> | $Enums.SafetyStatus
+    notes?: StringNullableWithAggregatesFilter<"FamilyMember"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FamilyMember"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FamilyMember"> | Date | string
+  }
+
   export type GroupTherapyParticipantWhereInput = {
     AND?: GroupTherapyParticipantWhereInput | GroupTherapyParticipantWhereInput[]
     OR?: GroupTherapyParticipantWhereInput[]
@@ -69278,6 +74906,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -69298,6 +74930,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -69311,6 +74944,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUpdateInput = {
@@ -69344,6 +74980,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -69364,6 +75004,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -69377,6 +75018,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -69397,6 +75041,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -69437,6 +75082,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IncidentReportCreateInput = {
@@ -69618,6 +75264,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetSectors?: AlertCreatetargetSectorsInput | string[]
   }
 
   export type AlertUncheckedCreateInput = {
@@ -69636,6 +75283,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetSectors?: AlertCreatetargetSectorsInput | string[]
   }
 
   export type AlertUpdateInput = {
@@ -69654,6 +75302,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
   export type AlertUncheckedUpdateInput = {
@@ -69672,6 +75321,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
   export type AlertCreateManyInput = {
@@ -69690,6 +75340,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetSectors?: AlertCreatetargetSectorsInput | string[]
   }
 
   export type AlertUpdateManyMutationInput = {
@@ -69708,6 +75359,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
   export type AlertUncheckedUpdateManyInput = {
@@ -69726,6 +75378,74 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetSectors?: AlertUpdatetargetSectorsInput | string[]
+  }
+
+  export type SectorCreateInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
+    users?: UserCreateNestedManyWithoutCurrentSectorInput
+  }
+
+  export type SectorUncheckedCreateInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
+    users?: UserUncheckedCreateNestedManyWithoutCurrentSectorInput
+  }
+
+  export type SectorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    users?: UserUpdateManyWithoutCurrentSectorNestedInput
+  }
+
+  export type SectorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    users?: UserUncheckedUpdateManyWithoutCurrentSectorNestedInput
+  }
+
+  export type SectorCreateManyInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
+  }
+
+  export type SectorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SectorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ReliefCampCreateInput = {
@@ -69747,6 +75467,7 @@ export namespace Prisma {
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateInput = {
@@ -69768,6 +75489,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUpdateInput = {
@@ -69789,6 +75511,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateInput = {
@@ -69810,6 +75533,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateManyInput = {
@@ -73404,6 +79128,261 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
   }
 
+  export type DonationCreateInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donor?: UserCreateNestedOneWithoutDonationsInput
+    camp?: ReliefCampCreateNestedOneWithoutDonationsInput
+  }
+
+  export type DonationUncheckedCreateInput = {
+    id?: string
+    donorId?: string | null
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    campId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donor?: UserUpdateOneWithoutDonationsNestedInput
+    camp?: ReliefCampUpdateOneWithoutDonationsNestedInput
+  }
+
+  export type DonationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonationCreateManyInput = {
+    id?: string
+    donorId?: string | null
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    campId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInCreateInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSafetyCheckInsInput
+  }
+
+  export type SafetyCheckInUncheckedCreateInput = {
+    id?: string
+    userId: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSafetyCheckInsNestedInput
+  }
+
+  export type SafetyCheckInUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInCreateManyInput = {
+    id?: string
+    userId: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberCreateInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    primaryUser: UserCreateNestedOneWithoutFamilyMembersInput
+  }
+
+  export type FamilyMemberUncheckedCreateInput = {
+    id?: string
+    primaryUserId: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    primaryUser?: UserUpdateOneRequiredWithoutFamilyMembersNestedInput
+  }
+
+  export type FamilyMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    primaryUserId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberCreateManyInput = {
+    id?: string
+    primaryUserId: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    primaryUserId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GroupTherapyParticipantCreateInput = {
     id?: string
     userId: string
@@ -73656,6 +79635,29 @@ export namespace Prisma {
     none?: UserSessionLogWhereInput
   }
 
+  export type SectorNullableScalarRelationFilter = {
+    is?: SectorWhereInput | null
+    isNot?: SectorWhereInput | null
+  }
+
+  export type DonationListRelationFilter = {
+    every?: DonationWhereInput
+    some?: DonationWhereInput
+    none?: DonationWhereInput
+  }
+
+  export type SafetyCheckInListRelationFilter = {
+    every?: SafetyCheckInWhereInput
+    some?: SafetyCheckInWhereInput
+    none?: SafetyCheckInWhereInput
+  }
+
+  export type FamilyMemberListRelationFilter = {
+    every?: FamilyMemberWhereInput
+    some?: FamilyMemberWhereInput
+    none?: FamilyMemberWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -73701,6 +79703,18 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type DonationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SafetyCheckInOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FamilyMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -73719,6 +79733,7 @@ export namespace Prisma {
     hasMobileApp?: SortOrder
     lastCheckInTime?: SortOrder
     isFieldActive?: SortOrder
+    currentSectorId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -73739,6 +79754,7 @@ export namespace Prisma {
     hasMobileApp?: SortOrder
     lastCheckInTime?: SortOrder
     isFieldActive?: SortOrder
+    currentSectorId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -73759,6 +79775,7 @@ export namespace Prisma {
     hasMobileApp?: SortOrder
     lastCheckInTime?: SortOrder
     isFieldActive?: SortOrder
+    currentSectorId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -74066,6 +80083,7 @@ export namespace Prisma {
     acknowledgementRate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetSectors?: SortOrder
   }
 
   export type AlertAvgOrderByAggregateInput = {
@@ -74142,6 +80160,41 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SectorCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    polygonData?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+  }
+
+  export type SectorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+  }
+
+  export type SectorMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -76497,6 +82550,191 @@ export namespace Prisma {
     maxParticipants?: SortOrder
   }
 
+  export type EnumDonationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationType | EnumDonationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationTypeFilter<$PrismaModel> | $Enums.DonationType
+  }
+
+  export type EnumDonationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationStatus | EnumDonationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationStatusFilter<$PrismaModel> | $Enums.DonationStatus
+  }
+
+  export type ReliefCampNullableScalarRelationFilter = {
+    is?: ReliefCampWhereInput | null
+    isNot?: ReliefCampWhereInput | null
+  }
+
+  export type DonationCountOrderByAggregateInput = {
+    id?: SortOrder
+    donorId?: SortOrder
+    donorName?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    itemsDescription?: SortOrder
+    transactionId?: SortOrder
+    paymentGateway?: SortOrder
+    transactionDate?: SortOrder
+    status?: SortOrder
+    campId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DonationAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type DonationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    donorId?: SortOrder
+    donorName?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    itemsDescription?: SortOrder
+    transactionId?: SortOrder
+    paymentGateway?: SortOrder
+    transactionDate?: SortOrder
+    status?: SortOrder
+    campId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DonationMinOrderByAggregateInput = {
+    id?: SortOrder
+    donorId?: SortOrder
+    donorName?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    itemsDescription?: SortOrder
+    transactionId?: SortOrder
+    paymentGateway?: SortOrder
+    transactionDate?: SortOrder
+    status?: SortOrder
+    campId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DonationSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type EnumDonationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationType | EnumDonationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationTypeWithAggregatesFilter<$PrismaModel> | $Enums.DonationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDonationTypeFilter<$PrismaModel>
+    _max?: NestedEnumDonationTypeFilter<$PrismaModel>
+  }
+
+  export type EnumDonationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationStatus | EnumDonationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationStatusWithAggregatesFilter<$PrismaModel> | $Enums.DonationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDonationStatusFilter<$PrismaModel>
+    _max?: NestedEnumDonationStatusFilter<$PrismaModel>
+  }
+
+  export type EnumSafetyStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SafetyStatus | EnumSafetyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSafetyStatusFilter<$PrismaModel> | $Enums.SafetyStatus
+  }
+
+  export type SafetyCheckInCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SafetyCheckInAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type SafetyCheckInMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SafetyCheckInMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SafetyCheckInSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type EnumSafetyStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SafetyStatus | EnumSafetyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSafetyStatusWithAggregatesFilter<$PrismaModel> | $Enums.SafetyStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSafetyStatusFilter<$PrismaModel>
+    _max?: NestedEnumSafetyStatusFilter<$PrismaModel>
+  }
+
+  export type FamilyMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    primaryUserId?: SortOrder
+    name?: SortOrder
+    relation?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FamilyMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    primaryUserId?: SortOrder
+    name?: SortOrder
+    relation?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FamilyMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    primaryUserId?: SortOrder
+    name?: SortOrder
+    relation?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type GroupTherapySessionScalarRelationFilter = {
     is?: GroupTherapySessionWhereInput
     isNot?: GroupTherapySessionWhereInput
@@ -76642,6 +82880,33 @@ export namespace Prisma {
     connect?: UserSessionLogWhereUniqueInput | UserSessionLogWhereUniqueInput[]
   }
 
+  export type SectorCreateNestedOneWithoutUsersInput = {
+    create?: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SectorCreateOrConnectWithoutUsersInput
+    connect?: SectorWhereUniqueInput
+  }
+
+  export type DonationCreateNestedManyWithoutDonorInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+  }
+
+  export type SafetyCheckInCreateNestedManyWithoutUserInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+  }
+
+  export type FamilyMemberCreateNestedManyWithoutPrimaryUserInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+  }
+
   export type DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -76729,6 +82994,27 @@ export namespace Prisma {
     connectOrCreate?: UserSessionLogCreateOrConnectWithoutUserInput | UserSessionLogCreateOrConnectWithoutUserInput[]
     createMany?: UserSessionLogCreateManyUserInputEnvelope
     connect?: UserSessionLogWhereUniqueInput | UserSessionLogWhereUniqueInput[]
+  }
+
+  export type DonationUncheckedCreateNestedManyWithoutDonorInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+  }
+
+  export type SafetyCheckInUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+  }
+
+  export type FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -76929,6 +83215,58 @@ export namespace Prisma {
     deleteMany?: UserSessionLogScalarWhereInput | UserSessionLogScalarWhereInput[]
   }
 
+  export type SectorUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SectorCreateOrConnectWithoutUsersInput
+    upsert?: SectorUpsertWithoutUsersInput
+    disconnect?: SectorWhereInput | boolean
+    delete?: SectorWhereInput | boolean
+    connect?: SectorWhereUniqueInput
+    update?: XOR<XOR<SectorUpdateToOneWithWhereWithoutUsersInput, SectorUpdateWithoutUsersInput>, SectorUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type DonationUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    upsert?: DonationUpsertWithWhereUniqueWithoutDonorInput | DonationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    update?: DonationUpdateWithWhereUniqueWithoutDonorInput | DonationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: DonationUpdateManyWithWhereWithoutDonorInput | DonationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
+  }
+
+  export type SafetyCheckInUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    upsert?: SafetyCheckInUpsertWithWhereUniqueWithoutUserInput | SafetyCheckInUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    set?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    disconnect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    delete?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    update?: SafetyCheckInUpdateWithWhereUniqueWithoutUserInput | SafetyCheckInUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SafetyCheckInUpdateManyWithWhereWithoutUserInput | SafetyCheckInUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+  }
+
+  export type FamilyMemberUpdateManyWithoutPrimaryUserNestedInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    upsert?: FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    set?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    disconnect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    delete?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    update?: FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput[]
+    updateMany?: FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput | FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput[]
+    deleteMany?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+  }
+
   export type DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -77101,6 +83439,48 @@ export namespace Prisma {
     update?: UserSessionLogUpdateWithWhereUniqueWithoutUserInput | UserSessionLogUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserSessionLogUpdateManyWithWhereWithoutUserInput | UserSessionLogUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserSessionLogScalarWhereInput | UserSessionLogScalarWhereInput[]
+  }
+
+  export type DonationUncheckedUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    upsert?: DonationUpsertWithWhereUniqueWithoutDonorInput | DonationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    update?: DonationUpdateWithWhereUniqueWithoutDonorInput | DonationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: DonationUpdateManyWithWhereWithoutDonorInput | DonationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
+  }
+
+  export type SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    upsert?: SafetyCheckInUpsertWithWhereUniqueWithoutUserInput | SafetyCheckInUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    set?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    disconnect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    delete?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    update?: SafetyCheckInUpdateWithWhereUniqueWithoutUserInput | SafetyCheckInUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SafetyCheckInUpdateManyWithWhereWithoutUserInput | SafetyCheckInUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+  }
+
+  export type FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    upsert?: FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    set?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    disconnect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    delete?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    update?: FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput[]
+    updateMany?: FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput | FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput[]
+    deleteMany?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
   }
 
   export type IncidentReportCreateimagesInput = {
@@ -77396,6 +83776,10 @@ export namespace Prisma {
     set: number[]
   }
 
+  export type AlertCreatetargetSectorsInput = {
+    set: string[]
+  }
+
   export type AlertUpdatelocationsInput = {
     set?: string[]
     push?: string | string[]
@@ -77413,6 +83797,53 @@ export namespace Prisma {
 
   export type EnumAlertTypeFieldUpdateOperationsInput = {
     set?: $Enums.AlertType
+  }
+
+  export type AlertUpdatetargetSectorsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserCreateNestedManyWithoutCurrentSectorInput = {
+    create?: XOR<UserCreateWithoutCurrentSectorInput, UserUncheckedCreateWithoutCurrentSectorInput> | UserCreateWithoutCurrentSectorInput[] | UserUncheckedCreateWithoutCurrentSectorInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCurrentSectorInput | UserCreateOrConnectWithoutCurrentSectorInput[]
+    createMany?: UserCreateManyCurrentSectorInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutCurrentSectorInput = {
+    create?: XOR<UserCreateWithoutCurrentSectorInput, UserUncheckedCreateWithoutCurrentSectorInput> | UserCreateWithoutCurrentSectorInput[] | UserUncheckedCreateWithoutCurrentSectorInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCurrentSectorInput | UserCreateOrConnectWithoutCurrentSectorInput[]
+    createMany?: UserCreateManyCurrentSectorInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUpdateManyWithoutCurrentSectorNestedInput = {
+    create?: XOR<UserCreateWithoutCurrentSectorInput, UserUncheckedCreateWithoutCurrentSectorInput> | UserCreateWithoutCurrentSectorInput[] | UserUncheckedCreateWithoutCurrentSectorInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCurrentSectorInput | UserCreateOrConnectWithoutCurrentSectorInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCurrentSectorInput | UserUpsertWithWhereUniqueWithoutCurrentSectorInput[]
+    createMany?: UserCreateManyCurrentSectorInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCurrentSectorInput | UserUpdateWithWhereUniqueWithoutCurrentSectorInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCurrentSectorInput | UserUpdateManyWithWhereWithoutCurrentSectorInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutCurrentSectorNestedInput = {
+    create?: XOR<UserCreateWithoutCurrentSectorInput, UserUncheckedCreateWithoutCurrentSectorInput> | UserCreateWithoutCurrentSectorInput[] | UserUncheckedCreateWithoutCurrentSectorInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCurrentSectorInput | UserCreateOrConnectWithoutCurrentSectorInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCurrentSectorInput | UserUpsertWithWhereUniqueWithoutCurrentSectorInput[]
+    createMany?: UserCreateManyCurrentSectorInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCurrentSectorInput | UserUpdateWithWhereUniqueWithoutCurrentSectorInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCurrentSectorInput | UserUpdateManyWithWhereWithoutCurrentSectorInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type ReliefCampCreateservicesInput = {
@@ -77461,6 +83892,13 @@ export namespace Prisma {
     connect?: CampTransferRequestWhereUniqueInput | CampTransferRequestWhereUniqueInput[]
   }
 
+  export type DonationCreateNestedManyWithoutCampInput = {
+    create?: XOR<DonationCreateWithoutCampInput, DonationUncheckedCreateWithoutCampInput> | DonationCreateWithoutCampInput[] | DonationUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutCampInput | DonationCreateOrConnectWithoutCampInput[]
+    createMany?: DonationCreateManyCampInputEnvelope
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+  }
+
   export type CampResidentUncheckedCreateNestedManyWithoutCampInput = {
     create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
@@ -77501,6 +83939,13 @@ export namespace Prisma {
     connectOrCreate?: CampTransferRequestCreateOrConnectWithoutToCampInput | CampTransferRequestCreateOrConnectWithoutToCampInput[]
     createMany?: CampTransferRequestCreateManyToCampInputEnvelope
     connect?: CampTransferRequestWhereUniqueInput | CampTransferRequestWhereUniqueInput[]
+  }
+
+  export type DonationUncheckedCreateNestedManyWithoutCampInput = {
+    create?: XOR<DonationCreateWithoutCampInput, DonationUncheckedCreateWithoutCampInput> | DonationCreateWithoutCampInput[] | DonationUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutCampInput | DonationCreateOrConnectWithoutCampInput[]
+    createMany?: DonationCreateManyCampInputEnvelope
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -77600,6 +84045,20 @@ export namespace Prisma {
     deleteMany?: CampTransferRequestScalarWhereInput | CampTransferRequestScalarWhereInput[]
   }
 
+  export type DonationUpdateManyWithoutCampNestedInput = {
+    create?: XOR<DonationCreateWithoutCampInput, DonationUncheckedCreateWithoutCampInput> | DonationCreateWithoutCampInput[] | DonationUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutCampInput | DonationCreateOrConnectWithoutCampInput[]
+    upsert?: DonationUpsertWithWhereUniqueWithoutCampInput | DonationUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: DonationCreateManyCampInputEnvelope
+    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    update?: DonationUpdateWithWhereUniqueWithoutCampInput | DonationUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: DonationUpdateManyWithWhereWithoutCampInput | DonationUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
+  }
+
   export type CampResidentUncheckedUpdateManyWithoutCampNestedInput = {
     create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
@@ -77682,6 +84141,20 @@ export namespace Prisma {
     update?: CampTransferRequestUpdateWithWhereUniqueWithoutToCampInput | CampTransferRequestUpdateWithWhereUniqueWithoutToCampInput[]
     updateMany?: CampTransferRequestUpdateManyWithWhereWithoutToCampInput | CampTransferRequestUpdateManyWithWhereWithoutToCampInput[]
     deleteMany?: CampTransferRequestScalarWhereInput | CampTransferRequestScalarWhereInput[]
+  }
+
+  export type DonationUncheckedUpdateManyWithoutCampNestedInput = {
+    create?: XOR<DonationCreateWithoutCampInput, DonationUncheckedCreateWithoutCampInput> | DonationCreateWithoutCampInput[] | DonationUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutCampInput | DonationCreateOrConnectWithoutCampInput[]
+    upsert?: DonationUpsertWithWhereUniqueWithoutCampInput | DonationUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: DonationCreateManyCampInputEnvelope
+    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    update?: DonationUpdateWithWhereUniqueWithoutCampInput | DonationUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: DonationUpdateManyWithWhereWithoutCampInput | DonationUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCreatedTasksInput = {
@@ -78893,6 +85366,78 @@ export namespace Prisma {
     deleteMany?: GroupTherapyParticipantScalarWhereInput | GroupTherapyParticipantScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutDonationsInput = {
+    create?: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDonationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ReliefCampCreateNestedOneWithoutDonationsInput = {
+    create?: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: ReliefCampCreateOrConnectWithoutDonationsInput
+    connect?: ReliefCampWhereUniqueInput
+  }
+
+  export type EnumDonationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DonationType
+  }
+
+  export type EnumDonationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DonationStatus
+  }
+
+  export type UserUpdateOneWithoutDonationsNestedInput = {
+    create?: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDonationsInput
+    upsert?: UserUpsertWithoutDonationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDonationsInput, UserUpdateWithoutDonationsInput>, UserUncheckedUpdateWithoutDonationsInput>
+  }
+
+  export type ReliefCampUpdateOneWithoutDonationsNestedInput = {
+    create?: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: ReliefCampCreateOrConnectWithoutDonationsInput
+    upsert?: ReliefCampUpsertWithoutDonationsInput
+    disconnect?: ReliefCampWhereInput | boolean
+    delete?: ReliefCampWhereInput | boolean
+    connect?: ReliefCampWhereUniqueInput
+    update?: XOR<XOR<ReliefCampUpdateToOneWithWhereWithoutDonationsInput, ReliefCampUpdateWithoutDonationsInput>, ReliefCampUncheckedUpdateWithoutDonationsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSafetyCheckInsInput = {
+    create?: XOR<UserCreateWithoutSafetyCheckInsInput, UserUncheckedCreateWithoutSafetyCheckInsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSafetyCheckInsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumSafetyStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SafetyStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutSafetyCheckInsNestedInput = {
+    create?: XOR<UserCreateWithoutSafetyCheckInsInput, UserUncheckedCreateWithoutSafetyCheckInsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSafetyCheckInsInput
+    upsert?: UserUpsertWithoutSafetyCheckInsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSafetyCheckInsInput, UserUpdateWithoutSafetyCheckInsInput>, UserUncheckedUpdateWithoutSafetyCheckInsInput>
+  }
+
+  export type UserCreateNestedOneWithoutFamilyMembersInput = {
+    create?: XOR<UserCreateWithoutFamilyMembersInput, UserUncheckedCreateWithoutFamilyMembersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFamilyMembersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFamilyMembersNestedInput = {
+    create?: XOR<UserCreateWithoutFamilyMembersInput, UserUncheckedCreateWithoutFamilyMembersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFamilyMembersInput
+    upsert?: UserUpsertWithoutFamilyMembersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFamilyMembersInput, UserUpdateWithoutFamilyMembersInput>, UserUncheckedUpdateWithoutFamilyMembersInput>
+  }
+
   export type GroupTherapySessionCreateNestedOneWithoutParticipantsInput = {
     create?: XOR<GroupTherapySessionCreateWithoutParticipantsInput, GroupTherapySessionUncheckedCreateWithoutParticipantsInput>
     connectOrCreate?: GroupTherapySessionCreateOrConnectWithoutParticipantsInput
@@ -79441,6 +85986,57 @@ export namespace Prisma {
     _max?: NestedEnumReferralStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDonationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationType | EnumDonationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationTypeFilter<$PrismaModel> | $Enums.DonationType
+  }
+
+  export type NestedEnumDonationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationStatus | EnumDonationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationStatusFilter<$PrismaModel> | $Enums.DonationStatus
+  }
+
+  export type NestedEnumDonationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationType | EnumDonationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationType[] | ListEnumDonationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationTypeWithAggregatesFilter<$PrismaModel> | $Enums.DonationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDonationTypeFilter<$PrismaModel>
+    _max?: NestedEnumDonationTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDonationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationStatus | EnumDonationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationStatus[] | ListEnumDonationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationStatusWithAggregatesFilter<$PrismaModel> | $Enums.DonationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDonationStatusFilter<$PrismaModel>
+    _max?: NestedEnumDonationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSafetyStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SafetyStatus | EnumSafetyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSafetyStatusFilter<$PrismaModel> | $Enums.SafetyStatus
+  }
+
+  export type NestedEnumSafetyStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SafetyStatus | EnumSafetyStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SafetyStatus[] | ListEnumSafetyStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSafetyStatusWithAggregatesFilter<$PrismaModel> | $Enums.SafetyStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSafetyStatusFilter<$PrismaModel>
+    _max?: NestedEnumSafetyStatusFilter<$PrismaModel>
+  }
+
   export type DamageAssessmentCreateWithoutReportedByInput = {
     id?: string
     location: string
@@ -79953,6 +86549,127 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SectorCreateWithoutUsersInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
+  }
+
+  export type SectorUncheckedCreateWithoutUsersInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
+  }
+
+  export type SectorCreateOrConnectWithoutUsersInput = {
+    where: SectorWhereUniqueInput
+    create: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+  }
+
+  export type DonationCreateWithoutDonorInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    camp?: ReliefCampCreateNestedOneWithoutDonationsInput
+  }
+
+  export type DonationUncheckedCreateWithoutDonorInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    campId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonationCreateOrConnectWithoutDonorInput = {
+    where: DonationWhereUniqueInput
+    create: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type DonationCreateManyDonorInputEnvelope = {
+    data: DonationCreateManyDonorInput | DonationCreateManyDonorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SafetyCheckInCreateWithoutUserInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInUncheckedCreateWithoutUserInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInCreateOrConnectWithoutUserInput = {
+    where: SafetyCheckInWhereUniqueInput
+    create: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput>
+  }
+
+  export type SafetyCheckInCreateManyUserInputEnvelope = {
+    data: SafetyCheckInCreateManyUserInput | SafetyCheckInCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FamilyMemberCreateWithoutPrimaryUserInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberUncheckedCreateWithoutPrimaryUserInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberCreateOrConnectWithoutPrimaryUserInput = {
+    where: FamilyMemberWhereUniqueInput
+    create: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberCreateManyPrimaryUserInputEnvelope = {
+    data: FamilyMemberCreateManyPrimaryUserInput | FamilyMemberCreateManyPrimaryUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput = {
     where: DamageAssessmentWhereUniqueInput
     update: XOR<DamageAssessmentUpdateWithoutReportedByInput, DamageAssessmentUncheckedUpdateWithoutReportedByInput>
@@ -80393,6 +87110,129 @@ export namespace Prisma {
     loginTime?: DateTimeFilter<"UserSessionLog"> | Date | string
   }
 
+  export type SectorUpsertWithoutUsersInput = {
+    update: XOR<SectorUpdateWithoutUsersInput, SectorUncheckedUpdateWithoutUsersInput>
+    create: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+    where?: SectorWhereInput
+  }
+
+  export type SectorUpdateToOneWithWhereWithoutUsersInput = {
+    where?: SectorWhereInput
+    data: XOR<SectorUpdateWithoutUsersInput, SectorUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type SectorUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SectorUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DonationUpsertWithWhereUniqueWithoutDonorInput = {
+    where: DonationWhereUniqueInput
+    update: XOR<DonationUpdateWithoutDonorInput, DonationUncheckedUpdateWithoutDonorInput>
+    create: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type DonationUpdateWithWhereUniqueWithoutDonorInput = {
+    where: DonationWhereUniqueInput
+    data: XOR<DonationUpdateWithoutDonorInput, DonationUncheckedUpdateWithoutDonorInput>
+  }
+
+  export type DonationUpdateManyWithWhereWithoutDonorInput = {
+    where: DonationScalarWhereInput
+    data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyWithoutDonorInput>
+  }
+
+  export type DonationScalarWhereInput = {
+    AND?: DonationScalarWhereInput | DonationScalarWhereInput[]
+    OR?: DonationScalarWhereInput[]
+    NOT?: DonationScalarWhereInput | DonationScalarWhereInput[]
+    id?: StringFilter<"Donation"> | string
+    donorId?: StringNullableFilter<"Donation"> | string | null
+    donorName?: StringFilter<"Donation"> | string
+    type?: EnumDonationTypeFilter<"Donation"> | $Enums.DonationType
+    amount?: FloatNullableFilter<"Donation"> | number | null
+    itemsDescription?: StringNullableFilter<"Donation"> | string | null
+    transactionId?: StringNullableFilter<"Donation"> | string | null
+    paymentGateway?: StringNullableFilter<"Donation"> | string | null
+    transactionDate?: DateTimeNullableFilter<"Donation"> | Date | string | null
+    status?: EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
+    campId?: StringNullableFilter<"Donation"> | string | null
+    createdAt?: DateTimeFilter<"Donation"> | Date | string
+    updatedAt?: DateTimeFilter<"Donation"> | Date | string
+  }
+
+  export type SafetyCheckInUpsertWithWhereUniqueWithoutUserInput = {
+    where: SafetyCheckInWhereUniqueInput
+    update: XOR<SafetyCheckInUpdateWithoutUserInput, SafetyCheckInUncheckedUpdateWithoutUserInput>
+    create: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput>
+  }
+
+  export type SafetyCheckInUpdateWithWhereUniqueWithoutUserInput = {
+    where: SafetyCheckInWhereUniqueInput
+    data: XOR<SafetyCheckInUpdateWithoutUserInput, SafetyCheckInUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SafetyCheckInUpdateManyWithWhereWithoutUserInput = {
+    where: SafetyCheckInScalarWhereInput
+    data: XOR<SafetyCheckInUpdateManyMutationInput, SafetyCheckInUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SafetyCheckInScalarWhereInput = {
+    AND?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+    OR?: SafetyCheckInScalarWhereInput[]
+    NOT?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+    id?: StringFilter<"SafetyCheckIn"> | string
+    userId?: StringFilter<"SafetyCheckIn"> | string
+    status?: EnumSafetyStatusFilter<"SafetyCheckIn"> | $Enums.SafetyStatus
+    message?: StringNullableFilter<"SafetyCheckIn"> | string | null
+    latitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    longitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    createdAt?: DateTimeFilter<"SafetyCheckIn"> | Date | string
+  }
+
+  export type FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput = {
+    where: FamilyMemberWhereUniqueInput
+    update: XOR<FamilyMemberUpdateWithoutPrimaryUserInput, FamilyMemberUncheckedUpdateWithoutPrimaryUserInput>
+    create: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput = {
+    where: FamilyMemberWhereUniqueInput
+    data: XOR<FamilyMemberUpdateWithoutPrimaryUserInput, FamilyMemberUncheckedUpdateWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput = {
+    where: FamilyMemberScalarWhereInput
+    data: XOR<FamilyMemberUpdateManyMutationInput, FamilyMemberUncheckedUpdateManyWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberScalarWhereInput = {
+    AND?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+    OR?: FamilyMemberScalarWhereInput[]
+    NOT?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+    id?: StringFilter<"FamilyMember"> | string
+    primaryUserId?: StringFilter<"FamilyMember"> | string
+    name?: StringFilter<"FamilyMember"> | string
+    relation?: StringFilter<"FamilyMember"> | string
+    status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
+    notes?: StringNullableFilter<"FamilyMember"> | string | null
+    createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
+    updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
+  }
+
   export type DamageAssessmentCreateWithoutIncidentInput = {
     id?: string
     location: string
@@ -80519,6 +87359,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsInput = {
@@ -80539,6 +87383,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -80551,6 +87396,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsInput = {
@@ -80760,6 +87608,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsInput = {
@@ -80780,6 +87632,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -80792,6 +87645,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type ReportVerificationUpsertWithWhereUniqueWithoutReportInput = {
@@ -80886,6 +87742,128 @@ export namespace Prisma {
     resolutionTime?: IntFieldUpdateOperationsInput | number
     lessonsLearned?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutCurrentSectorInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCurrentSectorInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCurrentSectorInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCurrentSectorInput, UserUncheckedCreateWithoutCurrentSectorInput>
+  }
+
+  export type UserCreateManyCurrentSectorInputEnvelope = {
+    data: UserCreateManyCurrentSectorInput | UserCreateManyCurrentSectorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutCurrentSectorInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutCurrentSectorInput, UserUncheckedUpdateWithoutCurrentSectorInput>
+    create: XOR<UserCreateWithoutCurrentSectorInput, UserUncheckedCreateWithoutCurrentSectorInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutCurrentSectorInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutCurrentSectorInput, UserUncheckedUpdateWithoutCurrentSectorInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutCurrentSectorInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCurrentSectorInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    name?: StringFilter<"User"> | string
+    phone?: StringNullableFilter<"User"> | string | null
+    profilePicture?: StringNullableFilter<"User"> | string | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    region?: StringNullableFilter<"User"> | string | null
+    nic?: StringNullableFilter<"User"> | string | null
+    twoFactorEnabled?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    twoFactorGracePeriodEnds?: DateTimeNullableFilter<"User"> | Date | string | null
+    hasMobileApp?: BoolFilter<"User"> | boolean
+    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
+    isFieldActive?: BoolFilter<"User"> | boolean
+    currentSectorId?: StringNullableFilter<"User"> | string | null
   }
 
   export type CampResidentCreateWithoutCampInput = {
@@ -81054,6 +88032,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DonationCreateWithoutCampInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donor?: UserCreateNestedOneWithoutDonationsInput
+  }
+
+  export type DonationUncheckedCreateWithoutCampInput = {
+    id?: string
+    donorId?: string | null
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonationCreateOrConnectWithoutCampInput = {
+    where: DonationWhereUniqueInput
+    create: XOR<DonationCreateWithoutCampInput, DonationUncheckedCreateWithoutCampInput>
+  }
+
+  export type DonationCreateManyCampInputEnvelope = {
+    data: DonationCreateManyCampInput | DonationCreateManyCampInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CampResidentUpsertWithWhereUniqueWithoutCampInput = {
     where: CampResidentWhereUniqueInput
     update: XOR<CampResidentUpdateWithoutCampInput, CampResidentUncheckedUpdateWithoutCampInput>
@@ -81215,6 +88233,22 @@ export namespace Prisma {
     data: XOR<CampTransferRequestUpdateManyMutationInput, CampTransferRequestUncheckedUpdateManyWithoutToCampInput>
   }
 
+  export type DonationUpsertWithWhereUniqueWithoutCampInput = {
+    where: DonationWhereUniqueInput
+    update: XOR<DonationUpdateWithoutCampInput, DonationUncheckedUpdateWithoutCampInput>
+    create: XOR<DonationCreateWithoutCampInput, DonationUncheckedCreateWithoutCampInput>
+  }
+
+  export type DonationUpdateWithWhereUniqueWithoutCampInput = {
+    where: DonationWhereUniqueInput
+    data: XOR<DonationUpdateWithoutCampInput, DonationUncheckedUpdateWithoutCampInput>
+  }
+
+  export type DonationUpdateManyWithWhereWithoutCampInput = {
+    where: DonationScalarWhereInput
+    data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyWithoutCampInput>
+  }
+
   export type UserCreateWithoutCreatedTasksInput = {
     id?: string
     email: string
@@ -81245,6 +88279,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -81265,6 +88303,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -81277,6 +88316,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -81314,6 +88356,10 @@ export namespace Prisma {
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -81334,6 +88380,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -81346,6 +88393,9 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -81449,6 +88499,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -81469,6 +88523,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -81481,6 +88536,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUpsertWithoutAssignedTasksInput = {
@@ -81524,6 +88582,10 @@ export namespace Prisma {
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -81544,6 +88606,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -81556,6 +88619,9 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type IncidentReportUpsertWithoutTasksInput = {
@@ -81649,6 +88715,10 @@ export namespace Prisma {
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutVolunteerProfileInput = {
@@ -81669,6 +88739,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -81681,6 +88752,9 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutVolunteerProfileInput = {
@@ -81855,6 +88929,10 @@ export namespace Prisma {
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVolunteerProfileInput = {
@@ -81875,6 +88953,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -81887,6 +88966,9 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type VolunteerSkillUpsertWithWhereUniqueWithoutVolunteerInput = {
@@ -82057,6 +89139,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutHelpRequestsInput = {
@@ -82077,6 +89163,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -82089,6 +89176,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutHelpRequestsInput = {
@@ -82189,6 +89279,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHelpRequestsInput = {
@@ -82209,6 +89303,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -82221,6 +89316,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput = {
@@ -82443,6 +89541,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -82463,6 +89565,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -82475,6 +89578,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -82584,6 +89690,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -82604,6 +89714,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -82616,6 +89727,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -82648,6 +89762,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -82668,6 +89786,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -82680,6 +89799,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -82728,6 +89850,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -82748,6 +89874,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -82760,6 +89887,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type IncidentReportCreateWithoutHistoryInput = {
@@ -82908,6 +90038,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutLocationLogsInput = {
@@ -82928,6 +90062,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -82940,6 +90075,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutLocationLogsInput = {
@@ -82988,6 +90126,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocationLogsInput = {
@@ -83008,6 +90150,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -83020,6 +90163,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserCreateWithoutReliefTokensInput = {
@@ -83052,6 +90198,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutReliefTokensInput = {
@@ -83072,6 +90222,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -83084,6 +90235,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutReliefTokensInput = {
@@ -83191,6 +90345,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReliefTokensInput = {
@@ -83211,6 +90369,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -83223,6 +90382,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type ReliefTokenClaimUpsertWithWhereUniqueWithoutTokenInput = {
@@ -83468,6 +90630,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutDamageReportsInput = {
@@ -83488,6 +90654,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -83500,6 +90667,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutDamageReportsInput = {
@@ -83609,6 +90779,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDamageReportsInput = {
@@ -83629,6 +90803,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -83641,6 +90816,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserCreateWithoutLocalVerifierInput = {
@@ -83673,6 +90851,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutLocalVerifierInput = {
@@ -83693,6 +90875,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -83705,6 +90888,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutLocalVerifierInput = {
@@ -83781,6 +90967,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocalVerifierInput = {
@@ -83801,6 +90991,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -83813,6 +91004,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutVerifierInput = {
@@ -84141,6 +91335,10 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutSupportRequestsInput = {
@@ -84161,6 +91359,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -84173,6 +91372,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutSupportRequestsInput = {
@@ -84221,6 +91423,10 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportRequestsInput = {
@@ -84241,6 +91447,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -84253,6 +91460,9 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type IncidentReportCreateWithoutAarInput = {
@@ -84597,6 +91807,10 @@ export namespace Prisma {
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionLogsInput = {
@@ -84617,6 +91831,7 @@ export namespace Prisma {
     hasMobileApp?: boolean
     lastCheckInTime?: Date | string | null
     isFieldActive?: boolean
+    currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
@@ -84629,6 +91844,9 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionLogsInput = {
@@ -84677,6 +91895,10 @@ export namespace Prisma {
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionLogsInput = {
@@ -84697,6 +91919,7 @@ export namespace Prisma {
     hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
     lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -84709,6 +91932,9 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type ReliefCampCreateWithoutResidentsInput = {
@@ -84729,6 +91955,7 @@ export namespace Prisma {
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutResidentsInput = {
@@ -84749,6 +91976,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutResidentsInput = {
@@ -84785,6 +92013,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutResidentsInput = {
@@ -84805,6 +92034,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutInventoryInput = {
@@ -84825,6 +92055,7 @@ export namespace Prisma {
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutInventoryInput = {
@@ -84845,6 +92076,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutInventoryInput = {
@@ -84881,6 +92113,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutInventoryInput = {
@@ -84901,6 +92134,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutSchedulesInput = {
@@ -84921,6 +92155,7 @@ export namespace Prisma {
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutSchedulesInput = {
@@ -84941,6 +92176,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutSchedulesInput = {
@@ -84977,6 +92213,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutSchedulesInput = {
@@ -84997,6 +92234,7 @@ export namespace Prisma {
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutReferralsInput = {
@@ -85017,6 +92255,7 @@ export namespace Prisma {
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutReferralsInput = {
@@ -85037,6 +92276,7 @@ export namespace Prisma {
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutReferralsInput = {
@@ -85073,6 +92313,7 @@ export namespace Prisma {
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutReferralsInput = {
@@ -85093,6 +92334,7 @@ export namespace Prisma {
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutTransfersOutInput = {
@@ -85113,6 +92355,7 @@ export namespace Prisma {
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutTransfersOutInput = {
@@ -85133,6 +92376,7 @@ export namespace Prisma {
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutTransfersOutInput = {
@@ -85158,6 +92402,7 @@ export namespace Prisma {
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutTransfersInInput = {
@@ -85178,6 +92423,7 @@ export namespace Prisma {
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutTransfersInInput = {
@@ -85214,6 +92460,7 @@ export namespace Prisma {
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutTransfersOutInput = {
@@ -85234,6 +92481,7 @@ export namespace Prisma {
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUpsertWithoutTransfersInInput = {
@@ -85265,6 +92513,7 @@ export namespace Prisma {
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutTransfersInInput = {
@@ -85285,6 +92534,7 @@ export namespace Prisma {
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefTokenCreateWithoutDonorInput = {
@@ -85875,6 +93125,586 @@ export namespace Prisma {
     notes?: StringNullableFilter<"GroupTherapyParticipant"> | string | null
   }
 
+  export type UserCreateWithoutDonationsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDonationsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDonationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+  }
+
+  export type ReliefCampCreateWithoutDonationsInput = {
+    id?: string
+    name: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    currentOccupancy?: number
+    totalCapacity: number
+    services?: ReliefCampCreateservicesInput | string[]
+    status?: string
+    waitTime?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    residents?: CampResidentCreateNestedManyWithoutCampInput
+    inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    schedules?: CampScheduleCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
+    transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+  }
+
+  export type ReliefCampUncheckedCreateWithoutDonationsInput = {
+    id?: string
+    name: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    currentOccupancy?: number
+    totalCapacity: number
+    services?: ReliefCampCreateservicesInput | string[]
+    status?: string
+    waitTime?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
+    inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
+    transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+  }
+
+  export type ReliefCampCreateOrConnectWithoutDonationsInput = {
+    where: ReliefCampWhereUniqueInput
+    create: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
+  }
+
+  export type UserUpsertWithoutDonationsInput = {
+    update: XOR<UserUpdateWithoutDonationsInput, UserUncheckedUpdateWithoutDonationsInput>
+    create: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDonationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDonationsInput, UserUncheckedUpdateWithoutDonationsInput>
+  }
+
+  export type UserUpdateWithoutDonationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDonationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+  }
+
+  export type ReliefCampUpsertWithoutDonationsInput = {
+    update: XOR<ReliefCampUpdateWithoutDonationsInput, ReliefCampUncheckedUpdateWithoutDonationsInput>
+    create: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
+    where?: ReliefCampWhereInput
+  }
+
+  export type ReliefCampUpdateToOneWithWhereWithoutDonationsInput = {
+    where?: ReliefCampWhereInput
+    data: XOR<ReliefCampUpdateWithoutDonationsInput, ReliefCampUncheckedUpdateWithoutDonationsInput>
+  }
+
+  export type ReliefCampUpdateWithoutDonationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currentOccupancy?: IntFieldUpdateOperationsInput | number
+    totalCapacity?: IntFieldUpdateOperationsInput | number
+    services?: ReliefCampUpdateservicesInput | string[]
+    status?: StringFieldUpdateOperationsInput | string
+    waitTime?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
+    inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    schedules?: CampScheduleUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
+    transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+  }
+
+  export type ReliefCampUncheckedUpdateWithoutDonationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currentOccupancy?: IntFieldUpdateOperationsInput | number
+    totalCapacity?: IntFieldUpdateOperationsInput | number
+    services?: ReliefCampUpdateservicesInput | string[]
+    status?: StringFieldUpdateOperationsInput | string
+    waitTime?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
+    inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
+    transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+  }
+
+  export type UserCreateWithoutSafetyCheckInsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSafetyCheckInsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSafetyCheckInsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSafetyCheckInsInput, UserUncheckedCreateWithoutSafetyCheckInsInput>
+  }
+
+  export type UserUpsertWithoutSafetyCheckInsInput = {
+    update: XOR<UserUpdateWithoutSafetyCheckInsInput, UserUncheckedUpdateWithoutSafetyCheckInsInput>
+    create: XOR<UserCreateWithoutSafetyCheckInsInput, UserUncheckedCreateWithoutSafetyCheckInsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSafetyCheckInsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSafetyCheckInsInput, UserUncheckedUpdateWithoutSafetyCheckInsInput>
+  }
+
+  export type UserUpdateWithoutSafetyCheckInsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSafetyCheckInsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+  }
+
+  export type UserCreateWithoutFamilyMembersInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFamilyMembersInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFamilyMembersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFamilyMembersInput, UserUncheckedCreateWithoutFamilyMembersInput>
+  }
+
+  export type UserUpsertWithoutFamilyMembersInput = {
+    update: XOR<UserUpdateWithoutFamilyMembersInput, UserUncheckedUpdateWithoutFamilyMembersInput>
+    create: XOR<UserCreateWithoutFamilyMembersInput, UserUncheckedCreateWithoutFamilyMembersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFamilyMembersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFamilyMembersInput, UserUncheckedUpdateWithoutFamilyMembersInput>
+  }
+
+  export type UserUpdateWithoutFamilyMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFamilyMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type GroupTherapySessionCreateWithoutParticipantsInput = {
     id?: string
     title: string
@@ -86092,6 +93922,40 @@ export namespace Prisma {
     device?: string | null
     location?: string | null
     loginTime?: Date | string
+  }
+
+  export type DonationCreateManyDonorInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    campId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SafetyCheckInCreateManyUserInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type FamilyMemberCreateManyPrimaryUserInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DamageAssessmentUpdateWithoutReportedByInput = {
@@ -86589,6 +94453,108 @@ export namespace Prisma {
     loginTime?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DonationUpdateWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    camp?: ReliefCampUpdateOneWithoutDonationsNestedInput
+  }
+
+  export type DonationUncheckedUpdateWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonationUncheckedUpdateManyWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUpdateWithoutPrimaryUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUncheckedUpdateWithoutPrimaryUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUncheckedUpdateManyWithoutPrimaryUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DamageAssessmentCreateManyIncidentInput = {
     id?: string
     reportedById: string
@@ -86861,6 +94827,118 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserCreateManyCurrentSectorInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    profilePicture?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorGracePeriodEnds?: Date | string | null
+    hasMobileApp?: boolean
+    lastCheckInTime?: Date | string | null
+    isFieldActive?: boolean
+  }
+
+  export type UserUpdateWithoutCurrentSectorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCurrentSectorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutCurrentSectorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type CampResidentCreateManyCampInput = {
     id?: string
     name: string
@@ -86912,6 +94990,21 @@ export namespace Prisma {
     peopleCount: number
     status?: string
     requestDate?: Date | string
+  }
+
+  export type DonationCreateManyCampInput = {
+    id?: string
+    donorId?: string | null
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type CampResidentUpdateWithoutCampInput = {
@@ -87071,6 +95164,51 @@ export namespace Prisma {
     peopleCount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonationUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donor?: UserUpdateOneWithoutDonationsNestedInput
+  }
+
+  export type DonationUncheckedUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonationUncheckedUpdateManyWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VolunteerSkillCreateManyVolunteerInput = {

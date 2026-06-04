@@ -41,7 +41,14 @@ export const createAlert = async (req: Request, res: Response) => {
 
     // Emit socket event for real-time alert with broadcast radius (in km)
     const io = req.app.get('socketio');
-    io.emit('new-alert', { ...alert, broadcastRadiusKm: 20 });
+    
+    if (alert.targetSectors && alert.targetSectors.length > 0) {
+      alert.targetSectors.forEach((sectorId: string) => {
+        io.to(`sector_${sectorId}`).emit('new-alert', { ...alert, broadcastRadiusKm: 20 });
+      });
+    } else {
+      io.emit('new-alert', { ...alert, broadcastRadiusKm: 20 });
+    }
 
     res.status(201).json(alert);
   } catch (error) {

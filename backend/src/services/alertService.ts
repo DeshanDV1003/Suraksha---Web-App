@@ -1,5 +1,6 @@
 import prisma from '../utils/prisma';
 import { geocodeAddress } from './geocodingService';
+import geohash from 'ngeohash';
 
 export const createAlert = async (data: any) => {
   const locations: string[] = data.locations || [];
@@ -19,6 +20,15 @@ export const createAlert = async (data: any) => {
     }
   }
 
+  // Calculate target sectors (Blast radius using Geohash length 5)
+  let targetSectors: string[] = [];
+  if (latitudes.length > 0 && longitudes.length > 0) {
+    // Assuming the first point is the center of the alert
+    const centerHash = geohash.encode(latitudes[0], longitudes[0], 5);
+    const neighbors = geohash.neighbors(centerHash);
+    targetSectors = [centerHash, ...neighbors]; // Center + 8 surrounding grid cells
+  }
+
   const alertData = {
     title: data.title,
     message: data.message,
@@ -26,6 +36,7 @@ export const createAlert = async (data: any) => {
     locations,
     latitudes,
     longitudes,
+    targetSectors,
     channels: data.channels || null,
     scheduledTime: data.scheduledTime ? new Date(data.scheduledTime) : null,
     translatedMsgSinhala: data.translatedMsgSinhala || null,
@@ -36,13 +47,22 @@ export const createAlert = async (data: any) => {
   const alert = await prisma.alert.create({ data: alertData });
 
   // Targeted Notification Logic
-  const targetLocations = locations;
+  let usersToNotify: any[] = [];
   
-  // Find users to notify (Legacy notification logic, kept for fallback)
-  const usersToNotify = await prisma.user.findMany({
-    where: targetLocations.includes('All Island') ? {} : { region: { in: targetLocations } },
-    select: { id: true }
-  });
+  if (locations.includes('All Island')) {
+    usersToNotify = await prisma.user.findMany({ select: { id: true } });
+  } else if (targetSectors.length > 0) {
+    usersToNotify = await prisma.user.findMany({
+      where: { currentSectorId: { in: targetSectors } },
+      select: { id: true }
+    });
+  } else {
+    // Legacy fallback
+    usersToNotify = await prisma.user.findMany({
+      where: { region: { in: locations } },
+      select: { id: true }
+    });
+  }
 
   // Create notifications in bulk
   if (usersToNotify.length > 0) {
