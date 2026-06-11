@@ -3,6 +3,8 @@ import { CheckCircle2, AlertCircle, Loader2, Award, Clock, MapPin, HeartPulse, B
 import { cn } from '@/lib/utils'
 import { volunteerService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import PageMeta from "@/components/common/PageMeta";
 
 export default function VolunteerPage() {
   const { user } = useAppStore()
@@ -119,7 +121,13 @@ export default function VolunteerPage() {
   }
 
   if (loading) {
-    return <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-blue-500" /></div>
+    return (
+          <>
+            <PageMeta title="Volunteer | Suraksha" description="Suraksha Volunteer Page" />
+            <PageBreadcrumb pageTitle="Volunteer" />
+            <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-blue-500" /></div>
+          </>
+        )
   }
 
   if (!profile) return <div>Could not load profile.</div>
@@ -127,15 +135,17 @@ export default function VolunteerPage() {
   const activeCheckIn = profile.checkIns?.find((c: any) => !c.checkOutTime)
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-[#1e293b]">Volunteer Headquarters</h1>
-        <p className="text-slate-500 mt-1 font-medium">Welcome back, {user?.name}. Manage your deployments and skills.</p>
-      </div>
+    <>
+      <PageMeta title="Volunteer | Suraksha" description="Suraksha Volunteer Page" />
+      <PageBreadcrumb pageTitle="Volunteer Headquarters" />
+      <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10 w-full min-w-0">
+        {/* Header */}
+        <div className="mb-2">
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Welcome back, {user?.name}. Manage your deployments and skills.</p>
+        </div>
 
       {/* Tabs */}
-      <div className="flex overflow-x-auto gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+      <div className="flex overflow-x-auto gap-2 bg-white dark:bg-gray-900 p-2 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
         {[
           { id: 'duty', label: 'Field Duty', icon: Navigation },
           { id: 'profile', label: 'My Skills & Matching', icon: BookOpen },
@@ -147,7 +157,7 @@ export default function VolunteerPage() {
             key={tab.id} onClick={() => setActiveTab(tab.id)}
             className={cn(
               "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
-              activeTab === tab.id ? "bg-slate-900 text-white shadow-md shadow-slate-900/20" : "text-slate-500 hover:bg-slate-50"
+              activeTab === tab.id ? "bg-slate-900 text-white shadow-md shadow-slate-900/20" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50"
             )}
           >
             <tab.icon className="w-4 h-4" />
@@ -167,7 +177,7 @@ export default function VolunteerPage() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-black text-slate-800">You are On Duty</h3>
-                  <p className="text-slate-500 mt-2 text-sm">Checked in at {new Date(activeCheckIn.checkInTime).toLocaleTimeString()}</p>
+                  <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">Checked in at {new Date(activeCheckIn.checkInTime).toLocaleTimeString()}</p>
                 </div>
                 <button 
                   onClick={() => handleCheckOut(activeCheckIn.id)} disabled={isSubmitting}
@@ -179,16 +189,16 @@ export default function VolunteerPage() {
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
-                  <MapPin className="w-10 h-10 text-slate-400" />
+                <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto">
+                  <MapPin className="w-10 h-10 text-gray-400 dark:text-gray-500" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-black text-slate-800">You are Off Duty</h3>
-                  <p className="text-slate-500 mt-2 text-sm">Ready to deploy? Capture your GPS location to start tracking your active hours.</p>
+                  <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">Ready to deploy? Capture your GPS location to start tracking your active hours.</p>
                 </div>
                 <button 
                   onClick={handleCheckIn} disabled={isSubmitting}
-                  className="bg-[#0061ff] text-white font-bold py-4 px-10 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center gap-2 mx-auto"
+                  className="bg-brand-500 text-white font-bold py-4 px-10 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center gap-2 mx-auto"
                 >
                   {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <Navigation className="w-5 h-5"/>}
                   Start Shift & Check In
@@ -198,14 +208,14 @@ export default function VolunteerPage() {
           </div>
           
           <div className="suraksha-card p-8 rounded-[1.5rem]">
-            <h3 className="text-xl font-black text-[#1e293b] mb-4">Check-In History</h3>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-4">Check-In History</h3>
             <div className="space-y-3">
-              {profile.checkIns?.length === 0 && <p className="text-slate-500 text-sm">No duty history yet.</p>}
+              {profile.checkIns?.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm">No duty history yet.</p>}
               {profile.checkIns?.map((ci: any) => (
-                <div key={ci.id} className="p-4 border border-slate-100 rounded-xl flex justify-between items-center bg-slate-50">
+                <div key={ci.id} className="p-4 border border-gray-200 dark:border-gray-800 rounded-xl flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                   <div>
                     <p className="font-bold text-sm text-slate-700">{new Date(ci.checkInTime).toLocaleDateString()}</p>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {new Date(ci.checkInTime).toLocaleTimeString()} - {ci.checkOutTime ? new Date(ci.checkOutTime).toLocaleTimeString() : 'Active Now'}
                     </p>
                   </div>
@@ -225,11 +235,11 @@ export default function VolunteerPage() {
       {activeTab === 'profile' && (
         <div className="grid md:grid-cols-2 gap-8">
           <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
-            <h3 className="text-xl font-black text-[#1e293b] mb-6">My Skills</h3>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">My Skills</h3>
             <div className="flex flex-wrap gap-2 mb-6">
-              {profile.skills?.length === 0 && <span className="text-slate-400 text-sm">No skills added yet.</span>}
+              {profile.skills?.length === 0 && <span className="text-gray-400 dark:text-gray-500 text-sm">No skills added yet.</span>}
               {profile.skills?.map((s: any) => (
-                <span key={s.id} className="bg-slate-100 border border-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-sm">
+                <span key={s.id} className="bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-sm">
                   {s.skillName}
                 </span>
               ))}
@@ -245,19 +255,19 @@ export default function VolunteerPage() {
           </div>
 
           <div className="suraksha-card p-8 rounded-[1.5rem]">
-            <h3 className="text-xl font-black text-[#1e293b] mb-2">Recommended Incidents</h3>
-            <p className="text-slate-500 text-sm mb-6">Auto-matched based on your skills and last known location.</p>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-2">Recommended Incidents</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Auto-matched based on your skills and last known location.</p>
             
             <div className="space-y-4">
-              {incidents.length === 0 && <p className="text-slate-500 text-sm text-center py-4 bg-slate-50 rounded-xl">No active matches found.</p>}
+              {incidents.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">No active matches found.</p>}
               {incidents.map((inc: any) => (
-                <div key={inc.id} className="p-4 border border-slate-100 rounded-xl hover:shadow-md transition-all">
+                <div key={inc.id} className="p-4 border border-gray-200 dark:border-gray-800 rounded-xl hover:shadow-md transition-all">
                   <div className="flex justify-between items-start">
                     <h4 className="font-bold text-slate-800">{inc.title}</h4>
                     <span className="bg-emerald-100 text-emerald-700 font-black text-xs px-2 py-1 rounded">Score: {inc.matchScore}</span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-2 line-clamp-2">{inc.description}</p>
-                  <div className="mt-3 flex items-center gap-4 text-xs font-bold text-slate-400">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 line-clamp-2">{inc.description}</p>
+                  <div className="mt-3 flex items-center gap-4 text-xs font-bold text-gray-400 dark:text-gray-500">
                     {inc.distance !== null && <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/> {inc.distance.toFixed(1)}km away</span>}
                     {inc.matchedSkills > 0 && <span className="flex items-center gap-1 text-blue-500"><BookOpen className="w-3 h-3"/> {inc.matchedSkills} skill matches</span>}
                   </div>
@@ -272,36 +282,36 @@ export default function VolunteerPage() {
       {activeTab === 'training' && (
         <div className="grid md:grid-cols-2 gap-8">
           <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
-             <h3 className="text-xl font-black text-[#1e293b] mb-6">Log New Certification</h3>
+             <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">Log New Certification</h3>
              <form onSubmit={handleAddTraining} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Training / Course Name</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Training / Course Name</label>
                   <input 
                     type="text" required className="suraksha-input w-full"
                     value={trainingData.trainingName} onChange={e => setTrainingData({...trainingData, trainingName: e.target.value})}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Completion Date</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Completion Date</label>
                   <input 
                     type="date" required className="suraksha-input w-full"
                     value={trainingData.completedAt} onChange={e => setTrainingData({...trainingData, completedAt: e.target.value})}
                   />
                 </div>
-                <button type="submit" disabled={isSubmitting} className="w-full bg-[#0061ff] text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-500/25">
+                <button type="submit" disabled={isSubmitting} className="w-full bg-brand-500 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-500/25">
                   Save Training Record
                 </button>
              </form>
           </div>
           <div className="suraksha-card p-8 rounded-[1.5rem]">
-            <h3 className="text-xl font-black text-[#1e293b] mb-6">My Certifications</h3>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">My Certifications</h3>
             <div className="space-y-3">
-              {profile.trainings?.length === 0 && <p className="text-slate-500 text-sm">No trainings logged yet.</p>}
+              {profile.trainings?.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm">No trainings logged yet.</p>}
               {profile.trainings?.map((t: any) => (
-                <div key={t.id} className="p-4 border border-slate-100 rounded-xl bg-slate-50 flex items-center justify-between">
+                <div key={t.id} className="p-4 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
                   <div>
                     <h4 className="font-bold text-slate-700">{t.trainingName}</h4>
-                    <p className="text-xs text-slate-500 mt-1">Completed: {new Date(t.completedAt).toLocaleDateString()}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Completed: {new Date(t.completedAt).toLocaleDateString()}</p>
                   </div>
                   <Award className="w-6 h-6 text-yellow-500" />
                 </div>
@@ -317,9 +327,9 @@ export default function VolunteerPage() {
           <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
             <div className="flex items-center gap-3 mb-6">
                <HeartPulse className="w-8 h-8 text-rose-500" />
-               <h3 className="text-xl font-black text-[#1e293b]">Daily Wellbeing Check</h3>
+               <h3 className="text-xl font-black text-gray-800 dark:text-white/90">Daily Wellbeing Check</h3>
             </div>
-            <p className="text-sm text-slate-500 mb-6">It takes 30 seconds. Your mental and physical health is our top priority during deployments.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">It takes 30 seconds. Your mental and physical health is our top priority during deployments.</p>
             <form onSubmit={handleWellbeingSubmit} className="space-y-6">
               <div>
                 <label className="block font-bold text-slate-700 mb-2">Physical Condition (1=Exhausted, 5=Excellent)</label>
@@ -354,15 +364,15 @@ export default function VolunteerPage() {
           </div>
 
           <div className="suraksha-card p-8 rounded-[1.5rem]">
-            <h3 className="text-xl font-black text-[#1e293b] mb-4">Past Check-ins</h3>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-4">Past Check-ins</h3>
             <div className="space-y-3">
               {profile.wellbeingLogs?.map((log: any) => (
-                <div key={log.id} className="p-4 border border-slate-100 rounded-xl bg-slate-50 flex items-center justify-between">
+                <div key={log.id} className="p-4 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
                   <div>
                      <p className="font-bold text-sm text-slate-700">{new Date(log.recordedAt).toLocaleDateString()}</p>
                      <div className="flex gap-3 mt-1">
-                       <span className="text-xs font-bold text-slate-500">Physical: {log.physicalRating}</span>
-                       <span className="text-xs font-bold text-slate-500">Mental: {log.mentalRating}</span>
+                       <span className="text-xs font-bold text-gray-500 dark:text-gray-400">Physical: {log.physicalRating}</span>
+                       <span className="text-xs font-bold text-gray-500 dark:text-gray-400">Mental: {log.mentalRating}</span>
                      </div>
                   </div>
                   {log.distressFlag && <ShieldAlert className="w-5 h-5 text-red-500" />}
@@ -379,22 +389,22 @@ export default function VolunteerPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
               <div className="text-4xl font-black text-blue-600 mb-1">{profile.totalHours.toFixed(0)}</div>
-              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Total Active Hours</div>
+              <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Total Active Hours</div>
             </div>
             <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
               <div className="text-4xl font-black text-emerald-600 mb-1">{profile.incidentsJoined}</div>
-              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Incidents Responded To</div>
+              <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Incidents Responded To</div>
             </div>
             <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
               <div className="text-4xl font-black text-purple-600 mb-1">{profile.readinessScore}%</div>
-              <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Readiness Score</div>
+              <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Readiness Score</div>
             </div>
           </div>
 
           <div className="suraksha-card p-8 rounded-[1.5rem]">
-            <h3 className="text-xl font-black text-[#1e293b] mb-6">Earned Badges</h3>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">Earned Badges</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {profile.badges?.length === 0 && <p className="text-slate-500 text-sm col-span-full">No badges earned yet. Complete deployments and log training to start earning!</p>}
+              {profile.badges?.length === 0 && <p className="text-gray-500 dark:text-gray-400 text-sm col-span-full">No badges earned yet. Complete deployments and log training to start earning!</p>}
               
               {profile.badges?.map((b: any) => (
                 <div key={b.id} className="p-6 bg-gradient-to-br from-amber-100 to-amber-50 border border-amber-200 rounded-2xl flex flex-col items-center justify-center text-center shadow-sm">
@@ -410,7 +420,7 @@ export default function VolunteerPage() {
 
       {toast && (
         <div className={cn(
-          "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+          "fixed bottom-8 right-8 z-[999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
           toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
         )}>
           {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
@@ -418,5 +428,6 @@ export default function VolunteerPage() {
         </div>
       )}
     </div>
+    </>
   )
 }

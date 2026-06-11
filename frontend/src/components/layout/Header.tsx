@@ -275,8 +275,8 @@ export function Header() {
                   onClick={() => { setIsUserOpen(false); navigate('/settings'); }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-all group"
                 >
-                  <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
-                    <User className="w-4 h-4 text-slate-400 group-hover:text-primary" />
+                  <div className="p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg group-hover:bg-white dark:bg-gray-900 transition-colors">
+                    <User className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-primary" />
                   </div>
                   <span className="text-xs font-black text-muted-foreground group-hover:text-foreground">{t('header.node_profile')}</span>
                 </button>
@@ -284,8 +284,8 @@ export function Header() {
                    onClick={() => { setIsUserOpen(false); navigate('/settings'); }}
                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-all group"
                 >
-                  <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
-                    <Settings className="w-4 h-4 text-slate-400 group-hover:text-primary" />
+                  <div className="p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg group-hover:bg-white dark:bg-gray-900 transition-colors">
+                    <Settings className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-primary" />
                   </div>
                   <span className="text-xs font-black text-muted-foreground group-hover:text-foreground">{t('header.system_config')}</span>
                 </button>

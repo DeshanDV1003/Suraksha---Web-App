@@ -1,9 +1,25 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
-import { DashboardLayout } from '@/components/layout/DashboardLayout'
 
-// Pages
+// Template Layout and Pages
+import AppLayout from './layout/AppLayout'
+import UserProfiles from "./pages/UserProfiles"
+import Videos from "./pages/UiElements/Videos"
+import Images from "./pages/UiElements/Images"
+import Alerts from "./pages/UiElements/Alerts"
+import Badges from "./pages/UiElements/Badges"
+import Avatars from "./pages/UiElements/Avatars"
+import Buttons from "./pages/UiElements/Buttons"
+import LineChart from "./pages/Charts/LineChart"
+import BarChart from "./pages/Charts/BarChart"
+import Calendar from "./pages/Calendar"
+import BasicTables from "./pages/Tables/BasicTables"
+import FormElements from "./pages/Forms/FormElements"
+import Blank from "./pages/Blank"
+import Home from "./pages/Dashboard/Home"
+
+// Suraksha Pages
 import DashboardPage from '@/pages/DashboardPage'
 import MapPage from '@/pages/MapPage'
 import IncidentsPage from '@/pages/IncidentsPage'
@@ -52,13 +68,11 @@ function GlobalAlertListener() {
     const socket = io('http://localhost:3001');
 
     socket.on('new-alert', (alert) => {
-      // If the alert doesn't have specific locations, show it to everyone
       if (!alert.latitudes || alert.latitudes.length === 0 || alert.locations?.includes('All Island')) {
         setActiveAlert({ title: alert.title, message: alert.message });
         return;
       }
 
-      // Check user's current GPS location
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           const userLat = position.coords.latitude;
@@ -67,7 +81,6 @@ function GlobalAlertListener() {
           let minDistance = Infinity;
           const radius = alert.broadcastRadiusKm || 20;
 
-          // Check against all targeted zones
           for (let i = 0; i < alert.latitudes.length; i++) {
             const distance = calculateDistanceKm(userLat, userLon, alert.latitudes[i], alert.longitudes[i]);
             if (distance < minDistance) {
@@ -122,12 +135,29 @@ const ProtectedRoutes = () => {
   if (!user) return <Navigate to="/login" />
 
   return (
-    <DashboardLayout>
-      <Routes>
+    <Routes>
+      <Route element={<AppLayout />}>
+        {/* Template Routes */}
+        <Route path="/template-home" element={<Home />} />
+        <Route path="/profile" element={<UserProfiles />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/blank" element={<Blank />} />
+        <Route path="/form-elements" element={<FormElements />} />
+        <Route path="/basic-tables" element={<BasicTables />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/avatars" element={<Avatars />} />
+        <Route path="/badge" element={<Badges />} />
+        <Route path="/buttons" element={<Buttons />} />
+        <Route path="/images" element={<Images />} />
+        <Route path="/videos" element={<Videos />} />
+        <Route path="/line-chart" element={<LineChart />} />
+        <Route path="/bar-chart" element={<BarChart />} />
+
+        {/* Suraksha Routes */}
         <Route path="/" element={<DashboardPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/incidents" element={<IncidentsPage />} />
-        <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/suraksha-alerts" element={<AlertsPage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/users" element={<UserManagementPage />} />
         <Route path="/resources" element={<ResourcesPage />} />
@@ -141,8 +171,8 @@ const ProtectedRoutes = () => {
         <Route path="/donations" element={<DonationsPage />} />
         <Route path="/family-safety" element={<FamilySafetyPage />} />
         <Route path="/settings" element={<SettingsPage />} />
-      </Routes>
-    </DashboardLayout>
+      </Route>
+    </Routes>
   )
 }
 

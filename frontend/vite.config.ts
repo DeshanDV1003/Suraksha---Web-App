@@ -2,11 +2,22 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
+import svgr from "vite-plugin-svgr";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     react(),
+    svgr({
+      svgrOptions: {
+        icon: true,
+        // This will transform your SVG to a React component
+        exportType: "named",
+        namedExport: "ReactComponent",
+      },
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],

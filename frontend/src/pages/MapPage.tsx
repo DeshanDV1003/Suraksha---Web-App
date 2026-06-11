@@ -10,6 +10,8 @@ import {
   Layers, Zap, Search, Shield, AlertTriangle, TrendingUp, Activity,
   Heart, Home, Play, Pause, Navigation, Clock, User
 } from 'lucide-react';
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import PageMeta from "@/components/common/PageMeta";
 
 const SRI_LANKA_CENTER: [number, number] = [7.8731, 80.7718];
 const SRI_LANKA_BOUNDS: [[number, number], [number, number]] = [[5.9, 79.5], [9.9, 81.9]];
@@ -130,16 +132,16 @@ function MapAddressSearch({ onLocationFound }: { onLocationFound: (loc: any) => 
 
   return (
     <div className="absolute top-6 left-6 z-[1000] w-full max-w-sm font-sans">
-      <div className="flex bg-white/95 backdrop-blur-md rounded-[1.25rem] shadow-2xl border border-slate-100 p-2 gap-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/25">
-        <div className="flex items-center pl-2 text-slate-400"><Search className="w-4 h-4" /></div>
+      <div className="flex bg-white dark:bg-gray-900/95 backdrop-blur-md rounded-[1.25rem] shadow-2xl border border-gray-200 dark:border-gray-800 p-2 gap-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/25">
+        <div className="flex items-center pl-2 text-gray-400 dark:text-gray-500"><Search className="w-4 h-4" /></div>
         <input value={query} onChange={handleInput} placeholder="Search town, road, city or zone..." className="flex-1 bg-transparent px-1 py-1.5 text-xs text-slate-800 focus:outline-none font-bold" onKeyDown={(e) => e.key === 'Enter' && handleGeocodeSearch()} />
         <button onClick={handleGeocodeSearch} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[10px] uppercase tracking-widest rounded-xl px-4 py-2 transition-colors disabled:opacity-50">{loading ? '...' : 'Go'}</button>
       </div>
       {suggestions.length > 0 && (
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-100 mt-2 overflow-hidden max-h-56 overflow-y-auto">
+        <div className="bg-white dark:bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 mt-2 overflow-hidden max-h-56 overflow-y-auto">
           {suggestions.map((s, idx) => (
-            <div key={idx} onClick={() => { const lat = parseFloat(s.lat); const lon = parseFloat(s.lon); setQuery(s.display_name.split(',')[0]); setSuggestions([]); map.flyTo([lat, lon], 14, { duration: 1.3 }); onLocationFound({ latitude: lat, longitude: lon, displayName: s.display_name }); }} className="px-4 py-3 text-[11px] font-bold text-slate-600 border-b border-slate-50 cursor-pointer hover:bg-slate-50 transition-all flex items-center gap-2">
-              <span className="text-slate-400">📍</span><span className="truncate">{s.display_name}</span>
+            <div key={idx} onClick={() => { const lat = parseFloat(s.lat); const lon = parseFloat(s.lon); setQuery(s.display_name.split(',')[0]); setSuggestions([]); map.flyTo([lat, lon], 14, { duration: 1.3 }); onLocationFound({ latitude: lat, longitude: lon, displayName: s.display_name }); }} className="px-4 py-3 text-[11px] font-bold text-gray-600 dark:text-gray-300 border-b border-slate-50 cursor-pointer hover:bg-gray-50 dark:bg-gray-800/50 transition-all flex items-center gap-2">
+              <span className="text-gray-400 dark:text-gray-500">📍</span><span className="truncate">{s.display_name}</span>
             </div>
           ))}
         </div>
@@ -319,216 +321,220 @@ export default function MapPage() {
   const activeIncidents = incidents.slice(0, visibleIncidentCount).filter((i) => i.latitude && i.longitude);
 
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in duration-500 font-sans h-full pb-16">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">Sri Lanka GIS Coordinate Dashboard</h1>
-          <p className="text-slate-500 mt-1 font-medium">Administrative Boundaries & Real-time Threat Tracking</p>
-        </div>
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-2xl border border-emerald-100">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live Monitoring System Active</span>
+        <>
+          <PageMeta title="Live Map | Suraksha" description="Suraksha Live Map Page" />
+          <PageBreadcrumb pageTitle="Live Map" />
+          <div className="flex flex-col gap-6 animate-in fade-in duration-500 font-sans h-full pb-16">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            
+            
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-stretch">
-        <div className="xl:col-span-1 flex flex-col gap-6">
-          <div className="suraksha-card p-6 flex flex-col gap-4">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Activity className="w-4 h-4 text-blue-500" /><span>National Operations Summary</span>
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                <span className="text-3xl font-black text-slate-800">{activeIncidents.length}</span>
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Total Incidents</span>
-              </div>
-              <div className="bg-red-50 border border-red-100 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                <span className="text-3xl font-black text-red-600">{activeIncidents.filter((i) => ['CRITICAL', 'HIGH'].includes(i.severity)).length}</span>
-                <span className="text-[9px] font-black text-red-400 uppercase tracking-widest mt-1">Critical/High</span>
-              </div>
-            </div>
-
-            <div className="space-y-3.5 mt-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-500 font-semibold">Active Support Camps</span>
-                <span className="text-slate-800 font-extrabold">{camps.length}</span>
-              </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-emerald-500 h-full w-[80%]" />
-              </div>
-              
-              <div className="flex items-center justify-between text-xs mt-2">
-                <span className="text-slate-500 font-semibold">Risk Coverage Index</span>
-                <span className="text-blue-600 font-extrabold">94.2%</span>
-              </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-blue-500 h-full w-[94.2%]" />
-              </div>
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-2xl border border-emerald-100">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live Monitoring System Active</span>
             </div>
           </div>
+        </div>
 
-          {layers.evacuationRoutes && evacRoutes && (
-            <div className="suraksha-card p-6 border-l-4 border-l-blue-500 bg-blue-50/30">
-               <h3 className="text-xs font-black text-blue-800 uppercase tracking-widest flex items-center gap-2 mb-3">
-                <Navigation className="w-4 h-4 text-blue-600" /> Active Evacuation Route
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-stretch">
+          <div className="xl:col-span-1 flex flex-col gap-6">
+            <div className="suraksha-card p-6 flex flex-col gap-4">
+              <h3 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 pb-3">
+                <Activity className="w-4 h-4 text-blue-500" /><span>National Operations Summary</span>
               </h3>
-              <p className="text-xs text-blue-700 font-bold mb-4">Primary route active. ETA to safe zone: 45 mins. Alternate routes available.</p>
-              <button className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors">
-                Export Route PDF
-              </button>
-            </div>
-          )}
-
-          {selectedZone && (
-            <div className="suraksha-card p-6 flex flex-col gap-4 border-l-4 border-l-slate-800 animate-in slide-in-from-left-4 duration-300">
-              <div className="flex justify-between items-start border-b border-slate-100 pb-3">
-                <div>
-                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">🗺️ {selectedZone.province} Province</span>
-                  <h3 className="text-lg font-black text-slate-800 leading-tight">{selectedZone.zoneName} District</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+                  <span className="text-3xl font-black text-slate-800">{activeIncidents.length}</span>
+                  <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1">Total Incidents</span>
                 </div>
-                <button onClick={() => setSelectedZone(null)} className="text-slate-300 hover:text-slate-600 font-bold text-sm">✕</button>
+                <div className="bg-red-50 border border-red-100 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+                  <span className="text-3xl font-black text-red-600">{activeIncidents.filter((i) => ['CRITICAL', 'HIGH'].includes(i.severity)).length}</span>
+                  <span className="text-[9px] font-black text-red-400 uppercase tracking-widest mt-1">Critical/High</span>
+                </div>
               </div>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl shadow-lg shadow-blue-500/25 transition-all text-center">
-                📢 Dispatch Local Alert
-              </button>
+
+              <div className="space-y-3.5 mt-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-gray-400 font-semibold">Active Support Camps</span>
+                  <span className="text-slate-800 font-extrabold">{camps.length}</span>
+                </div>
+                <div className="w-full bg-gray-100 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-emerald-500 h-full w-[80%]" />
+                </div>
+                
+                <div className="flex items-center justify-between text-xs mt-2">
+                  <span className="text-gray-500 dark:text-gray-400 font-semibold">Risk Coverage Index</span>
+                  <span className="text-blue-600 font-extrabold">94.2%</span>
+                </div>
+                <div className="w-full bg-gray-100 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-blue-500 h-full w-[94.2%]" />
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-
-        <div className="xl:col-span-3 h-[700px] flex flex-col bg-slate-100 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl relative">
-          <MapContainer center={SRI_LANKA_CENTER} zoom={DEFAULT_ZOOM} maxBounds={SRI_LANKA_BOUNDS} maxBoundsViscosity={0.9} minZoom={7} maxZoom={17} style={{ flex: 1, width: '100%' }} className="z-0" zoomControl={false}>
-            <ZoomControl position="bottomright" />
-            <TileLayer attribution='&copy; OpenStreetMap' url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
-            <MapAddressSearch onLocationFound={(loc) => setSearchedPin(loc)} />
-
-            {districtGeoJSON && (
-              <GeoJSON key={`${mapMode}-${selectedZone?.zoneId}-${hoveredZoneId}`} data={districtGeoJSON} style={getZoneStyle} onEachFeature={(feature, layer) => {
-                  layer.on({ mouseover: () => setHoveredZoneId(feature.properties.ZONE_ID), mouseout: () => setHoveredZoneId(null), click: () => handleZoneClick(feature) });
-                  layer.bindTooltip(`<div style="font-family: inherit; font-size: 11px; font-weight: 800; color: #1e293b;">📍 ${feature.properties.ZONE_NAME} District</div>`, { direction: 'top', className: 'shadow-lg border-0 bg-white/95 rounded-lg px-2.5 py-1 z-[2000]' });
-              }} />
-            )}
-
-            {layers.weatherProjections && (
-               <Polygon positions={MOCK_CYCLONE_CONE} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.15, weight: 1, dashArray: '5, 10' }}>
-                 <Popup className="font-sans">
-                   <div className="font-bold text-red-600 text-sm">⚠️ Cyclone Path Projection</div>
-                   <div className="text-xs text-slate-500 mt-1">DMC Cone of Uncertainty (Next 72h)</div>
-                 </Popup>
-               </Polygon>
-            )}
 
             {layers.evacuationRoutes && evacRoutes && (
-               <>
-                 <Polyline positions={evacRoutes.primary} pathOptions={{ color: '#2563eb', weight: 4, opacity: 0.8 }} />
-                 <Polyline positions={evacRoutes.alternate} pathOptions={{ color: '#64748b', weight: 3, dashArray: '10, 10', opacity: 0.8 }} />
-               </>
+              <div className="suraksha-card p-6 border-l-4 border-l-blue-500 bg-blue-50/30">
+                 <h3 className="text-xs font-black text-blue-800 uppercase tracking-widest flex items-center gap-2 mb-3">
+                  <Navigation className="w-4 h-4 text-blue-600" /> Active Evacuation Route
+                </h3>
+                <p className="text-xs text-blue-700 font-bold mb-4">Primary route active. ETA to safe zone: 45 mins. Alternate routes available.</p>
+                <button className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors">
+                  Export Route PDF
+                </button>
+              </div>
             )}
 
-            {layers.assignmentArrows && assignmentArrows.map(arrow => (
-               <Polyline key={arrow.id} positions={arrow.positions} pathOptions={{ color: '#f59e0b', weight: 2, dashArray: '5, 5', opacity: 0.8 }}>
-                 <Popup><div className="text-xs font-bold text-amber-600">Camp to Incident Assignment Route</div></Popup>
-               </Polyline>
-            ))}
-
-            {layers.volunteers && volunteers.map(vol => (
-              <Marker key={vol.id} position={[vol.latitude, vol.longitude]} icon={createVolunteerIcon(vol.skill)}>
-                <Popup className="suraksha-popup">
-                  <div className="font-sans p-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <User className="w-4 h-4 text-blue-500" />
-                      <span className="font-black text-slate-800 text-sm">{vol.name}</span>
-                    </div>
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Skill: <span className="text-blue-600">{vol.skill}</span></div>
-                    <button className="w-full py-1.5 bg-blue-600 text-white rounded text-xs font-bold uppercase hover:bg-blue-700 transition">Assign to nearest</button>
+            {selectedZone && (
+              <div className="suraksha-card p-6 flex flex-col gap-4 border-l-4 border-l-slate-800 animate-in slide-in-from-left-4 duration-300">
+                <div className="flex justify-between items-start border-b border-gray-200 dark:border-gray-800 pb-3">
+                  <div>
+                    <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">🗺️ {selectedZone.province} Province</span>
+                    <h3 className="text-lg font-black text-slate-800 leading-tight">{selectedZone.zoneName} District</h3>
                   </div>
-                </Popup>
-              </Marker>
-            ))}
+                  <button onClick={() => setSelectedZone(null)} className="text-slate-300 hover:text-gray-600 dark:text-gray-300 font-bold text-sm">✕</button>
+                </div>
+                <button className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl shadow-lg shadow-blue-500/25 transition-all text-center">
+                  📢 Dispatch Local Alert
+                </button>
+              </div>
+            )}
+          </div>
 
-            {layers.incidents && mapMode === 'incidents' && activeIncidents.map((incident) => (
-              <Marker key={incident.id} position={[incident.latitude, incident.longitude]} icon={createPinIcon(incident.severity, incident.category)}>
-                <Popup className="suraksha-popup" minWidth={220}>
-                  <div className="p-2 font-sans">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={cn("text-[9px] font-black text-white px-2 py-0.5 rounded-md tracking-wider uppercase", incident.severity === 'CRITICAL' ? 'bg-red-500' : incident.severity === 'HIGH' ? 'bg-orange-500' : incident.severity === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500')}>{incident.severity}</span>
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{incident.category}</span>
-                    </div>
-                    <h4 className="font-black text-slate-900 text-sm leading-snug">{incident.title}</h4>
-                    <p className="text-slate-500 text-xs mt-1">📍 {incident.location}</p>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
+          <div className="xl:col-span-3 h-[700px] flex flex-col bg-gray-100 dark:bg-gray-800 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl relative">
+            <MapContainer center={SRI_LANKA_CENTER} zoom={DEFAULT_ZOOM} maxBounds={SRI_LANKA_BOUNDS} maxBoundsViscosity={0.9} minZoom={7} maxZoom={17} style={{ flex: 1, width: '100%' }} className="z-0" zoomControl={false}>
+              <ZoomControl position="bottomright" />
+              <TileLayer attribution='&copy; OpenStreetMap' url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+              <MapAddressSearch onLocationFound={(loc) => setSearchedPin(loc)} />
 
-            {layers.reliefCamps && mapMode === 'incidents' && camps.map((camp) => (
-              camp.latitude && camp.longitude && (
-                <Marker key={camp.id} position={[camp.latitude, camp.longitude]} icon={createCampIcon()}>
-                  <Popup className="suraksha-popup" minWidth={220}>
-                    <div className="p-2 font-sans">
-                      <div className="flex items-center gap-2 mb-3"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Active Safety Hub</span></div>
-                      <h4 className="font-black text-slate-900 text-sm leading-snug">{camp.name}</h4>
-                      <div className="space-y-2 mt-4 mb-2">
-                        <div className="flex justify-between text-[10px] font-black"><span className="text-slate-400">Occupancy</span><span className="text-slate-800">{camp.currentOccupancy} / {camp.totalCapacity}</span></div>
-                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(camp.currentOccupancy / camp.totalCapacity) * 100}%` }} /></div>
+              {districtGeoJSON && (
+                <GeoJSON key={`${mapMode}-${selectedZone?.zoneId}-${hoveredZoneId}`} data={districtGeoJSON} style={getZoneStyle} onEachFeature={(feature, layer) => {
+                    layer.on({ mouseover: () => setHoveredZoneId(feature.properties.ZONE_ID), mouseout: () => setHoveredZoneId(null), click: () => handleZoneClick(feature) });
+                    layer.bindTooltip(`<div style="font-family: inherit; font-size: 11px; font-weight: 800; color: #1e293b;">📍 ${feature.properties.ZONE_NAME} District</div>`, { direction: 'top', className: 'shadow-lg border-0 bg-white dark:bg-gray-900/95 rounded-lg px-2.5 py-1 z-[2000]' });
+                }} />
+              )}
+
+              {layers.weatherProjections && (
+                 <Polygon positions={MOCK_CYCLONE_CONE} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.15, weight: 1, dashArray: '5, 10' }}>
+                   <Popup className="font-sans">
+                     <div className="font-bold text-red-600 text-sm">⚠️ Cyclone Path Projection</div>
+                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">DMC Cone of Uncertainty (Next 72h)</div>
+                   </Popup>
+                 </Polygon>
+              )}
+
+              {layers.evacuationRoutes && evacRoutes && (
+                 <>
+                   <Polyline positions={evacRoutes.primary} pathOptions={{ color: '#2563eb', weight: 4, opacity: 0.8 }} />
+                   <Polyline positions={evacRoutes.alternate} pathOptions={{ color: '#64748b', weight: 3, dashArray: '10, 10', opacity: 0.8 }} />
+                 </>
+              )}
+
+              {layers.assignmentArrows && assignmentArrows.map(arrow => (
+                 <Polyline key={arrow.id} positions={arrow.positions} pathOptions={{ color: '#f59e0b', weight: 2, dashArray: '5, 5', opacity: 0.8 }}>
+                   <Popup><div className="text-xs font-bold text-amber-600">Camp to Incident Assignment Route</div></Popup>
+                 </Polyline>
+              ))}
+
+              {layers.volunteers && volunteers.map(vol => (
+                <Marker key={vol.id} position={[vol.latitude, vol.longitude]} icon={createVolunteerIcon(vol.skill)}>
+                  <Popup className="suraksha-popup">
+                    <div className="font-sans p-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <User className="w-4 h-4 text-blue-500" />
+                        <span className="font-black text-slate-800 text-sm">{vol.name}</span>
                       </div>
+                      <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">Skill: <span className="text-blue-600">{vol.skill}</span></div>
+                      <button className="w-full py-1.5 bg-blue-600 text-white rounded text-xs font-bold uppercase hover:bg-blue-700 transition">Assign to nearest</button>
                     </div>
                   </Popup>
                 </Marker>
-              )
-            ))}
-          </MapContainer>
+              ))}
 
-          {/* Historical Incident Replay Scrubber (LOW) */}
-          <div className="bg-white/95 backdrop-blur-md p-4 flex items-center gap-4 z-[1000] border-t border-slate-100">
-            <button onClick={() => { if(timeScrubber === 100) setTimeScrubber(0); setIsPlaying(!isPlaying); }} className="w-10 h-10 shrink-0 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full flex items-center justify-center transition-colors">
-              {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-1" />}
-            </button>
-            <div className="flex-1 flex flex-col gap-1">
-               <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                 <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Historical Timeline</span>
-                 <span>{timeScrubber}%</span>
-               </div>
-               <input type="range" min="0" max="100" value={timeScrubber} onChange={(e) => setTimeScrubber(parseInt(e.target.value))} className="w-full accent-blue-600 cursor-pointer" />
-            </div>
-          </div>
+              {layers.incidents && mapMode === 'incidents' && activeIncidents.map((incident) => (
+                <Marker key={incident.id} position={[incident.latitude, incident.longitude]} icon={createPinIcon(incident.severity, incident.category)}>
+                  <Popup className="suraksha-popup" minWidth={220}>
+                    <div className="p-2 font-sans">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={cn("text-[9px] font-black text-white px-2 py-0.5 rounded-md tracking-wider uppercase", incident.severity === 'CRITICAL' ? 'bg-red-500' : incident.severity === 'HIGH' ? 'bg-orange-500' : incident.severity === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500')}>{incident.severity}</span>
+                        <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{incident.category}</span>
+                      </div>
+                      <h4 className="font-black text-slate-900 text-sm leading-snug">{incident.title}</h4>
+                      
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
 
-          <div className="absolute top-6 right-6 z-[1000] flex flex-col gap-2.5 bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-slate-100 shadow-2xl">
-            <button onClick={() => setMapMode('incidents')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'incidents' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-slate-50")}>📍 Incidents Layout</button>
-            <button onClick={() => setMapMode('zones')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'zones' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-slate-50")}>🗺️ Zone Boundaries</button>
-          </div>
+              {layers.reliefCamps && mapMode === 'incidents' && camps.map((camp) => (
+                camp.latitude && camp.longitude && (
+                  <Marker key={camp.id} position={[camp.latitude, camp.longitude]} icon={createCampIcon()}>
+                    <Popup className="suraksha-popup" minWidth={220}>
+                      <div className="p-2 font-sans">
+                        <div className="flex items-center gap-2 mb-3"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Active Safety Hub</span></div>
+                        <h4 className="font-black text-slate-900 text-sm leading-snug">{camp.name}</h4>
+                        <div className="space-y-2 mt-4 mb-2">
+                          <div className="flex justify-between text-[10px] font-black"><span className="text-gray-400 dark:text-gray-500">Occupancy</span><span className="text-slate-800">{camp.currentOccupancy} / {camp.totalCapacity}</span></div>
+                          <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden"><div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(camp.currentOccupancy / camp.totalCapacity) * 100}%` }} /></div>
+                        </div>
+                      </div>
+                    </Popup>
+                  </Marker>
+                )
+              ))}
+            </MapContainer>
 
-          {mapMode === 'incidents' && (
-            <div className="absolute bottom-24 left-6 z-[1000] w-48 bg-white/95 backdrop-blur-md border border-slate-100 shadow-2xl rounded-2xl p-4 transition-all">
-              <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">Legend</h4>
-              <div className="space-y-2">
-                {[{ label: 'Critical Response', color: '#ef4444' }, { label: 'High Alert', color: '#f97316' }, { label: 'Relief Hub (Camp)', color: '#10b981', isCamp: true }, { label: 'Volunteer', color: '#3b82f6', isVol: true }].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2.5">
-                    <div className={cn("w-2.5 h-2.5 shadow-sm", item.isCamp ? "rounded-sm rotate-45" : item.isVol ? "rounded-full border border-white" : "rounded-full")} style={{ backgroundColor: item.color }} />
-                    <span className="text-[10px] font-bold text-slate-600">{item.label}</span>
-                  </div>
-                ))}
+            {/* Historical Incident Replay Scrubber (LOW) */}
+            <div className="bg-white dark:bg-gray-900/95 backdrop-blur-md p-4 flex items-center gap-4 z-[1000] border-t border-gray-200 dark:border-gray-800">
+              <button onClick={() => { if(timeScrubber === 100) setTimeScrubber(0); setIsPlaying(!isPlaying); }} className="w-10 h-10 shrink-0 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full flex items-center justify-center transition-colors">
+                {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-1" />}
+              </button>
+              <div className="flex-1 flex flex-col gap-1">
+                 <div className="flex justify-between text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Historical Timeline</span>
+                   <span>{timeScrubber}%</span>
+                 </div>
+                 <input type="range" min="0" max="100" value={timeScrubber} onChange={(e) => setTimeScrubber(parseInt(e.target.value))} className="w-full accent-blue-600 cursor-pointer" />
               </div>
             </div>
-          )}
 
-          <div className="absolute bottom-24 right-6 z-[1000] w-48 bg-white/95 backdrop-blur-md border border-slate-100 shadow-2xl rounded-2xl p-4 transition-all">
-            <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">Layers</h4>
-            <div className="space-y-2 max-h-[300px] overflow-y-auto">
-              {Object.entries(layers).map(([key, enabled]) => (
-                <label key={key} className="flex items-center gap-2.5 cursor-pointer select-none group">
-                  <input type="checkbox" checked={enabled} onChange={() => setLayers(prev => ({ ...prev, [key]: !enabled }))} className="w-3.5 h-3.5 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer" />
-                  <span className={cn("text-[10px] font-bold transition-all uppercase tracking-wider", enabled ? "text-slate-700" : "text-slate-400 group-hover:text-slate-600")}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                </label>
-              ))}
+            <div className="absolute top-6 right-6 z-[1000] flex flex-col gap-2.5 bg-white dark:bg-gray-900/95 backdrop-blur-md p-2 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-2xl">
+              <button onClick={() => setMapMode('incidents')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'incidents' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-gray-50 dark:bg-gray-800/50")}>📍 Incidents Layout</button>
+              <button onClick={() => setMapMode('zones')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'zones' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-gray-50 dark:bg-gray-800/50")}>🗺️ Zone Boundaries</button>
+            </div>
+
+            {mapMode === 'incidents' && (
+              <div className="absolute bottom-24 left-6 z-[1000] w-48 bg-white dark:bg-gray-900/95 backdrop-blur-md border border-gray-200 dark:border-gray-800 shadow-2xl rounded-2xl p-4 transition-all">
+                <h4 className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">Legend</h4>
+                <div className="space-y-2">
+                  {[{ label: 'Critical Response', color: '#ef4444' }, { label: 'High Alert', color: '#f97316' }, { label: 'Relief Hub (Camp)', color: '#10b981', isCamp: true }, { label: 'Volunteer', color: '#3b82f6', isVol: true }].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2.5">
+                      <div className={cn("w-2.5 h-2.5 shadow-sm", item.isCamp ? "rounded-sm rotate-45" : item.isVol ? "rounded-full border border-white" : "rounded-full")} style={{ backgroundColor: item.color }} />
+                      <span className="text-[10px] font-bold text-gray-600 dark:text-gray-300">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="absolute bottom-24 right-6 z-[1000] w-48 bg-white dark:bg-gray-900/95 backdrop-blur-md border border-gray-200 dark:border-gray-800 shadow-2xl rounded-2xl p-4 transition-all">
+              <h4 className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">Layers</h4>
+              <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                {Object.entries(layers).map(([key, enabled]) => (
+                  <label key={key} className="flex items-center gap-2.5 cursor-pointer select-none group">
+                    <input type="checkbox" checked={enabled} onChange={() => setLayers(prev => ({ ...prev, [key]: !enabled }))} className="w-3.5 h-3.5 text-blue-600 bg-gray-100 dark:bg-gray-800 border-slate-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer" />
+                    <span className={cn("text-[10px] font-bold transition-all uppercase tracking-wider", enabled ? "text-slate-700" : "text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:text-gray-300")}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+        </>
+      );
 }

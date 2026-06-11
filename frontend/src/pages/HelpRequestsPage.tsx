@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { AlertTriangle, Clock, MapPin, Users, Loader2, Navigation, MessageSquare, CheckCircle, Smartphone } from 'lucide-react'
 import { helpRequestService, volunteerService } from '@/services/api'
 import { cn } from '@/lib/utils'
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import PageMeta from "@/components/common/PageMeta";
 
 export default function HelpRequestsPage() {
   const [loading, setLoading] = useState(true)
@@ -78,17 +80,25 @@ export default function HelpRequestsPage() {
   }
 
   if (loading && requests.length === 0) {
-    return <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-red-500" /></div>
+    return (
+          <>
+            <PageMeta title="Help Requests | Suraksha" description="Suraksha Help Requests Page" />
+            <PageBreadcrumb pageTitle="Help Requests" />
+            <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-red-500" /></div>
+          </>
+        )
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-10">
-      <div>
-        <h1 className="text-3xl font-bold text-[#1e293b]">SOS Command Center</h1>
-        <p className="text-slate-500 mt-1 font-medium">Manage distress signals, dispatch responders, and monitor active operations.</p>
-      </div>
+    <>
+      <PageMeta title="Help Requests | Suraksha" description="Suraksha Help Requests Page" />
+      <PageBreadcrumb pageTitle="SOS Command Center" />
+      <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10 w-full min-w-0">
+        <div className="mb-2">
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Manage distress signals, dispatch responders, and monitor active operations.</p>
+        </div>
 
-      <div className="flex gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+      <div className="flex gap-2 bg-white dark:bg-gray-900 p-2 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
         {[
           { id: 'dispatch', label: 'Dispatch Queue', icon: Navigation },
           { id: 'map', label: 'Clustered Hotspots', icon: MapPin },
@@ -98,7 +108,7 @@ export default function HelpRequestsPage() {
             key={tab.id} onClick={() => setActiveTab(tab.id)}
             className={cn(
               "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all",
-              activeTab === tab.id ? "bg-red-600 text-white shadow-md" : "text-slate-500 hover:bg-slate-50"
+              activeTab === tab.id ? "bg-red-600 text-white shadow-md" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50"
             )}
           >
             <tab.icon className="w-4 h-4" />
@@ -115,7 +125,7 @@ export default function HelpRequestsPage() {
             <h2 className="text-xl font-black text-slate-800">Pending Requests</h2>
             
             {requests.filter(r => r.status === 'PENDING').length === 0 && (
-               <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-100 text-slate-500">
+               <div className="p-8 text-center bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-400">
                  No pending SOS signals.
                </div>
             )}
@@ -152,29 +162,29 @@ export default function HelpRequestsPage() {
                           {req.priority}
                         </span>
                       </div>
-                      <p className="text-slate-500 font-medium mt-1">{req.description}</p>
+                      <p className="text-gray-500 dark:text-gray-400 font-medium mt-1">{req.description}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mt-6 p-4 bg-slate-50 rounded-xl">
-                  <div className="flex items-center gap-2 text-slate-600 text-sm font-bold">
-                    <MapPin className="w-4 h-4 text-slate-400" />
+                <div className="grid grid-cols-3 gap-4 mt-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 text-sm font-bold">
+                    <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     {req.location}
                   </div>
-                  <div className="flex items-center gap-2 text-slate-600 text-sm font-bold">
-                    <Users className="w-4 h-4 text-slate-400" />
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 text-sm font-bold">
+                    <Users className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     {req.peopleCount || 1} people
                   </div>
-                  <div className="flex items-center gap-2 text-slate-600 text-sm font-bold">
-                    <Clock className="w-4 h-4 text-slate-400" />
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 text-sm font-bold">
+                    <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     {Math.floor((new Date().getTime() - new Date(req.createdAt).getTime()) / 60000)} mins ago
                   </div>
                 </div>
 
                 <div className="mt-6 flex items-center gap-3">
                   <select 
-                    className="flex-1 bg-slate-100 border-none p-3 rounded-xl font-bold text-sm outline-none cursor-pointer"
+                    className="flex-1 bg-gray-100 dark:bg-gray-800 border-none p-3 rounded-xl font-bold text-sm outline-none cursor-pointer"
                     id={`assign-${req.id}`}
                   >
                     <option value="">Select Active Responder...</option>
@@ -214,12 +224,12 @@ export default function HelpRequestsPage() {
             <h2 className="text-xl font-black text-slate-800">Active Operations</h2>
             <div className="bg-slate-900 rounded-[1.5rem] p-6 space-y-4 shadow-xl">
                {requests.filter(r => ['ASSIGNED', 'EN_ROUTE', 'ON_SITE'].includes(r.status)).length === 0 && (
-                 <p className="text-slate-400 text-sm text-center">No active operations.</p>
+                 <p className="text-gray-400 dark:text-gray-500 text-sm text-center">No active operations.</p>
                )}
                {requests.filter(r => ['ASSIGNED', 'EN_ROUTE', 'ON_SITE'].includes(r.status)).map(req => (
                  <div key={req.id} className="bg-slate-800 p-4 rounded-xl border border-slate-700">
                     <h4 className="font-bold text-white mb-1">{req.type} - {req.location}</h4>
-                    <p className="text-xs text-slate-400 mb-4">Priority: {req.priority}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Priority: {req.priority}</p>
                     
                     <div className="flex gap-2">
                       <button 
@@ -250,29 +260,29 @@ export default function HelpRequestsPage() {
 
       {activeTab === 'map' && (
         <div className="suraksha-card p-8 rounded-[1.5rem]">
-           <h3 className="text-xl font-black text-[#1e293b] mb-2">Clustered Request Density</h3>
-           <p className="text-slate-500 text-sm mb-6">Pending requests grouped by 1km grids for optimal responder routing.</p>
+           <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-2">Clustered Request Density</h3>
+           <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Pending requests grouped by 1km grids for optimal responder routing.</p>
            
            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {clusters.length === 0 && <p className="text-slate-500">No geo-tagged pending requests.</p>}
+              {clusters.length === 0 && <p className="text-gray-500 dark:text-gray-400">No geo-tagged pending requests.</p>}
               {clusters.map((cluster: any, idx: number) => (
-                <div key={idx} className="bg-slate-50 border border-slate-100 p-6 rounded-2xl relative overflow-hidden">
+                <div key={idx} className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 p-6 rounded-2xl relative overflow-hidden">
                    <div className="absolute -right-6 -top-6 w-24 h-24 bg-red-100 rounded-full flex items-center justify-center opacity-50 pointer-events-none">
                      <span className="text-red-500 font-black text-3xl">{cluster.requestCount}</span>
                    </div>
                    <MapPin className="w-8 h-8 text-red-500 mb-4 relative z-10" />
                    <h4 className="font-black text-slate-800 text-lg relative z-10">Cluster #{idx + 1}</h4>
-                   <p className="text-xs text-slate-500 font-bold mb-4 relative z-10">Grid: {cluster.centerLat}, {cluster.centerLng}</p>
+                   <p className="text-xs text-gray-500 dark:text-gray-400 font-bold mb-4 relative z-10">Grid: {cluster.centerLat}, {cluster.centerLng}</p>
                    
                    <div className="space-y-2 relative z-10">
                      {cluster.requests.slice(0, 3).map((r:any) => (
-                       <div key={r.id} className="text-xs font-bold text-slate-700 flex justify-between bg-white p-2 rounded border border-slate-100">
+                       <div key={r.id} className="text-xs font-bold text-slate-700 flex justify-between bg-white dark:bg-gray-900 p-2 rounded border border-gray-200 dark:border-gray-800">
                          <span>{r.type}</span>
                          <span className={r.priority === 'CRITICAL' ? 'text-red-500' : ''}>{r.priority}</span>
                        </div>
                      ))}
                      {cluster.requests.length > 3 && (
-                       <p className="text-xs text-slate-400 font-bold mt-2">+{cluster.requests.length - 3} more requests</p>
+                       <p className="text-xs text-gray-400 dark:text-gray-500 font-bold mt-2">+{cluster.requests.length - 3} more requests</p>
                      )}
                    </div>
                 </div>
@@ -288,8 +298,8 @@ export default function HelpRequestsPage() {
                <MessageSquare className="w-7 h-7 text-green-600" />
              </div>
              <div>
-               <h3 className="text-2xl font-black text-[#1e293b]">SMS & WhatsApp Intake</h3>
-               <p className="text-slate-500 text-sm font-medium">Test the public webhook endpoint used by our Twilio integration.</p>
+               <h3 className="text-2xl font-black text-gray-800 dark:text-white/90">SMS & WhatsApp Intake</h3>
+               <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Test the public webhook endpoint used by our Twilio integration.</p>
              </div>
           </div>
 
@@ -320,9 +330,10 @@ export default function HelpRequestsPage() {
                </div>
              )}
           </div>
-          <p className="text-xs text-slate-400 text-center font-medium">Submitting this form triggers the same backend logic as an incoming Twilio webhook.</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 text-center font-medium">Submitting this form triggers the same backend logic as an incoming Twilio webhook.</p>
         </div>
       )}
     </div>
+    </>
   )
 }

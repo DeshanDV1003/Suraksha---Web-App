@@ -132,7 +132,7 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
           value={address}
           onChange={handleInputChange}
           placeholder="Enter address, road, city or landmark in Sri Lanka..."
-          className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12 font-medium"
+          className="w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12 font-medium"
         />
         {loading && (
           <div className="absolute right-4 top-3.5 flex items-center justify-center">
@@ -144,9 +144,9 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
       {error && <div className="text-red-500 text-xs font-semibold px-1">⚠️ {error}</div>}
 
       {coords ? (
-        <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition-all">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all">
           <div className="relative h-48 w-full z-0">
-            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm shadow border px-2.5 py-1.5 rounded-lg text-[10px] font-black text-blue-600 uppercase tracking-widest z-[1000]">
+            <div className="absolute top-3 left-3 bg-white dark:bg-gray-900/90 backdrop-blur-sm shadow border px-2.5 py-1.5 rounded-lg text-[10px] font-black text-blue-600 uppercase tracking-widest z-[1000]">
               📍 Click map to refine marker
             </div>
             <MapContainer center={coords} zoom={15} style={{ height: '100%', width: '100%' }}>
@@ -157,8 +157,8 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
           </div>
 
           {zone && zone.zoneName && (
-            <div className="bg-slate-50 border-t border-slate-100 px-4 py-3 flex items-center justify-between">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Target Safety Zone:</span>
+            <div className="bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
+              <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Target Safety Zone:</span>
               <span className="bg-blue-50 text-blue-600 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-blue-100">
                 🗺️ {zone.zoneName} District
               </span>
@@ -166,7 +166,7 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
           )}
         </div>
       ) : (
-        <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-8 text-center text-slate-400 text-xs font-bold leading-normal transition-all hover:bg-slate-50">
+        <div className="rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50/50 p-8 text-center text-gray-400 dark:text-gray-500 text-xs font-bold leading-normal transition-all hover:bg-gray-50 dark:bg-gray-800/50">
           📍 Type an address above or drag map to place a precise incident coordinate pin.
         </div>
       )}

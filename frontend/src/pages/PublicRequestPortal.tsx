@@ -58,11 +58,11 @@ export default function PublicRequestPortal() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-xl max-w-md w-full text-center">
           <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-6" />
           <h2 className="text-2xl font-black text-slate-800 mb-2">Request Received</h2>
-          <p className="text-slate-500 mb-8">Your distress signal has been routed to the Suraksha Command Center. Responders are being dispatched.</p>
+          <p className="text-gray-500 dark:text-gray-400 mb-8">Your distress signal has been routed to the Suraksha Command Center. Responders are being dispatched.</p>
           <button 
             onClick={() => { setSuccess(false); setFormData({ ...formData, description: '' }) }}
             className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-all"
@@ -75,15 +75,15 @@ export default function PublicRequestPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
-      <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center p-4 font-sans">
+      <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-xl max-w-md w-full">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center">
             <AlertTriangle className="w-6 h-6" />
           </div>
           <div>
             <h1 className="text-2xl font-black text-slate-800">Request Help</h1>
-            <p className="text-sm text-slate-500 font-medium">Suraksha Emergency Portal</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Suraksha Emergency Portal</p>
           </div>
         </div>
 
@@ -95,10 +95,10 @@ export default function PublicRequestPortal() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Emergency Type</label>
+            <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Emergency Type</label>
             <select 
               required
-              className="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
+              className="w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
               value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})}
             >
               <option value="Rescue">Rescue / Trapped</option>
@@ -110,16 +110,16 @@ export default function PublicRequestPortal() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location</label>
+            <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Location</label>
             <div className="flex gap-2">
               <input 
                 type="text" required placeholder="Address or landmark"
-                className="flex-1 bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
+                className="flex-1 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
                 value={formData.location} onChange={e => setFormData({...formData, location: e.target.value})}
               />
               <button 
                 type="button" onClick={handleGetLocation} disabled={gettingLocation}
-                className="bg-slate-100 text-slate-600 p-4 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center"
+                className="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 p-4 rounded-xl hover:bg-gray-200 dark:bg-gray-700 transition-colors flex items-center justify-center"
                 title="Use current GPS location"
               >
                 {gettingLocation ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
@@ -129,28 +129,28 @@ export default function PublicRequestPortal() {
 
           <div className="grid grid-cols-2 gap-4">
              <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">People Affected</label>
+              <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">People Affected</label>
               <input 
                 type="number" min="1" required
-                className="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
+                className="w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
                 value={formData.peopleCount} onChange={e => setFormData({...formData, peopleCount: parseInt(e.target.value)})}
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Contact Number</label>
+              <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Contact Number</label>
               <input 
                 type="tel" required placeholder="Mobile No."
-                className="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
+                className="w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none"
                 value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Describe the situation</label>
+            <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Describe the situation</label>
             <textarea 
               required rows={3} placeholder="Provide critical details (e.g., 'Water level rising, elderly person trapped')."
-              className="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none resize-none"
+              className="w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500 outline-none resize-none"
               value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}
             />
           </div>

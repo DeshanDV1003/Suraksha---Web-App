@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils'
 import { resourceService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
 import { useTranslation } from 'react-i18next'
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import PageMeta from "@/components/common/PageMeta";
 
 interface Resource {
   id: string
@@ -106,328 +108,328 @@ export default function ResourcesPage() {
   ]
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#1e293b]">{t('resources.title')}</h1>
-          <p className="text-slate-500 mt-1 font-medium">{t('resources.subtitle')}</p>
+        <>
+          <PageMeta title="Resources | Suraksha" description="Suraksha Resources Page" />
+          <PageBreadcrumb pageTitle="Resources" />
+          <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <button 
+            onClick={() => setShowModal(true)}
+            className="px-6 py-3 bg-brand-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95"
+          >
+            <Plus className="w-5 h-5" />
+            Add Resource
+          </button>
         </div>
-        <button 
-          onClick={() => setShowModal(true)}
-          className="px-6 py-3 bg-[#0061ff] text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95"
-        >
-          <Plus className="w-5 h-5" />
-          Add Resource
-        </button>
-      </div>
 
-      {/* Mini Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
-             <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
-             <div className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</div>
-          </div>
-        ))}
-      </div>
+        {/* Mini Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, i) => (
+            <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all shadow-sm">
+               <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
+               <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{stat.label}</div>
+            </div>
+          ))}
+        </div>
 
-      {/* Resources Table */}
-      <div className="bg-white border border-slate-100 rounded-[1.5rem] overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-slate-50/50 border-b border-slate-100">
-                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Resource Type</th>
-                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Owner</th>
-                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Location</th>
-                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Capacity</th>
-                <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Status</th>
-                <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Contact</th>
-                <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {loading ? (
-                <tr>
-                  <td colSpan={7} className="px-8 py-20 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                      <p className="text-slate-400 font-medium">Loading resources...</p>
-                    </div>
-                  </td>
+        {/* Resources Table */}
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-[1.5rem] overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-50 dark:bg-gray-800/50/50 border-b border-gray-200 dark:border-gray-800">
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Resource Type</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Owner</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Location</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Capacity</th>
+                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Status</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Contact</th>
+                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Actions</th>
                 </tr>
-              ) : resources.filter(r => 
-                r.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                r.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                r.location.toLowerCase().includes(searchQuery.toLowerCase())
-              ).length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-8 py-20 text-center text-slate-400 font-medium">
-                    {searchQuery ? `No matching resources found for "${searchQuery}"` : 'No resources found. Add one to get started!'}
-                  </td>
-                </tr>
-              ) : (
-                resources
-                  .filter(r => 
-                    r.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                    r.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    r.location.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((resource) => (
-                  <tr key={resource.id} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="px-8 py-6">
-                      <span className="text-sm font-bold text-[#1e293b] group-hover:text-[#0061ff] transition-colors whitespace-nowrap">{resource.type}</span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className="text-sm font-semibold text-slate-400">{resource.owner}</span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className="text-sm font-semibold text-slate-400 whitespace-nowrap">{resource.location}</span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className="text-sm font-semibold text-slate-400 whitespace-nowrap">{resource.capacity}</span>
-                    </td>
-                    <td className="px-8 py-6 text-center">
-                      <span className={cn(
-                        "text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide whitespace-nowrap inline-block uppercase",
-                        resource.status === 'AVAILABLE' ? "bg-green-50 text-green-600" : "bg-slate-100 text-slate-500"
-                      )}>
-                        {resource.status}
-                      </span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className="text-sm font-semibold text-slate-400 whitespace-nowrap">{resource.contact}</span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center justify-center gap-5">
-                        <button 
-                          onClick={() => setSelectedResource(resource)}
-                          className="text-blue-500 hover:scale-110 transition-transform" 
-                          title="View details"
-                        >
-                          <Eye className="w-5 h-5" />
-                        </button>
-                        <button 
-                          onClick={() => setContactModal(resource.contact)}
-                          className="text-[#00AEEF] hover:scale-110 transition-transform" 
-                          title="Contact options"
-                        >
-                          <Phone className="w-5 h-5" />
-                        </button>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {loading ? (
+                  <tr>
+                    <td colSpan={7} className="px-8 py-20 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                        <p className="text-gray-400 dark:text-gray-500 font-medium">Loading resources...</p>
                       </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : resources.filter(r => 
+                  r.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                  r.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  r.location.toLowerCase().includes(searchQuery.toLowerCase())
+                ).length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="px-8 py-20 text-center text-gray-400 dark:text-gray-500 font-medium">
+                      {searchQuery ? `No matching resources found for "${searchQuery}"` : 'No resources found. Add one to get started!'}
+                    </td>
+                  </tr>
+                ) : (
+                  resources
+                    .filter(r => 
+                      r.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      r.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      r.location.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((resource) => (
+                    <tr key={resource.id} className="hover:bg-gray-50 dark:bg-gray-800/50/50 transition-colors group">
+                      <td className="px-8 py-6">
+                        <span className="text-sm font-bold text-gray-800 dark:text-white/90 group-hover:text-brand-500 transition-colors whitespace-nowrap">{resource.type}</span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500">{resource.owner}</span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">{resource.location}</span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">{resource.capacity}</span>
+                      </td>
+                      <td className="px-8 py-6 text-center">
+                        <span className={cn(
+                          "text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide whitespace-nowrap inline-block uppercase",
+                          resource.status === 'AVAILABLE' ? "bg-green-50 text-green-600" : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                        )}>
+                          {resource.status}
+                        </span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">{resource.contact}</span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="flex items-center justify-center gap-5">
+                          <button 
+                            onClick={() => setSelectedResource(resource)}
+                            className="text-blue-500 hover:scale-110 transition-transform" 
+                            title="View details"
+                          >
+                            <Eye className="w-5 h-5" />
+                          </button>
+                          <button 
+                            onClick={() => setContactModal(resource.contact)}
+                            className="text-[#00AEEF] hover:scale-110 transition-transform" 
+                            title="Contact options"
+                          >
+                            <Phone className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-xl font-black text-[#1e293b]">Add New Resource</h2>
-              <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
-                <X className="w-6 h-6" />
-              </button>
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50">
+                <h2 className="text-xl font-black text-gray-800 dark:text-white/90">Add New Resource</h2>
+                <button onClick={() => setShowModal(false)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <form onSubmit={handleAddResource} className="p-8 space-y-5">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Resource Type</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. Boat, Pickup Truck, Generator" 
+                    required
+                    className="suraksha-input"
+                    value={newResource.type}
+                    onChange={(e) => setNewResource({...newResource, type: e.target.value})}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Owner Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Enter full name" 
+                      required
+                      className="suraksha-input"
+                      value={newResource.owner}
+                      onChange={(e) => setNewResource({...newResource, owner: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Location</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. Colombo 7" 
+                      required
+                      className="suraksha-input"
+                      value={newResource.location}
+                      onChange={(e) => setNewResource({...newResource, location: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Capacity</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. 6 people, 5kW" 
+                      required
+                      className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      value={newResource.capacity}
+                      onChange={(e) => setNewResource({...newResource, capacity: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Contact Number</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. +94 ..." 
+                      required
+                      className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      value={newResource.contact}
+                      onChange={(e) => setNewResource({...newResource, contact: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <div className="pt-4 flex gap-4">
+                  <button 
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="flex-1 px-6 py-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-2xl text-sm font-bold hover:bg-gray-200 dark:bg-gray-700 transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 px-6 py-4 bg-brand-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Creating...
+                      </>
+                    ) : (
+                      'Create Resource'
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
-            <form onSubmit={handleAddResource} className="p-8 space-y-5">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Resource Type</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Boat, Pickup Truck, Generator" 
-                  required
-                  className="suraksha-input"
-                  value={newResource.type}
-                  onChange={(e) => setNewResource({...newResource, type: e.target.value})}
-                />
+          </div>
+        )}
+
+        {selectedResource && (
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <Package className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-black text-gray-800 dark:text-white/90">Resource Info</h2>
+                    <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
+                  </div>
+                </div>
+                <button onClick={() => setSelectedResource(null)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Owner Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="Enter full name" 
-                    required
-                    className="suraksha-input"
-                    value={newResource.owner}
-                    onChange={(e) => setNewResource({...newResource, owner: e.target.value})}
-                  />
+              <div className="p-6 space-y-4">
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Type</p>
+                  <p className="font-semibold text-slate-800">{selectedResource.type}</p>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Location</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Colombo 7" 
-                    required
-                    className="suraksha-input"
-                    value={newResource.location}
-                    onChange={(e) => setNewResource({...newResource, location: e.target.value})}
-                  />
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Owner</p>
+                  <p className="font-semibold text-slate-800">{selectedResource.owner}</p>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Capacity</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. 6 people, 5kW" 
-                    required
-                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                    value={newResource.capacity}
-                    onChange={(e) => setNewResource({...newResource, capacity: e.target.value})}
-                  />
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Location</p>
+                  <p className="font-semibold text-slate-800">{selectedResource.location}</p>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Contact Number</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. +94 ..." 
-                    required
-                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                    value={newResource.contact}
-                    onChange={(e) => setNewResource({...newResource, contact: e.target.value})}
-                  />
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Capacity</p>
+                  <p className="font-semibold text-slate-800">{selectedResource.capacity}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Contact</p>
+                  <p className="font-semibold text-slate-800">{selectedResource.contact}</p>
                 </div>
               </div>
-              <div className="pt-4 flex gap-4">
+              <div className="p-6 pt-0 flex gap-3">
                 <button 
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 px-6 py-4 bg-slate-100 text-slate-600 rounded-2xl text-sm font-bold hover:bg-slate-200 transition-all"
+                  onClick={() => setContactModal(selectedResource.contact)}
+                  className="flex-1 bg-[#00AEEF] hover:bg-[#009bd6] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/25"
+                >
+                  <Phone className="w-4 h-4" />
+                  Contact Options
+                </button>
+                <button 
+                  onClick={() => setSelectedResource(null)}
+                  className="flex-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:bg-gray-700 text-slate-700 py-3 rounded-xl font-bold transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {contactModal && (
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="p-8 text-center space-y-6">
+                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-brand-500">
+                  <Phone className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-2">Contact Resource</h3>
+                  <p className="text-2xl font-bold tracking-widest text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 py-3 rounded-xl">{contactModal}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <button 
+                    onClick={() => handleCopyContact(contactModal)}
+                    className="flex flex-col items-center justify-center gap-2 py-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:bg-gray-700 text-slate-700 rounded-2xl font-bold transition-all"
+                  >
+                    <Copy className="w-5 h-5" />
+                    <span className="text-xs">Copy</span>
+                  </button>
+                  <a 
+                    href={`tel:${contactModal}`}
+                    className="flex flex-col items-center justify-center gap-2 py-4 bg-[#00AEEF] hover:bg-[#009bd6] text-white rounded-2xl font-bold transition-all shadow-lg shadow-cyan-500/25"
+                  >
+                    <Phone className="w-5 h-5" />
+                    <span className="text-xs">Dial</span>
+                  </a>
+                </div>
+                <button 
+                  onClick={() => setContactModal(null)}
+                  className="w-full py-3 text-sm font-bold text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors"
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 px-6 py-4 bg-[#0061ff] text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Creating...
-                    </>
-                  ) : (
-                    'Create Resource'
-                  )}
-                </button>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {selectedResource && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <Package className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-black text-[#1e293b]">Resource Info</h2>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
-                </div>
-              </div>
-              <button onClick={() => setSelectedResource(null)} className="text-slate-400 hover:text-slate-600 transition-colors">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Type</p>
-                <p className="font-semibold text-slate-800">{selectedResource.type}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Owner</p>
-                <p className="font-semibold text-slate-800">{selectedResource.owner}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Location</p>
-                <p className="font-semibold text-slate-800">{selectedResource.location}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Capacity</p>
-                <p className="font-semibold text-slate-800">{selectedResource.capacity}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contact</p>
-                <p className="font-semibold text-slate-800">{selectedResource.contact}</p>
-              </div>
-            </div>
-            <div className="p-6 pt-0 flex gap-3">
-              <button 
-                onClick={() => setContactModal(selectedResource.contact)}
-                className="flex-1 bg-[#00AEEF] hover:bg-[#009bd6] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/25"
-              >
-                <Phone className="w-4 h-4" />
-                Contact Options
-              </button>
-              <button 
-                onClick={() => setSelectedResource(null)}
-                className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold transition-all"
-              >
-                Close
-              </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {contactModal && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            <div className="p-8 text-center space-y-6">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-[#0061ff]">
-                <Phone className="w-8 h-8" />
-              </div>
-              <div>
-                <h3 className="text-xl font-black text-[#1e293b] mb-2">Contact Resource</h3>
-                <p className="text-2xl font-bold tracking-widest text-slate-500 bg-slate-50 py-3 rounded-xl">{contactModal}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <button 
-                  onClick={() => handleCopyContact(contactModal)}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all"
-                >
-                  <Copy className="w-5 h-5" />
-                  <span className="text-xs">Copy</span>
-                </button>
-                <a 
-                  href={`tel:${contactModal}`}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-[#00AEEF] hover:bg-[#009bd6] text-white rounded-2xl font-bold transition-all shadow-lg shadow-cyan-500/25"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span className="text-xs">Dial</span>
-                </a>
-              </div>
-              <button 
-                onClick={() => setContactModal(null)}
-                className="w-full py-3 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
+        {toast && (
+          <div className={cn(
+            "fixed bottom-8 right-8 z-[999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+            toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
+          )}>
+            {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+            <span className="font-bold text-sm tracking-wide">{toast.message}</span>
           </div>
-        </div>
-      )}
-
-      {toast && (
-        <div className={cn(
-          "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
-          toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-red-50 text-red-600 border border-red-100"
-        )}>
-          {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
-          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
-        </div>
-      )}
-    </div>
-  )
+        )}
+      </div>
+        </>
+      )
 }

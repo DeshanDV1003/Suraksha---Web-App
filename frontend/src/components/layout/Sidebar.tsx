@@ -90,7 +90,7 @@ export function Sidebar() {
           <img src={logo} alt="Suraksha Logo" className="w-full h-full object-contain" />
         </div>
         <div>
-          <h1 className="text-xl font-bold leading-none tracking-tight text-[#0061ff] uppercase">SURAKSHA</h1>
+          <h1 className="text-xl font-bold leading-none tracking-tight text-brand-500 uppercase">SURAKSHA</h1>
           <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mt-1.5 opacity-70">{t('nav.command_center')}</p>
         </div>
       </div>
@@ -124,7 +124,7 @@ export function Sidebar() {
               {item.count !== undefined && item.count > 0 && !item.status && (
                 <span className={cn(
                   "text-[11px] font-bold px-2 py-0.5 min-w-[1.5rem] text-center rounded-full transition-colors",
-                  isActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+                  isActive ? "bg-white dark:bg-gray-900/20 text-white" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
                 )}>
                   {item.count}
                 </span>
