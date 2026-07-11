@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/client"
+  provider        = "prisma-client-js"
+  output          = "./generated/client"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -886,4 +888,74 @@ model MentalHealthGuide {
   tags               String
   isOfflineAvailable Boolean  @default(true)
   createdAt          DateTime @default(now())
+}
+
+// --- Water Monitoring Module ---
+
+enum WaterRiskLevel {
+  NORMAL
+  WATCH
+  WARNING
+  DANGER
+}
+
+enum RiverStatus {
+  NORMAL
+  ALERT
+  MINOR_FLOOD
+  MAJOR_FLOOD
+}
+
+enum WaterTrend {
+  RISING
+  FALLING
+  STABLE
+}
+
+model RainfallReading {
+  id                String         @id @default(uuid())
+  stationId         String
+  stationName       String
+  district          String
+  province          String
+  latitude          Float
+  longitude         Float
+  rainfallMmPerHour Float
+  cumulativeRain24h Float
+  cumulativeRain72h Float
+  riskLevel         WaterRiskLevel
+  recordedAt        DateTime
+  fetchedAt         DateTime
+  source            String
+}
+
+model RiverWaterLevel {
+  id                 String      @id @default(uuid())
+  gaugeId            String
+  riverName          String
+  stationName        String
+  district           String
+  latitude           Float
+  longitude          Float
+  waterLevelMetres   Float
+  flowRateCumecs     Float
+  alertLevel         Float
+  minorFloodLevel    Float
+  majorFloodLevel    Float
+  status             RiverStatus
+  changeFromLastHour Float
+  trend              WaterTrend
+  recordedAt         DateTime
+  fetchedAt          DateTime
+  source             String
+}
+
+model DownstreamMapping {
+  id              String   @id @default(uuid())
+  gaugeId         String   @unique
+  riverName       String
+  stationName     String
+  targetDistricts String[] // Array of district names to alert
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

@@ -41,6 +41,8 @@ import { DonationsPage } from './pages/DonationsPage'
 import { FamilySafetyPage } from './pages/FamilySafetyPage'
 import PublicRequestPortal from '@/pages/PublicRequestPortal'
 import PublicMissingPortal from '@/pages/PublicMissingPortal'
+import RiverMappingsPage from '@/pages/RiverMappingsPage'
+import WaterMonitorPage from '@/pages/WaterMonitorPage'
 
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
@@ -170,7 +172,9 @@ const ProtectedRoutes = () => {
         <Route path="/support" element={<SupportPage />} />
         <Route path="/donations" element={<DonationsPage />} />
         <Route path="/family-safety" element={<FamilySafetyPage />} />
+        <Route path="/water-monitor" element={<WaterMonitorPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/river-mappings" element={<RiverMappingsPage />} />
       </Route>
     </Routes>
   )

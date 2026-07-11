@@ -43,4 +43,23 @@ def build_feature_vector(nlp_output: dict, metadata: dict) -> np.ndarray:
     features.append(1 if metadata.get("has_elderly") else 0)
     features.append(1 if metadata.get("has_disabled") else 0)
     
+    # --- NEW ENVIRONMENTAL FEATURES (Water Data) --- (10 features)
+    env_data = metadata.get("environmental_data", {})
+    
+    # Rainfall
+    features.append(min(env_data.get("rainfall_mm_last_hour", 0) / 100.0, 1.0))
+    features.append(min(env_data.get("cumulative_rain_24h", 0) / 300.0, 1.0))
+    features.append(min(env_data.get("cumulative_rain_72h", 0) / 600.0, 1.0))
+    features.append(env_data.get("rainfall_risk_level", 0) / 3.0)
+    
+    # River Levels
+    features.append(env_data.get("nearest_river_level_metres", 0) / 15.0)
+    features.append(np.clip(env_data.get("river_vs_alert_level", 0) / 5.0, -1.0, 1.0))
+    features.append(env_data.get("river_status_encoded", 0) / 3.0)
+    features.append(env_data.get("river_trend_encoded", 0)) # -1, 0, 1
+    
+    # Composite & Seasonality
+    features.append(env_data.get("district_risk_score", risk)) # fallback to geographic risk
+    features.append(1.0 if env_data.get("is_monsoon_season") else 0.0)
+
     return np.array(features)

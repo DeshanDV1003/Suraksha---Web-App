@@ -22,7 +22,9 @@ import {
   ExternalLink,
   ChevronDownIcon,
   MoreHorizontal,
-  Settings
+  Settings,
+  Map,
+  Waves
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -36,6 +38,7 @@ type NavItem = {
 const mainItems: NavItem[] = [
   { icon: <LayoutDashboard className="w-5 h-5" />, name: "Dashboard", path: "/" },
   { icon: <MapPin className="w-5 h-5" />, name: "Live Map", path: "/map" },
+  { icon: <Waves className="w-5 h-5" />, name: "Water Monitor", path: "/water-monitor" },
   { icon: <AlertTriangle className="w-5 h-5" />, name: "Incidents", path: "/incidents" },
   { icon: <Radio className="w-5 h-5" />, name: "Alerts", path: "/suraksha-alerts" },
   { icon: <BarChart3 className="w-5 h-5" />, name: "Analytics", path: "/reports" },
@@ -62,6 +65,7 @@ const safetyItems: NavItem[] = [
 
 const systemItems: NavItem[] = [
   { icon: <Settings className="w-5 h-5" />, name: "Settings", path: "/settings" },
+  { icon: <Map className="w-5 h-5" />, name: "River Mappings", path: "/river-mappings" },
 ];
 
 const AppSidebar: React.FC = () => {

@@ -29,7 +29,19 @@ def train_priority_classifier(dataset_path: str):
             "hour_of_day": row["hour_of_day"],
             "has_children": row.get("has_children", 0),
             "has_elderly": row.get("has_elderly", 0),
-            "has_disabled": row.get("has_disabled", 0)
+            "has_disabled": row.get("has_disabled", 0),
+            "environmental_data": {
+                "rainfall_mm_last_hour": row.get("rainfall_mm_last_hour", 0),
+                "cumulative_rain_24h": row.get("cumulative_rain_24h", 0),
+                "cumulative_rain_72h": row.get("cumulative_rain_72h", 0),
+                "rainfall_risk_level": row.get("rainfall_risk_level", 0),
+                "nearest_river_level_metres": row.get("nearest_river_level_metres", 0),
+                "river_vs_alert_level": row.get("river_vs_alert_level", 0),
+                "river_status_encoded": row.get("river_status_encoded", 0),
+                "river_trend_encoded": row.get("river_trend_encoded", 0),
+                "district_risk_score": row.get("district_risk_score", 0.5),
+                "is_monsoon_season": row.get("is_monsoon_season", 0)
+            }
         }
         features = build_feature_vector(nlp_output, metadata)
         X.append(features)

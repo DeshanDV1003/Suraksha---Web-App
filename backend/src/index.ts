@@ -29,6 +29,8 @@ import locationRoutes from './routes/locationRoutes';
 import mapRoutes from './routes/mapRoutes';
 import donationRoutes from './routes/donationRoutes';
 import familyRoutes from './routes/familyRoutes';
+import waterRoutes from './routes/waterRoutes';
+import { setupWaterDataCron } from './services/water-data-fetcher';
 
 dotenv.config();
 
@@ -72,6 +74,7 @@ app.use('/api/location', locationRoutes);
 app.use('/api/map', mapRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/family', familyRoutes);
+app.use('/api/water', waterRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -107,6 +110,14 @@ io.on('connection', (socket) => {
     console.log('Client disconnected:', socket.id);
   });
 });
+
+const waterNamespace = io.of('/water');
+waterNamespace.on('connection', (socket) => {
+  console.log('Client connected to /water namespace:', socket.id);
+});
+
+// Start the water data fetch cron job
+setupWaterDataCron();
 
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
