@@ -229,3 +229,73 @@ export const getVulnerabilityIndex = async () => {
 export const getDisasterBudgets = async () => {
   return await prisma.disasterBudget.findMany({ include: { expenditures: { include: { resourceCost: true } } } });
 };
+
+export const exportIntelligencePdf = async (data: any, res: any) => {
+  const PDFDocument = require('pdfkit');
+  const doc = new PDFDocument({ margin: 50, size: 'A4' });
+  doc.pipe(res);
+
+  // 1. Cover Page / Header
+  doc.fontSize(24).font('Helvetica-Bold').text('Operational Intelligence Briefing', { align: 'center' });
+  doc.moveDown(1);
+  doc.fontSize(12).font('Helvetica').text(`Generated Date: ${new Date(data.timestamp || Date.now()).toLocaleString()}`, { align: 'center' });
+  doc.moveDown(3);
+
+  // 2. Executive KPIs
+  doc.fontSize(18).font('Helvetica-Bold').text('1. Executive KPIs');
+  doc.moveDown(1);
+  if (data.stats && data.stats.incidents) {
+    doc.fontSize(12).font('Helvetica').text(`Total Incidents: ${data.stats.incidents.total}`);
+    doc.text(`Critical/High Incidents: ${data.stats.incidents.critical + data.stats.incidents.high}`);
+    doc.text(`Average Response Time: ${data.stats.kpis?.avgResponseTime}`);
+    doc.text(`Volunteer Utilization: ${data.stats.kpis?.volunteerUtilization}`);
+    doc.text(`Alert Delivery Rate: ${data.stats.kpis?.alertDeliveryRate}`);
+  }
+  doc.moveDown(2);
+
+  // 3. Resource & Fund Utilization
+  doc.fontSize(18).font('Helvetica-Bold').text('2. Resources & Crisis Fund');
+  doc.moveDown(1);
+  if (data.stats && data.stats.crisisFund) {
+    doc.fontSize(12).font('Helvetica').text(`Crisis Fund Meter: ${data.stats.crisisFund.total}`);
+    doc.text(`Fulfillment Efficiency: ${data.stats.crisisFund.efficiency}`);
+  }
+  if (data.stats && data.stats.resourceUtilization) {
+    doc.moveDown(1);
+    doc.fontSize(14).font('Helvetica-Bold').text('Resource Usage:');
+    data.stats.resourceUtilization.forEach((r: any) => {
+      doc.fontSize(12).font('Helvetica').text(`- ${r.name}: ${r.used.toFixed(1)} used / ${(r.used + r.available).toFixed(1)} total`);
+    });
+  }
+  doc.moveDown(2);
+
+  // 4. Vulnerability Index
+  doc.fontSize(18).font('Helvetica-Bold').text('3. Vulnerability Heat Index');
+  doc.moveDown(1);
+  if (data.vulnerability && data.vulnerability.length > 0) {
+    data.vulnerability.forEach((v: any) => {
+      doc.fontSize(12).font('Helvetica').text(`${v.district} District - Risk Score: ${v.riskScore}%`);
+      doc.fontSize(10).font('Helvetica').text(`  Elderly: ${v.elderly} | Infants: ${v.infants} | Disabled: ${v.disabled} | Chronic: ${v.chronic}`);
+      doc.moveDown(0.5);
+    });
+  } else {
+    doc.fontSize(12).font('Helvetica').text('No vulnerability data available.');
+  }
+  doc.moveDown(1.5);
+
+  // 5. Budgets
+  doc.fontSize(18).font('Helvetica-Bold').text('4. Disaster Budgets & Expenditures');
+  doc.moveDown(1);
+  if (data.budgets && data.budgets.length > 0) {
+    data.budgets.forEach((b: any) => {
+      const spent = b.expenditures?.reduce((sum: number, exp: any) => sum + exp.totalCost, 0) || 0;
+      doc.fontSize(12).font('Helvetica-Bold').text(b.eventName);
+      doc.fontSize(12).font('Helvetica').text(`Allocated: LKR ${b.allocatedBudget.toLocaleString()} | Spent: LKR ${spent.toLocaleString()}`);
+      doc.moveDown(0.5);
+    });
+  } else {
+    doc.fontSize(12).font('Helvetica').text('No active budgets.');
+  }
+
+  doc.end();
+};

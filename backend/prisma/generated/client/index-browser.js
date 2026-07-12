@@ -123,18 +123,18 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   phone: 'phone',
-  profilePicture: 'profilePicture',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   region: 'region',
+  hasMobileApp: 'hasMobileApp',
+  isFieldActive: 'isFieldActive',
+  lastCheckInTime: 'lastCheckInTime',
   nic: 'nic',
   twoFactorEnabled: 'twoFactorEnabled',
-  twoFactorSecret: 'twoFactorSecret',
   twoFactorGracePeriodEnds: 'twoFactorGracePeriodEnds',
-  hasMobileApp: 'hasMobileApp',
-  lastCheckInTime: 'lastCheckInTime',
-  isFieldActive: 'isFieldActive',
+  twoFactorSecret: 'twoFactorSecret',
+  profilePicture: 'profilePicture',
   currentSectorId: 'currentSectorId'
 };
 
@@ -145,35 +145,35 @@ exports.Prisma.IncidentReportScalarFieldEnum = {
   location: 'location',
   latitude: 'latitude',
   longitude: 'longitude',
-  zoneId: 'zoneId',
-  zoneName: 'zoneName',
-  province: 'province',
   status: 'status',
   severity: 'severity',
-  mlConfidence: 'mlConfidence',
   category: 'category',
   images: 'images',
   reporterId: 'reporterId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  province: 'province',
+  zoneId: 'zoneId',
+  zoneName: 'zoneName',
+  mlConfidence: 'mlConfidence'
 };
 
 exports.Prisma.AlertScalarFieldEnum = {
   id: 'id',
   title: 'title',
   message: 'message',
-  locations: 'locations',
-  latitudes: 'latitudes',
-  longitudes: 'longitudes',
   type: 'type',
   active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  latitudes: 'latitudes',
+  locations: 'locations',
+  longitudes: 'longitudes',
+  acknowledgementRate: 'acknowledgementRate',
   channels: 'channels',
   scheduledTime: 'scheduledTime',
   translatedMsgSinhala: 'translatedMsgSinhala',
   translatedMsgTamil: 'translatedMsgTamil',
-  acknowledgementRate: 'acknowledgementRate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   targetSectors: 'targetSectors'
 };
 
@@ -230,17 +230,16 @@ exports.Prisma.TaskScalarFieldEnum = {
 exports.Prisma.VolunteerProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  totalHours: 'totalHours',
+  createdAt: 'createdAt',
   incidentsJoined: 'incidentsJoined',
   readinessScore: 'readinessScore',
-  createdAt: 'createdAt',
+  totalHours: 'totalHours',
   updatedAt: 'updatedAt'
 };
 
 exports.Prisma.HelpRequestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  phone: 'phone',
   type: 'type',
   description: 'description',
   location: 'location',
@@ -249,10 +248,11 @@ exports.Prisma.HelpRequestScalarFieldEnum = {
   priority: 'priority',
   status: 'status',
   peopleCount: 'peopleCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   assignedVolunteerId: 'assignedVolunteerId',
   escalationLevel: 'escalationLevel',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  phone: 'phone'
 };
 
 exports.Prisma.HelpRequestEscalationScalarFieldEnum = {
@@ -275,21 +275,21 @@ exports.Prisma.ReportVerificationScalarFieldEnum = {
 exports.Prisma.MissingPersonScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  nic: 'nic',
   age: 'age',
-  gender: 'gender',
   description: 'description',
   lastSeen: 'lastSeen',
   photo: 'photo',
   reportedBy: 'reportedBy',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  nic: 'nic',
   contactName: 'contactName',
   contactPhone: 'contactPhone',
-  status: 'status',
+  gender: 'gender',
   isUnidentified: 'isUnidentified',
-  reunificationStatus: 'reunificationStatus',
   reunificationNotes: 'reunificationNotes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  reunificationStatus: 'reunificationStatus'
 };
 
 exports.Prisma.NotificationScalarFieldEnum = {
@@ -357,13 +357,13 @@ exports.Prisma.ReliefTokenScalarFieldEnum = {
   maxUsage: 'maxUsage',
   issuedAt: 'issuedAt',
   expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   categories: 'categories',
-  isHouseholdBundle: 'isHouseholdBundle',
-  householdId: 'householdId',
   donorId: 'donorId',
   fraudRiskScore: 'fraudRiskScore',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  householdId: 'householdId',
+  isHouseholdBundle: 'isHouseholdBundle'
 };
 
 exports.Prisma.ReliefTokenClaimScalarFieldEnum = {
@@ -387,7 +387,6 @@ exports.Prisma.DamageAssessmentScalarFieldEnum = {
   location: 'location',
   latitude: 'latitude',
   longitude: 'longitude',
-  polygonData: 'polygonData',
   category: 'category',
   structuralDamage: 'structuralDamage',
   cropDamage: 'cropDamage',
@@ -395,20 +394,21 @@ exports.Prisma.DamageAssessmentScalarFieldEnum = {
   roadDamage: 'roadDamage',
   affectedPersons: 'affectedPersons',
   estimatedLoss: 'estimatedLoss',
-  aiEstimatedDamage: 'aiEstimatedDamage',
-  aiEstimatedCost: 'aiEstimatedCost',
-  propertyOwnershipStatus: 'propertyOwnershipStatus',
-  familyVulnerabilityScore: 'familyVulnerabilityScore',
-  incomeBracket: 'incomeBracket',
-  compensationEligibilityScore: 'compensationEligibilityScore',
-  compensationEligible: 'compensationEligible',
   mediaUrls: 'mediaUrls',
   status: 'status',
   notes: 'notes',
-  reviewerNotes: 'reviewerNotes',
   verifiedById: 'verifiedById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  aiEstimatedCost: 'aiEstimatedCost',
+  aiEstimatedDamage: 'aiEstimatedDamage',
+  compensationEligibilityScore: 'compensationEligibilityScore',
+  compensationEligible: 'compensationEligible',
+  familyVulnerabilityScore: 'familyVulnerabilityScore',
+  incomeBracket: 'incomeBracket',
+  polygonData: 'polygonData',
+  propertyOwnershipStatus: 'propertyOwnershipStatus',
+  reviewerNotes: 'reviewerNotes'
 };
 
 exports.Prisma.LocalVerifierScalarFieldEnum = {
@@ -447,10 +447,10 @@ exports.Prisma.PsychologicalSupportRequestScalarFieldEnum = {
   affectedCount: 'affectedCount',
   assignedToId: 'assignedToId',
   notes: 'notes',
-  nextCheckInDate: 'nextCheckInDate',
-  checkInStatus: 'checkInStatus',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  checkInStatus: 'checkInStatus',
+  nextCheckInDate: 'nextCheckInDate'
 };
 
 exports.Prisma.ThreatForecastScalarFieldEnum = {
@@ -847,10 +847,10 @@ exports.Role = exports.$Enums.Role = {
 exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
   ASSIGNED: 'ASSIGNED',
-  EN_ROUTE: 'EN_ROUTE',
-  ON_SITE: 'ON_SITE',
   IN_PROGRESS: 'IN_PROGRESS',
-  RESOLVED: 'RESOLVED'
+  RESOLVED: 'RESOLVED',
+  EN_ROUTE: 'EN_ROUTE',
+  ON_SITE: 'ON_SITE'
 };
 
 exports.Severity = exports.$Enums.Severity = {
@@ -903,10 +903,10 @@ exports.DamageLevel = exports.$Enums.DamageLevel = {
 
 exports.DamageStatus = exports.$Enums.DamageStatus = {
   PENDING_REVIEW: 'PENDING_REVIEW',
-  SENIOR_REVIEW: 'SENIOR_REVIEW',
-  APPROVED: 'APPROVED',
   VERIFIED: 'VERIFIED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  SENIOR_REVIEW: 'SENIOR_REVIEW',
+  APPROVED: 'APPROVED'
 };
 
 exports.VerifierRole = exports.$Enums.VerifierRole = {

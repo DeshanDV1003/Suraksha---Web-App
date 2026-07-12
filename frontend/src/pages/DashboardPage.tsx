@@ -21,6 +21,7 @@ import 'leaflet.heat'
 import L from 'leaflet'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
+import ExportReportModal from "@/components/dashboard/ExportReportModal";
 
 // Fix Leaflet icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -81,6 +82,7 @@ export default function DashboardPage() {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false)
   const [newAlert, setNewAlert] = useState({ title: '', message: '', location: '', type: 'INFO' })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false)
 
   const fetchData = async () => {
     try {
@@ -225,7 +227,9 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex gap-3">
-            <button className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50 dark:bg-gray-800/50 transition-all active:scale-95 shadow-sm">
+            <button 
+              onClick={() => setIsExportModalOpen(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50 dark:bg-gray-800/50 transition-all active:scale-95 shadow-sm">
               <Download className="w-4 h-4" />
               {t('dashboard.export_report')}
             </button>
@@ -689,6 +693,11 @@ export default function DashboardPage() {
               </form>
             </div>
           </div>
+        )}
+
+        {/* Export Report Modal */}
+        {isExportModalOpen && (
+          <ExportReportModal onClose={() => setIsExportModalOpen(false)} />
         )}
       </div>
         </>

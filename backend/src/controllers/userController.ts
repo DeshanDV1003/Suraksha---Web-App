@@ -61,7 +61,8 @@ export const updateUserRole = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
-    const user = await userService.updateUserRole(id, role);
+    const userId = req.user.userId;
+    const user = await userService.updateUserRole(id, role, userId);
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
@@ -89,7 +90,8 @@ export const updateUserRole = async (req: any, res: Response) => {
 export const deleteUser = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
-    await userService.deleteUser(id);
+    const userId = req.user.userId;
+    await userService.deleteUser(id, userId);
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

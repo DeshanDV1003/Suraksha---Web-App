@@ -1,0 +1,1 @@
+const axios = require('axios'); async function run() { try { const r = await axios.post('http://localhost:3001/api/reports/export', { format: 'pdf', filters: {} }); console.log('OK', r.status); } catch(e) { console.log('ERROR IS', e.code); } } run();

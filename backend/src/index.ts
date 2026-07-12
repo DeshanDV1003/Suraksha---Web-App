@@ -30,6 +30,7 @@ import mapRoutes from './routes/mapRoutes';
 import donationRoutes from './routes/donationRoutes';
 import familyRoutes from './routes/familyRoutes';
 import waterRoutes from './routes/waterRoutes';
+import reportRoutes from './routes/reportRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
 
 dotenv.config();
@@ -75,6 +76,7 @@ app.use('/api/map', mapRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/family', familyRoutes);
 app.use('/api/water', waterRoutes);
+app.use('/api/reports', reportRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 

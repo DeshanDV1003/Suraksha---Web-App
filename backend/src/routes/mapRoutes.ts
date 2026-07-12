@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/routes', mapController.createEvacuationRoute);
 router.get('/routes', mapController.getEvacuationRoutes);
+router.post('/routes/export/pdf', mapController.exportRoutePdf);
 
 router.post('/volunteers', mapController.createVolunteerLocation);
 router.get('/volunteers', mapController.getVolunteerLocations);

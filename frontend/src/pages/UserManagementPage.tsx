@@ -10,6 +10,7 @@ import PageMeta from "@/components/common/PageMeta";
 
 export default function UserManagementPage() {
   const [activeTab, setActiveTab] = useState<'DIRECTORY' | 'RBAC' | 'AUDIT' | 'SECURITY'>('DIRECTORY')
+  const user = useAppStore(state => state.user)
   const [localSearch, setLocalSearch] = useState('')
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -146,7 +147,7 @@ export default function UserManagementPage() {
         <div className="flex space-x-2 border-b border-gray-200 dark:border-gray-700">
           {[
             { id: 'DIRECTORY', label: 'Directory', icon: User },
-            { id: 'RBAC', label: 'RBAC Matrix', icon: ShieldCheck },
+            ...(user?.role === 'ADMIN' ? [{ id: 'RBAC', label: 'RBAC Matrix', icon: ShieldCheck }] : []),
             { id: 'AUDIT', label: 'Audit Logs', icon: FileText },
             { id: 'SECURITY', label: '2FA & Security', icon: ShieldAlert }
           ].map(tab => (

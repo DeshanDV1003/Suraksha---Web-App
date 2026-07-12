@@ -1,6 +1,6 @@
 import prisma from '../utils/prisma';
 import bcrypt from 'bcryptjs';
-import { Role } from '@prisma/client';
+import { Role } from '../../prisma/generated/client';
 
 export const listUsers = async () => {
   return prisma.user.findMany({
@@ -33,8 +33,8 @@ export const getUserById = async (id: string) => {
   });
 };
 
-export const updateUserRole = async (id: string, role: any) => {
-  return prisma.user.update({
+export const updateUserRole = async (id: string, role: any, updatedByUserId?: string) => {
+  const updated = await prisma.user.update({
     where: { id },
     data: { role },
     select: {
@@ -44,10 +44,36 @@ export const updateUserRole = async (id: string, role: any) => {
       role: true,
     }
   });
+
+  if (updatedByUserId) {
+    await prisma.auditLog.create({
+      data: {
+        userId: updatedByUserId,
+        action: 'UPDATE',
+        entity: 'USER_ROLE',
+        entityId: id,
+        metadata: { newRole: role }
+      }
+    });
+  }
+  return updated;
 };
 
-export const deleteUser = async (id: string) => {
-  return prisma.user.delete({ where: { id } });
+export const deleteUser = async (id: string, deletedByUserId?: string) => {
+  const deleted = await prisma.user.delete({ where: { id } });
+  
+  if (deletedByUserId) {
+    await prisma.auditLog.create({
+      data: {
+        userId: deletedByUserId,
+        action: 'DELETE',
+        entity: 'USER',
+        entityId: id,
+        metadata: { deletedEmail: deleted.email }
+      }
+    });
+  }
+  return deleted;
 };
 
 export const updateProfile = async (userId: string, data: any) => {
@@ -72,13 +98,28 @@ export const getRBACMatrix = async () => {
 };
 
 export const updateRBACMatrix = async (permissions: any[], updatedBy: string) => {
-  const promises = permissions.map(p => 
-    prisma.rolePermission.upsert({
-      where: { id: p.id || '' },
-      create: { role: p.role, module: p.module, canView: p.canView, canEdit: p.canEdit, canDelete: p.canDelete, updatedBy },
-      update: { canView: p.canView, canEdit: p.canEdit, canDelete: p.canDelete, updatedBy }
-    })
-  );
+  const promises = permissions.map(async (p) => {
+    if (p.id) {
+      return prisma.rolePermission.update({
+        where: { id: p.id },
+        data: { canView: p.canView, canEdit: p.canEdit, canDelete: p.canDelete, updatedBy }
+      });
+    } else {
+      const existing = await prisma.rolePermission.findFirst({
+        where: { role: p.role, module: p.module }
+      });
+      if (existing) {
+        return prisma.rolePermission.update({
+          where: { id: existing.id },
+          data: { canView: p.canView, canEdit: p.canEdit, canDelete: p.canDelete, updatedBy }
+        });
+      } else {
+        return prisma.rolePermission.create({
+          data: { role: p.role, module: p.module, canView: p.canView, canEdit: p.canEdit, canDelete: p.canDelete, updatedBy }
+        });
+      }
+    }
+  });
   
   await prisma.auditLog.create({
     data: {
@@ -130,7 +171,22 @@ export const getAuditLogs = async () => {
     take: 100
   });
 
-  return { sessions, actions };
+  const userIds = [...new Set(actions.map(a => a.userId).filter(Boolean))];
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds as string[] } },
+    select: { id: true, email: true, name: true }
+  });
+
+  const enrichedActions = actions.map(a => {
+    const u = users.find(u => u.id === a.userId);
+    return {
+      ...a,
+      userEmail: u ? u.email : 'System',
+      userName: u ? u.name : 'System'
+    };
+  });
+
+  return { sessions, actions: enrichedActions };
 };
 
 export const toggleFieldResponderApp = async (userId: string, hasApp: boolean) => {

@@ -220,7 +220,7 @@ export default function CampsPage() {
         {selectedCampId && <CampDetailsModal campId={selectedCampId} onClose={() => { setSelectedCampId(null); fetchCamps(); }} />}
 
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
             <div className="bg-white dark:bg-gray-900 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
               <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50">
                 <h2 className="text-xl font-black text-gray-800 dark:text-white/90">Add New Resource</h2>
@@ -283,7 +283,7 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
   }, [campId])
 
   if (!camp) return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
+    <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
       <Loader2 className="w-12 h-12 animate-spin text-white" />
     </div>
   )
@@ -292,7 +292,7 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
   const isSurging = occupancyRate >= 0.8
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div className="bg-white dark:bg-gray-900 w-full max-w-6xl rounded-[1.5rem] shadow-2xl flex flex-col h-[90vh] animate-in zoom-in-95 duration-200">
         
         {/* Header */}
@@ -660,7 +660,7 @@ function TransferModal({ fromCamp, onClose, refresh }: any) {
   }
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
+    <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
       <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-[1.5rem] p-8 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 flex items-center gap-2"><ArrowRightLeft className="w-5 h-5"/> Transfer Request</h3>

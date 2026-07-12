@@ -27,10 +27,20 @@ interface AppState {
   clearNotifications: () => void
 }
 
+let initialUser = null;
+try {
+  const savedUser = localStorage.getItem('user');
+  if (savedUser) {
+    initialUser = JSON.parse(savedUser);
+  }
+} catch (e) {
+  console.error("Failed to parse user from local storage", e);
+}
+
 export const useAppStore = create<AppState>((set) => ({
-  user: null,
+  user: initialUser,
   setUser: (user) => set({ user }),
-  isAuthenticated: false,
+  isAuthenticated: !!initialUser,
   setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
   
   incidents: [],

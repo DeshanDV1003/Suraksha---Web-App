@@ -322,10 +322,10 @@ export type Role = (typeof Role)[keyof typeof Role]
 export const Status: {
   PENDING: 'PENDING',
   ASSIGNED: 'ASSIGNED',
-  EN_ROUTE: 'EN_ROUTE',
-  ON_SITE: 'ON_SITE',
   IN_PROGRESS: 'IN_PROGRESS',
-  RESOLVED: 'RESOLVED'
+  RESOLVED: 'RESOLVED',
+  EN_ROUTE: 'EN_ROUTE',
+  ON_SITE: 'ON_SITE'
 };
 
 export type Status = (typeof Status)[keyof typeof Status]
@@ -386,10 +386,10 @@ export type DamageLevel = (typeof DamageLevel)[keyof typeof DamageLevel]
 
 export const DamageStatus: {
   PENDING_REVIEW: 'PENDING_REVIEW',
-  SENIOR_REVIEW: 'SENIOR_REVIEW',
-  APPROVED: 'APPROVED',
   VERIFIED: 'VERIFIED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  SENIOR_REVIEW: 'SENIOR_REVIEW',
+  APPROVED: 'APPROVED'
 };
 
 export type DamageStatus = (typeof DamageStatus)[keyof typeof DamageStatus]
@@ -6383,6 +6383,8 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     damageReports: number
+    donations: number
+    familyMembers: number
     helpRequests: number
     reports: number
     locationLogs: number
@@ -6390,16 +6392,16 @@ export namespace Prisma {
     supportRequests: number
     reliefTokens: number
     verifications: number
+    safetyCheckIns: number
     createdTasks: number
     assignedTasks: number
     sessionLogs: number
-    donations: number
-    safetyCheckIns: number
-    familyMembers: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     damageReports?: boolean | UserCountOutputTypeCountDamageReportsArgs
+    donations?: boolean | UserCountOutputTypeCountDonationsArgs
+    familyMembers?: boolean | UserCountOutputTypeCountFamilyMembersArgs
     helpRequests?: boolean | UserCountOutputTypeCountHelpRequestsArgs
     reports?: boolean | UserCountOutputTypeCountReportsArgs
     locationLogs?: boolean | UserCountOutputTypeCountLocationLogsArgs
@@ -6407,12 +6409,10 @@ export namespace Prisma {
     supportRequests?: boolean | UserCountOutputTypeCountSupportRequestsArgs
     reliefTokens?: boolean | UserCountOutputTypeCountReliefTokensArgs
     verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
+    safetyCheckIns?: boolean | UserCountOutputTypeCountSafetyCheckInsArgs
     createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
     assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
     sessionLogs?: boolean | UserCountOutputTypeCountSessionLogsArgs
-    donations?: boolean | UserCountOutputTypeCountDonationsArgs
-    safetyCheckIns?: boolean | UserCountOutputTypeCountSafetyCheckInsArgs
-    familyMembers?: boolean | UserCountOutputTypeCountFamilyMembersArgs
   }
 
   // Custom InputTypes
@@ -6431,6 +6431,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountDamageReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DamageAssessmentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DonationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFamilyMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FamilyMemberWhereInput
   }
 
   /**
@@ -6485,6 +6499,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountSafetyCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SafetyCheckInWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountCreatedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskWhereInput
   }
@@ -6501,27 +6522,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSessionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserSessionLogWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountDonationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DonationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountSafetyCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SafetyCheckInWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountFamilyMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FamilyMemberWhereInput
   }
 
 
@@ -6628,23 +6628,23 @@ export namespace Prisma {
    */
 
   export type ReliefCampCountOutputType = {
-    residents: number
     inventory: number
+    residents: number
     schedules: number
-    referrals: number
     transfersOut: number
     transfersIn: number
     donations: number
+    referrals: number
   }
 
   export type ReliefCampCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    residents?: boolean | ReliefCampCountOutputTypeCountResidentsArgs
     inventory?: boolean | ReliefCampCountOutputTypeCountInventoryArgs
+    residents?: boolean | ReliefCampCountOutputTypeCountResidentsArgs
     schedules?: boolean | ReliefCampCountOutputTypeCountSchedulesArgs
-    referrals?: boolean | ReliefCampCountOutputTypeCountReferralsArgs
     transfersOut?: boolean | ReliefCampCountOutputTypeCountTransfersOutArgs
     transfersIn?: boolean | ReliefCampCountOutputTypeCountTransfersInArgs
     donations?: boolean | ReliefCampCountOutputTypeCountDonationsArgs
+    referrals?: boolean | ReliefCampCountOutputTypeCountReferralsArgs
   }
 
   // Custom InputTypes
@@ -6661,13 +6661,6 @@ export namespace Prisma {
   /**
    * ReliefCampCountOutputType without action
    */
-  export type ReliefCampCountOutputTypeCountResidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CampResidentWhereInput
-  }
-
-  /**
-   * ReliefCampCountOutputType without action
-   */
   export type ReliefCampCountOutputTypeCountInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CampInventoryWhereInput
   }
@@ -6675,15 +6668,15 @@ export namespace Prisma {
   /**
    * ReliefCampCountOutputType without action
    */
-  export type ReliefCampCountOutputTypeCountSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CampScheduleWhereInput
+  export type ReliefCampCountOutputTypeCountResidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampResidentWhereInput
   }
 
   /**
    * ReliefCampCountOutputType without action
    */
-  export type ReliefCampCountOutputTypeCountReferralsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: HospitalReferralWhereInput
+  export type ReliefCampCountOutputTypeCountSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampScheduleWhereInput
   }
 
   /**
@@ -6707,25 +6700,32 @@ export namespace Prisma {
     where?: DonationWhereInput
   }
 
+  /**
+   * ReliefCampCountOutputType without action
+   */
+  export type ReliefCampCountOutputTypeCountReferralsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HospitalReferralWhereInput
+  }
+
 
   /**
    * Count Type VolunteerProfileCountOutputType
    */
 
   export type VolunteerProfileCountOutputType = {
+    badges: number
+    checkIns: number
     skills: number
     trainings: number
-    checkIns: number
     wellbeingLogs: number
-    badges: number
   }
 
   export type VolunteerProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    badges?: boolean | VolunteerProfileCountOutputTypeCountBadgesArgs
+    checkIns?: boolean | VolunteerProfileCountOutputTypeCountCheckInsArgs
     skills?: boolean | VolunteerProfileCountOutputTypeCountSkillsArgs
     trainings?: boolean | VolunteerProfileCountOutputTypeCountTrainingsArgs
-    checkIns?: boolean | VolunteerProfileCountOutputTypeCountCheckInsArgs
     wellbeingLogs?: boolean | VolunteerProfileCountOutputTypeCountWellbeingLogsArgs
-    badges?: boolean | VolunteerProfileCountOutputTypeCountBadgesArgs
   }
 
   // Custom InputTypes
@@ -6737,6 +6737,20 @@ export namespace Prisma {
      * Select specific fields to fetch from the VolunteerProfileCountOutputType
      */
     select?: VolunteerProfileCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VolunteerProfileCountOutputType without action
+   */
+  export type VolunteerProfileCountOutputTypeCountBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerBadgeWhereInput
+  }
+
+  /**
+   * VolunteerProfileCountOutputType without action
+   */
+  export type VolunteerProfileCountOutputTypeCountCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VolunteerCheckInWhereInput
   }
 
   /**
@@ -6756,22 +6770,8 @@ export namespace Prisma {
   /**
    * VolunteerProfileCountOutputType without action
    */
-  export type VolunteerProfileCountOutputTypeCountCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VolunteerCheckInWhereInput
-  }
-
-  /**
-   * VolunteerProfileCountOutputType without action
-   */
   export type VolunteerProfileCountOutputTypeCountWellbeingLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VolunteerWellbeingWhereInput
-  }
-
-  /**
-   * VolunteerProfileCountOutputType without action
-   */
-  export type VolunteerProfileCountOutputTypeCountBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VolunteerBadgeWhereInput
   }
 
 
@@ -6780,13 +6780,13 @@ export namespace Prisma {
    */
 
   export type HelpRequestCountOutputType = {
-    verifierActions: number
     escalations: number
+    verifierActions: number
   }
 
   export type HelpRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    verifierActions?: boolean | HelpRequestCountOutputTypeCountVerifierActionsArgs
     escalations?: boolean | HelpRequestCountOutputTypeCountEscalationsArgs
+    verifierActions?: boolean | HelpRequestCountOutputTypeCountVerifierActionsArgs
   }
 
   // Custom InputTypes
@@ -6803,15 +6803,15 @@ export namespace Prisma {
   /**
    * HelpRequestCountOutputType without action
    */
-  export type HelpRequestCountOutputTypeCountVerifierActionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VerifierActionWhereInput
+  export type HelpRequestCountOutputTypeCountEscalationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HelpRequestEscalationWhereInput
   }
 
   /**
    * HelpRequestCountOutputType without action
    */
-  export type HelpRequestCountOutputTypeCountEscalationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: HelpRequestEscalationWhereInput
+  export type HelpRequestCountOutputTypeCountVerifierActionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VerifierActionWhereInput
   }
 
 
@@ -7052,18 +7052,18 @@ export namespace Prisma {
     password: string | null
     name: string | null
     phone: string | null
-    profilePicture: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
     region: string | null
+    hasMobileApp: boolean | null
+    isFieldActive: boolean | null
+    lastCheckInTime: Date | null
     nic: string | null
     twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
     twoFactorGracePeriodEnds: Date | null
-    hasMobileApp: boolean | null
-    lastCheckInTime: Date | null
-    isFieldActive: boolean | null
+    twoFactorSecret: string | null
+    profilePicture: string | null
     currentSectorId: string | null
   }
 
@@ -7073,18 +7073,18 @@ export namespace Prisma {
     password: string | null
     name: string | null
     phone: string | null
-    profilePicture: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
     region: string | null
+    hasMobileApp: boolean | null
+    isFieldActive: boolean | null
+    lastCheckInTime: Date | null
     nic: string | null
     twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
     twoFactorGracePeriodEnds: Date | null
-    hasMobileApp: boolean | null
-    lastCheckInTime: Date | null
-    isFieldActive: boolean | null
+    twoFactorSecret: string | null
+    profilePicture: string | null
     currentSectorId: string | null
   }
 
@@ -7094,18 +7094,18 @@ export namespace Prisma {
     password: number
     name: number
     phone: number
-    profilePicture: number
     role: number
     createdAt: number
     updatedAt: number
     region: number
+    hasMobileApp: number
+    isFieldActive: number
+    lastCheckInTime: number
     nic: number
     twoFactorEnabled: number
-    twoFactorSecret: number
     twoFactorGracePeriodEnds: number
-    hasMobileApp: number
-    lastCheckInTime: number
-    isFieldActive: number
+    twoFactorSecret: number
+    profilePicture: number
     currentSectorId: number
     _all: number
   }
@@ -7117,18 +7117,18 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
-    profilePicture?: true
     role?: true
     createdAt?: true
     updatedAt?: true
     region?: true
+    hasMobileApp?: true
+    isFieldActive?: true
+    lastCheckInTime?: true
     nic?: true
     twoFactorEnabled?: true
-    twoFactorSecret?: true
     twoFactorGracePeriodEnds?: true
-    hasMobileApp?: true
-    lastCheckInTime?: true
-    isFieldActive?: true
+    twoFactorSecret?: true
+    profilePicture?: true
     currentSectorId?: true
   }
 
@@ -7138,18 +7138,18 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
-    profilePicture?: true
     role?: true
     createdAt?: true
     updatedAt?: true
     region?: true
+    hasMobileApp?: true
+    isFieldActive?: true
+    lastCheckInTime?: true
     nic?: true
     twoFactorEnabled?: true
-    twoFactorSecret?: true
     twoFactorGracePeriodEnds?: true
-    hasMobileApp?: true
-    lastCheckInTime?: true
-    isFieldActive?: true
+    twoFactorSecret?: true
+    profilePicture?: true
     currentSectorId?: true
   }
 
@@ -7159,18 +7159,18 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
-    profilePicture?: true
     role?: true
     createdAt?: true
     updatedAt?: true
     region?: true
+    hasMobileApp?: true
+    isFieldActive?: true
+    lastCheckInTime?: true
     nic?: true
     twoFactorEnabled?: true
-    twoFactorSecret?: true
     twoFactorGracePeriodEnds?: true
-    hasMobileApp?: true
-    lastCheckInTime?: true
-    isFieldActive?: true
+    twoFactorSecret?: true
+    profilePicture?: true
     currentSectorId?: true
     _all?: true
   }
@@ -7253,18 +7253,18 @@ export namespace Prisma {
     password: string
     name: string
     phone: string | null
-    profilePicture: string | null
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
     region: string | null
+    hasMobileApp: boolean
+    isFieldActive: boolean
+    lastCheckInTime: Date | null
     nic: string | null
     twoFactorEnabled: boolean
-    twoFactorSecret: string | null
     twoFactorGracePeriodEnds: Date | null
-    hasMobileApp: boolean
-    lastCheckInTime: Date | null
-    isFieldActive: boolean
+    twoFactorSecret: string | null
+    profilePicture: string | null
     currentSectorId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -7291,20 +7291,22 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    profilePicture?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     region?: boolean
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: boolean
     nic?: boolean
     twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     twoFactorGracePeriodEnds?: boolean
-    hasMobileApp?: boolean
-    lastCheckInTime?: boolean
-    isFieldActive?: boolean
+    twoFactorSecret?: boolean
+    profilePicture?: boolean
     currentSectorId?: boolean
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
+    donations?: boolean | User$donationsArgs<ExtArgs>
+    familyMembers?: boolean | User$familyMembersArgs<ExtArgs>
     helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
     reports?: boolean | User$reportsArgs<ExtArgs>
     localVerifier?: boolean | User$localVerifierArgs<ExtArgs>
@@ -7313,14 +7315,12 @@ export namespace Prisma {
     supportRequests?: boolean | User$supportRequestsArgs<ExtArgs>
     reliefTokens?: boolean | User$reliefTokensArgs<ExtArgs>
     verifications?: boolean | User$verificationsArgs<ExtArgs>
+    safetyCheckIns?: boolean | User$safetyCheckInsArgs<ExtArgs>
     createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
     assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
-    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
-    sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
     currentSector?: boolean | User$currentSectorArgs<ExtArgs>
-    donations?: boolean | User$donationsArgs<ExtArgs>
-    safetyCheckIns?: boolean | User$safetyCheckInsArgs<ExtArgs>
-    familyMembers?: boolean | User$familyMembersArgs<ExtArgs>
+    sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
+    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7330,18 +7330,18 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    profilePicture?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     region?: boolean
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: boolean
     nic?: boolean
     twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     twoFactorGracePeriodEnds?: boolean
-    hasMobileApp?: boolean
-    lastCheckInTime?: boolean
-    isFieldActive?: boolean
+    twoFactorSecret?: boolean
+    profilePicture?: boolean
     currentSectorId?: boolean
     currentSector?: boolean | User$currentSectorArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -7352,18 +7352,18 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    profilePicture?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     region?: boolean
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: boolean
     nic?: boolean
     twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     twoFactorGracePeriodEnds?: boolean
-    hasMobileApp?: boolean
-    lastCheckInTime?: boolean
-    isFieldActive?: boolean
+    twoFactorSecret?: boolean
+    profilePicture?: boolean
     currentSectorId?: boolean
     currentSector?: boolean | User$currentSectorArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -7374,24 +7374,26 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
-    profilePicture?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     region?: boolean
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: boolean
     nic?: boolean
     twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
     twoFactorGracePeriodEnds?: boolean
-    hasMobileApp?: boolean
-    lastCheckInTime?: boolean
-    isFieldActive?: boolean
+    twoFactorSecret?: boolean
+    profilePicture?: boolean
     currentSectorId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "profilePicture" | "role" | "createdAt" | "updatedAt" | "region" | "nic" | "twoFactorEnabled" | "twoFactorSecret" | "twoFactorGracePeriodEnds" | "hasMobileApp" | "lastCheckInTime" | "isFieldActive" | "currentSectorId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "role" | "createdAt" | "updatedAt" | "region" | "hasMobileApp" | "isFieldActive" | "lastCheckInTime" | "nic" | "twoFactorEnabled" | "twoFactorGracePeriodEnds" | "twoFactorSecret" | "profilePicture" | "currentSectorId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
+    donations?: boolean | User$donationsArgs<ExtArgs>
+    familyMembers?: boolean | User$familyMembersArgs<ExtArgs>
     helpRequests?: boolean | User$helpRequestsArgs<ExtArgs>
     reports?: boolean | User$reportsArgs<ExtArgs>
     localVerifier?: boolean | User$localVerifierArgs<ExtArgs>
@@ -7400,14 +7402,12 @@ export namespace Prisma {
     supportRequests?: boolean | User$supportRequestsArgs<ExtArgs>
     reliefTokens?: boolean | User$reliefTokensArgs<ExtArgs>
     verifications?: boolean | User$verificationsArgs<ExtArgs>
+    safetyCheckIns?: boolean | User$safetyCheckInsArgs<ExtArgs>
     createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
     assignedTasks?: boolean | User$assignedTasksArgs<ExtArgs>
-    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
-    sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
     currentSector?: boolean | User$currentSectorArgs<ExtArgs>
-    donations?: boolean | User$donationsArgs<ExtArgs>
-    safetyCheckIns?: boolean | User$safetyCheckInsArgs<ExtArgs>
-    familyMembers?: boolean | User$familyMembersArgs<ExtArgs>
+    sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
+    volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7421,6 +7421,8 @@ export namespace Prisma {
     name: "User"
     objects: {
       damageReports: Prisma.$DamageAssessmentPayload<ExtArgs>[]
+      donations: Prisma.$DonationPayload<ExtArgs>[]
+      familyMembers: Prisma.$FamilyMemberPayload<ExtArgs>[]
       helpRequests: Prisma.$HelpRequestPayload<ExtArgs>[]
       reports: Prisma.$IncidentReportPayload<ExtArgs>[]
       localVerifier: Prisma.$LocalVerifierPayload<ExtArgs> | null
@@ -7429,14 +7431,12 @@ export namespace Prisma {
       supportRequests: Prisma.$PsychologicalSupportRequestPayload<ExtArgs>[]
       reliefTokens: Prisma.$ReliefTokenPayload<ExtArgs>[]
       verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
+      safetyCheckIns: Prisma.$SafetyCheckInPayload<ExtArgs>[]
       createdTasks: Prisma.$TaskPayload<ExtArgs>[]
       assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
-      volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
-      sessionLogs: Prisma.$UserSessionLogPayload<ExtArgs>[]
       currentSector: Prisma.$SectorPayload<ExtArgs> | null
-      donations: Prisma.$DonationPayload<ExtArgs>[]
-      safetyCheckIns: Prisma.$SafetyCheckInPayload<ExtArgs>[]
-      familyMembers: Prisma.$FamilyMemberPayload<ExtArgs>[]
+      sessionLogs: Prisma.$UserSessionLogPayload<ExtArgs>[]
+      volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7444,18 +7444,18 @@ export namespace Prisma {
       password: string
       name: string
       phone: string | null
-      profilePicture: string | null
       role: $Enums.Role
       createdAt: Date
       updatedAt: Date
       region: string | null
+      hasMobileApp: boolean
+      isFieldActive: boolean
+      lastCheckInTime: Date | null
       nic: string | null
       twoFactorEnabled: boolean
-      twoFactorSecret: string | null
       twoFactorGracePeriodEnds: Date | null
-      hasMobileApp: boolean
-      lastCheckInTime: Date | null
-      isFieldActive: boolean
+      twoFactorSecret: string | null
+      profilePicture: string | null
       currentSectorId: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -7852,6 +7852,8 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     damageReports<T extends User$damageReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$damageReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DamageAssessmentPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    donations<T extends User$donationsArgs<ExtArgs> = {}>(args?: Subset<T, User$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    familyMembers<T extends User$familyMembersArgs<ExtArgs> = {}>(args?: Subset<T, User$familyMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     helpRequests<T extends User$helpRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$helpRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HelpRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     reports<T extends User$reportsArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     localVerifier<T extends User$localVerifierArgs<ExtArgs> = {}>(args?: Subset<T, User$localVerifierArgs<ExtArgs>>): Prisma__LocalVerifierClient<$Result.GetResult<Prisma.$LocalVerifierPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
@@ -7860,14 +7862,12 @@ export namespace Prisma {
     supportRequests<T extends User$supportRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$supportRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PsychologicalSupportRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     reliefTokens<T extends User$reliefTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$reliefTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReliefTokenPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     verifications<T extends User$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    safetyCheckIns<T extends User$safetyCheckInsArgs<ExtArgs> = {}>(args?: Subset<T, User$safetyCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     createdTasks<T extends User$createdTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$createdTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     assignedTasks<T extends User$assignedTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
-    sessionLogs<T extends User$sessionLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSessionLogPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     currentSector<T extends User$currentSectorArgs<ExtArgs> = {}>(args?: Subset<T, User$currentSectorArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
-    donations<T extends User$donationsArgs<ExtArgs> = {}>(args?: Subset<T, User$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    safetyCheckIns<T extends User$safetyCheckInsArgs<ExtArgs> = {}>(args?: Subset<T, User$safetyCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafetyCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    familyMembers<T extends User$familyMembersArgs<ExtArgs> = {}>(args?: Subset<T, User$familyMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    sessionLogs<T extends User$sessionLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSessionLogPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7902,18 +7902,18 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
-    readonly profilePicture: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly region: FieldRef<"User", 'String'>
+    readonly hasMobileApp: FieldRef<"User", 'Boolean'>
+    readonly isFieldActive: FieldRef<"User", 'Boolean'>
+    readonly lastCheckInTime: FieldRef<"User", 'DateTime'>
     readonly nic: FieldRef<"User", 'String'>
     readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
-    readonly twoFactorSecret: FieldRef<"User", 'String'>
     readonly twoFactorGracePeriodEnds: FieldRef<"User", 'DateTime'>
-    readonly hasMobileApp: FieldRef<"User", 'Boolean'>
-    readonly lastCheckInTime: FieldRef<"User", 'DateTime'>
-    readonly isFieldActive: FieldRef<"User", 'Boolean'>
+    readonly twoFactorSecret: FieldRef<"User", 'String'>
+    readonly profilePicture: FieldRef<"User", 'String'>
     readonly currentSectorId: FieldRef<"User", 'String'>
   }
     
@@ -8335,6 +8335,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.donations
+   */
+  export type User$donationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donation
+     */
+    select?: DonationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donation
+     */
+    omit?: DonationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationInclude<ExtArgs> | null
+    where?: DonationWhereInput
+    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
+    cursor?: DonationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
+  }
+
+  /**
+   * User.familyMembers
+   */
+  export type User$familyMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FamilyMember
+     */
+    select?: FamilyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FamilyMember
+     */
+    omit?: FamilyMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FamilyMemberInclude<ExtArgs> | null
+    where?: FamilyMemberWhereInput
+    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
+    cursor?: FamilyMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FamilyMemberScalarFieldEnum | FamilyMemberScalarFieldEnum[]
+  }
+
+  /**
    * User.helpRequests
    */
   export type User$helpRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8522,6 +8570,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.safetyCheckIns
+   */
+  export type User$safetyCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafetyCheckIn
+     */
+    select?: SafetyCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafetyCheckIn
+     */
+    omit?: SafetyCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafetyCheckInInclude<ExtArgs> | null
+    where?: SafetyCheckInWhereInput
+    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
+    cursor?: SafetyCheckInWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SafetyCheckInScalarFieldEnum | SafetyCheckInScalarFieldEnum[]
+  }
+
+  /**
    * User.createdTasks
    */
   export type User$createdTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8570,22 +8642,22 @@ export namespace Prisma {
   }
 
   /**
-   * User.volunteerProfile
+   * User.currentSector
    */
-  export type User$volunteerProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$currentSectorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VolunteerProfile
+     * Select specific fields to fetch from the Sector
      */
-    select?: VolunteerProfileSelect<ExtArgs> | null
+    select?: SectorSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VolunteerProfile
+     * Omit specific fields from the Sector
      */
-    omit?: VolunteerProfileOmit<ExtArgs> | null
+    omit?: SectorOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: VolunteerProfileInclude<ExtArgs> | null
-    where?: VolunteerProfileWhereInput
+    include?: SectorInclude<ExtArgs> | null
+    where?: SectorWhereInput
   }
 
   /**
@@ -8613,94 +8685,22 @@ export namespace Prisma {
   }
 
   /**
-   * User.currentSector
+   * User.volunteerProfile
    */
-  export type User$currentSectorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$volunteerProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Sector
+     * Select specific fields to fetch from the VolunteerProfile
      */
-    select?: SectorSelect<ExtArgs> | null
+    select?: VolunteerProfileSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Sector
+     * Omit specific fields from the VolunteerProfile
      */
-    omit?: SectorOmit<ExtArgs> | null
+    omit?: VolunteerProfileOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SectorInclude<ExtArgs> | null
-    where?: SectorWhereInput
-  }
-
-  /**
-   * User.donations
-   */
-  export type User$donationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Donation
-     */
-    select?: DonationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Donation
-     */
-    omit?: DonationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DonationInclude<ExtArgs> | null
-    where?: DonationWhereInput
-    orderBy?: DonationOrderByWithRelationInput | DonationOrderByWithRelationInput[]
-    cursor?: DonationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
-  }
-
-  /**
-   * User.safetyCheckIns
-   */
-  export type User$safetyCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SafetyCheckIn
-     */
-    select?: SafetyCheckInSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the SafetyCheckIn
-     */
-    omit?: SafetyCheckInOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SafetyCheckInInclude<ExtArgs> | null
-    where?: SafetyCheckInWhereInput
-    orderBy?: SafetyCheckInOrderByWithRelationInput | SafetyCheckInOrderByWithRelationInput[]
-    cursor?: SafetyCheckInWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SafetyCheckInScalarFieldEnum | SafetyCheckInScalarFieldEnum[]
-  }
-
-  /**
-   * User.familyMembers
-   */
-  export type User$familyMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FamilyMember
-     */
-    select?: FamilyMemberSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the FamilyMember
-     */
-    omit?: FamilyMemberOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FamilyMemberInclude<ExtArgs> | null
-    where?: FamilyMemberWhereInput
-    orderBy?: FamilyMemberOrderByWithRelationInput | FamilyMemberOrderByWithRelationInput[]
-    cursor?: FamilyMemberWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FamilyMemberScalarFieldEnum | FamilyMemberScalarFieldEnum[]
+    include?: VolunteerProfileInclude<ExtArgs> | null
+    where?: VolunteerProfileWhereInput
   }
 
   /**
@@ -8753,16 +8753,16 @@ export namespace Prisma {
     location: string | null
     latitude: number | null
     longitude: number | null
-    zoneId: string | null
-    zoneName: string | null
-    province: string | null
     status: $Enums.Status | null
     severity: $Enums.Severity | null
-    mlConfidence: number | null
     category: string | null
     reporterId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    province: string | null
+    zoneId: string | null
+    zoneName: string | null
+    mlConfidence: number | null
   }
 
   export type IncidentReportMaxAggregateOutputType = {
@@ -8772,16 +8772,16 @@ export namespace Prisma {
     location: string | null
     latitude: number | null
     longitude: number | null
-    zoneId: string | null
-    zoneName: string | null
-    province: string | null
     status: $Enums.Status | null
     severity: $Enums.Severity | null
-    mlConfidence: number | null
     category: string | null
     reporterId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    province: string | null
+    zoneId: string | null
+    zoneName: string | null
+    mlConfidence: number | null
   }
 
   export type IncidentReportCountAggregateOutputType = {
@@ -8791,17 +8791,17 @@ export namespace Prisma {
     location: number
     latitude: number
     longitude: number
-    zoneId: number
-    zoneName: number
-    province: number
     status: number
     severity: number
-    mlConfidence: number
     category: number
     images: number
     reporterId: number
     createdAt: number
     updatedAt: number
+    province: number
+    zoneId: number
+    zoneName: number
+    mlConfidence: number
     _all: number
   }
 
@@ -8825,16 +8825,16 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
-    zoneId?: true
-    zoneName?: true
-    province?: true
     status?: true
     severity?: true
-    mlConfidence?: true
     category?: true
     reporterId?: true
     createdAt?: true
     updatedAt?: true
+    province?: true
+    zoneId?: true
+    zoneName?: true
+    mlConfidence?: true
   }
 
   export type IncidentReportMaxAggregateInputType = {
@@ -8844,16 +8844,16 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
-    zoneId?: true
-    zoneName?: true
-    province?: true
     status?: true
     severity?: true
-    mlConfidence?: true
     category?: true
     reporterId?: true
     createdAt?: true
     updatedAt?: true
+    province?: true
+    zoneId?: true
+    zoneName?: true
+    mlConfidence?: true
   }
 
   export type IncidentReportCountAggregateInputType = {
@@ -8863,17 +8863,17 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
-    zoneId?: true
-    zoneName?: true
-    province?: true
     status?: true
     severity?: true
-    mlConfidence?: true
     category?: true
     images?: true
     reporterId?: true
     createdAt?: true
     updatedAt?: true
+    province?: true
+    zoneId?: true
+    zoneName?: true
+    mlConfidence?: true
     _all?: true
   }
 
@@ -8970,17 +8970,17 @@ export namespace Prisma {
     location: string
     latitude: number | null
     longitude: number | null
-    zoneId: string | null
-    zoneName: string | null
-    province: string | null
     status: $Enums.Status
     severity: $Enums.Severity
-    mlConfidence: number | null
     category: string
     images: string[]
     reporterId: string
     createdAt: Date
     updatedAt: Date
+    province: string | null
+    zoneId: string | null
+    zoneName: string | null
+    mlConfidence: number | null
     _count: IncidentReportCountAggregateOutputType | null
     _avg: IncidentReportAvgAggregateOutputType | null
     _sum: IncidentReportSumAggregateOutputType | null
@@ -9009,24 +9009,24 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    zoneId?: boolean
-    zoneName?: boolean
-    province?: boolean
     status?: boolean
     severity?: boolean
-    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    province?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    mlConfidence?: boolean
+    aar?: boolean | IncidentReport$aarArgs<ExtArgs>
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
     history?: boolean | IncidentReport$historyArgs<ExtArgs>
     reporter?: boolean | UserDefaultArgs<ExtArgs>
     verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
     tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
     verifierActions?: boolean | IncidentReport$verifierActionsArgs<ExtArgs>
-    aar?: boolean | IncidentReport$aarArgs<ExtArgs>
     _count?: boolean | IncidentReportCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
 
@@ -9037,17 +9037,17 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    zoneId?: boolean
-    zoneName?: boolean
-    province?: boolean
     status?: boolean
     severity?: boolean
-    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    province?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    mlConfidence?: boolean
     reporter?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
 
@@ -9058,17 +9058,17 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    zoneId?: boolean
-    zoneName?: boolean
-    province?: boolean
     status?: boolean
     severity?: boolean
-    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    province?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    mlConfidence?: boolean
     reporter?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
 
@@ -9079,28 +9079,28 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    zoneId?: boolean
-    zoneName?: boolean
-    province?: boolean
     status?: boolean
     severity?: boolean
-    mlConfidence?: boolean
     category?: boolean
     images?: boolean
     reporterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    province?: boolean
+    zoneId?: boolean
+    zoneName?: boolean
+    mlConfidence?: boolean
   }
 
-  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "zoneId" | "zoneName" | "province" | "status" | "severity" | "mlConfidence" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt", ExtArgs["result"]["incidentReport"]>
+  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt" | "province" | "zoneId" | "zoneName" | "mlConfidence", ExtArgs["result"]["incidentReport"]>
   export type IncidentReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    aar?: boolean | IncidentReport$aarArgs<ExtArgs>
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
     history?: boolean | IncidentReport$historyArgs<ExtArgs>
     reporter?: boolean | UserDefaultArgs<ExtArgs>
     verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
     tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
     verifierActions?: boolean | IncidentReport$verifierActionsArgs<ExtArgs>
-    aar?: boolean | IncidentReport$aarArgs<ExtArgs>
     _count?: boolean | IncidentReportCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IncidentReportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9113,13 +9113,13 @@ export namespace Prisma {
   export type $IncidentReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "IncidentReport"
     objects: {
+      aar: Prisma.$AfterActionReportPayload<ExtArgs> | null
       damageAssessments: Prisma.$DamageAssessmentPayload<ExtArgs>[]
       history: Prisma.$IncidentHistoryPayload<ExtArgs>[]
       reporter: Prisma.$UserPayload<ExtArgs>
       verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       verifierActions: Prisma.$VerifierActionPayload<ExtArgs>[]
-      aar: Prisma.$AfterActionReportPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9128,17 +9128,17 @@ export namespace Prisma {
       location: string
       latitude: number | null
       longitude: number | null
-      zoneId: string | null
-      zoneName: string | null
-      province: string | null
       status: $Enums.Status
       severity: $Enums.Severity
-      mlConfidence: number | null
       category: string
       images: string[]
       reporterId: string
       createdAt: Date
       updatedAt: Date
+      province: string | null
+      zoneId: string | null
+      zoneName: string | null
+      mlConfidence: number | null
     }, ExtArgs["result"]["incidentReport"]>
     composites: {}
   }
@@ -9533,13 +9533,13 @@ export namespace Prisma {
    */
   export interface Prisma__IncidentReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    aar<T extends IncidentReport$aarArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$aarArgs<ExtArgs>>): Prisma__AfterActionReportClient<$Result.GetResult<Prisma.$AfterActionReportPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     damageAssessments<T extends IncidentReport$damageAssessmentsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$damageAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DamageAssessmentPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     history<T extends IncidentReport$historyArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$historyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentHistoryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     reporter<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     verifications<T extends IncidentReport$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     tasks<T extends IncidentReport$tasksArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     verifierActions<T extends IncidentReport$verifierActionsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verifierActionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerifierActionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    aar<T extends IncidentReport$aarArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$aarArgs<ExtArgs>>): Prisma__AfterActionReportClient<$Result.GetResult<Prisma.$AfterActionReportPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9575,17 +9575,17 @@ export namespace Prisma {
     readonly location: FieldRef<"IncidentReport", 'String'>
     readonly latitude: FieldRef<"IncidentReport", 'Float'>
     readonly longitude: FieldRef<"IncidentReport", 'Float'>
-    readonly zoneId: FieldRef<"IncidentReport", 'String'>
-    readonly zoneName: FieldRef<"IncidentReport", 'String'>
-    readonly province: FieldRef<"IncidentReport", 'String'>
     readonly status: FieldRef<"IncidentReport", 'Status'>
     readonly severity: FieldRef<"IncidentReport", 'Severity'>
-    readonly mlConfidence: FieldRef<"IncidentReport", 'Float'>
     readonly category: FieldRef<"IncidentReport", 'String'>
     readonly images: FieldRef<"IncidentReport", 'String[]'>
     readonly reporterId: FieldRef<"IncidentReport", 'String'>
     readonly createdAt: FieldRef<"IncidentReport", 'DateTime'>
     readonly updatedAt: FieldRef<"IncidentReport", 'DateTime'>
+    readonly province: FieldRef<"IncidentReport", 'String'>
+    readonly zoneId: FieldRef<"IncidentReport", 'String'>
+    readonly zoneName: FieldRef<"IncidentReport", 'String'>
+    readonly mlConfidence: FieldRef<"IncidentReport", 'Float'>
   }
     
 
@@ -9982,6 +9982,25 @@ export namespace Prisma {
   }
 
   /**
+   * IncidentReport.aar
+   */
+  export type IncidentReport$aarArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AfterActionReport
+     */
+    select?: AfterActionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AfterActionReport
+     */
+    omit?: AfterActionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AfterActionReportInclude<ExtArgs> | null
+    where?: AfterActionReportWhereInput
+  }
+
+  /**
    * IncidentReport.damageAssessments
    */
   export type IncidentReport$damageAssessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10102,25 +10121,6 @@ export namespace Prisma {
   }
 
   /**
-   * IncidentReport.aar
-   */
-  export type IncidentReport$aarArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AfterActionReport
-     */
-    select?: AfterActionReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AfterActionReport
-     */
-    omit?: AfterActionReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AfterActionReportInclude<ExtArgs> | null
-    where?: AfterActionReportWhereInput
-  }
-
-  /**
    * IncidentReport without action
    */
   export type IncidentReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10169,12 +10169,12 @@ export namespace Prisma {
     message: string | null
     type: $Enums.AlertType | null
     active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    acknowledgementRate: number | null
     scheduledTime: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
-    acknowledgementRate: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type AlertMaxAggregateOutputType = {
@@ -10183,30 +10183,30 @@ export namespace Prisma {
     message: string | null
     type: $Enums.AlertType | null
     active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    acknowledgementRate: number | null
     scheduledTime: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
-    acknowledgementRate: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type AlertCountAggregateOutputType = {
     id: number
     title: number
     message: number
-    locations: number
-    latitudes: number
-    longitudes: number
     type: number
     active: number
+    createdAt: number
+    updatedAt: number
+    latitudes: number
+    locations: number
+    longitudes: number
+    acknowledgementRate: number
     channels: number
     scheduledTime: number
     translatedMsgSinhala: number
     translatedMsgTamil: number
-    acknowledgementRate: number
-    createdAt: number
-    updatedAt: number
     targetSectors: number
     _all: number
   }
@@ -10230,12 +10230,12 @@ export namespace Prisma {
     message?: true
     type?: true
     active?: true
+    createdAt?: true
+    updatedAt?: true
+    acknowledgementRate?: true
     scheduledTime?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
-    acknowledgementRate?: true
-    createdAt?: true
-    updatedAt?: true
   }
 
   export type AlertMaxAggregateInputType = {
@@ -10244,30 +10244,30 @@ export namespace Prisma {
     message?: true
     type?: true
     active?: true
+    createdAt?: true
+    updatedAt?: true
+    acknowledgementRate?: true
     scheduledTime?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
-    acknowledgementRate?: true
-    createdAt?: true
-    updatedAt?: true
   }
 
   export type AlertCountAggregateInputType = {
     id?: true
     title?: true
     message?: true
-    locations?: true
-    latitudes?: true
-    longitudes?: true
     type?: true
     active?: true
+    createdAt?: true
+    updatedAt?: true
+    latitudes?: true
+    locations?: true
+    longitudes?: true
+    acknowledgementRate?: true
     channels?: true
     scheduledTime?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
-    acknowledgementRate?: true
-    createdAt?: true
-    updatedAt?: true
     targetSectors?: true
     _all?: true
   }
@@ -10362,18 +10362,18 @@ export namespace Prisma {
     id: string
     title: string
     message: string
-    locations: string[]
-    latitudes: number[]
-    longitudes: number[]
     type: $Enums.AlertType
     active: boolean
+    createdAt: Date
+    updatedAt: Date
+    latitudes: number[]
+    locations: string[]
+    longitudes: number[]
+    acknowledgementRate: number | null
     channels: JsonValue | null
     scheduledTime: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
-    acknowledgementRate: number | null
-    createdAt: Date
-    updatedAt: Date
     targetSectors: string[]
     _count: AlertCountAggregateOutputType | null
     _avg: AlertAvgAggregateOutputType | null
@@ -10400,18 +10400,18 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    locations?: boolean
-    latitudes?: boolean
-    longitudes?: boolean
     type?: boolean
     active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    latitudes?: boolean
+    locations?: boolean
+    longitudes?: boolean
+    acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
-    acknowledgementRate?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     targetSectors?: boolean
   }, ExtArgs["result"]["alert"]>
 
@@ -10419,18 +10419,18 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    locations?: boolean
-    latitudes?: boolean
-    longitudes?: boolean
     type?: boolean
     active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    latitudes?: boolean
+    locations?: boolean
+    longitudes?: boolean
+    acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
-    acknowledgementRate?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     targetSectors?: boolean
   }, ExtArgs["result"]["alert"]>
 
@@ -10438,18 +10438,18 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    locations?: boolean
-    latitudes?: boolean
-    longitudes?: boolean
     type?: boolean
     active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    latitudes?: boolean
+    locations?: boolean
+    longitudes?: boolean
+    acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
-    acknowledgementRate?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     targetSectors?: boolean
   }, ExtArgs["result"]["alert"]>
 
@@ -10457,22 +10457,22 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     message?: boolean
-    locations?: boolean
-    latitudes?: boolean
-    longitudes?: boolean
     type?: boolean
     active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    latitudes?: boolean
+    locations?: boolean
+    longitudes?: boolean
+    acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
-    acknowledgementRate?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     targetSectors?: boolean
   }
 
-  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "locations" | "latitudes" | "longitudes" | "type" | "active" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "acknowledgementRate" | "createdAt" | "updatedAt" | "targetSectors", ExtArgs["result"]["alert"]>
+  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "type" | "active" | "createdAt" | "updatedAt" | "latitudes" | "locations" | "longitudes" | "acknowledgementRate" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "targetSectors", ExtArgs["result"]["alert"]>
 
   export type $AlertPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Alert"
@@ -10481,18 +10481,18 @@ export namespace Prisma {
       id: string
       title: string
       message: string
-      locations: string[]
-      latitudes: number[]
-      longitudes: number[]
       type: $Enums.AlertType
       active: boolean
+      createdAt: Date
+      updatedAt: Date
+      latitudes: number[]
+      locations: string[]
+      longitudes: number[]
+      acknowledgementRate: number | null
       channels: Prisma.JsonValue | null
       scheduledTime: Date | null
       translatedMsgSinhala: string | null
       translatedMsgTamil: string | null
-      acknowledgementRate: number | null
-      createdAt: Date
-      updatedAt: Date
       targetSectors: string[]
     }, ExtArgs["result"]["alert"]>
     composites: {}
@@ -10920,18 +10920,18 @@ export namespace Prisma {
     readonly id: FieldRef<"Alert", 'String'>
     readonly title: FieldRef<"Alert", 'String'>
     readonly message: FieldRef<"Alert", 'String'>
-    readonly locations: FieldRef<"Alert", 'String[]'>
-    readonly latitudes: FieldRef<"Alert", 'Float[]'>
-    readonly longitudes: FieldRef<"Alert", 'Float[]'>
     readonly type: FieldRef<"Alert", 'AlertType'>
     readonly active: FieldRef<"Alert", 'Boolean'>
+    readonly createdAt: FieldRef<"Alert", 'DateTime'>
+    readonly updatedAt: FieldRef<"Alert", 'DateTime'>
+    readonly latitudes: FieldRef<"Alert", 'Float[]'>
+    readonly locations: FieldRef<"Alert", 'String[]'>
+    readonly longitudes: FieldRef<"Alert", 'Float[]'>
+    readonly acknowledgementRate: FieldRef<"Alert", 'Float'>
     readonly channels: FieldRef<"Alert", 'Json'>
     readonly scheduledTime: FieldRef<"Alert", 'DateTime'>
     readonly translatedMsgSinhala: FieldRef<"Alert", 'String'>
     readonly translatedMsgTamil: FieldRef<"Alert", 'String'>
-    readonly acknowledgementRate: FieldRef<"Alert", 'Float'>
-    readonly createdAt: FieldRef<"Alert", 'DateTime'>
-    readonly updatedAt: FieldRef<"Alert", 'DateTime'>
     readonly targetSectors: FieldRef<"Alert", 'String[]'>
   }
     
@@ -12640,13 +12640,13 @@ export namespace Prisma {
     waitTime?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    residents?: boolean | ReliefCamp$residentsArgs<ExtArgs>
     inventory?: boolean | ReliefCamp$inventoryArgs<ExtArgs>
+    residents?: boolean | ReliefCamp$residentsArgs<ExtArgs>
     schedules?: boolean | ReliefCamp$schedulesArgs<ExtArgs>
-    referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
     transfersOut?: boolean | ReliefCamp$transfersOutArgs<ExtArgs>
     transfersIn?: boolean | ReliefCamp$transfersInArgs<ExtArgs>
     donations?: boolean | ReliefCamp$donationsArgs<ExtArgs>
+    referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
     _count?: boolean | ReliefCampCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["reliefCamp"]>
 
@@ -12697,13 +12697,13 @@ export namespace Prisma {
 
   export type ReliefCampOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "location" | "latitude" | "longitude" | "currentOccupancy" | "totalCapacity" | "services" | "status" | "waitTime" | "createdAt" | "updatedAt", ExtArgs["result"]["reliefCamp"]>
   export type ReliefCampInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    residents?: boolean | ReliefCamp$residentsArgs<ExtArgs>
     inventory?: boolean | ReliefCamp$inventoryArgs<ExtArgs>
+    residents?: boolean | ReliefCamp$residentsArgs<ExtArgs>
     schedules?: boolean | ReliefCamp$schedulesArgs<ExtArgs>
-    referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
     transfersOut?: boolean | ReliefCamp$transfersOutArgs<ExtArgs>
     transfersIn?: boolean | ReliefCamp$transfersInArgs<ExtArgs>
     donations?: boolean | ReliefCamp$donationsArgs<ExtArgs>
+    referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
     _count?: boolean | ReliefCampCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ReliefCampIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -12712,13 +12712,13 @@ export namespace Prisma {
   export type $ReliefCampPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ReliefCamp"
     objects: {
-      residents: Prisma.$CampResidentPayload<ExtArgs>[]
       inventory: Prisma.$CampInventoryPayload<ExtArgs>[]
+      residents: Prisma.$CampResidentPayload<ExtArgs>[]
       schedules: Prisma.$CampSchedulePayload<ExtArgs>[]
-      referrals: Prisma.$HospitalReferralPayload<ExtArgs>[]
       transfersOut: Prisma.$CampTransferRequestPayload<ExtArgs>[]
       transfersIn: Prisma.$CampTransferRequestPayload<ExtArgs>[]
       donations: Prisma.$DonationPayload<ExtArgs>[]
+      referrals: Prisma.$HospitalReferralPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13127,13 +13127,13 @@ export namespace Prisma {
    */
   export interface Prisma__ReliefCampClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    residents<T extends ReliefCamp$residentsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampResidentPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     inventory<T extends ReliefCamp$inventoryArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$inventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampInventoryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    residents<T extends ReliefCamp$residentsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$residentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampResidentPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     schedules<T extends ReliefCamp$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampSchedulePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    referrals<T extends ReliefCamp$referralsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$referralsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HospitalReferralPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     transfersOut<T extends ReliefCamp$transfersOutArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$transfersOutArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampTransferRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     transfersIn<T extends ReliefCamp$transfersInArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$transfersInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampTransferRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     donations<T extends ReliefCamp$donationsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    referrals<T extends ReliefCamp$referralsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$referralsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HospitalReferralPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13563,30 +13563,6 @@ export namespace Prisma {
   }
 
   /**
-   * ReliefCamp.residents
-   */
-  export type ReliefCamp$residentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CampResident
-     */
-    select?: CampResidentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CampResident
-     */
-    omit?: CampResidentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CampResidentInclude<ExtArgs> | null
-    where?: CampResidentWhereInput
-    orderBy?: CampResidentOrderByWithRelationInput | CampResidentOrderByWithRelationInput[]
-    cursor?: CampResidentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CampResidentScalarFieldEnum | CampResidentScalarFieldEnum[]
-  }
-
-  /**
    * ReliefCamp.inventory
    */
   export type ReliefCamp$inventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13611,6 +13587,30 @@ export namespace Prisma {
   }
 
   /**
+   * ReliefCamp.residents
+   */
+  export type ReliefCamp$residentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampResident
+     */
+    select?: CampResidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampResident
+     */
+    omit?: CampResidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampResidentInclude<ExtArgs> | null
+    where?: CampResidentWhereInput
+    orderBy?: CampResidentOrderByWithRelationInput | CampResidentOrderByWithRelationInput[]
+    cursor?: CampResidentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampResidentScalarFieldEnum | CampResidentScalarFieldEnum[]
+  }
+
+  /**
    * ReliefCamp.schedules
    */
   export type ReliefCamp$schedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13632,30 +13632,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CampScheduleScalarFieldEnum | CampScheduleScalarFieldEnum[]
-  }
-
-  /**
-   * ReliefCamp.referrals
-   */
-  export type ReliefCamp$referralsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the HospitalReferral
-     */
-    select?: HospitalReferralSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the HospitalReferral
-     */
-    omit?: HospitalReferralOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HospitalReferralInclude<ExtArgs> | null
-    where?: HospitalReferralWhereInput
-    orderBy?: HospitalReferralOrderByWithRelationInput | HospitalReferralOrderByWithRelationInput[]
-    cursor?: HospitalReferralWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: HospitalReferralScalarFieldEnum | HospitalReferralScalarFieldEnum[]
   }
 
   /**
@@ -13728,6 +13704,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DonationScalarFieldEnum | DonationScalarFieldEnum[]
+  }
+
+  /**
+   * ReliefCamp.referrals
+   */
+  export type ReliefCamp$referralsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HospitalReferral
+     */
+    select?: HospitalReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HospitalReferral
+     */
+    omit?: HospitalReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HospitalReferralInclude<ExtArgs> | null
+    where?: HospitalReferralWhereInput
+    orderBy?: HospitalReferralOrderByWithRelationInput | HospitalReferralOrderByWithRelationInput[]
+    cursor?: HospitalReferralWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HospitalReferralScalarFieldEnum | HospitalReferralScalarFieldEnum[]
   }
 
   /**
@@ -16018,88 +16018,88 @@ export namespace Prisma {
   }
 
   export type VolunteerProfileAvgAggregateOutputType = {
-    totalHours: number | null
     incidentsJoined: number | null
     readinessScore: number | null
+    totalHours: number | null
   }
 
   export type VolunteerProfileSumAggregateOutputType = {
-    totalHours: number | null
     incidentsJoined: number | null
     readinessScore: number | null
+    totalHours: number | null
   }
 
   export type VolunteerProfileMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    totalHours: number | null
+    createdAt: Date | null
     incidentsJoined: number | null
     readinessScore: number | null
-    createdAt: Date | null
+    totalHours: number | null
     updatedAt: Date | null
   }
 
   export type VolunteerProfileMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    totalHours: number | null
+    createdAt: Date | null
     incidentsJoined: number | null
     readinessScore: number | null
-    createdAt: Date | null
+    totalHours: number | null
     updatedAt: Date | null
   }
 
   export type VolunteerProfileCountAggregateOutputType = {
     id: number
     userId: number
-    totalHours: number
+    createdAt: number
     incidentsJoined: number
     readinessScore: number
-    createdAt: number
+    totalHours: number
     updatedAt: number
     _all: number
   }
 
 
   export type VolunteerProfileAvgAggregateInputType = {
-    totalHours?: true
     incidentsJoined?: true
     readinessScore?: true
+    totalHours?: true
   }
 
   export type VolunteerProfileSumAggregateInputType = {
-    totalHours?: true
     incidentsJoined?: true
     readinessScore?: true
+    totalHours?: true
   }
 
   export type VolunteerProfileMinAggregateInputType = {
     id?: true
     userId?: true
-    totalHours?: true
+    createdAt?: true
     incidentsJoined?: true
     readinessScore?: true
-    createdAt?: true
+    totalHours?: true
     updatedAt?: true
   }
 
   export type VolunteerProfileMaxAggregateInputType = {
     id?: true
     userId?: true
-    totalHours?: true
+    createdAt?: true
     incidentsJoined?: true
     readinessScore?: true
-    createdAt?: true
+    totalHours?: true
     updatedAt?: true
   }
 
   export type VolunteerProfileCountAggregateInputType = {
     id?: true
     userId?: true
-    totalHours?: true
+    createdAt?: true
     incidentsJoined?: true
     readinessScore?: true
-    createdAt?: true
+    totalHours?: true
     updatedAt?: true
     _all?: true
   }
@@ -16193,10 +16193,10 @@ export namespace Prisma {
   export type VolunteerProfileGroupByOutputType = {
     id: string
     userId: string
-    totalHours: number
+    createdAt: Date
     incidentsJoined: number
     readinessScore: number
-    createdAt: Date
+    totalHours: number
     updatedAt: Date
     _count: VolunteerProfileCountAggregateOutputType | null
     _avg: VolunteerProfileAvgAggregateOutputType | null
@@ -16222,27 +16222,27 @@ export namespace Prisma {
   export type VolunteerProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    totalHours?: boolean
+    createdAt?: boolean
     incidentsJoined?: boolean
     readinessScore?: boolean
-    createdAt?: boolean
+    totalHours?: boolean
     updatedAt?: boolean
+    badges?: boolean | VolunteerProfile$badgesArgs<ExtArgs>
+    checkIns?: boolean | VolunteerProfile$checkInsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     skills?: boolean | VolunteerProfile$skillsArgs<ExtArgs>
     trainings?: boolean | VolunteerProfile$trainingsArgs<ExtArgs>
-    checkIns?: boolean | VolunteerProfile$checkInsArgs<ExtArgs>
     wellbeingLogs?: boolean | VolunteerProfile$wellbeingLogsArgs<ExtArgs>
-    badges?: boolean | VolunteerProfile$badgesArgs<ExtArgs>
     _count?: boolean | VolunteerProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["volunteerProfile"]>
 
   export type VolunteerProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    totalHours?: boolean
+    createdAt?: boolean
     incidentsJoined?: boolean
     readinessScore?: boolean
-    createdAt?: boolean
+    totalHours?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["volunteerProfile"]>
@@ -16250,10 +16250,10 @@ export namespace Prisma {
   export type VolunteerProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    totalHours?: boolean
+    createdAt?: boolean
     incidentsJoined?: boolean
     readinessScore?: boolean
-    createdAt?: boolean
+    totalHours?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["volunteerProfile"]>
@@ -16261,21 +16261,21 @@ export namespace Prisma {
   export type VolunteerProfileSelectScalar = {
     id?: boolean
     userId?: boolean
-    totalHours?: boolean
+    createdAt?: boolean
     incidentsJoined?: boolean
     readinessScore?: boolean
-    createdAt?: boolean
+    totalHours?: boolean
     updatedAt?: boolean
   }
 
-  export type VolunteerProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "totalHours" | "incidentsJoined" | "readinessScore" | "createdAt" | "updatedAt", ExtArgs["result"]["volunteerProfile"]>
+  export type VolunteerProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "createdAt" | "incidentsJoined" | "readinessScore" | "totalHours" | "updatedAt", ExtArgs["result"]["volunteerProfile"]>
   export type VolunteerProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    badges?: boolean | VolunteerProfile$badgesArgs<ExtArgs>
+    checkIns?: boolean | VolunteerProfile$checkInsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     skills?: boolean | VolunteerProfile$skillsArgs<ExtArgs>
     trainings?: boolean | VolunteerProfile$trainingsArgs<ExtArgs>
-    checkIns?: boolean | VolunteerProfile$checkInsArgs<ExtArgs>
     wellbeingLogs?: boolean | VolunteerProfile$wellbeingLogsArgs<ExtArgs>
-    badges?: boolean | VolunteerProfile$badgesArgs<ExtArgs>
     _count?: boolean | VolunteerProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VolunteerProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16288,20 +16288,20 @@ export namespace Prisma {
   export type $VolunteerProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "VolunteerProfile"
     objects: {
+      badges: Prisma.$VolunteerBadgePayload<ExtArgs>[]
+      checkIns: Prisma.$VolunteerCheckInPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       skills: Prisma.$VolunteerSkillPayload<ExtArgs>[]
       trainings: Prisma.$VolunteerTrainingPayload<ExtArgs>[]
-      checkIns: Prisma.$VolunteerCheckInPayload<ExtArgs>[]
       wellbeingLogs: Prisma.$VolunteerWellbeingPayload<ExtArgs>[]
-      badges: Prisma.$VolunteerBadgePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      totalHours: number
+      createdAt: Date
       incidentsJoined: number
       readinessScore: number
-      createdAt: Date
+      totalHours: number
       updatedAt: Date
     }, ExtArgs["result"]["volunteerProfile"]>
     composites: {}
@@ -16697,12 +16697,12 @@ export namespace Prisma {
    */
   export interface Prisma__VolunteerProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    badges<T extends VolunteerProfile$badgesArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerBadgePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    checkIns<T extends VolunteerProfile$checkInsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     skills<T extends VolunteerProfile$skillsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$skillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerSkillPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     trainings<T extends VolunteerProfile$trainingsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$trainingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerTrainingPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    checkIns<T extends VolunteerProfile$checkInsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     wellbeingLogs<T extends VolunteerProfile$wellbeingLogsArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$wellbeingLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerWellbeingPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    badges<T extends VolunteerProfile$badgesArgs<ExtArgs> = {}>(args?: Subset<T, VolunteerProfile$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VolunteerBadgePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16734,10 +16734,10 @@ export namespace Prisma {
   interface VolunteerProfileFieldRefs {
     readonly id: FieldRef<"VolunteerProfile", 'String'>
     readonly userId: FieldRef<"VolunteerProfile", 'String'>
-    readonly totalHours: FieldRef<"VolunteerProfile", 'Float'>
+    readonly createdAt: FieldRef<"VolunteerProfile", 'DateTime'>
     readonly incidentsJoined: FieldRef<"VolunteerProfile", 'Int'>
     readonly readinessScore: FieldRef<"VolunteerProfile", 'Float'>
-    readonly createdAt: FieldRef<"VolunteerProfile", 'DateTime'>
+    readonly totalHours: FieldRef<"VolunteerProfile", 'Float'>
     readonly updatedAt: FieldRef<"VolunteerProfile", 'DateTime'>
   }
     
@@ -17135,6 +17135,54 @@ export namespace Prisma {
   }
 
   /**
+   * VolunteerProfile.badges
+   */
+  export type VolunteerProfile$badgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerBadge
+     */
+    select?: VolunteerBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerBadge
+     */
+    omit?: VolunteerBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerBadgeInclude<ExtArgs> | null
+    where?: VolunteerBadgeWhereInput
+    orderBy?: VolunteerBadgeOrderByWithRelationInput | VolunteerBadgeOrderByWithRelationInput[]
+    cursor?: VolunteerBadgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VolunteerBadgeScalarFieldEnum | VolunteerBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * VolunteerProfile.checkIns
+   */
+  export type VolunteerProfile$checkInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VolunteerCheckIn
+     */
+    select?: VolunteerCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VolunteerCheckIn
+     */
+    omit?: VolunteerCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VolunteerCheckInInclude<ExtArgs> | null
+    where?: VolunteerCheckInWhereInput
+    orderBy?: VolunteerCheckInOrderByWithRelationInput | VolunteerCheckInOrderByWithRelationInput[]
+    cursor?: VolunteerCheckInWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VolunteerCheckInScalarFieldEnum | VolunteerCheckInScalarFieldEnum[]
+  }
+
+  /**
    * VolunteerProfile.skills
    */
   export type VolunteerProfile$skillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17183,30 +17231,6 @@ export namespace Prisma {
   }
 
   /**
-   * VolunteerProfile.checkIns
-   */
-  export type VolunteerProfile$checkInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VolunteerCheckIn
-     */
-    select?: VolunteerCheckInSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the VolunteerCheckIn
-     */
-    omit?: VolunteerCheckInOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VolunteerCheckInInclude<ExtArgs> | null
-    where?: VolunteerCheckInWhereInput
-    orderBy?: VolunteerCheckInOrderByWithRelationInput | VolunteerCheckInOrderByWithRelationInput[]
-    cursor?: VolunteerCheckInWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VolunteerCheckInScalarFieldEnum | VolunteerCheckInScalarFieldEnum[]
-  }
-
-  /**
    * VolunteerProfile.wellbeingLogs
    */
   export type VolunteerProfile$wellbeingLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17228,30 +17252,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VolunteerWellbeingScalarFieldEnum | VolunteerWellbeingScalarFieldEnum[]
-  }
-
-  /**
-   * VolunteerProfile.badges
-   */
-  export type VolunteerProfile$badgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VolunteerBadge
-     */
-    select?: VolunteerBadgeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the VolunteerBadge
-     */
-    omit?: VolunteerBadgeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VolunteerBadgeInclude<ExtArgs> | null
-    where?: VolunteerBadgeWhereInput
-    orderBy?: VolunteerBadgeOrderByWithRelationInput | VolunteerBadgeOrderByWithRelationInput[]
-    cursor?: VolunteerBadgeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VolunteerBadgeScalarFieldEnum | VolunteerBadgeScalarFieldEnum[]
   }
 
   /**
@@ -17300,7 +17300,6 @@ export namespace Prisma {
   export type HelpRequestMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    phone: string | null
     type: string | null
     description: string | null
     location: string | null
@@ -17309,16 +17308,16 @@ export namespace Prisma {
     priority: $Enums.Severity | null
     status: $Enums.Status | null
     peopleCount: number | null
-    assignedVolunteerId: string | null
-    escalationLevel: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    assignedVolunteerId: string | null
+    escalationLevel: string | null
+    phone: string | null
   }
 
   export type HelpRequestMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    phone: string | null
     type: string | null
     description: string | null
     location: string | null
@@ -17327,16 +17326,16 @@ export namespace Prisma {
     priority: $Enums.Severity | null
     status: $Enums.Status | null
     peopleCount: number | null
-    assignedVolunteerId: string | null
-    escalationLevel: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    assignedVolunteerId: string | null
+    escalationLevel: string | null
+    phone: string | null
   }
 
   export type HelpRequestCountAggregateOutputType = {
     id: number
     userId: number
-    phone: number
     type: number
     description: number
     location: number
@@ -17345,10 +17344,11 @@ export namespace Prisma {
     priority: number
     status: number
     peopleCount: number
-    assignedVolunteerId: number
-    escalationLevel: number
     createdAt: number
     updatedAt: number
+    assignedVolunteerId: number
+    escalationLevel: number
+    phone: number
     _all: number
   }
 
@@ -17368,7 +17368,6 @@ export namespace Prisma {
   export type HelpRequestMinAggregateInputType = {
     id?: true
     userId?: true
-    phone?: true
     type?: true
     description?: true
     location?: true
@@ -17377,16 +17376,16 @@ export namespace Prisma {
     priority?: true
     status?: true
     peopleCount?: true
-    assignedVolunteerId?: true
-    escalationLevel?: true
     createdAt?: true
     updatedAt?: true
+    assignedVolunteerId?: true
+    escalationLevel?: true
+    phone?: true
   }
 
   export type HelpRequestMaxAggregateInputType = {
     id?: true
     userId?: true
-    phone?: true
     type?: true
     description?: true
     location?: true
@@ -17395,16 +17394,16 @@ export namespace Prisma {
     priority?: true
     status?: true
     peopleCount?: true
-    assignedVolunteerId?: true
-    escalationLevel?: true
     createdAt?: true
     updatedAt?: true
+    assignedVolunteerId?: true
+    escalationLevel?: true
+    phone?: true
   }
 
   export type HelpRequestCountAggregateInputType = {
     id?: true
     userId?: true
-    phone?: true
     type?: true
     description?: true
     location?: true
@@ -17413,10 +17412,11 @@ export namespace Prisma {
     priority?: true
     status?: true
     peopleCount?: true
-    assignedVolunteerId?: true
-    escalationLevel?: true
     createdAt?: true
     updatedAt?: true
+    assignedVolunteerId?: true
+    escalationLevel?: true
+    phone?: true
     _all?: true
   }
 
@@ -17509,7 +17509,6 @@ export namespace Prisma {
   export type HelpRequestGroupByOutputType = {
     id: string
     userId: string | null
-    phone: string | null
     type: string
     description: string
     location: string
@@ -17518,10 +17517,11 @@ export namespace Prisma {
     priority: $Enums.Severity
     status: $Enums.Status
     peopleCount: number | null
-    assignedVolunteerId: string | null
-    escalationLevel: string
     createdAt: Date
     updatedAt: Date
+    assignedVolunteerId: string | null
+    escalationLevel: string
+    phone: string | null
     _count: HelpRequestCountAggregateOutputType | null
     _avg: HelpRequestAvgAggregateOutputType | null
     _sum: HelpRequestSumAggregateOutputType | null
@@ -17546,7 +17546,6 @@ export namespace Prisma {
   export type HelpRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    phone?: boolean
     type?: boolean
     description?: boolean
     location?: boolean
@@ -17555,20 +17554,20 @@ export namespace Prisma {
     priority?: boolean
     status?: boolean
     peopleCount?: boolean
-    assignedVolunteerId?: boolean
-    escalationLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    assignedVolunteerId?: boolean
+    escalationLevel?: boolean
+    phone?: boolean
     user?: boolean | HelpRequest$userArgs<ExtArgs>
-    verifierActions?: boolean | HelpRequest$verifierActionsArgs<ExtArgs>
     escalations?: boolean | HelpRequest$escalationsArgs<ExtArgs>
+    verifierActions?: boolean | HelpRequest$verifierActionsArgs<ExtArgs>
     _count?: boolean | HelpRequestCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["helpRequest"]>
 
   export type HelpRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    phone?: boolean
     type?: boolean
     description?: boolean
     location?: boolean
@@ -17577,17 +17576,17 @@ export namespace Prisma {
     priority?: boolean
     status?: boolean
     peopleCount?: boolean
-    assignedVolunteerId?: boolean
-    escalationLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    assignedVolunteerId?: boolean
+    escalationLevel?: boolean
+    phone?: boolean
     user?: boolean | HelpRequest$userArgs<ExtArgs>
   }, ExtArgs["result"]["helpRequest"]>
 
   export type HelpRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    phone?: boolean
     type?: boolean
     description?: boolean
     location?: boolean
@@ -17596,17 +17595,17 @@ export namespace Prisma {
     priority?: boolean
     status?: boolean
     peopleCount?: boolean
-    assignedVolunteerId?: boolean
-    escalationLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    assignedVolunteerId?: boolean
+    escalationLevel?: boolean
+    phone?: boolean
     user?: boolean | HelpRequest$userArgs<ExtArgs>
   }, ExtArgs["result"]["helpRequest"]>
 
   export type HelpRequestSelectScalar = {
     id?: boolean
     userId?: boolean
-    phone?: boolean
     type?: boolean
     description?: boolean
     location?: boolean
@@ -17615,17 +17614,18 @@ export namespace Prisma {
     priority?: boolean
     status?: boolean
     peopleCount?: boolean
-    assignedVolunteerId?: boolean
-    escalationLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    assignedVolunteerId?: boolean
+    escalationLevel?: boolean
+    phone?: boolean
   }
 
-  export type HelpRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "phone" | "type" | "description" | "location" | "latitude" | "longitude" | "priority" | "status" | "peopleCount" | "assignedVolunteerId" | "escalationLevel" | "createdAt" | "updatedAt", ExtArgs["result"]["helpRequest"]>
+  export type HelpRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "description" | "location" | "latitude" | "longitude" | "priority" | "status" | "peopleCount" | "createdAt" | "updatedAt" | "assignedVolunteerId" | "escalationLevel" | "phone", ExtArgs["result"]["helpRequest"]>
   export type HelpRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | HelpRequest$userArgs<ExtArgs>
-    verifierActions?: boolean | HelpRequest$verifierActionsArgs<ExtArgs>
     escalations?: boolean | HelpRequest$escalationsArgs<ExtArgs>
+    verifierActions?: boolean | HelpRequest$verifierActionsArgs<ExtArgs>
     _count?: boolean | HelpRequestCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HelpRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17639,13 +17639,12 @@ export namespace Prisma {
     name: "HelpRequest"
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
-      verifierActions: Prisma.$VerifierActionPayload<ExtArgs>[]
       escalations: Prisma.$HelpRequestEscalationPayload<ExtArgs>[]
+      verifierActions: Prisma.$VerifierActionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string | null
-      phone: string | null
       type: string
       description: string
       location: string
@@ -17654,10 +17653,11 @@ export namespace Prisma {
       priority: $Enums.Severity
       status: $Enums.Status
       peopleCount: number | null
-      assignedVolunteerId: string | null
-      escalationLevel: string
       createdAt: Date
       updatedAt: Date
+      assignedVolunteerId: string | null
+      escalationLevel: string
+      phone: string | null
     }, ExtArgs["result"]["helpRequest"]>
     composites: {}
   }
@@ -18053,8 +18053,8 @@ export namespace Prisma {
   export interface Prisma__HelpRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends HelpRequest$userArgs<ExtArgs> = {}>(args?: Subset<T, HelpRequest$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
-    verifierActions<T extends HelpRequest$verifierActionsArgs<ExtArgs> = {}>(args?: Subset<T, HelpRequest$verifierActionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerifierActionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     escalations<T extends HelpRequest$escalationsArgs<ExtArgs> = {}>(args?: Subset<T, HelpRequest$escalationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HelpRequestEscalationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    verifierActions<T extends HelpRequest$verifierActionsArgs<ExtArgs> = {}>(args?: Subset<T, HelpRequest$verifierActionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerifierActionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18086,7 +18086,6 @@ export namespace Prisma {
   interface HelpRequestFieldRefs {
     readonly id: FieldRef<"HelpRequest", 'String'>
     readonly userId: FieldRef<"HelpRequest", 'String'>
-    readonly phone: FieldRef<"HelpRequest", 'String'>
     readonly type: FieldRef<"HelpRequest", 'String'>
     readonly description: FieldRef<"HelpRequest", 'String'>
     readonly location: FieldRef<"HelpRequest", 'String'>
@@ -18095,10 +18094,11 @@ export namespace Prisma {
     readonly priority: FieldRef<"HelpRequest", 'Severity'>
     readonly status: FieldRef<"HelpRequest", 'Status'>
     readonly peopleCount: FieldRef<"HelpRequest", 'Int'>
-    readonly assignedVolunteerId: FieldRef<"HelpRequest", 'String'>
-    readonly escalationLevel: FieldRef<"HelpRequest", 'String'>
     readonly createdAt: FieldRef<"HelpRequest", 'DateTime'>
     readonly updatedAt: FieldRef<"HelpRequest", 'DateTime'>
+    readonly assignedVolunteerId: FieldRef<"HelpRequest", 'String'>
+    readonly escalationLevel: FieldRef<"HelpRequest", 'String'>
+    readonly phone: FieldRef<"HelpRequest", 'String'>
   }
     
 
@@ -18514,30 +18514,6 @@ export namespace Prisma {
   }
 
   /**
-   * HelpRequest.verifierActions
-   */
-  export type HelpRequest$verifierActionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VerifierAction
-     */
-    select?: VerifierActionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the VerifierAction
-     */
-    omit?: VerifierActionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VerifierActionInclude<ExtArgs> | null
-    where?: VerifierActionWhereInput
-    orderBy?: VerifierActionOrderByWithRelationInput | VerifierActionOrderByWithRelationInput[]
-    cursor?: VerifierActionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VerifierActionScalarFieldEnum | VerifierActionScalarFieldEnum[]
-  }
-
-  /**
    * HelpRequest.escalations
    */
   export type HelpRequest$escalationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18559,6 +18535,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: HelpRequestEscalationScalarFieldEnum | HelpRequestEscalationScalarFieldEnum[]
+  }
+
+  /**
+   * HelpRequest.verifierActions
+   */
+  export type HelpRequest$verifierActionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerifierAction
+     */
+    select?: VerifierActionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerifierAction
+     */
+    omit?: VerifierActionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VerifierActionInclude<ExtArgs> | null
+    where?: VerifierActionWhereInput
+    orderBy?: VerifierActionOrderByWithRelationInput | VerifierActionOrderByWithRelationInput[]
+    cursor?: VerifierActionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VerifierActionScalarFieldEnum | VerifierActionScalarFieldEnum[]
   }
 
   /**
@@ -20740,61 +20740,61 @@ export namespace Prisma {
   export type MissingPersonMinAggregateOutputType = {
     id: string | null
     name: string | null
-    nic: string | null
     age: number | null
-    gender: string | null
     description: string | null
     lastSeen: string | null
     photo: string | null
     reportedBy: string | null
-    contactName: string | null
-    contactPhone: string | null
     status: string | null
-    isUnidentified: boolean | null
-    reunificationStatus: string | null
-    reunificationNotes: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    nic: string | null
+    contactName: string | null
+    contactPhone: string | null
+    gender: string | null
+    isUnidentified: boolean | null
+    reunificationNotes: string | null
+    reunificationStatus: string | null
   }
 
   export type MissingPersonMaxAggregateOutputType = {
     id: string | null
     name: string | null
-    nic: string | null
     age: number | null
-    gender: string | null
     description: string | null
     lastSeen: string | null
     photo: string | null
     reportedBy: string | null
-    contactName: string | null
-    contactPhone: string | null
     status: string | null
-    isUnidentified: boolean | null
-    reunificationStatus: string | null
-    reunificationNotes: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    nic: string | null
+    contactName: string | null
+    contactPhone: string | null
+    gender: string | null
+    isUnidentified: boolean | null
+    reunificationNotes: string | null
+    reunificationStatus: string | null
   }
 
   export type MissingPersonCountAggregateOutputType = {
     id: number
     name: number
-    nic: number
     age: number
-    gender: number
     description: number
     lastSeen: number
     photo: number
     reportedBy: number
-    contactName: number
-    contactPhone: number
     status: number
-    isUnidentified: number
-    reunificationStatus: number
-    reunificationNotes: number
     createdAt: number
     updatedAt: number
+    nic: number
+    contactName: number
+    contactPhone: number
+    gender: number
+    isUnidentified: number
+    reunificationNotes: number
+    reunificationStatus: number
     _all: number
   }
 
@@ -20810,61 +20810,61 @@ export namespace Prisma {
   export type MissingPersonMinAggregateInputType = {
     id?: true
     name?: true
-    nic?: true
     age?: true
-    gender?: true
     description?: true
     lastSeen?: true
     photo?: true
     reportedBy?: true
-    contactName?: true
-    contactPhone?: true
     status?: true
-    isUnidentified?: true
-    reunificationStatus?: true
-    reunificationNotes?: true
     createdAt?: true
     updatedAt?: true
+    nic?: true
+    contactName?: true
+    contactPhone?: true
+    gender?: true
+    isUnidentified?: true
+    reunificationNotes?: true
+    reunificationStatus?: true
   }
 
   export type MissingPersonMaxAggregateInputType = {
     id?: true
     name?: true
-    nic?: true
     age?: true
-    gender?: true
     description?: true
     lastSeen?: true
     photo?: true
     reportedBy?: true
-    contactName?: true
-    contactPhone?: true
     status?: true
-    isUnidentified?: true
-    reunificationStatus?: true
-    reunificationNotes?: true
     createdAt?: true
     updatedAt?: true
+    nic?: true
+    contactName?: true
+    contactPhone?: true
+    gender?: true
+    isUnidentified?: true
+    reunificationNotes?: true
+    reunificationStatus?: true
   }
 
   export type MissingPersonCountAggregateInputType = {
     id?: true
     name?: true
-    nic?: true
     age?: true
-    gender?: true
     description?: true
     lastSeen?: true
     photo?: true
     reportedBy?: true
-    contactName?: true
-    contactPhone?: true
     status?: true
-    isUnidentified?: true
-    reunificationStatus?: true
-    reunificationNotes?: true
     createdAt?: true
     updatedAt?: true
+    nic?: true
+    contactName?: true
+    contactPhone?: true
+    gender?: true
+    isUnidentified?: true
+    reunificationNotes?: true
+    reunificationStatus?: true
     _all?: true
   }
 
@@ -20957,21 +20957,21 @@ export namespace Prisma {
   export type MissingPersonGroupByOutputType = {
     id: string
     name: string
-    nic: string | null
     age: number | null
-    gender: string | null
     description: string
     lastSeen: string
     photo: string | null
     reportedBy: string | null
-    contactName: string | null
-    contactPhone: string | null
     status: string
-    isUnidentified: boolean
-    reunificationStatus: string
-    reunificationNotes: string | null
     createdAt: Date
     updatedAt: Date
+    nic: string | null
+    contactName: string | null
+    contactPhone: string | null
+    gender: string | null
+    isUnidentified: boolean
+    reunificationNotes: string | null
+    reunificationStatus: string
     _count: MissingPersonCountAggregateOutputType | null
     _avg: MissingPersonAvgAggregateOutputType | null
     _sum: MissingPersonSumAggregateOutputType | null
@@ -20996,84 +20996,84 @@ export namespace Prisma {
   export type MissingPersonSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    nic?: boolean
     age?: boolean
-    gender?: boolean
     description?: boolean
     lastSeen?: boolean
     photo?: boolean
     reportedBy?: boolean
-    contactName?: boolean
-    contactPhone?: boolean
     status?: boolean
-    isUnidentified?: boolean
-    reunificationStatus?: boolean
-    reunificationNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    nic?: boolean
+    contactName?: boolean
+    contactPhone?: boolean
+    gender?: boolean
+    isUnidentified?: boolean
+    reunificationNotes?: boolean
+    reunificationStatus?: boolean
   }, ExtArgs["result"]["missingPerson"]>
 
   export type MissingPersonSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    nic?: boolean
     age?: boolean
-    gender?: boolean
     description?: boolean
     lastSeen?: boolean
     photo?: boolean
     reportedBy?: boolean
-    contactName?: boolean
-    contactPhone?: boolean
     status?: boolean
-    isUnidentified?: boolean
-    reunificationStatus?: boolean
-    reunificationNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    nic?: boolean
+    contactName?: boolean
+    contactPhone?: boolean
+    gender?: boolean
+    isUnidentified?: boolean
+    reunificationNotes?: boolean
+    reunificationStatus?: boolean
   }, ExtArgs["result"]["missingPerson"]>
 
   export type MissingPersonSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    nic?: boolean
     age?: boolean
-    gender?: boolean
     description?: boolean
     lastSeen?: boolean
     photo?: boolean
     reportedBy?: boolean
-    contactName?: boolean
-    contactPhone?: boolean
     status?: boolean
-    isUnidentified?: boolean
-    reunificationStatus?: boolean
-    reunificationNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    nic?: boolean
+    contactName?: boolean
+    contactPhone?: boolean
+    gender?: boolean
+    isUnidentified?: boolean
+    reunificationNotes?: boolean
+    reunificationStatus?: boolean
   }, ExtArgs["result"]["missingPerson"]>
 
   export type MissingPersonSelectScalar = {
     id?: boolean
     name?: boolean
-    nic?: boolean
     age?: boolean
-    gender?: boolean
     description?: boolean
     lastSeen?: boolean
     photo?: boolean
     reportedBy?: boolean
-    contactName?: boolean
-    contactPhone?: boolean
     status?: boolean
-    isUnidentified?: boolean
-    reunificationStatus?: boolean
-    reunificationNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    nic?: boolean
+    contactName?: boolean
+    contactPhone?: boolean
+    gender?: boolean
+    isUnidentified?: boolean
+    reunificationNotes?: boolean
+    reunificationStatus?: boolean
   }
 
-  export type MissingPersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nic" | "age" | "gender" | "description" | "lastSeen" | "photo" | "reportedBy" | "contactName" | "contactPhone" | "status" | "isUnidentified" | "reunificationStatus" | "reunificationNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["missingPerson"]>
+  export type MissingPersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "age" | "description" | "lastSeen" | "photo" | "reportedBy" | "status" | "createdAt" | "updatedAt" | "nic" | "contactName" | "contactPhone" | "gender" | "isUnidentified" | "reunificationNotes" | "reunificationStatus", ExtArgs["result"]["missingPerson"]>
 
   export type $MissingPersonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MissingPerson"
@@ -21081,21 +21081,21 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      nic: string | null
       age: number | null
-      gender: string | null
       description: string
       lastSeen: string
       photo: string | null
       reportedBy: string | null
-      contactName: string | null
-      contactPhone: string | null
       status: string
-      isUnidentified: boolean
-      reunificationStatus: string
-      reunificationNotes: string | null
       createdAt: Date
       updatedAt: Date
+      nic: string | null
+      contactName: string | null
+      contactPhone: string | null
+      gender: string | null
+      isUnidentified: boolean
+      reunificationNotes: string | null
+      reunificationStatus: string
     }, ExtArgs["result"]["missingPerson"]>
     composites: {}
   }
@@ -21521,21 +21521,21 @@ export namespace Prisma {
   interface MissingPersonFieldRefs {
     readonly id: FieldRef<"MissingPerson", 'String'>
     readonly name: FieldRef<"MissingPerson", 'String'>
-    readonly nic: FieldRef<"MissingPerson", 'String'>
     readonly age: FieldRef<"MissingPerson", 'Int'>
-    readonly gender: FieldRef<"MissingPerson", 'String'>
     readonly description: FieldRef<"MissingPerson", 'String'>
     readonly lastSeen: FieldRef<"MissingPerson", 'String'>
     readonly photo: FieldRef<"MissingPerson", 'String'>
     readonly reportedBy: FieldRef<"MissingPerson", 'String'>
-    readonly contactName: FieldRef<"MissingPerson", 'String'>
-    readonly contactPhone: FieldRef<"MissingPerson", 'String'>
     readonly status: FieldRef<"MissingPerson", 'String'>
-    readonly isUnidentified: FieldRef<"MissingPerson", 'Boolean'>
-    readonly reunificationStatus: FieldRef<"MissingPerson", 'String'>
-    readonly reunificationNotes: FieldRef<"MissingPerson", 'String'>
     readonly createdAt: FieldRef<"MissingPerson", 'DateTime'>
     readonly updatedAt: FieldRef<"MissingPerson", 'DateTime'>
+    readonly nic: FieldRef<"MissingPerson", 'String'>
+    readonly contactName: FieldRef<"MissingPerson", 'String'>
+    readonly contactPhone: FieldRef<"MissingPerson", 'String'>
+    readonly gender: FieldRef<"MissingPerson", 'String'>
+    readonly isUnidentified: FieldRef<"MissingPerson", 'Boolean'>
+    readonly reunificationNotes: FieldRef<"MissingPerson", 'String'>
+    readonly reunificationStatus: FieldRef<"MissingPerson", 'String'>
   }
     
 
@@ -28272,12 +28272,12 @@ export namespace Prisma {
     maxUsage: number | null
     issuedAt: Date | null
     expiresAt: Date | null
-    isHouseholdBundle: boolean | null
-    householdId: string | null
-    donorId: string | null
-    fraudRiskScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    donorId: string | null
+    fraudRiskScore: number | null
+    householdId: string | null
+    isHouseholdBundle: boolean | null
   }
 
   export type ReliefTokenMaxAggregateOutputType = {
@@ -28291,12 +28291,12 @@ export namespace Prisma {
     maxUsage: number | null
     issuedAt: Date | null
     expiresAt: Date | null
-    isHouseholdBundle: boolean | null
-    householdId: string | null
-    donorId: string | null
-    fraudRiskScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    donorId: string | null
+    fraudRiskScore: number | null
+    householdId: string | null
+    isHouseholdBundle: boolean | null
   }
 
   export type ReliefTokenCountAggregateOutputType = {
@@ -28310,13 +28310,13 @@ export namespace Prisma {
     maxUsage: number
     issuedAt: number
     expiresAt: number
-    categories: number
-    isHouseholdBundle: number
-    householdId: number
-    donorId: number
-    fraudRiskScore: number
     createdAt: number
     updatedAt: number
+    categories: number
+    donorId: number
+    fraudRiskScore: number
+    householdId: number
+    isHouseholdBundle: number
     _all: number
   }
 
@@ -28344,12 +28344,12 @@ export namespace Prisma {
     maxUsage?: true
     issuedAt?: true
     expiresAt?: true
-    isHouseholdBundle?: true
-    householdId?: true
-    donorId?: true
-    fraudRiskScore?: true
     createdAt?: true
     updatedAt?: true
+    donorId?: true
+    fraudRiskScore?: true
+    householdId?: true
+    isHouseholdBundle?: true
   }
 
   export type ReliefTokenMaxAggregateInputType = {
@@ -28363,12 +28363,12 @@ export namespace Prisma {
     maxUsage?: true
     issuedAt?: true
     expiresAt?: true
-    isHouseholdBundle?: true
-    householdId?: true
-    donorId?: true
-    fraudRiskScore?: true
     createdAt?: true
     updatedAt?: true
+    donorId?: true
+    fraudRiskScore?: true
+    householdId?: true
+    isHouseholdBundle?: true
   }
 
   export type ReliefTokenCountAggregateInputType = {
@@ -28382,13 +28382,13 @@ export namespace Prisma {
     maxUsage?: true
     issuedAt?: true
     expiresAt?: true
-    categories?: true
-    isHouseholdBundle?: true
-    householdId?: true
-    donorId?: true
-    fraudRiskScore?: true
     createdAt?: true
     updatedAt?: true
+    categories?: true
+    donorId?: true
+    fraudRiskScore?: true
+    householdId?: true
+    isHouseholdBundle?: true
     _all?: true
   }
 
@@ -28489,13 +28489,13 @@ export namespace Prisma {
     maxUsage: number
     issuedAt: Date
     expiresAt: Date | null
-    categories: $Enums.TokenCategory[]
-    isHouseholdBundle: boolean
-    householdId: string | null
-    donorId: string | null
-    fraudRiskScore: number
     createdAt: Date
     updatedAt: Date
+    categories: $Enums.TokenCategory[]
+    donorId: string | null
+    fraudRiskScore: number
+    householdId: string | null
+    isHouseholdBundle: boolean
     _count: ReliefTokenCountAggregateOutputType | null
     _avg: ReliefTokenAvgAggregateOutputType | null
     _sum: ReliefTokenSumAggregateOutputType | null
@@ -28528,16 +28528,16 @@ export namespace Prisma {
     maxUsage?: boolean
     issuedAt?: boolean
     expiresAt?: boolean
-    categories?: boolean
-    isHouseholdBundle?: boolean
-    householdId?: boolean
-    donorId?: boolean
-    fraudRiskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    categories?: boolean
+    donorId?: boolean
+    fraudRiskScore?: boolean
+    householdId?: boolean
+    isHouseholdBundle?: boolean
+    donor?: boolean | ReliefToken$donorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     claims?: boolean | ReliefToken$claimsArgs<ExtArgs>
-    donor?: boolean | ReliefToken$donorArgs<ExtArgs>
     _count?: boolean | ReliefTokenCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["reliefToken"]>
 
@@ -28552,15 +28552,15 @@ export namespace Prisma {
     maxUsage?: boolean
     issuedAt?: boolean
     expiresAt?: boolean
-    categories?: boolean
-    isHouseholdBundle?: boolean
-    householdId?: boolean
-    donorId?: boolean
-    fraudRiskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    categories?: boolean
+    donorId?: boolean
+    fraudRiskScore?: boolean
+    householdId?: boolean
+    isHouseholdBundle?: boolean
     donor?: boolean | ReliefToken$donorArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["reliefToken"]>
 
   export type ReliefTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28574,15 +28574,15 @@ export namespace Prisma {
     maxUsage?: boolean
     issuedAt?: boolean
     expiresAt?: boolean
-    categories?: boolean
-    isHouseholdBundle?: boolean
-    householdId?: boolean
-    donorId?: boolean
-    fraudRiskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    categories?: boolean
+    donorId?: boolean
+    fraudRiskScore?: boolean
+    householdId?: boolean
+    isHouseholdBundle?: boolean
     donor?: boolean | ReliefToken$donorArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["reliefToken"]>
 
   export type ReliefTokenSelectScalar = {
@@ -28596,37 +28596,37 @@ export namespace Prisma {
     maxUsage?: boolean
     issuedAt?: boolean
     expiresAt?: boolean
-    categories?: boolean
-    isHouseholdBundle?: boolean
-    householdId?: boolean
-    donorId?: boolean
-    fraudRiskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    categories?: boolean
+    donorId?: boolean
+    fraudRiskScore?: boolean
+    householdId?: boolean
+    isHouseholdBundle?: boolean
   }
 
-  export type ReliefTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "qrCodeData" | "userId" | "campId" | "status" | "usageCount" | "maxUsage" | "issuedAt" | "expiresAt" | "categories" | "isHouseholdBundle" | "householdId" | "donorId" | "fraudRiskScore" | "createdAt" | "updatedAt", ExtArgs["result"]["reliefToken"]>
+  export type ReliefTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "qrCodeData" | "userId" | "campId" | "status" | "usageCount" | "maxUsage" | "issuedAt" | "expiresAt" | "createdAt" | "updatedAt" | "categories" | "donorId" | "fraudRiskScore" | "householdId" | "isHouseholdBundle", ExtArgs["result"]["reliefToken"]>
   export type ReliefTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | ReliefToken$donorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     claims?: boolean | ReliefToken$claimsArgs<ExtArgs>
-    donor?: boolean | ReliefToken$donorArgs<ExtArgs>
     _count?: boolean | ReliefTokenCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ReliefTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     donor?: boolean | ReliefToken$donorArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ReliefTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     donor?: boolean | ReliefToken$donorArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $ReliefTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ReliefToken"
     objects: {
+      donor: Prisma.$DonorCampaignPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       claims: Prisma.$ReliefTokenClaimPayload<ExtArgs>[]
-      donor: Prisma.$DonorCampaignPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -28639,13 +28639,13 @@ export namespace Prisma {
       maxUsage: number
       issuedAt: Date
       expiresAt: Date | null
-      categories: $Enums.TokenCategory[]
-      isHouseholdBundle: boolean
-      householdId: string | null
-      donorId: string | null
-      fraudRiskScore: number
       createdAt: Date
       updatedAt: Date
+      categories: $Enums.TokenCategory[]
+      donorId: string | null
+      fraudRiskScore: number
+      householdId: string | null
+      isHouseholdBundle: boolean
     }, ExtArgs["result"]["reliefToken"]>
     composites: {}
   }
@@ -29040,9 +29040,9 @@ export namespace Prisma {
    */
   export interface Prisma__ReliefTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    donor<T extends ReliefToken$donorArgs<ExtArgs> = {}>(args?: Subset<T, ReliefToken$donorArgs<ExtArgs>>): Prisma__DonorCampaignClient<$Result.GetResult<Prisma.$DonorCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     claims<T extends ReliefToken$claimsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefToken$claimsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReliefTokenClaimPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    donor<T extends ReliefToken$donorArgs<ExtArgs> = {}>(args?: Subset<T, ReliefToken$donorArgs<ExtArgs>>): Prisma__DonorCampaignClient<$Result.GetResult<Prisma.$DonorCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29082,13 +29082,13 @@ export namespace Prisma {
     readonly maxUsage: FieldRef<"ReliefToken", 'Int'>
     readonly issuedAt: FieldRef<"ReliefToken", 'DateTime'>
     readonly expiresAt: FieldRef<"ReliefToken", 'DateTime'>
-    readonly categories: FieldRef<"ReliefToken", 'TokenCategory[]'>
-    readonly isHouseholdBundle: FieldRef<"ReliefToken", 'Boolean'>
-    readonly householdId: FieldRef<"ReliefToken", 'String'>
-    readonly donorId: FieldRef<"ReliefToken", 'String'>
-    readonly fraudRiskScore: FieldRef<"ReliefToken", 'Float'>
     readonly createdAt: FieldRef<"ReliefToken", 'DateTime'>
     readonly updatedAt: FieldRef<"ReliefToken", 'DateTime'>
+    readonly categories: FieldRef<"ReliefToken", 'TokenCategory[]'>
+    readonly donorId: FieldRef<"ReliefToken", 'String'>
+    readonly fraudRiskScore: FieldRef<"ReliefToken", 'Float'>
+    readonly householdId: FieldRef<"ReliefToken", 'String'>
+    readonly isHouseholdBundle: FieldRef<"ReliefToken", 'Boolean'>
   }
     
 
@@ -29485,6 +29485,25 @@ export namespace Prisma {
   }
 
   /**
+   * ReliefToken.donor
+   */
+  export type ReliefToken$donorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DonorCampaign
+     */
+    select?: DonorCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DonorCampaign
+     */
+    omit?: DonorCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonorCampaignInclude<ExtArgs> | null
+    where?: DonorCampaignWhereInput
+  }
+
+  /**
    * ReliefToken.claims
    */
   export type ReliefToken$claimsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -29506,25 +29525,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReliefTokenClaimScalarFieldEnum | ReliefTokenClaimScalarFieldEnum[]
-  }
-
-  /**
-   * ReliefToken.donor
-   */
-  export type ReliefToken$donorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DonorCampaign
-     */
-    select?: DonorCampaignSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DonorCampaign
-     */
-    omit?: DonorCampaignOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DonorCampaignInclude<ExtArgs> | null
-    where?: DonorCampaignWhereInput
   }
 
   /**
@@ -30742,8 +30742,8 @@ export namespace Prisma {
     affectedPersons: number | null
     estimatedLoss: number | null
     aiEstimatedCost: number | null
-    familyVulnerabilityScore: number | null
     compensationEligibilityScore: number | null
+    familyVulnerabilityScore: number | null
   }
 
   export type DamageAssessmentSumAggregateOutputType = {
@@ -30752,8 +30752,8 @@ export namespace Prisma {
     affectedPersons: number | null
     estimatedLoss: number | null
     aiEstimatedCost: number | null
-    familyVulnerabilityScore: number | null
     compensationEligibilityScore: number | null
+    familyVulnerabilityScore: number | null
   }
 
   export type DamageAssessmentMinAggregateOutputType = {
@@ -30770,19 +30770,19 @@ export namespace Prisma {
     roadDamage: $Enums.DamageLevel | null
     affectedPersons: number | null
     estimatedLoss: number | null
-    aiEstimatedDamage: string | null
-    aiEstimatedCost: number | null
-    propertyOwnershipStatus: string | null
-    familyVulnerabilityScore: number | null
-    incomeBracket: string | null
-    compensationEligibilityScore: number | null
-    compensationEligible: boolean | null
     status: $Enums.DamageStatus | null
     notes: string | null
-    reviewerNotes: string | null
     verifiedById: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    aiEstimatedCost: number | null
+    aiEstimatedDamage: string | null
+    compensationEligibilityScore: number | null
+    compensationEligible: boolean | null
+    familyVulnerabilityScore: number | null
+    incomeBracket: string | null
+    propertyOwnershipStatus: string | null
+    reviewerNotes: string | null
   }
 
   export type DamageAssessmentMaxAggregateOutputType = {
@@ -30799,19 +30799,19 @@ export namespace Prisma {
     roadDamage: $Enums.DamageLevel | null
     affectedPersons: number | null
     estimatedLoss: number | null
-    aiEstimatedDamage: string | null
-    aiEstimatedCost: number | null
-    propertyOwnershipStatus: string | null
-    familyVulnerabilityScore: number | null
-    incomeBracket: string | null
-    compensationEligibilityScore: number | null
-    compensationEligible: boolean | null
     status: $Enums.DamageStatus | null
     notes: string | null
-    reviewerNotes: string | null
     verifiedById: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    aiEstimatedCost: number | null
+    aiEstimatedDamage: string | null
+    compensationEligibilityScore: number | null
+    compensationEligible: boolean | null
+    familyVulnerabilityScore: number | null
+    incomeBracket: string | null
+    propertyOwnershipStatus: string | null
+    reviewerNotes: string | null
   }
 
   export type DamageAssessmentCountAggregateOutputType = {
@@ -30821,7 +30821,6 @@ export namespace Prisma {
     location: number
     latitude: number
     longitude: number
-    polygonData: number
     category: number
     structuralDamage: number
     cropDamage: number
@@ -30829,20 +30828,21 @@ export namespace Prisma {
     roadDamage: number
     affectedPersons: number
     estimatedLoss: number
-    aiEstimatedDamage: number
-    aiEstimatedCost: number
-    propertyOwnershipStatus: number
-    familyVulnerabilityScore: number
-    incomeBracket: number
-    compensationEligibilityScore: number
-    compensationEligible: number
     mediaUrls: number
     status: number
     notes: number
-    reviewerNotes: number
     verifiedById: number
     createdAt: number
     updatedAt: number
+    aiEstimatedCost: number
+    aiEstimatedDamage: number
+    compensationEligibilityScore: number
+    compensationEligible: number
+    familyVulnerabilityScore: number
+    incomeBracket: number
+    polygonData: number
+    propertyOwnershipStatus: number
+    reviewerNotes: number
     _all: number
   }
 
@@ -30853,8 +30853,8 @@ export namespace Prisma {
     affectedPersons?: true
     estimatedLoss?: true
     aiEstimatedCost?: true
-    familyVulnerabilityScore?: true
     compensationEligibilityScore?: true
+    familyVulnerabilityScore?: true
   }
 
   export type DamageAssessmentSumAggregateInputType = {
@@ -30863,8 +30863,8 @@ export namespace Prisma {
     affectedPersons?: true
     estimatedLoss?: true
     aiEstimatedCost?: true
-    familyVulnerabilityScore?: true
     compensationEligibilityScore?: true
+    familyVulnerabilityScore?: true
   }
 
   export type DamageAssessmentMinAggregateInputType = {
@@ -30881,19 +30881,19 @@ export namespace Prisma {
     roadDamage?: true
     affectedPersons?: true
     estimatedLoss?: true
-    aiEstimatedDamage?: true
-    aiEstimatedCost?: true
-    propertyOwnershipStatus?: true
-    familyVulnerabilityScore?: true
-    incomeBracket?: true
-    compensationEligibilityScore?: true
-    compensationEligible?: true
     status?: true
     notes?: true
-    reviewerNotes?: true
     verifiedById?: true
     createdAt?: true
     updatedAt?: true
+    aiEstimatedCost?: true
+    aiEstimatedDamage?: true
+    compensationEligibilityScore?: true
+    compensationEligible?: true
+    familyVulnerabilityScore?: true
+    incomeBracket?: true
+    propertyOwnershipStatus?: true
+    reviewerNotes?: true
   }
 
   export type DamageAssessmentMaxAggregateInputType = {
@@ -30910,19 +30910,19 @@ export namespace Prisma {
     roadDamage?: true
     affectedPersons?: true
     estimatedLoss?: true
-    aiEstimatedDamage?: true
-    aiEstimatedCost?: true
-    propertyOwnershipStatus?: true
-    familyVulnerabilityScore?: true
-    incomeBracket?: true
-    compensationEligibilityScore?: true
-    compensationEligible?: true
     status?: true
     notes?: true
-    reviewerNotes?: true
     verifiedById?: true
     createdAt?: true
     updatedAt?: true
+    aiEstimatedCost?: true
+    aiEstimatedDamage?: true
+    compensationEligibilityScore?: true
+    compensationEligible?: true
+    familyVulnerabilityScore?: true
+    incomeBracket?: true
+    propertyOwnershipStatus?: true
+    reviewerNotes?: true
   }
 
   export type DamageAssessmentCountAggregateInputType = {
@@ -30932,7 +30932,6 @@ export namespace Prisma {
     location?: true
     latitude?: true
     longitude?: true
-    polygonData?: true
     category?: true
     structuralDamage?: true
     cropDamage?: true
@@ -30940,20 +30939,21 @@ export namespace Prisma {
     roadDamage?: true
     affectedPersons?: true
     estimatedLoss?: true
-    aiEstimatedDamage?: true
-    aiEstimatedCost?: true
-    propertyOwnershipStatus?: true
-    familyVulnerabilityScore?: true
-    incomeBracket?: true
-    compensationEligibilityScore?: true
-    compensationEligible?: true
     mediaUrls?: true
     status?: true
     notes?: true
-    reviewerNotes?: true
     verifiedById?: true
     createdAt?: true
     updatedAt?: true
+    aiEstimatedCost?: true
+    aiEstimatedDamage?: true
+    compensationEligibilityScore?: true
+    compensationEligible?: true
+    familyVulnerabilityScore?: true
+    incomeBracket?: true
+    polygonData?: true
+    propertyOwnershipStatus?: true
+    reviewerNotes?: true
     _all?: true
   }
 
@@ -31050,7 +31050,6 @@ export namespace Prisma {
     location: string
     latitude: number | null
     longitude: number | null
-    polygonData: JsonValue | null
     category: $Enums.DamageCategory
     structuralDamage: $Enums.DamageLevel
     cropDamage: $Enums.DamageLevel
@@ -31058,20 +31057,21 @@ export namespace Prisma {
     roadDamage: $Enums.DamageLevel
     affectedPersons: number | null
     estimatedLoss: number | null
-    aiEstimatedDamage: string | null
-    aiEstimatedCost: number | null
-    propertyOwnershipStatus: string | null
-    familyVulnerabilityScore: number | null
-    incomeBracket: string | null
-    compensationEligibilityScore: number | null
-    compensationEligible: boolean
     mediaUrls: string[]
     status: $Enums.DamageStatus
     notes: string | null
-    reviewerNotes: string | null
     verifiedById: string | null
     createdAt: Date
     updatedAt: Date
+    aiEstimatedCost: number | null
+    aiEstimatedDamage: string | null
+    compensationEligibilityScore: number | null
+    compensationEligible: boolean
+    familyVulnerabilityScore: number | null
+    incomeBracket: string | null
+    polygonData: JsonValue | null
+    propertyOwnershipStatus: string | null
+    reviewerNotes: string | null
     _count: DamageAssessmentCountAggregateOutputType | null
     _avg: DamageAssessmentAvgAggregateOutputType | null
     _sum: DamageAssessmentSumAggregateOutputType | null
@@ -31100,7 +31100,6 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    polygonData?: boolean
     category?: boolean
     structuralDamage?: boolean
     cropDamage?: boolean
@@ -31108,20 +31107,21 @@ export namespace Prisma {
     roadDamage?: boolean
     affectedPersons?: boolean
     estimatedLoss?: boolean
-    aiEstimatedDamage?: boolean
-    aiEstimatedCost?: boolean
-    propertyOwnershipStatus?: boolean
-    familyVulnerabilityScore?: boolean
-    incomeBracket?: boolean
-    compensationEligibilityScore?: boolean
-    compensationEligible?: boolean
     mediaUrls?: boolean
     status?: boolean
     notes?: boolean
-    reviewerNotes?: boolean
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    aiEstimatedCost?: boolean
+    aiEstimatedDamage?: boolean
+    compensationEligibilityScore?: boolean
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: boolean
+    incomeBracket?: boolean
+    polygonData?: boolean
+    propertyOwnershipStatus?: boolean
+    reviewerNotes?: boolean
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
     reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["damageAssessment"]>
@@ -31133,7 +31133,6 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    polygonData?: boolean
     category?: boolean
     structuralDamage?: boolean
     cropDamage?: boolean
@@ -31141,20 +31140,21 @@ export namespace Prisma {
     roadDamage?: boolean
     affectedPersons?: boolean
     estimatedLoss?: boolean
-    aiEstimatedDamage?: boolean
-    aiEstimatedCost?: boolean
-    propertyOwnershipStatus?: boolean
-    familyVulnerabilityScore?: boolean
-    incomeBracket?: boolean
-    compensationEligibilityScore?: boolean
-    compensationEligible?: boolean
     mediaUrls?: boolean
     status?: boolean
     notes?: boolean
-    reviewerNotes?: boolean
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    aiEstimatedCost?: boolean
+    aiEstimatedDamage?: boolean
+    compensationEligibilityScore?: boolean
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: boolean
+    incomeBracket?: boolean
+    polygonData?: boolean
+    propertyOwnershipStatus?: boolean
+    reviewerNotes?: boolean
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
     reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["damageAssessment"]>
@@ -31166,7 +31166,6 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    polygonData?: boolean
     category?: boolean
     structuralDamage?: boolean
     cropDamage?: boolean
@@ -31174,20 +31173,21 @@ export namespace Prisma {
     roadDamage?: boolean
     affectedPersons?: boolean
     estimatedLoss?: boolean
-    aiEstimatedDamage?: boolean
-    aiEstimatedCost?: boolean
-    propertyOwnershipStatus?: boolean
-    familyVulnerabilityScore?: boolean
-    incomeBracket?: boolean
-    compensationEligibilityScore?: boolean
-    compensationEligible?: boolean
     mediaUrls?: boolean
     status?: boolean
     notes?: boolean
-    reviewerNotes?: boolean
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    aiEstimatedCost?: boolean
+    aiEstimatedDamage?: boolean
+    compensationEligibilityScore?: boolean
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: boolean
+    incomeBracket?: boolean
+    polygonData?: boolean
+    propertyOwnershipStatus?: boolean
+    reviewerNotes?: boolean
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
     reportedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["damageAssessment"]>
@@ -31199,7 +31199,6 @@ export namespace Prisma {
     location?: boolean
     latitude?: boolean
     longitude?: boolean
-    polygonData?: boolean
     category?: boolean
     structuralDamage?: boolean
     cropDamage?: boolean
@@ -31207,23 +31206,24 @@ export namespace Prisma {
     roadDamage?: boolean
     affectedPersons?: boolean
     estimatedLoss?: boolean
-    aiEstimatedDamage?: boolean
-    aiEstimatedCost?: boolean
-    propertyOwnershipStatus?: boolean
-    familyVulnerabilityScore?: boolean
-    incomeBracket?: boolean
-    compensationEligibilityScore?: boolean
-    compensationEligible?: boolean
     mediaUrls?: boolean
     status?: boolean
     notes?: boolean
-    reviewerNotes?: boolean
     verifiedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    aiEstimatedCost?: boolean
+    aiEstimatedDamage?: boolean
+    compensationEligibilityScore?: boolean
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: boolean
+    incomeBracket?: boolean
+    polygonData?: boolean
+    propertyOwnershipStatus?: boolean
+    reviewerNotes?: boolean
   }
 
-  export type DamageAssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reportedById" | "incidentId" | "location" | "latitude" | "longitude" | "polygonData" | "category" | "structuralDamage" | "cropDamage" | "utilityDamage" | "roadDamage" | "affectedPersons" | "estimatedLoss" | "aiEstimatedDamage" | "aiEstimatedCost" | "propertyOwnershipStatus" | "familyVulnerabilityScore" | "incomeBracket" | "compensationEligibilityScore" | "compensationEligible" | "mediaUrls" | "status" | "notes" | "reviewerNotes" | "verifiedById" | "createdAt" | "updatedAt", ExtArgs["result"]["damageAssessment"]>
+  export type DamageAssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reportedById" | "incidentId" | "location" | "latitude" | "longitude" | "category" | "structuralDamage" | "cropDamage" | "utilityDamage" | "roadDamage" | "affectedPersons" | "estimatedLoss" | "mediaUrls" | "status" | "notes" | "verifiedById" | "createdAt" | "updatedAt" | "aiEstimatedCost" | "aiEstimatedDamage" | "compensationEligibilityScore" | "compensationEligible" | "familyVulnerabilityScore" | "incomeBracket" | "polygonData" | "propertyOwnershipStatus" | "reviewerNotes", ExtArgs["result"]["damageAssessment"]>
   export type DamageAssessmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     incident?: boolean | DamageAssessment$incidentArgs<ExtArgs>
     reportedBy?: boolean | UserDefaultArgs<ExtArgs>
@@ -31250,7 +31250,6 @@ export namespace Prisma {
       location: string
       latitude: number | null
       longitude: number | null
-      polygonData: Prisma.JsonValue | null
       category: $Enums.DamageCategory
       structuralDamage: $Enums.DamageLevel
       cropDamage: $Enums.DamageLevel
@@ -31258,20 +31257,21 @@ export namespace Prisma {
       roadDamage: $Enums.DamageLevel
       affectedPersons: number | null
       estimatedLoss: number | null
-      aiEstimatedDamage: string | null
-      aiEstimatedCost: number | null
-      propertyOwnershipStatus: string | null
-      familyVulnerabilityScore: number | null
-      incomeBracket: string | null
-      compensationEligibilityScore: number | null
-      compensationEligible: boolean
       mediaUrls: string[]
       status: $Enums.DamageStatus
       notes: string | null
-      reviewerNotes: string | null
       verifiedById: string | null
       createdAt: Date
       updatedAt: Date
+      aiEstimatedCost: number | null
+      aiEstimatedDamage: string | null
+      compensationEligibilityScore: number | null
+      compensationEligible: boolean
+      familyVulnerabilityScore: number | null
+      incomeBracket: string | null
+      polygonData: Prisma.JsonValue | null
+      propertyOwnershipStatus: string | null
+      reviewerNotes: string | null
     }, ExtArgs["result"]["damageAssessment"]>
     composites: {}
   }
@@ -31703,7 +31703,6 @@ export namespace Prisma {
     readonly location: FieldRef<"DamageAssessment", 'String'>
     readonly latitude: FieldRef<"DamageAssessment", 'Float'>
     readonly longitude: FieldRef<"DamageAssessment", 'Float'>
-    readonly polygonData: FieldRef<"DamageAssessment", 'Json'>
     readonly category: FieldRef<"DamageAssessment", 'DamageCategory'>
     readonly structuralDamage: FieldRef<"DamageAssessment", 'DamageLevel'>
     readonly cropDamage: FieldRef<"DamageAssessment", 'DamageLevel'>
@@ -31711,20 +31710,21 @@ export namespace Prisma {
     readonly roadDamage: FieldRef<"DamageAssessment", 'DamageLevel'>
     readonly affectedPersons: FieldRef<"DamageAssessment", 'Int'>
     readonly estimatedLoss: FieldRef<"DamageAssessment", 'Float'>
-    readonly aiEstimatedDamage: FieldRef<"DamageAssessment", 'String'>
-    readonly aiEstimatedCost: FieldRef<"DamageAssessment", 'Float'>
-    readonly propertyOwnershipStatus: FieldRef<"DamageAssessment", 'String'>
-    readonly familyVulnerabilityScore: FieldRef<"DamageAssessment", 'Int'>
-    readonly incomeBracket: FieldRef<"DamageAssessment", 'String'>
-    readonly compensationEligibilityScore: FieldRef<"DamageAssessment", 'Float'>
-    readonly compensationEligible: FieldRef<"DamageAssessment", 'Boolean'>
     readonly mediaUrls: FieldRef<"DamageAssessment", 'String[]'>
     readonly status: FieldRef<"DamageAssessment", 'DamageStatus'>
     readonly notes: FieldRef<"DamageAssessment", 'String'>
-    readonly reviewerNotes: FieldRef<"DamageAssessment", 'String'>
     readonly verifiedById: FieldRef<"DamageAssessment", 'String'>
     readonly createdAt: FieldRef<"DamageAssessment", 'DateTime'>
     readonly updatedAt: FieldRef<"DamageAssessment", 'DateTime'>
+    readonly aiEstimatedCost: FieldRef<"DamageAssessment", 'Float'>
+    readonly aiEstimatedDamage: FieldRef<"DamageAssessment", 'String'>
+    readonly compensationEligibilityScore: FieldRef<"DamageAssessment", 'Float'>
+    readonly compensationEligible: FieldRef<"DamageAssessment", 'Boolean'>
+    readonly familyVulnerabilityScore: FieldRef<"DamageAssessment", 'Int'>
+    readonly incomeBracket: FieldRef<"DamageAssessment", 'String'>
+    readonly polygonData: FieldRef<"DamageAssessment", 'Json'>
+    readonly propertyOwnershipStatus: FieldRef<"DamageAssessment", 'String'>
+    readonly reviewerNotes: FieldRef<"DamageAssessment", 'String'>
   }
     
 
@@ -34528,10 +34528,10 @@ export namespace Prisma {
     affectedCount: number | null
     assignedToId: string | null
     notes: string | null
-    nextCheckInDate: Date | null
-    checkInStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    checkInStatus: string | null
+    nextCheckInDate: Date | null
   }
 
   export type PsychologicalSupportRequestMaxAggregateOutputType = {
@@ -34546,10 +34546,10 @@ export namespace Prisma {
     affectedCount: number | null
     assignedToId: string | null
     notes: string | null
-    nextCheckInDate: Date | null
-    checkInStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    checkInStatus: string | null
+    nextCheckInDate: Date | null
   }
 
   export type PsychologicalSupportRequestCountAggregateOutputType = {
@@ -34564,10 +34564,10 @@ export namespace Prisma {
     affectedCount: number
     assignedToId: number
     notes: number
-    nextCheckInDate: number
-    checkInStatus: number
     createdAt: number
     updatedAt: number
+    checkInStatus: number
+    nextCheckInDate: number
     _all: number
   }
 
@@ -34592,10 +34592,10 @@ export namespace Prisma {
     affectedCount?: true
     assignedToId?: true
     notes?: true
-    nextCheckInDate?: true
-    checkInStatus?: true
     createdAt?: true
     updatedAt?: true
+    checkInStatus?: true
+    nextCheckInDate?: true
   }
 
   export type PsychologicalSupportRequestMaxAggregateInputType = {
@@ -34610,10 +34610,10 @@ export namespace Prisma {
     affectedCount?: true
     assignedToId?: true
     notes?: true
-    nextCheckInDate?: true
-    checkInStatus?: true
     createdAt?: true
     updatedAt?: true
+    checkInStatus?: true
+    nextCheckInDate?: true
   }
 
   export type PsychologicalSupportRequestCountAggregateInputType = {
@@ -34628,10 +34628,10 @@ export namespace Prisma {
     affectedCount?: true
     assignedToId?: true
     notes?: true
-    nextCheckInDate?: true
-    checkInStatus?: true
     createdAt?: true
     updatedAt?: true
+    checkInStatus?: true
+    nextCheckInDate?: true
     _all?: true
   }
 
@@ -34733,10 +34733,10 @@ export namespace Prisma {
     affectedCount: number | null
     assignedToId: string | null
     notes: string | null
-    nextCheckInDate: Date | null
-    checkInStatus: string | null
     createdAt: Date
     updatedAt: Date
+    checkInStatus: string | null
+    nextCheckInDate: Date | null
     _count: PsychologicalSupportRequestCountAggregateOutputType | null
     _avg: PsychologicalSupportRequestAvgAggregateOutputType | null
     _sum: PsychologicalSupportRequestSumAggregateOutputType | null
@@ -34770,10 +34770,10 @@ export namespace Prisma {
     affectedCount?: boolean
     assignedToId?: boolean
     notes?: boolean
-    nextCheckInDate?: boolean
-    checkInStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    checkInStatus?: boolean
+    nextCheckInDate?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["psychologicalSupportRequest"]>
 
@@ -34789,10 +34789,10 @@ export namespace Prisma {
     affectedCount?: boolean
     assignedToId?: boolean
     notes?: boolean
-    nextCheckInDate?: boolean
-    checkInStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    checkInStatus?: boolean
+    nextCheckInDate?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["psychologicalSupportRequest"]>
 
@@ -34808,10 +34808,10 @@ export namespace Prisma {
     affectedCount?: boolean
     assignedToId?: boolean
     notes?: boolean
-    nextCheckInDate?: boolean
-    checkInStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    checkInStatus?: boolean
+    nextCheckInDate?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["psychologicalSupportRequest"]>
 
@@ -34827,13 +34827,13 @@ export namespace Prisma {
     affectedCount?: boolean
     assignedToId?: boolean
     notes?: boolean
-    nextCheckInDate?: boolean
-    checkInStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    checkInStatus?: boolean
+    nextCheckInDate?: boolean
   }
 
-  export type PsychologicalSupportRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "description" | "urgency" | "status" | "anonymous" | "location" | "affectedCount" | "assignedToId" | "notes" | "nextCheckInDate" | "checkInStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["psychologicalSupportRequest"]>
+  export type PsychologicalSupportRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "description" | "urgency" | "status" | "anonymous" | "location" | "affectedCount" | "assignedToId" | "notes" | "createdAt" | "updatedAt" | "checkInStatus" | "nextCheckInDate", ExtArgs["result"]["psychologicalSupportRequest"]>
   export type PsychologicalSupportRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -34861,10 +34861,10 @@ export namespace Prisma {
       affectedCount: number | null
       assignedToId: string | null
       notes: string | null
-      nextCheckInDate: Date | null
-      checkInStatus: string | null
       createdAt: Date
       updatedAt: Date
+      checkInStatus: string | null
+      nextCheckInDate: Date | null
     }, ExtArgs["result"]["psychologicalSupportRequest"]>
     composites: {}
   }
@@ -35300,10 +35300,10 @@ export namespace Prisma {
     readonly affectedCount: FieldRef<"PsychologicalSupportRequest", 'Int'>
     readonly assignedToId: FieldRef<"PsychologicalSupportRequest", 'String'>
     readonly notes: FieldRef<"PsychologicalSupportRequest", 'String'>
-    readonly nextCheckInDate: FieldRef<"PsychologicalSupportRequest", 'DateTime'>
-    readonly checkInStatus: FieldRef<"PsychologicalSupportRequest", 'String'>
     readonly createdAt: FieldRef<"PsychologicalSupportRequest", 'DateTime'>
     readonly updatedAt: FieldRef<"PsychologicalSupportRequest", 'DateTime'>
+    readonly checkInStatus: FieldRef<"PsychologicalSupportRequest", 'String'>
+    readonly nextCheckInDate: FieldRef<"PsychologicalSupportRequest", 'DateTime'>
   }
     
 
@@ -45597,8 +45597,8 @@ export namespace Prisma {
     totalCost?: boolean
     budgetId?: boolean
     createdAt?: boolean
-    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
     budget?: boolean | DisasterBudgetDefaultArgs<ExtArgs>
+    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resourceExpenditure"]>
 
   export type ResourceExpenditureSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -45608,8 +45608,8 @@ export namespace Prisma {
     totalCost?: boolean
     budgetId?: boolean
     createdAt?: boolean
-    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
     budget?: boolean | DisasterBudgetDefaultArgs<ExtArgs>
+    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resourceExpenditure"]>
 
   export type ResourceExpenditureSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -45619,8 +45619,8 @@ export namespace Prisma {
     totalCost?: boolean
     budgetId?: boolean
     createdAt?: boolean
-    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
     budget?: boolean | DisasterBudgetDefaultArgs<ExtArgs>
+    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resourceExpenditure"]>
 
   export type ResourceExpenditureSelectScalar = {
@@ -45634,23 +45634,23 @@ export namespace Prisma {
 
   export type ResourceExpenditureOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "resourceCostId" | "quantity" | "totalCost" | "budgetId" | "createdAt", ExtArgs["result"]["resourceExpenditure"]>
   export type ResourceExpenditureInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
     budget?: boolean | DisasterBudgetDefaultArgs<ExtArgs>
+    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
   }
   export type ResourceExpenditureIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
     budget?: boolean | DisasterBudgetDefaultArgs<ExtArgs>
+    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
   }
   export type ResourceExpenditureIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
     budget?: boolean | DisasterBudgetDefaultArgs<ExtArgs>
+    resourceCost?: boolean | ResourceCostDefaultArgs<ExtArgs>
   }
 
   export type $ResourceExpenditurePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ResourceExpenditure"
     objects: {
-      resourceCost: Prisma.$ResourceCostPayload<ExtArgs>
       budget: Prisma.$DisasterBudgetPayload<ExtArgs>
+      resourceCost: Prisma.$ResourceCostPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -46053,8 +46053,8 @@ export namespace Prisma {
    */
   export interface Prisma__ResourceExpenditureClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    resourceCost<T extends ResourceCostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ResourceCostDefaultArgs<ExtArgs>>): Prisma__ResourceCostClient<$Result.GetResult<Prisma.$ResourceCostPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     budget<T extends DisasterBudgetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DisasterBudgetDefaultArgs<ExtArgs>>): Prisma__DisasterBudgetClient<$Result.GetResult<Prisma.$DisasterBudgetPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    resourceCost<T extends ResourceCostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ResourceCostDefaultArgs<ExtArgs>>): Prisma__ResourceCostClient<$Result.GetResult<Prisma.$ResourceCostPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -64237,8 +64237,8 @@ export namespace Prisma {
     campId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    donor?: boolean | Donation$donorArgs<ExtArgs>
     camp?: boolean | Donation$campArgs<ExtArgs>
+    donor?: boolean | Donation$donorArgs<ExtArgs>
   }, ExtArgs["result"]["donation"]>
 
   export type DonationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -64255,8 +64255,8 @@ export namespace Prisma {
     campId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    donor?: boolean | Donation$donorArgs<ExtArgs>
     camp?: boolean | Donation$campArgs<ExtArgs>
+    donor?: boolean | Donation$donorArgs<ExtArgs>
   }, ExtArgs["result"]["donation"]>
 
   export type DonationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -64273,8 +64273,8 @@ export namespace Prisma {
     campId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    donor?: boolean | Donation$donorArgs<ExtArgs>
     camp?: boolean | Donation$campArgs<ExtArgs>
+    donor?: boolean | Donation$donorArgs<ExtArgs>
   }, ExtArgs["result"]["donation"]>
 
   export type DonationSelectScalar = {
@@ -64295,23 +64295,23 @@ export namespace Prisma {
 
   export type DonationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "donorId" | "donorName" | "type" | "amount" | "itemsDescription" | "transactionId" | "paymentGateway" | "transactionDate" | "status" | "campId" | "createdAt" | "updatedAt", ExtArgs["result"]["donation"]>
   export type DonationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    donor?: boolean | Donation$donorArgs<ExtArgs>
     camp?: boolean | Donation$campArgs<ExtArgs>
+    donor?: boolean | Donation$donorArgs<ExtArgs>
   }
   export type DonationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    donor?: boolean | Donation$donorArgs<ExtArgs>
     camp?: boolean | Donation$campArgs<ExtArgs>
+    donor?: boolean | Donation$donorArgs<ExtArgs>
   }
   export type DonationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    donor?: boolean | Donation$donorArgs<ExtArgs>
     camp?: boolean | Donation$campArgs<ExtArgs>
+    donor?: boolean | Donation$donorArgs<ExtArgs>
   }
 
   export type $DonationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Donation"
     objects: {
-      donor: Prisma.$UserPayload<ExtArgs> | null
       camp: Prisma.$ReliefCampPayload<ExtArgs> | null
+      donor: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -64721,8 +64721,8 @@ export namespace Prisma {
    */
   export interface Prisma__DonationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    donor<T extends Donation$donorArgs<ExtArgs> = {}>(args?: Subset<T, Donation$donorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     camp<T extends Donation$campArgs<ExtArgs> = {}>(args?: Subset<T, Donation$campArgs<ExtArgs>>): Prisma__ReliefCampClient<$Result.GetResult<Prisma.$ReliefCampPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    donor<T extends Donation$donorArgs<ExtArgs> = {}>(args?: Subset<T, Donation$donorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -65161,25 +65161,6 @@ export namespace Prisma {
   }
 
   /**
-   * Donation.donor
-   */
-  export type Donation$donorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
    * Donation.camp
    */
   export type Donation$campArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -65196,6 +65177,25 @@ export namespace Prisma {
      */
     include?: ReliefCampInclude<ExtArgs> | null
     where?: ReliefCampWhereInput
+  }
+
+  /**
+   * Donation.donor
+   */
+  export type Donation$donorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -72927,18 +72927,18 @@ export namespace Prisma {
     password: 'password',
     name: 'name',
     phone: 'phone',
-    profilePicture: 'profilePicture',
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     region: 'region',
+    hasMobileApp: 'hasMobileApp',
+    isFieldActive: 'isFieldActive',
+    lastCheckInTime: 'lastCheckInTime',
     nic: 'nic',
     twoFactorEnabled: 'twoFactorEnabled',
-    twoFactorSecret: 'twoFactorSecret',
     twoFactorGracePeriodEnds: 'twoFactorGracePeriodEnds',
-    hasMobileApp: 'hasMobileApp',
-    lastCheckInTime: 'lastCheckInTime',
-    isFieldActive: 'isFieldActive',
+    twoFactorSecret: 'twoFactorSecret',
+    profilePicture: 'profilePicture',
     currentSectorId: 'currentSectorId'
   };
 
@@ -72952,17 +72952,17 @@ export namespace Prisma {
     location: 'location',
     latitude: 'latitude',
     longitude: 'longitude',
-    zoneId: 'zoneId',
-    zoneName: 'zoneName',
-    province: 'province',
     status: 'status',
     severity: 'severity',
-    mlConfidence: 'mlConfidence',
     category: 'category',
     images: 'images',
     reporterId: 'reporterId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    province: 'province',
+    zoneId: 'zoneId',
+    zoneName: 'zoneName',
+    mlConfidence: 'mlConfidence'
   };
 
   export type IncidentReportScalarFieldEnum = (typeof IncidentReportScalarFieldEnum)[keyof typeof IncidentReportScalarFieldEnum]
@@ -72972,18 +72972,18 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     message: 'message',
-    locations: 'locations',
-    latitudes: 'latitudes',
-    longitudes: 'longitudes',
     type: 'type',
     active: 'active',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    latitudes: 'latitudes',
+    locations: 'locations',
+    longitudes: 'longitudes',
+    acknowledgementRate: 'acknowledgementRate',
     channels: 'channels',
     scheduledTime: 'scheduledTime',
     translatedMsgSinhala: 'translatedMsgSinhala',
     translatedMsgTamil: 'translatedMsgTamil',
-    acknowledgementRate: 'acknowledgementRate',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
     targetSectors: 'targetSectors'
   };
 
@@ -73055,10 +73055,10 @@ export namespace Prisma {
   export const VolunteerProfileScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    totalHours: 'totalHours',
+    createdAt: 'createdAt',
     incidentsJoined: 'incidentsJoined',
     readinessScore: 'readinessScore',
-    createdAt: 'createdAt',
+    totalHours: 'totalHours',
     updatedAt: 'updatedAt'
   };
 
@@ -73068,7 +73068,6 @@ export namespace Prisma {
   export const HelpRequestScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    phone: 'phone',
     type: 'type',
     description: 'description',
     location: 'location',
@@ -73077,10 +73076,11 @@ export namespace Prisma {
     priority: 'priority',
     status: 'status',
     peopleCount: 'peopleCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
     assignedVolunteerId: 'assignedVolunteerId',
     escalationLevel: 'escalationLevel',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    phone: 'phone'
   };
 
   export type HelpRequestScalarFieldEnum = (typeof HelpRequestScalarFieldEnum)[keyof typeof HelpRequestScalarFieldEnum]
@@ -73112,21 +73112,21 @@ export namespace Prisma {
   export const MissingPersonScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    nic: 'nic',
     age: 'age',
-    gender: 'gender',
     description: 'description',
     lastSeen: 'lastSeen',
     photo: 'photo',
     reportedBy: 'reportedBy',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    nic: 'nic',
     contactName: 'contactName',
     contactPhone: 'contactPhone',
-    status: 'status',
+    gender: 'gender',
     isUnidentified: 'isUnidentified',
-    reunificationStatus: 'reunificationStatus',
     reunificationNotes: 'reunificationNotes',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    reunificationStatus: 'reunificationStatus'
   };
 
   export type MissingPersonScalarFieldEnum = (typeof MissingPersonScalarFieldEnum)[keyof typeof MissingPersonScalarFieldEnum]
@@ -73215,13 +73215,13 @@ export namespace Prisma {
     maxUsage: 'maxUsage',
     issuedAt: 'issuedAt',
     expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
     categories: 'categories',
-    isHouseholdBundle: 'isHouseholdBundle',
-    householdId: 'householdId',
     donorId: 'donorId',
     fraudRiskScore: 'fraudRiskScore',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    householdId: 'householdId',
+    isHouseholdBundle: 'isHouseholdBundle'
   };
 
   export type ReliefTokenScalarFieldEnum = (typeof ReliefTokenScalarFieldEnum)[keyof typeof ReliefTokenScalarFieldEnum]
@@ -73251,7 +73251,6 @@ export namespace Prisma {
     location: 'location',
     latitude: 'latitude',
     longitude: 'longitude',
-    polygonData: 'polygonData',
     category: 'category',
     structuralDamage: 'structuralDamage',
     cropDamage: 'cropDamage',
@@ -73259,20 +73258,21 @@ export namespace Prisma {
     roadDamage: 'roadDamage',
     affectedPersons: 'affectedPersons',
     estimatedLoss: 'estimatedLoss',
-    aiEstimatedDamage: 'aiEstimatedDamage',
-    aiEstimatedCost: 'aiEstimatedCost',
-    propertyOwnershipStatus: 'propertyOwnershipStatus',
-    familyVulnerabilityScore: 'familyVulnerabilityScore',
-    incomeBracket: 'incomeBracket',
-    compensationEligibilityScore: 'compensationEligibilityScore',
-    compensationEligible: 'compensationEligible',
     mediaUrls: 'mediaUrls',
     status: 'status',
     notes: 'notes',
-    reviewerNotes: 'reviewerNotes',
     verifiedById: 'verifiedById',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    aiEstimatedCost: 'aiEstimatedCost',
+    aiEstimatedDamage: 'aiEstimatedDamage',
+    compensationEligibilityScore: 'compensationEligibilityScore',
+    compensationEligible: 'compensationEligible',
+    familyVulnerabilityScore: 'familyVulnerabilityScore',
+    incomeBracket: 'incomeBracket',
+    polygonData: 'polygonData',
+    propertyOwnershipStatus: 'propertyOwnershipStatus',
+    reviewerNotes: 'reviewerNotes'
   };
 
   export type DamageAssessmentScalarFieldEnum = (typeof DamageAssessmentScalarFieldEnum)[keyof typeof DamageAssessmentScalarFieldEnum]
@@ -73320,10 +73320,10 @@ export namespace Prisma {
     affectedCount: 'affectedCount',
     assignedToId: 'assignedToId',
     notes: 'notes',
-    nextCheckInDate: 'nextCheckInDate',
-    checkInStatus: 'checkInStatus',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    checkInStatus: 'checkInStatus',
+    nextCheckInDate: 'nextCheckInDate'
   };
 
   export type PsychologicalSupportRequestScalarFieldEnum = (typeof PsychologicalSupportRequestScalarFieldEnum)[keyof typeof PsychologicalSupportRequestScalarFieldEnum]
@@ -74235,20 +74235,22 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    profilePicture?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     region?: StringNullableFilter<"User"> | string | null
+    hasMobileApp?: BoolFilter<"User"> | boolean
+    isFieldActive?: BoolFilter<"User"> | boolean
+    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
     nic?: StringNullableFilter<"User"> | string | null
     twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
     twoFactorGracePeriodEnds?: DateTimeNullableFilter<"User"> | Date | string | null
-    hasMobileApp?: BoolFilter<"User"> | boolean
-    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
-    isFieldActive?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    profilePicture?: StringNullableFilter<"User"> | string | null
     currentSectorId?: StringNullableFilter<"User"> | string | null
     damageReports?: DamageAssessmentListRelationFilter
+    donations?: DonationListRelationFilter
+    familyMembers?: FamilyMemberListRelationFilter
     helpRequests?: HelpRequestListRelationFilter
     reports?: IncidentReportListRelationFilter
     localVerifier?: XOR<LocalVerifierNullableScalarRelationFilter, LocalVerifierWhereInput> | null
@@ -74257,14 +74259,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestListRelationFilter
     reliefTokens?: ReliefTokenListRelationFilter
     verifications?: ReportVerificationListRelationFilter
+    safetyCheckIns?: SafetyCheckInListRelationFilter
     createdTasks?: TaskListRelationFilter
     assignedTasks?: TaskListRelationFilter
-    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
-    sessionLogs?: UserSessionLogListRelationFilter
     currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
-    donations?: DonationListRelationFilter
-    safetyCheckIns?: SafetyCheckInListRelationFilter
-    familyMembers?: FamilyMemberListRelationFilter
+    sessionLogs?: UserSessionLogListRelationFilter
+    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -74273,20 +74273,22 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
-    profilePicture?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     region?: SortOrderInput | SortOrder
+    hasMobileApp?: SortOrder
+    isFieldActive?: SortOrder
+    lastCheckInTime?: SortOrderInput | SortOrder
     nic?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
     twoFactorGracePeriodEnds?: SortOrderInput | SortOrder
-    hasMobileApp?: SortOrder
-    lastCheckInTime?: SortOrderInput | SortOrder
-    isFieldActive?: SortOrder
+    twoFactorSecret?: SortOrderInput | SortOrder
+    profilePicture?: SortOrderInput | SortOrder
     currentSectorId?: SortOrderInput | SortOrder
     damageReports?: DamageAssessmentOrderByRelationAggregateInput
+    donations?: DonationOrderByRelationAggregateInput
+    familyMembers?: FamilyMemberOrderByRelationAggregateInput
     helpRequests?: HelpRequestOrderByRelationAggregateInput
     reports?: IncidentReportOrderByRelationAggregateInput
     localVerifier?: LocalVerifierOrderByWithRelationInput
@@ -74295,14 +74297,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestOrderByRelationAggregateInput
     reliefTokens?: ReliefTokenOrderByRelationAggregateInput
     verifications?: ReportVerificationOrderByRelationAggregateInput
+    safetyCheckIns?: SafetyCheckInOrderByRelationAggregateInput
     createdTasks?: TaskOrderByRelationAggregateInput
     assignedTasks?: TaskOrderByRelationAggregateInput
-    volunteerProfile?: VolunteerProfileOrderByWithRelationInput
-    sessionLogs?: UserSessionLogOrderByRelationAggregateInput
     currentSector?: SectorOrderByWithRelationInput
-    donations?: DonationOrderByRelationAggregateInput
-    safetyCheckIns?: SafetyCheckInOrderByRelationAggregateInput
-    familyMembers?: FamilyMemberOrderByRelationAggregateInput
+    sessionLogs?: UserSessionLogOrderByRelationAggregateInput
+    volunteerProfile?: VolunteerProfileOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -74315,19 +74315,21 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    profilePicture?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     region?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
-    twoFactorGracePeriodEnds?: DateTimeNullableFilter<"User"> | Date | string | null
     hasMobileApp?: BoolFilter<"User"> | boolean
-    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
     isFieldActive?: BoolFilter<"User"> | boolean
+    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
+    twoFactorEnabled?: BoolFilter<"User"> | boolean
+    twoFactorGracePeriodEnds?: DateTimeNullableFilter<"User"> | Date | string | null
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    profilePicture?: StringNullableFilter<"User"> | string | null
     currentSectorId?: StringNullableFilter<"User"> | string | null
     damageReports?: DamageAssessmentListRelationFilter
+    donations?: DonationListRelationFilter
+    familyMembers?: FamilyMemberListRelationFilter
     helpRequests?: HelpRequestListRelationFilter
     reports?: IncidentReportListRelationFilter
     localVerifier?: XOR<LocalVerifierNullableScalarRelationFilter, LocalVerifierWhereInput> | null
@@ -74336,14 +74338,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestListRelationFilter
     reliefTokens?: ReliefTokenListRelationFilter
     verifications?: ReportVerificationListRelationFilter
+    safetyCheckIns?: SafetyCheckInListRelationFilter
     createdTasks?: TaskListRelationFilter
     assignedTasks?: TaskListRelationFilter
-    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
-    sessionLogs?: UserSessionLogListRelationFilter
     currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
-    donations?: DonationListRelationFilter
-    safetyCheckIns?: SafetyCheckInListRelationFilter
-    familyMembers?: FamilyMemberListRelationFilter
+    sessionLogs?: UserSessionLogListRelationFilter
+    volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
   }, "id" | "email" | "nic">
 
   export type UserOrderByWithAggregationInput = {
@@ -74352,18 +74352,18 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
-    profilePicture?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     region?: SortOrderInput | SortOrder
+    hasMobileApp?: SortOrder
+    isFieldActive?: SortOrder
+    lastCheckInTime?: SortOrderInput | SortOrder
     nic?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
     twoFactorGracePeriodEnds?: SortOrderInput | SortOrder
-    hasMobileApp?: SortOrder
-    lastCheckInTime?: SortOrderInput | SortOrder
-    isFieldActive?: SortOrder
+    twoFactorSecret?: SortOrderInput | SortOrder
+    profilePicture?: SortOrderInput | SortOrder
     currentSectorId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -74379,18 +74379,18 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
-    profilePicture?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     region?: StringNullableWithAggregatesFilter<"User"> | string | null
+    hasMobileApp?: BoolWithAggregatesFilter<"User"> | boolean
+    isFieldActive?: BoolWithAggregatesFilter<"User"> | boolean
+    lastCheckInTime?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     nic?: StringNullableWithAggregatesFilter<"User"> | string | null
     twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
     twoFactorGracePeriodEnds?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    hasMobileApp?: BoolWithAggregatesFilter<"User"> | boolean
-    lastCheckInTime?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    isFieldActive?: BoolWithAggregatesFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
+    profilePicture?: StringNullableWithAggregatesFilter<"User"> | string | null
     currentSectorId?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
@@ -74404,24 +74404,24 @@ export namespace Prisma {
     location?: StringFilter<"IncidentReport"> | string
     latitude?: FloatNullableFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableFilter<"IncidentReport"> | number | null
-    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
-    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
-    province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
-    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
     category?: StringFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringFilter<"IncidentReport"> | string
     createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
     updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
+    province?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
+    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    aar?: XOR<AfterActionReportNullableScalarRelationFilter, AfterActionReportWhereInput> | null
     damageAssessments?: DamageAssessmentListRelationFilter
     history?: IncidentHistoryListRelationFilter
     reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
     verifications?: ReportVerificationListRelationFilter
     tasks?: TaskListRelationFilter
     verifierActions?: VerifierActionListRelationFilter
-    aar?: XOR<AfterActionReportNullableScalarRelationFilter, AfterActionReportWhereInput> | null
   }
 
   export type IncidentReportOrderByWithRelationInput = {
@@ -74431,24 +74431,24 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
-    zoneId?: SortOrderInput | SortOrder
-    zoneName?: SortOrderInput | SortOrder
-    province?: SortOrderInput | SortOrder
     status?: SortOrder
     severity?: SortOrder
-    mlConfidence?: SortOrderInput | SortOrder
     category?: SortOrder
     images?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    province?: SortOrderInput | SortOrder
+    zoneId?: SortOrderInput | SortOrder
+    zoneName?: SortOrderInput | SortOrder
+    mlConfidence?: SortOrderInput | SortOrder
+    aar?: AfterActionReportOrderByWithRelationInput
     damageAssessments?: DamageAssessmentOrderByRelationAggregateInput
     history?: IncidentHistoryOrderByRelationAggregateInput
     reporter?: UserOrderByWithRelationInput
     verifications?: ReportVerificationOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
     verifierActions?: VerifierActionOrderByRelationAggregateInput
-    aar?: AfterActionReportOrderByWithRelationInput
   }
 
   export type IncidentReportWhereUniqueInput = Prisma.AtLeast<{
@@ -74461,24 +74461,24 @@ export namespace Prisma {
     location?: StringFilter<"IncidentReport"> | string
     latitude?: FloatNullableFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableFilter<"IncidentReport"> | number | null
-    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
-    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
-    province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
-    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
     category?: StringFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringFilter<"IncidentReport"> | string
     createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
     updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
+    province?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
+    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    aar?: XOR<AfterActionReportNullableScalarRelationFilter, AfterActionReportWhereInput> | null
     damageAssessments?: DamageAssessmentListRelationFilter
     history?: IncidentHistoryListRelationFilter
     reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
     verifications?: ReportVerificationListRelationFilter
     tasks?: TaskListRelationFilter
     verifierActions?: VerifierActionListRelationFilter
-    aar?: XOR<AfterActionReportNullableScalarRelationFilter, AfterActionReportWhereInput> | null
   }, "id">
 
   export type IncidentReportOrderByWithAggregationInput = {
@@ -74488,17 +74488,17 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
-    zoneId?: SortOrderInput | SortOrder
-    zoneName?: SortOrderInput | SortOrder
-    province?: SortOrderInput | SortOrder
     status?: SortOrder
     severity?: SortOrder
-    mlConfidence?: SortOrderInput | SortOrder
     category?: SortOrder
     images?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    province?: SortOrderInput | SortOrder
+    zoneId?: SortOrderInput | SortOrder
+    zoneName?: SortOrderInput | SortOrder
+    mlConfidence?: SortOrderInput | SortOrder
     _count?: IncidentReportCountOrderByAggregateInput
     _avg?: IncidentReportAvgOrderByAggregateInput
     _max?: IncidentReportMaxOrderByAggregateInput
@@ -74516,17 +74516,17 @@ export namespace Prisma {
     location?: StringWithAggregatesFilter<"IncidentReport"> | string
     latitude?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
-    zoneId?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
-    zoneName?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
-    province?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
     status?: EnumStatusWithAggregatesFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityWithAggregatesFilter<"IncidentReport"> | $Enums.Severity
-    mlConfidence?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
     category?: StringWithAggregatesFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringWithAggregatesFilter<"IncidentReport"> | string
     createdAt?: DateTimeWithAggregatesFilter<"IncidentReport"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"IncidentReport"> | Date | string
+    province?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    zoneId?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    mlConfidence?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
   }
 
   export type AlertWhereInput = {
@@ -74536,18 +74536,18 @@ export namespace Prisma {
     id?: StringFilter<"Alert"> | string
     title?: StringFilter<"Alert"> | string
     message?: StringFilter<"Alert"> | string
-    locations?: StringNullableListFilter<"Alert">
-    latitudes?: FloatNullableListFilter<"Alert">
-    longitudes?: FloatNullableListFilter<"Alert">
     type?: EnumAlertTypeFilter<"Alert"> | $Enums.AlertType
     active?: BoolFilter<"Alert"> | boolean
+    createdAt?: DateTimeFilter<"Alert"> | Date | string
+    updatedAt?: DateTimeFilter<"Alert"> | Date | string
+    latitudes?: FloatNullableListFilter<"Alert">
+    locations?: StringNullableListFilter<"Alert">
+    longitudes?: FloatNullableListFilter<"Alert">
+    acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
     channels?: JsonNullableFilter<"Alert">
     scheduledTime?: DateTimeNullableFilter<"Alert"> | Date | string | null
     translatedMsgSinhala?: StringNullableFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableFilter<"Alert"> | string | null
-    acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
-    createdAt?: DateTimeFilter<"Alert"> | Date | string
-    updatedAt?: DateTimeFilter<"Alert"> | Date | string
     targetSectors?: StringNullableListFilter<"Alert">
   }
 
@@ -74555,18 +74555,18 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    locations?: SortOrder
-    latitudes?: SortOrder
-    longitudes?: SortOrder
     type?: SortOrder
     active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    latitudes?: SortOrder
+    locations?: SortOrder
+    longitudes?: SortOrder
+    acknowledgementRate?: SortOrderInput | SortOrder
     channels?: SortOrderInput | SortOrder
     scheduledTime?: SortOrderInput | SortOrder
     translatedMsgSinhala?: SortOrderInput | SortOrder
     translatedMsgTamil?: SortOrderInput | SortOrder
-    acknowledgementRate?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     targetSectors?: SortOrder
   }
 
@@ -74577,18 +74577,18 @@ export namespace Prisma {
     NOT?: AlertWhereInput | AlertWhereInput[]
     title?: StringFilter<"Alert"> | string
     message?: StringFilter<"Alert"> | string
-    locations?: StringNullableListFilter<"Alert">
-    latitudes?: FloatNullableListFilter<"Alert">
-    longitudes?: FloatNullableListFilter<"Alert">
     type?: EnumAlertTypeFilter<"Alert"> | $Enums.AlertType
     active?: BoolFilter<"Alert"> | boolean
+    createdAt?: DateTimeFilter<"Alert"> | Date | string
+    updatedAt?: DateTimeFilter<"Alert"> | Date | string
+    latitudes?: FloatNullableListFilter<"Alert">
+    locations?: StringNullableListFilter<"Alert">
+    longitudes?: FloatNullableListFilter<"Alert">
+    acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
     channels?: JsonNullableFilter<"Alert">
     scheduledTime?: DateTimeNullableFilter<"Alert"> | Date | string | null
     translatedMsgSinhala?: StringNullableFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableFilter<"Alert"> | string | null
-    acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
-    createdAt?: DateTimeFilter<"Alert"> | Date | string
-    updatedAt?: DateTimeFilter<"Alert"> | Date | string
     targetSectors?: StringNullableListFilter<"Alert">
   }, "id">
 
@@ -74596,18 +74596,18 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    locations?: SortOrder
-    latitudes?: SortOrder
-    longitudes?: SortOrder
     type?: SortOrder
     active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    latitudes?: SortOrder
+    locations?: SortOrder
+    longitudes?: SortOrder
+    acknowledgementRate?: SortOrderInput | SortOrder
     channels?: SortOrderInput | SortOrder
     scheduledTime?: SortOrderInput | SortOrder
     translatedMsgSinhala?: SortOrderInput | SortOrder
     translatedMsgTamil?: SortOrderInput | SortOrder
-    acknowledgementRate?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     targetSectors?: SortOrder
     _count?: AlertCountOrderByAggregateInput
     _avg?: AlertAvgOrderByAggregateInput
@@ -74623,18 +74623,18 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Alert"> | string
     title?: StringWithAggregatesFilter<"Alert"> | string
     message?: StringWithAggregatesFilter<"Alert"> | string
-    locations?: StringNullableListFilter<"Alert">
-    latitudes?: FloatNullableListFilter<"Alert">
-    longitudes?: FloatNullableListFilter<"Alert">
     type?: EnumAlertTypeWithAggregatesFilter<"Alert"> | $Enums.AlertType
     active?: BoolWithAggregatesFilter<"Alert"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
+    latitudes?: FloatNullableListFilter<"Alert">
+    locations?: StringNullableListFilter<"Alert">
+    longitudes?: FloatNullableListFilter<"Alert">
+    acknowledgementRate?: FloatNullableWithAggregatesFilter<"Alert"> | number | null
     channels?: JsonNullableWithAggregatesFilter<"Alert">
     scheduledTime?: DateTimeNullableWithAggregatesFilter<"Alert"> | Date | string | null
     translatedMsgSinhala?: StringNullableWithAggregatesFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableWithAggregatesFilter<"Alert"> | string | null
-    acknowledgementRate?: FloatNullableWithAggregatesFilter<"Alert"> | number | null
-    createdAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Alert"> | Date | string
     targetSectors?: StringNullableListFilter<"Alert">
   }
 
@@ -74714,13 +74714,13 @@ export namespace Prisma {
     waitTime?: StringNullableFilter<"ReliefCamp"> | string | null
     createdAt?: DateTimeFilter<"ReliefCamp"> | Date | string
     updatedAt?: DateTimeFilter<"ReliefCamp"> | Date | string
-    residents?: CampResidentListRelationFilter
     inventory?: CampInventoryListRelationFilter
+    residents?: CampResidentListRelationFilter
     schedules?: CampScheduleListRelationFilter
-    referrals?: HospitalReferralListRelationFilter
     transfersOut?: CampTransferRequestListRelationFilter
     transfersIn?: CampTransferRequestListRelationFilter
     donations?: DonationListRelationFilter
+    referrals?: HospitalReferralListRelationFilter
   }
 
   export type ReliefCampOrderByWithRelationInput = {
@@ -74736,13 +74736,13 @@ export namespace Prisma {
     waitTime?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    residents?: CampResidentOrderByRelationAggregateInput
     inventory?: CampInventoryOrderByRelationAggregateInput
+    residents?: CampResidentOrderByRelationAggregateInput
     schedules?: CampScheduleOrderByRelationAggregateInput
-    referrals?: HospitalReferralOrderByRelationAggregateInput
     transfersOut?: CampTransferRequestOrderByRelationAggregateInput
     transfersIn?: CampTransferRequestOrderByRelationAggregateInput
     donations?: DonationOrderByRelationAggregateInput
+    referrals?: HospitalReferralOrderByRelationAggregateInput
   }
 
   export type ReliefCampWhereUniqueInput = Prisma.AtLeast<{
@@ -74761,13 +74761,13 @@ export namespace Prisma {
     waitTime?: StringNullableFilter<"ReliefCamp"> | string | null
     createdAt?: DateTimeFilter<"ReliefCamp"> | Date | string
     updatedAt?: DateTimeFilter<"ReliefCamp"> | Date | string
-    residents?: CampResidentListRelationFilter
     inventory?: CampInventoryListRelationFilter
+    residents?: CampResidentListRelationFilter
     schedules?: CampScheduleListRelationFilter
-    referrals?: HospitalReferralListRelationFilter
     transfersOut?: CampTransferRequestListRelationFilter
     transfersIn?: CampTransferRequestListRelationFilter
     donations?: DonationListRelationFilter
+    referrals?: HospitalReferralListRelationFilter
   }, "id">
 
   export type ReliefCampOrderByWithAggregationInput = {
@@ -74977,33 +74977,33 @@ export namespace Prisma {
     NOT?: VolunteerProfileWhereInput | VolunteerProfileWhereInput[]
     id?: StringFilter<"VolunteerProfile"> | string
     userId?: StringFilter<"VolunteerProfile"> | string
-    totalHours?: FloatFilter<"VolunteerProfile"> | number
+    createdAt?: DateTimeFilter<"VolunteerProfile"> | Date | string
     incidentsJoined?: IntFilter<"VolunteerProfile"> | number
     readinessScore?: FloatFilter<"VolunteerProfile"> | number
-    createdAt?: DateTimeFilter<"VolunteerProfile"> | Date | string
+    totalHours?: FloatFilter<"VolunteerProfile"> | number
     updatedAt?: DateTimeFilter<"VolunteerProfile"> | Date | string
+    badges?: VolunteerBadgeListRelationFilter
+    checkIns?: VolunteerCheckInListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     skills?: VolunteerSkillListRelationFilter
     trainings?: VolunteerTrainingListRelationFilter
-    checkIns?: VolunteerCheckInListRelationFilter
     wellbeingLogs?: VolunteerWellbeingListRelationFilter
-    badges?: VolunteerBadgeListRelationFilter
   }
 
   export type VolunteerProfileOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    totalHours?: SortOrder
+    createdAt?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
-    createdAt?: SortOrder
+    totalHours?: SortOrder
     updatedAt?: SortOrder
+    badges?: VolunteerBadgeOrderByRelationAggregateInput
+    checkIns?: VolunteerCheckInOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     skills?: VolunteerSkillOrderByRelationAggregateInput
     trainings?: VolunteerTrainingOrderByRelationAggregateInput
-    checkIns?: VolunteerCheckInOrderByRelationAggregateInput
     wellbeingLogs?: VolunteerWellbeingOrderByRelationAggregateInput
-    badges?: VolunteerBadgeOrderByRelationAggregateInput
   }
 
   export type VolunteerProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -75012,26 +75012,26 @@ export namespace Prisma {
     AND?: VolunteerProfileWhereInput | VolunteerProfileWhereInput[]
     OR?: VolunteerProfileWhereInput[]
     NOT?: VolunteerProfileWhereInput | VolunteerProfileWhereInput[]
-    totalHours?: FloatFilter<"VolunteerProfile"> | number
+    createdAt?: DateTimeFilter<"VolunteerProfile"> | Date | string
     incidentsJoined?: IntFilter<"VolunteerProfile"> | number
     readinessScore?: FloatFilter<"VolunteerProfile"> | number
-    createdAt?: DateTimeFilter<"VolunteerProfile"> | Date | string
+    totalHours?: FloatFilter<"VolunteerProfile"> | number
     updatedAt?: DateTimeFilter<"VolunteerProfile"> | Date | string
+    badges?: VolunteerBadgeListRelationFilter
+    checkIns?: VolunteerCheckInListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     skills?: VolunteerSkillListRelationFilter
     trainings?: VolunteerTrainingListRelationFilter
-    checkIns?: VolunteerCheckInListRelationFilter
     wellbeingLogs?: VolunteerWellbeingListRelationFilter
-    badges?: VolunteerBadgeListRelationFilter
   }, "id" | "userId">
 
   export type VolunteerProfileOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    totalHours?: SortOrder
+    createdAt?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
-    createdAt?: SortOrder
+    totalHours?: SortOrder
     updatedAt?: SortOrder
     _count?: VolunteerProfileCountOrderByAggregateInput
     _avg?: VolunteerProfileAvgOrderByAggregateInput
@@ -75046,10 +75046,10 @@ export namespace Prisma {
     NOT?: VolunteerProfileScalarWhereWithAggregatesInput | VolunteerProfileScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"VolunteerProfile"> | string
     userId?: StringWithAggregatesFilter<"VolunteerProfile"> | string
-    totalHours?: FloatWithAggregatesFilter<"VolunteerProfile"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"VolunteerProfile"> | Date | string
     incidentsJoined?: IntWithAggregatesFilter<"VolunteerProfile"> | number
     readinessScore?: FloatWithAggregatesFilter<"VolunteerProfile"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"VolunteerProfile"> | Date | string
+    totalHours?: FloatWithAggregatesFilter<"VolunteerProfile"> | number
     updatedAt?: DateTimeWithAggregatesFilter<"VolunteerProfile"> | Date | string
   }
 
@@ -75059,7 +75059,6 @@ export namespace Prisma {
     NOT?: HelpRequestWhereInput | HelpRequestWhereInput[]
     id?: StringFilter<"HelpRequest"> | string
     userId?: StringNullableFilter<"HelpRequest"> | string | null
-    phone?: StringNullableFilter<"HelpRequest"> | string | null
     type?: StringFilter<"HelpRequest"> | string
     description?: StringFilter<"HelpRequest"> | string
     location?: StringFilter<"HelpRequest"> | string
@@ -75068,19 +75067,19 @@ export namespace Prisma {
     priority?: EnumSeverityFilter<"HelpRequest"> | $Enums.Severity
     status?: EnumStatusFilter<"HelpRequest"> | $Enums.Status
     peopleCount?: IntNullableFilter<"HelpRequest"> | number | null
-    assignedVolunteerId?: StringNullableFilter<"HelpRequest"> | string | null
-    escalationLevel?: StringFilter<"HelpRequest"> | string
     createdAt?: DateTimeFilter<"HelpRequest"> | Date | string
     updatedAt?: DateTimeFilter<"HelpRequest"> | Date | string
+    assignedVolunteerId?: StringNullableFilter<"HelpRequest"> | string | null
+    escalationLevel?: StringFilter<"HelpRequest"> | string
+    phone?: StringNullableFilter<"HelpRequest"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    verifierActions?: VerifierActionListRelationFilter
     escalations?: HelpRequestEscalationListRelationFilter
+    verifierActions?: VerifierActionListRelationFilter
   }
 
   export type HelpRequestOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrderInput | SortOrder
-    phone?: SortOrderInput | SortOrder
     type?: SortOrder
     description?: SortOrder
     location?: SortOrder
@@ -75089,13 +75088,14 @@ export namespace Prisma {
     priority?: SortOrder
     status?: SortOrder
     peopleCount?: SortOrderInput | SortOrder
-    assignedVolunteerId?: SortOrderInput | SortOrder
-    escalationLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    assignedVolunteerId?: SortOrderInput | SortOrder
+    escalationLevel?: SortOrder
+    phone?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
-    verifierActions?: VerifierActionOrderByRelationAggregateInput
     escalations?: HelpRequestEscalationOrderByRelationAggregateInput
+    verifierActions?: VerifierActionOrderByRelationAggregateInput
   }
 
   export type HelpRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -75104,7 +75104,6 @@ export namespace Prisma {
     OR?: HelpRequestWhereInput[]
     NOT?: HelpRequestWhereInput | HelpRequestWhereInput[]
     userId?: StringNullableFilter<"HelpRequest"> | string | null
-    phone?: StringNullableFilter<"HelpRequest"> | string | null
     type?: StringFilter<"HelpRequest"> | string
     description?: StringFilter<"HelpRequest"> | string
     location?: StringFilter<"HelpRequest"> | string
@@ -75113,19 +75112,19 @@ export namespace Prisma {
     priority?: EnumSeverityFilter<"HelpRequest"> | $Enums.Severity
     status?: EnumStatusFilter<"HelpRequest"> | $Enums.Status
     peopleCount?: IntNullableFilter<"HelpRequest"> | number | null
-    assignedVolunteerId?: StringNullableFilter<"HelpRequest"> | string | null
-    escalationLevel?: StringFilter<"HelpRequest"> | string
     createdAt?: DateTimeFilter<"HelpRequest"> | Date | string
     updatedAt?: DateTimeFilter<"HelpRequest"> | Date | string
+    assignedVolunteerId?: StringNullableFilter<"HelpRequest"> | string | null
+    escalationLevel?: StringFilter<"HelpRequest"> | string
+    phone?: StringNullableFilter<"HelpRequest"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    verifierActions?: VerifierActionListRelationFilter
     escalations?: HelpRequestEscalationListRelationFilter
+    verifierActions?: VerifierActionListRelationFilter
   }, "id">
 
   export type HelpRequestOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrderInput | SortOrder
-    phone?: SortOrderInput | SortOrder
     type?: SortOrder
     description?: SortOrder
     location?: SortOrder
@@ -75134,10 +75133,11 @@ export namespace Prisma {
     priority?: SortOrder
     status?: SortOrder
     peopleCount?: SortOrderInput | SortOrder
-    assignedVolunteerId?: SortOrderInput | SortOrder
-    escalationLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    assignedVolunteerId?: SortOrderInput | SortOrder
+    escalationLevel?: SortOrder
+    phone?: SortOrderInput | SortOrder
     _count?: HelpRequestCountOrderByAggregateInput
     _avg?: HelpRequestAvgOrderByAggregateInput
     _max?: HelpRequestMaxOrderByAggregateInput
@@ -75151,7 +75151,6 @@ export namespace Prisma {
     NOT?: HelpRequestScalarWhereWithAggregatesInput | HelpRequestScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"HelpRequest"> | string
     userId?: StringNullableWithAggregatesFilter<"HelpRequest"> | string | null
-    phone?: StringNullableWithAggregatesFilter<"HelpRequest"> | string | null
     type?: StringWithAggregatesFilter<"HelpRequest"> | string
     description?: StringWithAggregatesFilter<"HelpRequest"> | string
     location?: StringWithAggregatesFilter<"HelpRequest"> | string
@@ -75160,10 +75159,11 @@ export namespace Prisma {
     priority?: EnumSeverityWithAggregatesFilter<"HelpRequest"> | $Enums.Severity
     status?: EnumStatusWithAggregatesFilter<"HelpRequest"> | $Enums.Status
     peopleCount?: IntNullableWithAggregatesFilter<"HelpRequest"> | number | null
-    assignedVolunteerId?: StringNullableWithAggregatesFilter<"HelpRequest"> | string | null
-    escalationLevel?: StringWithAggregatesFilter<"HelpRequest"> | string
     createdAt?: DateTimeWithAggregatesFilter<"HelpRequest"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"HelpRequest"> | Date | string
+    assignedVolunteerId?: StringNullableWithAggregatesFilter<"HelpRequest"> | string | null
+    escalationLevel?: StringWithAggregatesFilter<"HelpRequest"> | string
+    phone?: StringNullableWithAggregatesFilter<"HelpRequest"> | string | null
   }
 
   export type HelpRequestEscalationWhereInput = {
@@ -75290,41 +75290,41 @@ export namespace Prisma {
     NOT?: MissingPersonWhereInput | MissingPersonWhereInput[]
     id?: StringFilter<"MissingPerson"> | string
     name?: StringFilter<"MissingPerson"> | string
-    nic?: StringNullableFilter<"MissingPerson"> | string | null
     age?: IntNullableFilter<"MissingPerson"> | number | null
-    gender?: StringNullableFilter<"MissingPerson"> | string | null
     description?: StringFilter<"MissingPerson"> | string
     lastSeen?: StringFilter<"MissingPerson"> | string
     photo?: StringNullableFilter<"MissingPerson"> | string | null
     reportedBy?: StringNullableFilter<"MissingPerson"> | string | null
-    contactName?: StringNullableFilter<"MissingPerson"> | string | null
-    contactPhone?: StringNullableFilter<"MissingPerson"> | string | null
     status?: StringFilter<"MissingPerson"> | string
-    isUnidentified?: BoolFilter<"MissingPerson"> | boolean
-    reunificationStatus?: StringFilter<"MissingPerson"> | string
-    reunificationNotes?: StringNullableFilter<"MissingPerson"> | string | null
     createdAt?: DateTimeFilter<"MissingPerson"> | Date | string
     updatedAt?: DateTimeFilter<"MissingPerson"> | Date | string
+    nic?: StringNullableFilter<"MissingPerson"> | string | null
+    contactName?: StringNullableFilter<"MissingPerson"> | string | null
+    contactPhone?: StringNullableFilter<"MissingPerson"> | string | null
+    gender?: StringNullableFilter<"MissingPerson"> | string | null
+    isUnidentified?: BoolFilter<"MissingPerson"> | boolean
+    reunificationNotes?: StringNullableFilter<"MissingPerson"> | string | null
+    reunificationStatus?: StringFilter<"MissingPerson"> | string
   }
 
   export type MissingPersonOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    nic?: SortOrderInput | SortOrder
     age?: SortOrderInput | SortOrder
-    gender?: SortOrderInput | SortOrder
     description?: SortOrder
     lastSeen?: SortOrder
     photo?: SortOrderInput | SortOrder
     reportedBy?: SortOrderInput | SortOrder
-    contactName?: SortOrderInput | SortOrder
-    contactPhone?: SortOrderInput | SortOrder
     status?: SortOrder
-    isUnidentified?: SortOrder
-    reunificationStatus?: SortOrder
-    reunificationNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    nic?: SortOrderInput | SortOrder
+    contactName?: SortOrderInput | SortOrder
+    contactPhone?: SortOrderInput | SortOrder
+    gender?: SortOrderInput | SortOrder
+    isUnidentified?: SortOrder
+    reunificationNotes?: SortOrderInput | SortOrder
+    reunificationStatus?: SortOrder
   }
 
   export type MissingPersonWhereUniqueInput = Prisma.AtLeast<{
@@ -75333,41 +75333,41 @@ export namespace Prisma {
     OR?: MissingPersonWhereInput[]
     NOT?: MissingPersonWhereInput | MissingPersonWhereInput[]
     name?: StringFilter<"MissingPerson"> | string
-    nic?: StringNullableFilter<"MissingPerson"> | string | null
     age?: IntNullableFilter<"MissingPerson"> | number | null
-    gender?: StringNullableFilter<"MissingPerson"> | string | null
     description?: StringFilter<"MissingPerson"> | string
     lastSeen?: StringFilter<"MissingPerson"> | string
     photo?: StringNullableFilter<"MissingPerson"> | string | null
     reportedBy?: StringNullableFilter<"MissingPerson"> | string | null
-    contactName?: StringNullableFilter<"MissingPerson"> | string | null
-    contactPhone?: StringNullableFilter<"MissingPerson"> | string | null
     status?: StringFilter<"MissingPerson"> | string
-    isUnidentified?: BoolFilter<"MissingPerson"> | boolean
-    reunificationStatus?: StringFilter<"MissingPerson"> | string
-    reunificationNotes?: StringNullableFilter<"MissingPerson"> | string | null
     createdAt?: DateTimeFilter<"MissingPerson"> | Date | string
     updatedAt?: DateTimeFilter<"MissingPerson"> | Date | string
+    nic?: StringNullableFilter<"MissingPerson"> | string | null
+    contactName?: StringNullableFilter<"MissingPerson"> | string | null
+    contactPhone?: StringNullableFilter<"MissingPerson"> | string | null
+    gender?: StringNullableFilter<"MissingPerson"> | string | null
+    isUnidentified?: BoolFilter<"MissingPerson"> | boolean
+    reunificationNotes?: StringNullableFilter<"MissingPerson"> | string | null
+    reunificationStatus?: StringFilter<"MissingPerson"> | string
   }, "id">
 
   export type MissingPersonOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    nic?: SortOrderInput | SortOrder
     age?: SortOrderInput | SortOrder
-    gender?: SortOrderInput | SortOrder
     description?: SortOrder
     lastSeen?: SortOrder
     photo?: SortOrderInput | SortOrder
     reportedBy?: SortOrderInput | SortOrder
-    contactName?: SortOrderInput | SortOrder
-    contactPhone?: SortOrderInput | SortOrder
     status?: SortOrder
-    isUnidentified?: SortOrder
-    reunificationStatus?: SortOrder
-    reunificationNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    nic?: SortOrderInput | SortOrder
+    contactName?: SortOrderInput | SortOrder
+    contactPhone?: SortOrderInput | SortOrder
+    gender?: SortOrderInput | SortOrder
+    isUnidentified?: SortOrder
+    reunificationNotes?: SortOrderInput | SortOrder
+    reunificationStatus?: SortOrder
     _count?: MissingPersonCountOrderByAggregateInput
     _avg?: MissingPersonAvgOrderByAggregateInput
     _max?: MissingPersonMaxOrderByAggregateInput
@@ -75381,21 +75381,21 @@ export namespace Prisma {
     NOT?: MissingPersonScalarWhereWithAggregatesInput | MissingPersonScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"MissingPerson"> | string
     name?: StringWithAggregatesFilter<"MissingPerson"> | string
-    nic?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
     age?: IntNullableWithAggregatesFilter<"MissingPerson"> | number | null
-    gender?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
     description?: StringWithAggregatesFilter<"MissingPerson"> | string
     lastSeen?: StringWithAggregatesFilter<"MissingPerson"> | string
     photo?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
     reportedBy?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
-    contactName?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
-    contactPhone?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
     status?: StringWithAggregatesFilter<"MissingPerson"> | string
-    isUnidentified?: BoolWithAggregatesFilter<"MissingPerson"> | boolean
-    reunificationStatus?: StringWithAggregatesFilter<"MissingPerson"> | string
-    reunificationNotes?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"MissingPerson"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MissingPerson"> | Date | string
+    nic?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
+    contactName?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
+    contactPhone?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
+    gender?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
+    isUnidentified?: BoolWithAggregatesFilter<"MissingPerson"> | boolean
+    reunificationNotes?: StringNullableWithAggregatesFilter<"MissingPerson"> | string | null
+    reunificationStatus?: StringWithAggregatesFilter<"MissingPerson"> | string
   }
 
   export type NotificationWhereInput = {
@@ -75769,16 +75769,16 @@ export namespace Prisma {
     maxUsage?: IntFilter<"ReliefToken"> | number
     issuedAt?: DateTimeFilter<"ReliefToken"> | Date | string
     expiresAt?: DateTimeNullableFilter<"ReliefToken"> | Date | string | null
-    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
-    isHouseholdBundle?: BoolFilter<"ReliefToken"> | boolean
-    householdId?: StringNullableFilter<"ReliefToken"> | string | null
-    donorId?: StringNullableFilter<"ReliefToken"> | string | null
-    fraudRiskScore?: FloatFilter<"ReliefToken"> | number
     createdAt?: DateTimeFilter<"ReliefToken"> | Date | string
     updatedAt?: DateTimeFilter<"ReliefToken"> | Date | string
+    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
+    donorId?: StringNullableFilter<"ReliefToken"> | string | null
+    fraudRiskScore?: FloatFilter<"ReliefToken"> | number
+    householdId?: StringNullableFilter<"ReliefToken"> | string | null
+    isHouseholdBundle?: BoolFilter<"ReliefToken"> | boolean
+    donor?: XOR<DonorCampaignNullableScalarRelationFilter, DonorCampaignWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     claims?: ReliefTokenClaimListRelationFilter
-    donor?: XOR<DonorCampaignNullableScalarRelationFilter, DonorCampaignWhereInput> | null
   }
 
   export type ReliefTokenOrderByWithRelationInput = {
@@ -75792,16 +75792,16 @@ export namespace Prisma {
     maxUsage?: SortOrder
     issuedAt?: SortOrder
     expiresAt?: SortOrderInput | SortOrder
-    categories?: SortOrder
-    isHouseholdBundle?: SortOrder
-    householdId?: SortOrderInput | SortOrder
-    donorId?: SortOrderInput | SortOrder
-    fraudRiskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    categories?: SortOrder
+    donorId?: SortOrderInput | SortOrder
+    fraudRiskScore?: SortOrder
+    householdId?: SortOrderInput | SortOrder
+    isHouseholdBundle?: SortOrder
+    donor?: DonorCampaignOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     claims?: ReliefTokenClaimOrderByRelationAggregateInput
-    donor?: DonorCampaignOrderByWithRelationInput
   }
 
   export type ReliefTokenWhereUniqueInput = Prisma.AtLeast<{
@@ -75818,16 +75818,16 @@ export namespace Prisma {
     maxUsage?: IntFilter<"ReliefToken"> | number
     issuedAt?: DateTimeFilter<"ReliefToken"> | Date | string
     expiresAt?: DateTimeNullableFilter<"ReliefToken"> | Date | string | null
-    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
-    isHouseholdBundle?: BoolFilter<"ReliefToken"> | boolean
-    householdId?: StringNullableFilter<"ReliefToken"> | string | null
-    donorId?: StringNullableFilter<"ReliefToken"> | string | null
-    fraudRiskScore?: FloatFilter<"ReliefToken"> | number
     createdAt?: DateTimeFilter<"ReliefToken"> | Date | string
     updatedAt?: DateTimeFilter<"ReliefToken"> | Date | string
+    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
+    donorId?: StringNullableFilter<"ReliefToken"> | string | null
+    fraudRiskScore?: FloatFilter<"ReliefToken"> | number
+    householdId?: StringNullableFilter<"ReliefToken"> | string | null
+    isHouseholdBundle?: BoolFilter<"ReliefToken"> | boolean
+    donor?: XOR<DonorCampaignNullableScalarRelationFilter, DonorCampaignWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     claims?: ReliefTokenClaimListRelationFilter
-    donor?: XOR<DonorCampaignNullableScalarRelationFilter, DonorCampaignWhereInput> | null
   }, "id" | "code">
 
   export type ReliefTokenOrderByWithAggregationInput = {
@@ -75841,13 +75841,13 @@ export namespace Prisma {
     maxUsage?: SortOrder
     issuedAt?: SortOrder
     expiresAt?: SortOrderInput | SortOrder
-    categories?: SortOrder
-    isHouseholdBundle?: SortOrder
-    householdId?: SortOrderInput | SortOrder
-    donorId?: SortOrderInput | SortOrder
-    fraudRiskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    categories?: SortOrder
+    donorId?: SortOrderInput | SortOrder
+    fraudRiskScore?: SortOrder
+    householdId?: SortOrderInput | SortOrder
+    isHouseholdBundle?: SortOrder
     _count?: ReliefTokenCountOrderByAggregateInput
     _avg?: ReliefTokenAvgOrderByAggregateInput
     _max?: ReliefTokenMaxOrderByAggregateInput
@@ -75869,13 +75869,13 @@ export namespace Prisma {
     maxUsage?: IntWithAggregatesFilter<"ReliefToken"> | number
     issuedAt?: DateTimeWithAggregatesFilter<"ReliefToken"> | Date | string
     expiresAt?: DateTimeNullableWithAggregatesFilter<"ReliefToken"> | Date | string | null
-    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
-    isHouseholdBundle?: BoolWithAggregatesFilter<"ReliefToken"> | boolean
-    householdId?: StringNullableWithAggregatesFilter<"ReliefToken"> | string | null
-    donorId?: StringNullableWithAggregatesFilter<"ReliefToken"> | string | null
-    fraudRiskScore?: FloatWithAggregatesFilter<"ReliefToken"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ReliefToken"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ReliefToken"> | Date | string
+    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
+    donorId?: StringNullableWithAggregatesFilter<"ReliefToken"> | string | null
+    fraudRiskScore?: FloatWithAggregatesFilter<"ReliefToken"> | number
+    householdId?: StringNullableWithAggregatesFilter<"ReliefToken"> | string | null
+    isHouseholdBundle?: BoolWithAggregatesFilter<"ReliefToken"> | boolean
   }
 
   export type ReliefTokenClaimWhereInput = {
@@ -75975,7 +75975,6 @@ export namespace Prisma {
     location?: StringFilter<"DamageAssessment"> | string
     latitude?: FloatNullableFilter<"DamageAssessment"> | number | null
     longitude?: FloatNullableFilter<"DamageAssessment"> | number | null
-    polygonData?: JsonNullableFilter<"DamageAssessment">
     category?: EnumDamageCategoryFilter<"DamageAssessment"> | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
@@ -75983,20 +75982,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
     affectedPersons?: IntNullableFilter<"DamageAssessment"> | number | null
     estimatedLoss?: FloatNullableFilter<"DamageAssessment"> | number | null
-    aiEstimatedDamage?: StringNullableFilter<"DamageAssessment"> | string | null
-    aiEstimatedCost?: FloatNullableFilter<"DamageAssessment"> | number | null
-    propertyOwnershipStatus?: StringNullableFilter<"DamageAssessment"> | string | null
-    familyVulnerabilityScore?: IntNullableFilter<"DamageAssessment"> | number | null
-    incomeBracket?: StringNullableFilter<"DamageAssessment"> | string | null
-    compensationEligibilityScore?: FloatNullableFilter<"DamageAssessment"> | number | null
-    compensationEligible?: BoolFilter<"DamageAssessment"> | boolean
     mediaUrls?: StringNullableListFilter<"DamageAssessment">
     status?: EnumDamageStatusFilter<"DamageAssessment"> | $Enums.DamageStatus
     notes?: StringNullableFilter<"DamageAssessment"> | string | null
-    reviewerNotes?: StringNullableFilter<"DamageAssessment"> | string | null
     verifiedById?: StringNullableFilter<"DamageAssessment"> | string | null
     createdAt?: DateTimeFilter<"DamageAssessment"> | Date | string
     updatedAt?: DateTimeFilter<"DamageAssessment"> | Date | string
+    aiEstimatedCost?: FloatNullableFilter<"DamageAssessment"> | number | null
+    aiEstimatedDamage?: StringNullableFilter<"DamageAssessment"> | string | null
+    compensationEligibilityScore?: FloatNullableFilter<"DamageAssessment"> | number | null
+    compensationEligible?: BoolFilter<"DamageAssessment"> | boolean
+    familyVulnerabilityScore?: IntNullableFilter<"DamageAssessment"> | number | null
+    incomeBracket?: StringNullableFilter<"DamageAssessment"> | string | null
+    polygonData?: JsonNullableFilter<"DamageAssessment">
+    propertyOwnershipStatus?: StringNullableFilter<"DamageAssessment"> | string | null
+    reviewerNotes?: StringNullableFilter<"DamageAssessment"> | string | null
     incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
     reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -76008,7 +76008,6 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
-    polygonData?: SortOrderInput | SortOrder
     category?: SortOrder
     structuralDamage?: SortOrder
     cropDamage?: SortOrder
@@ -76016,20 +76015,21 @@ export namespace Prisma {
     roadDamage?: SortOrder
     affectedPersons?: SortOrderInput | SortOrder
     estimatedLoss?: SortOrderInput | SortOrder
-    aiEstimatedDamage?: SortOrderInput | SortOrder
-    aiEstimatedCost?: SortOrderInput | SortOrder
-    propertyOwnershipStatus?: SortOrderInput | SortOrder
-    familyVulnerabilityScore?: SortOrderInput | SortOrder
-    incomeBracket?: SortOrderInput | SortOrder
-    compensationEligibilityScore?: SortOrderInput | SortOrder
-    compensationEligible?: SortOrder
     mediaUrls?: SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
-    reviewerNotes?: SortOrderInput | SortOrder
     verifiedById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    aiEstimatedCost?: SortOrderInput | SortOrder
+    aiEstimatedDamage?: SortOrderInput | SortOrder
+    compensationEligibilityScore?: SortOrderInput | SortOrder
+    compensationEligible?: SortOrder
+    familyVulnerabilityScore?: SortOrderInput | SortOrder
+    incomeBracket?: SortOrderInput | SortOrder
+    polygonData?: SortOrderInput | SortOrder
+    propertyOwnershipStatus?: SortOrderInput | SortOrder
+    reviewerNotes?: SortOrderInput | SortOrder
     incident?: IncidentReportOrderByWithRelationInput
     reportedBy?: UserOrderByWithRelationInput
   }
@@ -76044,7 +76044,6 @@ export namespace Prisma {
     location?: StringFilter<"DamageAssessment"> | string
     latitude?: FloatNullableFilter<"DamageAssessment"> | number | null
     longitude?: FloatNullableFilter<"DamageAssessment"> | number | null
-    polygonData?: JsonNullableFilter<"DamageAssessment">
     category?: EnumDamageCategoryFilter<"DamageAssessment"> | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
@@ -76052,20 +76051,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
     affectedPersons?: IntNullableFilter<"DamageAssessment"> | number | null
     estimatedLoss?: FloatNullableFilter<"DamageAssessment"> | number | null
-    aiEstimatedDamage?: StringNullableFilter<"DamageAssessment"> | string | null
-    aiEstimatedCost?: FloatNullableFilter<"DamageAssessment"> | number | null
-    propertyOwnershipStatus?: StringNullableFilter<"DamageAssessment"> | string | null
-    familyVulnerabilityScore?: IntNullableFilter<"DamageAssessment"> | number | null
-    incomeBracket?: StringNullableFilter<"DamageAssessment"> | string | null
-    compensationEligibilityScore?: FloatNullableFilter<"DamageAssessment"> | number | null
-    compensationEligible?: BoolFilter<"DamageAssessment"> | boolean
     mediaUrls?: StringNullableListFilter<"DamageAssessment">
     status?: EnumDamageStatusFilter<"DamageAssessment"> | $Enums.DamageStatus
     notes?: StringNullableFilter<"DamageAssessment"> | string | null
-    reviewerNotes?: StringNullableFilter<"DamageAssessment"> | string | null
     verifiedById?: StringNullableFilter<"DamageAssessment"> | string | null
     createdAt?: DateTimeFilter<"DamageAssessment"> | Date | string
     updatedAt?: DateTimeFilter<"DamageAssessment"> | Date | string
+    aiEstimatedCost?: FloatNullableFilter<"DamageAssessment"> | number | null
+    aiEstimatedDamage?: StringNullableFilter<"DamageAssessment"> | string | null
+    compensationEligibilityScore?: FloatNullableFilter<"DamageAssessment"> | number | null
+    compensationEligible?: BoolFilter<"DamageAssessment"> | boolean
+    familyVulnerabilityScore?: IntNullableFilter<"DamageAssessment"> | number | null
+    incomeBracket?: StringNullableFilter<"DamageAssessment"> | string | null
+    polygonData?: JsonNullableFilter<"DamageAssessment">
+    propertyOwnershipStatus?: StringNullableFilter<"DamageAssessment"> | string | null
+    reviewerNotes?: StringNullableFilter<"DamageAssessment"> | string | null
     incident?: XOR<IncidentReportNullableScalarRelationFilter, IncidentReportWhereInput> | null
     reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -76077,7 +76077,6 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
-    polygonData?: SortOrderInput | SortOrder
     category?: SortOrder
     structuralDamage?: SortOrder
     cropDamage?: SortOrder
@@ -76085,20 +76084,21 @@ export namespace Prisma {
     roadDamage?: SortOrder
     affectedPersons?: SortOrderInput | SortOrder
     estimatedLoss?: SortOrderInput | SortOrder
-    aiEstimatedDamage?: SortOrderInput | SortOrder
-    aiEstimatedCost?: SortOrderInput | SortOrder
-    propertyOwnershipStatus?: SortOrderInput | SortOrder
-    familyVulnerabilityScore?: SortOrderInput | SortOrder
-    incomeBracket?: SortOrderInput | SortOrder
-    compensationEligibilityScore?: SortOrderInput | SortOrder
-    compensationEligible?: SortOrder
     mediaUrls?: SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
-    reviewerNotes?: SortOrderInput | SortOrder
     verifiedById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    aiEstimatedCost?: SortOrderInput | SortOrder
+    aiEstimatedDamage?: SortOrderInput | SortOrder
+    compensationEligibilityScore?: SortOrderInput | SortOrder
+    compensationEligible?: SortOrder
+    familyVulnerabilityScore?: SortOrderInput | SortOrder
+    incomeBracket?: SortOrderInput | SortOrder
+    polygonData?: SortOrderInput | SortOrder
+    propertyOwnershipStatus?: SortOrderInput | SortOrder
+    reviewerNotes?: SortOrderInput | SortOrder
     _count?: DamageAssessmentCountOrderByAggregateInput
     _avg?: DamageAssessmentAvgOrderByAggregateInput
     _max?: DamageAssessmentMaxOrderByAggregateInput
@@ -76116,7 +76116,6 @@ export namespace Prisma {
     location?: StringWithAggregatesFilter<"DamageAssessment"> | string
     latitude?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
-    polygonData?: JsonNullableWithAggregatesFilter<"DamageAssessment">
     category?: EnumDamageCategoryWithAggregatesFilter<"DamageAssessment"> | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelWithAggregatesFilter<"DamageAssessment"> | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelWithAggregatesFilter<"DamageAssessment"> | $Enums.DamageLevel
@@ -76124,20 +76123,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelWithAggregatesFilter<"DamageAssessment"> | $Enums.DamageLevel
     affectedPersons?: IntNullableWithAggregatesFilter<"DamageAssessment"> | number | null
     estimatedLoss?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
-    aiEstimatedDamage?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
-    aiEstimatedCost?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
-    propertyOwnershipStatus?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
-    familyVulnerabilityScore?: IntNullableWithAggregatesFilter<"DamageAssessment"> | number | null
-    incomeBracket?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
-    compensationEligibilityScore?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
-    compensationEligible?: BoolWithAggregatesFilter<"DamageAssessment"> | boolean
     mediaUrls?: StringNullableListFilter<"DamageAssessment">
     status?: EnumDamageStatusWithAggregatesFilter<"DamageAssessment"> | $Enums.DamageStatus
     notes?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
-    reviewerNotes?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
     verifiedById?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DamageAssessment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DamageAssessment"> | Date | string
+    aiEstimatedCost?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
+    aiEstimatedDamage?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
+    compensationEligibilityScore?: FloatNullableWithAggregatesFilter<"DamageAssessment"> | number | null
+    compensationEligible?: BoolWithAggregatesFilter<"DamageAssessment"> | boolean
+    familyVulnerabilityScore?: IntNullableWithAggregatesFilter<"DamageAssessment"> | number | null
+    incomeBracket?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
+    polygonData?: JsonNullableWithAggregatesFilter<"DamageAssessment">
+    propertyOwnershipStatus?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
+    reviewerNotes?: StringNullableWithAggregatesFilter<"DamageAssessment"> | string | null
   }
 
   export type LocalVerifierWhereInput = {
@@ -76316,10 +76316,10 @@ export namespace Prisma {
     affectedCount?: IntNullableFilter<"PsychologicalSupportRequest"> | number | null
     assignedToId?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
     notes?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
-    nextCheckInDate?: DateTimeNullableFilter<"PsychologicalSupportRequest"> | Date | string | null
-    checkInStatus?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
     createdAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
     updatedAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
+    checkInStatus?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
+    nextCheckInDate?: DateTimeNullableFilter<"PsychologicalSupportRequest"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -76335,10 +76335,10 @@ export namespace Prisma {
     affectedCount?: SortOrderInput | SortOrder
     assignedToId?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
-    nextCheckInDate?: SortOrderInput | SortOrder
-    checkInStatus?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    checkInStatus?: SortOrderInput | SortOrder
+    nextCheckInDate?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -76357,10 +76357,10 @@ export namespace Prisma {
     affectedCount?: IntNullableFilter<"PsychologicalSupportRequest"> | number | null
     assignedToId?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
     notes?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
-    nextCheckInDate?: DateTimeNullableFilter<"PsychologicalSupportRequest"> | Date | string | null
-    checkInStatus?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
     createdAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
     updatedAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
+    checkInStatus?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
+    nextCheckInDate?: DateTimeNullableFilter<"PsychologicalSupportRequest"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -76376,10 +76376,10 @@ export namespace Prisma {
     affectedCount?: SortOrderInput | SortOrder
     assignedToId?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
-    nextCheckInDate?: SortOrderInput | SortOrder
-    checkInStatus?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    checkInStatus?: SortOrderInput | SortOrder
+    nextCheckInDate?: SortOrderInput | SortOrder
     _count?: PsychologicalSupportRequestCountOrderByAggregateInput
     _avg?: PsychologicalSupportRequestAvgOrderByAggregateInput
     _max?: PsychologicalSupportRequestMaxOrderByAggregateInput
@@ -76402,10 +76402,10 @@ export namespace Prisma {
     affectedCount?: IntNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | number | null
     assignedToId?: StringNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | string | null
     notes?: StringNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | string | null
-    nextCheckInDate?: DateTimeNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | Date | string | null
-    checkInStatus?: StringNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PsychologicalSupportRequest"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PsychologicalSupportRequest"> | Date | string
+    checkInStatus?: StringNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | string | null
+    nextCheckInDate?: DateTimeNullableWithAggregatesFilter<"PsychologicalSupportRequest"> | Date | string | null
   }
 
   export type ThreatForecastWhereInput = {
@@ -77004,8 +77004,8 @@ export namespace Prisma {
     totalCost?: FloatFilter<"ResourceExpenditure"> | number
     budgetId?: StringFilter<"ResourceExpenditure"> | string
     createdAt?: DateTimeFilter<"ResourceExpenditure"> | Date | string
-    resourceCost?: XOR<ResourceCostScalarRelationFilter, ResourceCostWhereInput>
     budget?: XOR<DisasterBudgetScalarRelationFilter, DisasterBudgetWhereInput>
+    resourceCost?: XOR<ResourceCostScalarRelationFilter, ResourceCostWhereInput>
   }
 
   export type ResourceExpenditureOrderByWithRelationInput = {
@@ -77015,8 +77015,8 @@ export namespace Prisma {
     totalCost?: SortOrder
     budgetId?: SortOrder
     createdAt?: SortOrder
-    resourceCost?: ResourceCostOrderByWithRelationInput
     budget?: DisasterBudgetOrderByWithRelationInput
+    resourceCost?: ResourceCostOrderByWithRelationInput
   }
 
   export type ResourceExpenditureWhereUniqueInput = Prisma.AtLeast<{
@@ -77029,8 +77029,8 @@ export namespace Prisma {
     totalCost?: FloatFilter<"ResourceExpenditure"> | number
     budgetId?: StringFilter<"ResourceExpenditure"> | string
     createdAt?: DateTimeFilter<"ResourceExpenditure"> | Date | string
-    resourceCost?: XOR<ResourceCostScalarRelationFilter, ResourceCostWhereInput>
     budget?: XOR<DisasterBudgetScalarRelationFilter, DisasterBudgetWhereInput>
+    resourceCost?: XOR<ResourceCostScalarRelationFilter, ResourceCostWhereInput>
   }, "id">
 
   export type ResourceExpenditureOrderByWithAggregationInput = {
@@ -78090,8 +78090,8 @@ export namespace Prisma {
     campId?: StringNullableFilter<"Donation"> | string | null
     createdAt?: DateTimeFilter<"Donation"> | Date | string
     updatedAt?: DateTimeFilter<"Donation"> | Date | string
-    donor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     camp?: XOR<ReliefCampNullableScalarRelationFilter, ReliefCampWhereInput> | null
+    donor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type DonationOrderByWithRelationInput = {
@@ -78108,8 +78108,8 @@ export namespace Prisma {
     campId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    donor?: UserOrderByWithRelationInput
     camp?: ReliefCampOrderByWithRelationInput
+    donor?: UserOrderByWithRelationInput
   }
 
   export type DonationWhereUniqueInput = Prisma.AtLeast<{
@@ -78129,8 +78129,8 @@ export namespace Prisma {
     campId?: StringNullableFilter<"Donation"> | string | null
     createdAt?: DateTimeFilter<"Donation"> | Date | string
     updatedAt?: DateTimeFilter<"Donation"> | Date | string
-    donor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     camp?: XOR<ReliefCampNullableScalarRelationFilter, ReliefCampWhereInput> | null
+    donor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type DonationOrderByWithAggregationInput = {
@@ -78708,19 +78708,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -78729,14 +78731,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -78745,20 +78745,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -78767,13 +78769,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -78782,19 +78782,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -78803,14 +78805,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -78819,20 +78819,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -78841,13 +78843,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -78856,18 +78856,18 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
   }
 
@@ -78877,18 +78877,18 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -78897,18 +78897,18 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -78919,23 +78919,23 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateInput = {
@@ -78945,23 +78945,23 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUpdateInput = {
@@ -78971,23 +78971,23 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateInput = {
@@ -78997,23 +78997,23 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportCreateManyInput = {
@@ -79023,17 +79023,17 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
   }
 
   export type IncidentReportUpdateManyMutationInput = {
@@ -79043,16 +79043,16 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type IncidentReportUncheckedUpdateManyInput = {
@@ -79062,35 +79062,35 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type AlertCreateInput = {
     id?: string
     title: string
     message: string
-    locations?: AlertCreatelocationsInput | string[]
-    latitudes?: AlertCreatelatitudesInput | number[]
-    longitudes?: AlertCreatelongitudesInput | number[]
     type?: $Enums.AlertType
     active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    latitudes?: AlertCreatelatitudesInput | number[]
+    locations?: AlertCreatelocationsInput | string[]
+    longitudes?: AlertCreatelongitudesInput | number[]
+    acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
-    acknowledgementRate?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
     targetSectors?: AlertCreatetargetSectorsInput | string[]
   }
 
@@ -79098,18 +79098,18 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    locations?: AlertCreatelocationsInput | string[]
-    latitudes?: AlertCreatelatitudesInput | number[]
-    longitudes?: AlertCreatelongitudesInput | number[]
     type?: $Enums.AlertType
     active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    latitudes?: AlertCreatelatitudesInput | number[]
+    locations?: AlertCreatelocationsInput | string[]
+    longitudes?: AlertCreatelongitudesInput | number[]
+    acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
-    acknowledgementRate?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
     targetSectors?: AlertCreatetargetSectorsInput | string[]
   }
 
@@ -79117,18 +79117,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    locations?: AlertUpdatelocationsInput | string[]
-    latitudes?: AlertUpdatelatitudesInput | number[]
-    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    locations?: AlertUpdatelocationsInput | string[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
+    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
-    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
@@ -79136,18 +79136,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    locations?: AlertUpdatelocationsInput | string[]
-    latitudes?: AlertUpdatelatitudesInput | number[]
-    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    locations?: AlertUpdatelocationsInput | string[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
+    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
-    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
@@ -79155,18 +79155,18 @@ export namespace Prisma {
     id?: string
     title: string
     message: string
-    locations?: AlertCreatelocationsInput | string[]
-    latitudes?: AlertCreatelatitudesInput | number[]
-    longitudes?: AlertCreatelongitudesInput | number[]
     type?: $Enums.AlertType
     active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    latitudes?: AlertCreatelatitudesInput | number[]
+    locations?: AlertCreatelocationsInput | string[]
+    longitudes?: AlertCreatelongitudesInput | number[]
+    acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
-    acknowledgementRate?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
     targetSectors?: AlertCreatetargetSectorsInput | string[]
   }
 
@@ -79174,18 +79174,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    locations?: AlertUpdatelocationsInput | string[]
-    latitudes?: AlertUpdatelatitudesInput | number[]
-    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    locations?: AlertUpdatelocationsInput | string[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
+    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
-    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
@@ -79193,18 +79193,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
-    locations?: AlertUpdatelocationsInput | string[]
-    latitudes?: AlertUpdatelatitudesInput | number[]
-    longitudes?: AlertUpdatelongitudesInput | number[]
     type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
     active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    locations?: AlertUpdatelocationsInput | string[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
+    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
-    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
   }
 
@@ -79288,13 +79288,13 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentCreateNestedManyWithoutCampInput
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateInput = {
@@ -79310,13 +79310,13 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUpdateInput = {
@@ -79332,13 +79332,13 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateInput = {
@@ -79354,13 +79354,13 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateManyInput = {
@@ -79589,96 +79589,95 @@ export namespace Prisma {
 
   export type VolunteerProfileCreateInput = {
     id?: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     user: UserCreateNestedOneWithoutVolunteerProfileInput
     skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUncheckedCreateInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
     skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     user?: UserUpdateOneRequiredWithoutVolunteerProfileNestedInput
     skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
     skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileCreateManyInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
   }
 
   export type VolunteerProfileUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VolunteerProfileUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HelpRequestCreateInput = {
     id?: string
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -79687,19 +79686,19 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     user?: UserCreateNestedOneWithoutHelpRequestsInput
-    verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
     escalations?: HelpRequestEscalationCreateNestedManyWithoutHelpRequestInput
+    verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
   }
 
   export type HelpRequestUncheckedCreateInput = {
     id?: string
     userId?: string | null
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -79708,17 +79707,17 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     escalations?: HelpRequestEscalationUncheckedCreateNestedManyWithoutHelpRequestInput
+    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
   }
 
   export type HelpRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -79727,19 +79726,19 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneWithoutHelpRequestsNestedInput
-    verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
     escalations?: HelpRequestEscalationUpdateManyWithoutHelpRequestNestedInput
+    verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
   }
 
   export type HelpRequestUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -79748,18 +79747,18 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     escalations?: HelpRequestEscalationUncheckedUpdateManyWithoutHelpRequestNestedInput
+    verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
   }
 
   export type HelpRequestCreateManyInput = {
     id?: string
     userId?: string | null
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -79768,15 +79767,15 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
   }
 
   export type HelpRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -79785,16 +79784,16 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type HelpRequestUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -79803,10 +79802,11 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type HelpRequestEscalationCreateInput = {
@@ -79928,141 +79928,141 @@ export namespace Prisma {
   export type MissingPersonCreateInput = {
     id?: string
     name: string
-    nic?: string | null
     age?: number | null
-    gender?: string | null
     description: string
     lastSeen: string
     photo?: string | null
     reportedBy?: string | null
-    contactName?: string | null
-    contactPhone?: string | null
     status?: string
-    isUnidentified?: boolean
-    reunificationStatus?: string
-    reunificationNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    nic?: string | null
+    contactName?: string | null
+    contactPhone?: string | null
+    gender?: string | null
+    isUnidentified?: boolean
+    reunificationNotes?: string | null
+    reunificationStatus?: string
   }
 
   export type MissingPersonUncheckedCreateInput = {
     id?: string
     name: string
-    nic?: string | null
     age?: number | null
-    gender?: string | null
     description: string
     lastSeen: string
     photo?: string | null
     reportedBy?: string | null
-    contactName?: string | null
-    contactPhone?: string | null
     status?: string
-    isUnidentified?: boolean
-    reunificationStatus?: string
-    reunificationNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    nic?: string | null
+    contactName?: string | null
+    contactPhone?: string | null
+    gender?: string | null
+    isUnidentified?: boolean
+    reunificationNotes?: string | null
+    reunificationStatus?: string
   }
 
   export type MissingPersonUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    nic?: NullableStringFieldUpdateOperationsInput | string | null
     age?: NullableIntFieldUpdateOperationsInput | number | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     lastSeen?: StringFieldUpdateOperationsInput | string
     photo?: NullableStringFieldUpdateOperationsInput | string | null
     reportedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    contactName?: NullableStringFieldUpdateOperationsInput | string | null
-    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
-    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
-    reunificationStatus?: StringFieldUpdateOperationsInput | string
-    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    contactName?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
+    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reunificationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type MissingPersonUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    nic?: NullableStringFieldUpdateOperationsInput | string | null
     age?: NullableIntFieldUpdateOperationsInput | number | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     lastSeen?: StringFieldUpdateOperationsInput | string
     photo?: NullableStringFieldUpdateOperationsInput | string | null
     reportedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    contactName?: NullableStringFieldUpdateOperationsInput | string | null
-    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
-    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
-    reunificationStatus?: StringFieldUpdateOperationsInput | string
-    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    contactName?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
+    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reunificationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type MissingPersonCreateManyInput = {
     id?: string
     name: string
-    nic?: string | null
     age?: number | null
-    gender?: string | null
     description: string
     lastSeen: string
     photo?: string | null
     reportedBy?: string | null
-    contactName?: string | null
-    contactPhone?: string | null
     status?: string
-    isUnidentified?: boolean
-    reunificationStatus?: string
-    reunificationNotes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    nic?: string | null
+    contactName?: string | null
+    contactPhone?: string | null
+    gender?: string | null
+    isUnidentified?: boolean
+    reunificationNotes?: string | null
+    reunificationStatus?: string
   }
 
   export type MissingPersonUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    nic?: NullableStringFieldUpdateOperationsInput | string | null
     age?: NullableIntFieldUpdateOperationsInput | number | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     lastSeen?: StringFieldUpdateOperationsInput | string
     photo?: NullableStringFieldUpdateOperationsInput | string | null
     reportedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    contactName?: NullableStringFieldUpdateOperationsInput | string | null
-    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
-    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
-    reunificationStatus?: StringFieldUpdateOperationsInput | string
-    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    contactName?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
+    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reunificationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type MissingPersonUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    nic?: NullableStringFieldUpdateOperationsInput | string | null
     age?: NullableIntFieldUpdateOperationsInput | number | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     lastSeen?: StringFieldUpdateOperationsInput | string
     photo?: NullableStringFieldUpdateOperationsInput | string | null
     reportedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    contactName?: NullableStringFieldUpdateOperationsInput | string | null
-    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
-    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
-    reunificationStatus?: StringFieldUpdateOperationsInput | string
-    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    contactName?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    isUnidentified?: BoolFieldUpdateOperationsInput | boolean
+    reunificationNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reunificationStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type NotificationCreateInput = {
@@ -80450,15 +80450,15 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
+    donor?: DonorCampaignCreateNestedOneWithoutTokensInput
     user: UserCreateNestedOneWithoutReliefTokensInput
     claims?: ReliefTokenClaimCreateNestedManyWithoutTokenInput
-    donor?: DonorCampaignCreateNestedOneWithoutTokensInput
   }
 
   export type ReliefTokenUncheckedCreateInput = {
@@ -80472,13 +80472,13 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    donorId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: string | null
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
     claims?: ReliefTokenClaimUncheckedCreateNestedManyWithoutTokenInput
   }
 
@@ -80492,15 +80492,15 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
+    donor?: DonorCampaignUpdateOneWithoutTokensNestedInput
     user?: UserUpdateOneRequiredWithoutReliefTokensNestedInput
     claims?: ReliefTokenClaimUpdateManyWithoutTokenNestedInput
-    donor?: DonorCampaignUpdateOneWithoutTokensNestedInput
   }
 
   export type ReliefTokenUncheckedUpdateInput = {
@@ -80514,13 +80514,13 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    donorId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
     claims?: ReliefTokenClaimUncheckedUpdateManyWithoutTokenNestedInput
   }
 
@@ -80535,13 +80535,13 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    donorId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: string | null
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
   }
 
   export type ReliefTokenUpdateManyMutationInput = {
@@ -80554,12 +80554,12 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReliefTokenUncheckedUpdateManyInput = {
@@ -80573,13 +80573,13 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    donorId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReliefTokenClaimCreateInput = {
@@ -80684,7 +80684,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -80692,20 +80691,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
     incident?: IncidentReportCreateNestedOneWithoutDamageAssessmentsInput
     reportedBy: UserCreateNestedOneWithoutDamageReportsInput
   }
@@ -80717,7 +80717,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -80725,20 +80724,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
   }
 
   export type DamageAssessmentUpdateInput = {
@@ -80746,7 +80746,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -80754,20 +80753,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     incident?: IncidentReportUpdateOneWithoutDamageAssessmentsNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutDamageReportsNestedInput
   }
@@ -80779,7 +80779,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -80787,20 +80786,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DamageAssessmentCreateManyInput = {
@@ -80810,7 +80810,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -80818,20 +80817,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
   }
 
   export type DamageAssessmentUpdateManyMutationInput = {
@@ -80839,7 +80839,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -80847,20 +80846,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DamageAssessmentUncheckedUpdateManyInput = {
@@ -80870,7 +80870,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -80878,20 +80877,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type LocalVerifierCreateInput = {
@@ -81073,10 +81073,10 @@ export namespace Prisma {
     affectedCount?: number | null
     assignedToId?: string | null
     notes?: string | null
-    nextCheckInDate?: Date | string | null
-    checkInStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    checkInStatus?: string | null
+    nextCheckInDate?: Date | string | null
     user: UserCreateNestedOneWithoutSupportRequestsInput
   }
 
@@ -81092,10 +81092,10 @@ export namespace Prisma {
     affectedCount?: number | null
     assignedToId?: string | null
     notes?: string | null
-    nextCheckInDate?: Date | string | null
-    checkInStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    checkInStatus?: string | null
+    nextCheckInDate?: Date | string | null
   }
 
   export type PsychologicalSupportRequestUpdateInput = {
@@ -81109,10 +81109,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutSupportRequestsNestedInput
   }
 
@@ -81128,10 +81128,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PsychologicalSupportRequestCreateManyInput = {
@@ -81146,10 +81146,10 @@ export namespace Prisma {
     affectedCount?: number | null
     assignedToId?: string | null
     notes?: string | null
-    nextCheckInDate?: Date | string | null
-    checkInStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    checkInStatus?: string | null
+    nextCheckInDate?: Date | string | null
   }
 
   export type PsychologicalSupportRequestUpdateManyMutationInput = {
@@ -81163,10 +81163,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PsychologicalSupportRequestUncheckedUpdateManyInput = {
@@ -81181,10 +81181,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ThreatForecastCreateInput = {
@@ -81836,8 +81836,8 @@ export namespace Prisma {
     quantity: number
     totalCost: number
     createdAt?: Date | string
-    resourceCost: ResourceCostCreateNestedOneWithoutExpendituresInput
     budget: DisasterBudgetCreateNestedOneWithoutExpendituresInput
+    resourceCost: ResourceCostCreateNestedOneWithoutExpendituresInput
   }
 
   export type ResourceExpenditureUncheckedCreateInput = {
@@ -81854,8 +81854,8 @@ export namespace Prisma {
     quantity?: FloatFieldUpdateOperationsInput | number
     totalCost?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    resourceCost?: ResourceCostUpdateOneRequiredWithoutExpendituresNestedInput
     budget?: DisasterBudgetUpdateOneRequiredWithoutExpendituresNestedInput
+    resourceCost?: ResourceCostUpdateOneRequiredWithoutExpendituresNestedInput
   }
 
   export type ResourceExpenditureUncheckedUpdateInput = {
@@ -82967,8 +82967,8 @@ export namespace Prisma {
     status?: $Enums.DonationStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    donor?: UserCreateNestedOneWithoutDonationsInput
     camp?: ReliefCampCreateNestedOneWithoutDonationsInput
+    donor?: UserCreateNestedOneWithoutDonationsInput
   }
 
   export type DonationUncheckedCreateInput = {
@@ -82999,8 +82999,8 @@ export namespace Prisma {
     status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    donor?: UserUpdateOneWithoutDonationsNestedInput
     camp?: ReliefCampUpdateOneWithoutDonationsNestedInput
+    donor?: UserUpdateOneWithoutDonationsNestedInput
   }
 
   export type DonationUncheckedUpdateInput = {
@@ -83734,6 +83734,18 @@ export namespace Prisma {
     none?: DamageAssessmentWhereInput
   }
 
+  export type DonationListRelationFilter = {
+    every?: DonationWhereInput
+    some?: DonationWhereInput
+    none?: DonationWhereInput
+  }
+
+  export type FamilyMemberListRelationFilter = {
+    every?: FamilyMemberWhereInput
+    some?: FamilyMemberWhereInput
+    none?: FamilyMemberWhereInput
+  }
+
   export type HelpRequestListRelationFilter = {
     every?: HelpRequestWhereInput
     some?: HelpRequestWhereInput
@@ -83781,15 +83793,21 @@ export namespace Prisma {
     none?: ReportVerificationWhereInput
   }
 
+  export type SafetyCheckInListRelationFilter = {
+    every?: SafetyCheckInWhereInput
+    some?: SafetyCheckInWhereInput
+    none?: SafetyCheckInWhereInput
+  }
+
   export type TaskListRelationFilter = {
     every?: TaskWhereInput
     some?: TaskWhereInput
     none?: TaskWhereInput
   }
 
-  export type VolunteerProfileNullableScalarRelationFilter = {
-    is?: VolunteerProfileWhereInput | null
-    isNot?: VolunteerProfileWhereInput | null
+  export type SectorNullableScalarRelationFilter = {
+    is?: SectorWhereInput | null
+    isNot?: SectorWhereInput | null
   }
 
   export type UserSessionLogListRelationFilter = {
@@ -83798,27 +83816,9 @@ export namespace Prisma {
     none?: UserSessionLogWhereInput
   }
 
-  export type SectorNullableScalarRelationFilter = {
-    is?: SectorWhereInput | null
-    isNot?: SectorWhereInput | null
-  }
-
-  export type DonationListRelationFilter = {
-    every?: DonationWhereInput
-    some?: DonationWhereInput
-    none?: DonationWhereInput
-  }
-
-  export type SafetyCheckInListRelationFilter = {
-    every?: SafetyCheckInWhereInput
-    some?: SafetyCheckInWhereInput
-    none?: SafetyCheckInWhereInput
-  }
-
-  export type FamilyMemberListRelationFilter = {
-    every?: FamilyMemberWhereInput
-    some?: FamilyMemberWhereInput
-    none?: FamilyMemberWhereInput
+  export type VolunteerProfileNullableScalarRelationFilter = {
+    is?: VolunteerProfileWhereInput | null
+    isNot?: VolunteerProfileWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -83827,6 +83827,14 @@ export namespace Prisma {
   }
 
   export type DamageAssessmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DonationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FamilyMemberOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -83858,23 +83866,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SafetyCheckInOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type TaskOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type UserSessionLogOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DonationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SafetyCheckInOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FamilyMemberOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -83884,18 +83884,18 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
-    profilePicture?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     region?: SortOrder
+    hasMobileApp?: SortOrder
+    isFieldActive?: SortOrder
+    lastCheckInTime?: SortOrder
     nic?: SortOrder
     twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
     twoFactorGracePeriodEnds?: SortOrder
-    hasMobileApp?: SortOrder
-    lastCheckInTime?: SortOrder
-    isFieldActive?: SortOrder
+    twoFactorSecret?: SortOrder
+    profilePicture?: SortOrder
     currentSectorId?: SortOrder
   }
 
@@ -83905,18 +83905,18 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
-    profilePicture?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     region?: SortOrder
+    hasMobileApp?: SortOrder
+    isFieldActive?: SortOrder
+    lastCheckInTime?: SortOrder
     nic?: SortOrder
     twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
     twoFactorGracePeriodEnds?: SortOrder
-    hasMobileApp?: SortOrder
-    lastCheckInTime?: SortOrder
-    isFieldActive?: SortOrder
+    twoFactorSecret?: SortOrder
+    profilePicture?: SortOrder
     currentSectorId?: SortOrder
   }
 
@@ -83926,18 +83926,18 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
-    profilePicture?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     region?: SortOrder
+    hasMobileApp?: SortOrder
+    isFieldActive?: SortOrder
+    lastCheckInTime?: SortOrder
     nic?: SortOrder
     twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
     twoFactorGracePeriodEnds?: SortOrder
-    hasMobileApp?: SortOrder
-    lastCheckInTime?: SortOrder
-    isFieldActive?: SortOrder
+    twoFactorSecret?: SortOrder
+    profilePicture?: SortOrder
     currentSectorId?: SortOrder
   }
 
@@ -84056,6 +84056,11 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type AfterActionReportNullableScalarRelationFilter = {
+    is?: AfterActionReportWhereInput | null
+    isNot?: AfterActionReportWhereInput | null
+  }
+
   export type IncidentHistoryListRelationFilter = {
     every?: IncidentHistoryWhereInput
     some?: IncidentHistoryWhereInput
@@ -84073,11 +84078,6 @@ export namespace Prisma {
     none?: VerifierActionWhereInput
   }
 
-  export type AfterActionReportNullableScalarRelationFilter = {
-    is?: AfterActionReportWhereInput | null
-    isNot?: AfterActionReportWhereInput | null
-  }
-
   export type IncidentHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -84093,17 +84093,17 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
-    zoneId?: SortOrder
-    zoneName?: SortOrder
-    province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
-    mlConfidence?: SortOrder
     category?: SortOrder
     images?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    province?: SortOrder
+    zoneId?: SortOrder
+    zoneName?: SortOrder
+    mlConfidence?: SortOrder
   }
 
   export type IncidentReportAvgOrderByAggregateInput = {
@@ -84119,16 +84119,16 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
-    zoneId?: SortOrder
-    zoneName?: SortOrder
-    province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
-    mlConfidence?: SortOrder
     category?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    province?: SortOrder
+    zoneId?: SortOrder
+    zoneName?: SortOrder
+    mlConfidence?: SortOrder
   }
 
   export type IncidentReportMinOrderByAggregateInput = {
@@ -84138,16 +84138,16 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
-    zoneId?: SortOrder
-    zoneName?: SortOrder
-    province?: SortOrder
     status?: SortOrder
     severity?: SortOrder
-    mlConfidence?: SortOrder
     category?: SortOrder
     reporterId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    province?: SortOrder
+    zoneId?: SortOrder
+    zoneName?: SortOrder
+    mlConfidence?: SortOrder
   }
 
   export type IncidentReportSumOrderByAggregateInput = {
@@ -84192,19 +84192,19 @@ export namespace Prisma {
     _max?: NestedEnumSeverityFilter<$PrismaModel>
   }
 
+  export type EnumAlertTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertTypeFilter<$PrismaModel> | $Enums.AlertType
+  }
+
   export type FloatNullableListFilter<$PrismaModel = never> = {
     equals?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     has?: number | FloatFieldRefInput<$PrismaModel> | null
     hasEvery?: number[] | ListFloatFieldRefInput<$PrismaModel>
     hasSome?: number[] | ListFloatFieldRefInput<$PrismaModel>
     isEmpty?: boolean
-  }
-
-  export type EnumAlertTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAlertTypeFilter<$PrismaModel> | $Enums.AlertType
   }
   export type JsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -84234,18 +84234,18 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     message?: SortOrder
-    locations?: SortOrder
-    latitudes?: SortOrder
-    longitudes?: SortOrder
     type?: SortOrder
     active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    latitudes?: SortOrder
+    locations?: SortOrder
+    longitudes?: SortOrder
+    acknowledgementRate?: SortOrder
     channels?: SortOrder
     scheduledTime?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
-    acknowledgementRate?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     targetSectors?: SortOrder
   }
 
@@ -84261,12 +84261,12 @@ export namespace Prisma {
     message?: SortOrder
     type?: SortOrder
     active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    acknowledgementRate?: SortOrder
     scheduledTime?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
-    acknowledgementRate?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type AlertMinOrderByAggregateInput = {
@@ -84275,12 +84275,12 @@ export namespace Prisma {
     message?: SortOrder
     type?: SortOrder
     active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    acknowledgementRate?: SortOrder
     scheduledTime?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
-    acknowledgementRate?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type AlertSumOrderByAggregateInput = {
@@ -84371,16 +84371,16 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type CampResidentListRelationFilter = {
-    every?: CampResidentWhereInput
-    some?: CampResidentWhereInput
-    none?: CampResidentWhereInput
-  }
-
   export type CampInventoryListRelationFilter = {
     every?: CampInventoryWhereInput
     some?: CampInventoryWhereInput
     none?: CampInventoryWhereInput
+  }
+
+  export type CampResidentListRelationFilter = {
+    every?: CampResidentWhereInput
+    some?: CampResidentWhereInput
+    none?: CampResidentWhereInput
   }
 
   export type CampScheduleListRelationFilter = {
@@ -84389,23 +84389,23 @@ export namespace Prisma {
     none?: CampScheduleWhereInput
   }
 
-  export type HospitalReferralListRelationFilter = {
-    every?: HospitalReferralWhereInput
-    some?: HospitalReferralWhereInput
-    none?: HospitalReferralWhereInput
-  }
-
   export type CampTransferRequestListRelationFilter = {
     every?: CampTransferRequestWhereInput
     some?: CampTransferRequestWhereInput
     none?: CampTransferRequestWhereInput
   }
 
-  export type CampResidentOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type HospitalReferralListRelationFilter = {
+    every?: HospitalReferralWhereInput
+    some?: HospitalReferralWhereInput
+    none?: HospitalReferralWhereInput
   }
 
   export type CampInventoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CampResidentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -84413,11 +84413,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type HospitalReferralOrderByRelationAggregateInput = {
+  export type CampTransferRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type CampTransferRequestOrderByRelationAggregateInput = {
+  export type HospitalReferralOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -84593,6 +84593,18 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type VolunteerBadgeListRelationFilter = {
+    every?: VolunteerBadgeWhereInput
+    some?: VolunteerBadgeWhereInput
+    none?: VolunteerBadgeWhereInput
+  }
+
+  export type VolunteerCheckInListRelationFilter = {
+    every?: VolunteerCheckInWhereInput
+    some?: VolunteerCheckInWhereInput
+    none?: VolunteerCheckInWhereInput
+  }
+
   export type VolunteerSkillListRelationFilter = {
     every?: VolunteerSkillWhereInput
     some?: VolunteerSkillWhereInput
@@ -84605,22 +84617,18 @@ export namespace Prisma {
     none?: VolunteerTrainingWhereInput
   }
 
-  export type VolunteerCheckInListRelationFilter = {
-    every?: VolunteerCheckInWhereInput
-    some?: VolunteerCheckInWhereInput
-    none?: VolunteerCheckInWhereInput
-  }
-
   export type VolunteerWellbeingListRelationFilter = {
     every?: VolunteerWellbeingWhereInput
     some?: VolunteerWellbeingWhereInput
     none?: VolunteerWellbeingWhereInput
   }
 
-  export type VolunteerBadgeListRelationFilter = {
-    every?: VolunteerBadgeWhereInput
-    some?: VolunteerBadgeWhereInput
-    none?: VolunteerBadgeWhereInput
+  export type VolunteerBadgeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VolunteerCheckInOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type VolunteerSkillOrderByRelationAggregateInput = {
@@ -84631,58 +84639,50 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type VolunteerCheckInOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type VolunteerWellbeingOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VolunteerBadgeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type VolunteerProfileCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    totalHours?: SortOrder
+    createdAt?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
-    createdAt?: SortOrder
+    totalHours?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type VolunteerProfileAvgOrderByAggregateInput = {
-    totalHours?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
+    totalHours?: SortOrder
   }
 
   export type VolunteerProfileMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    totalHours?: SortOrder
+    createdAt?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
-    createdAt?: SortOrder
+    totalHours?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type VolunteerProfileMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    totalHours?: SortOrder
+    createdAt?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
-    createdAt?: SortOrder
+    totalHours?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type VolunteerProfileSumOrderByAggregateInput = {
-    totalHours?: SortOrder
     incidentsJoined?: SortOrder
     readinessScore?: SortOrder
+    totalHours?: SortOrder
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -84725,7 +84725,6 @@ export namespace Prisma {
   export type HelpRequestCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    phone?: SortOrder
     type?: SortOrder
     description?: SortOrder
     location?: SortOrder
@@ -84734,10 +84733,11 @@ export namespace Prisma {
     priority?: SortOrder
     status?: SortOrder
     peopleCount?: SortOrder
-    assignedVolunteerId?: SortOrder
-    escalationLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    assignedVolunteerId?: SortOrder
+    escalationLevel?: SortOrder
+    phone?: SortOrder
   }
 
   export type HelpRequestAvgOrderByAggregateInput = {
@@ -84749,7 +84749,6 @@ export namespace Prisma {
   export type HelpRequestMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    phone?: SortOrder
     type?: SortOrder
     description?: SortOrder
     location?: SortOrder
@@ -84758,16 +84757,16 @@ export namespace Prisma {
     priority?: SortOrder
     status?: SortOrder
     peopleCount?: SortOrder
-    assignedVolunteerId?: SortOrder
-    escalationLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    assignedVolunteerId?: SortOrder
+    escalationLevel?: SortOrder
+    phone?: SortOrder
   }
 
   export type HelpRequestMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    phone?: SortOrder
     type?: SortOrder
     description?: SortOrder
     location?: SortOrder
@@ -84776,10 +84775,11 @@ export namespace Prisma {
     priority?: SortOrder
     status?: SortOrder
     peopleCount?: SortOrder
-    assignedVolunteerId?: SortOrder
-    escalationLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    assignedVolunteerId?: SortOrder
+    escalationLevel?: SortOrder
+    phone?: SortOrder
   }
 
   export type HelpRequestSumOrderByAggregateInput = {
@@ -84868,21 +84868,21 @@ export namespace Prisma {
   export type MissingPersonCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    nic?: SortOrder
     age?: SortOrder
-    gender?: SortOrder
     description?: SortOrder
     lastSeen?: SortOrder
     photo?: SortOrder
     reportedBy?: SortOrder
-    contactName?: SortOrder
-    contactPhone?: SortOrder
     status?: SortOrder
-    isUnidentified?: SortOrder
-    reunificationStatus?: SortOrder
-    reunificationNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    nic?: SortOrder
+    contactName?: SortOrder
+    contactPhone?: SortOrder
+    gender?: SortOrder
+    isUnidentified?: SortOrder
+    reunificationNotes?: SortOrder
+    reunificationStatus?: SortOrder
   }
 
   export type MissingPersonAvgOrderByAggregateInput = {
@@ -84892,41 +84892,41 @@ export namespace Prisma {
   export type MissingPersonMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    nic?: SortOrder
     age?: SortOrder
-    gender?: SortOrder
     description?: SortOrder
     lastSeen?: SortOrder
     photo?: SortOrder
     reportedBy?: SortOrder
-    contactName?: SortOrder
-    contactPhone?: SortOrder
     status?: SortOrder
-    isUnidentified?: SortOrder
-    reunificationStatus?: SortOrder
-    reunificationNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    nic?: SortOrder
+    contactName?: SortOrder
+    contactPhone?: SortOrder
+    gender?: SortOrder
+    isUnidentified?: SortOrder
+    reunificationNotes?: SortOrder
+    reunificationStatus?: SortOrder
   }
 
   export type MissingPersonMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    nic?: SortOrder
     age?: SortOrder
-    gender?: SortOrder
     description?: SortOrder
     lastSeen?: SortOrder
     photo?: SortOrder
     reportedBy?: SortOrder
-    contactName?: SortOrder
-    contactPhone?: SortOrder
     status?: SortOrder
-    isUnidentified?: SortOrder
-    reunificationStatus?: SortOrder
-    reunificationNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    nic?: SortOrder
+    contactName?: SortOrder
+    contactPhone?: SortOrder
+    gender?: SortOrder
+    isUnidentified?: SortOrder
+    reunificationNotes?: SortOrder
+    reunificationStatus?: SortOrder
   }
 
   export type MissingPersonSumOrderByAggregateInput = {
@@ -85181,15 +85181,15 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type DonorCampaignNullableScalarRelationFilter = {
+    is?: DonorCampaignWhereInput | null
+    isNot?: DonorCampaignWhereInput | null
+  }
+
   export type ReliefTokenClaimListRelationFilter = {
     every?: ReliefTokenClaimWhereInput
     some?: ReliefTokenClaimWhereInput
     none?: ReliefTokenClaimWhereInput
-  }
-
-  export type DonorCampaignNullableScalarRelationFilter = {
-    is?: DonorCampaignWhereInput | null
-    isNot?: DonorCampaignWhereInput | null
   }
 
   export type ReliefTokenClaimOrderByRelationAggregateInput = {
@@ -85207,13 +85207,13 @@ export namespace Prisma {
     maxUsage?: SortOrder
     issuedAt?: SortOrder
     expiresAt?: SortOrder
-    categories?: SortOrder
-    isHouseholdBundle?: SortOrder
-    householdId?: SortOrder
-    donorId?: SortOrder
-    fraudRiskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    categories?: SortOrder
+    donorId?: SortOrder
+    fraudRiskScore?: SortOrder
+    householdId?: SortOrder
+    isHouseholdBundle?: SortOrder
   }
 
   export type ReliefTokenAvgOrderByAggregateInput = {
@@ -85233,12 +85233,12 @@ export namespace Prisma {
     maxUsage?: SortOrder
     issuedAt?: SortOrder
     expiresAt?: SortOrder
-    isHouseholdBundle?: SortOrder
-    householdId?: SortOrder
-    donorId?: SortOrder
-    fraudRiskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    donorId?: SortOrder
+    fraudRiskScore?: SortOrder
+    householdId?: SortOrder
+    isHouseholdBundle?: SortOrder
   }
 
   export type ReliefTokenMinOrderByAggregateInput = {
@@ -85252,12 +85252,12 @@ export namespace Prisma {
     maxUsage?: SortOrder
     issuedAt?: SortOrder
     expiresAt?: SortOrder
-    isHouseholdBundle?: SortOrder
-    householdId?: SortOrder
-    donorId?: SortOrder
-    fraudRiskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    donorId?: SortOrder
+    fraudRiskScore?: SortOrder
+    householdId?: SortOrder
+    isHouseholdBundle?: SortOrder
   }
 
   export type ReliefTokenSumOrderByAggregateInput = {
@@ -85363,7 +85363,6 @@ export namespace Prisma {
     location?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
-    polygonData?: SortOrder
     category?: SortOrder
     structuralDamage?: SortOrder
     cropDamage?: SortOrder
@@ -85371,20 +85370,21 @@ export namespace Prisma {
     roadDamage?: SortOrder
     affectedPersons?: SortOrder
     estimatedLoss?: SortOrder
-    aiEstimatedDamage?: SortOrder
-    aiEstimatedCost?: SortOrder
-    propertyOwnershipStatus?: SortOrder
-    familyVulnerabilityScore?: SortOrder
-    incomeBracket?: SortOrder
-    compensationEligibilityScore?: SortOrder
-    compensationEligible?: SortOrder
     mediaUrls?: SortOrder
     status?: SortOrder
     notes?: SortOrder
-    reviewerNotes?: SortOrder
     verifiedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    aiEstimatedCost?: SortOrder
+    aiEstimatedDamage?: SortOrder
+    compensationEligibilityScore?: SortOrder
+    compensationEligible?: SortOrder
+    familyVulnerabilityScore?: SortOrder
+    incomeBracket?: SortOrder
+    polygonData?: SortOrder
+    propertyOwnershipStatus?: SortOrder
+    reviewerNotes?: SortOrder
   }
 
   export type DamageAssessmentAvgOrderByAggregateInput = {
@@ -85393,8 +85393,8 @@ export namespace Prisma {
     affectedPersons?: SortOrder
     estimatedLoss?: SortOrder
     aiEstimatedCost?: SortOrder
-    familyVulnerabilityScore?: SortOrder
     compensationEligibilityScore?: SortOrder
+    familyVulnerabilityScore?: SortOrder
   }
 
   export type DamageAssessmentMaxOrderByAggregateInput = {
@@ -85411,19 +85411,19 @@ export namespace Prisma {
     roadDamage?: SortOrder
     affectedPersons?: SortOrder
     estimatedLoss?: SortOrder
-    aiEstimatedDamage?: SortOrder
-    aiEstimatedCost?: SortOrder
-    propertyOwnershipStatus?: SortOrder
-    familyVulnerabilityScore?: SortOrder
-    incomeBracket?: SortOrder
-    compensationEligibilityScore?: SortOrder
-    compensationEligible?: SortOrder
     status?: SortOrder
     notes?: SortOrder
-    reviewerNotes?: SortOrder
     verifiedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    aiEstimatedCost?: SortOrder
+    aiEstimatedDamage?: SortOrder
+    compensationEligibilityScore?: SortOrder
+    compensationEligible?: SortOrder
+    familyVulnerabilityScore?: SortOrder
+    incomeBracket?: SortOrder
+    propertyOwnershipStatus?: SortOrder
+    reviewerNotes?: SortOrder
   }
 
   export type DamageAssessmentMinOrderByAggregateInput = {
@@ -85440,19 +85440,19 @@ export namespace Prisma {
     roadDamage?: SortOrder
     affectedPersons?: SortOrder
     estimatedLoss?: SortOrder
-    aiEstimatedDamage?: SortOrder
-    aiEstimatedCost?: SortOrder
-    propertyOwnershipStatus?: SortOrder
-    familyVulnerabilityScore?: SortOrder
-    incomeBracket?: SortOrder
-    compensationEligibilityScore?: SortOrder
-    compensationEligible?: SortOrder
     status?: SortOrder
     notes?: SortOrder
-    reviewerNotes?: SortOrder
     verifiedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    aiEstimatedCost?: SortOrder
+    aiEstimatedDamage?: SortOrder
+    compensationEligibilityScore?: SortOrder
+    compensationEligible?: SortOrder
+    familyVulnerabilityScore?: SortOrder
+    incomeBracket?: SortOrder
+    propertyOwnershipStatus?: SortOrder
+    reviewerNotes?: SortOrder
   }
 
   export type DamageAssessmentSumOrderByAggregateInput = {
@@ -85461,8 +85461,8 @@ export namespace Prisma {
     affectedPersons?: SortOrder
     estimatedLoss?: SortOrder
     aiEstimatedCost?: SortOrder
-    familyVulnerabilityScore?: SortOrder
     compensationEligibilityScore?: SortOrder
+    familyVulnerabilityScore?: SortOrder
   }
 
   export type EnumDamageCategoryWithAggregatesFilter<$PrismaModel = never> = {
@@ -85652,10 +85652,10 @@ export namespace Prisma {
     affectedCount?: SortOrder
     assignedToId?: SortOrder
     notes?: SortOrder
-    nextCheckInDate?: SortOrder
-    checkInStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    checkInStatus?: SortOrder
+    nextCheckInDate?: SortOrder
   }
 
   export type PsychologicalSupportRequestAvgOrderByAggregateInput = {
@@ -85674,10 +85674,10 @@ export namespace Prisma {
     affectedCount?: SortOrder
     assignedToId?: SortOrder
     notes?: SortOrder
-    nextCheckInDate?: SortOrder
-    checkInStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    checkInStatus?: SortOrder
+    nextCheckInDate?: SortOrder
   }
 
   export type PsychologicalSupportRequestMinOrderByAggregateInput = {
@@ -85692,10 +85692,10 @@ export namespace Prisma {
     affectedCount?: SortOrder
     assignedToId?: SortOrder
     notes?: SortOrder
-    nextCheckInDate?: SortOrder
-    checkInStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    checkInStatus?: SortOrder
+    nextCheckInDate?: SortOrder
   }
 
   export type PsychologicalSupportRequestSumOrderByAggregateInput = {
@@ -86079,14 +86079,14 @@ export namespace Prisma {
     allocatedBudget?: SortOrder
   }
 
-  export type ResourceCostScalarRelationFilter = {
-    is?: ResourceCostWhereInput
-    isNot?: ResourceCostWhereInput
-  }
-
   export type DisasterBudgetScalarRelationFilter = {
     is?: DisasterBudgetWhereInput
     isNot?: DisasterBudgetWhereInput
+  }
+
+  export type ResourceCostScalarRelationFilter = {
+    is?: ResourceCostWhereInput
+    isNot?: ResourceCostWhereInput
   }
 
   export type ResourceExpenditureCountOrderByAggregateInput = {
@@ -87192,6 +87192,20 @@ export namespace Prisma {
     connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
   }
 
+  export type DonationCreateNestedManyWithoutDonorInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+  }
+
+  export type FamilyMemberCreateNestedManyWithoutPrimaryUserInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+  }
+
   export type HelpRequestCreateNestedManyWithoutUserInput = {
     create?: XOR<HelpRequestCreateWithoutUserInput, HelpRequestUncheckedCreateWithoutUserInput> | HelpRequestCreateWithoutUserInput[] | HelpRequestUncheckedCreateWithoutUserInput[]
     connectOrCreate?: HelpRequestCreateOrConnectWithoutUserInput | HelpRequestCreateOrConnectWithoutUserInput[]
@@ -87247,6 +87261,13 @@ export namespace Prisma {
     connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
   }
 
+  export type SafetyCheckInCreateNestedManyWithoutUserInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+  }
+
   export type TaskCreateNestedManyWithoutAssignedByInput = {
     create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
@@ -87261,10 +87282,10 @@ export namespace Prisma {
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
-  export type VolunteerProfileCreateNestedOneWithoutUserInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    connect?: VolunteerProfileWhereUniqueInput
+  export type SectorCreateNestedOneWithoutUsersInput = {
+    create?: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SectorCreateOrConnectWithoutUsersInput
+    connect?: SectorWhereUniqueInput
   }
 
   export type UserSessionLogCreateNestedManyWithoutUserInput = {
@@ -87274,31 +87295,10 @@ export namespace Prisma {
     connect?: UserSessionLogWhereUniqueInput | UserSessionLogWhereUniqueInput[]
   }
 
-  export type SectorCreateNestedOneWithoutUsersInput = {
-    create?: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
-    connectOrCreate?: SectorCreateOrConnectWithoutUsersInput
-    connect?: SectorWhereUniqueInput
-  }
-
-  export type DonationCreateNestedManyWithoutDonorInput = {
-    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
-    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
-    createMany?: DonationCreateManyDonorInputEnvelope
-    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-  }
-
-  export type SafetyCheckInCreateNestedManyWithoutUserInput = {
-    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
-    createMany?: SafetyCheckInCreateManyUserInputEnvelope
-    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-  }
-
-  export type FamilyMemberCreateNestedManyWithoutPrimaryUserInput = {
-    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
-    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
-    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
-    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+  export type VolunteerProfileCreateNestedOneWithoutUserInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    connect?: VolunteerProfileWhereUniqueInput
   }
 
   export type DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput = {
@@ -87306,6 +87306,20 @@ export namespace Prisma {
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
     createMany?: DamageAssessmentCreateManyReportedByInputEnvelope
     connect?: DamageAssessmentWhereUniqueInput | DamageAssessmentWhereUniqueInput[]
+  }
+
+  export type DonationUncheckedCreateNestedManyWithoutDonorInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+  }
+
+  export type FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
   }
 
   export type HelpRequestUncheckedCreateNestedManyWithoutUserInput = {
@@ -87363,6 +87377,13 @@ export namespace Prisma {
     connect?: ReportVerificationWhereUniqueInput | ReportVerificationWhereUniqueInput[]
   }
 
+  export type SafetyCheckInUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+  }
+
   export type TaskUncheckedCreateNestedManyWithoutAssignedByInput = {
     create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
@@ -87377,12 +87398,6 @@ export namespace Prisma {
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
-  export type VolunteerProfileUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    connect?: VolunteerProfileWhereUniqueInput
-  }
-
   export type UserSessionLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserSessionLogCreateWithoutUserInput, UserSessionLogUncheckedCreateWithoutUserInput> | UserSessionLogCreateWithoutUserInput[] | UserSessionLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSessionLogCreateOrConnectWithoutUserInput | UserSessionLogCreateOrConnectWithoutUserInput[]
@@ -87390,25 +87405,10 @@ export namespace Prisma {
     connect?: UserSessionLogWhereUniqueInput | UserSessionLogWhereUniqueInput[]
   }
 
-  export type DonationUncheckedCreateNestedManyWithoutDonorInput = {
-    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
-    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
-    createMany?: DonationCreateManyDonorInputEnvelope
-    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-  }
-
-  export type SafetyCheckInUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
-    createMany?: SafetyCheckInCreateManyUserInputEnvelope
-    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-  }
-
-  export type FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput = {
-    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
-    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
-    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
-    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+  export type VolunteerProfileUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    connect?: VolunteerProfileWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -87447,6 +87447,34 @@ export namespace Prisma {
     update?: DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput | DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput[]
     updateMany?: DamageAssessmentUpdateManyWithWhereWithoutReportedByInput | DamageAssessmentUpdateManyWithWhereWithoutReportedByInput[]
     deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
+  }
+
+  export type DonationUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    upsert?: DonationUpsertWithWhereUniqueWithoutDonorInput | DonationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    update?: DonationUpdateWithWhereUniqueWithoutDonorInput | DonationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: DonationUpdateManyWithWhereWithoutDonorInput | DonationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
+  }
+
+  export type FamilyMemberUpdateManyWithoutPrimaryUserNestedInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    upsert?: FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    set?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    disconnect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    delete?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    update?: FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput[]
+    updateMany?: FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput | FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput[]
+    deleteMany?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
   }
 
   export type HelpRequestUpdateManyWithoutUserNestedInput = {
@@ -87557,6 +87585,20 @@ export namespace Prisma {
     deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
   }
 
+  export type SafetyCheckInUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    upsert?: SafetyCheckInUpsertWithWhereUniqueWithoutUserInput | SafetyCheckInUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    set?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    disconnect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    delete?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    update?: SafetyCheckInUpdateWithWhereUniqueWithoutUserInput | SafetyCheckInUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SafetyCheckInUpdateManyWithWhereWithoutUserInput | SafetyCheckInUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+  }
+
   export type TaskUpdateManyWithoutAssignedByNestedInput = {
     create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
@@ -87585,14 +87627,14 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type VolunteerProfileUpdateOneWithoutUserNestedInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    upsert?: VolunteerProfileUpsertWithoutUserInput
-    disconnect?: VolunteerProfileWhereInput | boolean
-    delete?: VolunteerProfileWhereInput | boolean
-    connect?: VolunteerProfileWhereUniqueInput
-    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
+  export type SectorUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: SectorCreateOrConnectWithoutUsersInput
+    upsert?: SectorUpsertWithoutUsersInput
+    disconnect?: SectorWhereInput | boolean
+    delete?: SectorWhereInput | boolean
+    connect?: SectorWhereUniqueInput
+    update?: XOR<XOR<SectorUpdateToOneWithWhereWithoutUsersInput, SectorUpdateWithoutUsersInput>, SectorUncheckedUpdateWithoutUsersInput>
   }
 
   export type UserSessionLogUpdateManyWithoutUserNestedInput = {
@@ -87609,56 +87651,14 @@ export namespace Prisma {
     deleteMany?: UserSessionLogScalarWhereInput | UserSessionLogScalarWhereInput[]
   }
 
-  export type SectorUpdateOneWithoutUsersNestedInput = {
-    create?: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
-    connectOrCreate?: SectorCreateOrConnectWithoutUsersInput
-    upsert?: SectorUpsertWithoutUsersInput
-    disconnect?: SectorWhereInput | boolean
-    delete?: SectorWhereInput | boolean
-    connect?: SectorWhereUniqueInput
-    update?: XOR<XOR<SectorUpdateToOneWithWhereWithoutUsersInput, SectorUpdateWithoutUsersInput>, SectorUncheckedUpdateWithoutUsersInput>
-  }
-
-  export type DonationUpdateManyWithoutDonorNestedInput = {
-    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
-    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
-    upsert?: DonationUpsertWithWhereUniqueWithoutDonorInput | DonationUpsertWithWhereUniqueWithoutDonorInput[]
-    createMany?: DonationCreateManyDonorInputEnvelope
-    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    update?: DonationUpdateWithWhereUniqueWithoutDonorInput | DonationUpdateWithWhereUniqueWithoutDonorInput[]
-    updateMany?: DonationUpdateManyWithWhereWithoutDonorInput | DonationUpdateManyWithWhereWithoutDonorInput[]
-    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
-  }
-
-  export type SafetyCheckInUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
-    upsert?: SafetyCheckInUpsertWithWhereUniqueWithoutUserInput | SafetyCheckInUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SafetyCheckInCreateManyUserInputEnvelope
-    set?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    disconnect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    delete?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    update?: SafetyCheckInUpdateWithWhereUniqueWithoutUserInput | SafetyCheckInUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SafetyCheckInUpdateManyWithWhereWithoutUserInput | SafetyCheckInUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
-  }
-
-  export type FamilyMemberUpdateManyWithoutPrimaryUserNestedInput = {
-    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
-    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
-    upsert?: FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput[]
-    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
-    set?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    disconnect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    delete?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    update?: FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput[]
-    updateMany?: FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput | FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput[]
-    deleteMany?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+  export type VolunteerProfileUpdateOneWithoutUserNestedInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    upsert?: VolunteerProfileUpsertWithoutUserInput
+    disconnect?: VolunteerProfileWhereInput | boolean
+    delete?: VolunteerProfileWhereInput | boolean
+    connect?: VolunteerProfileWhereUniqueInput
+    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
   }
 
   export type DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput = {
@@ -87673,6 +87673,34 @@ export namespace Prisma {
     update?: DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput | DamageAssessmentUpdateWithWhereUniqueWithoutReportedByInput[]
     updateMany?: DamageAssessmentUpdateManyWithWhereWithoutReportedByInput | DamageAssessmentUpdateManyWithWhereWithoutReportedByInput[]
     deleteMany?: DamageAssessmentScalarWhereInput | DamageAssessmentScalarWhereInput[]
+  }
+
+  export type DonationUncheckedUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
+    upsert?: DonationUpsertWithWhereUniqueWithoutDonorInput | DonationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: DonationCreateManyDonorInputEnvelope
+    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
+    update?: DonationUpdateWithWhereUniqueWithoutDonorInput | DonationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: DonationUpdateManyWithWhereWithoutDonorInput | DonationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
+  }
+
+  export type FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput = {
+    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
+    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
+    upsert?: FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput[]
+    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
+    set?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    disconnect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    delete?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
+    update?: FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput[]
+    updateMany?: FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput | FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput[]
+    deleteMany?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
   }
 
   export type HelpRequestUncheckedUpdateManyWithoutUserNestedInput = {
@@ -87783,6 +87811,20 @@ export namespace Prisma {
     deleteMany?: ReportVerificationScalarWhereInput | ReportVerificationScalarWhereInput[]
   }
 
+  export type SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
+    upsert?: SafetyCheckInUpsertWithWhereUniqueWithoutUserInput | SafetyCheckInUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SafetyCheckInCreateManyUserInputEnvelope
+    set?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    disconnect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    delete?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
+    update?: SafetyCheckInUpdateWithWhereUniqueWithoutUserInput | SafetyCheckInUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SafetyCheckInUpdateManyWithWhereWithoutUserInput | SafetyCheckInUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+  }
+
   export type TaskUncheckedUpdateManyWithoutAssignedByNestedInput = {
     create?: XOR<TaskCreateWithoutAssignedByInput, TaskUncheckedCreateWithoutAssignedByInput> | TaskCreateWithoutAssignedByInput[] | TaskUncheckedCreateWithoutAssignedByInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutAssignedByInput | TaskCreateOrConnectWithoutAssignedByInput[]
@@ -87811,16 +87853,6 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
-    upsert?: VolunteerProfileUpsertWithoutUserInput
-    disconnect?: VolunteerProfileWhereInput | boolean
-    delete?: VolunteerProfileWhereInput | boolean
-    connect?: VolunteerProfileWhereUniqueInput
-    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
-  }
-
   export type UserSessionLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserSessionLogCreateWithoutUserInput, UserSessionLogUncheckedCreateWithoutUserInput> | UserSessionLogCreateWithoutUserInput[] | UserSessionLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSessionLogCreateOrConnectWithoutUserInput | UserSessionLogCreateOrConnectWithoutUserInput[]
@@ -87835,50 +87867,24 @@ export namespace Prisma {
     deleteMany?: UserSessionLogScalarWhereInput | UserSessionLogScalarWhereInput[]
   }
 
-  export type DonationUncheckedUpdateManyWithoutDonorNestedInput = {
-    create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
-    connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
-    upsert?: DonationUpsertWithWhereUniqueWithoutDonorInput | DonationUpsertWithWhereUniqueWithoutDonorInput[]
-    createMany?: DonationCreateManyDonorInputEnvelope
-    set?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    disconnect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    delete?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
-    update?: DonationUpdateWithWhereUniqueWithoutDonorInput | DonationUpdateWithWhereUniqueWithoutDonorInput[]
-    updateMany?: DonationUpdateManyWithWhereWithoutDonorInput | DonationUpdateManyWithWhereWithoutDonorInput[]
-    deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
-  }
-
-  export type SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput> | SafetyCheckInCreateWithoutUserInput[] | SafetyCheckInUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SafetyCheckInCreateOrConnectWithoutUserInput | SafetyCheckInCreateOrConnectWithoutUserInput[]
-    upsert?: SafetyCheckInUpsertWithWhereUniqueWithoutUserInput | SafetyCheckInUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SafetyCheckInCreateManyUserInputEnvelope
-    set?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    disconnect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    delete?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    connect?: SafetyCheckInWhereUniqueInput | SafetyCheckInWhereUniqueInput[]
-    update?: SafetyCheckInUpdateWithWhereUniqueWithoutUserInput | SafetyCheckInUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SafetyCheckInUpdateManyWithWhereWithoutUserInput | SafetyCheckInUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
-  }
-
-  export type FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput = {
-    create?: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput> | FamilyMemberCreateWithoutPrimaryUserInput[] | FamilyMemberUncheckedCreateWithoutPrimaryUserInput[]
-    connectOrCreate?: FamilyMemberCreateOrConnectWithoutPrimaryUserInput | FamilyMemberCreateOrConnectWithoutPrimaryUserInput[]
-    upsert?: FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput[]
-    createMany?: FamilyMemberCreateManyPrimaryUserInputEnvelope
-    set?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    disconnect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    delete?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    connect?: FamilyMemberWhereUniqueInput | FamilyMemberWhereUniqueInput[]
-    update?: FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput | FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput[]
-    updateMany?: FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput | FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput[]
-    deleteMany?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+  export type VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
+    upsert?: VolunteerProfileUpsertWithoutUserInput
+    disconnect?: VolunteerProfileWhereInput | boolean
+    delete?: VolunteerProfileWhereInput | boolean
+    connect?: VolunteerProfileWhereUniqueInput
+    update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
   }
 
   export type IncidentReportCreateimagesInput = {
     set: string[]
+  }
+
+  export type AfterActionReportCreateNestedOneWithoutIncidentInput = {
+    create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
+    connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
+    connect?: AfterActionReportWhereUniqueInput
   }
 
   export type DamageAssessmentCreateNestedManyWithoutIncidentInput = {
@@ -87922,7 +87928,7 @@ export namespace Prisma {
     connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
   }
 
-  export type AfterActionReportCreateNestedOneWithoutIncidentInput = {
+  export type AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput = {
     create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
     connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
     connect?: AfterActionReportWhereUniqueInput
@@ -87963,12 +87969,6 @@ export namespace Prisma {
     connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
   }
 
-  export type AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput = {
-    create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
-    connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
-    connect?: AfterActionReportWhereUniqueInput
-  }
-
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -87988,6 +87988,16 @@ export namespace Prisma {
   export type IncidentReportUpdateimagesInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type AfterActionReportUpdateOneWithoutIncidentNestedInput = {
+    create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
+    connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
+    upsert?: AfterActionReportUpsertWithoutIncidentInput
+    disconnect?: AfterActionReportWhereInput | boolean
+    delete?: AfterActionReportWhereInput | boolean
+    connect?: AfterActionReportWhereUniqueInput
+    update?: XOR<XOR<AfterActionReportUpdateToOneWithWhereWithoutIncidentInput, AfterActionReportUpdateWithoutIncidentInput>, AfterActionReportUncheckedUpdateWithoutIncidentInput>
   }
 
   export type DamageAssessmentUpdateManyWithoutIncidentNestedInput = {
@@ -88068,7 +88078,7 @@ export namespace Prisma {
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
   }
 
-  export type AfterActionReportUpdateOneWithoutIncidentNestedInput = {
+  export type AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput = {
     create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
     connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
     upsert?: AfterActionReportUpsertWithoutIncidentInput
@@ -88148,22 +88158,12 @@ export namespace Prisma {
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
   }
 
-  export type AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput = {
-    create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
-    connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
-    upsert?: AfterActionReportUpsertWithoutIncidentInput
-    disconnect?: AfterActionReportWhereInput | boolean
-    delete?: AfterActionReportWhereInput | boolean
-    connect?: AfterActionReportWhereUniqueInput
-    update?: XOR<XOR<AfterActionReportUpdateToOneWithWhereWithoutIncidentInput, AfterActionReportUpdateWithoutIncidentInput>, AfterActionReportUncheckedUpdateWithoutIncidentInput>
+  export type AlertCreatelatitudesInput = {
+    set: number[]
   }
 
   export type AlertCreatelocationsInput = {
     set: string[]
-  }
-
-  export type AlertCreatelatitudesInput = {
-    set: number[]
   }
 
   export type AlertCreatelongitudesInput = {
@@ -88174,9 +88174,8 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type AlertUpdatelocationsInput = {
-    set?: string[]
-    push?: string | string[]
+  export type EnumAlertTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AlertType
   }
 
   export type AlertUpdatelatitudesInput = {
@@ -88184,13 +88183,14 @@ export namespace Prisma {
     push?: number | number[]
   }
 
+  export type AlertUpdatelocationsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type AlertUpdatelongitudesInput = {
     set?: number[]
     push?: number | number[]
-  }
-
-  export type EnumAlertTypeFieldUpdateOperationsInput = {
-    set?: $Enums.AlertType
   }
 
   export type AlertUpdatetargetSectorsInput = {
@@ -88244,13 +88244,6 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type CampResidentCreateNestedManyWithoutCampInput = {
-    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
-    createMany?: CampResidentCreateManyCampInputEnvelope
-    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-  }
-
   export type CampInventoryCreateNestedManyWithoutCampInput = {
     create?: XOR<CampInventoryCreateWithoutCampInput, CampInventoryUncheckedCreateWithoutCampInput> | CampInventoryCreateWithoutCampInput[] | CampInventoryUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampInventoryCreateOrConnectWithoutCampInput | CampInventoryCreateOrConnectWithoutCampInput[]
@@ -88258,18 +88251,18 @@ export namespace Prisma {
     connect?: CampInventoryWhereUniqueInput | CampInventoryWhereUniqueInput[]
   }
 
+  export type CampResidentCreateNestedManyWithoutCampInput = {
+    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
+    createMany?: CampResidentCreateManyCampInputEnvelope
+    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+  }
+
   export type CampScheduleCreateNestedManyWithoutCampInput = {
     create?: XOR<CampScheduleCreateWithoutCampInput, CampScheduleUncheckedCreateWithoutCampInput> | CampScheduleCreateWithoutCampInput[] | CampScheduleUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampScheduleCreateOrConnectWithoutCampInput | CampScheduleCreateOrConnectWithoutCampInput[]
     createMany?: CampScheduleCreateManyCampInputEnvelope
     connect?: CampScheduleWhereUniqueInput | CampScheduleWhereUniqueInput[]
-  }
-
-  export type HospitalReferralCreateNestedManyWithoutCampInput = {
-    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
-    createMany?: HospitalReferralCreateManyCampInputEnvelope
-    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
   }
 
   export type CampTransferRequestCreateNestedManyWithoutFromCampInput = {
@@ -88293,11 +88286,11 @@ export namespace Prisma {
     connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
   }
 
-  export type CampResidentUncheckedCreateNestedManyWithoutCampInput = {
-    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
-    createMany?: CampResidentCreateManyCampInputEnvelope
-    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+  export type HospitalReferralCreateNestedManyWithoutCampInput = {
+    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
+    createMany?: HospitalReferralCreateManyCampInputEnvelope
+    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
   }
 
   export type CampInventoryUncheckedCreateNestedManyWithoutCampInput = {
@@ -88307,18 +88300,18 @@ export namespace Prisma {
     connect?: CampInventoryWhereUniqueInput | CampInventoryWhereUniqueInput[]
   }
 
+  export type CampResidentUncheckedCreateNestedManyWithoutCampInput = {
+    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
+    createMany?: CampResidentCreateManyCampInputEnvelope
+    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+  }
+
   export type CampScheduleUncheckedCreateNestedManyWithoutCampInput = {
     create?: XOR<CampScheduleCreateWithoutCampInput, CampScheduleUncheckedCreateWithoutCampInput> | CampScheduleCreateWithoutCampInput[] | CampScheduleUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampScheduleCreateOrConnectWithoutCampInput | CampScheduleCreateOrConnectWithoutCampInput[]
     createMany?: CampScheduleCreateManyCampInputEnvelope
     connect?: CampScheduleWhereUniqueInput | CampScheduleWhereUniqueInput[]
-  }
-
-  export type HospitalReferralUncheckedCreateNestedManyWithoutCampInput = {
-    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
-    createMany?: HospitalReferralCreateManyCampInputEnvelope
-    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
   }
 
   export type CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput = {
@@ -88342,6 +88335,13 @@ export namespace Prisma {
     connect?: DonationWhereUniqueInput | DonationWhereUniqueInput[]
   }
 
+  export type HospitalReferralUncheckedCreateNestedManyWithoutCampInput = {
+    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
+    createMany?: HospitalReferralCreateManyCampInputEnvelope
+    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -88353,20 +88353,6 @@ export namespace Prisma {
   export type ReliefCampUpdateservicesInput = {
     set?: string[]
     push?: string | string[]
-  }
-
-  export type CampResidentUpdateManyWithoutCampNestedInput = {
-    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
-    upsert?: CampResidentUpsertWithWhereUniqueWithoutCampInput | CampResidentUpsertWithWhereUniqueWithoutCampInput[]
-    createMany?: CampResidentCreateManyCampInputEnvelope
-    set?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    disconnect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    delete?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    update?: CampResidentUpdateWithWhereUniqueWithoutCampInput | CampResidentUpdateWithWhereUniqueWithoutCampInput[]
-    updateMany?: CampResidentUpdateManyWithWhereWithoutCampInput | CampResidentUpdateManyWithWhereWithoutCampInput[]
-    deleteMany?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
   }
 
   export type CampInventoryUpdateManyWithoutCampNestedInput = {
@@ -88383,6 +88369,20 @@ export namespace Prisma {
     deleteMany?: CampInventoryScalarWhereInput | CampInventoryScalarWhereInput[]
   }
 
+  export type CampResidentUpdateManyWithoutCampNestedInput = {
+    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
+    upsert?: CampResidentUpsertWithWhereUniqueWithoutCampInput | CampResidentUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: CampResidentCreateManyCampInputEnvelope
+    set?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    disconnect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    delete?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    update?: CampResidentUpdateWithWhereUniqueWithoutCampInput | CampResidentUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: CampResidentUpdateManyWithWhereWithoutCampInput | CampResidentUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
+  }
+
   export type CampScheduleUpdateManyWithoutCampNestedInput = {
     create?: XOR<CampScheduleCreateWithoutCampInput, CampScheduleUncheckedCreateWithoutCampInput> | CampScheduleCreateWithoutCampInput[] | CampScheduleUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampScheduleCreateOrConnectWithoutCampInput | CampScheduleCreateOrConnectWithoutCampInput[]
@@ -88395,20 +88395,6 @@ export namespace Prisma {
     update?: CampScheduleUpdateWithWhereUniqueWithoutCampInput | CampScheduleUpdateWithWhereUniqueWithoutCampInput[]
     updateMany?: CampScheduleUpdateManyWithWhereWithoutCampInput | CampScheduleUpdateManyWithWhereWithoutCampInput[]
     deleteMany?: CampScheduleScalarWhereInput | CampScheduleScalarWhereInput[]
-  }
-
-  export type HospitalReferralUpdateManyWithoutCampNestedInput = {
-    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
-    upsert?: HospitalReferralUpsertWithWhereUniqueWithoutCampInput | HospitalReferralUpsertWithWhereUniqueWithoutCampInput[]
-    createMany?: HospitalReferralCreateManyCampInputEnvelope
-    set?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    disconnect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    delete?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    update?: HospitalReferralUpdateWithWhereUniqueWithoutCampInput | HospitalReferralUpdateWithWhereUniqueWithoutCampInput[]
-    updateMany?: HospitalReferralUpdateManyWithWhereWithoutCampInput | HospitalReferralUpdateManyWithWhereWithoutCampInput[]
-    deleteMany?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
   }
 
   export type CampTransferRequestUpdateManyWithoutFromCampNestedInput = {
@@ -88453,18 +88439,18 @@ export namespace Prisma {
     deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
   }
 
-  export type CampResidentUncheckedUpdateManyWithoutCampNestedInput = {
-    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
-    upsert?: CampResidentUpsertWithWhereUniqueWithoutCampInput | CampResidentUpsertWithWhereUniqueWithoutCampInput[]
-    createMany?: CampResidentCreateManyCampInputEnvelope
-    set?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    disconnect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    delete?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
-    update?: CampResidentUpdateWithWhereUniqueWithoutCampInput | CampResidentUpdateWithWhereUniqueWithoutCampInput[]
-    updateMany?: CampResidentUpdateManyWithWhereWithoutCampInput | CampResidentUpdateManyWithWhereWithoutCampInput[]
-    deleteMany?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
+  export type HospitalReferralUpdateManyWithoutCampNestedInput = {
+    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
+    upsert?: HospitalReferralUpsertWithWhereUniqueWithoutCampInput | HospitalReferralUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: HospitalReferralCreateManyCampInputEnvelope
+    set?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    disconnect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    delete?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    update?: HospitalReferralUpdateWithWhereUniqueWithoutCampInput | HospitalReferralUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: HospitalReferralUpdateManyWithWhereWithoutCampInput | HospitalReferralUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
   }
 
   export type CampInventoryUncheckedUpdateManyWithoutCampNestedInput = {
@@ -88481,6 +88467,20 @@ export namespace Prisma {
     deleteMany?: CampInventoryScalarWhereInput | CampInventoryScalarWhereInput[]
   }
 
+  export type CampResidentUncheckedUpdateManyWithoutCampNestedInput = {
+    create?: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput> | CampResidentCreateWithoutCampInput[] | CampResidentUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampResidentCreateOrConnectWithoutCampInput | CampResidentCreateOrConnectWithoutCampInput[]
+    upsert?: CampResidentUpsertWithWhereUniqueWithoutCampInput | CampResidentUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: CampResidentCreateManyCampInputEnvelope
+    set?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    disconnect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    delete?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    connect?: CampResidentWhereUniqueInput | CampResidentWhereUniqueInput[]
+    update?: CampResidentUpdateWithWhereUniqueWithoutCampInput | CampResidentUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: CampResidentUpdateManyWithWhereWithoutCampInput | CampResidentUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
+  }
+
   export type CampScheduleUncheckedUpdateManyWithoutCampNestedInput = {
     create?: XOR<CampScheduleCreateWithoutCampInput, CampScheduleUncheckedCreateWithoutCampInput> | CampScheduleCreateWithoutCampInput[] | CampScheduleUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampScheduleCreateOrConnectWithoutCampInput | CampScheduleCreateOrConnectWithoutCampInput[]
@@ -88493,20 +88493,6 @@ export namespace Prisma {
     update?: CampScheduleUpdateWithWhereUniqueWithoutCampInput | CampScheduleUpdateWithWhereUniqueWithoutCampInput[]
     updateMany?: CampScheduleUpdateManyWithWhereWithoutCampInput | CampScheduleUpdateManyWithWhereWithoutCampInput[]
     deleteMany?: CampScheduleScalarWhereInput | CampScheduleScalarWhereInput[]
-  }
-
-  export type HospitalReferralUncheckedUpdateManyWithoutCampNestedInput = {
-    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
-    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
-    upsert?: HospitalReferralUpsertWithWhereUniqueWithoutCampInput | HospitalReferralUpsertWithWhereUniqueWithoutCampInput[]
-    createMany?: HospitalReferralCreateManyCampInputEnvelope
-    set?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    disconnect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    delete?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-    update?: HospitalReferralUpdateWithWhereUniqueWithoutCampInput | HospitalReferralUpdateWithWhereUniqueWithoutCampInput[]
-    updateMany?: HospitalReferralUpdateManyWithWhereWithoutCampInput | HospitalReferralUpdateManyWithWhereWithoutCampInput[]
-    deleteMany?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
   }
 
   export type CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput = {
@@ -88549,6 +88535,20 @@ export namespace Prisma {
     update?: DonationUpdateWithWhereUniqueWithoutCampInput | DonationUpdateWithWhereUniqueWithoutCampInput[]
     updateMany?: DonationUpdateManyWithWhereWithoutCampInput | DonationUpdateManyWithWhereWithoutCampInput[]
     deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
+  }
+
+  export type HospitalReferralUncheckedUpdateManyWithoutCampNestedInput = {
+    create?: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput> | HospitalReferralCreateWithoutCampInput[] | HospitalReferralUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
+    upsert?: HospitalReferralUpsertWithWhereUniqueWithoutCampInput | HospitalReferralUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: HospitalReferralCreateManyCampInputEnvelope
+    set?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    disconnect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    delete?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+    update?: HospitalReferralUpdateWithWhereUniqueWithoutCampInput | HospitalReferralUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: HospitalReferralUpdateManyWithWhereWithoutCampInput | HospitalReferralUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCreatedTasksInput = {
@@ -88599,6 +88599,20 @@ export namespace Prisma {
     update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutTasksInput, IncidentReportUpdateWithoutTasksInput>, IncidentReportUncheckedUpdateWithoutTasksInput>
   }
 
+  export type VolunteerBadgeCreateNestedManyWithoutVolunteerInput = {
+    create?: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput> | VolunteerBadgeCreateWithoutVolunteerInput[] | VolunteerBadgeUncheckedCreateWithoutVolunteerInput[]
+    connectOrCreate?: VolunteerBadgeCreateOrConnectWithoutVolunteerInput | VolunteerBadgeCreateOrConnectWithoutVolunteerInput[]
+    createMany?: VolunteerBadgeCreateManyVolunteerInputEnvelope
+    connect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
+  }
+
+  export type VolunteerCheckInCreateNestedManyWithoutVolunteerInput = {
+    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
+    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
+    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
+    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutVolunteerProfileInput = {
     create?: XOR<UserCreateWithoutVolunteerProfileInput, UserUncheckedCreateWithoutVolunteerProfileInput>
     connectOrCreate?: UserCreateOrConnectWithoutVolunteerProfileInput
@@ -88619,13 +88633,6 @@ export namespace Prisma {
     connect?: VolunteerTrainingWhereUniqueInput | VolunteerTrainingWhereUniqueInput[]
   }
 
-  export type VolunteerCheckInCreateNestedManyWithoutVolunteerInput = {
-    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
-    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
-    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
-    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-  }
-
   export type VolunteerWellbeingCreateNestedManyWithoutVolunteerInput = {
     create?: XOR<VolunteerWellbeingCreateWithoutVolunteerInput, VolunteerWellbeingUncheckedCreateWithoutVolunteerInput> | VolunteerWellbeingCreateWithoutVolunteerInput[] | VolunteerWellbeingUncheckedCreateWithoutVolunteerInput[]
     connectOrCreate?: VolunteerWellbeingCreateOrConnectWithoutVolunteerInput | VolunteerWellbeingCreateOrConnectWithoutVolunteerInput[]
@@ -88633,11 +88640,18 @@ export namespace Prisma {
     connect?: VolunteerWellbeingWhereUniqueInput | VolunteerWellbeingWhereUniqueInput[]
   }
 
-  export type VolunteerBadgeCreateNestedManyWithoutVolunteerInput = {
+  export type VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput = {
     create?: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput> | VolunteerBadgeCreateWithoutVolunteerInput[] | VolunteerBadgeUncheckedCreateWithoutVolunteerInput[]
     connectOrCreate?: VolunteerBadgeCreateOrConnectWithoutVolunteerInput | VolunteerBadgeCreateOrConnectWithoutVolunteerInput[]
     createMany?: VolunteerBadgeCreateManyVolunteerInputEnvelope
     connect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
+  }
+
+  export type VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput = {
+    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
+    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
+    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
+    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
   }
 
   export type VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput = {
@@ -88654,25 +88668,11 @@ export namespace Prisma {
     connect?: VolunteerTrainingWhereUniqueInput | VolunteerTrainingWhereUniqueInput[]
   }
 
-  export type VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput = {
-    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
-    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
-    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
-    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-  }
-
   export type VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput = {
     create?: XOR<VolunteerWellbeingCreateWithoutVolunteerInput, VolunteerWellbeingUncheckedCreateWithoutVolunteerInput> | VolunteerWellbeingCreateWithoutVolunteerInput[] | VolunteerWellbeingUncheckedCreateWithoutVolunteerInput[]
     connectOrCreate?: VolunteerWellbeingCreateOrConnectWithoutVolunteerInput | VolunteerWellbeingCreateOrConnectWithoutVolunteerInput[]
     createMany?: VolunteerWellbeingCreateManyVolunteerInputEnvelope
     connect?: VolunteerWellbeingWhereUniqueInput | VolunteerWellbeingWhereUniqueInput[]
-  }
-
-  export type VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput = {
-    create?: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput> | VolunteerBadgeCreateWithoutVolunteerInput[] | VolunteerBadgeUncheckedCreateWithoutVolunteerInput[]
-    connectOrCreate?: VolunteerBadgeCreateOrConnectWithoutVolunteerInput | VolunteerBadgeCreateOrConnectWithoutVolunteerInput[]
-    createMany?: VolunteerBadgeCreateManyVolunteerInputEnvelope
-    connect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -88681,6 +88681,34 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type VolunteerBadgeUpdateManyWithoutVolunteerNestedInput = {
+    create?: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput> | VolunteerBadgeCreateWithoutVolunteerInput[] | VolunteerBadgeUncheckedCreateWithoutVolunteerInput[]
+    connectOrCreate?: VolunteerBadgeCreateOrConnectWithoutVolunteerInput | VolunteerBadgeCreateOrConnectWithoutVolunteerInput[]
+    upsert?: VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput[]
+    createMany?: VolunteerBadgeCreateManyVolunteerInputEnvelope
+    set?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
+    disconnect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
+    delete?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
+    connect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
+    update?: VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput[]
+    updateMany?: VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput | VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput[]
+    deleteMany?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
+  }
+
+  export type VolunteerCheckInUpdateManyWithoutVolunteerNestedInput = {
+    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
+    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
+    upsert?: VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput[]
+    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
+    set?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    disconnect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    delete?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    update?: VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput[]
+    updateMany?: VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput | VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput[]
+    deleteMany?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
   }
 
   export type UserUpdateOneRequiredWithoutVolunteerProfileNestedInput = {
@@ -88719,20 +88747,6 @@ export namespace Prisma {
     deleteMany?: VolunteerTrainingScalarWhereInput | VolunteerTrainingScalarWhereInput[]
   }
 
-  export type VolunteerCheckInUpdateManyWithoutVolunteerNestedInput = {
-    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
-    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
-    upsert?: VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput[]
-    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
-    set?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    disconnect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    delete?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    update?: VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput[]
-    updateMany?: VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput | VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput[]
-    deleteMany?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
-  }
-
   export type VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput = {
     create?: XOR<VolunteerWellbeingCreateWithoutVolunteerInput, VolunteerWellbeingUncheckedCreateWithoutVolunteerInput> | VolunteerWellbeingCreateWithoutVolunteerInput[] | VolunteerWellbeingUncheckedCreateWithoutVolunteerInput[]
     connectOrCreate?: VolunteerWellbeingCreateOrConnectWithoutVolunteerInput | VolunteerWellbeingCreateOrConnectWithoutVolunteerInput[]
@@ -88747,7 +88761,7 @@ export namespace Prisma {
     deleteMany?: VolunteerWellbeingScalarWhereInput | VolunteerWellbeingScalarWhereInput[]
   }
 
-  export type VolunteerBadgeUpdateManyWithoutVolunteerNestedInput = {
+  export type VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput = {
     create?: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput> | VolunteerBadgeCreateWithoutVolunteerInput[] | VolunteerBadgeUncheckedCreateWithoutVolunteerInput[]
     connectOrCreate?: VolunteerBadgeCreateOrConnectWithoutVolunteerInput | VolunteerBadgeCreateOrConnectWithoutVolunteerInput[]
     upsert?: VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput[]
@@ -88759,6 +88773,20 @@ export namespace Prisma {
     update?: VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput[]
     updateMany?: VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput | VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput[]
     deleteMany?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
+  }
+
+  export type VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput = {
+    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
+    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
+    upsert?: VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput[]
+    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
+    set?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    disconnect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    delete?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
+    update?: VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput[]
+    updateMany?: VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput | VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput[]
+    deleteMany?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
   }
 
   export type VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput = {
@@ -88789,20 +88817,6 @@ export namespace Prisma {
     deleteMany?: VolunteerTrainingScalarWhereInput | VolunteerTrainingScalarWhereInput[]
   }
 
-  export type VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput = {
-    create?: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput> | VolunteerCheckInCreateWithoutVolunteerInput[] | VolunteerCheckInUncheckedCreateWithoutVolunteerInput[]
-    connectOrCreate?: VolunteerCheckInCreateOrConnectWithoutVolunteerInput | VolunteerCheckInCreateOrConnectWithoutVolunteerInput[]
-    upsert?: VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput[]
-    createMany?: VolunteerCheckInCreateManyVolunteerInputEnvelope
-    set?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    disconnect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    delete?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    connect?: VolunteerCheckInWhereUniqueInput | VolunteerCheckInWhereUniqueInput[]
-    update?: VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput[]
-    updateMany?: VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput | VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput[]
-    deleteMany?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
-  }
-
   export type VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput = {
     create?: XOR<VolunteerWellbeingCreateWithoutVolunteerInput, VolunteerWellbeingUncheckedCreateWithoutVolunteerInput> | VolunteerWellbeingCreateWithoutVolunteerInput[] | VolunteerWellbeingUncheckedCreateWithoutVolunteerInput[]
     connectOrCreate?: VolunteerWellbeingCreateOrConnectWithoutVolunteerInput | VolunteerWellbeingCreateOrConnectWithoutVolunteerInput[]
@@ -88817,31 +88831,10 @@ export namespace Prisma {
     deleteMany?: VolunteerWellbeingScalarWhereInput | VolunteerWellbeingScalarWhereInput[]
   }
 
-  export type VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput = {
-    create?: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput> | VolunteerBadgeCreateWithoutVolunteerInput[] | VolunteerBadgeUncheckedCreateWithoutVolunteerInput[]
-    connectOrCreate?: VolunteerBadgeCreateOrConnectWithoutVolunteerInput | VolunteerBadgeCreateOrConnectWithoutVolunteerInput[]
-    upsert?: VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput | VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput[]
-    createMany?: VolunteerBadgeCreateManyVolunteerInputEnvelope
-    set?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
-    disconnect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
-    delete?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
-    connect?: VolunteerBadgeWhereUniqueInput | VolunteerBadgeWhereUniqueInput[]
-    update?: VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput | VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput[]
-    updateMany?: VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput | VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput[]
-    deleteMany?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutHelpRequestsInput = {
     create?: XOR<UserCreateWithoutHelpRequestsInput, UserUncheckedCreateWithoutHelpRequestsInput>
     connectOrCreate?: UserCreateOrConnectWithoutHelpRequestsInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type VerifierActionCreateNestedManyWithoutHelpRequestInput = {
-    create?: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput> | VerifierActionCreateWithoutHelpRequestInput[] | VerifierActionUncheckedCreateWithoutHelpRequestInput[]
-    connectOrCreate?: VerifierActionCreateOrConnectWithoutHelpRequestInput | VerifierActionCreateOrConnectWithoutHelpRequestInput[]
-    createMany?: VerifierActionCreateManyHelpRequestInputEnvelope
-    connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
   }
 
   export type HelpRequestEscalationCreateNestedManyWithoutHelpRequestInput = {
@@ -88851,7 +88844,7 @@ export namespace Prisma {
     connect?: HelpRequestEscalationWhereUniqueInput | HelpRequestEscalationWhereUniqueInput[]
   }
 
-  export type VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput = {
+  export type VerifierActionCreateNestedManyWithoutHelpRequestInput = {
     create?: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput> | VerifierActionCreateWithoutHelpRequestInput[] | VerifierActionUncheckedCreateWithoutHelpRequestInput[]
     connectOrCreate?: VerifierActionCreateOrConnectWithoutHelpRequestInput | VerifierActionCreateOrConnectWithoutHelpRequestInput[]
     createMany?: VerifierActionCreateManyHelpRequestInputEnvelope
@@ -88863,6 +88856,13 @@ export namespace Prisma {
     connectOrCreate?: HelpRequestEscalationCreateOrConnectWithoutHelpRequestInput | HelpRequestEscalationCreateOrConnectWithoutHelpRequestInput[]
     createMany?: HelpRequestEscalationCreateManyHelpRequestInputEnvelope
     connect?: HelpRequestEscalationWhereUniqueInput | HelpRequestEscalationWhereUniqueInput[]
+  }
+
+  export type VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput = {
+    create?: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput> | VerifierActionCreateWithoutHelpRequestInput[] | VerifierActionUncheckedCreateWithoutHelpRequestInput[]
+    connectOrCreate?: VerifierActionCreateOrConnectWithoutHelpRequestInput | VerifierActionCreateOrConnectWithoutHelpRequestInput[]
+    createMany?: VerifierActionCreateManyHelpRequestInputEnvelope
+    connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -88883,20 +88883,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHelpRequestsInput, UserUpdateWithoutHelpRequestsInput>, UserUncheckedUpdateWithoutHelpRequestsInput>
   }
 
-  export type VerifierActionUpdateManyWithoutHelpRequestNestedInput = {
-    create?: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput> | VerifierActionCreateWithoutHelpRequestInput[] | VerifierActionUncheckedCreateWithoutHelpRequestInput[]
-    connectOrCreate?: VerifierActionCreateOrConnectWithoutHelpRequestInput | VerifierActionCreateOrConnectWithoutHelpRequestInput[]
-    upsert?: VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput | VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput[]
-    createMany?: VerifierActionCreateManyHelpRequestInputEnvelope
-    set?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
-    disconnect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
-    delete?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
-    connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
-    update?: VerifierActionUpdateWithWhereUniqueWithoutHelpRequestInput | VerifierActionUpdateWithWhereUniqueWithoutHelpRequestInput[]
-    updateMany?: VerifierActionUpdateManyWithWhereWithoutHelpRequestInput | VerifierActionUpdateManyWithWhereWithoutHelpRequestInput[]
-    deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
-  }
-
   export type HelpRequestEscalationUpdateManyWithoutHelpRequestNestedInput = {
     create?: XOR<HelpRequestEscalationCreateWithoutHelpRequestInput, HelpRequestEscalationUncheckedCreateWithoutHelpRequestInput> | HelpRequestEscalationCreateWithoutHelpRequestInput[] | HelpRequestEscalationUncheckedCreateWithoutHelpRequestInput[]
     connectOrCreate?: HelpRequestEscalationCreateOrConnectWithoutHelpRequestInput | HelpRequestEscalationCreateOrConnectWithoutHelpRequestInput[]
@@ -88911,7 +88897,7 @@ export namespace Prisma {
     deleteMany?: HelpRequestEscalationScalarWhereInput | HelpRequestEscalationScalarWhereInput[]
   }
 
-  export type VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput = {
+  export type VerifierActionUpdateManyWithoutHelpRequestNestedInput = {
     create?: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput> | VerifierActionCreateWithoutHelpRequestInput[] | VerifierActionUncheckedCreateWithoutHelpRequestInput[]
     connectOrCreate?: VerifierActionCreateOrConnectWithoutHelpRequestInput | VerifierActionCreateOrConnectWithoutHelpRequestInput[]
     upsert?: VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput | VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput[]
@@ -88937,6 +88923,20 @@ export namespace Prisma {
     update?: HelpRequestEscalationUpdateWithWhereUniqueWithoutHelpRequestInput | HelpRequestEscalationUpdateWithWhereUniqueWithoutHelpRequestInput[]
     updateMany?: HelpRequestEscalationUpdateManyWithWhereWithoutHelpRequestInput | HelpRequestEscalationUpdateManyWithWhereWithoutHelpRequestInput[]
     deleteMany?: HelpRequestEscalationScalarWhereInput | HelpRequestEscalationScalarWhereInput[]
+  }
+
+  export type VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput = {
+    create?: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput> | VerifierActionCreateWithoutHelpRequestInput[] | VerifierActionUncheckedCreateWithoutHelpRequestInput[]
+    connectOrCreate?: VerifierActionCreateOrConnectWithoutHelpRequestInput | VerifierActionCreateOrConnectWithoutHelpRequestInput[]
+    upsert?: VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput | VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput[]
+    createMany?: VerifierActionCreateManyHelpRequestInputEnvelope
+    set?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
+    disconnect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
+    delete?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
+    connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
+    update?: VerifierActionUpdateWithWhereUniqueWithoutHelpRequestInput | VerifierActionUpdateWithWhereUniqueWithoutHelpRequestInput[]
+    updateMany?: VerifierActionUpdateManyWithWhereWithoutHelpRequestInput | VerifierActionUpdateManyWithWhereWithoutHelpRequestInput[]
+    deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
   }
 
   export type HelpRequestCreateNestedOneWithoutEscalationsInput = {
@@ -89027,6 +89027,12 @@ export namespace Prisma {
     set: $Enums.TokenCategory[]
   }
 
+  export type DonorCampaignCreateNestedOneWithoutTokensInput = {
+    create?: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
+    connectOrCreate?: DonorCampaignCreateOrConnectWithoutTokensInput
+    connect?: DonorCampaignWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutReliefTokensInput = {
     create?: XOR<UserCreateWithoutReliefTokensInput, UserUncheckedCreateWithoutReliefTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutReliefTokensInput
@@ -89038,12 +89044,6 @@ export namespace Prisma {
     connectOrCreate?: ReliefTokenClaimCreateOrConnectWithoutTokenInput | ReliefTokenClaimCreateOrConnectWithoutTokenInput[]
     createMany?: ReliefTokenClaimCreateManyTokenInputEnvelope
     connect?: ReliefTokenClaimWhereUniqueInput | ReliefTokenClaimWhereUniqueInput[]
-  }
-
-  export type DonorCampaignCreateNestedOneWithoutTokensInput = {
-    create?: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
-    connectOrCreate?: DonorCampaignCreateOrConnectWithoutTokensInput
-    connect?: DonorCampaignWhereUniqueInput
   }
 
   export type ReliefTokenClaimUncheckedCreateNestedManyWithoutTokenInput = {
@@ -89060,6 +89060,16 @@ export namespace Prisma {
   export type ReliefTokenUpdatecategoriesInput = {
     set?: $Enums.TokenCategory[]
     push?: $Enums.TokenCategory | $Enums.TokenCategory[]
+  }
+
+  export type DonorCampaignUpdateOneWithoutTokensNestedInput = {
+    create?: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
+    connectOrCreate?: DonorCampaignCreateOrConnectWithoutTokensInput
+    upsert?: DonorCampaignUpsertWithoutTokensInput
+    disconnect?: DonorCampaignWhereInput | boolean
+    delete?: DonorCampaignWhereInput | boolean
+    connect?: DonorCampaignWhereUniqueInput
+    update?: XOR<XOR<DonorCampaignUpdateToOneWithWhereWithoutTokensInput, DonorCampaignUpdateWithoutTokensInput>, DonorCampaignUncheckedUpdateWithoutTokensInput>
   }
 
   export type UserUpdateOneRequiredWithoutReliefTokensNestedInput = {
@@ -89082,16 +89092,6 @@ export namespace Prisma {
     update?: ReliefTokenClaimUpdateWithWhereUniqueWithoutTokenInput | ReliefTokenClaimUpdateWithWhereUniqueWithoutTokenInput[]
     updateMany?: ReliefTokenClaimUpdateManyWithWhereWithoutTokenInput | ReliefTokenClaimUpdateManyWithWhereWithoutTokenInput[]
     deleteMany?: ReliefTokenClaimScalarWhereInput | ReliefTokenClaimScalarWhereInput[]
-  }
-
-  export type DonorCampaignUpdateOneWithoutTokensNestedInput = {
-    create?: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
-    connectOrCreate?: DonorCampaignCreateOrConnectWithoutTokensInput
-    upsert?: DonorCampaignUpsertWithoutTokensInput
-    disconnect?: DonorCampaignWhereInput | boolean
-    delete?: DonorCampaignWhereInput | boolean
-    connect?: DonorCampaignWhereUniqueInput
-    update?: XOR<XOR<DonorCampaignUpdateToOneWithWhereWithoutTokensInput, DonorCampaignUpdateWithoutTokensInput>, DonorCampaignUncheckedUpdateWithoutTokensInput>
   }
 
   export type ReliefTokenClaimUncheckedUpdateManyWithoutTokenNestedInput = {
@@ -89407,24 +89407,16 @@ export namespace Prisma {
     deleteMany?: ResourceExpenditureScalarWhereInput | ResourceExpenditureScalarWhereInput[]
   }
 
-  export type ResourceCostCreateNestedOneWithoutExpendituresInput = {
-    create?: XOR<ResourceCostCreateWithoutExpendituresInput, ResourceCostUncheckedCreateWithoutExpendituresInput>
-    connectOrCreate?: ResourceCostCreateOrConnectWithoutExpendituresInput
-    connect?: ResourceCostWhereUniqueInput
-  }
-
   export type DisasterBudgetCreateNestedOneWithoutExpendituresInput = {
     create?: XOR<DisasterBudgetCreateWithoutExpendituresInput, DisasterBudgetUncheckedCreateWithoutExpendituresInput>
     connectOrCreate?: DisasterBudgetCreateOrConnectWithoutExpendituresInput
     connect?: DisasterBudgetWhereUniqueInput
   }
 
-  export type ResourceCostUpdateOneRequiredWithoutExpendituresNestedInput = {
+  export type ResourceCostCreateNestedOneWithoutExpendituresInput = {
     create?: XOR<ResourceCostCreateWithoutExpendituresInput, ResourceCostUncheckedCreateWithoutExpendituresInput>
     connectOrCreate?: ResourceCostCreateOrConnectWithoutExpendituresInput
-    upsert?: ResourceCostUpsertWithoutExpendituresInput
     connect?: ResourceCostWhereUniqueInput
-    update?: XOR<XOR<ResourceCostUpdateToOneWithWhereWithoutExpendituresInput, ResourceCostUpdateWithoutExpendituresInput>, ResourceCostUncheckedUpdateWithoutExpendituresInput>
   }
 
   export type DisasterBudgetUpdateOneRequiredWithoutExpendituresNestedInput = {
@@ -89433,6 +89425,14 @@ export namespace Prisma {
     upsert?: DisasterBudgetUpsertWithoutExpendituresInput
     connect?: DisasterBudgetWhereUniqueInput
     update?: XOR<XOR<DisasterBudgetUpdateToOneWithWhereWithoutExpendituresInput, DisasterBudgetUpdateWithoutExpendituresInput>, DisasterBudgetUncheckedUpdateWithoutExpendituresInput>
+  }
+
+  export type ResourceCostUpdateOneRequiredWithoutExpendituresNestedInput = {
+    create?: XOR<ResourceCostCreateWithoutExpendituresInput, ResourceCostUncheckedCreateWithoutExpendituresInput>
+    connectOrCreate?: ResourceCostCreateOrConnectWithoutExpendituresInput
+    upsert?: ResourceCostUpsertWithoutExpendituresInput
+    connect?: ResourceCostWhereUniqueInput
+    update?: XOR<XOR<ResourceCostUpdateToOneWithWhereWithoutExpendituresInput, ResourceCostUpdateWithoutExpendituresInput>, ResourceCostUncheckedUpdateWithoutExpendituresInput>
   }
 
   export type UserCreateNestedOneWithoutSessionLogsInput = {
@@ -89760,16 +89760,16 @@ export namespace Prisma {
     deleteMany?: GroupTherapyParticipantScalarWhereInput | GroupTherapyParticipantScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutDonationsInput = {
-    create?: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDonationsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type ReliefCampCreateNestedOneWithoutDonationsInput = {
     create?: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
     connectOrCreate?: ReliefCampCreateOrConnectWithoutDonationsInput
     connect?: ReliefCampWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDonationsInput = {
+    create?: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDonationsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type EnumDonationTypeFieldUpdateOperationsInput = {
@@ -89780,16 +89780,6 @@ export namespace Prisma {
     set?: $Enums.DonationStatus
   }
 
-  export type UserUpdateOneWithoutDonationsNestedInput = {
-    create?: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDonationsInput
-    upsert?: UserUpsertWithoutDonationsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDonationsInput, UserUpdateWithoutDonationsInput>, UserUncheckedUpdateWithoutDonationsInput>
-  }
-
   export type ReliefCampUpdateOneWithoutDonationsNestedInput = {
     create?: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
     connectOrCreate?: ReliefCampCreateOrConnectWithoutDonationsInput
@@ -89798,6 +89788,16 @@ export namespace Prisma {
     delete?: ReliefCampWhereInput | boolean
     connect?: ReliefCampWhereUniqueInput
     update?: XOR<XOR<ReliefCampUpdateToOneWithWhereWithoutDonationsInput, ReliefCampUpdateWithoutDonationsInput>, ReliefCampUncheckedUpdateWithoutDonationsInput>
+  }
+
+  export type UserUpdateOneWithoutDonationsNestedInput = {
+    create?: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDonationsInput
+    upsert?: UserUpsertWithoutDonationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDonationsInput, UserUpdateWithoutDonationsInput>, UserUncheckedUpdateWithoutDonationsInput>
   }
 
   export type UserCreateNestedOneWithoutSafetyCheckInsInput = {
@@ -90508,7 +90508,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -90516,20 +90515,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
     incident?: IncidentReportCreateNestedOneWithoutDamageAssessmentsInput
   }
 
@@ -90539,7 +90539,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -90547,20 +90546,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
   }
 
   export type DamageAssessmentCreateOrConnectWithoutReportedByInput = {
@@ -90573,9 +90573,78 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DonationCreateWithoutDonorInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    camp?: ReliefCampCreateNestedOneWithoutDonationsInput
+  }
+
+  export type DonationUncheckedCreateWithoutDonorInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    campId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonationCreateOrConnectWithoutDonorInput = {
+    where: DonationWhereUniqueInput
+    create: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type DonationCreateManyDonorInputEnvelope = {
+    data: DonationCreateManyDonorInput | DonationCreateManyDonorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FamilyMemberCreateWithoutPrimaryUserInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberUncheckedCreateWithoutPrimaryUserInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberCreateOrConnectWithoutPrimaryUserInput = {
+    where: FamilyMemberWhereUniqueInput
+    create: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberCreateManyPrimaryUserInputEnvelope = {
+    data: FamilyMemberCreateManyPrimaryUserInput | FamilyMemberCreateManyPrimaryUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type HelpRequestCreateWithoutUserInput = {
     id?: string
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -90584,17 +90653,17 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     escalations?: HelpRequestEscalationCreateNestedManyWithoutHelpRequestInput
+    verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
   }
 
   export type HelpRequestUncheckedCreateWithoutUserInput = {
     id?: string
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -90603,12 +90672,13 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     escalations?: HelpRequestEscalationUncheckedCreateNestedManyWithoutHelpRequestInput
+    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
   }
 
   export type HelpRequestCreateOrConnectWithoutUserInput = {
@@ -90628,22 +90698,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateWithoutReporterInput = {
@@ -90653,22 +90723,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportCreateOrConnectWithoutReporterInput = {
@@ -90775,10 +90845,10 @@ export namespace Prisma {
     affectedCount?: number | null
     assignedToId?: string | null
     notes?: string | null
-    nextCheckInDate?: Date | string | null
-    checkInStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    checkInStatus?: string | null
+    nextCheckInDate?: Date | string | null
   }
 
   export type PsychologicalSupportRequestUncheckedCreateWithoutUserInput = {
@@ -90792,10 +90862,10 @@ export namespace Prisma {
     affectedCount?: number | null
     assignedToId?: string | null
     notes?: string | null
-    nextCheckInDate?: Date | string | null
-    checkInStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    checkInStatus?: string | null
+    nextCheckInDate?: Date | string | null
   }
 
   export type PsychologicalSupportRequestCreateOrConnectWithoutUserInput = {
@@ -90818,14 +90888,14 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    claims?: ReliefTokenClaimCreateNestedManyWithoutTokenInput
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
     donor?: DonorCampaignCreateNestedOneWithoutTokensInput
+    claims?: ReliefTokenClaimCreateNestedManyWithoutTokenInput
   }
 
   export type ReliefTokenUncheckedCreateWithoutUserInput = {
@@ -90838,13 +90908,13 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    donorId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: string | null
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
     claims?: ReliefTokenClaimUncheckedCreateNestedManyWithoutTokenInput
   }
 
@@ -90881,6 +90951,34 @@ export namespace Prisma {
 
   export type ReportVerificationCreateManyUserInputEnvelope = {
     data: ReportVerificationCreateManyUserInput | ReportVerificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SafetyCheckInCreateWithoutUserInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInUncheckedCreateWithoutUserInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInCreateOrConnectWithoutUserInput = {
+    where: SafetyCheckInWhereUniqueInput
+    create: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput>
+  }
+
+  export type SafetyCheckInCreateManyUserInputEnvelope = {
+    data: SafetyCheckInCreateManyUserInput | SafetyCheckInCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -90956,37 +91054,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type VolunteerProfileCreateWithoutUserInput = {
-    id?: string
-    totalHours?: number
-    incidentsJoined?: number
-    readinessScore?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
-    trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
-    wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
+  export type SectorCreateWithoutUsersInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
   }
 
-  export type VolunteerProfileUncheckedCreateWithoutUserInput = {
-    id?: string
-    totalHours?: number
-    incidentsJoined?: number
-    readinessScore?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
-    trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
-    wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
+  export type SectorUncheckedCreateWithoutUsersInput = {
+    id: string
+    name?: string | null
+    type?: string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: string | null
+    province?: string | null
   }
 
-  export type VolunteerProfileCreateOrConnectWithoutUserInput = {
-    where: VolunteerProfileWhereUniqueInput
-    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+  export type SectorCreateOrConnectWithoutUsersInput = {
+    where: SectorWhereUniqueInput
+    create: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
   }
 
   export type UserSessionLogCreateWithoutUserInput = {
@@ -91015,125 +91103,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SectorCreateWithoutUsersInput = {
-    id: string
-    name?: string | null
-    type?: string
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
-    district?: string | null
-    province?: string | null
-  }
-
-  export type SectorUncheckedCreateWithoutUsersInput = {
-    id: string
-    name?: string | null
-    type?: string
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
-    district?: string | null
-    province?: string | null
-  }
-
-  export type SectorCreateOrConnectWithoutUsersInput = {
-    where: SectorWhereUniqueInput
-    create: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
-  }
-
-  export type DonationCreateWithoutDonorInput = {
+  export type VolunteerProfileCreateWithoutUserInput = {
     id?: string
-    donorName: string
-    type: $Enums.DonationType
-    amount?: number | null
-    itemsDescription?: string | null
-    transactionId?: string | null
-    paymentGateway?: string | null
-    transactionDate?: Date | string | null
-    status?: $Enums.DonationStatus
     createdAt?: Date | string
+    incidentsJoined?: number
+    readinessScore?: number
+    totalHours?: number
     updatedAt?: Date | string
-    camp?: ReliefCampCreateNestedOneWithoutDonationsInput
+    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
+    skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
+    trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
+    wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
   }
 
-  export type DonationUncheckedCreateWithoutDonorInput = {
+  export type VolunteerProfileUncheckedCreateWithoutUserInput = {
     id?: string
-    donorName: string
-    type: $Enums.DonationType
-    amount?: number | null
-    itemsDescription?: string | null
-    transactionId?: string | null
-    paymentGateway?: string | null
-    transactionDate?: Date | string | null
-    status?: $Enums.DonationStatus
-    campId?: string | null
     createdAt?: Date | string
+    incidentsJoined?: number
+    readinessScore?: number
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
+    skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
+    trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
+    wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
-  export type DonationCreateOrConnectWithoutDonorInput = {
-    where: DonationWhereUniqueInput
-    create: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput>
-  }
-
-  export type DonationCreateManyDonorInputEnvelope = {
-    data: DonationCreateManyDonorInput | DonationCreateManyDonorInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type SafetyCheckInCreateWithoutUserInput = {
-    id?: string
-    status: $Enums.SafetyStatus
-    message?: string | null
-    latitude?: number | null
-    longitude?: number | null
-    createdAt?: Date | string
-  }
-
-  export type SafetyCheckInUncheckedCreateWithoutUserInput = {
-    id?: string
-    status: $Enums.SafetyStatus
-    message?: string | null
-    latitude?: number | null
-    longitude?: number | null
-    createdAt?: Date | string
-  }
-
-  export type SafetyCheckInCreateOrConnectWithoutUserInput = {
-    where: SafetyCheckInWhereUniqueInput
-    create: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput>
-  }
-
-  export type SafetyCheckInCreateManyUserInputEnvelope = {
-    data: SafetyCheckInCreateManyUserInput | SafetyCheckInCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type FamilyMemberCreateWithoutPrimaryUserInput = {
-    id?: string
-    name: string
-    relation: string
-    status: $Enums.SafetyStatus
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type FamilyMemberUncheckedCreateWithoutPrimaryUserInput = {
-    id?: string
-    name: string
-    relation: string
-    status: $Enums.SafetyStatus
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type FamilyMemberCreateOrConnectWithoutPrimaryUserInput = {
-    where: FamilyMemberWhereUniqueInput
-    create: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput>
-  }
-
-  export type FamilyMemberCreateManyPrimaryUserInputEnvelope = {
-    data: FamilyMemberCreateManyPrimaryUserInput | FamilyMemberCreateManyPrimaryUserInput[]
-    skipDuplicates?: boolean
+  export type VolunteerProfileCreateOrConnectWithoutUserInput = {
+    where: VolunteerProfileWhereUniqueInput
+    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
   }
 
   export type DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput = {
@@ -91162,7 +91162,6 @@ export namespace Prisma {
     location?: StringFilter<"DamageAssessment"> | string
     latitude?: FloatNullableFilter<"DamageAssessment"> | number | null
     longitude?: FloatNullableFilter<"DamageAssessment"> | number | null
-    polygonData?: JsonNullableFilter<"DamageAssessment">
     category?: EnumDamageCategoryFilter<"DamageAssessment"> | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
@@ -91170,20 +91169,86 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFilter<"DamageAssessment"> | $Enums.DamageLevel
     affectedPersons?: IntNullableFilter<"DamageAssessment"> | number | null
     estimatedLoss?: FloatNullableFilter<"DamageAssessment"> | number | null
-    aiEstimatedDamage?: StringNullableFilter<"DamageAssessment"> | string | null
-    aiEstimatedCost?: FloatNullableFilter<"DamageAssessment"> | number | null
-    propertyOwnershipStatus?: StringNullableFilter<"DamageAssessment"> | string | null
-    familyVulnerabilityScore?: IntNullableFilter<"DamageAssessment"> | number | null
-    incomeBracket?: StringNullableFilter<"DamageAssessment"> | string | null
-    compensationEligibilityScore?: FloatNullableFilter<"DamageAssessment"> | number | null
-    compensationEligible?: BoolFilter<"DamageAssessment"> | boolean
     mediaUrls?: StringNullableListFilter<"DamageAssessment">
     status?: EnumDamageStatusFilter<"DamageAssessment"> | $Enums.DamageStatus
     notes?: StringNullableFilter<"DamageAssessment"> | string | null
-    reviewerNotes?: StringNullableFilter<"DamageAssessment"> | string | null
     verifiedById?: StringNullableFilter<"DamageAssessment"> | string | null
     createdAt?: DateTimeFilter<"DamageAssessment"> | Date | string
     updatedAt?: DateTimeFilter<"DamageAssessment"> | Date | string
+    aiEstimatedCost?: FloatNullableFilter<"DamageAssessment"> | number | null
+    aiEstimatedDamage?: StringNullableFilter<"DamageAssessment"> | string | null
+    compensationEligibilityScore?: FloatNullableFilter<"DamageAssessment"> | number | null
+    compensationEligible?: BoolFilter<"DamageAssessment"> | boolean
+    familyVulnerabilityScore?: IntNullableFilter<"DamageAssessment"> | number | null
+    incomeBracket?: StringNullableFilter<"DamageAssessment"> | string | null
+    polygonData?: JsonNullableFilter<"DamageAssessment">
+    propertyOwnershipStatus?: StringNullableFilter<"DamageAssessment"> | string | null
+    reviewerNotes?: StringNullableFilter<"DamageAssessment"> | string | null
+  }
+
+  export type DonationUpsertWithWhereUniqueWithoutDonorInput = {
+    where: DonationWhereUniqueInput
+    update: XOR<DonationUpdateWithoutDonorInput, DonationUncheckedUpdateWithoutDonorInput>
+    create: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type DonationUpdateWithWhereUniqueWithoutDonorInput = {
+    where: DonationWhereUniqueInput
+    data: XOR<DonationUpdateWithoutDonorInput, DonationUncheckedUpdateWithoutDonorInput>
+  }
+
+  export type DonationUpdateManyWithWhereWithoutDonorInput = {
+    where: DonationScalarWhereInput
+    data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyWithoutDonorInput>
+  }
+
+  export type DonationScalarWhereInput = {
+    AND?: DonationScalarWhereInput | DonationScalarWhereInput[]
+    OR?: DonationScalarWhereInput[]
+    NOT?: DonationScalarWhereInput | DonationScalarWhereInput[]
+    id?: StringFilter<"Donation"> | string
+    donorId?: StringNullableFilter<"Donation"> | string | null
+    donorName?: StringFilter<"Donation"> | string
+    type?: EnumDonationTypeFilter<"Donation"> | $Enums.DonationType
+    amount?: FloatNullableFilter<"Donation"> | number | null
+    itemsDescription?: StringNullableFilter<"Donation"> | string | null
+    transactionId?: StringNullableFilter<"Donation"> | string | null
+    paymentGateway?: StringNullableFilter<"Donation"> | string | null
+    transactionDate?: DateTimeNullableFilter<"Donation"> | Date | string | null
+    status?: EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
+    campId?: StringNullableFilter<"Donation"> | string | null
+    createdAt?: DateTimeFilter<"Donation"> | Date | string
+    updatedAt?: DateTimeFilter<"Donation"> | Date | string
+  }
+
+  export type FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput = {
+    where: FamilyMemberWhereUniqueInput
+    update: XOR<FamilyMemberUpdateWithoutPrimaryUserInput, FamilyMemberUncheckedUpdateWithoutPrimaryUserInput>
+    create: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput = {
+    where: FamilyMemberWhereUniqueInput
+    data: XOR<FamilyMemberUpdateWithoutPrimaryUserInput, FamilyMemberUncheckedUpdateWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput = {
+    where: FamilyMemberScalarWhereInput
+    data: XOR<FamilyMemberUpdateManyMutationInput, FamilyMemberUncheckedUpdateManyWithoutPrimaryUserInput>
+  }
+
+  export type FamilyMemberScalarWhereInput = {
+    AND?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+    OR?: FamilyMemberScalarWhereInput[]
+    NOT?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
+    id?: StringFilter<"FamilyMember"> | string
+    primaryUserId?: StringFilter<"FamilyMember"> | string
+    name?: StringFilter<"FamilyMember"> | string
+    relation?: StringFilter<"FamilyMember"> | string
+    status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
+    notes?: StringNullableFilter<"FamilyMember"> | string | null
+    createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
+    updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
   }
 
   export type HelpRequestUpsertWithWhereUniqueWithoutUserInput = {
@@ -91208,7 +91273,6 @@ export namespace Prisma {
     NOT?: HelpRequestScalarWhereInput | HelpRequestScalarWhereInput[]
     id?: StringFilter<"HelpRequest"> | string
     userId?: StringNullableFilter<"HelpRequest"> | string | null
-    phone?: StringNullableFilter<"HelpRequest"> | string | null
     type?: StringFilter<"HelpRequest"> | string
     description?: StringFilter<"HelpRequest"> | string
     location?: StringFilter<"HelpRequest"> | string
@@ -91217,10 +91281,11 @@ export namespace Prisma {
     priority?: EnumSeverityFilter<"HelpRequest"> | $Enums.Severity
     status?: EnumStatusFilter<"HelpRequest"> | $Enums.Status
     peopleCount?: IntNullableFilter<"HelpRequest"> | number | null
-    assignedVolunteerId?: StringNullableFilter<"HelpRequest"> | string | null
-    escalationLevel?: StringFilter<"HelpRequest"> | string
     createdAt?: DateTimeFilter<"HelpRequest"> | Date | string
     updatedAt?: DateTimeFilter<"HelpRequest"> | Date | string
+    assignedVolunteerId?: StringNullableFilter<"HelpRequest"> | string | null
+    escalationLevel?: StringFilter<"HelpRequest"> | string
+    phone?: StringNullableFilter<"HelpRequest"> | string | null
   }
 
   export type IncidentReportUpsertWithWhereUniqueWithoutReporterInput = {
@@ -91249,17 +91314,17 @@ export namespace Prisma {
     location?: StringFilter<"IncidentReport"> | string
     latitude?: FloatNullableFilter<"IncidentReport"> | number | null
     longitude?: FloatNullableFilter<"IncidentReport"> | number | null
-    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
-    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
-    province?: StringNullableFilter<"IncidentReport"> | string | null
     status?: EnumStatusFilter<"IncidentReport"> | $Enums.Status
     severity?: EnumSeverityFilter<"IncidentReport"> | $Enums.Severity
-    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
     category?: StringFilter<"IncidentReport"> | string
     images?: StringNullableListFilter<"IncidentReport">
     reporterId?: StringFilter<"IncidentReport"> | string
     createdAt?: DateTimeFilter<"IncidentReport"> | Date | string
     updatedAt?: DateTimeFilter<"IncidentReport"> | Date | string
+    province?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneId?: StringNullableFilter<"IncidentReport"> | string | null
+    zoneName?: StringNullableFilter<"IncidentReport"> | string | null
+    mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
   }
 
   export type LocalVerifierUpsertWithoutUserInput = {
@@ -91387,10 +91452,10 @@ export namespace Prisma {
     affectedCount?: IntNullableFilter<"PsychologicalSupportRequest"> | number | null
     assignedToId?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
     notes?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
-    nextCheckInDate?: DateTimeNullableFilter<"PsychologicalSupportRequest"> | Date | string | null
-    checkInStatus?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
     createdAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
     updatedAt?: DateTimeFilter<"PsychologicalSupportRequest"> | Date | string
+    checkInStatus?: StringNullableFilter<"PsychologicalSupportRequest"> | string | null
+    nextCheckInDate?: DateTimeNullableFilter<"PsychologicalSupportRequest"> | Date | string | null
   }
 
   export type ReliefTokenUpsertWithWhereUniqueWithoutUserInput = {
@@ -91423,13 +91488,13 @@ export namespace Prisma {
     maxUsage?: IntFilter<"ReliefToken"> | number
     issuedAt?: DateTimeFilter<"ReliefToken"> | Date | string
     expiresAt?: DateTimeNullableFilter<"ReliefToken"> | Date | string | null
-    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
-    isHouseholdBundle?: BoolFilter<"ReliefToken"> | boolean
-    householdId?: StringNullableFilter<"ReliefToken"> | string | null
-    donorId?: StringNullableFilter<"ReliefToken"> | string | null
-    fraudRiskScore?: FloatFilter<"ReliefToken"> | number
     createdAt?: DateTimeFilter<"ReliefToken"> | Date | string
     updatedAt?: DateTimeFilter<"ReliefToken"> | Date | string
+    categories?: EnumTokenCategoryNullableListFilter<"ReliefToken">
+    donorId?: StringNullableFilter<"ReliefToken"> | string | null
+    fraudRiskScore?: FloatFilter<"ReliefToken"> | number
+    householdId?: StringNullableFilter<"ReliefToken"> | string | null
+    isHouseholdBundle?: BoolFilter<"ReliefToken"> | boolean
   }
 
   export type ReportVerificationUpsertWithWhereUniqueWithoutUserInput = {
@@ -91458,6 +91523,35 @@ export namespace Prisma {
     status?: StringFilter<"ReportVerification"> | string
     comment?: StringNullableFilter<"ReportVerification"> | string | null
     createdAt?: DateTimeFilter<"ReportVerification"> | Date | string
+  }
+
+  export type SafetyCheckInUpsertWithWhereUniqueWithoutUserInput = {
+    where: SafetyCheckInWhereUniqueInput
+    update: XOR<SafetyCheckInUpdateWithoutUserInput, SafetyCheckInUncheckedUpdateWithoutUserInput>
+    create: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput>
+  }
+
+  export type SafetyCheckInUpdateWithWhereUniqueWithoutUserInput = {
+    where: SafetyCheckInWhereUniqueInput
+    data: XOR<SafetyCheckInUpdateWithoutUserInput, SafetyCheckInUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SafetyCheckInUpdateManyWithWhereWithoutUserInput = {
+    where: SafetyCheckInScalarWhereInput
+    data: XOR<SafetyCheckInUpdateManyMutationInput, SafetyCheckInUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SafetyCheckInScalarWhereInput = {
+    AND?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+    OR?: SafetyCheckInScalarWhereInput[]
+    NOT?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
+    id?: StringFilter<"SafetyCheckIn"> | string
+    userId?: StringFilter<"SafetyCheckIn"> | string
+    status?: EnumSafetyStatusFilter<"SafetyCheckIn"> | $Enums.SafetyStatus
+    message?: StringNullableFilter<"SafetyCheckIn"> | string | null
+    latitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    longitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
+    createdAt?: DateTimeFilter<"SafetyCheckIn"> | Date | string
   }
 
   export type TaskUpsertWithWhereUniqueWithoutAssignedByInput = {
@@ -91509,43 +91603,33 @@ export namespace Prisma {
     data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutAssignedToInput>
   }
 
-  export type VolunteerProfileUpsertWithoutUserInput = {
-    update: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
-    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
-    where?: VolunteerProfileWhereInput
+  export type SectorUpsertWithoutUsersInput = {
+    update: XOR<SectorUpdateWithoutUsersInput, SectorUncheckedUpdateWithoutUsersInput>
+    create: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
+    where?: SectorWhereInput
   }
 
-  export type VolunteerProfileUpdateToOneWithWhereWithoutUserInput = {
-    where?: VolunteerProfileWhereInput
-    data: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
+  export type SectorUpdateToOneWithWhereWithoutUsersInput = {
+    where?: SectorWhereInput
+    data: XOR<SectorUpdateWithoutUsersInput, SectorUncheckedUpdateWithoutUsersInput>
   }
 
-  export type VolunteerProfileUpdateWithoutUserInput = {
+  export type SectorUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
-    incidentsJoined?: IntFieldUpdateOperationsInput | number
-    readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
-    trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
-    wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type VolunteerProfileUncheckedUpdateWithoutUserInput = {
+  export type SectorUncheckedUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
-    incidentsJoined?: IntFieldUpdateOperationsInput | number
-    readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
-    trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
-    wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    district?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSessionLogUpsertWithWhereUniqueWithoutUserInput = {
@@ -91576,127 +91660,70 @@ export namespace Prisma {
     loginTime?: DateTimeFilter<"UserSessionLog"> | Date | string
   }
 
-  export type SectorUpsertWithoutUsersInput = {
-    update: XOR<SectorUpdateWithoutUsersInput, SectorUncheckedUpdateWithoutUsersInput>
-    create: XOR<SectorCreateWithoutUsersInput, SectorUncheckedCreateWithoutUsersInput>
-    where?: SectorWhereInput
+  export type VolunteerProfileUpsertWithoutUserInput = {
+    update: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
+    create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
+    where?: VolunteerProfileWhereInput
   }
 
-  export type SectorUpdateToOneWithWhereWithoutUsersInput = {
-    where?: SectorWhereInput
-    data: XOR<SectorUpdateWithoutUsersInput, SectorUncheckedUpdateWithoutUsersInput>
+  export type VolunteerProfileUpdateToOneWithWhereWithoutUserInput = {
+    where?: VolunteerProfileWhereInput
+    data: XOR<VolunteerProfileUpdateWithoutUserInput, VolunteerProfileUncheckedUpdateWithoutUserInput>
   }
 
-  export type SectorUpdateWithoutUsersInput = {
+  export type VolunteerProfileUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
-    district?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidentsJoined?: IntFieldUpdateOperationsInput | number
+    readinessScore?: FloatFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
+    skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
+    trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
+    wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
   }
 
-  export type SectorUncheckedUpdateWithoutUsersInput = {
+  export type VolunteerProfileUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
-    district?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidentsJoined?: IntFieldUpdateOperationsInput | number
+    readinessScore?: FloatFieldUpdateOperationsInput | number
+    totalHours?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
+    skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
+    trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
+    wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
-  export type DonationUpsertWithWhereUniqueWithoutDonorInput = {
-    where: DonationWhereUniqueInput
-    update: XOR<DonationUpdateWithoutDonorInput, DonationUncheckedUpdateWithoutDonorInput>
-    create: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput>
+  export type AfterActionReportCreateWithoutIncidentInput = {
+    id?: string
+    timeline: JsonNullValueInput | InputJsonValue
+    resourcesUsed: JsonNullValueInput | InputJsonValue
+    costEstimate: number
+    peopleAffected: number
+    resolutionTime: number
+    lessonsLearned?: string | null
+    createdAt?: Date | string
   }
 
-  export type DonationUpdateWithWhereUniqueWithoutDonorInput = {
-    where: DonationWhereUniqueInput
-    data: XOR<DonationUpdateWithoutDonorInput, DonationUncheckedUpdateWithoutDonorInput>
+  export type AfterActionReportUncheckedCreateWithoutIncidentInput = {
+    id?: string
+    timeline: JsonNullValueInput | InputJsonValue
+    resourcesUsed: JsonNullValueInput | InputJsonValue
+    costEstimate: number
+    peopleAffected: number
+    resolutionTime: number
+    lessonsLearned?: string | null
+    createdAt?: Date | string
   }
 
-  export type DonationUpdateManyWithWhereWithoutDonorInput = {
-    where: DonationScalarWhereInput
-    data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyWithoutDonorInput>
-  }
-
-  export type DonationScalarWhereInput = {
-    AND?: DonationScalarWhereInput | DonationScalarWhereInput[]
-    OR?: DonationScalarWhereInput[]
-    NOT?: DonationScalarWhereInput | DonationScalarWhereInput[]
-    id?: StringFilter<"Donation"> | string
-    donorId?: StringNullableFilter<"Donation"> | string | null
-    donorName?: StringFilter<"Donation"> | string
-    type?: EnumDonationTypeFilter<"Donation"> | $Enums.DonationType
-    amount?: FloatNullableFilter<"Donation"> | number | null
-    itemsDescription?: StringNullableFilter<"Donation"> | string | null
-    transactionId?: StringNullableFilter<"Donation"> | string | null
-    paymentGateway?: StringNullableFilter<"Donation"> | string | null
-    transactionDate?: DateTimeNullableFilter<"Donation"> | Date | string | null
-    status?: EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
-    campId?: StringNullableFilter<"Donation"> | string | null
-    createdAt?: DateTimeFilter<"Donation"> | Date | string
-    updatedAt?: DateTimeFilter<"Donation"> | Date | string
-  }
-
-  export type SafetyCheckInUpsertWithWhereUniqueWithoutUserInput = {
-    where: SafetyCheckInWhereUniqueInput
-    update: XOR<SafetyCheckInUpdateWithoutUserInput, SafetyCheckInUncheckedUpdateWithoutUserInput>
-    create: XOR<SafetyCheckInCreateWithoutUserInput, SafetyCheckInUncheckedCreateWithoutUserInput>
-  }
-
-  export type SafetyCheckInUpdateWithWhereUniqueWithoutUserInput = {
-    where: SafetyCheckInWhereUniqueInput
-    data: XOR<SafetyCheckInUpdateWithoutUserInput, SafetyCheckInUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SafetyCheckInUpdateManyWithWhereWithoutUserInput = {
-    where: SafetyCheckInScalarWhereInput
-    data: XOR<SafetyCheckInUpdateManyMutationInput, SafetyCheckInUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SafetyCheckInScalarWhereInput = {
-    AND?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
-    OR?: SafetyCheckInScalarWhereInput[]
-    NOT?: SafetyCheckInScalarWhereInput | SafetyCheckInScalarWhereInput[]
-    id?: StringFilter<"SafetyCheckIn"> | string
-    userId?: StringFilter<"SafetyCheckIn"> | string
-    status?: EnumSafetyStatusFilter<"SafetyCheckIn"> | $Enums.SafetyStatus
-    message?: StringNullableFilter<"SafetyCheckIn"> | string | null
-    latitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
-    longitude?: FloatNullableFilter<"SafetyCheckIn"> | number | null
-    createdAt?: DateTimeFilter<"SafetyCheckIn"> | Date | string
-  }
-
-  export type FamilyMemberUpsertWithWhereUniqueWithoutPrimaryUserInput = {
-    where: FamilyMemberWhereUniqueInput
-    update: XOR<FamilyMemberUpdateWithoutPrimaryUserInput, FamilyMemberUncheckedUpdateWithoutPrimaryUserInput>
-    create: XOR<FamilyMemberCreateWithoutPrimaryUserInput, FamilyMemberUncheckedCreateWithoutPrimaryUserInput>
-  }
-
-  export type FamilyMemberUpdateWithWhereUniqueWithoutPrimaryUserInput = {
-    where: FamilyMemberWhereUniqueInput
-    data: XOR<FamilyMemberUpdateWithoutPrimaryUserInput, FamilyMemberUncheckedUpdateWithoutPrimaryUserInput>
-  }
-
-  export type FamilyMemberUpdateManyWithWhereWithoutPrimaryUserInput = {
-    where: FamilyMemberScalarWhereInput
-    data: XOR<FamilyMemberUpdateManyMutationInput, FamilyMemberUncheckedUpdateManyWithoutPrimaryUserInput>
-  }
-
-  export type FamilyMemberScalarWhereInput = {
-    AND?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
-    OR?: FamilyMemberScalarWhereInput[]
-    NOT?: FamilyMemberScalarWhereInput | FamilyMemberScalarWhereInput[]
-    id?: StringFilter<"FamilyMember"> | string
-    primaryUserId?: StringFilter<"FamilyMember"> | string
-    name?: StringFilter<"FamilyMember"> | string
-    relation?: StringFilter<"FamilyMember"> | string
-    status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
-    notes?: StringNullableFilter<"FamilyMember"> | string | null
-    createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
-    updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
+  export type AfterActionReportCreateOrConnectWithoutIncidentInput = {
+    where: AfterActionReportWhereUniqueInput
+    create: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
   }
 
   export type DamageAssessmentCreateWithoutIncidentInput = {
@@ -91704,7 +91731,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -91712,20 +91738,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
     reportedBy: UserCreateNestedOneWithoutDamageReportsInput
   }
 
@@ -91735,7 +91762,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -91743,20 +91769,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
   }
 
   export type DamageAssessmentCreateOrConnectWithoutIncidentInput = {
@@ -91801,19 +91828,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
     locationLogs?: LocationLogCreateNestedManyWithoutUserInput
@@ -91821,14 +91850,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsInput = {
@@ -91837,20 +91864,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
     locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
@@ -91858,13 +91887,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsInput = {
@@ -91962,31 +91989,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AfterActionReportCreateWithoutIncidentInput = {
-    id?: string
-    timeline: JsonNullValueInput | InputJsonValue
-    resourcesUsed: JsonNullValueInput | InputJsonValue
-    costEstimate: number
-    peopleAffected: number
-    resolutionTime: number
-    lessonsLearned?: string | null
-    createdAt?: Date | string
-  }
-
-  export type AfterActionReportUncheckedCreateWithoutIncidentInput = {
-    id?: string
-    timeline: JsonNullValueInput | InputJsonValue
-    resourcesUsed: JsonNullValueInput | InputJsonValue
-    costEstimate: number
-    peopleAffected: number
-    resolutionTime: number
-    lessonsLearned?: string | null
-    createdAt?: Date | string
-  }
-
-  export type AfterActionReportCreateOrConnectWithoutIncidentInput = {
-    where: AfterActionReportWhereUniqueInput
+  export type AfterActionReportUpsertWithoutIncidentInput = {
+    update: XOR<AfterActionReportUpdateWithoutIncidentInput, AfterActionReportUncheckedUpdateWithoutIncidentInput>
     create: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
+    where?: AfterActionReportWhereInput
+  }
+
+  export type AfterActionReportUpdateToOneWithWhereWithoutIncidentInput = {
+    where?: AfterActionReportWhereInput
+    data: XOR<AfterActionReportUpdateWithoutIncidentInput, AfterActionReportUncheckedUpdateWithoutIncidentInput>
+  }
+
+  export type AfterActionReportUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timeline?: JsonNullValueInput | InputJsonValue
+    resourcesUsed?: JsonNullValueInput | InputJsonValue
+    costEstimate?: FloatFieldUpdateOperationsInput | number
+    peopleAffected?: IntFieldUpdateOperationsInput | number
+    resolutionTime?: IntFieldUpdateOperationsInput | number
+    lessonsLearned?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AfterActionReportUncheckedUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timeline?: JsonNullValueInput | InputJsonValue
+    resourcesUsed?: JsonNullValueInput | InputJsonValue
+    costEstimate?: FloatFieldUpdateOperationsInput | number
+    peopleAffected?: IntFieldUpdateOperationsInput | number
+    resolutionTime?: IntFieldUpdateOperationsInput | number
+    lessonsLearned?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DamageAssessmentUpsertWithWhereUniqueWithoutIncidentInput = {
@@ -92050,19 +92083,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
     locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
@@ -92070,14 +92105,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsInput = {
@@ -92086,20 +92119,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
     locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
@@ -92107,13 +92142,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type ReportVerificationUpsertWithWhereUniqueWithoutReportInput = {
@@ -92177,58 +92210,27 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"VerifierAction"> | Date | string
   }
 
-  export type AfterActionReportUpsertWithoutIncidentInput = {
-    update: XOR<AfterActionReportUpdateWithoutIncidentInput, AfterActionReportUncheckedUpdateWithoutIncidentInput>
-    create: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
-    where?: AfterActionReportWhereInput
-  }
-
-  export type AfterActionReportUpdateToOneWithWhereWithoutIncidentInput = {
-    where?: AfterActionReportWhereInput
-    data: XOR<AfterActionReportUpdateWithoutIncidentInput, AfterActionReportUncheckedUpdateWithoutIncidentInput>
-  }
-
-  export type AfterActionReportUpdateWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    timeline?: JsonNullValueInput | InputJsonValue
-    resourcesUsed?: JsonNullValueInput | InputJsonValue
-    costEstimate?: FloatFieldUpdateOperationsInput | number
-    peopleAffected?: IntFieldUpdateOperationsInput | number
-    resolutionTime?: IntFieldUpdateOperationsInput | number
-    lessonsLearned?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AfterActionReportUncheckedUpdateWithoutIncidentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    timeline?: JsonNullValueInput | InputJsonValue
-    resourcesUsed?: JsonNullValueInput | InputJsonValue
-    costEstimate?: FloatFieldUpdateOperationsInput | number
-    peopleAffected?: IntFieldUpdateOperationsInput | number
-    resolutionTime?: IntFieldUpdateOperationsInput | number
-    lessonsLearned?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type UserCreateWithoutCurrentSectorInput = {
     id?: string
     email: string
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -92237,13 +92239,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCurrentSectorInput = {
@@ -92252,19 +92252,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -92273,13 +92275,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCurrentSectorInput = {
@@ -92317,19 +92317,45 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    profilePicture?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     region?: StringNullableFilter<"User"> | string | null
+    hasMobileApp?: BoolFilter<"User"> | boolean
+    isFieldActive?: BoolFilter<"User"> | boolean
+    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
     nic?: StringNullableFilter<"User"> | string | null
     twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
     twoFactorGracePeriodEnds?: DateTimeNullableFilter<"User"> | Date | string | null
-    hasMobileApp?: BoolFilter<"User"> | boolean
-    lastCheckInTime?: DateTimeNullableFilter<"User"> | Date | string | null
-    isFieldActive?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    profilePicture?: StringNullableFilter<"User"> | string | null
     currentSectorId?: StringNullableFilter<"User"> | string | null
+  }
+
+  export type CampInventoryCreateWithoutCampInput = {
+    id?: string
+    itemType: $Enums.InventoryItemType
+    quantity: number
+    threshold: number
+    lastUpdated?: Date | string
+  }
+
+  export type CampInventoryUncheckedCreateWithoutCampInput = {
+    id?: string
+    itemType: $Enums.InventoryItemType
+    quantity: number
+    threshold: number
+    lastUpdated?: Date | string
+  }
+
+  export type CampInventoryCreateOrConnectWithoutCampInput = {
+    where: CampInventoryWhereUniqueInput
+    create: XOR<CampInventoryCreateWithoutCampInput, CampInventoryUncheckedCreateWithoutCampInput>
+  }
+
+  export type CampInventoryCreateManyCampInputEnvelope = {
+    data: CampInventoryCreateManyCampInput | CampInventoryCreateManyCampInput[]
+    skipDuplicates?: boolean
   }
 
   export type CampResidentCreateWithoutCampInput = {
@@ -92362,32 +92388,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CampInventoryCreateWithoutCampInput = {
-    id?: string
-    itemType: $Enums.InventoryItemType
-    quantity: number
-    threshold: number
-    lastUpdated?: Date | string
-  }
-
-  export type CampInventoryUncheckedCreateWithoutCampInput = {
-    id?: string
-    itemType: $Enums.InventoryItemType
-    quantity: number
-    threshold: number
-    lastUpdated?: Date | string
-  }
-
-  export type CampInventoryCreateOrConnectWithoutCampInput = {
-    where: CampInventoryWhereUniqueInput
-    create: XOR<CampInventoryCreateWithoutCampInput, CampInventoryUncheckedCreateWithoutCampInput>
-  }
-
-  export type CampInventoryCreateManyCampInputEnvelope = {
-    data: CampInventoryCreateManyCampInput | CampInventoryCreateManyCampInput[]
-    skipDuplicates?: boolean
-  }
-
   export type CampScheduleCreateWithoutCampInput = {
     id?: string
     activityName: string
@@ -92411,38 +92411,6 @@ export namespace Prisma {
 
   export type CampScheduleCreateManyCampInputEnvelope = {
     data: CampScheduleCreateManyCampInput | CampScheduleCreateManyCampInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type HospitalReferralCreateWithoutCampInput = {
-    id?: string
-    patientName: string
-    conditionSeverity?: $Enums.Severity
-    hospitalAssigned: string
-    transportMethod?: string | null
-    outcome?: string | null
-    status?: $Enums.ReferralStatus
-    createdAt?: Date | string
-  }
-
-  export type HospitalReferralUncheckedCreateWithoutCampInput = {
-    id?: string
-    patientName: string
-    conditionSeverity?: $Enums.Severity
-    hospitalAssigned: string
-    transportMethod?: string | null
-    outcome?: string | null
-    status?: $Enums.ReferralStatus
-    createdAt?: Date | string
-  }
-
-  export type HospitalReferralCreateOrConnectWithoutCampInput = {
-    where: HospitalReferralWhereUniqueInput
-    create: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput>
-  }
-
-  export type HospitalReferralCreateManyCampInputEnvelope = {
-    data: HospitalReferralCreateManyCampInput | HospitalReferralCreateManyCampInput[]
     skipDuplicates?: boolean
   }
 
@@ -92538,34 +92506,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CampResidentUpsertWithWhereUniqueWithoutCampInput = {
-    where: CampResidentWhereUniqueInput
-    update: XOR<CampResidentUpdateWithoutCampInput, CampResidentUncheckedUpdateWithoutCampInput>
-    create: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput>
+  export type HospitalReferralCreateWithoutCampInput = {
+    id?: string
+    patientName: string
+    conditionSeverity?: $Enums.Severity
+    hospitalAssigned: string
+    transportMethod?: string | null
+    outcome?: string | null
+    status?: $Enums.ReferralStatus
+    createdAt?: Date | string
   }
 
-  export type CampResidentUpdateWithWhereUniqueWithoutCampInput = {
-    where: CampResidentWhereUniqueInput
-    data: XOR<CampResidentUpdateWithoutCampInput, CampResidentUncheckedUpdateWithoutCampInput>
+  export type HospitalReferralUncheckedCreateWithoutCampInput = {
+    id?: string
+    patientName: string
+    conditionSeverity?: $Enums.Severity
+    hospitalAssigned: string
+    transportMethod?: string | null
+    outcome?: string | null
+    status?: $Enums.ReferralStatus
+    createdAt?: Date | string
   }
 
-  export type CampResidentUpdateManyWithWhereWithoutCampInput = {
-    where: CampResidentScalarWhereInput
-    data: XOR<CampResidentUpdateManyMutationInput, CampResidentUncheckedUpdateManyWithoutCampInput>
+  export type HospitalReferralCreateOrConnectWithoutCampInput = {
+    where: HospitalReferralWhereUniqueInput
+    create: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput>
   }
 
-  export type CampResidentScalarWhereInput = {
-    AND?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
-    OR?: CampResidentScalarWhereInput[]
-    NOT?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
-    id?: StringFilter<"CampResident"> | string
-    campId?: StringFilter<"CampResident"> | string
-    name?: StringFilter<"CampResident"> | string
-    nic?: StringNullableFilter<"CampResident"> | string | null
-    familySize?: IntFilter<"CampResident"> | number
-    checkInTime?: DateTimeFilter<"CampResident"> | Date | string
-    checkOutTime?: DateTimeNullableFilter<"CampResident"> | Date | string | null
-    status?: StringFilter<"CampResident"> | string
+  export type HospitalReferralCreateManyCampInputEnvelope = {
+    data: HospitalReferralCreateManyCampInput | HospitalReferralCreateManyCampInput[]
+    skipDuplicates?: boolean
   }
 
   export type CampInventoryUpsertWithWhereUniqueWithoutCampInput = {
@@ -92596,6 +92566,36 @@ export namespace Prisma {
     lastUpdated?: DateTimeFilter<"CampInventory"> | Date | string
   }
 
+  export type CampResidentUpsertWithWhereUniqueWithoutCampInput = {
+    where: CampResidentWhereUniqueInput
+    update: XOR<CampResidentUpdateWithoutCampInput, CampResidentUncheckedUpdateWithoutCampInput>
+    create: XOR<CampResidentCreateWithoutCampInput, CampResidentUncheckedCreateWithoutCampInput>
+  }
+
+  export type CampResidentUpdateWithWhereUniqueWithoutCampInput = {
+    where: CampResidentWhereUniqueInput
+    data: XOR<CampResidentUpdateWithoutCampInput, CampResidentUncheckedUpdateWithoutCampInput>
+  }
+
+  export type CampResidentUpdateManyWithWhereWithoutCampInput = {
+    where: CampResidentScalarWhereInput
+    data: XOR<CampResidentUpdateManyMutationInput, CampResidentUncheckedUpdateManyWithoutCampInput>
+  }
+
+  export type CampResidentScalarWhereInput = {
+    AND?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
+    OR?: CampResidentScalarWhereInput[]
+    NOT?: CampResidentScalarWhereInput | CampResidentScalarWhereInput[]
+    id?: StringFilter<"CampResident"> | string
+    campId?: StringFilter<"CampResident"> | string
+    name?: StringFilter<"CampResident"> | string
+    nic?: StringNullableFilter<"CampResident"> | string | null
+    familySize?: IntFilter<"CampResident"> | number
+    checkInTime?: DateTimeFilter<"CampResident"> | Date | string
+    checkOutTime?: DateTimeNullableFilter<"CampResident"> | Date | string | null
+    status?: StringFilter<"CampResident"> | string
+  }
+
   export type CampScheduleUpsertWithWhereUniqueWithoutCampInput = {
     where: CampScheduleWhereUniqueInput
     update: XOR<CampScheduleUpdateWithoutCampInput, CampScheduleUncheckedUpdateWithoutCampInput>
@@ -92622,37 +92622,6 @@ export namespace Prisma {
     startTime?: StringFilter<"CampSchedule"> | string
     endTime?: StringFilter<"CampSchedule"> | string
     type?: StringFilter<"CampSchedule"> | string
-  }
-
-  export type HospitalReferralUpsertWithWhereUniqueWithoutCampInput = {
-    where: HospitalReferralWhereUniqueInput
-    update: XOR<HospitalReferralUpdateWithoutCampInput, HospitalReferralUncheckedUpdateWithoutCampInput>
-    create: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput>
-  }
-
-  export type HospitalReferralUpdateWithWhereUniqueWithoutCampInput = {
-    where: HospitalReferralWhereUniqueInput
-    data: XOR<HospitalReferralUpdateWithoutCampInput, HospitalReferralUncheckedUpdateWithoutCampInput>
-  }
-
-  export type HospitalReferralUpdateManyWithWhereWithoutCampInput = {
-    where: HospitalReferralScalarWhereInput
-    data: XOR<HospitalReferralUpdateManyMutationInput, HospitalReferralUncheckedUpdateManyWithoutCampInput>
-  }
-
-  export type HospitalReferralScalarWhereInput = {
-    AND?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
-    OR?: HospitalReferralScalarWhereInput[]
-    NOT?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
-    id?: StringFilter<"HospitalReferral"> | string
-    campId?: StringFilter<"HospitalReferral"> | string
-    patientName?: StringFilter<"HospitalReferral"> | string
-    conditionSeverity?: EnumSeverityFilter<"HospitalReferral"> | $Enums.Severity
-    hospitalAssigned?: StringFilter<"HospitalReferral"> | string
-    transportMethod?: StringNullableFilter<"HospitalReferral"> | string | null
-    outcome?: StringNullableFilter<"HospitalReferral"> | string | null
-    status?: EnumReferralStatusFilter<"HospitalReferral"> | $Enums.ReferralStatus
-    createdAt?: DateTimeFilter<"HospitalReferral"> | Date | string
   }
 
   export type CampTransferRequestUpsertWithWhereUniqueWithoutFromCampInput = {
@@ -92715,25 +92684,58 @@ export namespace Prisma {
     data: XOR<DonationUpdateManyMutationInput, DonationUncheckedUpdateManyWithoutCampInput>
   }
 
+  export type HospitalReferralUpsertWithWhereUniqueWithoutCampInput = {
+    where: HospitalReferralWhereUniqueInput
+    update: XOR<HospitalReferralUpdateWithoutCampInput, HospitalReferralUncheckedUpdateWithoutCampInput>
+    create: XOR<HospitalReferralCreateWithoutCampInput, HospitalReferralUncheckedCreateWithoutCampInput>
+  }
+
+  export type HospitalReferralUpdateWithWhereUniqueWithoutCampInput = {
+    where: HospitalReferralWhereUniqueInput
+    data: XOR<HospitalReferralUpdateWithoutCampInput, HospitalReferralUncheckedUpdateWithoutCampInput>
+  }
+
+  export type HospitalReferralUpdateManyWithWhereWithoutCampInput = {
+    where: HospitalReferralScalarWhereInput
+    data: XOR<HospitalReferralUpdateManyMutationInput, HospitalReferralUncheckedUpdateManyWithoutCampInput>
+  }
+
+  export type HospitalReferralScalarWhereInput = {
+    AND?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
+    OR?: HospitalReferralScalarWhereInput[]
+    NOT?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
+    id?: StringFilter<"HospitalReferral"> | string
+    campId?: StringFilter<"HospitalReferral"> | string
+    patientName?: StringFilter<"HospitalReferral"> | string
+    conditionSeverity?: EnumSeverityFilter<"HospitalReferral"> | $Enums.Severity
+    hospitalAssigned?: StringFilter<"HospitalReferral"> | string
+    transportMethod?: StringNullableFilter<"HospitalReferral"> | string | null
+    outcome?: StringNullableFilter<"HospitalReferral"> | string | null
+    status?: EnumReferralStatusFilter<"HospitalReferral"> | $Enums.ReferralStatus
+    createdAt?: DateTimeFilter<"HospitalReferral"> | Date | string
+  }
+
   export type UserCreateWithoutCreatedTasksInput = {
     id?: string
     email: string
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -92742,13 +92744,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
-    currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
     safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -92757,20 +92757,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -92779,12 +92781,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
     safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -92798,19 +92798,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -92819,13 +92821,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
-    currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
     safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -92834,20 +92834,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -92856,12 +92858,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
     safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -92876,22 +92876,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateWithoutTasksInput = {
@@ -92901,22 +92901,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportCreateOrConnectWithoutTasksInput = {
@@ -92941,19 +92941,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -92962,13 +92964,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
-    currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
     safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -92977,20 +92977,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -92999,12 +93001,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
     safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAssignedTasksInput = {
@@ -93024,19 +93024,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -93045,13 +93047,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
-    currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
     safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -93060,20 +93060,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -93082,12 +93084,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
     safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type IncidentReportUpsertWithoutTasksInput = {
@@ -93108,22 +93108,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutTasksInput = {
@@ -93133,22 +93133,74 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
+  }
+
+  export type VolunteerBadgeCreateWithoutVolunteerInput = {
+    id?: string
+    badgeType: string
+    earnedAt?: Date | string
+  }
+
+  export type VolunteerBadgeUncheckedCreateWithoutVolunteerInput = {
+    id?: string
+    badgeType: string
+    earnedAt?: Date | string
+  }
+
+  export type VolunteerBadgeCreateOrConnectWithoutVolunteerInput = {
+    where: VolunteerBadgeWhereUniqueInput
+    create: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput>
+  }
+
+  export type VolunteerBadgeCreateManyVolunteerInputEnvelope = {
+    data: VolunteerBadgeCreateManyVolunteerInput | VolunteerBadgeCreateManyVolunteerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VolunteerCheckInCreateWithoutVolunteerInput = {
+    id?: string
+    checkInTime?: Date | string
+    checkOutTime?: Date | string | null
+    latitude: number
+    longitude: number
+    zone?: string | null
+    activeHours?: number
+  }
+
+  export type VolunteerCheckInUncheckedCreateWithoutVolunteerInput = {
+    id?: string
+    checkInTime?: Date | string
+    checkOutTime?: Date | string | null
+    latitude: number
+    longitude: number
+    zone?: string | null
+    activeHours?: number
+  }
+
+  export type VolunteerCheckInCreateOrConnectWithoutVolunteerInput = {
+    where: VolunteerCheckInWhereUniqueInput
+    create: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput>
+  }
+
+  export type VolunteerCheckInCreateManyVolunteerInputEnvelope = {
+    data: VolunteerCheckInCreateManyVolunteerInput | VolunteerCheckInCreateManyVolunteerInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutVolunteerProfileInput = {
@@ -93157,19 +93209,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -93178,13 +93232,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVolunteerProfileInput = {
@@ -93193,20 +93245,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -93215,12 +93269,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutVolunteerProfileInput = {
@@ -93274,36 +93326,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type VolunteerCheckInCreateWithoutVolunteerInput = {
-    id?: string
-    checkInTime?: Date | string
-    checkOutTime?: Date | string | null
-    latitude: number
-    longitude: number
-    zone?: string | null
-    activeHours?: number
-  }
-
-  export type VolunteerCheckInUncheckedCreateWithoutVolunteerInput = {
-    id?: string
-    checkInTime?: Date | string
-    checkOutTime?: Date | string | null
-    latitude: number
-    longitude: number
-    zone?: string | null
-    activeHours?: number
-  }
-
-  export type VolunteerCheckInCreateOrConnectWithoutVolunteerInput = {
-    where: VolunteerCheckInWhereUniqueInput
-    create: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput>
-  }
-
-  export type VolunteerCheckInCreateManyVolunteerInputEnvelope = {
-    data: VolunteerCheckInCreateManyVolunteerInput | VolunteerCheckInCreateManyVolunteerInput[]
-    skipDuplicates?: boolean
-  }
-
   export type VolunteerWellbeingCreateWithoutVolunteerInput = {
     id?: string
     recordedAt?: Date | string
@@ -93332,26 +93354,60 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type VolunteerBadgeCreateWithoutVolunteerInput = {
-    id?: string
-    badgeType: string
-    earnedAt?: Date | string
-  }
-
-  export type VolunteerBadgeUncheckedCreateWithoutVolunteerInput = {
-    id?: string
-    badgeType: string
-    earnedAt?: Date | string
-  }
-
-  export type VolunteerBadgeCreateOrConnectWithoutVolunteerInput = {
+  export type VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput = {
     where: VolunteerBadgeWhereUniqueInput
+    update: XOR<VolunteerBadgeUpdateWithoutVolunteerInput, VolunteerBadgeUncheckedUpdateWithoutVolunteerInput>
     create: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput>
   }
 
-  export type VolunteerBadgeCreateManyVolunteerInputEnvelope = {
-    data: VolunteerBadgeCreateManyVolunteerInput | VolunteerBadgeCreateManyVolunteerInput[]
-    skipDuplicates?: boolean
+  export type VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput = {
+    where: VolunteerBadgeWhereUniqueInput
+    data: XOR<VolunteerBadgeUpdateWithoutVolunteerInput, VolunteerBadgeUncheckedUpdateWithoutVolunteerInput>
+  }
+
+  export type VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput = {
+    where: VolunteerBadgeScalarWhereInput
+    data: XOR<VolunteerBadgeUpdateManyMutationInput, VolunteerBadgeUncheckedUpdateManyWithoutVolunteerInput>
+  }
+
+  export type VolunteerBadgeScalarWhereInput = {
+    AND?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
+    OR?: VolunteerBadgeScalarWhereInput[]
+    NOT?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
+    id?: StringFilter<"VolunteerBadge"> | string
+    volunteerId?: StringFilter<"VolunteerBadge"> | string
+    badgeType?: StringFilter<"VolunteerBadge"> | string
+    earnedAt?: DateTimeFilter<"VolunteerBadge"> | Date | string
+  }
+
+  export type VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput = {
+    where: VolunteerCheckInWhereUniqueInput
+    update: XOR<VolunteerCheckInUpdateWithoutVolunteerInput, VolunteerCheckInUncheckedUpdateWithoutVolunteerInput>
+    create: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput>
+  }
+
+  export type VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput = {
+    where: VolunteerCheckInWhereUniqueInput
+    data: XOR<VolunteerCheckInUpdateWithoutVolunteerInput, VolunteerCheckInUncheckedUpdateWithoutVolunteerInput>
+  }
+
+  export type VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput = {
+    where: VolunteerCheckInScalarWhereInput
+    data: XOR<VolunteerCheckInUpdateManyMutationInput, VolunteerCheckInUncheckedUpdateManyWithoutVolunteerInput>
+  }
+
+  export type VolunteerCheckInScalarWhereInput = {
+    AND?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
+    OR?: VolunteerCheckInScalarWhereInput[]
+    NOT?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
+    id?: StringFilter<"VolunteerCheckIn"> | string
+    volunteerId?: StringFilter<"VolunteerCheckIn"> | string
+    checkInTime?: DateTimeFilter<"VolunteerCheckIn"> | Date | string
+    checkOutTime?: DateTimeNullableFilter<"VolunteerCheckIn"> | Date | string | null
+    latitude?: FloatFilter<"VolunteerCheckIn"> | number
+    longitude?: FloatFilter<"VolunteerCheckIn"> | number
+    zone?: StringNullableFilter<"VolunteerCheckIn"> | string | null
+    activeHours?: FloatFilter<"VolunteerCheckIn"> | number
   }
 
   export type UserUpsertWithoutVolunteerProfileInput = {
@@ -93371,19 +93427,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -93392,13 +93450,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVolunteerProfileInput = {
@@ -93407,20 +93463,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -93429,12 +93487,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type VolunteerSkillUpsertWithWhereUniqueWithoutVolunteerInput = {
@@ -93490,36 +93546,6 @@ export namespace Prisma {
     expiresAt?: DateTimeNullableFilter<"VolunteerTraining"> | Date | string | null
   }
 
-  export type VolunteerCheckInUpsertWithWhereUniqueWithoutVolunteerInput = {
-    where: VolunteerCheckInWhereUniqueInput
-    update: XOR<VolunteerCheckInUpdateWithoutVolunteerInput, VolunteerCheckInUncheckedUpdateWithoutVolunteerInput>
-    create: XOR<VolunteerCheckInCreateWithoutVolunteerInput, VolunteerCheckInUncheckedCreateWithoutVolunteerInput>
-  }
-
-  export type VolunteerCheckInUpdateWithWhereUniqueWithoutVolunteerInput = {
-    where: VolunteerCheckInWhereUniqueInput
-    data: XOR<VolunteerCheckInUpdateWithoutVolunteerInput, VolunteerCheckInUncheckedUpdateWithoutVolunteerInput>
-  }
-
-  export type VolunteerCheckInUpdateManyWithWhereWithoutVolunteerInput = {
-    where: VolunteerCheckInScalarWhereInput
-    data: XOR<VolunteerCheckInUpdateManyMutationInput, VolunteerCheckInUncheckedUpdateManyWithoutVolunteerInput>
-  }
-
-  export type VolunteerCheckInScalarWhereInput = {
-    AND?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
-    OR?: VolunteerCheckInScalarWhereInput[]
-    NOT?: VolunteerCheckInScalarWhereInput | VolunteerCheckInScalarWhereInput[]
-    id?: StringFilter<"VolunteerCheckIn"> | string
-    volunteerId?: StringFilter<"VolunteerCheckIn"> | string
-    checkInTime?: DateTimeFilter<"VolunteerCheckIn"> | Date | string
-    checkOutTime?: DateTimeNullableFilter<"VolunteerCheckIn"> | Date | string | null
-    latitude?: FloatFilter<"VolunteerCheckIn"> | number
-    longitude?: FloatFilter<"VolunteerCheckIn"> | number
-    zone?: StringNullableFilter<"VolunteerCheckIn"> | string | null
-    activeHours?: FloatFilter<"VolunteerCheckIn"> | number
-  }
-
   export type VolunteerWellbeingUpsertWithWhereUniqueWithoutVolunteerInput = {
     where: VolunteerWellbeingWhereUniqueInput
     update: XOR<VolunteerWellbeingUpdateWithoutVolunteerInput, VolunteerWellbeingUncheckedUpdateWithoutVolunteerInput>
@@ -93549,51 +93575,27 @@ export namespace Prisma {
     distressFlag?: BoolFilter<"VolunteerWellbeing"> | boolean
   }
 
-  export type VolunteerBadgeUpsertWithWhereUniqueWithoutVolunteerInput = {
-    where: VolunteerBadgeWhereUniqueInput
-    update: XOR<VolunteerBadgeUpdateWithoutVolunteerInput, VolunteerBadgeUncheckedUpdateWithoutVolunteerInput>
-    create: XOR<VolunteerBadgeCreateWithoutVolunteerInput, VolunteerBadgeUncheckedCreateWithoutVolunteerInput>
-  }
-
-  export type VolunteerBadgeUpdateWithWhereUniqueWithoutVolunteerInput = {
-    where: VolunteerBadgeWhereUniqueInput
-    data: XOR<VolunteerBadgeUpdateWithoutVolunteerInput, VolunteerBadgeUncheckedUpdateWithoutVolunteerInput>
-  }
-
-  export type VolunteerBadgeUpdateManyWithWhereWithoutVolunteerInput = {
-    where: VolunteerBadgeScalarWhereInput
-    data: XOR<VolunteerBadgeUpdateManyMutationInput, VolunteerBadgeUncheckedUpdateManyWithoutVolunteerInput>
-  }
-
-  export type VolunteerBadgeScalarWhereInput = {
-    AND?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
-    OR?: VolunteerBadgeScalarWhereInput[]
-    NOT?: VolunteerBadgeScalarWhereInput | VolunteerBadgeScalarWhereInput[]
-    id?: StringFilter<"VolunteerBadge"> | string
-    volunteerId?: StringFilter<"VolunteerBadge"> | string
-    badgeType?: StringFilter<"VolunteerBadge"> | string
-    earnedAt?: DateTimeFilter<"VolunteerBadge"> | Date | string
-  }
-
   export type UserCreateWithoutHelpRequestsInput = {
     id?: string
     email: string
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
     locationLogs?: LocationLogCreateNestedManyWithoutUserInput
@@ -93601,14 +93603,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHelpRequestsInput = {
@@ -93617,20 +93617,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
     locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
@@ -93638,18 +93640,40 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHelpRequestsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutHelpRequestsInput, UserUncheckedCreateWithoutHelpRequestsInput>
+  }
+
+  export type HelpRequestEscalationCreateWithoutHelpRequestInput = {
+    id?: string
+    level: string
+    message: string
+    triggeredAt?: Date | string
+  }
+
+  export type HelpRequestEscalationUncheckedCreateWithoutHelpRequestInput = {
+    id?: string
+    level: string
+    message: string
+    triggeredAt?: Date | string
+  }
+
+  export type HelpRequestEscalationCreateOrConnectWithoutHelpRequestInput = {
+    where: HelpRequestEscalationWhereUniqueInput
+    create: XOR<HelpRequestEscalationCreateWithoutHelpRequestInput, HelpRequestEscalationUncheckedCreateWithoutHelpRequestInput>
+  }
+
+  export type HelpRequestEscalationCreateManyHelpRequestInputEnvelope = {
+    data: HelpRequestEscalationCreateManyHelpRequestInput | HelpRequestEscalationCreateManyHelpRequestInput[]
+    skipDuplicates?: boolean
   }
 
   export type VerifierActionCreateWithoutHelpRequestInput = {
@@ -93680,30 +93704,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type HelpRequestEscalationCreateWithoutHelpRequestInput = {
-    id?: string
-    level: string
-    message: string
-    triggeredAt?: Date | string
-  }
-
-  export type HelpRequestEscalationUncheckedCreateWithoutHelpRequestInput = {
-    id?: string
-    level: string
-    message: string
-    triggeredAt?: Date | string
-  }
-
-  export type HelpRequestEscalationCreateOrConnectWithoutHelpRequestInput = {
-    where: HelpRequestEscalationWhereUniqueInput
-    create: XOR<HelpRequestEscalationCreateWithoutHelpRequestInput, HelpRequestEscalationUncheckedCreateWithoutHelpRequestInput>
-  }
-
-  export type HelpRequestEscalationCreateManyHelpRequestInputEnvelope = {
-    data: HelpRequestEscalationCreateManyHelpRequestInput | HelpRequestEscalationCreateManyHelpRequestInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserUpsertWithoutHelpRequestsInput = {
     update: XOR<UserUpdateWithoutHelpRequestsInput, UserUncheckedUpdateWithoutHelpRequestsInput>
     create: XOR<UserCreateWithoutHelpRequestsInput, UserUncheckedCreateWithoutHelpRequestsInput>
@@ -93721,19 +93721,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
     locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
@@ -93741,14 +93743,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHelpRequestsInput = {
@@ -93757,20 +93757,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
     locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
@@ -93778,29 +93780,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
-  }
-
-  export type VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput = {
-    where: VerifierActionWhereUniqueInput
-    update: XOR<VerifierActionUpdateWithoutHelpRequestInput, VerifierActionUncheckedUpdateWithoutHelpRequestInput>
-    create: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput>
-  }
-
-  export type VerifierActionUpdateWithWhereUniqueWithoutHelpRequestInput = {
-    where: VerifierActionWhereUniqueInput
-    data: XOR<VerifierActionUpdateWithoutHelpRequestInput, VerifierActionUncheckedUpdateWithoutHelpRequestInput>
-  }
-
-  export type VerifierActionUpdateManyWithWhereWithoutHelpRequestInput = {
-    where: VerifierActionScalarWhereInput
-    data: XOR<VerifierActionUpdateManyMutationInput, VerifierActionUncheckedUpdateManyWithoutHelpRequestInput>
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type HelpRequestEscalationUpsertWithWhereUniqueWithoutHelpRequestInput = {
@@ -93830,9 +93814,24 @@ export namespace Prisma {
     triggeredAt?: DateTimeFilter<"HelpRequestEscalation"> | Date | string
   }
 
+  export type VerifierActionUpsertWithWhereUniqueWithoutHelpRequestInput = {
+    where: VerifierActionWhereUniqueInput
+    update: XOR<VerifierActionUpdateWithoutHelpRequestInput, VerifierActionUncheckedUpdateWithoutHelpRequestInput>
+    create: XOR<VerifierActionCreateWithoutHelpRequestInput, VerifierActionUncheckedCreateWithoutHelpRequestInput>
+  }
+
+  export type VerifierActionUpdateWithWhereUniqueWithoutHelpRequestInput = {
+    where: VerifierActionWhereUniqueInput
+    data: XOR<VerifierActionUpdateWithoutHelpRequestInput, VerifierActionUncheckedUpdateWithoutHelpRequestInput>
+  }
+
+  export type VerifierActionUpdateManyWithWhereWithoutHelpRequestInput = {
+    where: VerifierActionScalarWhereInput
+    data: XOR<VerifierActionUpdateManyMutationInput, VerifierActionUncheckedUpdateManyWithoutHelpRequestInput>
+  }
+
   export type HelpRequestCreateWithoutEscalationsInput = {
     id?: string
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -93841,10 +93840,11 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     user?: UserCreateNestedOneWithoutHelpRequestsInput
     verifierActions?: VerifierActionCreateNestedManyWithoutHelpRequestInput
   }
@@ -93852,7 +93852,6 @@ export namespace Prisma {
   export type HelpRequestUncheckedCreateWithoutEscalationsInput = {
     id?: string
     userId?: string | null
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -93861,10 +93860,11 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutHelpRequestInput
   }
 
@@ -93886,7 +93886,6 @@ export namespace Prisma {
 
   export type HelpRequestUpdateWithoutEscalationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -93895,10 +93894,11 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneWithoutHelpRequestsNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
   }
@@ -93906,7 +93906,6 @@ export namespace Prisma {
   export type HelpRequestUncheckedUpdateWithoutEscalationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -93915,10 +93914,11 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
   }
 
@@ -93929,22 +93929,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateWithoutVerificationsInput = {
@@ -93954,22 +93954,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportCreateOrConnectWithoutVerificationsInput = {
@@ -93983,19 +93983,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -94003,14 +94005,12 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -94019,20 +94019,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -94040,13 +94042,11 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -94072,22 +94072,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutVerificationsInput = {
@@ -94097,22 +94097,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
   }
 
   export type UserUpsertWithoutVerificationsInput = {
@@ -94132,19 +94132,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -94152,14 +94154,12 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -94168,20 +94168,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -94189,13 +94191,11 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -94204,19 +94204,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -94224,14 +94226,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -94240,20 +94240,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -94261,13 +94263,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -94292,19 +94292,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -94312,14 +94314,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -94328,20 +94328,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -94349,13 +94351,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type IncidentReportCreateWithoutHistoryInput = {
@@ -94365,22 +94365,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateWithoutHistoryInput = {
@@ -94390,22 +94390,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportCreateOrConnectWithoutHistoryInput = {
@@ -94431,22 +94431,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutHistoryInput = {
@@ -94456,22 +94456,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
   }
 
   export type UserCreateWithoutLocationLogsInput = {
@@ -94480,19 +94480,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -94500,14 +94502,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLocationLogsInput = {
@@ -94516,20 +94516,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -94537,13 +94539,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLocationLogsInput = {
@@ -94568,19 +94568,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -94588,14 +94590,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocationLogsInput = {
@@ -94604,20 +94604,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -94625,13 +94627,34 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type DonorCampaignCreateWithoutTokensInput = {
+    id?: string
+    donorName: string
+    contributionAmount: number
+    targetCategories?: DonorCampaignCreatetargetCategoriesInput | $Enums.TokenCategory[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonorCampaignUncheckedCreateWithoutTokensInput = {
+    id?: string
+    donorName: string
+    contributionAmount: number
+    targetCategories?: DonorCampaignCreatetargetCategoriesInput | $Enums.TokenCategory[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DonorCampaignCreateOrConnectWithoutTokensInput = {
+    where: DonorCampaignWhereUniqueInput
+    create: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
   }
 
   export type UserCreateWithoutReliefTokensInput = {
@@ -94640,19 +94663,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -94660,14 +94685,12 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReliefTokensInput = {
@@ -94676,20 +94699,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -94697,13 +94722,11 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReliefTokensInput = {
@@ -94747,27 +94770,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type DonorCampaignCreateWithoutTokensInput = {
-    id?: string
-    donorName: string
-    contributionAmount: number
-    targetCategories?: DonorCampaignCreatetargetCategoriesInput | $Enums.TokenCategory[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DonorCampaignUncheckedCreateWithoutTokensInput = {
-    id?: string
-    donorName: string
-    contributionAmount: number
-    targetCategories?: DonorCampaignCreatetargetCategoriesInput | $Enums.TokenCategory[]
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DonorCampaignCreateOrConnectWithoutTokensInput = {
-    where: DonorCampaignWhereUniqueInput
+  export type DonorCampaignUpsertWithoutTokensInput = {
+    update: XOR<DonorCampaignUpdateWithoutTokensInput, DonorCampaignUncheckedUpdateWithoutTokensInput>
     create: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
+    where?: DonorCampaignWhereInput
+  }
+
+  export type DonorCampaignUpdateToOneWithWhereWithoutTokensInput = {
+    where?: DonorCampaignWhereInput
+    data: XOR<DonorCampaignUpdateWithoutTokensInput, DonorCampaignUncheckedUpdateWithoutTokensInput>
+  }
+
+  export type DonorCampaignUpdateWithoutTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    contributionAmount?: FloatFieldUpdateOperationsInput | number
+    targetCategories?: DonorCampaignUpdatetargetCategoriesInput | $Enums.TokenCategory[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonorCampaignUncheckedUpdateWithoutTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    contributionAmount?: FloatFieldUpdateOperationsInput | number
+    targetCategories?: DonorCampaignUpdatetargetCategoriesInput | $Enums.TokenCategory[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpsertWithoutReliefTokensInput = {
@@ -94787,19 +94816,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -94807,14 +94838,12 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReliefTokensInput = {
@@ -94823,20 +94852,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -94844,13 +94875,11 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type ReliefTokenClaimUpsertWithWhereUniqueWithoutTokenInput = {
@@ -94886,35 +94915,6 @@ export namespace Prisma {
     locationLng?: FloatNullableFilter<"ReliefTokenClaim"> | number | null
   }
 
-  export type DonorCampaignUpsertWithoutTokensInput = {
-    update: XOR<DonorCampaignUpdateWithoutTokensInput, DonorCampaignUncheckedUpdateWithoutTokensInput>
-    create: XOR<DonorCampaignCreateWithoutTokensInput, DonorCampaignUncheckedCreateWithoutTokensInput>
-    where?: DonorCampaignWhereInput
-  }
-
-  export type DonorCampaignUpdateToOneWithWhereWithoutTokensInput = {
-    where?: DonorCampaignWhereInput
-    data: XOR<DonorCampaignUpdateWithoutTokensInput, DonorCampaignUncheckedUpdateWithoutTokensInput>
-  }
-
-  export type DonorCampaignUpdateWithoutTokensInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    donorName?: StringFieldUpdateOperationsInput | string
-    contributionAmount?: FloatFieldUpdateOperationsInput | number
-    targetCategories?: DonorCampaignUpdatetargetCategoriesInput | $Enums.TokenCategory[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DonorCampaignUncheckedUpdateWithoutTokensInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    donorName?: StringFieldUpdateOperationsInput | string
-    contributionAmount?: FloatFieldUpdateOperationsInput | number
-    targetCategories?: DonorCampaignUpdatetargetCategoriesInput | $Enums.TokenCategory[]
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ReliefTokenCreateWithoutClaimsInput = {
     id?: string
     code: string
@@ -94925,14 +94925,14 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutReliefTokensInput
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
     donor?: DonorCampaignCreateNestedOneWithoutTokensInput
+    user: UserCreateNestedOneWithoutReliefTokensInput
   }
 
   export type ReliefTokenUncheckedCreateWithoutClaimsInput = {
@@ -94946,13 +94946,13 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    donorId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: string | null
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
   }
 
   export type ReliefTokenCreateOrConnectWithoutClaimsInput = {
@@ -94981,14 +94981,14 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutReliefTokensNestedInput
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
     donor?: DonorCampaignUpdateOneWithoutTokensNestedInput
+    user?: UserUpdateOneRequiredWithoutReliefTokensNestedInput
   }
 
   export type ReliefTokenUncheckedUpdateWithoutClaimsInput = {
@@ -95002,13 +95002,13 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    donorId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type IncidentReportCreateWithoutDamageAssessmentsInput = {
@@ -95018,22 +95018,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateWithoutDamageAssessmentsInput = {
@@ -95043,22 +95043,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportCreateOrConnectWithoutDamageAssessmentsInput = {
@@ -95072,18 +95072,20 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -95092,14 +95094,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDamageReportsInput = {
@@ -95108,19 +95108,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -95129,13 +95131,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDamageReportsInput = {
@@ -95161,22 +95161,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutDamageAssessmentsInput = {
@@ -95186,22 +95186,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
   }
 
   export type UserUpsertWithoutDamageReportsInput = {
@@ -95221,18 +95221,20 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -95241,14 +95243,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDamageReportsInput = {
@@ -95257,19 +95257,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -95278,13 +95280,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLocalVerifierInput = {
@@ -95293,19 +95293,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     locationLogs?: LocationLogCreateNestedManyWithoutUserInput
@@ -95313,14 +95315,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLocalVerifierInput = {
@@ -95329,20 +95329,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
@@ -95350,13 +95352,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLocalVerifierInput = {
@@ -95409,19 +95409,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
@@ -95429,14 +95431,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocalVerifierInput = {
@@ -95445,20 +95445,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
@@ -95466,13 +95468,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutVerifierInput = {
@@ -95493,7 +95493,6 @@ export namespace Prisma {
 
   export type HelpRequestCreateWithoutVerifierActionsInput = {
     id?: string
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -95502,10 +95501,11 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     user?: UserCreateNestedOneWithoutHelpRequestsInput
     escalations?: HelpRequestEscalationCreateNestedManyWithoutHelpRequestInput
   }
@@ -95513,7 +95513,6 @@ export namespace Prisma {
   export type HelpRequestUncheckedCreateWithoutVerifierActionsInput = {
     id?: string
     userId?: string | null
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -95522,10 +95521,11 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
     escalations?: HelpRequestEscalationUncheckedCreateNestedManyWithoutHelpRequestInput
   }
 
@@ -95541,22 +95541,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportUncheckedCreateWithoutVerifierActionsInput = {
@@ -95566,22 +95566,22 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
-    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
   }
 
   export type IncidentReportCreateOrConnectWithoutVerifierActionsInput = {
@@ -95635,7 +95635,6 @@ export namespace Prisma {
 
   export type HelpRequestUpdateWithoutVerifierActionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -95644,10 +95643,11 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneWithoutHelpRequestsNestedInput
     escalations?: HelpRequestEscalationUpdateManyWithoutHelpRequestNestedInput
   }
@@ -95655,7 +95655,6 @@ export namespace Prisma {
   export type HelpRequestUncheckedUpdateWithoutVerifierActionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -95664,10 +95663,11 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     escalations?: HelpRequestEscalationUncheckedUpdateManyWithoutHelpRequestNestedInput
   }
 
@@ -95689,22 +95689,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutVerifierActionsInput = {
@@ -95714,22 +95714,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
   }
 
   export type LocalVerifierUpsertWithoutActionsInput = {
@@ -95777,19 +95777,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -95797,14 +95799,12 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSupportRequestsInput = {
@@ -95813,20 +95813,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -95834,13 +95836,11 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSupportRequestsInput = {
@@ -95865,19 +95865,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -95885,14 +95887,12 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportRequestsInput = {
@@ -95901,20 +95901,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -95922,13 +95924,11 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type IncidentReportCreateWithoutAarInput = {
@@ -95938,16 +95938,16 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
@@ -95963,17 +95963,17 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     reporterId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
@@ -96004,16 +96004,16 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
@@ -96029,17 +96029,17 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     reporterId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
@@ -96143,6 +96143,27 @@ export namespace Prisma {
     data: XOR<ResourceExpenditureUpdateManyMutationInput, ResourceExpenditureUncheckedUpdateManyWithoutBudgetInput>
   }
 
+  export type DisasterBudgetCreateWithoutExpendituresInput = {
+    id?: string
+    eventName: string
+    allocatedBudget: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DisasterBudgetUncheckedCreateWithoutExpendituresInput = {
+    id?: string
+    eventName: string
+    allocatedBudget: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DisasterBudgetCreateOrConnectWithoutExpendituresInput = {
+    where: DisasterBudgetWhereUniqueInput
+    create: XOR<DisasterBudgetCreateWithoutExpendituresInput, DisasterBudgetUncheckedCreateWithoutExpendituresInput>
+  }
+
   export type ResourceCostCreateWithoutExpendituresInput = {
     id?: string
     resourceType: string
@@ -96166,25 +96187,31 @@ export namespace Prisma {
     create: XOR<ResourceCostCreateWithoutExpendituresInput, ResourceCostUncheckedCreateWithoutExpendituresInput>
   }
 
-  export type DisasterBudgetCreateWithoutExpendituresInput = {
-    id?: string
-    eventName: string
-    allocatedBudget: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DisasterBudgetUncheckedCreateWithoutExpendituresInput = {
-    id?: string
-    eventName: string
-    allocatedBudget: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DisasterBudgetCreateOrConnectWithoutExpendituresInput = {
-    where: DisasterBudgetWhereUniqueInput
+  export type DisasterBudgetUpsertWithoutExpendituresInput = {
+    update: XOR<DisasterBudgetUpdateWithoutExpendituresInput, DisasterBudgetUncheckedUpdateWithoutExpendituresInput>
     create: XOR<DisasterBudgetCreateWithoutExpendituresInput, DisasterBudgetUncheckedCreateWithoutExpendituresInput>
+    where?: DisasterBudgetWhereInput
+  }
+
+  export type DisasterBudgetUpdateToOneWithWhereWithoutExpendituresInput = {
+    where?: DisasterBudgetWhereInput
+    data: XOR<DisasterBudgetUpdateWithoutExpendituresInput, DisasterBudgetUncheckedUpdateWithoutExpendituresInput>
+  }
+
+  export type DisasterBudgetUpdateWithoutExpendituresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventName?: StringFieldUpdateOperationsInput | string
+    allocatedBudget?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DisasterBudgetUncheckedUpdateWithoutExpendituresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventName?: StringFieldUpdateOperationsInput | string
+    allocatedBudget?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResourceCostUpsertWithoutExpendituresInput = {
@@ -96216,52 +96243,27 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DisasterBudgetUpsertWithoutExpendituresInput = {
-    update: XOR<DisasterBudgetUpdateWithoutExpendituresInput, DisasterBudgetUncheckedUpdateWithoutExpendituresInput>
-    create: XOR<DisasterBudgetCreateWithoutExpendituresInput, DisasterBudgetUncheckedCreateWithoutExpendituresInput>
-    where?: DisasterBudgetWhereInput
-  }
-
-  export type DisasterBudgetUpdateToOneWithWhereWithoutExpendituresInput = {
-    where?: DisasterBudgetWhereInput
-    data: XOR<DisasterBudgetUpdateWithoutExpendituresInput, DisasterBudgetUncheckedUpdateWithoutExpendituresInput>
-  }
-
-  export type DisasterBudgetUpdateWithoutExpendituresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventName?: StringFieldUpdateOperationsInput | string
-    allocatedBudget?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DisasterBudgetUncheckedUpdateWithoutExpendituresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventName?: StringFieldUpdateOperationsInput | string
-    allocatedBudget?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type UserCreateWithoutSessionLogsInput = {
     id?: string
     email: string
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -96270,13 +96272,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionLogsInput = {
@@ -96285,20 +96285,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -96307,12 +96309,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionLogsInput = {
@@ -96337,19 +96337,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -96358,13 +96360,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionLogsInput = {
@@ -96373,20 +96373,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -96395,12 +96397,10 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type ReliefCampCreateWithoutResidentsInput = {
@@ -96418,10 +96418,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutResidentsInput = {
@@ -96439,10 +96439,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutResidentsInput = {
@@ -96476,10 +96476,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutResidentsInput = {
@@ -96497,10 +96497,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutInventoryInput = {
@@ -96518,10 +96518,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     residents?: CampResidentCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutInventoryInput = {
@@ -96539,10 +96539,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutInventoryInput = {
@@ -96576,10 +96576,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     residents?: CampResidentUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutInventoryInput = {
@@ -96597,10 +96597,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutSchedulesInput = {
@@ -96616,12 +96616,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentCreateNestedManyWithoutCampInput
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutSchedulesInput = {
@@ -96637,12 +96637,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutSchedulesInput = {
@@ -96674,12 +96674,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutSchedulesInput = {
@@ -96695,12 +96695,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutReferralsInput = {
@@ -96716,8 +96716,8 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentCreateNestedManyWithoutCampInput
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
@@ -96737,8 +96737,8 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
@@ -96774,8 +96774,8 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
@@ -96795,8 +96795,8 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
@@ -96816,12 +96816,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentCreateNestedManyWithoutCampInput
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutTransfersOutInput = {
@@ -96837,12 +96837,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutTransfersOutInput = {
@@ -96863,12 +96863,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentCreateNestedManyWithoutCampInput
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutTransfersInInput = {
@@ -96884,12 +96884,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutTransfersInInput = {
@@ -96921,12 +96921,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutTransfersOutInput = {
@@ -96942,12 +96942,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUpsertWithoutTransfersInInput = {
@@ -96974,12 +96974,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutTransfersInInput = {
@@ -96995,12 +96995,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefTokenCreateWithoutDonorInput = {
@@ -97013,12 +97013,12 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
     user: UserCreateNestedOneWithoutReliefTokensInput
     claims?: ReliefTokenClaimCreateNestedManyWithoutTokenInput
   }
@@ -97034,12 +97034,12 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
     claims?: ReliefTokenClaimUncheckedCreateNestedManyWithoutTokenInput
   }
 
@@ -97071,30 +97071,30 @@ export namespace Prisma {
 
   export type VolunteerProfileCreateWithoutSkillsInput = {
     id?: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     user: UserCreateNestedOneWithoutVolunteerProfileInput
     trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUncheckedCreateWithoutSkillsInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
-    trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
-    wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
     badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
+    trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
+    wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileCreateOrConnectWithoutSkillsInput = {
@@ -97115,58 +97115,58 @@ export namespace Prisma {
 
   export type VolunteerProfileUpdateWithoutSkillsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     user?: UserUpdateOneRequiredWithoutVolunteerProfileNestedInput
     trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileUncheckedUpdateWithoutSkillsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
-    wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
     badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
+    trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
+    wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileCreateWithoutTrainingsInput = {
     id?: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     user: UserCreateNestedOneWithoutVolunteerProfileInput
     skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUncheckedCreateWithoutTrainingsInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
-    skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
-    wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
     badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
+    skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
+    wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileCreateOrConnectWithoutTrainingsInput = {
@@ -97187,58 +97187,58 @@ export namespace Prisma {
 
   export type VolunteerProfileUpdateWithoutTrainingsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     user?: UserUpdateOneRequiredWithoutVolunteerProfileNestedInput
     skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileUncheckedUpdateWithoutTrainingsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
-    wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
     badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
+    skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
+    wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileCreateWithoutCheckInsInput = {
     id?: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
     user: UserCreateNestedOneWithoutVolunteerProfileInput
     skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUncheckedCreateWithoutCheckInsInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
     skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileCreateOrConnectWithoutCheckInsInput = {
@@ -97259,58 +97259,58 @@ export namespace Prisma {
 
   export type VolunteerProfileUpdateWithoutCheckInsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
     user?: UserUpdateOneRequiredWithoutVolunteerProfileNestedInput
     skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileUncheckedUpdateWithoutCheckInsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
     skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileCreateWithoutWellbeingLogsInput = {
     id?: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     user: UserCreateNestedOneWithoutVolunteerProfileInput
     skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUncheckedCreateWithoutWellbeingLogsInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
+    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
     skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
-    badges?: VolunteerBadgeUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileCreateOrConnectWithoutWellbeingLogsInput = {
@@ -97331,57 +97331,57 @@ export namespace Prisma {
 
   export type VolunteerProfileUpdateWithoutWellbeingLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     user?: UserUpdateOneRequiredWithoutVolunteerProfileNestedInput
     skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileUncheckedUpdateWithoutWellbeingLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
+    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
     skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
-    badges?: VolunteerBadgeUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileCreateWithoutBadgesInput = {
     id?: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     user: UserCreateNestedOneWithoutVolunteerProfileInput
     skills?: VolunteerSkillCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingCreateNestedManyWithoutVolunteerInput
   }
 
   export type VolunteerProfileUncheckedCreateWithoutBadgesInput = {
     id?: string
     userId: string
-    totalHours?: number
+    createdAt?: Date | string
     incidentsJoined?: number
     readinessScore?: number
-    createdAt?: Date | string
+    totalHours?: number
     updatedAt?: Date | string
+    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
     skills?: VolunteerSkillUncheckedCreateNestedManyWithoutVolunteerInput
     trainings?: VolunteerTrainingUncheckedCreateNestedManyWithoutVolunteerInput
-    checkIns?: VolunteerCheckInUncheckedCreateNestedManyWithoutVolunteerInput
     wellbeingLogs?: VolunteerWellbeingUncheckedCreateNestedManyWithoutVolunteerInput
   }
 
@@ -97403,29 +97403,29 @@ export namespace Prisma {
 
   export type VolunteerProfileUpdateWithoutBadgesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     user?: UserUpdateOneRequiredWithoutVolunteerProfileNestedInput
     skills?: VolunteerSkillUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUpdateManyWithoutVolunteerNestedInput
   }
 
   export type VolunteerProfileUncheckedUpdateWithoutBadgesInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    totalHours?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     incidentsJoined?: IntFieldUpdateOperationsInput | number
     readinessScore?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalHours?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
     skills?: VolunteerSkillUncheckedUpdateManyWithoutVolunteerNestedInput
     trainings?: VolunteerTrainingUncheckedUpdateManyWithoutVolunteerNestedInput
-    checkIns?: VolunteerCheckInUncheckedUpdateManyWithoutVolunteerNestedInput
     wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
@@ -97591,83 +97591,6 @@ export namespace Prisma {
     notes?: StringNullableFilter<"GroupTherapyParticipant"> | string | null
   }
 
-  export type UserCreateWithoutDonationsInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    profilePicture?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    region?: string | null
-    nic?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
-    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
-    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
-    reports?: IncidentReportCreateNestedManyWithoutReporterInput
-    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
-    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
-    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
-    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
-    currentSector?: SectorCreateNestedOneWithoutUsersInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
-  }
-
-  export type UserUncheckedCreateWithoutDonationsInput = {
-    id?: string
-    email: string
-    password: string
-    name: string
-    phone?: string | null
-    profilePicture?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    region?: string | null
-    nic?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
-    currentSectorId?: string | null
-    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
-    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
-    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
-    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
-    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
-    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
-    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
-    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
-    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
-  }
-
-  export type UserCreateOrConnectWithoutDonationsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
-  }
-
   export type ReliefCampCreateWithoutDonationsInput = {
     id?: string
     name: string
@@ -97681,12 +97604,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentCreateNestedManyWithoutCampInput
     inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
     schedules?: CampScheduleCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutDonationsInput = {
@@ -97702,12 +97625,12 @@ export namespace Prisma {
     waitTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
     schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
-    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutDonationsInput = {
@@ -97715,87 +97638,81 @@ export namespace Prisma {
     create: XOR<ReliefCampCreateWithoutDonationsInput, ReliefCampUncheckedCreateWithoutDonationsInput>
   }
 
-  export type UserUpsertWithoutDonationsInput = {
-    update: XOR<UserUpdateWithoutDonationsInput, UserUncheckedUpdateWithoutDonationsInput>
+  export type UserCreateWithoutDonationsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDonationsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phone?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDonationsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDonationsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDonationsInput, UserUncheckedUpdateWithoutDonationsInput>
-  }
-
-  export type UserUpdateWithoutDonationsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    nic?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
-    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
-    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
-    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
-    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
-    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
-    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
-    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
-    currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDonationsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    nic?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
-    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
-    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
-    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
-    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
-    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
-    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
-    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
-    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
-    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
   }
 
   export type ReliefCampUpsertWithoutDonationsInput = {
@@ -97822,12 +97739,12 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutDonationsInput = {
@@ -97843,12 +97760,95 @@ export namespace Prisma {
     waitTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
     schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
-    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+  }
+
+  export type UserUpsertWithoutDonationsInput = {
+    update: XOR<UserUpdateWithoutDonationsInput, UserUncheckedUpdateWithoutDonationsInput>
+    create: XOR<UserCreateWithoutDonationsInput, UserUncheckedCreateWithoutDonationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDonationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDonationsInput, UserUncheckedUpdateWithoutDonationsInput>
+  }
+
+  export type UserUpdateWithoutDonationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDonationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSafetyCheckInsInput = {
@@ -97857,19 +97857,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -97880,11 +97882,9 @@ export namespace Prisma {
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSafetyCheckInsInput = {
@@ -97893,20 +97893,22 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -97917,10 +97919,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSafetyCheckInsInput = {
@@ -97945,19 +97945,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -97968,11 +97970,9 @@ export namespace Prisma {
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSafetyCheckInsInput = {
@@ -97981,20 +97981,22 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -98005,10 +98007,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutFamilyMembersInput = {
@@ -98017,19 +98017,20 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
     helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
     reports?: IncidentReportCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
@@ -98038,13 +98039,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
     createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
-    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
-    donations?: DonationCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFamilyMembersInput = {
@@ -98053,20 +98053,21 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
     currentSectorId?: string | null
     damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
     helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
     reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
     localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
@@ -98075,12 +98076,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
     reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
-    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
-    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
-    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFamilyMembersInput = {
@@ -98105,19 +98105,20 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -98126,13 +98127,12 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
-    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFamilyMembersInput = {
@@ -98141,20 +98141,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -98163,12 +98164,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type GroupTherapySessionCreateWithoutParticipantsInput = {
@@ -98237,7 +98237,6 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -98245,25 +98244,50 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
+  }
+
+  export type DonationCreateManyDonorInput = {
+    id?: string
+    donorName: string
+    type: $Enums.DonationType
+    amount?: number | null
+    itemsDescription?: string | null
+    transactionId?: string | null
+    paymentGateway?: string | null
+    transactionDate?: Date | string | null
+    status?: $Enums.DonationStatus
+    campId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FamilyMemberCreateManyPrimaryUserInput = {
+    id?: string
+    name: string
+    relation: string
+    status: $Enums.SafetyStatus
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type HelpRequestCreateManyUserInput = {
     id?: string
-    phone?: string | null
     type: string
     description: string
     location: string
@@ -98272,10 +98296,11 @@ export namespace Prisma {
     priority?: $Enums.Severity
     status?: $Enums.Status
     peopleCount?: number | null
-    assignedVolunteerId?: string | null
-    escalationLevel?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    assignedVolunteerId?: string | null
+    escalationLevel?: string
+    phone?: string | null
   }
 
   export type IncidentReportCreateManyReporterInput = {
@@ -98285,16 +98310,16 @@ export namespace Prisma {
     location: string
     latitude?: number | null
     longitude?: number | null
-    zoneId?: string | null
-    zoneName?: string | null
-    province?: string | null
     status?: $Enums.Status
     severity?: $Enums.Severity
-    mlConfidence?: number | null
     category: string
     images?: IncidentReportCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
   }
 
   export type LocationLogCreateManyUserInput = {
@@ -98323,10 +98348,10 @@ export namespace Prisma {
     affectedCount?: number | null
     assignedToId?: string | null
     notes?: string | null
-    nextCheckInDate?: Date | string | null
-    checkInStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    checkInStatus?: string | null
+    nextCheckInDate?: Date | string | null
   }
 
   export type ReliefTokenCreateManyUserInput = {
@@ -98339,13 +98364,13 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    donorId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: string | null
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
   }
 
   export type ReportVerificationCreateManyUserInput = {
@@ -98353,6 +98378,15 @@ export namespace Prisma {
     reportId: string
     status: string
     comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SafetyCheckInCreateManyUserInput = {
+    id?: string
+    status: $Enums.SafetyStatus
+    message?: string | null
+    latitude?: number | null
+    longitude?: number | null
     createdAt?: Date | string
   }
 
@@ -98390,46 +98424,11 @@ export namespace Prisma {
     loginTime?: Date | string
   }
 
-  export type DonationCreateManyDonorInput = {
-    id?: string
-    donorName: string
-    type: $Enums.DonationType
-    amount?: number | null
-    itemsDescription?: string | null
-    transactionId?: string | null
-    paymentGateway?: string | null
-    transactionDate?: Date | string | null
-    status?: $Enums.DonationStatus
-    campId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type SafetyCheckInCreateManyUserInput = {
-    id?: string
-    status: $Enums.SafetyStatus
-    message?: string | null
-    latitude?: number | null
-    longitude?: number | null
-    createdAt?: Date | string
-  }
-
-  export type FamilyMemberCreateManyPrimaryUserInput = {
-    id?: string
-    name: string
-    relation: string
-    status: $Enums.SafetyStatus
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type DamageAssessmentUpdateWithoutReportedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -98437,20 +98436,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     incident?: IncidentReportUpdateOneWithoutDamageAssessmentsNestedInput
   }
 
@@ -98460,7 +98460,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -98468,20 +98467,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DamageAssessmentUncheckedUpdateManyWithoutReportedByInput = {
@@ -98490,7 +98490,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -98498,25 +98497,100 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DonationUpdateWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    camp?: ReliefCampUpdateOneWithoutDonationsNestedInput
+  }
+
+  export type DonationUncheckedUpdateWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DonationUncheckedUpdateManyWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    donorName?: StringFieldUpdateOperationsInput | string
+    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
+    amount?: NullableFloatFieldUpdateOperationsInput | number | null
+    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUpdateWithoutPrimaryUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUncheckedUpdateWithoutPrimaryUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FamilyMemberUncheckedUpdateManyWithoutPrimaryUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    relation?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HelpRequestUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -98525,17 +98599,17 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     escalations?: HelpRequestEscalationUpdateManyWithoutHelpRequestNestedInput
+    verifierActions?: VerifierActionUpdateManyWithoutHelpRequestNestedInput
   }
 
   export type HelpRequestUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -98544,17 +98618,17 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     escalations?: HelpRequestEscalationUncheckedUpdateManyWithoutHelpRequestNestedInput
+    verifierActions?: VerifierActionUncheckedUpdateManyWithoutHelpRequestNestedInput
   }
 
   export type HelpRequestUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -98563,10 +98637,11 @@ export namespace Prisma {
     priority?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     peopleCount?: NullableIntFieldUpdateOperationsInput | number | null
-    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
-    escalationLevel?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedVolunteerId?: NullableStringFieldUpdateOperationsInput | string | null
+    escalationLevel?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IncidentReportUpdateWithoutReporterInput = {
@@ -98576,22 +98651,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutReporterInput = {
@@ -98601,22 +98676,22 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
-    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
   }
 
   export type IncidentReportUncheckedUpdateManyWithoutReporterInput = {
@@ -98626,16 +98701,16 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
-    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
     category?: StringFieldUpdateOperationsInput | string
     images?: IncidentReportUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type LocationLogUpdateWithoutUserInput = {
@@ -98694,10 +98769,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PsychologicalSupportRequestUncheckedUpdateWithoutUserInput = {
@@ -98711,10 +98786,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PsychologicalSupportRequestUncheckedUpdateManyWithoutUserInput = {
@@ -98728,10 +98803,10 @@ export namespace Prisma {
     affectedCount?: NullableIntFieldUpdateOperationsInput | number | null
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkInStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    nextCheckInDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ReliefTokenUpdateWithoutUserInput = {
@@ -98744,14 +98819,14 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    claims?: ReliefTokenClaimUpdateManyWithoutTokenNestedInput
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
     donor?: DonorCampaignUpdateOneWithoutTokensNestedInput
+    claims?: ReliefTokenClaimUpdateManyWithoutTokenNestedInput
   }
 
   export type ReliefTokenUncheckedUpdateWithoutUserInput = {
@@ -98764,13 +98839,13 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    donorId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
     claims?: ReliefTokenClaimUncheckedUpdateManyWithoutTokenNestedInput
   }
 
@@ -98784,13 +98859,13 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    donorId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReportVerificationUpdateWithoutUserInput = {
@@ -98814,6 +98889,33 @@ export namespace Prisma {
     reportId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafetyCheckInUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -98919,115 +99021,12 @@ export namespace Prisma {
     loginTime?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DonationUpdateWithoutDonorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    donorName?: StringFieldUpdateOperationsInput | string
-    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
-    amount?: NullableFloatFieldUpdateOperationsInput | number | null
-    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
-    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    camp?: ReliefCampUpdateOneWithoutDonationsNestedInput
-  }
-
-  export type DonationUncheckedUpdateWithoutDonorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    donorName?: StringFieldUpdateOperationsInput | string
-    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
-    amount?: NullableFloatFieldUpdateOperationsInput | number | null
-    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
-    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
-    campId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DonationUncheckedUpdateManyWithoutDonorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    donorName?: StringFieldUpdateOperationsInput | string
-    type?: EnumDonationTypeFieldUpdateOperationsInput | $Enums.DonationType
-    amount?: NullableFloatFieldUpdateOperationsInput | number | null
-    itemsDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentGateway?: NullableStringFieldUpdateOperationsInput | string | null
-    transactionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
-    campId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SafetyCheckInUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
-    message?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SafetyCheckInUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
-    message?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SafetyCheckInUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
-    message?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FamilyMemberUpdateWithoutPrimaryUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    relation?: StringFieldUpdateOperationsInput | string
-    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FamilyMemberUncheckedUpdateWithoutPrimaryUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    relation?: StringFieldUpdateOperationsInput | string
-    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FamilyMemberUncheckedUpdateManyWithoutPrimaryUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    relation?: StringFieldUpdateOperationsInput | string
-    status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type DamageAssessmentCreateManyIncidentInput = {
     id?: string
     reportedById: string
     location: string
     latitude?: number | null
     longitude?: number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category: $Enums.DamageCategory
     structuralDamage?: $Enums.DamageLevel
     cropDamage?: $Enums.DamageLevel
@@ -99035,20 +99034,21 @@ export namespace Prisma {
     roadDamage?: $Enums.DamageLevel
     affectedPersons?: number | null
     estimatedLoss?: number | null
-    aiEstimatedDamage?: string | null
-    aiEstimatedCost?: number | null
-    propertyOwnershipStatus?: string | null
-    familyVulnerabilityScore?: number | null
-    incomeBracket?: string | null
-    compensationEligibilityScore?: number | null
-    compensationEligible?: boolean
     mediaUrls?: DamageAssessmentCreatemediaUrlsInput | string[]
     status?: $Enums.DamageStatus
     notes?: string | null
-    reviewerNotes?: string | null
     verifiedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    aiEstimatedCost?: number | null
+    aiEstimatedDamage?: string | null
+    compensationEligibilityScore?: number | null
+    compensationEligible?: boolean
+    familyVulnerabilityScore?: number | null
+    incomeBracket?: string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: string | null
+    reviewerNotes?: string | null
   }
 
   export type IncidentHistoryCreateManyIncidentInput = {
@@ -99094,7 +99094,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -99102,20 +99101,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     reportedBy?: UserUpdateOneRequiredWithoutDamageReportsNestedInput
   }
 
@@ -99125,7 +99125,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -99133,20 +99132,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DamageAssessmentUncheckedUpdateManyWithoutIncidentInput = {
@@ -99155,7 +99155,6 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    polygonData?: NullableJsonNullValueInput | InputJsonValue
     category?: EnumDamageCategoryFieldUpdateOperationsInput | $Enums.DamageCategory
     structuralDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     cropDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
@@ -99163,20 +99162,21 @@ export namespace Prisma {
     roadDamage?: EnumDamageLevelFieldUpdateOperationsInput | $Enums.DamageLevel
     affectedPersons?: NullableIntFieldUpdateOperationsInput | number | null
     estimatedLoss?: NullableFloatFieldUpdateOperationsInput | number | null
-    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
-    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
-    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
-    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
-    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
     mediaUrls?: DamageAssessmentUpdatemediaUrlsInput | string[]
     status?: EnumDamageStatusFieldUpdateOperationsInput | $Enums.DamageStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    aiEstimatedCost?: NullableFloatFieldUpdateOperationsInput | number | null
+    aiEstimatedDamage?: NullableStringFieldUpdateOperationsInput | string | null
+    compensationEligibilityScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    compensationEligible?: BoolFieldUpdateOperationsInput | boolean
+    familyVulnerabilityScore?: NullableIntFieldUpdateOperationsInput | number | null
+    incomeBracket?: NullableStringFieldUpdateOperationsInput | string | null
+    polygonData?: NullableJsonNullValueInput | InputJsonValue
+    propertyOwnershipStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewerNotes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IncidentHistoryUpdateWithoutIncidentInput = {
@@ -99299,18 +99299,18 @@ export namespace Prisma {
     password: string
     name: string
     phone?: string | null
-    profilePicture?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
     nic?: string | null
     twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
     twoFactorGracePeriodEnds?: Date | string | null
-    hasMobileApp?: boolean
-    lastCheckInTime?: Date | string | null
-    isFieldActive?: boolean
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
   }
 
   export type UserUpdateWithoutCurrentSectorInput = {
@@ -99319,19 +99319,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
@@ -99340,13 +99342,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
-    donations?: DonationUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCurrentSectorInput = {
@@ -99355,19 +99355,21 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
     helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
     reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
     localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
@@ -99376,13 +99378,11 @@ export namespace Prisma {
     supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
     reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
-    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
-    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
-    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
-    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCurrentSectorInput = {
@@ -99391,18 +99391,26 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     nic?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
-    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CampInventoryCreateManyCampInput = {
+    id?: string
+    itemType: $Enums.InventoryItemType
+    quantity: number
+    threshold: number
+    lastUpdated?: Date | string
   }
 
   export type CampResidentCreateManyCampInput = {
@@ -99415,31 +99423,12 @@ export namespace Prisma {
     status?: string
   }
 
-  export type CampInventoryCreateManyCampInput = {
-    id?: string
-    itemType: $Enums.InventoryItemType
-    quantity: number
-    threshold: number
-    lastUpdated?: Date | string
-  }
-
   export type CampScheduleCreateManyCampInput = {
     id?: string
     activityName: string
     startTime: string
     endTime: string
     type: string
-  }
-
-  export type HospitalReferralCreateManyCampInput = {
-    id?: string
-    patientName: string
-    conditionSeverity?: $Enums.Severity
-    hospitalAssigned: string
-    transportMethod?: string | null
-    outcome?: string | null
-    status?: $Enums.ReferralStatus
-    createdAt?: Date | string
   }
 
   export type CampTransferRequestCreateManyFromCampInput = {
@@ -99473,6 +99462,41 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type HospitalReferralCreateManyCampInput = {
+    id?: string
+    patientName: string
+    conditionSeverity?: $Enums.Severity
+    hospitalAssigned: string
+    transportMethod?: string | null
+    outcome?: string | null
+    status?: $Enums.ReferralStatus
+    createdAt?: Date | string
+  }
+
+  export type CampInventoryUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
+    quantity?: IntFieldUpdateOperationsInput | number
+    threshold?: IntFieldUpdateOperationsInput | number
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampInventoryUncheckedUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
+    quantity?: IntFieldUpdateOperationsInput | number
+    threshold?: IntFieldUpdateOperationsInput | number
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampInventoryUncheckedUpdateManyWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
+    quantity?: IntFieldUpdateOperationsInput | number
+    threshold?: IntFieldUpdateOperationsInput | number
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CampResidentUpdateWithoutCampInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -99503,30 +99527,6 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
   }
 
-  export type CampInventoryUpdateWithoutCampInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    itemType?: EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
-    quantity?: IntFieldUpdateOperationsInput | number
-    threshold?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CampInventoryUncheckedUpdateWithoutCampInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    itemType?: EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
-    quantity?: IntFieldUpdateOperationsInput | number
-    threshold?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CampInventoryUncheckedUpdateManyWithoutCampInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    itemType?: EnumInventoryItemTypeFieldUpdateOperationsInput | $Enums.InventoryItemType
-    quantity?: IntFieldUpdateOperationsInput | number
-    threshold?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CampScheduleUpdateWithoutCampInput = {
     id?: StringFieldUpdateOperationsInput | string
     activityName?: StringFieldUpdateOperationsInput | string
@@ -99549,39 +99549,6 @@ export namespace Prisma {
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type HospitalReferralUpdateWithoutCampInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    patientName?: StringFieldUpdateOperationsInput | string
-    conditionSeverity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    hospitalAssigned?: StringFieldUpdateOperationsInput | string
-    transportMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    outcome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HospitalReferralUncheckedUpdateWithoutCampInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    patientName?: StringFieldUpdateOperationsInput | string
-    conditionSeverity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    hospitalAssigned?: StringFieldUpdateOperationsInput | string
-    transportMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    outcome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HospitalReferralUncheckedUpdateManyWithoutCampInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    patientName?: StringFieldUpdateOperationsInput | string
-    conditionSeverity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
-    hospitalAssigned?: StringFieldUpdateOperationsInput | string
-    transportMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    outcome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CampTransferRequestUpdateWithoutFromCampInput = {
@@ -99677,6 +99644,55 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type HospitalReferralUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientName?: StringFieldUpdateOperationsInput | string
+    conditionSeverity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    hospitalAssigned?: StringFieldUpdateOperationsInput | string
+    transportMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HospitalReferralUncheckedUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientName?: StringFieldUpdateOperationsInput | string
+    conditionSeverity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    hospitalAssigned?: StringFieldUpdateOperationsInput | string
+    transportMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HospitalReferralUncheckedUpdateManyWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientName?: StringFieldUpdateOperationsInput | string
+    conditionSeverity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    hospitalAssigned?: StringFieldUpdateOperationsInput | string
+    transportMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerBadgeCreateManyVolunteerInput = {
+    id?: string
+    badgeType: string
+    earnedAt?: Date | string
+  }
+
+  export type VolunteerCheckInCreateManyVolunteerInput = {
+    id?: string
+    checkInTime?: Date | string
+    checkOutTime?: Date | string | null
+    latitude: number
+    longitude: number
+    zone?: string | null
+    activeHours?: number
+  }
+
   export type VolunteerSkillCreateManyVolunteerInput = {
     id?: string
     skillName: string
@@ -99690,16 +99706,6 @@ export namespace Prisma {
     expiresAt?: Date | string | null
   }
 
-  export type VolunteerCheckInCreateManyVolunteerInput = {
-    id?: string
-    checkInTime?: Date | string
-    checkOutTime?: Date | string | null
-    latitude: number
-    longitude: number
-    zone?: string | null
-    activeHours?: number
-  }
-
   export type VolunteerWellbeingCreateManyVolunteerInput = {
     id?: string
     recordedAt?: Date | string
@@ -99709,10 +99715,52 @@ export namespace Prisma {
     distressFlag?: boolean
   }
 
-  export type VolunteerBadgeCreateManyVolunteerInput = {
-    id?: string
-    badgeType: string
-    earnedAt?: Date | string
+  export type VolunteerBadgeUpdateWithoutVolunteerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeType?: StringFieldUpdateOperationsInput | string
+    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerBadgeUncheckedUpdateWithoutVolunteerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeType?: StringFieldUpdateOperationsInput | string
+    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerBadgeUncheckedUpdateManyWithoutVolunteerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeType?: StringFieldUpdateOperationsInput | string
+    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VolunteerCheckInUpdateWithoutVolunteerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    checkInTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    activeHours?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type VolunteerCheckInUncheckedUpdateWithoutVolunteerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    checkInTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    activeHours?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type VolunteerCheckInUncheckedUpdateManyWithoutVolunteerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    checkInTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    zone?: NullableStringFieldUpdateOperationsInput | string | null
+    activeHours?: FloatFieldUpdateOperationsInput | number
   }
 
   export type VolunteerSkillUpdateWithoutVolunteerInput = {
@@ -99754,36 +99802,6 @@ export namespace Prisma {
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type VolunteerCheckInUpdateWithoutVolunteerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    checkInTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    latitude?: FloatFieldUpdateOperationsInput | number
-    longitude?: FloatFieldUpdateOperationsInput | number
-    zone?: NullableStringFieldUpdateOperationsInput | string | null
-    activeHours?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type VolunteerCheckInUncheckedUpdateWithoutVolunteerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    checkInTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    latitude?: FloatFieldUpdateOperationsInput | number
-    longitude?: FloatFieldUpdateOperationsInput | number
-    zone?: NullableStringFieldUpdateOperationsInput | string | null
-    activeHours?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type VolunteerCheckInUncheckedUpdateManyWithoutVolunteerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    checkInTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    latitude?: FloatFieldUpdateOperationsInput | number
-    longitude?: FloatFieldUpdateOperationsInput | number
-    zone?: NullableStringFieldUpdateOperationsInput | string | null
-    activeHours?: FloatFieldUpdateOperationsInput | number
-  }
-
   export type VolunteerWellbeingUpdateWithoutVolunteerInput = {
     id?: StringFieldUpdateOperationsInput | string
     recordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -99811,22 +99829,11 @@ export namespace Prisma {
     distressFlag?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type VolunteerBadgeUpdateWithoutVolunteerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    badgeType?: StringFieldUpdateOperationsInput | string
-    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VolunteerBadgeUncheckedUpdateWithoutVolunteerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    badgeType?: StringFieldUpdateOperationsInput | string
-    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VolunteerBadgeUncheckedUpdateManyWithoutVolunteerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    badgeType?: StringFieldUpdateOperationsInput | string
-    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type HelpRequestEscalationCreateManyHelpRequestInput = {
+    id?: string
+    level: string
+    message: string
+    triggeredAt?: Date | string
   }
 
   export type VerifierActionCreateManyHelpRequestInput = {
@@ -99838,11 +99845,25 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type HelpRequestEscalationCreateManyHelpRequestInput = {
-    id?: string
-    level: string
-    message: string
-    triggeredAt?: Date | string
+  export type HelpRequestEscalationUpdateWithoutHelpRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HelpRequestEscalationUncheckedUpdateWithoutHelpRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HelpRequestEscalationUncheckedUpdateManyWithoutHelpRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    level?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerifierActionUpdateWithoutHelpRequestInput = {
@@ -99870,27 +99891,6 @@ export namespace Prisma {
     result?: EnumVerificationResultFieldUpdateOperationsInput | $Enums.VerificationResult
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HelpRequestEscalationUpdateWithoutHelpRequestInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    level?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HelpRequestEscalationUncheckedUpdateWithoutHelpRequestInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    level?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type HelpRequestEscalationUncheckedUpdateManyWithoutHelpRequestInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    level?: StringFieldUpdateOperationsInput | string
-    message?: StringFieldUpdateOperationsInput | string
-    triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReliefTokenClaimCreateManyTokenInput = {
@@ -100056,12 +100056,12 @@ export namespace Prisma {
     maxUsage?: number
     issuedAt?: Date | string
     expiresAt?: Date | string | null
-    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: boolean
-    householdId?: string | null
-    fraudRiskScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    categories?: ReliefTokenCreatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: number
+    householdId?: string | null
+    isHouseholdBundle?: boolean
   }
 
   export type ReliefTokenUpdateWithoutDonorInput = {
@@ -100074,12 +100074,12 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutReliefTokensNestedInput
     claims?: ReliefTokenClaimUpdateManyWithoutTokenNestedInput
   }
@@ -100095,12 +100095,12 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
     claims?: ReliefTokenClaimUncheckedUpdateManyWithoutTokenNestedInput
   }
 
@@ -100115,12 +100115,12 @@ export namespace Prisma {
     maxUsage?: IntFieldUpdateOperationsInput | number
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
-    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
-    householdId?: NullableStringFieldUpdateOperationsInput | string | null
-    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categories?: ReliefTokenUpdatecategoriesInput | $Enums.TokenCategory[]
+    fraudRiskScore?: FloatFieldUpdateOperationsInput | number
+    householdId?: NullableStringFieldUpdateOperationsInput | string | null
+    isHouseholdBundle?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ChatMessageCreateManySessionInput = {

@@ -184,12 +184,17 @@ export const dashboardService = {
   getStats: () => api.get('/dashboard/stats'),
 };
 
+export const reportService = {
+  exportReport: (format: string, filters: any) => api.post('/reports/export', { format, filters }, { responseType: 'blob' }),
+};
+
 export const analyticsService = {
   getOperationalIntelligence: () => api.get('/analytics/operational-intelligence'),
   generateAAR: (incidentId: string) => api.post(`/analytics/aar/${incidentId}`),
   getKPIBenchmarks: (month: string) => api.get(`/analytics/kpis?month=${month}`),
   getVulnerabilityIndex: () => api.get('/analytics/vulnerability'),
   getDisasterBudgets: () => api.get('/analytics/budgets'),
+  exportIntelligencePdf: (data: any) => api.post('/analytics/export/pdf', data, { responseType: 'blob' })
 };
 
 export const auditService = {
@@ -209,6 +214,7 @@ export const locationService = {
 export const mapService = {
   createEvacuationRoute: (data: any) => api.post('/map/routes', data),
   getEvacuationRoutes: () => api.get('/map/routes'),
+  exportRoutePdf: (data: any) => api.post('/map/routes/export/pdf', data, { responseType: 'blob' }),
   createVolunteerLocation: (data: any) => api.post('/map/volunteers', data),
   getVolunteerLocations: () => api.get('/map/volunteers'),
   createThreatProjection: (data: any) => api.post('/map/projections', data),

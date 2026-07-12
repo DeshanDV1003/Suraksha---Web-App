@@ -1,0 +1,296 @@
+import PDFDocument from 'pdfkit';
+import ExcelJS from 'exceljs';
+import * as fastCsv from 'fast-csv';
+import prisma from '../utils/prisma';
+import { Response } from 'express';
+import axios from 'axios';
+
+interface ReportFilters {
+  startDate?: string;
+  endDate?: string;
+  district?: string;
+  disasterType?: string;
+  incidentStatus?: string;
+  severity?: string;
+  riverStation?: string;
+}
+
+export class ReportService {
+  /**
+   * Main method to generate report based on format
+   */
+  async generateReport(
+    format: 'pdf' | 'excel' | 'csv',
+    filters: ReportFilters,
+    userRole: string,
+    res: Response
+  ) {
+    // 1. Fetch filtered data
+    const data = await this.fetchData(filters, userRole);
+
+    // 2. Route to specific format generator
+    if (format === 'pdf') {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="Disaster_Report.pdf"');
+      await this.generatePDF(data, res);
+    } else if (format === 'excel') {
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', 'attachment; filename="Disaster_Report.xlsx"');
+      await this.generateExcel(data, res);
+    } else if (format === 'csv') {
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="Disaster_Report.csv"');
+      await this.generateCSV(data, res);
+    } else {
+      throw new Error('Unsupported format');
+    }
+  }
+
+  private async fetchData(filters: ReportFilters, userRole: string) {
+    const { startDate, endDate, district, disasterType, incidentStatus, severity, riverStation } = filters;
+
+    // Apply role-based filtering logic if needed (e.g. restrict to user's assigned district)
+    
+    // Incident Query
+    const incidentWhere: any = {};
+    if (startDate && endDate) {
+      incidentWhere.createdAt = {
+        gte: new Date(startDate),
+        lte: new Date(endDate)
+      };
+    }
+    if (district) incidentWhere.province = district; // Using province/location loosely as district here
+    if (disasterType) incidentWhere.category = disasterType;
+    if (incidentStatus) incidentWhere.status = incidentStatus as any;
+    if (severity) incidentWhere.severity = severity as any;
+
+    const incidents = await prisma.incidentReport.findMany({
+      where: incidentWhere,
+      orderBy: { createdAt: 'desc' }
+    });
+
+    const activeIncidents = incidents.filter((i: any) => i.status !== 'CLOSED' && i.status !== 'RESOLVED');
+    const resolvedIncidents = incidents.filter((i: any) => i.status === 'RESOLVED');
+
+    // River Water Levels
+    const riverWhere: any = {};
+    if (riverStation) riverWhere.stationName = riverStation;
+    const rivers = await prisma.riverWaterLevel.findMany({
+      where: riverWhere,
+      take: 10,
+      orderBy: { recordedAt: 'desc' }
+    });
+
+    // Alerts
+    const alerts = await prisma.alert.findMany({
+      take: 10,
+      orderBy: { createdAt: 'desc' }
+    });
+
+    // Threat Forecasts (AI Predictions)
+    const forecasts = await prisma.threatForecast.findMany({
+      take: 5,
+      orderBy: { forecastTime: 'desc' }
+    });
+
+    // Resources
+    const resources = await prisma.resource.findMany();
+
+    // Relief Camps
+    const camps = await prisma.reliefCamp.findMany();
+
+    // System Activity
+    const usersCount = await prisma.user.count({
+        where: startDate && endDate ? { createdAt: { gte: new Date(startDate), lte: new Date(endDate) } } : {}
+    });
+
+    return {
+      incidents,
+      activeIncidents,
+      resolvedIncidents,
+      rivers,
+      alerts,
+      forecasts,
+      resources,
+      camps,
+      system: { newUsers: usersCount }
+    };
+  }
+
+  private async getChartImage(config: any): Promise<Buffer> {
+    try {
+      const response = await axios.post('https://quickchart.io/chart', {
+        chart: config,
+        width: 500,
+        height: 300,
+        format: 'png',
+        backgroundColor: 'white'
+      }, { responseType: 'arraybuffer' });
+      return Buffer.from(response.data);
+    } catch (error) {
+      console.error('Failed to fetch chart image', error);
+      throw error;
+    }
+  }
+
+  private async generatePDF(data: any, stream: any) {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const doc = new PDFDocument({ margin: 50, size: 'A4' });
+        doc.pipe(stream);
+
+        // 1. Cover Page
+        doc.fontSize(28).font('Helvetica-Bold').text('SURAKSHA', { align: 'center' });
+        doc.fontSize(16).font('Helvetica').text('Disaster Management System', { align: 'center' });
+        doc.moveDown(4);
+        doc.fontSize(22).font('Helvetica-Bold').text('Disaster Situation Report', { align: 'center' });
+        doc.moveDown(2);
+        
+        doc.fontSize(12).font('Helvetica');
+        doc.text(`Generated Date: ${new Date().toLocaleDateString()}`, { align: 'center' });
+        doc.text(`Generated By: System Administrator`, { align: 'center' }); // Replace with actual user
+        
+        // Page break
+        doc.addPage();
+
+        // 2. Executive Summary
+        doc.fontSize(18).font('Helvetica-Bold').text('2. Executive Summary');
+        doc.moveDown(1);
+        doc.fontSize(12).font('Helvetica');
+        doc.text('A quick overview of the selected period.');
+        doc.moveDown(1);
+        
+        const summaryTable = [
+            ['Item', 'Count'],
+            ['Total Incidents', data.incidents.length.toString()],
+            ['Active Incidents', data.activeIncidents.length.toString()],
+            ['Resolved Incidents', data.resolvedIncidents.length.toString()],
+            ['Relief Camps', data.camps.length.toString()],
+            ['Resources Registered', data.resources.length.toString()]
+        ];
+
+        this.drawTable(doc, summaryTable, 50, doc.y);
+
+        doc.addPage();
+
+        // 3. Incident Statistics (Charts)
+        doc.fontSize(18).font('Helvetica-Bold').text('3. Incident Statistics');
+        doc.moveDown(1);
+
+        try {
+            // Count severity
+            const criticalCount = data.incidents.filter((i:any) => i.severity === 'CRITICAL').length;
+            const highCount = data.incidents.filter((i:any) => i.severity === 'HIGH').length;
+            const mediumCount = data.incidents.filter((i:any) => i.severity === 'MEDIUM').length;
+            const lowCount = data.incidents.filter((i:any) => i.severity === 'LOW').length;
+
+            const pieConfig = {
+                type: 'pie',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low'],
+                    datasets: [{ data: [criticalCount, highCount, mediumCount, lowCount] }]
+                }
+            };
+            const pieImage = await this.getChartImage(pieConfig);
+            doc.image(pieImage, 50, doc.y, { width: 300 });
+            doc.moveDown(15);
+        } catch(e) {
+            doc.text('Chart rendering failed.');
+        }
+
+        doc.addPage();
+
+        // 4. Active Incidents Table
+        doc.fontSize(18).font('Helvetica-Bold').text('4. Active Incidents');
+        doc.moveDown(1);
+        
+        const activeTable = [['Incident ID', 'Type', 'Severity', 'Status']];
+        data.activeIncidents.slice(0, 20).forEach((i: any) => {
+            activeTable.push([i.id.substring(0,8), i.category || 'N/A', i.severity, i.status]);
+        });
+        
+        this.drawTable(doc, activeTable, 50, doc.y);
+
+        // Finalize
+        doc.end();
+        stream.on('finish', () => resolve());
+      } catch (err: any) {
+        reject(err);
+      }
+    });
+  }
+
+  private async generateExcel(data: any, stream: any) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Incidents');
+
+    worksheet.columns = [
+      { header: 'ID', key: 'id', width: 36 },
+      { header: 'Title', key: 'title', width: 30 },
+      { header: 'Severity', key: 'severity', width: 15 },
+      { header: 'Status', key: 'status', width: 15 },
+      { header: 'Location', key: 'location', width: 30 },
+      { header: 'Reported At', key: 'createdAt', width: 25 },
+    ];
+
+    data.incidents.forEach((i: any) => {
+      worksheet.addRow({
+        id: i.id,
+        title: i.title,
+        severity: i.severity,
+        status: i.status,
+        location: i.location,
+        createdAt: new Date(i.createdAt).toLocaleString(),
+      });
+    });
+
+    await workbook.xlsx.write(stream);
+  }
+
+  private async generateCSV(data: any, stream: any) {
+    return new Promise<void>((resolve, reject) => {
+      const csvStream = fastCsv.format({ headers: true });
+      csvStream.pipe(stream)
+        .on('end', () => resolve())
+        .on('error', (err: any) => reject(err));
+
+      data.incidents.forEach((i: any) => {
+        csvStream.write({
+            ID: i.id,
+            Title: i.title,
+            Severity: i.severity,
+            Status: i.status,
+            Location: i.location,
+            'Reported At': new Date(i.createdAt).toISOString()
+        });
+      });
+      
+      csvStream.end();
+    });
+  }
+
+  // Simple table drawing utility for PDFKit
+  private drawTable(doc: typeof PDFDocument, table: string[][], startX: number, startY: number) {
+    const columnWidth = 120;
+    const rowHeight = 25;
+    let y = startY;
+
+    doc.font('Helvetica-Bold').fontSize(10);
+    
+    table.forEach((row, rowIndex) => {
+        if (rowIndex === 1) doc.font('Helvetica'); // Reset font for body
+        
+        row.forEach((cell, i) => {
+            doc.text(cell.toString(), startX + (i * columnWidth), y, { width: columnWidth, align: 'left' });
+        });
+        
+        y += rowHeight;
+        
+        // Add new page if table overflows
+        if (y > 750) {
+            doc.addPage();
+            y = 50;
+        }
+    });
+  }
+}

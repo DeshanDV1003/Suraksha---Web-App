@@ -20,6 +20,7 @@ export default function ReportsPage() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isExporting, setIsExporting] = useState(false)
   
   // AAR State
   const [aarIncidentId, setAarIncidentId] = useState('')
@@ -31,23 +32,33 @@ export default function ReportsPage() {
   const [vulnerability, setVulnerability] = useState<any[]>([])
   const [budgets, setBudgets] = useState<any[]>([])
 
-  const handleExport = () => {
+  const handleExport = async () => {
     if (!data) return
-    const exportData = {
-      timestamp: new Date().toISOString(),
-      stats: data,
-      vulnerability,
-      kpis,
-      budgets
+    setIsExporting(true)
+    try {
+      const exportData = {
+        timestamp: new Date().toISOString(),
+        stats: data,
+        vulnerability,
+        kpis,
+        budgets
+      }
+      const response = await analyticsService.exportIntelligencePdf(exportData)
+      const blob = new Blob([response.data], { type: 'application/pdf' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `Intelligence_Briefing_${new Date().toISOString().split('T')[0]}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Failed to export PDF', error)
+      alert('Failed to generate intelligence briefing. Please try again.')
+    } finally {
+      setIsExporting(false)
     }
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `suraksha-intelligence-${new Date().getTime()}.json`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
   }
 
   useEffect(() => {
@@ -149,10 +160,13 @@ export default function ReportsPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-end gap-6 mb-2">
           <button
             onClick={handleExport}
-            className="flex items-center gap-3 px-8 h-14 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-95 shadow-sm group"
+            disabled={isExporting}
+            className="flex items-center gap-3 px-8 h-14 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-95 shadow-sm group disabled:opacity-50"
           >
             <Download className="w-5 h-5 text-gray-500 group-hover:text-blue-500 transition-colors" />
-            <span className="uppercase tracking-widest text-[11px] font-black text-gray-700 dark:text-gray-200">Export Intelligence Briefing</span>
+            <span className="uppercase tracking-widest text-[11px] font-black text-gray-700 dark:text-gray-200">
+              {isExporting ? 'Generating Report...' : 'Export Intelligence Briefing'}
+            </span>
           </button>
         </div>
 

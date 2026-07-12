@@ -66,3 +66,16 @@ export const getDisasterBudgets = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
+
+export const exportIntelligencePdf = async (req: Request, res: Response) => {
+  try {
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="Intelligence_Briefing.pdf"');
+    await analyticsService.exportIntelligencePdf(req.body, res);
+  } catch (error) {
+    console.error('Failed to export intelligence PDF', error);
+    if (!res.headersSent) {
+      res.status(500).json({ message: 'Internal server error', error });
+    }
+  }
+};

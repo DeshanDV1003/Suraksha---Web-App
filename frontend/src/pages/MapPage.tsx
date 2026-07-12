@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
+import { mapService } from "@/services/api";
 
 const SRI_LANKA_CENTER: [number, number] = [7.8731, 80.7718];
 const SRI_LANKA_BOUNDS: [[number, number], [number, number]] = [[5.9, 79.5], [9.9, 81.9]];
@@ -210,6 +211,28 @@ export default function MapPage() {
   const [volunteers, setVolunteers] = useState<any[]>([]);
   const [evacRoutes, setEvacRoutes] = useState<any>(null);
   const [assignmentArrows, setAssignmentArrows] = useState<any[]>([]);
+  const [isExportingRoute, setIsExportingRoute] = useState(false);
+
+  const handleExportRoute = async () => {
+    if (!evacRoutes) return;
+    setIsExportingRoute(true);
+    try {
+      const response = await mapService.exportRoutePdf(evacRoutes);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Evacuation_Route_${new Date().toISOString().split('T')[0]}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to export route PDF', error);
+      alert('Failed to export route. Please try again.');
+    } finally {
+      setIsExportingRoute(false);
+    }
+  };
   
   // Historical Scrubber
   const [timeScrubber, setTimeScrubber] = useState(100);
@@ -383,8 +406,8 @@ export default function MapPage() {
                   <Navigation className="w-4 h-4 text-blue-600" /> Active Evacuation Route
                 </h3>
                 <p className="text-xs text-blue-700 font-bold mb-4">Primary route active. ETA to safe zone: 45 mins. Alternate routes available.</p>
-                <button className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors">
-                  Export Route PDF
+                <button onClick={handleExportRoute} disabled={isExportingRoute} className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-50">
+                  {isExportingRoute ? 'Exporting...' : 'Export Route PDF'}
                 </button>
               </div>
             )}
