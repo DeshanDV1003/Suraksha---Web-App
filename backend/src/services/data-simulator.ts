@@ -64,10 +64,54 @@ export async function simulateDataFetch() {
     console.log(`Saved simulated rainfall for ${station.name}: ${currentRain.toFixed(2)} mm/hr`);
   }
 
-  // Simulate River Gauges
   const simulatedRivers = [
-    { id: 'RG-KELANI-HANWELLA', river: 'Kelani River', name: 'Hanwella', district: 'Colombo', lat: 6.9, lng: 80.0, normal: 1.2, alert: 4.0, minor: 5.5, major: 7.0 },
-    { id: 'RG-KALU-PUTUPAULA', river: 'Kalu River', name: 'Putupaula', district: 'Kalutara', lat: 6.5, lng: 80.1, normal: 2.1, alert: 5.5, minor: 7.0, major: 9.0 },
+    { id: 'RG-KELANI-NORWOOD', river: 'Kelani Ganga', name: 'Norwood', district: 'Nuwara Eliya', lat: 6.8394, lng: 80.6117, normal: 1.5, alert: 3.5, minor: 5.0, major: 6.5 },
+    { id: 'RG-KELANI-KITHULGALA', river: 'Kelani Ganga', name: 'Kithulgala', district: 'Kegalle', lat: 6.9906, lng: 80.4122, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-KELANI-DERANIYAGALA', river: 'Kelani Ganga', name: 'Deraniyagala', district: 'Kegalle', lat: 6.9244, lng: 80.3378, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-KELANI-GLENCOURSE', river: 'Kelani Ganga', name: 'Glencourse', district: 'Colombo', lat: 6.9530, lng: 80.1640, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-KELANI-HANWELLA', river: 'Kelani Ganga', name: 'Hanwella', district: 'Colombo', lat: 6.9090, lng: 80.0810, normal: 2.5, alert: 5.0, minor: 7.0, major: 9.0 },
+    { id: 'RG-KELANI-NAGALAGAM', river: 'Kelani Ganga', name: 'Nagalagam Street', district: 'Colombo', lat: 6.9430, lng: 79.8660, normal: 1.0, alert: 3.0, minor: 4.5, major: 6.0 },
+    { id: 'RG-KALU-RATNAPURA', river: 'Kalu Ganga', name: 'Ratnapura', district: 'Ratnapura', lat: 6.6828, lng: 80.3992, normal: 2.5, alert: 5.0, minor: 7.0, major: 9.0 },
+    { id: 'RG-KALU-MILLAKANDA', river: 'Kalu Ganga', name: 'Millakanda', district: 'Kalutara', lat: 6.5940, lng: 80.1790, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-KALU-ELLAGAWA', river: 'Kalu Ganga', name: 'Ellagawa', district: 'Ratnapura', lat: 6.7440, lng: 80.4700, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-KALU-PUTUPAULA', river: 'Kalu Ganga', name: 'Putupaula', district: 'Ratnapura', lat: 6.6440, lng: 80.4160, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-NILWALA-PITABEDDARA', river: 'Nilwala Ganga', name: 'Pitabeddara', district: 'Matara', lat: 6.2240, lng: 80.5750, normal: 2.0, alert: 4.0, minor: 5.5, major: 7.5 },
+    { id: 'RG-NILWALA-THALGAHAGODA', river: 'Nilwala Ganga', name: 'Thalgahagoda', district: 'Matara', lat: 6.0340, lng: 80.5480, normal: 1.5, alert: 3.5, minor: 5.0, major: 6.5 },
+    { id: 'RG-GIN-BADDEGAMA', river: 'Gin Ganga', name: 'Baddegama', district: 'Galle', lat: 6.1650, lng: 80.1790, normal: 2.0, alert: 4.0, minor: 5.5, major: 7.0 },
+    { id: 'RG-GIN-TAWALAMA', river: 'Gin Ganga', name: 'Tawalama', district: 'Galle', lat: 6.1150, lng: 80.3330, normal: 2.0, alert: 4.0, minor: 5.5, major: 7.0 },
+    { id: 'RG-MAHA-HOLOMBUWA', river: 'Maha Oya', name: 'Holombuwa', district: 'Kurunegala', lat: 7.1510, lng: 80.2110, normal: 2.5, alert: 5.0, minor: 6.5, major: 8.5 },
+    { id: 'RG-MAHA-GIRIULLA', river: 'Maha Oya', name: 'Giriulla', district: 'Kurunegala', lat: 7.3270, lng: 80.1260, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-MAHAWELI-PERADENIYA', river: 'Mahaweli Ganga', name: 'Peradeniya', district: 'Kandy', lat: 7.2690, lng: 80.5960, normal: 3.0, alert: 5.5, minor: 7.0, major: 9.0 },
+    { id: 'RG-MAHAWELI-MANAMPITIYA', river: 'Mahaweli Ganga', name: 'Manampitiya', district: 'Polonnaruwa', lat: 7.9100, lng: 81.1300, normal: 3.5, alert: 6.0, minor: 7.5, major: 9.5 },
+    { id: 'RG-MAHAWELI-WELIKANDA', river: 'Mahaweli Ganga', name: 'Welikanda', district: 'Polonnaruwa', lat: 7.9500, lng: 81.2500, normal: 3.0, alert: 5.5, minor: 7.0, major: 9.0 },
+    { id: 'RG-KIRINDI-THANAMALWILA', river: 'Kirindi Oya', name: 'Thanamalwila', district: 'Monaragala', lat: 6.4330, lng: 81.1330, normal: 2.0, alert: 4.0, minor: 5.5, major: 7.5 },
+    { id: 'RG-UMA-UVAPARANAGAMA', river: 'Uma Oya', name: 'Uva Paranagama', district: 'Badulla', lat: 6.8600, lng: 80.9300, normal: 1.5, alert: 3.5, minor: 5.0, major: 6.5 },
+    { id: 'RG-KALA-DAMBULLA', river: 'Kala Oya', name: 'Dambulla', district: 'Matale', lat: 7.8840, lng: 80.6470, normal: 2.0, alert: 4.0, minor: 5.5, major: 7.5 },
+    { id: 'RG-DEDURU-MEDIYAWA', river: 'Deduru Oya', name: 'Mediyawa', district: 'Kurunegala', lat: 7.5200, lng: 80.2500, normal: 2.0, alert: 4.0, minor: 5.5, major: 7.5 },
+    { id: 'RG-GAL-PADIYATHALAWA', river: 'Gal Oya', name: 'Padiyathalawa', district: 'Ampara', lat: 7.4000, lng: 81.2000, normal: 2.0, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-AMBAN-ANGAMMEDILLA', river: 'Amban Ganga', name: 'Angammedilla', district: 'Polonnaruwa', lat: 7.9160, lng: 80.9600, normal: 2.5, alert: 4.5, minor: 6.0, major: 8.0 },
+    { id: 'RG-KALU-RATHNAPURA', river: 'Kalu Ganga', name: 'Rathnapura', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.6, alert: 5.2, minor: 7.5, major: 9.5 },
+    { id: 'RG-MAGURU-MAGURA', river: 'Maguru Ganga', name: 'Magura', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.0, alert: 4.0, minor: 6.0, major: 7.5 },
+    { id: 'RG-KUDA-KALAWELLAWA(MILLAKANDA)', river: 'Kuda Ganga', name: 'Kalawellawa (Millakanda)', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.5, alert: 5.0, minor: 6.5, major: 8.0 },
+    { id: 'RG-GIN-THAWALAMA', river: 'Gin Ganga', name: 'Thawalama', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.0, alert: 4.0, minor: 6.0, major: 7.5 },
+    { id: 'RG-NILWALA-PANADUGAMA', river: 'Nilwala Ganga', name: 'Panadugama', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.5, alert: 5.0, minor: 6.0, major: 7.5 },
+    { id: 'RG-URUBOKKA-URAWA', river: 'Urubokka Ganga', name: 'Urawa', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 1.25, alert: 2.5, minor: 4.0, major: 6.0 },
+    { id: 'RG-WALAWE-MORAKETIYA', river: 'Walawe Ganga', name: 'Moraketiya', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 1.5, alert: 3.0, minor: 5.0, major: 7.0 },
+    { id: 'RG-KIRINDI-WELLAWAYA', river: 'Kirindi Oya', name: 'Wellawaya', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.2, alert: 4.4, minor: 5.4, major: 5.9 },
+    { id: 'RG-KUDA-KUDAOYA', river: 'Kuda Oya', name: 'Kuda Oya', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 3.45, alert: 6.9, minor: 8.4, major: 8.8 },
+    { id: 'RG-MENIK-KATHARAGAMA', river: 'Menik Ganga', name: 'Katharagama', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.0, alert: 4.0, minor: 4.6, major: 6.5 },
+    { id: 'RG-KUMBUKKAN-NAKKALA', river: 'Kumbukkan Oya', name: 'Nakkala', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.5, alert: 5.0, minor: 6.0, major: 7.5 },
+    { id: 'RG-HEDA-SIYAMBALANDUWA', river: 'Heda Oya', name: 'Siyambalanduwa', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.25, alert: 4.5, minor: 6.0, major: 7.0 },
+    { id: 'RG-MAHAWELI-WERAGANTHOTA', river: 'Mahaweli Ganga', name: 'Weraganthota', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.5, alert: 5.0, minor: 6.0, major: 8.0 },
+    { id: 'RG-MAHAWELI-NAWALAPITIYA', river: 'Mahaweli Ganga', name: 'Nawalapitiya', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 1.75, alert: 3.5, minor: 5.0, major: 6.0 },
+    { id: 'RG-BADULU-THALDENA', river: 'Badulu Oya', name: 'Thaldena', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 1.5, alert: 3.0, minor: 4.0, major: 5.0 },
+    { id: 'RG-YAN-HOROWPOTHANA', river: 'Yan Oya', name: 'Horowpothana', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 3.0, alert: 6.0, minor: 7.5, major: 10.5 },
+    { id: 'RG-MUKUNU-YAKAWEWA', river: 'Mukunu Oya', name: 'Yaka Wewa', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.0, alert: 4.0, minor: 5.0, major: 6.0 },
+    { id: 'RG-MALWATHU-THANTHIRIMALE', river: 'Malwathu Oya', name: 'Thanthirimale', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.5, alert: 5.0, minor: 6.8, major: 7.8 },
+    { id: 'RG-MEE-GALGAMUWA', river: 'Mee Oya', name: 'Galgamuwa', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.42, alert: 4.84, minor: 5.94, major: 8.0 },
+    { id: 'RG-DEDURU-MORAGASWEWA', river: 'Deduru Oya', name: 'Moragaswewa', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.375, alert: 4.75, minor: 6.0, major: 7.0 },
+    { id: 'RG-MAHA-BADALGAMA', river: 'Maha Oya', name: 'Badalgama', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 2.5, alert: 5.0, minor: 6.2, major: 9.6 },
+    { id: 'RG-ATTANAGALU-DUNAMALE', river: 'Attanagalu Oya', name: 'Dunamale', district: 'Unknown', lat: 7.0, lng: 80.0, normal: 1.65, alert: 3.3, minor: 4.4, major: 5.5 }
   ];
 
   for (const river of simulatedRivers) {
@@ -116,4 +160,12 @@ export async function simulateDataFetch() {
   }
 
   console.log('--- Completed Water Data Simulation Fetch ---');
+
+  // Run LSTM predictions after each simulation cycle
+  try {
+    const { runPredictionsForAllGauges } = await import('./water-predictor');
+    await runPredictionsForAllGauges();
+  } catch (err) {
+    console.warn('[Simulator] Prediction cycle skipped (ML service may be offline):', err);
+  }
 }

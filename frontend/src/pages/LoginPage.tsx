@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import backgroundVideo from '@/videos/Cinematic_Disaster_Response_Tech_Background.mp4'
+import loginBg from '@/pictures/login_bg.png'
 import logo from '@/pictures/Full logo.png'
 
 export default function LoginPage() {
@@ -93,19 +93,49 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Background Video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={backgroundVideo} type="video/mp4" />
-      </video>
+      {/* Static Background Image */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${loginBg})` }}
+      />
 
-      {/* Overlay - Darkened to match the moody aesthetic of the screenshot */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      {/* Dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-950/70 to-slate-900/85" />
+
+      {/* Animated radar/pulse rings — CSS-only, no video */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[1]">
+        <div className="relative w-[600px] h-[600px]">
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="absolute inset-0 rounded-full border border-cyan-400/20"
+              style={{
+                animation: `loginPulse 4s ease-out infinite`,
+                animationDelay: `${i * 1}s`,
+                transform: 'scale(0)',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Subtle grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none z-[1]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(148,214,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(148,214,255,0.8) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
+      />
+
+      {/* CSS keyframes injected inline */}
+      <style>{`
+        @keyframes loginPulse {
+          0%   { transform: scale(0.1); opacity: 0.6; }
+          80%  { transform: scale(1.4); opacity: 0; }
+          100% { transform: scale(1.4); opacity: 0; }
+        }
+      `}</style>
 
       <div className="max-w-[400px] w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 space-y-8 animate-in fade-in zoom-in duration-700 relative z-10 shadow-2xl">
         <div className="text-center">

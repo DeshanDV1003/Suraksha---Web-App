@@ -41,18 +41,18 @@ layer(base);
   --color-white: #ffffff;
   --color-black: #101828;
 
-  --color-brand-25: #f2f7ff;
-  --color-brand-50: #ecf3ff;
-  --color-brand-100: #dde9ff;
-  --color-brand-200: #c2d6ff;
-  --color-brand-300: #9cb9ff;
-  --color-brand-400: #7592ff;
-  --color-brand-500: #465fff;
-  --color-brand-600: #3641f5;
-  --color-brand-700: #2a31d8;
-  --color-brand-800: #252dae;
-  --color-brand-900: #262e89;
-  --color-brand-950: #161950;
+  --color-brand-25: #ecfeff;
+  --color-brand-50: #cffafe;
+  --color-brand-100: #a5f3fc;
+  --color-brand-200: #67e8f9;
+  --color-brand-300: #22d3ee;
+  --color-brand-400: #06b6d4;
+  --color-brand-500: #0891b2;
+  --color-brand-600: #0e7490;
+  --color-brand-700: #155e75;
+  --color-brand-800: #164e63;
+  --color-brand-900: #0c3a4a;
+  --color-brand-950: #071e26;
 
   --color-blue-light-25: #f5fbff;
   --color-blue-light-50: #f0f9ff;
@@ -206,7 +206,7 @@ layer(base);
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-normal font-outfit z-1 bg-[#0e1d36];
   }
 }
 
@@ -215,19 +215,19 @@ layer(base);
 }
 
 @utility menu-item-active {
-  @apply bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12] dark:text-brand-400;
+  @apply bg-cyan-400/10 text-cyan-400 dark:bg-cyan-400/10 dark:text-cyan-400;
 }
 
 @utility menu-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-gray-300;
+  @apply text-slate-400 hover:bg-white/5 hover:text-slate-200 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-200;
 }
 
 @utility menu-item-icon {
-  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400;
+  @apply text-slate-400 group-hover:text-slate-200;
 }
 
 @utility menu-item-icon-active {
-  @apply text-brand-500 dark:text-brand-400;
+  @apply text-cyan-400;
 }
 
 @utility menu-item-icon-size {
@@ -237,7 +237,7 @@ layer(base);
 }
 
 @utility menu-item-icon-inactive {
-  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300;
+  @apply text-slate-400 group-hover:text-slate-200;
 }
 
 @utility menu-item-arrow {
@@ -257,11 +257,11 @@ layer(base);
 }
 
 @utility menu-dropdown-item-active {
-  @apply bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12] dark:text-brand-400;
+  @apply bg-cyan-400/10 text-cyan-400;
 }
 
 @utility menu-dropdown-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5;
+  @apply text-slate-400 hover:bg-white/5 hover:text-slate-200;
 }
 
 @utility menu-dropdown-badge {
@@ -817,6 +817,40 @@ span.flatpickr-weekday,
 
 @layer base {
   :root {
+    /* === Suraksha Dark Command Center Theme (default) === */
+    --background: 215 45% 6%;        /* #0a1120 deep navy */
+    --foreground: 210 40% 96%;       /* near-white text */
+
+    --card: 217 38% 11%;             /* #131f33 dark card */
+    --card-foreground: 210 40% 96%;
+
+    --popover: 217 38% 11%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 192 91% 36%;          /* #0891b2 cyan-600 */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217 35% 16%;        /* dark surface */
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 217 35% 14%;
+    --muted-foreground: 215 25% 55%;
+
+    --accent: 192 91% 36% / 0.1;
+    --accent-foreground: 192 91% 70%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 192 91% 60% / 0.12;    /* subtle cyan border */
+    --input: 217 35% 16%;
+    --ring: 192 91% 36%;
+
+    --radius: 0.75rem;
+  }
+
+  .light {
+    /* === Light mode (opt-in via toggle) === */
     --background: 214 15% 93%;
     --foreground: 222.2 84% 4.9%;
 
@@ -826,8 +860,7 @@ span.flatpickr-weekday,
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 206.5 100% 41.8%;
-    /* Suraksha Blue #0076D6 */
+    --primary: 192 91% 36%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 214 15% 88%;
@@ -836,47 +869,46 @@ span.flatpickr-weekday,
     --muted: 214 15% 88%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 206.5 100% 41.8% / 0.1;
-    --accent-foreground: 206.5 100% 41.8%;
+    --accent: 192 91% 36% / 0.1;
+    --accent-foreground: 192 91% 36%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 206.5 100% 41.8%;
-
-    --radius: 0.75rem;
+    --ring: 192 91% 36%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* === Dark mode (same as default :root) === */
+    --background: 215 45% 6%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 217 38% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 217 38% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 192 91% 36%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217 35% 16%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 35% 14%;
+    --muted-foreground: 215 25% 55%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 192 91% 36% / 0.1;
+    --accent-foreground: 192 91% 70%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 192 91% 60% / 0.12;
+    --input: 217 35% 16%;
+    --ring: 192 91% 36%;
   }
 }
 
@@ -894,27 +926,47 @@ span.flatpickr-weekday,
 /* Custom Suraksha UI Utility Classes */
 @layer components {
   .suraksha-card {
-    @apply bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-theme-sm transition-all duration-300 relative overflow-hidden;
+    @apply bg-[#131f33] border border-cyan-400/10 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-300 relative overflow-hidden hover:border-cyan-400/25 hover:shadow-[0_4px_32px_rgba(34,211,238,0.06)];
   }
 
   .suraksha-input {
-    @apply w-full h-12 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl px-5 text-sm font-semibold text-gray-800 dark:text-white/90 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500/40 transition-all;
+    @apply w-full h-12 bg-[#1a2540] border border-cyan-400/15 rounded-xl px-5 text-sm font-semibold text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 focus:border-cyan-400/40 transition-all;
   }
 
   .suraksha-button {
-    @apply px-6 py-2.5 bg-brand-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-500/25 hover:bg-brand-600 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none;
+    @apply px-6 py-2.5 bg-cyan-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-cyan-500/25 hover:bg-cyan-400 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .suraksha-button-outline {
-    @apply px-6 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 rounded-xl text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800 active:scale-95 transition-all;
+    @apply px-6 py-2.5 bg-transparent border border-cyan-400/30 text-cyan-400 rounded-xl text-sm font-bold hover:bg-cyan-400/10 active:scale-95 transition-all;
   }
 
   .premium-shadow {
-    @apply shadow-theme-lg;
+    @apply shadow-[0_8px_32px_rgba(0,0,0,0.5)];
   }
 
   .stat-blob {
-    @apply absolute -top-4 -right-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none;
+    @apply absolute -top-4 -right-4 w-24 h-24 rounded-full blur-[40px] opacity-15 pointer-events-none;
+  }
+
+  .cmd-card {
+    @apply bg-[#131f33]/80 backdrop-blur-sm border border-cyan-400/10 rounded-2xl transition-all duration-300 relative overflow-hidden hover:border-cyan-400/20;
+  }
+
+  .cmd-badge-active {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-400/10 text-cyan-400 border border-cyan-400/20;
+  }
+
+  .cmd-badge-danger {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20;
+  }
+
+  .cmd-badge-warning {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20;
+  }
+
+  .cmd-badge-success {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
   }
 }
 

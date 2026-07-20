@@ -1,15 +1,27 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import joblib
 import numpy as np
 import os
+from typing import List, Optional
 
-from nlp.language_detector import detect_language
-from nlp.translator import translate_to_english
-from nlp.ner_extractor import extract_entities
-from ml.feature_builder import build_feature_vector
-from ml.damage_scorer import score_damage_assessment
-from ml.fake_report_detector import check_duplicate
+# Optional NLP modules — only needed for /process-report endpoint
+try:
+    import joblib
+    from nlp.language_detector import detect_language
+    from nlp.translator import translate_to_english
+    from nlp.ner_extractor import extract_entities
+    from ml.feature_builder import build_feature_vector
+    from ml.damage_scorer import score_damage_assessment
+    from ml.fake_report_detector import check_duplicate
+    NLP_AVAILABLE = True
+except ImportError as e:
+    NLP_AVAILABLE = False
+    print(f"[WARNING] NLP modules unavailable ({e}). /process-report endpoint disabled.")
+    joblib = None
+    detect_language = translate_to_english = extract_entities = None
+    build_feature_vector = score_damage_assessment = check_duplicate = None
+
+from ml.lstm_water_predictor import predictor as water_predictor
 
 app = FastAPI(title="Suraksha ML Service")
 
@@ -17,20 +29,23 @@ app = FastAPI(title="Suraksha ML Service")
 PRIORITY_MODEL_PATH = "models/priority_classifier.pkl"
 LABEL_ENCODER_PATH = "models/label_encoder.pkl"
 
-# Global model variables
+# Global model variables (for NLP classifier)
 classifier = None
 label_encoder = None
 
 @app.on_event("startup")
 async def load_models():
     global classifier, label_encoder
-    if os.path.exists(PRIORITY_MODEL_PATH):
-        classifier = joblib.load(PRIORITY_MODEL_PATH)
-    else:
-        print(f"Warning: Priority classifier not found at {PRIORITY_MODEL_PATH}")
-    
-    if os.path.exists(LABEL_ENCODER_PATH):
-        label_encoder = joblib.load(LABEL_ENCODER_PATH)
+    if not NLP_AVAILABLE:
+        return
+    try:
+        import joblib as jl
+        if os.path.exists(PRIORITY_MODEL_PATH):
+            classifier = jl.load(PRIORITY_MODEL_PATH)
+        if os.path.exists(LABEL_ENCODER_PATH):
+            label_encoder = jl.load(LABEL_ENCODER_PATH)
+    except Exception as e:
+        print(f"Warning: Could not load classifier: {e}")
 
 class ReportInput(BaseModel):
     raw_text: str
@@ -59,6 +74,8 @@ class DamageInput(BaseModel):
 
 @app.post("/process-report", response_model=ProcessedOutput)
 async def process_report(data: ReportInput):
+    if not NLP_AVAILABLE:
+        raise HTTPException(status_code=503, detail="NLP modules not installed on this server.")
     # Step 1 — detect language
     lang_result = detect_language(data.raw_text)
     
@@ -105,12 +122,99 @@ async def process_report(data: ReportInput):
 
 @app.post("/score-damage")
 async def score_damage(data: DamageInput):
+    if not NLP_AVAILABLE:
+        raise HTTPException(status_code=503, detail="NLP modules not installed.")
     return score_damage_assessment(data.dict())
 
 @app.post("/check-duplicate")
 async def check_dup(text: str, existing_texts: list[str]):
+    if not NLP_AVAILABLE:
+        raise HTTPException(status_code=503, detail="NLP modules not installed.")
     return check_duplicate(text, existing_texts)
+
+
+# ═══════════════════════════════════════════
+# WATER LEVEL PREDICTION ENDPOINTS
+# ═══════════════════════════════════════════
+
+class WaterReading(BaseModel):
+    water_level_m: float
+    rainfall_mm_hr: float = 0.0
+    rainfall_24h_total: float = 0.0
+    humidity_pct: float = 75.0
+    temp_c: float = 28.0
+    month: int = 1
+
+class GaugeThresholds(BaseModel):
+    watch_m: float = 4.5
+    warning_m: float = 6.0
+    critical_m: float = 8.0
+
+class WaterPredictionInput(BaseModel):
+    gauge_id: str
+    gauge_thresholds: Optional[GaugeThresholds] = None
+    readings: List[WaterReading]   # last N hourly readings, newest last
+
+class WaterPredictionOutput(BaseModel):
+    gauge_id: str
+    predicted_t1_m: float
+    predicted_t2_m: float
+    confidence: float
+    alert_level: str
+    model_used: str
+    reason: str
+    predicted_at: str
+
+
+@app.post("/predict-water-level", response_model=WaterPredictionOutput)
+async def predict_water_level(data: WaterPredictionInput):
+    """
+    Core LSTM prediction endpoint.
+    Called by Node.js backend every hour after a new reading is saved.
+    Accepts last 12 hourly readings, returns T+1hr and T+2hr predictions
+    with confidence score and alert level.
+    Alert is suppressed if confidence < 75% to prevent false alarms.
+    """
+    if len(data.readings) < 3:
+        raise HTTPException(
+            status_code=400,
+            detail="Minimum 3 readings required. Provide up to 12 for best accuracy."
+        )
+
+    readings_list = [r.dict() for r in data.readings]
+    thresholds    = data.gauge_thresholds.dict() if data.gauge_thresholds else None
+
+    result = water_predictor.predict(
+        readings=readings_list,
+        gauge_thresholds=thresholds
+    )
+
+    return WaterPredictionOutput(
+        gauge_id       = data.gauge_id,
+        predicted_t1_m = result["predicted_t1_m"],
+        predicted_t2_m = result["predicted_t2_m"],
+        confidence     = result["confidence"],
+        alert_level    = result["alert_level"],
+        model_used     = result["model_used"],
+        reason         = result["reason"],
+        predicted_at   = result["predicted_at"]
+    )
+
+
+@app.get("/water-model-status")
+async def water_model_status():
+    """Returns the LSTM water model load status and metadata."""
+    return {
+        "model_loaded": water_predictor.model_loaded,
+        "model_info":   water_predictor.model_info,
+        "status":       "LSTM" if water_predictor.model_loaded else "RULE_BASED_FALLBACK"
+    }
+
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "models_loaded": classifier is not None}
+    return {
+        "status": "ok",
+        "models_loaded": classifier is not None,
+        "water_model_loaded": water_predictor.model_loaded
+    }

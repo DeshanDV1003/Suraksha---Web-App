@@ -1,0 +1,18 @@
+{
+  "version": "v1.0",
+  "trained_at": "2026-07-19T05:35:43.511423",
+  "epochs_run": 13,
+  "val_mae_normalised": 0.005915,
+  "val_mae_metres": 14.1345,
+  "sequence_length": 12,
+  "features": [
+    "water_level_m",
+    "rainfall_mm_hr",
+    "rainfall_24h_total",
+    "humidity_pct",
+    "temp_c",
+    "rate_of_change",
+    "month"
+  ],
+  "data_source": "SYNTHETIC"
+}
