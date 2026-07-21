@@ -326,41 +326,41 @@ export default function ResourcesPage() {
 
         {selectedResource && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50">
+            <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-6 py-5 border-b border-cyan-400/10 flex items-center justify-between bg-[#131f33]">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
                     <Package className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-black text-gray-800 dark:text-white/90">Resource Info</h2>
-                    <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
+                    <h2 className="text-lg font-black text-slate-100">Resource Info</h2>
+                    <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedResource(null)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors">
+                <button onClick={() => setSelectedResource(null)} className="text-slate-400 hover:text-slate-200 transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Type</p>
-                  <p className="font-semibold text-slate-800">{selectedResource.type}</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Type</p>
+                  <p className="font-semibold text-slate-100">{selectedResource.type}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Owner</p>
-                  <p className="font-semibold text-slate-800">{selectedResource.owner}</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Owner</p>
+                  <p className="font-semibold text-slate-100">{selectedResource.owner}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Location</p>
-                  <p className="font-semibold text-slate-800">{selectedResource.location}</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Location</p>
+                  <p className="font-semibold text-slate-100">{selectedResource.location}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Capacity</p>
-                  <p className="font-semibold text-slate-800">{selectedResource.capacity}</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Capacity</p>
+                  <p className="font-semibold text-slate-100">{selectedResource.capacity}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Contact</p>
-                  <p className="font-semibold text-slate-800">{selectedResource.contact}</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Contact</p>
+                  <p className="font-semibold text-slate-100">{selectedResource.contact}</p>
                 </div>
               </div>
               <div className="p-6 pt-0 flex gap-3">
@@ -373,7 +373,7 @@ export default function ResourcesPage() {
                 </button>
                 <button 
                   onClick={() => setSelectedResource(null)}
-                  className="flex-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:bg-gray-700 text-slate-700 py-3 rounded-xl font-bold transition-all"
+                  className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold transition-all"
                 >
                   Close
                 </button>

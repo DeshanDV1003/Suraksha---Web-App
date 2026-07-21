@@ -158,10 +158,13 @@ export async function runPredictionsForAllGauges(): Promise<void> {
       `confidence=${(prediction.confidence * 100).toFixed(0)}% alert=${prediction.alertLevel}`
     );
 
-    // Only fire alert if confidence ≥ 75% (prevents false alarms)
+    // Only fire alert if confidence ≥ 75% and there is a threat in the next 2 hours
+    const hasThreatInNext2Hours = prediction.predictedT1M >= thresholds.watch_m || prediction.predictedT2M >= thresholds.watch_m;
+    
     if (
       prediction.alertLevel !== 'NONE' &&
-      prediction.confidence >= MIN_CONFIDENCE
+      prediction.confidence >= MIN_CONFIDENCE &&
+      hasThreatInNext2Hours
     ) {
       alertsFired++;
       try {

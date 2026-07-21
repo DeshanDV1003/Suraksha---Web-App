@@ -14,7 +14,7 @@ To use REAL data from your database export:
      rainfall_24h_total, humidity_pct, temp_c, month
 
 After training, models/ folder will contain:
-  - lstm_water_model.h5
+  - lstm_water_model.keras
   - lstm_scaler.pkl
   - lstm_model_info.json
 """
@@ -29,8 +29,8 @@ import joblib
 from datetime import datetime, timedelta
 
 # ── Config ──────────────────────────────────────────
-USE_REAL_DATA  = False
-REAL_DATA_CSV  = "data/water_levels_export.csv"
+USE_REAL_DATA  = True
+REAL_DATA_CSV  = "synthetic_flood_dataset_real_stations.csv"
 OUTPUT_DIR     = os.path.join(os.path.dirname(__file__), "../models")
 SEQUENCE_LEN   = 12   # 12 hours of input
 PREDICTION_LEN = 2    # predict T+1 and T+2
@@ -161,8 +161,11 @@ FEATURE_COLS = [
 ]
 
 def preprocess(df: pd.DataFrame):
-    # Compute rate of change
-    df["rate_of_change"] = df["water_level_m"].diff().fillna(0)
+    # Compute rate of change per station to avoid cross-station artifacts
+    if "stationName" in df.columns:
+        df["rate_of_change"] = df.groupby("stationName")["water_level_m"].diff().fillna(0)
+    else:
+        df["rate_of_change"] = df["water_level_m"].diff().fillna(0)
 
     features = df[FEATURE_COLS].values.astype(np.float32)
 
@@ -221,7 +224,7 @@ def train():
     callbacks = [
         EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True, verbose=1),
         ModelCheckpoint(
-            filepath=os.path.join(OUTPUT_DIR, "lstm_water_model.h5"),
+            filepath=os.path.join(OUTPUT_DIR, "lstm_water_model.keras"),
             monitor="val_loss", save_best_only=True, verbose=1
         )
     ]
@@ -266,7 +269,7 @@ def train():
         json.dump(info, f, indent=2)
     print(f"📋  Model info saved to {info_path}")
     print("\n✅  Training complete! Model ready for predictions.")
-    print(f"    Model: {os.path.join(OUTPUT_DIR, 'lstm_water_model.h5')}")
+    print(f"    Model: {os.path.join(OUTPUT_DIR, 'lstm_water_model.keras')}")
 
 
 if __name__ == "__main__":

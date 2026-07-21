@@ -21,7 +21,7 @@ except ImportError:
     TF_AVAILABLE = False
     print("[INFO] TensorFlow not installed. Predictor will use rule-based fallback.")
 
-MODEL_PATH  = os.path.join(os.path.dirname(__file__), "../models/lstm_water_model.h5")
+MODEL_PATH  = os.path.join(os.path.dirname(__file__), "../models/lstm_water_model.keras")
 SCALER_PATH = os.path.join(os.path.dirname(__file__), "../models/lstm_scaler.pkl")
 INFO_PATH   = os.path.join(os.path.dirname(__file__), "../models/lstm_model_info.json")
 

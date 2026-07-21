@@ -173,8 +173,8 @@ export default function AlertsPage() {
             <div className="flex items-center gap-4 text-brand-500">
                <div className="p-3 bg-brand-500 rounded-2xl text-white shadow-lg shadow-blue-500/20"><Bell className="w-6 h-6" /></div>
                <div>
-                 <h3 className="text-xl font-black uppercase tracking-tighter">Smart Templates</h3>
-                 <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Rapid directive deployment</p>
+                 <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Smart Templates</h3>
+                 <p className="text-[10px] font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest">Rapid directive deployment</p>
                </div>
             </div>
             

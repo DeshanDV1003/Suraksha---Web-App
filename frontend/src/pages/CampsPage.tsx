@@ -139,7 +139,7 @@ export default function CampsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
-            <div key={i} className="suraksha-card p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all">
+            <div key={i} className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all">
                <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
                <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{stat.label}</div>
             </div>
@@ -148,12 +148,12 @@ export default function CampsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {loading ? (
-            <div className="lg:col-span-2 flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-900 rounded-[1.5rem] shadow-sm space-y-3">
+            <div className="lg:col-span-2 flex flex-col items-center justify-center py-20 bg-[#131f33] border border-cyan-400/20 rounded-[1.5rem] shadow-sm space-y-3">
               <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
               <p className="text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest text-xs">Loading camps...</p>
             </div>
           ) : camps.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.location.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
-             <div className="lg:col-span-2 text-center py-24 bg-white dark:bg-gray-900 rounded-[1.5rem] border border-dashed border-gray-200 dark:border-gray-700">
+             <div className="lg:col-span-2 text-center py-24 bg-[#131f33] border border-cyan-400/20 rounded-[1.5rem] border border-dashed border-gray-200 dark:border-gray-700">
                <div className="bg-gray-50 dark:bg-gray-800/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building2 className="w-10 h-10 text-slate-300" />
                </div>
@@ -167,7 +167,7 @@ export default function CampsPage() {
               const barColor = status === 'HIGH' ? 'bg-red-500' : status === 'MODERATE' ? 'bg-yellow-500' : 'bg-green-500'
 
               return (
-                <div key={idx} className="suraksha-card p-7 flex flex-col space-y-6 hover:shadow-lg transition-all relative group rounded-[1.5rem]">
+                <div key={idx} className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col space-y-6 hover:shadow-lg transition-all relative group rounded-[1.5rem]">
                   <div className="absolute top-7 right-7">
                     <span className={cn("text-[10px] font-bold px-3 py-1 rounded-full tracking-wide uppercase border", statusColor)}>{status}</span>
                   </div>
@@ -221,10 +221,10 @@ export default function CampsPage() {
 
         {showModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
-              <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50">
+            <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
+              <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between bg-[#0f172a]">
                 <h2 className="text-xl font-black text-gray-800 dark:text-white/90">Add New Resource</h2>
-                <button onClick={() => setShowModal(false)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors">
+                <button onClick={() => setShowModal(false)} className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -247,7 +247,7 @@ export default function CampsPage() {
                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Services Available</label>
                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                      {servicesList.map((service) => (
-                       <button key={service.name} type="button" onClick={() => toggleService(service.name)} className={cn("flex flex-col items-center justify-center p-4 rounded-2xl border transition-all space-y-2", newCamp.services.includes(service.name) ? "bg-blue-50 border-blue-200 text-blue-600 shadow-sm" : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-gray-400 dark:text-gray-500 hover:border-slate-300")}>
+                       <button key={service.name} type="button" onClick={() => toggleService(service.name)} className={cn("flex flex-col items-center justify-center p-4 rounded-2xl border transition-all space-y-2", newCamp.services.includes(service.name) ? "bg-blue-50 border-blue-200 text-blue-600 shadow-sm" : "bg-[#131f33] border border-cyan-400/20 border-gray-200 dark:border-gray-800 text-gray-400 dark:text-gray-500 hover:border-slate-300")}>
                          <service.icon className="w-6 h-6" />
                          <span className="text-[10px] font-bold uppercase tracking-wider">{service.name}</span>
                        </button>
@@ -255,7 +255,7 @@ export default function CampsPage() {
                    </div>
                  </div>
                  <div className="pt-4 flex gap-4">
-                   <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-6 py-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-2xl text-sm font-bold hover:bg-gray-200 dark:bg-gray-700 transition-all">Cancel</button>
+                   <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-6 py-4 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-cyan-900/20 transition-all">Cancel</button>
                    <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-4 bg-brand-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25">Create Camp</button>
                  </div>
               </form>
@@ -293,10 +293,10 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-gray-900 w-full max-w-6xl rounded-[1.5rem] shadow-2xl flex flex-col h-[90vh] animate-in zoom-in-95 duration-200">
+      <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-6xl rounded-[1.5rem] shadow-2xl flex flex-col h-[90vh] animate-in zoom-in-95 duration-200">
         
         {/* Header */}
-        <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between shrink-0">
+        <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between shrink-0 bg-[#0f172a] rounded-t-[1.5rem]">
           <div>
             <h2 className="text-2xl font-black text-gray-800 dark:text-white/90 flex items-center gap-3">
               {camp.name}
@@ -304,11 +304,11 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
             </h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 font-bold mt-1 flex items-center gap-1"><MapPin className="w-3 h-3"/> {camp.location}</p>
           </div>
-          <button onClick={onClose} className="bg-gray-100 dark:bg-gray-800 p-2 rounded-full hover:bg-gray-200 dark:bg-gray-700"><X className="w-5 h-5"/></button>
+          <button onClick={onClose} className="bg-[#131f33] border border-cyan-400/20 text-cyan-400/70 p-2 rounded-full hover:bg-cyan-900/20"><X className="w-5 h-5"/></button>
         </div>
 
         {/* Tabs Navigation */}
-        <div className="flex px-8 border-b border-gray-200 dark:border-gray-800 shrink-0 overflow-x-auto">
+        <div className="flex px-8 border-b border-cyan-400/20 shrink-0 overflow-x-auto bg-[#0f172a]">
           {[
             { id: 'OVERVIEW', label: 'Overview & Map', icon: Building2 },
             { id: 'RESIDENTS', label: 'Digital Roll', icon: Users },
@@ -327,7 +327,7 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-8 bg-gray-50 dark:bg-gray-800/50/50">
+        <div className="flex-1 overflow-y-auto p-8 bg-[#0f172a]">
           {activeTab === 'OVERVIEW' && (
             <div className="space-y-6">
               {isSurging && (
@@ -340,7 +340,7 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
                 </div>
               )}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="suraksha-card p-6 bg-white dark:bg-gray-900 space-y-6">
+                <div className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 space-y-6">
                   <div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Current Occupancy</h4>
                     <div className="text-3xl font-black text-gray-800 dark:text-white/90">{camp.currentOccupancy} <span className="text-lg text-gray-400 dark:text-gray-500">/ {camp.totalCapacity}</span></div>
@@ -351,18 +351,18 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
                   <div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Transfers</h4>
                     <div className="flex gap-4">
-                      <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-800 flex-1 text-center">
+                      <div className="bg-[#0f172a] p-4 rounded-xl border border-cyan-400/20 flex-1 text-center">
                         <div className="text-2xl font-black text-blue-600">{camp.transfersIn?.length || 0}</div>
                         <div className="text-[9px] uppercase tracking-widest text-gray-400 dark:text-gray-500">Pending Inbound</div>
                       </div>
-                      <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-800 flex-1 text-center">
+                      <div className="bg-[#0f172a] p-4 rounded-xl border border-cyan-400/20 flex-1 text-center">
                         <div className="text-2xl font-black text-orange-600">{camp.transfersOut?.length || 0}</div>
                         <div className="text-[9px] uppercase tracking-widest text-gray-400 dark:text-gray-500">Pending Outbound</div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="suraksha-card overflow-hidden h-64 lg:h-auto bg-gray-100 dark:bg-gray-800 relative min-h-[300px]">
+                <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 overflow-hidden h-64 lg:h-auto relative min-h-[300px]">
                   {camp.latitude && camp.longitude ? (
                     <MapContainer center={[camp.latitude, camp.longitude]} zoom={15} style={{ height: '100%', width: '100%' }} zoomControl={false}>
                       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
@@ -416,7 +416,7 @@ function ResidentsTab({ campId, residents, refresh }: any) {
 
   return (
     <div className="space-y-6">
-      <form onSubmit={handleAdd} className="suraksha-card p-6 bg-white dark:bg-gray-900 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
+      <form onSubmit={handleAdd} className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
          <div className="flex-1 w-full space-y-1">
            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Full Name</label>
            <input required className="suraksha-input" value={name} onChange={e=>setName(e.target.value)} placeholder="Resident Name" />
@@ -427,9 +427,9 @@ function ResidentsTab({ campId, residents, refresh }: any) {
          </div>
          <button type="submit" className="suraksha-button h-12 px-8 w-full md:w-auto">Register Resident</button>
       </form>
-      <div className="suraksha-card bg-white dark:bg-gray-900 overflow-hidden shadow-sm">
+      <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 overflow-hidden shadow-sm">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 dark:bg-gray-800/50">
+          <thead className="bg-[#0f172a]">
             <tr>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Name</th>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">NIC</th>
@@ -473,7 +473,7 @@ function InventoryTab({ campId, inventory, refresh }: any) {
        {items.map(type => {
          const inv = inventory.find((i: any) => i.itemType === type) || { quantity: 0, threshold: 100 }
          const status = inv.quantity > inv.threshold * 1.5 ? 'GREEN' : inv.quantity > inv.threshold ? 'AMBER' : 'RED'
-         const color = status === 'GREEN' ? 'text-green-600 bg-green-50 border-green-200' : status === 'AMBER' ? 'text-yellow-600 bg-yellow-50 border-yellow-200' : 'text-red-600 bg-red-50 border-red-200'
+         const color = status === 'GREEN' ? 'text-green-400 bg-green-500/10 border-green-500/30' : status === 'AMBER' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30' : 'text-red-400 bg-red-500/10 border-red-500/30'
          
          return (
            <div key={type} className={cn("suraksha-card p-6 border-2 transition-colors", color)}>
@@ -485,8 +485,8 @@ function InventoryTab({ campId, inventory, refresh }: any) {
               <div className="text-[10px] uppercase font-bold tracking-widest opacity-60 mb-6">Threshold: {inv.threshold}</div>
               
               <div className="flex gap-2">
-                <button onClick={() => handleUpdate(type, (inv.quantity + 50).toString())} className="flex-1 bg-white dark:bg-gray-900/50 hover:bg-white dark:bg-gray-900 text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">+50</button>
-                <button onClick={() => handleUpdate(type, Math.max(0, inv.quantity - 10).toString())} className="flex-1 bg-white dark:bg-gray-900/50 hover:bg-white dark:bg-gray-900 text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">-10</button>
+                <button onClick={() => handleUpdate(type, (inv.quantity + 50).toString())} className="flex-1 bg-[#131f33] border border-cyan-400/20/50 hover:bg-[#131f33] border border-cyan-400/20 text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">+50</button>
+                <button onClick={() => handleUpdate(type, Math.max(0, inv.quantity - 10).toString())} className="flex-1 bg-[#131f33] border border-cyan-400/20/50 hover:bg-[#131f33] border border-cyan-400/20 text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">-10</button>
               </div>
            </div>
          )
@@ -513,7 +513,7 @@ function ScheduleTab({ campId, schedules, refresh }: any) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
        <div className="lg:col-span-1">
-         <form onSubmit={handleAdd} className="suraksha-card p-6 bg-white dark:bg-gray-900 space-y-4 shadow-sm">
+         <form onSubmit={handleAdd} className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 space-y-4 shadow-sm">
            <h3 className="font-black uppercase tracking-widest text-sm mb-4">Add Schedule Entry</h3>
            <input required className="suraksha-input" placeholder="Activity Name" value={form.activityName} onChange={e=>setForm({...form, activityName: e.target.value})} />
            <div className="flex gap-2">
@@ -530,9 +530,9 @@ function ScheduleTab({ campId, schedules, refresh }: any) {
          </form>
        </div>
        <div className="lg:col-span-2">
-         <div className="suraksha-card bg-white dark:bg-gray-900 shadow-sm p-6 space-y-4">
+         <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 shadow-sm p-6 space-y-4">
            {schedules.map((s: any) => (
-             <div key={s.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl">
+             <div key={s.id} className="flex items-center justify-between p-4 bg-[#0f172a] border border-cyan-400/20 rounded-2xl">
                <div className="flex items-center gap-4">
                  <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-black text-xs">{s.startTime}</div>
                  <div>
@@ -567,7 +567,7 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
 
   return (
     <div className="space-y-6">
-       <form onSubmit={handleAdd} className="suraksha-card p-6 bg-white dark:bg-gray-900 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
+       <form onSubmit={handleAdd} className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
          <div className="flex-1 w-full space-y-1">
            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Patient Name</label>
            <input required className="suraksha-input" value={form.patientName} onChange={e=>setForm({...form, patientName: e.target.value})} placeholder="Name" />
@@ -588,9 +588,9 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
          <button type="submit" className="suraksha-button h-12 px-8 w-full md:w-auto">Log Referral</button>
       </form>
 
-      <div className="suraksha-card bg-white dark:bg-gray-900 overflow-hidden shadow-sm">
+      <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 overflow-hidden shadow-sm">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 dark:bg-gray-800/50">
+          <thead className="bg-[#0f172a]">
             <tr>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Patient</th>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Hospital</th>
@@ -608,7 +608,7 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
                 </td>
                 <td className="p-4">
                    <select 
-                     className="text-xs font-bold bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded px-2 py-1"
+                     className="text-xs font-bold bg-[#0f172a] border border-cyan-400/20 text-cyan-400 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-400/50"
                      value={r.status}
                      onChange={(e) => handleUpdate(r.id, e.target.value)}
                    >
@@ -661,7 +661,7 @@ function TransferModal({ fromCamp, onClose, refresh }: any) {
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
-      <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-[1.5rem] p-8 shadow-2xl">
+      <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-md rounded-[1.5rem] p-8 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 flex items-center gap-2"><ArrowRightLeft className="w-5 h-5"/> Transfer Request</h3>
            <button onClick={onClose}><X className="w-5 h-5 text-gray-400 dark:text-gray-500"/></button>
@@ -681,7 +681,7 @@ function TransferModal({ fromCamp, onClose, refresh }: any) {
              <input required type="number" max={fromCamp.currentOccupancy} className="suraksha-input" value={peopleCount} onChange={e=>setPeopleCount(e.target.value)} placeholder="0" />
            </div>
            <div className="pt-4 flex gap-4">
-             <button type="button" onClick={onClose} className="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl py-3 font-bold text-sm">Cancel</button>
+             <button type="button" onClick={onClose} className="flex-1 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 hover:bg-cyan-900/20 rounded-xl py-3 font-bold text-sm transition-colors">Cancel</button>
              <button type="submit" disabled={loading || !toCampId} className="flex-1 bg-red-600 text-white rounded-xl py-3 font-bold text-sm">Submit Request</button>
            </div>
         </form>

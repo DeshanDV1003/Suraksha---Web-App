@@ -1,9 +1,9 @@
 {
   "version": "v1.0",
-  "trained_at": "2026-07-19T05:35:43.511423",
-  "epochs_run": 13,
-  "val_mae_normalised": 0.005915,
-  "val_mae_metres": 14.1345,
+  "trained_at": "2026-07-21T07:09:12.160979",
+  "epochs_run": 11,
+  "val_mae_normalised": 0.009755,
+  "val_mae_metres": 0.1364,
   "sequence_length": 12,
   "features": [
     "water_level_m",
@@ -14,5 +14,5 @@
     "rate_of_change",
     "month"
   ],
-  "data_source": "SYNTHETIC"
+  "data_source": "REAL_CSV"
 }
