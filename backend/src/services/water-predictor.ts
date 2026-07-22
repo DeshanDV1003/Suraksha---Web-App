@@ -7,6 +7,8 @@
  */
 
 import prisma from '../utils/prisma';
+import { getIO } from '../utils/socketInstance';
+import { AlertType } from '../../prisma/generated/client';
 
 const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
 const MIN_CONFIDENCE = 0.75;
@@ -117,6 +119,50 @@ export async function getPrediction(
   }
 }
 
+// ─── Push ML prediction alert to mobile app ──────────────────────
+// Dedup key store — same gauge+level won't re-alert within 30 min
+const mobileSentKeys = new Map<string, number>();
+const MOBILE_DEDUP_MS = 30 * 60 * 1000;
+
+async function pushMobileAlert(payload: {
+  gaugeName: string;
+  district: string;
+  currentLevelM: number;
+  predictedT1M: number;
+  predictedT2M: number;
+  confidence: number;
+  alertLevel: string;
+  reason: string;
+  targetDistricts: string[];
+}): Promise<void> {
+  const key = `${payload.gaugeName}:${payload.alertLevel}`;
+  const now = Date.now();
+  const last = mobileSentKeys.get(key);
+  if (last && now - last < MOBILE_DEDUP_MS) return;
+  mobileSentKeys.set(key, now);
+
+  const isEmergency = payload.alertLevel === 'CRITICAL';
+  const emoji = isEmergency ? '🚨' : payload.alertLevel === 'WARNING' ? '⚠️' : '🔔';
+  const type = isEmergency ? AlertType.EMERGENCY : AlertType.WARNING;
+
+  const title = `${emoji} ML Flood Prediction — ${payload.district}`;
+  const message =
+    `${payload.gaugeName}: current ${payload.currentLevelM.toFixed(2)} m. ` +
+    `AI predicts ${payload.predictedT1M.toFixed(2)} m in 1hr / ${payload.predictedT2M.toFixed(2)} m in 2hrs ` +
+    `(${Math.round(payload.confidence * 100)}% confidence). ${payload.reason}`;
+
+  try {
+    const alert = await prisma.alert.create({
+      data: { title, message, type, active: true, locations: payload.targetDistricts },
+    });
+    const io = getIO();
+    io.emit('new-alert', { ...alert, source: 'ml-water-predictor' });
+    console.log(`[WaterPredictor] Mobile alert emitted for ${payload.gaugeName} (${payload.alertLevel})`);
+  } catch (err) {
+    console.error('[WaterPredictor] Failed to push mobile alert:', err);
+  }
+}
+
 // ─── Run predictions for all active gauges ────────────────────────
 export async function runPredictionsForAllGauges(): Promise<void> {
   console.log('[WaterPredictor] Starting prediction cycle for all gauges...');
@@ -172,10 +218,19 @@ export async function runPredictionsForAllGauges(): Promise<void> {
         const latest = await prisma.riverWaterLevel.findFirst({
           where: { gaugeId: gauge.gaugeId }, orderBy: { recordedAt: 'desc' }
         });
+        const currentLevelM = latest?.waterLevelMetres ?? prediction.predictedT1M;
+
+        // Get downstream districts affected by this gauge
+        const mapping = await prisma.downstreamMapping.findUnique({
+          where: { gaugeId: gauge.gaugeId },
+        });
+        const targetDistricts = mapping ? mapping.targetDistricts : [gauge.district];
+
+        // Send Telegram alert
         await sendTelegramFloodAlert({
           gaugeName:      `${gauge.riverName} @ ${gauge.stationName}`,
-          district:       gauge.district,
-          currentLevelM: latest?.waterLevelMetres ?? prediction.predictedT1M,
+          district:       targetDistricts.join(', '),
+          currentLevelM,
           predictedT1M:   prediction.predictedT1M,
           predictedT2M:   prediction.predictedT2M,
           confidence:     prediction.confidence,
@@ -183,8 +238,21 @@ export async function runPredictionsForAllGauges(): Promise<void> {
           watchThreshold: thresholds.watch_m,
           reason:         prediction.reason,
         });
+
+        // Push the same alert to mobile app users in real-time
+        await pushMobileAlert({
+          gaugeName:      `${gauge.riverName} @ ${gauge.stationName}`,
+          district:       gauge.district,
+          currentLevelM,
+          predictedT1M:   prediction.predictedT1M,
+          predictedT2M:   prediction.predictedT2M,
+          confidence:     prediction.confidence,
+          alertLevel:     prediction.alertLevel,
+          reason:         prediction.reason,
+          targetDistricts,
+        });
       } catch (e) {
-        console.error('[WaterPredictor] Telegram alert failed:', e);
+        console.error('[WaterPredictor] Alert dispatch failed:', e);
       }
     }
   }

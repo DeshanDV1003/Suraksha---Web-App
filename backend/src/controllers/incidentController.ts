@@ -106,38 +106,62 @@ export const createIncident = async (req: any, res: Response) => {
 
     // Run ML/NLP asynchronously — don't make the user wait
     processReport({ ...req.body, images: incident.images }).then(async (mlResult) => {
-      // Update the report with ML results
+      // Validate priority against the Severity enum before writing to DB
+      const VALID_SEVERITIES = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
+      const severity = VALID_SEVERITIES.includes(mlResult.priority?.toUpperCase())
+        ? mlResult.priority.toUpperCase()
+        : 'MEDIUM';
+
+      // Write all NLP results back to the incident record
       await prisma.incidentReport.update({
         where: { id: incident.id },
         data: {
-          severity: mlResult.priority as any,
-          mlConfidence: mlResult.priority_confidence,
+          severity: severity as any,
+          mlConfidence: mlResult.priority_confidence ?? 0,
+          detectedLanguage: mlResult.detected_language ?? null,
+          languageConfidence: mlResult.language_confidence ?? null,
+          // Only store translation if the language is not English
+          translatedText: mlResult.detected_language !== 'en'
+            ? (mlResult.translated_text ?? null)
+            : null,
+          nlpEntities: mlResult.nlp_entities ?? null,
         }
       });
 
-      // Log ML prediction
+      // Log ML prediction linked to this incident
       await prisma.mLLog.create({
         data: {
-          inputData: req.body as any,
-          prediction: mlResult.priority,
-          confidence: mlResult.priority_confidence,
-          modelVersion: "1.0.0"
+          incidentId: incident.id,
+          inputData: {
+            description: req.body.description,
+            location: req.body.location,
+          } as any,
+          prediction: severity,
+          confidence: mlResult.priority_confidence ?? 0,
+          modelVersion: '1.0.0'
         }
       });
 
-      // If HIGH or CRITICAL — emit WebSocket event to DMC dashboard
+      // Emit WebSocket events — guard io in case socket is not yet ready
       const io = req.app.get('socketio');
-      if (['HIGH', 'CRITICAL'].includes(mlResult.priority)) {
+      if (!io) return;
+
+      if (['HIGH', 'CRITICAL'].includes(severity)) {
         io.emit('new-high-priority-incident', {
           incidentId: incident.id,
-          priority: mlResult.priority,
-          confidence: mlResult.priority_confidence,
-          location: incident.location
+          priority: severity,
+          confidence: mlResult.priority_confidence ?? 0,
+          location: incident.location,
+          nlpEntities: mlResult.nlp_entities,
+          detectedLanguage: mlResult.detected_language,
         });
       }
-      
-      // Also emit regular update for the new incident with updated severity and confidence
-      io.emit('incident-updated', { ...incident, severity: mlResult.priority, mlConfidence: mlResult.priority_confidence });
+
+      io.emit('incident-updated', {
+        ...incident,
+        severity,
+        mlConfidence: mlResult.priority_confidence ?? 0,
+      });
 
     }).catch(err => console.error('Async ML processing failed:', err));
 

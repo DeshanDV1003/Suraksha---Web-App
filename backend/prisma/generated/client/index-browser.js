@@ -155,7 +155,11 @@ exports.Prisma.IncidentReportScalarFieldEnum = {
   province: 'province',
   zoneId: 'zoneId',
   zoneName: 'zoneName',
-  mlConfidence: 'mlConfidence'
+  mlConfidence: 'mlConfidence',
+  detectedLanguage: 'detectedLanguage',
+  languageConfidence: 'languageConfidence',
+  translatedText: 'translatedText',
+  nlpEntities: 'nlpEntities'
 };
 
 exports.Prisma.AlertScalarFieldEnum = {
@@ -303,6 +307,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
 
 exports.Prisma.MLLogScalarFieldEnum = {
   id: 'id',
+  incidentId: 'incidentId',
   inputData: 'inputData',
   prediction: 'prediction',
   confidence: 'confidence',

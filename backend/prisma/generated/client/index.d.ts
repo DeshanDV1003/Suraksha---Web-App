@@ -8738,12 +8738,14 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     mlConfidence: number | null
+    languageConfidence: number | null
   }
 
   export type IncidentReportSumAggregateOutputType = {
     latitude: number | null
     longitude: number | null
     mlConfidence: number | null
+    languageConfidence: number | null
   }
 
   export type IncidentReportMinAggregateOutputType = {
@@ -8763,6 +8765,9 @@ export namespace Prisma {
     zoneId: string | null
     zoneName: string | null
     mlConfidence: number | null
+    detectedLanguage: string | null
+    languageConfidence: number | null
+    translatedText: string | null
   }
 
   export type IncidentReportMaxAggregateOutputType = {
@@ -8782,6 +8787,9 @@ export namespace Prisma {
     zoneId: string | null
     zoneName: string | null
     mlConfidence: number | null
+    detectedLanguage: string | null
+    languageConfidence: number | null
+    translatedText: string | null
   }
 
   export type IncidentReportCountAggregateOutputType = {
@@ -8802,6 +8810,10 @@ export namespace Prisma {
     zoneId: number
     zoneName: number
     mlConfidence: number
+    detectedLanguage: number
+    languageConfidence: number
+    translatedText: number
+    nlpEntities: number
     _all: number
   }
 
@@ -8810,12 +8822,14 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     mlConfidence?: true
+    languageConfidence?: true
   }
 
   export type IncidentReportSumAggregateInputType = {
     latitude?: true
     longitude?: true
     mlConfidence?: true
+    languageConfidence?: true
   }
 
   export type IncidentReportMinAggregateInputType = {
@@ -8835,6 +8849,9 @@ export namespace Prisma {
     zoneId?: true
     zoneName?: true
     mlConfidence?: true
+    detectedLanguage?: true
+    languageConfidence?: true
+    translatedText?: true
   }
 
   export type IncidentReportMaxAggregateInputType = {
@@ -8854,6 +8871,9 @@ export namespace Prisma {
     zoneId?: true
     zoneName?: true
     mlConfidence?: true
+    detectedLanguage?: true
+    languageConfidence?: true
+    translatedText?: true
   }
 
   export type IncidentReportCountAggregateInputType = {
@@ -8874,6 +8894,10 @@ export namespace Prisma {
     zoneId?: true
     zoneName?: true
     mlConfidence?: true
+    detectedLanguage?: true
+    languageConfidence?: true
+    translatedText?: true
+    nlpEntities?: true
     _all?: true
   }
 
@@ -8981,6 +9005,10 @@ export namespace Prisma {
     zoneId: string | null
     zoneName: string | null
     mlConfidence: number | null
+    detectedLanguage: string | null
+    languageConfidence: number | null
+    translatedText: string | null
+    nlpEntities: JsonValue | null
     _count: IncidentReportCountAggregateOutputType | null
     _avg: IncidentReportAvgAggregateOutputType | null
     _sum: IncidentReportSumAggregateOutputType | null
@@ -9020,6 +9048,10 @@ export namespace Prisma {
     zoneId?: boolean
     zoneName?: boolean
     mlConfidence?: boolean
+    detectedLanguage?: boolean
+    languageConfidence?: boolean
+    translatedText?: boolean
+    nlpEntities?: boolean
     aar?: boolean | IncidentReport$aarArgs<ExtArgs>
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
     history?: boolean | IncidentReport$historyArgs<ExtArgs>
@@ -9048,6 +9080,10 @@ export namespace Prisma {
     zoneId?: boolean
     zoneName?: boolean
     mlConfidence?: boolean
+    detectedLanguage?: boolean
+    languageConfidence?: boolean
+    translatedText?: boolean
+    nlpEntities?: boolean
     reporter?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
 
@@ -9069,6 +9105,10 @@ export namespace Prisma {
     zoneId?: boolean
     zoneName?: boolean
     mlConfidence?: boolean
+    detectedLanguage?: boolean
+    languageConfidence?: boolean
+    translatedText?: boolean
+    nlpEntities?: boolean
     reporter?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
 
@@ -9090,9 +9130,13 @@ export namespace Prisma {
     zoneId?: boolean
     zoneName?: boolean
     mlConfidence?: boolean
+    detectedLanguage?: boolean
+    languageConfidence?: boolean
+    translatedText?: boolean
+    nlpEntities?: boolean
   }
 
-  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt" | "province" | "zoneId" | "zoneName" | "mlConfidence", ExtArgs["result"]["incidentReport"]>
+  export type IncidentReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "latitude" | "longitude" | "status" | "severity" | "category" | "images" | "reporterId" | "createdAt" | "updatedAt" | "province" | "zoneId" | "zoneName" | "mlConfidence" | "detectedLanguage" | "languageConfidence" | "translatedText" | "nlpEntities", ExtArgs["result"]["incidentReport"]>
   export type IncidentReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     aar?: boolean | IncidentReport$aarArgs<ExtArgs>
     damageAssessments?: boolean | IncidentReport$damageAssessmentsArgs<ExtArgs>
@@ -9139,6 +9183,10 @@ export namespace Prisma {
       zoneId: string | null
       zoneName: string | null
       mlConfidence: number | null
+      detectedLanguage: string | null
+      languageConfidence: number | null
+      translatedText: string | null
+      nlpEntities: Prisma.JsonValue | null
     }, ExtArgs["result"]["incidentReport"]>
     composites: {}
   }
@@ -9586,6 +9634,10 @@ export namespace Prisma {
     readonly zoneId: FieldRef<"IncidentReport", 'String'>
     readonly zoneName: FieldRef<"IncidentReport", 'String'>
     readonly mlConfidence: FieldRef<"IncidentReport", 'Float'>
+    readonly detectedLanguage: FieldRef<"IncidentReport", 'String'>
+    readonly languageConfidence: FieldRef<"IncidentReport", 'Float'>
+    readonly translatedText: FieldRef<"IncidentReport", 'String'>
+    readonly nlpEntities: FieldRef<"IncidentReport", 'Json'>
   }
     
 
@@ -22995,6 +23047,7 @@ export namespace Prisma {
 
   export type MLLogMinAggregateOutputType = {
     id: string | null
+    incidentId: string | null
     prediction: string | null
     confidence: number | null
     modelVersion: string | null
@@ -23003,6 +23056,7 @@ export namespace Prisma {
 
   export type MLLogMaxAggregateOutputType = {
     id: string | null
+    incidentId: string | null
     prediction: string | null
     confidence: number | null
     modelVersion: string | null
@@ -23011,6 +23065,7 @@ export namespace Prisma {
 
   export type MLLogCountAggregateOutputType = {
     id: number
+    incidentId: number
     inputData: number
     prediction: number
     confidence: number
@@ -23030,6 +23085,7 @@ export namespace Prisma {
 
   export type MLLogMinAggregateInputType = {
     id?: true
+    incidentId?: true
     prediction?: true
     confidence?: true
     modelVersion?: true
@@ -23038,6 +23094,7 @@ export namespace Prisma {
 
   export type MLLogMaxAggregateInputType = {
     id?: true
+    incidentId?: true
     prediction?: true
     confidence?: true
     modelVersion?: true
@@ -23046,6 +23103,7 @@ export namespace Prisma {
 
   export type MLLogCountAggregateInputType = {
     id?: true
+    incidentId?: true
     inputData?: true
     prediction?: true
     confidence?: true
@@ -23142,6 +23200,7 @@ export namespace Prisma {
 
   export type MLLogGroupByOutputType = {
     id: string
+    incidentId: string | null
     inputData: JsonValue
     prediction: string
     confidence: number | null
@@ -23170,6 +23229,7 @@ export namespace Prisma {
 
   export type MLLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    incidentId?: boolean
     inputData?: boolean
     prediction?: boolean
     confidence?: boolean
@@ -23179,6 +23239,7 @@ export namespace Prisma {
 
   export type MLLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    incidentId?: boolean
     inputData?: boolean
     prediction?: boolean
     confidence?: boolean
@@ -23188,6 +23249,7 @@ export namespace Prisma {
 
   export type MLLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    incidentId?: boolean
     inputData?: boolean
     prediction?: boolean
     confidence?: boolean
@@ -23197,6 +23259,7 @@ export namespace Prisma {
 
   export type MLLogSelectScalar = {
     id?: boolean
+    incidentId?: boolean
     inputData?: boolean
     prediction?: boolean
     confidence?: boolean
@@ -23204,13 +23267,14 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type MLLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "inputData" | "prediction" | "confidence" | "modelVersion" | "createdAt", ExtArgs["result"]["mLLog"]>
+  export type MLLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "incidentId" | "inputData" | "prediction" | "confidence" | "modelVersion" | "createdAt", ExtArgs["result"]["mLLog"]>
 
   export type $MLLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MLLog"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      incidentId: string | null
       inputData: Prisma.JsonValue
       prediction: string
       confidence: number | null
@@ -23640,6 +23704,7 @@ export namespace Prisma {
    */ 
   interface MLLogFieldRefs {
     readonly id: FieldRef<"MLLog", 'String'>
+    readonly incidentId: FieldRef<"MLLog", 'String'>
     readonly inputData: FieldRef<"MLLog", 'Json'>
     readonly prediction: FieldRef<"MLLog", 'String'>
     readonly confidence: FieldRef<"MLLog", 'Float'>
@@ -72962,7 +73027,11 @@ export namespace Prisma {
     province: 'province',
     zoneId: 'zoneId',
     zoneName: 'zoneName',
-    mlConfidence: 'mlConfidence'
+    mlConfidence: 'mlConfidence',
+    detectedLanguage: 'detectedLanguage',
+    languageConfidence: 'languageConfidence',
+    translatedText: 'translatedText',
+    nlpEntities: 'nlpEntities'
   };
 
   export type IncidentReportScalarFieldEnum = (typeof IncidentReportScalarFieldEnum)[keyof typeof IncidentReportScalarFieldEnum]
@@ -73146,6 +73215,7 @@ export namespace Prisma {
 
   export const MLLogScalarFieldEnum: {
     id: 'id',
+    incidentId: 'incidentId',
     inputData: 'inputData',
     prediction: 'prediction',
     confidence: 'confidence',
@@ -73930,20 +74000,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'AlertType'
-   */
-  export type EnumAlertTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlertType'>
-    
-
-
-  /**
-   * Reference to a field of type 'AlertType[]'
-   */
-  export type ListEnumAlertTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlertType[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -73954,6 +74010,20 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'AlertType'
+   */
+  export type EnumAlertTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlertType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AlertType[]'
+   */
+  export type ListEnumAlertTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlertType[]'>
     
 
 
@@ -74415,6 +74485,10 @@ export namespace Prisma {
     zoneId?: StringNullableFilter<"IncidentReport"> | string | null
     zoneName?: StringNullableFilter<"IncidentReport"> | string | null
     mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    detectedLanguage?: StringNullableFilter<"IncidentReport"> | string | null
+    languageConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    translatedText?: StringNullableFilter<"IncidentReport"> | string | null
+    nlpEntities?: JsonNullableFilter<"IncidentReport">
     aar?: XOR<AfterActionReportNullableScalarRelationFilter, AfterActionReportWhereInput> | null
     damageAssessments?: DamageAssessmentListRelationFilter
     history?: IncidentHistoryListRelationFilter
@@ -74442,6 +74516,10 @@ export namespace Prisma {
     zoneId?: SortOrderInput | SortOrder
     zoneName?: SortOrderInput | SortOrder
     mlConfidence?: SortOrderInput | SortOrder
+    detectedLanguage?: SortOrderInput | SortOrder
+    languageConfidence?: SortOrderInput | SortOrder
+    translatedText?: SortOrderInput | SortOrder
+    nlpEntities?: SortOrderInput | SortOrder
     aar?: AfterActionReportOrderByWithRelationInput
     damageAssessments?: DamageAssessmentOrderByRelationAggregateInput
     history?: IncidentHistoryOrderByRelationAggregateInput
@@ -74472,6 +74550,10 @@ export namespace Prisma {
     zoneId?: StringNullableFilter<"IncidentReport"> | string | null
     zoneName?: StringNullableFilter<"IncidentReport"> | string | null
     mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    detectedLanguage?: StringNullableFilter<"IncidentReport"> | string | null
+    languageConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    translatedText?: StringNullableFilter<"IncidentReport"> | string | null
+    nlpEntities?: JsonNullableFilter<"IncidentReport">
     aar?: XOR<AfterActionReportNullableScalarRelationFilter, AfterActionReportWhereInput> | null
     damageAssessments?: DamageAssessmentListRelationFilter
     history?: IncidentHistoryListRelationFilter
@@ -74499,6 +74581,10 @@ export namespace Prisma {
     zoneId?: SortOrderInput | SortOrder
     zoneName?: SortOrderInput | SortOrder
     mlConfidence?: SortOrderInput | SortOrder
+    detectedLanguage?: SortOrderInput | SortOrder
+    languageConfidence?: SortOrderInput | SortOrder
+    translatedText?: SortOrderInput | SortOrder
+    nlpEntities?: SortOrderInput | SortOrder
     _count?: IncidentReportCountOrderByAggregateInput
     _avg?: IncidentReportAvgOrderByAggregateInput
     _max?: IncidentReportMaxOrderByAggregateInput
@@ -74527,6 +74613,10 @@ export namespace Prisma {
     zoneId?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
     zoneName?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
     mlConfidence?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
+    detectedLanguage?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    languageConfidence?: FloatNullableWithAggregatesFilter<"IncidentReport"> | number | null
+    translatedText?: StringNullableWithAggregatesFilter<"IncidentReport"> | string | null
+    nlpEntities?: JsonNullableWithAggregatesFilter<"IncidentReport">
   }
 
   export type AlertWhereInput = {
@@ -75463,6 +75553,7 @@ export namespace Prisma {
     OR?: MLLogWhereInput[]
     NOT?: MLLogWhereInput | MLLogWhereInput[]
     id?: StringFilter<"MLLog"> | string
+    incidentId?: StringNullableFilter<"MLLog"> | string | null
     inputData?: JsonFilter<"MLLog">
     prediction?: StringFilter<"MLLog"> | string
     confidence?: FloatNullableFilter<"MLLog"> | number | null
@@ -75472,6 +75563,7 @@ export namespace Prisma {
 
   export type MLLogOrderByWithRelationInput = {
     id?: SortOrder
+    incidentId?: SortOrderInput | SortOrder
     inputData?: SortOrder
     prediction?: SortOrder
     confidence?: SortOrderInput | SortOrder
@@ -75484,6 +75576,7 @@ export namespace Prisma {
     AND?: MLLogWhereInput | MLLogWhereInput[]
     OR?: MLLogWhereInput[]
     NOT?: MLLogWhereInput | MLLogWhereInput[]
+    incidentId?: StringNullableFilter<"MLLog"> | string | null
     inputData?: JsonFilter<"MLLog">
     prediction?: StringFilter<"MLLog"> | string
     confidence?: FloatNullableFilter<"MLLog"> | number | null
@@ -75493,6 +75586,7 @@ export namespace Prisma {
 
   export type MLLogOrderByWithAggregationInput = {
     id?: SortOrder
+    incidentId?: SortOrderInput | SortOrder
     inputData?: SortOrder
     prediction?: SortOrder
     confidence?: SortOrderInput | SortOrder
@@ -75510,6 +75604,7 @@ export namespace Prisma {
     OR?: MLLogScalarWhereWithAggregatesInput[]
     NOT?: MLLogScalarWhereWithAggregatesInput | MLLogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"MLLog"> | string
+    incidentId?: StringNullableWithAggregatesFilter<"MLLog"> | string | null
     inputData?: JsonWithAggregatesFilter<"MLLog">
     prediction?: StringWithAggregatesFilter<"MLLog"> | string
     confidence?: FloatNullableWithAggregatesFilter<"MLLog"> | number | null
@@ -78929,6 +79024,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
@@ -78956,6 +79055,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
@@ -78981,6 +79084,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
@@ -79008,6 +79115,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
@@ -79034,6 +79145,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type IncidentReportUpdateManyMutationInput = {
@@ -79053,6 +79168,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type IncidentReportUncheckedUpdateManyInput = {
@@ -79073,6 +79192,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type AlertCreateInput = {
@@ -80129,6 +80252,7 @@ export namespace Prisma {
 
   export type MLLogCreateInput = {
     id?: string
+    incidentId?: string | null
     inputData: JsonNullValueInput | InputJsonValue
     prediction: string
     confidence?: number | null
@@ -80138,6 +80262,7 @@ export namespace Prisma {
 
   export type MLLogUncheckedCreateInput = {
     id?: string
+    incidentId?: string | null
     inputData: JsonNullValueInput | InputJsonValue
     prediction: string
     confidence?: number | null
@@ -80147,6 +80272,7 @@ export namespace Prisma {
 
   export type MLLogUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
     inputData?: JsonNullValueInput | InputJsonValue
     prediction?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -80156,6 +80282,7 @@ export namespace Prisma {
 
   export type MLLogUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
     inputData?: JsonNullValueInput | InputJsonValue
     prediction?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -80165,6 +80292,7 @@ export namespace Prisma {
 
   export type MLLogCreateManyInput = {
     id?: string
+    incidentId?: string | null
     inputData: JsonNullValueInput | InputJsonValue
     prediction: string
     confidence?: number | null
@@ -80174,6 +80302,7 @@ export namespace Prisma {
 
   export type MLLogUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
     inputData?: JsonNullValueInput | InputJsonValue
     prediction?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -80183,6 +80312,7 @@ export namespace Prisma {
 
   export type MLLogUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    incidentId?: NullableStringFieldUpdateOperationsInput | string | null
     inputData?: JsonNullValueInput | InputJsonValue
     prediction?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -84055,6 +84185,29 @@ export namespace Prisma {
     hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
     isEmpty?: boolean
   }
+  export type JsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type AfterActionReportNullableScalarRelationFilter = {
     is?: AfterActionReportWhereInput | null
@@ -84104,12 +84257,17 @@ export namespace Prisma {
     zoneId?: SortOrder
     zoneName?: SortOrder
     mlConfidence?: SortOrder
+    detectedLanguage?: SortOrder
+    languageConfidence?: SortOrder
+    translatedText?: SortOrder
+    nlpEntities?: SortOrder
   }
 
   export type IncidentReportAvgOrderByAggregateInput = {
     latitude?: SortOrder
     longitude?: SortOrder
     mlConfidence?: SortOrder
+    languageConfidence?: SortOrder
   }
 
   export type IncidentReportMaxOrderByAggregateInput = {
@@ -84129,6 +84287,9 @@ export namespace Prisma {
     zoneId?: SortOrder
     zoneName?: SortOrder
     mlConfidence?: SortOrder
+    detectedLanguage?: SortOrder
+    languageConfidence?: SortOrder
+    translatedText?: SortOrder
   }
 
   export type IncidentReportMinOrderByAggregateInput = {
@@ -84148,12 +84309,16 @@ export namespace Prisma {
     zoneId?: SortOrder
     zoneName?: SortOrder
     mlConfidence?: SortOrder
+    detectedLanguage?: SortOrder
+    languageConfidence?: SortOrder
+    translatedText?: SortOrder
   }
 
   export type IncidentReportSumOrderByAggregateInput = {
     latitude?: SortOrder
     longitude?: SortOrder
     mlConfidence?: SortOrder
+    languageConfidence?: SortOrder
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -84191,29 +84356,14 @@ export namespace Prisma {
     _min?: NestedEnumSeverityFilter<$PrismaModel>
     _max?: NestedEnumSeverityFilter<$PrismaModel>
   }
-
-  export type EnumAlertTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAlertTypeFilter<$PrismaModel> | $Enums.AlertType
-  }
-
-  export type FloatNullableListFilter<$PrismaModel = never> = {
-    equals?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    has?: number | FloatFieldRefInput<$PrismaModel> | null
-    hasEvery?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    hasSome?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-  export type JsonNullableFilter<$PrismaModel = never> = 
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
       >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
@@ -84228,6 +84378,24 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type EnumAlertTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertTypeFilter<$PrismaModel> | $Enums.AlertType
+  }
+
+  export type FloatNullableListFilter<$PrismaModel = never> = {
+    equals?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    has?: number | FloatFieldRefInput<$PrismaModel> | null
+    hasEvery?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    hasSome?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type AlertCountOrderByAggregateInput = {
@@ -84297,32 +84465,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAlertTypeFilter<$PrismaModel>
     _max?: NestedEnumAlertTypeFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type UserListRelationFilter = {
@@ -84985,6 +85127,7 @@ export namespace Prisma {
 
   export type MLLogCountOrderByAggregateInput = {
     id?: SortOrder
+    incidentId?: SortOrder
     inputData?: SortOrder
     prediction?: SortOrder
     confidence?: SortOrder
@@ -84998,6 +85141,7 @@ export namespace Prisma {
 
   export type MLLogMaxOrderByAggregateInput = {
     id?: SortOrder
+    incidentId?: SortOrder
     prediction?: SortOrder
     confidence?: SortOrder
     modelVersion?: SortOrder
@@ -85006,6 +85150,7 @@ export namespace Prisma {
 
   export type MLLogMinOrderByAggregateInput = {
     id?: SortOrder
+    incidentId?: SortOrder
     prediction?: SortOrder
     confidence?: SortOrder
     modelVersion?: SortOrder
@@ -90091,23 +90236,6 @@ export namespace Prisma {
     _min?: NestedEnumSeverityFilter<$PrismaModel>
     _max?: NestedEnumSeverityFilter<$PrismaModel>
   }
-
-  export type NestedEnumAlertTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAlertTypeFilter<$PrismaModel> | $Enums.AlertType
-  }
-
-  export type NestedEnumAlertTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAlertTypeWithAggregatesFilter<$PrismaModel> | $Enums.AlertType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAlertTypeFilter<$PrismaModel>
-    _max?: NestedEnumAlertTypeFilter<$PrismaModel>
-  }
   export type NestedJsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -90130,6 +90258,23 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumAlertTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertTypeFilter<$PrismaModel> | $Enums.AlertType
+  }
+
+  export type NestedEnumAlertTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertType | EnumAlertTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertType[] | ListEnumAlertTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertTypeWithAggregatesFilter<$PrismaModel> | $Enums.AlertType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAlertTypeFilter<$PrismaModel>
+    _max?: NestedEnumAlertTypeFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -90708,6 +90853,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
@@ -90733,6 +90882,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
@@ -91325,6 +91478,10 @@ export namespace Prisma {
     zoneId?: StringNullableFilter<"IncidentReport"> | string | null
     zoneName?: StringNullableFilter<"IncidentReport"> | string | null
     mlConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    detectedLanguage?: StringNullableFilter<"IncidentReport"> | string | null
+    languageConfidence?: FloatNullableFilter<"IncidentReport"> | number | null
+    translatedText?: StringNullableFilter<"IncidentReport"> | string | null
+    nlpEntities?: JsonNullableFilter<"IncidentReport">
   }
 
   export type LocalVerifierUpsertWithoutUserInput = {
@@ -92886,6 +93043,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
@@ -92912,6 +93073,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
@@ -93118,6 +93283,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
@@ -93144,6 +93313,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
@@ -93939,6 +94112,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
@@ -93965,6 +94142,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
@@ -94082,6 +94263,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
@@ -94108,6 +94293,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
@@ -94375,6 +94564,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
@@ -94401,6 +94594,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
@@ -94441,6 +94638,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
@@ -94467,6 +94668,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
@@ -95028,6 +95233,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
@@ -95054,6 +95263,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
@@ -95171,6 +95384,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
@@ -95197,6 +95414,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
@@ -95551,6 +95772,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
@@ -95577,6 +95802,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
@@ -95699,6 +95928,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
@@ -95725,6 +95958,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
@@ -95948,6 +96185,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
     reporter: UserCreateNestedOneWithoutReportsInput
@@ -95974,6 +96215,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
@@ -96014,6 +96259,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
@@ -96040,6 +96289,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
@@ -98320,6 +98573,10 @@ export namespace Prisma {
     zoneId?: string | null
     zoneName?: string | null
     mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type LocationLogCreateManyUserInput = {
@@ -98661,6 +98918,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
@@ -98686,6 +98947,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
     aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
     damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
@@ -98711,6 +98976,10 @@ export namespace Prisma {
     zoneId?: NullableStringFieldUpdateOperationsInput | string | null
     zoneName?: NullableStringFieldUpdateOperationsInput | string | null
     mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type LocationLogUpdateWithoutUserInput = {

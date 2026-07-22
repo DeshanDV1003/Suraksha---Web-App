@@ -65,6 +65,10 @@ model IncidentReport {
   zoneId            String?
   zoneName          String?
   mlConfidence      Float?
+  detectedLanguage  String?
+  languageConfidence Float?
+  translatedText    String?
+  nlpEntities       Json?
   aar               AfterActionReport?
   damageAssessments DamageAssessment[]
   history           IncidentHistory[]
@@ -243,6 +247,7 @@ model Notification {
 
 model MLLog {
   id           String   @id @default(uuid())
+  incidentId   String?
   inputData    Json
   prediction   String
   confidence   Float?

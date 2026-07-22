@@ -1,27 +1,42 @@
 import prisma from '../utils/prisma';
+import axios from 'axios';
 
-// 1. AI-Assisted Damage Classification (Mock)
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+
+// 1. AI-Assisted Damage Classification
+// Calls the ML service /classify-image endpoint; falls back to a rule-based
+// heuristic if the ML service is unreachable.
 export const aiClassifyImage = async (imageUrl: string) => {
-  // Simulate 3 seconds ML latency
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  
-  // Fake ML output based on random chance
-  const rand = Math.random();
-  let severity = 'MINOR';
-  let cost = 50000; // LKR
-  
-  if (rand > 0.8) {
-    severity = 'DESTROYED';
-    cost = 2500000;
-  } else if (rand > 0.5) {
-    severity = 'MAJOR';
-    cost = 800000;
-  } else if (rand > 0.2) {
-    severity = 'MODERATE';
-    cost = 250000;
-  }
+  if (!imageUrl) throw new Error('imageUrl is required');
 
-  return { severity, estimatedCost: cost };
+  try {
+    const response = await axios.post(
+      `${ML_SERVICE_URL}/classify-image`,
+      { image_url: imageUrl },
+      { timeout: 30000 }
+    );
+    // ML service should return { severity, estimatedCost, confidence }
+    return {
+      severity: response.data.severity ?? 'UNKNOWN',
+      estimatedCost: response.data.estimatedCost ?? response.data.estimated_cost ?? 0,
+      confidence: response.data.confidence ?? null,
+      source: 'ml',
+    };
+  } catch (err: any) {
+    console.warn('[DamageService] ML classify-image unavailable, using heuristic fallback:', err.message);
+    // Heuristic fallback based on URL keywords — better than pure random
+    const lower = imageUrl.toLowerCase();
+    let severity = 'MINOR';
+    let estimatedCost = 50000;
+    if (lower.includes('collapse') || lower.includes('destroyed') || lower.includes('ruin')) {
+      severity = 'DESTROYED'; estimatedCost = 2500000;
+    } else if (lower.includes('major') || lower.includes('flood') || lower.includes('severe')) {
+      severity = 'MAJOR'; estimatedCost = 800000;
+    } else if (lower.includes('moderate') || lower.includes('damage')) {
+      severity = 'MODERATE'; estimatedCost = 250000;
+    }
+    return { severity, estimatedCost, confidence: null, source: 'fallback' };
+  }
 };
 
 // 2. Compensation Eligibility Scoring Algorithm

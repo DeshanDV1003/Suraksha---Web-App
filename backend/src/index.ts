@@ -32,6 +32,7 @@ import familyRoutes from './routes/familyRoutes';
 import waterRoutes from './routes/waterRoutes';
 import reportRoutes from './routes/reportRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
+import { setIO } from './utils/socketInstance';
 
 dotenv.config();
 
@@ -44,8 +45,9 @@ const io = new Server(httpServer, {
   }
 });
 
-// Make io accessible in request object
+// Make io accessible in request object and via singleton for services
 app.set('socketio', io);
+setIO(io);
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));

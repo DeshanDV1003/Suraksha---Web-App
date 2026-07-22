@@ -8,28 +8,45 @@ export const reportDamage = async (req: any, res: Response) => {
     const userId = req.user.userId;
     const assessment = await damageAssessmentService.createDamageAssessment(userId, req.body);
 
-    // Run ML damage scoring asynchronously
-    scoreDamage(req.body).then(async (mlResult) => {
-      if (mlResult) {
-        // Log ML prediction
-        await prisma.mLLog.create({
-          data: {
-            inputData: req.body as any,
-            prediction: mlResult.severity,
-            confidence: mlResult.score,
-            modelVersion: "1.0.0-damage"
-          }
-        });
+    // Shape the input for the ML scorer — only send relevant fields
+    const scoringPayload = {
+      structuralDamage: req.body.structuralDamage,
+      category: req.body.category,
+      affectedPersons: req.body.affectedPersons,
+      estimatedLoss: req.body.estimatedLoss,
+      description: req.body.description,
+    };
 
-        // If high severity, we might want to alert or update linked incident
-        const io = req.app.get('socketio');
-        if (['HIGH', 'CRITICAL'].includes(mlResult.severity) && io) {
-          io.emit('high-severity-damage', {
-            assessmentId: assessment.id,
-            severity: mlResult.severity,
-            score: mlResult.score
-          });
+    // Run ML damage scoring asynchronously
+    scoreDamage(scoringPayload).then(async (mlResult) => {
+      if (!mlResult) return;
+
+      // Write ML score back to the assessment record
+      await prisma.damageAssessment.update({
+        where: { id: assessment.id },
+        data: {
+          aiEstimatedCost: typeof mlResult.score === 'number' ? mlResult.score : null,
+          aiEstimatedDamage: mlResult.severity ?? null,
         }
+      });
+
+      // Log ML prediction
+      await prisma.mLLog.create({
+        data: {
+          inputData: { assessmentId: assessment.id, ...scoringPayload } as any,
+          prediction: mlResult.severity ?? 'UNKNOWN',
+          confidence: typeof mlResult.score === 'number' ? mlResult.score : 0,
+          modelVersion: '1.0.0-damage'
+        }
+      });
+
+      const io = req.app.get('socketio');
+      if (io && ['HIGH', 'CRITICAL'].includes(mlResult.severity)) {
+        io.emit('high-severity-damage', {
+          assessmentId: assessment.id,
+          severity: mlResult.severity,
+          score: mlResult.score
+        });
       }
     }).catch(err => console.error('Async damage scoring failed:', err));
 

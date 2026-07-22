@@ -157,8 +157,9 @@ function MapAddressSearch({ onLocationFound }: { onLocationFound: (loc: any) => 
 }
 
 // Mock Data Generators for New Features
+// Cyclone cone bounded within Sri Lanka's eastern coast (lng max 81.9)
 const MOCK_CYCLONE_CONE: [number, number][] = [
-  [9.0, 82.5], [8.0, 81.0], [7.5, 80.5], [6.5, 80.0], [6.0, 80.5], [6.5, 81.5], [7.0, 82.5]
+  [8.8, 81.0], [8.2, 81.5], [7.8, 81.7], [7.2, 81.8], [6.8, 81.5], [7.2, 81.0], [7.8, 80.8], [8.4, 80.8]
 ];
 
 const generateMockVolunteers = (incidents: Incident[]) => {
@@ -181,17 +182,22 @@ const generateEvacRoutes = () => {
 };
 
 const generateAssignmentArrows = (camps: Camp[], incidents: Incident[]) => {
-  const arrows = [];
-  if (camps.length > 0 && incidents.length > 0) {
-    for (let i = 0; i < Math.min(5, incidents.length); i++) {
-      const camp = camps[i % camps.length];
-      const inc = incidents[i];
-      if (camp.latitude && inc.latitude) {
-        arrows.push({
-          id: `arrow-${i}`,
-          positions: [[camp.latitude, camp.longitude], [inc.latitude, inc.longitude]] as [number, number][]
-        });
-      }
+  const arrows: { id: string; positions: [number, number][] }[] = [];
+  if (camps.length === 0 || incidents.length === 0) return arrows;
+  // Only draw arrows between a camp and the nearest incident within 0.4° (~44 km)
+  for (let i = 0; i < Math.min(5, camps.length); i++) {
+    const camp = camps[i];
+    if (!camp.latitude || !camp.longitude) continue;
+    const nearby = incidents.find(inc =>
+      inc.latitude && inc.longitude &&
+      Math.abs(inc.latitude - camp.latitude!) < 0.4 &&
+      Math.abs(inc.longitude - camp.longitude!) < 0.4
+    );
+    if (nearby) {
+      arrows.push({
+        id: `arrow-${i}`,
+        positions: [[camp.latitude, camp.longitude], [nearby.latitude!, nearby.longitude!]],
+      });
     }
   }
   return arrows;
@@ -244,9 +250,9 @@ export default function MapPage() {
     riskZones: true,
     reliefCamps: true,
     volunteers: true,
-    weatherProjections: true,
-    evacuationRoutes: true,
-    assignmentArrows: true,
+    weatherProjections: false,
+    evacuationRoutes: false,
+    assignmentArrows: false,
   });
 
   useEffect(() => {
