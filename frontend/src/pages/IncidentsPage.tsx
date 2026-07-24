@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useDialog } from '@/components/ui/dialogs/DialogProvider'
-import { Plus, Eye, Search, Clock, CheckCircle2, AlertCircle, X, MapPin, AlertTriangle, Shield, Trash2, ChevronDown as LucideChevronDown, GitMerge, FileText, Upload, Activity, Zap, Cpu, History } from 'lucide-react'
+import { Plus, Eye, Search, Clock, CheckCircle2, AlertCircle, X, MapPin, AlertTriangle, Shield, Trash2, ChevronDown as LucideChevronDown, GitMerge, FileText, Upload, Activity, Zap, Cpu, History, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { IncidentLocationPicker } from '../components/map/IncidentLocationPicker'
-import { incidentService } from '../services/api'
+import { incidentService, aiService } from '../services/api'
 import { formatDistanceToNow, differenceInMinutes, format } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
@@ -505,6 +505,105 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
   )
 }
 
+function IncidentAIPanel({ incident }: { incident: any }) {
+  const [aiData, setAiData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+
+  const analyse = useCallback(async () => {
+    if (!incident?.description) return
+    setLoading(true)
+    try {
+      const res = await aiService.analyzeReport({
+        text: incident.description + ' ' + (incident.title || ''),
+        latitude: incident.latitude,
+        longitude: incident.longitude,
+        detected_language: incident.detectedLanguage || 'en',
+        language_confidence: incident.languageConfidence || 0.7,
+        priority_confidence: incident.mlConfidence || 0.5,
+      })
+      setAiData(res.data)
+    } catch { /* silent */ }
+    finally { setLoading(false) }
+  }, [incident])
+
+  const m = aiData?.multitask
+  const u = aiData?.uncertainty
+
+  const DECISION_STYLE: Record<string, string> = {
+    AUTO_CLASSIFY: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+    REQUEST_CLARIFICATION: 'bg-amber-500/10 border-amber-500/20 text-amber-400',
+    ESCALATE_TO_HUMAN: 'bg-red-500/10 border-red-500/20 text-red-400',
+  }
+
+  return (
+    <div className="mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+          <Cpu className="w-3.5 h-3.5 text-cyan-400" /> AI Multitask Analysis
+        </h3>
+        <button onClick={analyse} disabled={loading}
+          className="text-[10px] font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 disabled:opacity-50">
+          {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Zap className="w-3 h-3" />}
+          {aiData ? 'Re-run' : 'Analyse'}
+        </button>
+      </div>
+
+      {/* Stored ML data */}
+      {!aiData && (incident.mlConfidence || incident.detectedLanguage) && (
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          {incident.detectedLanguage && (
+            <div className="bg-white/5 rounded-xl p-2.5">
+              <p className="text-[9px] text-slate-500 uppercase tracking-widest">Language</p>
+              <p className="text-xs font-bold text-white/70 mt-0.5">{incident.detectedLanguage.toUpperCase()}</p>
+            </div>
+          )}
+          {incident.mlConfidence != null && (
+            <div className="bg-white/5 rounded-xl p-2.5">
+              <p className="text-[9px] text-slate-500 uppercase tracking-widest">ML Confidence</p>
+              <p className="text-xs font-bold text-white/70 mt-0.5">{(incident.mlConfidence * 100).toFixed(0)}%</p>
+            </div>
+          )}
+          {incident.translatedText && (
+            <div className="col-span-2 bg-blue-500/5 border border-blue-500/15 rounded-xl p-2.5">
+              <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Translated (EN)</p>
+              <p className="text-xs text-slate-300 line-clamp-2">{incident.translatedText}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Full AI analysis */}
+      {m && u && (
+        <div className="space-y-2">
+          <div className={cn('p-2.5 rounded-xl border text-[11px] font-bold', DECISION_STYLE[u.decision] || 'bg-white/5 border-white/10 text-slate-400')}>
+            {u.decision_label} · {(u.calibrated_confidence * 100).toFixed(0)}% confidence
+          </div>
+          <div className="grid grid-cols-2 gap-1.5">
+            {[
+              { l: 'Type', v: m.disaster_type },
+              { l: 'Urgency', v: m.urgency },
+              { l: 'Resource', v: m.required_resource },
+              { l: 'Vulnerable', v: m.vulnerable_group },
+            ].map(item => (
+              <div key={item.l} className="bg-white/5 rounded-lg p-2">
+                <p className="text-[9px] text-slate-500 uppercase tracking-widest">{item.l}</p>
+                <p className="text-[11px] font-bold text-white/70 mt-0.5 truncate">{item.v}</p>
+              </div>
+            ))}
+          </div>
+          {u.prediction_set && (
+            <p className="text-[10px] text-slate-500">Prediction set: [{u.prediction_set.join(', ')}]</p>
+          )}
+        </div>
+      )}
+
+      {!aiData && !incident.mlConfidence && (
+        <p className="text-[11px] text-slate-600 italic">Click Analyse to run AI multitask classification on this report.</p>
+      )}
+    </div>
+  )
+}
+
 function IncidentDetailsModal({ incident, onClose }: any) {
   const { t } = useTranslation()
 
@@ -593,6 +692,9 @@ function IncidentDetailsModal({ incident, onClose }: any) {
                 ))}
               </div>
             </div>
+
+            {/* AI Multitask Analysis */}
+            <IncidentAIPanel incident={incident} />
 
             {/* Field Photo Upload */}
             <div>

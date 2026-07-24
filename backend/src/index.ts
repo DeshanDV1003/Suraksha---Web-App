@@ -31,6 +31,8 @@ import donationRoutes from './routes/donationRoutes';
 import familyRoutes from './routes/familyRoutes';
 import waterRoutes from './routes/waterRoutes';
 import reportRoutes from './routes/reportRoutes';
+import aiRoutes from './routes/aiRoutes';
+import safeZoneRoutes from './routes/safeZoneRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
 import { setIO } from './utils/socketInstance';
 
@@ -79,6 +81,8 @@ app.use('/api/donations', donationRoutes);
 app.use('/api/family', familyRoutes);
 app.use('/api/water', waterRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/ai', aiRoutes);
+app.use('/api/safe-zones', safeZoneRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 

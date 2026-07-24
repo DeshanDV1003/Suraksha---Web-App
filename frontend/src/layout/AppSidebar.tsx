@@ -24,7 +24,8 @@ import {
   MoreHorizontal,
   Settings,
   Map,
-  Waves
+  Waves,
+  Brain
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -64,6 +65,7 @@ const safetyItems: NavItem[] = [
 ];
 
 const systemItems: NavItem[] = [
+  { icon: <Brain className="w-5 h-5" />, nameKey: "nav.ai_research", path: "/ai-research" },
   { icon: <Settings className="w-5 h-5" />, nameKey: "nav.settings", path: "/settings" },
   { icon: <Map className="w-5 h-5" />, nameKey: "nav.river_mappings", path: "/river-mappings" },
 ];

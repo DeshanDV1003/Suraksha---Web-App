@@ -816,6 +816,35 @@ exports.Prisma.DownstreamMappingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PublicSafePlaceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  district: 'district',
+  province: 'province',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  capacity: 'capacity',
+  address: 'address',
+  phone: 'phone',
+  isVerified: 'isVerified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AuthorityContactScalarFieldEnum = {
+  id: 'id',
+  district: 'district',
+  role: 'role',
+  name: 'name',
+  phone: 'phone',
+  phone2: 'phone2',
+  email: 'email',
+  sector: 'sector',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1069,7 +1098,9 @@ exports.Prisma.ModelName = {
   MentalHealthGuide: 'MentalHealthGuide',
   RainfallReading: 'RainfallReading',
   RiverWaterLevel: 'RiverWaterLevel',
-  DownstreamMapping: 'DownstreamMapping'
+  DownstreamMapping: 'DownstreamMapping',
+  PublicSafePlace: 'PublicSafePlace',
+  AuthorityContact: 'AuthorityContact'
 };
 
 /**

@@ -24,6 +24,15 @@ if (!ENABLED) {
 const recentAlerts = new Map<string, number>(); // gaugeKey → timestamp
 const DEDUP_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
+export interface SafeZoneTelegramInfo {
+  name: string;
+  type: string;
+  distanceKm: number;
+  isInDangerZone: boolean;
+  mapsUrl: string;
+  address?: string | null;
+}
+
 export interface FloodAlertPayload {
   gaugeName:      string;
   district:       string;
@@ -35,6 +44,9 @@ export interface FloodAlertPayload {
   watchThreshold: number;
   reason:         string;
   nearestShelter?: string;
+  safeZones?:     SafeZoneTelegramInfo[];
+  gaugeLatitude?:  number;
+  gaugeLongitude?: number;
 }
 
 // ─── Format alert emoji by level ────────────────────────────────
@@ -63,6 +75,38 @@ function buildMessage(p: FloodAlertPayload): string {
     ? `\n🏕  <b>Nearest shelter:</b> ${p.nearestShelter}`
     : '';
 
+  // Safe zones section
+  let safeZoneSection = '';
+  if (p.safeZones && p.safeZones.length > 0) {
+    const safeOnes   = p.safeZones.filter(z => !z.isInDangerZone).slice(0, 3);
+    const dangerOnes = p.safeZones.filter(z => z.isInDangerZone).slice(0, 2);
+
+    const typeEmoji: Record<string, string> = {
+      HOSPITAL: '🏥', SCHOOL: '🏫', TEMPLE: '⛪', POLICE_STATION: '👮',
+      FIRE_BRIGADE: '🚒', COMMUNITY_HALL: '🏛', SPORTS_GROUND: '🏟',
+    };
+
+    const formatPlace = (z: SafeZoneTelegramInfo) => {
+      const em = typeEmoji[z.type] || '📍';
+      const addr = z.address ? ` — ${z.address}` : '';
+      const flag = z.isInDangerZone ? ' ⚠️' : ' ✅';
+      return `   ${em} <a href="${z.mapsUrl}">${z.name}</a>${addr} (${z.distanceKm} km)${flag}`;
+    };
+
+    const lines: string[] = ['', '🛡 <b>NEAREST SAFE ZONES:</b>'];
+    safeOnes.forEach(z => lines.push(formatPlace(z)));
+
+    if (dangerOnes.length > 0) {
+      lines.push('');
+      lines.push('⚠️  <i>These places are also in the danger zone — seek alternatives above:</i>');
+      dangerOnes.forEach(z => lines.push(formatPlace(z)));
+    }
+
+    lines.push('');
+    lines.push('📲 <b>Open Suraksha app → Safe Zones for live map & directions</b>');
+    safeZoneSection = lines.join('\n');
+  }
+
   return [
     `${emoji} <b>SURAKSHA FLOOD ALERT — ${p.alertLevel}</b>`,
     `━━━━━━━━━━━━━━━━━━━━━━━━━`,
@@ -78,6 +122,7 @@ function buildMessage(p: FloodAlertPayload): string {
     `🧠 Confidence: <b>${confPct}%</b>`,
     `📊 Reason: ${p.reason}`,
     shelter,
+    safeZoneSection,
     ``,
     `⏰ ${now}`,
     `━━━━━━━━━━━━━━━━━━━━━━━━━`,
@@ -86,15 +131,19 @@ function buildMessage(p: FloodAlertPayload): string {
 }
 
 // ─── Core send function ─────────────────────────────────────────
-async function sendMessage(text: string): Promise<boolean> {
+async function sendMessage(text: string, inlineKeyboard?: object[][]): Promise<boolean> {
   if (!ENABLED) return false;
   try {
     const url  = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    const body = JSON.stringify({
+    const payload: Record<string, any> = {
       chat_id:    CHAT_ID,
       text,
       parse_mode: 'HTML',
-    });
+    };
+    if (inlineKeyboard) {
+      payload.reply_markup = { inline_keyboard: inlineKeyboard };
+    }
+    const body = JSON.stringify(payload);
 
     const res = await fetch(url, {
       method:  'POST',
@@ -130,7 +179,24 @@ export async function sendTelegramFloodAlert(p: FloodAlertPayload): Promise<bool
   }
 
   const message = buildMessage(p);
-  const success = await sendMessage(message);
+
+  // Build inline keyboard: map button for each safe zone + view all link
+  const keyboard: object[][] = [];
+  if (p.safeZones && p.safeZones.length > 0) {
+    const safeOnes = p.safeZones.filter(z => !z.isInDangerZone).slice(0, 3);
+    safeOnes.forEach(z => {
+      keyboard.push([{ text: `🗺 ${z.name} (${z.distanceKm} km)`, url: z.mapsUrl }]);
+    });
+  }
+  if (p.gaugeLatitude && p.gaugeLongitude) {
+    keyboard.push([{
+      text: '📍 View Danger Zone on Map',
+      url: `https://www.google.com/maps/search/?api=1&query=${p.gaugeLatitude},${p.gaugeLongitude}`,
+    }]);
+  }
+  keyboard.push([{ text: '📲 Open Suraksha App', url: 'https://suraksha.lk' }]);
+
+  const success = await sendMessage(message, keyboard.length > 0 ? keyboard : undefined);
 
   if (success) {
     recentAlerts.set(key, now);

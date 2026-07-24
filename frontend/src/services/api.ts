@@ -225,4 +225,35 @@ export const mapService = {
   getThreatProjections: () => api.get('/map/projections'),
 };
 
+// ── Research AI features ──────────────────────────────────────────────────────
+export const aiService = {
+  // F5 + F3: Full multitask analysis + uncertainty triage
+  analyzeReport: (data: {
+    text: string; latitude?: number | null; longitude?: number | null;
+    detected_language?: string; language_confidence?: number; priority_confidence?: number;
+  }) => api.post('/ai/analyze-report', data),
+
+  // F4: Clarification questions
+  getClarificationQuestions: (data: {
+    text: string; disaster_type?: string; urgency?: string; detected_language?: string;
+  }) => api.post('/ai/clarification-questions', data),
+
+  // F7 + F8: Hotspot forecast + bias correction
+  getHotspots: () => api.get('/ai/hotspots'),
+
+  // F10: Resource optimization
+  optimizeResources: () => api.get('/ai/optimize-resources'),
+
+  // F12: Team composition
+  composeTeam: (data: {
+    disaster_type: string; latitude?: number | null; longitude?: number | null; team_size?: number;
+  }) => api.post('/ai/compose-team', data),
+
+  // F16: Situation summary
+  getSituationSummary: (hours?: number) => api.get(`/ai/situation-summary${hours ? `?hours=${hours}` : ''}`),
+
+  // F15: Drift detection
+  getDriftStatus: (hours?: number) => api.get(`/ai/drift-status${hours ? `?hours=${hours}` : ''}`),
+};
+
 export default api;

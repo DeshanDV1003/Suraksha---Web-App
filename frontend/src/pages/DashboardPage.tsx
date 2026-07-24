@@ -6,7 +6,7 @@ import {
   Printer, ArrowRightLeft, CloudLightning
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { dashboardService, alertService } from '../services/api'
+import { dashboardService, alertService, aiService } from '../services/api'
 import { formatDistanceToNow, format } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppStore } from '@/store/useAppStore'
@@ -42,6 +42,68 @@ function HeatmapLayer({ points, isVisible }: { points: [number, number, number][
     };
   }, [map, points, isVisible]);
   return null;
+}
+
+function AISituationSummaryWidget() {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    aiService.getSituationSummary(2)
+      .then(res => setData(res.data))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return (
+    <div className="suraksha-card p-6 flex items-center gap-3">
+      <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+        <CloudLightning className="w-4 h-4 text-cyan-400 animate-pulse" />
+      </div>
+      <p className="text-sm text-gray-500">Generating AI situation summary…</p>
+    </div>
+  )
+
+  if (!data) return null
+
+  return (
+    <div className="suraksha-card p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+            <CloudLightning className="w-4 h-4 text-cyan-400" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-gray-800 dark:text-white/90">AI Situation Summary (last 2h)</h3>
+            <p className="text-[10px] text-gray-400 dark:text-slate-500">F16 · Grounded template extraction · All statements cite source data</p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          {data.critical_count > 0 && (
+            <span className="px-2.5 py-1 bg-red-500/10 border border-red-500/20 rounded-lg text-[11px] font-bold text-red-400">
+              {data.critical_count} Critical
+            </span>
+          )}
+          {data.flood_warnings > 0 && (
+            <span className="px-2.5 py-1 bg-blue-500/10 border border-blue-500/20 rounded-lg text-[11px] font-bold text-blue-400">
+              {data.flood_warnings} Flood Warn
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="space-y-2">
+        {(data.sentences || []).filter((_: any, i: number) => i < data.sentences.length - 1).map((s: string, i: number) => (
+          <p key={i} className="text-sm text-gray-600 dark:text-slate-300 leading-relaxed">{s}</p>
+        ))}
+      </div>
+      {data.sentences?.length > 0 && (
+        <p className="mt-3 text-[10px] text-gray-400 dark:text-slate-500 border-t border-gray-100 dark:border-white/5 pt-2">
+          {data.sentences[data.sentences.length - 1]}
+        </p>
+      )}
+    </div>
+  )
 }
 
 export default function DashboardPage() {
@@ -444,6 +506,9 @@ export default function DashboardPage() {
           </div>
 
         </div>
+
+        {/* AI Situation Summary */}
+        <AISituationSummaryWidget />
 
         {/* Row 3: ML Priority Queue & Recent Alerts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

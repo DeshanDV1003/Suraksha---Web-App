@@ -134,6 +134,9 @@ async function pushMobileAlert(payload: {
   alertLevel: string;
   reason: string;
   targetDistricts: string[];
+  safeZones?: { name: string; type: string; distanceKm: number; isInDangerZone: boolean; deepLink?: string }[];
+  gaugeLatitude?: number;
+  gaugeLongitude?: number;
 }): Promise<void> {
   const key = `${payload.gaugeName}:${payload.alertLevel}`;
   const now = Date.now();
@@ -146,17 +149,26 @@ async function pushMobileAlert(payload: {
   const type = isEmergency ? AlertType.EMERGENCY : AlertType.WARNING;
 
   const title = `${emoji} ML Flood Prediction — ${payload.district}`;
+  const safeZoneSuffix = payload.safeZones && payload.safeZones.length > 0
+    ? ` Nearest safe zone: ${payload.safeZones.filter(z => !z.isInDangerZone)[0]?.name || payload.safeZones[0].name}. Open app for map.`
+    : '';
   const message =
     `${payload.gaugeName}: current ${payload.currentLevelM.toFixed(2)} m. ` +
     `AI predicts ${payload.predictedT1M.toFixed(2)} m in 1hr / ${payload.predictedT2M.toFixed(2)} m in 2hrs ` +
-    `(${Math.round(payload.confidence * 100)}% confidence). ${payload.reason}`;
+    `(${Math.round(payload.confidence * 100)}% confidence). ${payload.reason}${safeZoneSuffix}`;
 
   try {
     const alert = await prisma.alert.create({
       data: { title, message, type, active: true, locations: payload.targetDistricts },
     });
     const io = getIO();
-    io.emit('new-alert', { ...alert, source: 'ml-water-predictor' });
+    io.emit('new-alert', {
+      ...alert,
+      source: 'ml-water-predictor',
+      safeZones: payload.safeZones || [],
+      gaugeLatitude: payload.gaugeLatitude,
+      gaugeLongitude: payload.gaugeLongitude,
+    });
     console.log(`[WaterPredictor] Mobile alert emitted for ${payload.gaugeName} (${payload.alertLevel})`);
   } catch (err) {
     console.error('[WaterPredictor] Failed to push mobile alert:', err);
@@ -226,17 +238,44 @@ export async function runPredictionsForAllGauges(): Promise<void> {
         });
         const targetDistricts = mapping ? mapping.targetDistricts : [gauge.district];
 
+        // Fetch safe zones for Telegram message
+        let safeZoneInfo: any[] = [];
+        let gaugeLat: number | undefined;
+        let gaugeLng: number | undefined;
+        try {
+          const { findSafeZones, dangerRadiusKmForLevel } = await import('./safeZoneService');
+          const latestGauge = await prisma.riverWaterLevel.findFirst({
+            where: { gaugeId: gauge.gaugeId }, orderBy: { recordedAt: 'desc' },
+            select: { latitude: true, longitude: true },
+          });
+          if (latestGauge?.latitude && latestGauge?.longitude) {
+            gaugeLat = latestGauge.latitude;
+            gaugeLng = latestGauge.longitude;
+            const dangerKm = dangerRadiusKmForLevel(prediction.alertLevel);
+            const zones = await findSafeZones(gaugeLat, gaugeLng, dangerKm, dangerKm * 3, 5);
+            safeZoneInfo = zones.map(z => ({
+              name: z.name, type: z.type, distanceKm: z.distanceKm,
+              isInDangerZone: z.isInDangerZone, mapsUrl: z.mapsUrl, address: z.address,
+            }));
+          }
+        } catch (szErr) {
+          console.warn('[WaterPredictor] Safe zone fetch failed:', szErr);
+        }
+
         // Send Telegram alert
         await sendTelegramFloodAlert({
-          gaugeName:      `${gauge.riverName} @ ${gauge.stationName}`,
-          district:       targetDistricts.join(', '),
+          gaugeName:       `${gauge.riverName} @ ${gauge.stationName}`,
+          district:        targetDistricts.join(', '),
           currentLevelM,
-          predictedT1M:   prediction.predictedT1M,
-          predictedT2M:   prediction.predictedT2M,
-          confidence:     prediction.confidence,
-          alertLevel:     prediction.alertLevel,
-          watchThreshold: thresholds.watch_m,
-          reason:         prediction.reason,
+          predictedT1M:    prediction.predictedT1M,
+          predictedT2M:    prediction.predictedT2M,
+          confidence:      prediction.confidence,
+          alertLevel:      prediction.alertLevel,
+          watchThreshold:  thresholds.watch_m,
+          reason:          prediction.reason,
+          safeZones:       safeZoneInfo,
+          gaugeLatitude:   gaugeLat,
+          gaugeLongitude:  gaugeLng,
         });
 
         // Push the same alert to mobile app users in real-time
@@ -250,6 +289,9 @@ export async function runPredictionsForAllGauges(): Promise<void> {
           alertLevel:     prediction.alertLevel,
           reason:         prediction.reason,
           targetDistricts,
+          safeZones:      safeZoneInfo,
+          gaugeLatitude:  gaugeLat,
+          gaugeLongitude: gaugeLng,
         });
       } catch (e) {
         console.error('[WaterPredictor] Alert dispatch failed:', e);

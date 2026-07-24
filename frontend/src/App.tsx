@@ -43,6 +43,7 @@ import { FamilySafetyPage } from './pages/FamilySafetyPage'
 import PublicRequestPortal from '@/pages/PublicRequestPortal'
 import PublicMissingPortal from '@/pages/PublicMissingPortal'
 import RiverMappingsPage from '@/pages/RiverMappingsPage'
+import AIResearchPage from '@/pages/AIResearchPage'
 import WaterMonitorPage from '@/pages/WaterMonitorPage'
 
 import { useEffect, useState } from 'react'
@@ -202,6 +203,7 @@ const ProtectedRoutes = () => {
         <Route path="/water-monitor" element={<WaterMonitorPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/river-mappings" element={<RiverMappingsPage />} />
+        <Route path="/ai-research" element={<AIResearchPage />} />
       </Route>
     </Routes>
   )

@@ -303,6 +303,16 @@ export type RiverWaterLevel = $Result.DefaultSelection<Prisma.$RiverWaterLevelPa
  * 
  */
 export type DownstreamMapping = $Result.DefaultSelection<Prisma.$DownstreamMappingPayload>
+/**
+ * Model PublicSafePlace
+ * 
+ */
+export type PublicSafePlace = $Result.DefaultSelection<Prisma.$PublicSafePlacePayload>
+/**
+ * Model AuthorityContact
+ * 
+ */
+export type AuthorityContact = $Result.DefaultSelection<Prisma.$AuthorityContactPayload>
 
 /**
  * Enums
@@ -1333,6 +1343,26 @@ export class PrismaClient<
     * ```
     */
   get downstreamMapping(): Prisma.DownstreamMappingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.publicSafePlace`: Exposes CRUD operations for the **PublicSafePlace** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PublicSafePlaces
+    * const publicSafePlaces = await prisma.publicSafePlace.findMany()
+    * ```
+    */
+  get publicSafePlace(): Prisma.PublicSafePlaceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.authorityContact`: Exposes CRUD operations for the **AuthorityContact** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuthorityContacts
+    * const authorityContacts = await prisma.authorityContact.findMany()
+    * ```
+    */
+  get authorityContact(): Prisma.AuthorityContactDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1830,7 +1860,9 @@ export namespace Prisma {
     MentalHealthGuide: 'MentalHealthGuide',
     RainfallReading: 'RainfallReading',
     RiverWaterLevel: 'RiverWaterLevel',
-    DownstreamMapping: 'DownstreamMapping'
+    DownstreamMapping: 'DownstreamMapping',
+    PublicSafePlace: 'PublicSafePlace',
+    AuthorityContact: 'AuthorityContact'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1846,7 +1878,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "publicSafePlace" | "authorityContact"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6142,6 +6174,154 @@ export namespace Prisma {
           }
         }
       }
+      PublicSafePlace: {
+        payload: Prisma.$PublicSafePlacePayload<ExtArgs>
+        fields: Prisma.PublicSafePlaceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PublicSafePlaceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PublicSafePlaceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>
+          }
+          findFirst: {
+            args: Prisma.PublicSafePlaceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PublicSafePlaceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>
+          }
+          findMany: {
+            args: Prisma.PublicSafePlaceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>[]
+          }
+          create: {
+            args: Prisma.PublicSafePlaceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>
+          }
+          createMany: {
+            args: Prisma.PublicSafePlaceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PublicSafePlaceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>[]
+          }
+          delete: {
+            args: Prisma.PublicSafePlaceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>
+          }
+          update: {
+            args: Prisma.PublicSafePlaceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>
+          }
+          deleteMany: {
+            args: Prisma.PublicSafePlaceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PublicSafePlaceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PublicSafePlaceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>[]
+          }
+          upsert: {
+            args: Prisma.PublicSafePlaceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicSafePlacePayload>
+          }
+          aggregate: {
+            args: Prisma.PublicSafePlaceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePublicSafePlace>
+          }
+          groupBy: {
+            args: Prisma.PublicSafePlaceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PublicSafePlaceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PublicSafePlaceCountArgs<ExtArgs>
+            result: $Utils.Optional<PublicSafePlaceCountAggregateOutputType> | number
+          }
+        }
+      }
+      AuthorityContact: {
+        payload: Prisma.$AuthorityContactPayload<ExtArgs>
+        fields: Prisma.AuthorityContactFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuthorityContactFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuthorityContactFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>
+          }
+          findFirst: {
+            args: Prisma.AuthorityContactFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuthorityContactFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>
+          }
+          findMany: {
+            args: Prisma.AuthorityContactFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>[]
+          }
+          create: {
+            args: Prisma.AuthorityContactCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>
+          }
+          createMany: {
+            args: Prisma.AuthorityContactCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuthorityContactCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>[]
+          }
+          delete: {
+            args: Prisma.AuthorityContactDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>
+          }
+          update: {
+            args: Prisma.AuthorityContactUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuthorityContactDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuthorityContactUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuthorityContactUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuthorityContactUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuthorityContactPayload>
+          }
+          aggregate: {
+            args: Prisma.AuthorityContactAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuthorityContact>
+          }
+          groupBy: {
+            args: Prisma.AuthorityContactGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuthorityContactGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuthorityContactCountArgs<ExtArgs>
+            result: $Utils.Optional<AuthorityContactCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -6288,6 +6468,8 @@ export namespace Prisma {
     rainfallReading?: RainfallReadingOmit
     riverWaterLevel?: RiverWaterLevelOmit
     downstreamMapping?: DownstreamMappingOmit
+    publicSafePlace?: PublicSafePlaceOmit
+    authorityContact?: AuthorityContactOmit
   }
 
   /* Types for Logging */
@@ -73166,6 +73348,2207 @@ export namespace Prisma {
 
 
   /**
+   * Model PublicSafePlace
+   */
+
+  export type AggregatePublicSafePlace = {
+    _count: PublicSafePlaceCountAggregateOutputType | null
+    _avg: PublicSafePlaceAvgAggregateOutputType | null
+    _sum: PublicSafePlaceSumAggregateOutputType | null
+    _min: PublicSafePlaceMinAggregateOutputType | null
+    _max: PublicSafePlaceMaxAggregateOutputType | null
+  }
+
+  export type PublicSafePlaceAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    capacity: number | null
+  }
+
+  export type PublicSafePlaceSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    capacity: number | null
+  }
+
+  export type PublicSafePlaceMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    type: string | null
+    district: string | null
+    province: string | null
+    latitude: number | null
+    longitude: number | null
+    capacity: number | null
+    address: string | null
+    phone: string | null
+    isVerified: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PublicSafePlaceMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    type: string | null
+    district: string | null
+    province: string | null
+    latitude: number | null
+    longitude: number | null
+    capacity: number | null
+    address: string | null
+    phone: string | null
+    isVerified: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PublicSafePlaceCountAggregateOutputType = {
+    id: number
+    name: number
+    type: number
+    district: number
+    province: number
+    latitude: number
+    longitude: number
+    capacity: number
+    address: number
+    phone: number
+    isVerified: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PublicSafePlaceAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    capacity?: true
+  }
+
+  export type PublicSafePlaceSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    capacity?: true
+  }
+
+  export type PublicSafePlaceMinAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    district?: true
+    province?: true
+    latitude?: true
+    longitude?: true
+    capacity?: true
+    address?: true
+    phone?: true
+    isVerified?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PublicSafePlaceMaxAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    district?: true
+    province?: true
+    latitude?: true
+    longitude?: true
+    capacity?: true
+    address?: true
+    phone?: true
+    isVerified?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PublicSafePlaceCountAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    district?: true
+    province?: true
+    latitude?: true
+    longitude?: true
+    capacity?: true
+    address?: true
+    phone?: true
+    isVerified?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PublicSafePlaceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PublicSafePlace to aggregate.
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicSafePlaces to fetch.
+     */
+    orderBy?: PublicSafePlaceOrderByWithRelationInput | PublicSafePlaceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PublicSafePlaceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicSafePlaces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicSafePlaces.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PublicSafePlaces
+    **/
+    _count?: true | PublicSafePlaceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PublicSafePlaceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PublicSafePlaceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PublicSafePlaceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PublicSafePlaceMaxAggregateInputType
+  }
+
+  export type GetPublicSafePlaceAggregateType<T extends PublicSafePlaceAggregateArgs> = {
+        [P in keyof T & keyof AggregatePublicSafePlace]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePublicSafePlace[P]>
+      : GetScalarType<T[P], AggregatePublicSafePlace[P]>
+  }
+
+
+
+
+  export type PublicSafePlaceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicSafePlaceWhereInput
+    orderBy?: PublicSafePlaceOrderByWithAggregationInput | PublicSafePlaceOrderByWithAggregationInput[]
+    by: PublicSafePlaceScalarFieldEnum[] | PublicSafePlaceScalarFieldEnum
+    having?: PublicSafePlaceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PublicSafePlaceCountAggregateInputType | true
+    _avg?: PublicSafePlaceAvgAggregateInputType
+    _sum?: PublicSafePlaceSumAggregateInputType
+    _min?: PublicSafePlaceMinAggregateInputType
+    _max?: PublicSafePlaceMaxAggregateInputType
+  }
+
+  export type PublicSafePlaceGroupByOutputType = {
+    id: string
+    name: string
+    type: string
+    district: string
+    province: string
+    latitude: number
+    longitude: number
+    capacity: number | null
+    address: string | null
+    phone: string | null
+    isVerified: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: PublicSafePlaceCountAggregateOutputType | null
+    _avg: PublicSafePlaceAvgAggregateOutputType | null
+    _sum: PublicSafePlaceSumAggregateOutputType | null
+    _min: PublicSafePlaceMinAggregateOutputType | null
+    _max: PublicSafePlaceMaxAggregateOutputType | null
+  }
+
+  type GetPublicSafePlaceGroupByPayload<T extends PublicSafePlaceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PublicSafePlaceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PublicSafePlaceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PublicSafePlaceGroupByOutputType[P]>
+            : GetScalarType<T[P], PublicSafePlaceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PublicSafePlaceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    district?: boolean
+    province?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    capacity?: boolean
+    address?: boolean
+    phone?: boolean
+    isVerified?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["publicSafePlace"]>
+
+  export type PublicSafePlaceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    district?: boolean
+    province?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    capacity?: boolean
+    address?: boolean
+    phone?: boolean
+    isVerified?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["publicSafePlace"]>
+
+  export type PublicSafePlaceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    district?: boolean
+    province?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    capacity?: boolean
+    address?: boolean
+    phone?: boolean
+    isVerified?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["publicSafePlace"]>
+
+  export type PublicSafePlaceSelectScalar = {
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    district?: boolean
+    province?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    capacity?: boolean
+    address?: boolean
+    phone?: boolean
+    isVerified?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PublicSafePlaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "district" | "province" | "latitude" | "longitude" | "capacity" | "address" | "phone" | "isVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["publicSafePlace"]>
+
+  export type $PublicSafePlacePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PublicSafePlace"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      type: string
+      district: string
+      province: string
+      latitude: number
+      longitude: number
+      capacity: number | null
+      address: string | null
+      phone: string | null
+      isVerified: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["publicSafePlace"]>
+    composites: {}
+  }
+
+  type PublicSafePlaceGetPayload<S extends boolean | null | undefined | PublicSafePlaceDefaultArgs> = $Result.GetResult<Prisma.$PublicSafePlacePayload, S>
+
+  type PublicSafePlaceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PublicSafePlaceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PublicSafePlaceCountAggregateInputType | true
+    }
+
+  export interface PublicSafePlaceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PublicSafePlace'], meta: { name: 'PublicSafePlace' } }
+    /**
+     * Find zero or one PublicSafePlace that matches the filter.
+     * @param {PublicSafePlaceFindUniqueArgs} args - Arguments to find a PublicSafePlace
+     * @example
+     * // Get one PublicSafePlace
+     * const publicSafePlace = await prisma.publicSafePlace.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PublicSafePlaceFindUniqueArgs>(args: SelectSubset<T, PublicSafePlaceFindUniqueArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one PublicSafePlace that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PublicSafePlaceFindUniqueOrThrowArgs} args - Arguments to find a PublicSafePlace
+     * @example
+     * // Get one PublicSafePlace
+     * const publicSafePlace = await prisma.publicSafePlace.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PublicSafePlaceFindUniqueOrThrowArgs>(args: SelectSubset<T, PublicSafePlaceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first PublicSafePlace that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceFindFirstArgs} args - Arguments to find a PublicSafePlace
+     * @example
+     * // Get one PublicSafePlace
+     * const publicSafePlace = await prisma.publicSafePlace.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PublicSafePlaceFindFirstArgs>(args?: SelectSubset<T, PublicSafePlaceFindFirstArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first PublicSafePlace that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceFindFirstOrThrowArgs} args - Arguments to find a PublicSafePlace
+     * @example
+     * // Get one PublicSafePlace
+     * const publicSafePlace = await prisma.publicSafePlace.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PublicSafePlaceFindFirstOrThrowArgs>(args?: SelectSubset<T, PublicSafePlaceFindFirstOrThrowArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more PublicSafePlaces that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PublicSafePlaces
+     * const publicSafePlaces = await prisma.publicSafePlace.findMany()
+     * 
+     * // Get first 10 PublicSafePlaces
+     * const publicSafePlaces = await prisma.publicSafePlace.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const publicSafePlaceWithIdOnly = await prisma.publicSafePlace.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PublicSafePlaceFindManyArgs>(args?: SelectSubset<T, PublicSafePlaceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a PublicSafePlace.
+     * @param {PublicSafePlaceCreateArgs} args - Arguments to create a PublicSafePlace.
+     * @example
+     * // Create one PublicSafePlace
+     * const PublicSafePlace = await prisma.publicSafePlace.create({
+     *   data: {
+     *     // ... data to create a PublicSafePlace
+     *   }
+     * })
+     * 
+     */
+    create<T extends PublicSafePlaceCreateArgs>(args: SelectSubset<T, PublicSafePlaceCreateArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many PublicSafePlaces.
+     * @param {PublicSafePlaceCreateManyArgs} args - Arguments to create many PublicSafePlaces.
+     * @example
+     * // Create many PublicSafePlaces
+     * const publicSafePlace = await prisma.publicSafePlace.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PublicSafePlaceCreateManyArgs>(args?: SelectSubset<T, PublicSafePlaceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PublicSafePlaces and returns the data saved in the database.
+     * @param {PublicSafePlaceCreateManyAndReturnArgs} args - Arguments to create many PublicSafePlaces.
+     * @example
+     * // Create many PublicSafePlaces
+     * const publicSafePlace = await prisma.publicSafePlace.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PublicSafePlaces and only return the `id`
+     * const publicSafePlaceWithIdOnly = await prisma.publicSafePlace.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PublicSafePlaceCreateManyAndReturnArgs>(args?: SelectSubset<T, PublicSafePlaceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a PublicSafePlace.
+     * @param {PublicSafePlaceDeleteArgs} args - Arguments to delete one PublicSafePlace.
+     * @example
+     * // Delete one PublicSafePlace
+     * const PublicSafePlace = await prisma.publicSafePlace.delete({
+     *   where: {
+     *     // ... filter to delete one PublicSafePlace
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PublicSafePlaceDeleteArgs>(args: SelectSubset<T, PublicSafePlaceDeleteArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one PublicSafePlace.
+     * @param {PublicSafePlaceUpdateArgs} args - Arguments to update one PublicSafePlace.
+     * @example
+     * // Update one PublicSafePlace
+     * const publicSafePlace = await prisma.publicSafePlace.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PublicSafePlaceUpdateArgs>(args: SelectSubset<T, PublicSafePlaceUpdateArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more PublicSafePlaces.
+     * @param {PublicSafePlaceDeleteManyArgs} args - Arguments to filter PublicSafePlaces to delete.
+     * @example
+     * // Delete a few PublicSafePlaces
+     * const { count } = await prisma.publicSafePlace.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PublicSafePlaceDeleteManyArgs>(args?: SelectSubset<T, PublicSafePlaceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicSafePlaces.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PublicSafePlaces
+     * const publicSafePlace = await prisma.publicSafePlace.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PublicSafePlaceUpdateManyArgs>(args: SelectSubset<T, PublicSafePlaceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicSafePlaces and returns the data updated in the database.
+     * @param {PublicSafePlaceUpdateManyAndReturnArgs} args - Arguments to update many PublicSafePlaces.
+     * @example
+     * // Update many PublicSafePlaces
+     * const publicSafePlace = await prisma.publicSafePlace.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PublicSafePlaces and only return the `id`
+     * const publicSafePlaceWithIdOnly = await prisma.publicSafePlace.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PublicSafePlaceUpdateManyAndReturnArgs>(args: SelectSubset<T, PublicSafePlaceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one PublicSafePlace.
+     * @param {PublicSafePlaceUpsertArgs} args - Arguments to update or create a PublicSafePlace.
+     * @example
+     * // Update or create a PublicSafePlace
+     * const publicSafePlace = await prisma.publicSafePlace.upsert({
+     *   create: {
+     *     // ... data to create a PublicSafePlace
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PublicSafePlace we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PublicSafePlaceUpsertArgs>(args: SelectSubset<T, PublicSafePlaceUpsertArgs<ExtArgs>>): Prisma__PublicSafePlaceClient<$Result.GetResult<Prisma.$PublicSafePlacePayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of PublicSafePlaces.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceCountArgs} args - Arguments to filter PublicSafePlaces to count.
+     * @example
+     * // Count the number of PublicSafePlaces
+     * const count = await prisma.publicSafePlace.count({
+     *   where: {
+     *     // ... the filter for the PublicSafePlaces we want to count
+     *   }
+     * })
+    **/
+    count<T extends PublicSafePlaceCountArgs>(
+      args?: Subset<T, PublicSafePlaceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PublicSafePlaceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PublicSafePlace.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PublicSafePlaceAggregateArgs>(args: Subset<T, PublicSafePlaceAggregateArgs>): Prisma.PrismaPromise<GetPublicSafePlaceAggregateType<T>>
+
+    /**
+     * Group by PublicSafePlace.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicSafePlaceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PublicSafePlaceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PublicSafePlaceGroupByArgs['orderBy'] }
+        : { orderBy?: PublicSafePlaceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PublicSafePlaceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPublicSafePlaceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PublicSafePlace model
+   */
+  readonly fields: PublicSafePlaceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PublicSafePlace.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PublicSafePlaceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PublicSafePlace model
+   */ 
+  interface PublicSafePlaceFieldRefs {
+    readonly id: FieldRef<"PublicSafePlace", 'String'>
+    readonly name: FieldRef<"PublicSafePlace", 'String'>
+    readonly type: FieldRef<"PublicSafePlace", 'String'>
+    readonly district: FieldRef<"PublicSafePlace", 'String'>
+    readonly province: FieldRef<"PublicSafePlace", 'String'>
+    readonly latitude: FieldRef<"PublicSafePlace", 'Float'>
+    readonly longitude: FieldRef<"PublicSafePlace", 'Float'>
+    readonly capacity: FieldRef<"PublicSafePlace", 'Int'>
+    readonly address: FieldRef<"PublicSafePlace", 'String'>
+    readonly phone: FieldRef<"PublicSafePlace", 'String'>
+    readonly isVerified: FieldRef<"PublicSafePlace", 'Boolean'>
+    readonly createdAt: FieldRef<"PublicSafePlace", 'DateTime'>
+    readonly updatedAt: FieldRef<"PublicSafePlace", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PublicSafePlace findUnique
+   */
+  export type PublicSafePlaceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicSafePlace to fetch.
+     */
+    where: PublicSafePlaceWhereUniqueInput
+  }
+
+  /**
+   * PublicSafePlace findUniqueOrThrow
+   */
+  export type PublicSafePlaceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicSafePlace to fetch.
+     */
+    where: PublicSafePlaceWhereUniqueInput
+  }
+
+  /**
+   * PublicSafePlace findFirst
+   */
+  export type PublicSafePlaceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicSafePlace to fetch.
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicSafePlaces to fetch.
+     */
+    orderBy?: PublicSafePlaceOrderByWithRelationInput | PublicSafePlaceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PublicSafePlaces.
+     */
+    cursor?: PublicSafePlaceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicSafePlaces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicSafePlaces.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PublicSafePlaces.
+     */
+    distinct?: PublicSafePlaceScalarFieldEnum | PublicSafePlaceScalarFieldEnum[]
+  }
+
+  /**
+   * PublicSafePlace findFirstOrThrow
+   */
+  export type PublicSafePlaceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicSafePlace to fetch.
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicSafePlaces to fetch.
+     */
+    orderBy?: PublicSafePlaceOrderByWithRelationInput | PublicSafePlaceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PublicSafePlaces.
+     */
+    cursor?: PublicSafePlaceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicSafePlaces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicSafePlaces.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PublicSafePlaces.
+     */
+    distinct?: PublicSafePlaceScalarFieldEnum | PublicSafePlaceScalarFieldEnum[]
+  }
+
+  /**
+   * PublicSafePlace findMany
+   */
+  export type PublicSafePlaceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicSafePlaces to fetch.
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicSafePlaces to fetch.
+     */
+    orderBy?: PublicSafePlaceOrderByWithRelationInput | PublicSafePlaceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PublicSafePlaces.
+     */
+    cursor?: PublicSafePlaceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicSafePlaces from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicSafePlaces.
+     */
+    skip?: number
+    distinct?: PublicSafePlaceScalarFieldEnum | PublicSafePlaceScalarFieldEnum[]
+  }
+
+  /**
+   * PublicSafePlace create
+   */
+  export type PublicSafePlaceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PublicSafePlace.
+     */
+    data: XOR<PublicSafePlaceCreateInput, PublicSafePlaceUncheckedCreateInput>
+  }
+
+  /**
+   * PublicSafePlace createMany
+   */
+  export type PublicSafePlaceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PublicSafePlaces.
+     */
+    data: PublicSafePlaceCreateManyInput | PublicSafePlaceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PublicSafePlace createManyAndReturn
+   */
+  export type PublicSafePlaceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * The data used to create many PublicSafePlaces.
+     */
+    data: PublicSafePlaceCreateManyInput | PublicSafePlaceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PublicSafePlace update
+   */
+  export type PublicSafePlaceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PublicSafePlace.
+     */
+    data: XOR<PublicSafePlaceUpdateInput, PublicSafePlaceUncheckedUpdateInput>
+    /**
+     * Choose, which PublicSafePlace to update.
+     */
+    where: PublicSafePlaceWhereUniqueInput
+  }
+
+  /**
+   * PublicSafePlace updateMany
+   */
+  export type PublicSafePlaceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PublicSafePlaces.
+     */
+    data: XOR<PublicSafePlaceUpdateManyMutationInput, PublicSafePlaceUncheckedUpdateManyInput>
+    /**
+     * Filter which PublicSafePlaces to update
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * Limit how many PublicSafePlaces to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicSafePlace updateManyAndReturn
+   */
+  export type PublicSafePlaceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * The data used to update PublicSafePlaces.
+     */
+    data: XOR<PublicSafePlaceUpdateManyMutationInput, PublicSafePlaceUncheckedUpdateManyInput>
+    /**
+     * Filter which PublicSafePlaces to update
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * Limit how many PublicSafePlaces to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicSafePlace upsert
+   */
+  export type PublicSafePlaceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PublicSafePlace to update in case it exists.
+     */
+    where: PublicSafePlaceWhereUniqueInput
+    /**
+     * In case the PublicSafePlace found by the `where` argument doesn't exist, create a new PublicSafePlace with this data.
+     */
+    create: XOR<PublicSafePlaceCreateInput, PublicSafePlaceUncheckedCreateInput>
+    /**
+     * In case the PublicSafePlace was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PublicSafePlaceUpdateInput, PublicSafePlaceUncheckedUpdateInput>
+  }
+
+  /**
+   * PublicSafePlace delete
+   */
+  export type PublicSafePlaceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+    /**
+     * Filter which PublicSafePlace to delete.
+     */
+    where: PublicSafePlaceWhereUniqueInput
+  }
+
+  /**
+   * PublicSafePlace deleteMany
+   */
+  export type PublicSafePlaceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PublicSafePlaces to delete
+     */
+    where?: PublicSafePlaceWhereInput
+    /**
+     * Limit how many PublicSafePlaces to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicSafePlace without action
+   */
+  export type PublicSafePlaceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicSafePlace
+     */
+    select?: PublicSafePlaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicSafePlace
+     */
+    omit?: PublicSafePlaceOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AuthorityContact
+   */
+
+  export type AggregateAuthorityContact = {
+    _count: AuthorityContactCountAggregateOutputType | null
+    _min: AuthorityContactMinAggregateOutputType | null
+    _max: AuthorityContactMaxAggregateOutputType | null
+  }
+
+  export type AuthorityContactMinAggregateOutputType = {
+    id: string | null
+    district: string | null
+    role: string | null
+    name: string | null
+    phone: string | null
+    phone2: string | null
+    email: string | null
+    sector: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AuthorityContactMaxAggregateOutputType = {
+    id: string | null
+    district: string | null
+    role: string | null
+    name: string | null
+    phone: string | null
+    phone2: string | null
+    email: string | null
+    sector: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AuthorityContactCountAggregateOutputType = {
+    id: number
+    district: number
+    role: number
+    name: number
+    phone: number
+    phone2: number
+    email: number
+    sector: number
+    isActive: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AuthorityContactMinAggregateInputType = {
+    id?: true
+    district?: true
+    role?: true
+    name?: true
+    phone?: true
+    phone2?: true
+    email?: true
+    sector?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type AuthorityContactMaxAggregateInputType = {
+    id?: true
+    district?: true
+    role?: true
+    name?: true
+    phone?: true
+    phone2?: true
+    email?: true
+    sector?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type AuthorityContactCountAggregateInputType = {
+    id?: true
+    district?: true
+    role?: true
+    name?: true
+    phone?: true
+    phone2?: true
+    email?: true
+    sector?: true
+    isActive?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AuthorityContactAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuthorityContact to aggregate.
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuthorityContacts to fetch.
+     */
+    orderBy?: AuthorityContactOrderByWithRelationInput | AuthorityContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuthorityContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuthorityContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuthorityContacts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuthorityContacts
+    **/
+    _count?: true | AuthorityContactCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuthorityContactMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuthorityContactMaxAggregateInputType
+  }
+
+  export type GetAuthorityContactAggregateType<T extends AuthorityContactAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuthorityContact]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuthorityContact[P]>
+      : GetScalarType<T[P], AggregateAuthorityContact[P]>
+  }
+
+
+
+
+  export type AuthorityContactGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuthorityContactWhereInput
+    orderBy?: AuthorityContactOrderByWithAggregationInput | AuthorityContactOrderByWithAggregationInput[]
+    by: AuthorityContactScalarFieldEnum[] | AuthorityContactScalarFieldEnum
+    having?: AuthorityContactScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuthorityContactCountAggregateInputType | true
+    _min?: AuthorityContactMinAggregateInputType
+    _max?: AuthorityContactMaxAggregateInputType
+  }
+
+  export type AuthorityContactGroupByOutputType = {
+    id: string
+    district: string
+    role: string
+    name: string
+    phone: string
+    phone2: string | null
+    email: string | null
+    sector: string | null
+    isActive: boolean
+    createdAt: Date
+    _count: AuthorityContactCountAggregateOutputType | null
+    _min: AuthorityContactMinAggregateOutputType | null
+    _max: AuthorityContactMaxAggregateOutputType | null
+  }
+
+  type GetAuthorityContactGroupByPayload<T extends AuthorityContactGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuthorityContactGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuthorityContactGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuthorityContactGroupByOutputType[P]>
+            : GetScalarType<T[P], AuthorityContactGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuthorityContactSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    district?: boolean
+    role?: boolean
+    name?: boolean
+    phone?: boolean
+    phone2?: boolean
+    email?: boolean
+    sector?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["authorityContact"]>
+
+  export type AuthorityContactSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    district?: boolean
+    role?: boolean
+    name?: boolean
+    phone?: boolean
+    phone2?: boolean
+    email?: boolean
+    sector?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["authorityContact"]>
+
+  export type AuthorityContactSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    district?: boolean
+    role?: boolean
+    name?: boolean
+    phone?: boolean
+    phone2?: boolean
+    email?: boolean
+    sector?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["authorityContact"]>
+
+  export type AuthorityContactSelectScalar = {
+    id?: boolean
+    district?: boolean
+    role?: boolean
+    name?: boolean
+    phone?: boolean
+    phone2?: boolean
+    email?: boolean
+    sector?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }
+
+  export type AuthorityContactOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "district" | "role" | "name" | "phone" | "phone2" | "email" | "sector" | "isActive" | "createdAt", ExtArgs["result"]["authorityContact"]>
+
+  export type $AuthorityContactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuthorityContact"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      district: string
+      role: string
+      name: string
+      phone: string
+      phone2: string | null
+      email: string | null
+      sector: string | null
+      isActive: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["authorityContact"]>
+    composites: {}
+  }
+
+  type AuthorityContactGetPayload<S extends boolean | null | undefined | AuthorityContactDefaultArgs> = $Result.GetResult<Prisma.$AuthorityContactPayload, S>
+
+  type AuthorityContactCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuthorityContactFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuthorityContactCountAggregateInputType | true
+    }
+
+  export interface AuthorityContactDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuthorityContact'], meta: { name: 'AuthorityContact' } }
+    /**
+     * Find zero or one AuthorityContact that matches the filter.
+     * @param {AuthorityContactFindUniqueArgs} args - Arguments to find a AuthorityContact
+     * @example
+     * // Get one AuthorityContact
+     * const authorityContact = await prisma.authorityContact.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuthorityContactFindUniqueArgs>(args: SelectSubset<T, AuthorityContactFindUniqueArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one AuthorityContact that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuthorityContactFindUniqueOrThrowArgs} args - Arguments to find a AuthorityContact
+     * @example
+     * // Get one AuthorityContact
+     * const authorityContact = await prisma.authorityContact.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuthorityContactFindUniqueOrThrowArgs>(args: SelectSubset<T, AuthorityContactFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first AuthorityContact that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactFindFirstArgs} args - Arguments to find a AuthorityContact
+     * @example
+     * // Get one AuthorityContact
+     * const authorityContact = await prisma.authorityContact.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuthorityContactFindFirstArgs>(args?: SelectSubset<T, AuthorityContactFindFirstArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first AuthorityContact that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactFindFirstOrThrowArgs} args - Arguments to find a AuthorityContact
+     * @example
+     * // Get one AuthorityContact
+     * const authorityContact = await prisma.authorityContact.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuthorityContactFindFirstOrThrowArgs>(args?: SelectSubset<T, AuthorityContactFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more AuthorityContacts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuthorityContacts
+     * const authorityContacts = await prisma.authorityContact.findMany()
+     * 
+     * // Get first 10 AuthorityContacts
+     * const authorityContacts = await prisma.authorityContact.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const authorityContactWithIdOnly = await prisma.authorityContact.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuthorityContactFindManyArgs>(args?: SelectSubset<T, AuthorityContactFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a AuthorityContact.
+     * @param {AuthorityContactCreateArgs} args - Arguments to create a AuthorityContact.
+     * @example
+     * // Create one AuthorityContact
+     * const AuthorityContact = await prisma.authorityContact.create({
+     *   data: {
+     *     // ... data to create a AuthorityContact
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuthorityContactCreateArgs>(args: SelectSubset<T, AuthorityContactCreateArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many AuthorityContacts.
+     * @param {AuthorityContactCreateManyArgs} args - Arguments to create many AuthorityContacts.
+     * @example
+     * // Create many AuthorityContacts
+     * const authorityContact = await prisma.authorityContact.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuthorityContactCreateManyArgs>(args?: SelectSubset<T, AuthorityContactCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuthorityContacts and returns the data saved in the database.
+     * @param {AuthorityContactCreateManyAndReturnArgs} args - Arguments to create many AuthorityContacts.
+     * @example
+     * // Create many AuthorityContacts
+     * const authorityContact = await prisma.authorityContact.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuthorityContacts and only return the `id`
+     * const authorityContactWithIdOnly = await prisma.authorityContact.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuthorityContactCreateManyAndReturnArgs>(args?: SelectSubset<T, AuthorityContactCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a AuthorityContact.
+     * @param {AuthorityContactDeleteArgs} args - Arguments to delete one AuthorityContact.
+     * @example
+     * // Delete one AuthorityContact
+     * const AuthorityContact = await prisma.authorityContact.delete({
+     *   where: {
+     *     // ... filter to delete one AuthorityContact
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuthorityContactDeleteArgs>(args: SelectSubset<T, AuthorityContactDeleteArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one AuthorityContact.
+     * @param {AuthorityContactUpdateArgs} args - Arguments to update one AuthorityContact.
+     * @example
+     * // Update one AuthorityContact
+     * const authorityContact = await prisma.authorityContact.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuthorityContactUpdateArgs>(args: SelectSubset<T, AuthorityContactUpdateArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more AuthorityContacts.
+     * @param {AuthorityContactDeleteManyArgs} args - Arguments to filter AuthorityContacts to delete.
+     * @example
+     * // Delete a few AuthorityContacts
+     * const { count } = await prisma.authorityContact.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuthorityContactDeleteManyArgs>(args?: SelectSubset<T, AuthorityContactDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuthorityContacts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuthorityContacts
+     * const authorityContact = await prisma.authorityContact.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuthorityContactUpdateManyArgs>(args: SelectSubset<T, AuthorityContactUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuthorityContacts and returns the data updated in the database.
+     * @param {AuthorityContactUpdateManyAndReturnArgs} args - Arguments to update many AuthorityContacts.
+     * @example
+     * // Update many AuthorityContacts
+     * const authorityContact = await prisma.authorityContact.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuthorityContacts and only return the `id`
+     * const authorityContactWithIdOnly = await prisma.authorityContact.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuthorityContactUpdateManyAndReturnArgs>(args: SelectSubset<T, AuthorityContactUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one AuthorityContact.
+     * @param {AuthorityContactUpsertArgs} args - Arguments to update or create a AuthorityContact.
+     * @example
+     * // Update or create a AuthorityContact
+     * const authorityContact = await prisma.authorityContact.upsert({
+     *   create: {
+     *     // ... data to create a AuthorityContact
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuthorityContact we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuthorityContactUpsertArgs>(args: SelectSubset<T, AuthorityContactUpsertArgs<ExtArgs>>): Prisma__AuthorityContactClient<$Result.GetResult<Prisma.$AuthorityContactPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of AuthorityContacts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactCountArgs} args - Arguments to filter AuthorityContacts to count.
+     * @example
+     * // Count the number of AuthorityContacts
+     * const count = await prisma.authorityContact.count({
+     *   where: {
+     *     // ... the filter for the AuthorityContacts we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuthorityContactCountArgs>(
+      args?: Subset<T, AuthorityContactCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuthorityContactCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuthorityContact.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuthorityContactAggregateArgs>(args: Subset<T, AuthorityContactAggregateArgs>): Prisma.PrismaPromise<GetAuthorityContactAggregateType<T>>
+
+    /**
+     * Group by AuthorityContact.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuthorityContactGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuthorityContactGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuthorityContactGroupByArgs['orderBy'] }
+        : { orderBy?: AuthorityContactGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuthorityContactGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuthorityContactGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuthorityContact model
+   */
+  readonly fields: AuthorityContactFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuthorityContact.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuthorityContactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuthorityContact model
+   */ 
+  interface AuthorityContactFieldRefs {
+    readonly id: FieldRef<"AuthorityContact", 'String'>
+    readonly district: FieldRef<"AuthorityContact", 'String'>
+    readonly role: FieldRef<"AuthorityContact", 'String'>
+    readonly name: FieldRef<"AuthorityContact", 'String'>
+    readonly phone: FieldRef<"AuthorityContact", 'String'>
+    readonly phone2: FieldRef<"AuthorityContact", 'String'>
+    readonly email: FieldRef<"AuthorityContact", 'String'>
+    readonly sector: FieldRef<"AuthorityContact", 'String'>
+    readonly isActive: FieldRef<"AuthorityContact", 'Boolean'>
+    readonly createdAt: FieldRef<"AuthorityContact", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuthorityContact findUnique
+   */
+  export type AuthorityContactFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * Filter, which AuthorityContact to fetch.
+     */
+    where: AuthorityContactWhereUniqueInput
+  }
+
+  /**
+   * AuthorityContact findUniqueOrThrow
+   */
+  export type AuthorityContactFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * Filter, which AuthorityContact to fetch.
+     */
+    where: AuthorityContactWhereUniqueInput
+  }
+
+  /**
+   * AuthorityContact findFirst
+   */
+  export type AuthorityContactFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * Filter, which AuthorityContact to fetch.
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuthorityContacts to fetch.
+     */
+    orderBy?: AuthorityContactOrderByWithRelationInput | AuthorityContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuthorityContacts.
+     */
+    cursor?: AuthorityContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuthorityContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuthorityContacts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuthorityContacts.
+     */
+    distinct?: AuthorityContactScalarFieldEnum | AuthorityContactScalarFieldEnum[]
+  }
+
+  /**
+   * AuthorityContact findFirstOrThrow
+   */
+  export type AuthorityContactFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * Filter, which AuthorityContact to fetch.
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuthorityContacts to fetch.
+     */
+    orderBy?: AuthorityContactOrderByWithRelationInput | AuthorityContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuthorityContacts.
+     */
+    cursor?: AuthorityContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuthorityContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuthorityContacts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuthorityContacts.
+     */
+    distinct?: AuthorityContactScalarFieldEnum | AuthorityContactScalarFieldEnum[]
+  }
+
+  /**
+   * AuthorityContact findMany
+   */
+  export type AuthorityContactFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * Filter, which AuthorityContacts to fetch.
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuthorityContacts to fetch.
+     */
+    orderBy?: AuthorityContactOrderByWithRelationInput | AuthorityContactOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuthorityContacts.
+     */
+    cursor?: AuthorityContactWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuthorityContacts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuthorityContacts.
+     */
+    skip?: number
+    distinct?: AuthorityContactScalarFieldEnum | AuthorityContactScalarFieldEnum[]
+  }
+
+  /**
+   * AuthorityContact create
+   */
+  export type AuthorityContactCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AuthorityContact.
+     */
+    data: XOR<AuthorityContactCreateInput, AuthorityContactUncheckedCreateInput>
+  }
+
+  /**
+   * AuthorityContact createMany
+   */
+  export type AuthorityContactCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuthorityContacts.
+     */
+    data: AuthorityContactCreateManyInput | AuthorityContactCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuthorityContact createManyAndReturn
+   */
+  export type AuthorityContactCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuthorityContacts.
+     */
+    data: AuthorityContactCreateManyInput | AuthorityContactCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuthorityContact update
+   */
+  export type AuthorityContactUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AuthorityContact.
+     */
+    data: XOR<AuthorityContactUpdateInput, AuthorityContactUncheckedUpdateInput>
+    /**
+     * Choose, which AuthorityContact to update.
+     */
+    where: AuthorityContactWhereUniqueInput
+  }
+
+  /**
+   * AuthorityContact updateMany
+   */
+  export type AuthorityContactUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuthorityContacts.
+     */
+    data: XOR<AuthorityContactUpdateManyMutationInput, AuthorityContactUncheckedUpdateManyInput>
+    /**
+     * Filter which AuthorityContacts to update
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * Limit how many AuthorityContacts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuthorityContact updateManyAndReturn
+   */
+  export type AuthorityContactUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * The data used to update AuthorityContacts.
+     */
+    data: XOR<AuthorityContactUpdateManyMutationInput, AuthorityContactUncheckedUpdateManyInput>
+    /**
+     * Filter which AuthorityContacts to update
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * Limit how many AuthorityContacts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuthorityContact upsert
+   */
+  export type AuthorityContactUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AuthorityContact to update in case it exists.
+     */
+    where: AuthorityContactWhereUniqueInput
+    /**
+     * In case the AuthorityContact found by the `where` argument doesn't exist, create a new AuthorityContact with this data.
+     */
+    create: XOR<AuthorityContactCreateInput, AuthorityContactUncheckedCreateInput>
+    /**
+     * In case the AuthorityContact was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuthorityContactUpdateInput, AuthorityContactUncheckedUpdateInput>
+  }
+
+  /**
+   * AuthorityContact delete
+   */
+  export type AuthorityContactDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+    /**
+     * Filter which AuthorityContact to delete.
+     */
+    where: AuthorityContactWhereUniqueInput
+  }
+
+  /**
+   * AuthorityContact deleteMany
+   */
+  export type AuthorityContactDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuthorityContacts to delete
+     */
+    where?: AuthorityContactWhereInput
+    /**
+     * Limit how many AuthorityContacts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuthorityContact without action
+   */
+  export type AuthorityContactDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuthorityContact
+     */
+    select?: AuthorityContactSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuthorityContact
+     */
+    omit?: AuthorityContactOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -74050,6 +76433,41 @@ export namespace Prisma {
   };
 
   export type DownstreamMappingScalarFieldEnum = (typeof DownstreamMappingScalarFieldEnum)[keyof typeof DownstreamMappingScalarFieldEnum]
+
+
+  export const PublicSafePlaceScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    type: 'type',
+    district: 'district',
+    province: 'province',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    capacity: 'capacity',
+    address: 'address',
+    phone: 'phone',
+    isVerified: 'isVerified',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PublicSafePlaceScalarFieldEnum = (typeof PublicSafePlaceScalarFieldEnum)[keyof typeof PublicSafePlaceScalarFieldEnum]
+
+
+  export const AuthorityContactScalarFieldEnum: {
+    id: 'id',
+    district: 'district',
+    role: 'role',
+    name: 'name',
+    phone: 'phone',
+    phone2: 'phone2',
+    email: 'email',
+    sector: 'sector',
+    isActive: 'isActive',
+    createdAt: 'createdAt'
+  };
+
+  export type AuthorityContactScalarFieldEnum = (typeof AuthorityContactScalarFieldEnum)[keyof typeof AuthorityContactScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -79018,6 +81436,177 @@ export namespace Prisma {
     targetDistricts?: StringNullableListFilter<"DownstreamMapping">
     createdAt?: DateTimeWithAggregatesFilter<"DownstreamMapping"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DownstreamMapping"> | Date | string
+  }
+
+  export type PublicSafePlaceWhereInput = {
+    AND?: PublicSafePlaceWhereInput | PublicSafePlaceWhereInput[]
+    OR?: PublicSafePlaceWhereInput[]
+    NOT?: PublicSafePlaceWhereInput | PublicSafePlaceWhereInput[]
+    id?: StringFilter<"PublicSafePlace"> | string
+    name?: StringFilter<"PublicSafePlace"> | string
+    type?: StringFilter<"PublicSafePlace"> | string
+    district?: StringFilter<"PublicSafePlace"> | string
+    province?: StringFilter<"PublicSafePlace"> | string
+    latitude?: FloatFilter<"PublicSafePlace"> | number
+    longitude?: FloatFilter<"PublicSafePlace"> | number
+    capacity?: IntNullableFilter<"PublicSafePlace"> | number | null
+    address?: StringNullableFilter<"PublicSafePlace"> | string | null
+    phone?: StringNullableFilter<"PublicSafePlace"> | string | null
+    isVerified?: BoolFilter<"PublicSafePlace"> | boolean
+    createdAt?: DateTimeFilter<"PublicSafePlace"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicSafePlace"> | Date | string
+  }
+
+  export type PublicSafePlaceOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicSafePlaceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PublicSafePlaceWhereInput | PublicSafePlaceWhereInput[]
+    OR?: PublicSafePlaceWhereInput[]
+    NOT?: PublicSafePlaceWhereInput | PublicSafePlaceWhereInput[]
+    name?: StringFilter<"PublicSafePlace"> | string
+    type?: StringFilter<"PublicSafePlace"> | string
+    district?: StringFilter<"PublicSafePlace"> | string
+    province?: StringFilter<"PublicSafePlace"> | string
+    latitude?: FloatFilter<"PublicSafePlace"> | number
+    longitude?: FloatFilter<"PublicSafePlace"> | number
+    capacity?: IntNullableFilter<"PublicSafePlace"> | number | null
+    address?: StringNullableFilter<"PublicSafePlace"> | string | null
+    phone?: StringNullableFilter<"PublicSafePlace"> | string | null
+    isVerified?: BoolFilter<"PublicSafePlace"> | boolean
+    createdAt?: DateTimeFilter<"PublicSafePlace"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicSafePlace"> | Date | string
+  }, "id">
+
+  export type PublicSafePlaceOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PublicSafePlaceCountOrderByAggregateInput
+    _avg?: PublicSafePlaceAvgOrderByAggregateInput
+    _max?: PublicSafePlaceMaxOrderByAggregateInput
+    _min?: PublicSafePlaceMinOrderByAggregateInput
+    _sum?: PublicSafePlaceSumOrderByAggregateInput
+  }
+
+  export type PublicSafePlaceScalarWhereWithAggregatesInput = {
+    AND?: PublicSafePlaceScalarWhereWithAggregatesInput | PublicSafePlaceScalarWhereWithAggregatesInput[]
+    OR?: PublicSafePlaceScalarWhereWithAggregatesInput[]
+    NOT?: PublicSafePlaceScalarWhereWithAggregatesInput | PublicSafePlaceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PublicSafePlace"> | string
+    name?: StringWithAggregatesFilter<"PublicSafePlace"> | string
+    type?: StringWithAggregatesFilter<"PublicSafePlace"> | string
+    district?: StringWithAggregatesFilter<"PublicSafePlace"> | string
+    province?: StringWithAggregatesFilter<"PublicSafePlace"> | string
+    latitude?: FloatWithAggregatesFilter<"PublicSafePlace"> | number
+    longitude?: FloatWithAggregatesFilter<"PublicSafePlace"> | number
+    capacity?: IntNullableWithAggregatesFilter<"PublicSafePlace"> | number | null
+    address?: StringNullableWithAggregatesFilter<"PublicSafePlace"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"PublicSafePlace"> | string | null
+    isVerified?: BoolWithAggregatesFilter<"PublicSafePlace"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PublicSafePlace"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PublicSafePlace"> | Date | string
+  }
+
+  export type AuthorityContactWhereInput = {
+    AND?: AuthorityContactWhereInput | AuthorityContactWhereInput[]
+    OR?: AuthorityContactWhereInput[]
+    NOT?: AuthorityContactWhereInput | AuthorityContactWhereInput[]
+    id?: StringFilter<"AuthorityContact"> | string
+    district?: StringFilter<"AuthorityContact"> | string
+    role?: StringFilter<"AuthorityContact"> | string
+    name?: StringFilter<"AuthorityContact"> | string
+    phone?: StringFilter<"AuthorityContact"> | string
+    phone2?: StringNullableFilter<"AuthorityContact"> | string | null
+    email?: StringNullableFilter<"AuthorityContact"> | string | null
+    sector?: StringNullableFilter<"AuthorityContact"> | string | null
+    isActive?: BoolFilter<"AuthorityContact"> | boolean
+    createdAt?: DateTimeFilter<"AuthorityContact"> | Date | string
+  }
+
+  export type AuthorityContactOrderByWithRelationInput = {
+    id?: SortOrder
+    district?: SortOrder
+    role?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    phone2?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    sector?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuthorityContactWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuthorityContactWhereInput | AuthorityContactWhereInput[]
+    OR?: AuthorityContactWhereInput[]
+    NOT?: AuthorityContactWhereInput | AuthorityContactWhereInput[]
+    district?: StringFilter<"AuthorityContact"> | string
+    role?: StringFilter<"AuthorityContact"> | string
+    name?: StringFilter<"AuthorityContact"> | string
+    phone?: StringFilter<"AuthorityContact"> | string
+    phone2?: StringNullableFilter<"AuthorityContact"> | string | null
+    email?: StringNullableFilter<"AuthorityContact"> | string | null
+    sector?: StringNullableFilter<"AuthorityContact"> | string | null
+    isActive?: BoolFilter<"AuthorityContact"> | boolean
+    createdAt?: DateTimeFilter<"AuthorityContact"> | Date | string
+  }, "id">
+
+  export type AuthorityContactOrderByWithAggregationInput = {
+    id?: SortOrder
+    district?: SortOrder
+    role?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    phone2?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    sector?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    _count?: AuthorityContactCountOrderByAggregateInput
+    _max?: AuthorityContactMaxOrderByAggregateInput
+    _min?: AuthorityContactMinOrderByAggregateInput
+  }
+
+  export type AuthorityContactScalarWhereWithAggregatesInput = {
+    AND?: AuthorityContactScalarWhereWithAggregatesInput | AuthorityContactScalarWhereWithAggregatesInput[]
+    OR?: AuthorityContactScalarWhereWithAggregatesInput[]
+    NOT?: AuthorityContactScalarWhereWithAggregatesInput | AuthorityContactScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuthorityContact"> | string
+    district?: StringWithAggregatesFilter<"AuthorityContact"> | string
+    role?: StringWithAggregatesFilter<"AuthorityContact"> | string
+    name?: StringWithAggregatesFilter<"AuthorityContact"> | string
+    phone?: StringWithAggregatesFilter<"AuthorityContact"> | string
+    phone2?: StringNullableWithAggregatesFilter<"AuthorityContact"> | string | null
+    email?: StringNullableWithAggregatesFilter<"AuthorityContact"> | string | null
+    sector?: StringNullableWithAggregatesFilter<"AuthorityContact"> | string | null
+    isActive?: BoolWithAggregatesFilter<"AuthorityContact"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AuthorityContact"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -84048,6 +86637,209 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PublicSafePlaceCreateInput = {
+    id?: string
+    name: string
+    type: string
+    district: string
+    province: string
+    latitude: number
+    longitude: number
+    capacity?: number | null
+    address?: string | null
+    phone?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicSafePlaceUncheckedCreateInput = {
+    id?: string
+    name: string
+    type: string
+    district: string
+    province: string
+    latitude: number
+    longitude: number
+    capacity?: number | null
+    address?: string | null
+    phone?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicSafePlaceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicSafePlaceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicSafePlaceCreateManyInput = {
+    id?: string
+    name: string
+    type: string
+    district: string
+    province: string
+    latitude: number
+    longitude: number
+    capacity?: number | null
+    address?: string | null
+    phone?: string | null
+    isVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicSafePlaceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicSafePlaceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuthorityContactCreateInput = {
+    id?: string
+    district: string
+    role: string
+    name: string
+    phone: string
+    phone2?: string | null
+    email?: string | null
+    sector?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AuthorityContactUncheckedCreateInput = {
+    id?: string
+    district: string
+    role: string
+    name: string
+    phone: string
+    phone2?: string | null
+    email?: string | null
+    sector?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AuthorityContactUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    phone2?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuthorityContactUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    phone2?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuthorityContactCreateManyInput = {
+    id?: string
+    district: string
+    role: string
+    name: string
+    phone: string
+    phone2?: string | null
+    email?: string | null
+    sector?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AuthorityContactUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    phone2?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuthorityContactUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    phone2?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -87603,6 +90395,105 @@ export namespace Prisma {
     stationName?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PublicSafePlaceCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    isVerified?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicSafePlaceAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrder
+  }
+
+  export type PublicSafePlaceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    isVerified?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicSafePlaceMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    district?: SortOrder
+    province?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    isVerified?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicSafePlaceSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    capacity?: SortOrder
+  }
+
+  export type AuthorityContactCountOrderByAggregateInput = {
+    id?: SortOrder
+    district?: SortOrder
+    role?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    phone2?: SortOrder
+    email?: SortOrder
+    sector?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuthorityContactMaxOrderByAggregateInput = {
+    id?: SortOrder
+    district?: SortOrder
+    role?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    phone2?: SortOrder
+    email?: SortOrder
+    sector?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuthorityContactMinOrderByAggregateInput = {
+    id?: SortOrder
+    district?: SortOrder
+    role?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    phone2?: SortOrder
+    email?: SortOrder
+    sector?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type DamageAssessmentCreateNestedManyWithoutReportedByInput = {
