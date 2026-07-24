@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import PageBreadcrumb from '../components/common/PageBreadCrumb';
 import PageMeta from '../components/common/PageMeta';
 import { io } from 'socket.io-client';
@@ -88,6 +89,7 @@ function LevelBar({ current, watch, minor, major, predicted }: {
 
 /* ════════════════════════════════════════════ */
 export default function WaterMonitorPage() {
+  const { t } = useTranslation();
   const [predictions, setPredictions]   = useState<Prediction[]>([]);
   const [rainfallData, setRainfallData] = useState<RainfallReading[]>([]);
   const [riverData, setRiverData]       = useState<RiverLevel[]>([]);
@@ -146,27 +148,27 @@ export default function WaterMonitorPage() {
 
   return (
     <div className="space-y-6">
-      <PageMeta title="Water Monitor | Suraksha" description="AI-powered river level monitoring and flood prediction" />
-      <PageBreadcrumb pageTitle="Water Monitor" />
+      <PageMeta title={`${t('water_monitor_page.title')} | Suraksha`} description="AI-powered river level monitoring and flood prediction" />
+      <PageBreadcrumb pageTitle={t('nav.water_monitor') || 'Water Monitor'} />
 
       {/* ── Top bar ── */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl bg-[#131f33] border border-cyan-400/10">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h2 className="text-lg font-bold text-slate-100">AI Water Level Monitor</h2>
+            <h2 className="text-lg font-bold text-slate-100">{t('water_monitor_page.title')}</h2>
             <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${mlStatus.online ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-slate-500/20 text-slate-400 border-slate-500/30'}`}>
-              {mlStatus.online ? `⚡ LSTM ${mlStatus.model_loaded ? 'ACTIVE' : 'FALLBACK'}` : '⚫ ML OFFLINE'}
+              {mlStatus.online ? `⚡ LSTM ${mlStatus.model_loaded ? t('water_monitor_page.lstm_active') : t('water_monitor_page.fallback')}` : `⚫ ${t('water_monitor_page.ml_offline')}`}
             </span>
           </div>
-          <p className="text-xs text-slate-400">Last updated: <span className="text-slate-200 font-medium">{lastUpdated.toLocaleTimeString()}</span></p>
+          <p className="text-xs text-slate-400">{t('water_monitor_page.last_updated')} <span className="text-slate-200 font-medium">{lastUpdated.toLocaleTimeString()}</span></p>
         </div>
         <div className="flex items-center gap-3">
           <button onClick={fetchAll} className="px-4 py-2 text-xs font-semibold text-cyan-400 border border-cyan-400/20 rounded-xl hover:bg-cyan-400/10 transition-all">
-            ↻ Refresh
+            ↻ {t('water_monitor_page.refresh')}
           </button>
           <button onClick={triggerPrediction} disabled={triggerLoading}
             className="px-4 py-2 text-xs font-bold bg-cyan-500 text-white rounded-xl hover:bg-cyan-400 disabled:opacity-50 transition-all flex items-center gap-2">
-            {triggerLoading ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />Running...</> : '🤖 Run AI Prediction'}
+            {triggerLoading ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('water_monitor_page.running')}</> : `🤖 ${t('water_monitor_page.run_ai')}`}
           </button>
         </div>
       </div>
@@ -174,10 +176,10 @@ export default function WaterMonitorPage() {
       {/* ── Stats row ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Gauges Monitored', value: predictions.length, icon: '📡', color: 'text-cyan-400' },
-          { label: 'Active Alerts',    value: activeAlerts,       icon: '⚠️', color: activeAlerts > 0 ? 'text-amber-400' : 'text-emerald-400' },
-          { label: 'Critical',         value: criticalAlerts,     icon: '🚨', color: criticalAlerts > 0 ? 'text-red-400' : 'text-emerald-400' },
-          { label: 'Avg Confidence',   value: `${Math.round(avgConf * 100)}%`, icon: '🧠', color: confColor(avgConf) },
+          { label: t('water_monitor_page.gauges_monitored'), value: predictions.length, icon: '📡', color: 'text-cyan-400' },
+          { label: t('water_monitor_page.active_alerts'),    value: activeAlerts,       icon: '⚠️', color: activeAlerts > 0 ? 'text-amber-400' : 'text-emerald-400' },
+          { label: t('water_monitor_page.critical'),         value: criticalAlerts,     icon: '🚨', color: criticalAlerts > 0 ? 'text-red-400' : 'text-emerald-400' },
+          { label: t('water_monitor_page.avg_confidence'),   value: `${Math.round(avgConf * 100)}%`, icon: '🧠', color: confColor(avgConf) },
         ].map(s => (
           <div key={s.label} className="p-4 rounded-2xl bg-[#131f33] border border-cyan-400/10 flex items-center gap-4">
             <span className="text-2xl">{s.icon}</span>
@@ -192,7 +194,7 @@ export default function WaterMonitorPage() {
       {/* ── Active Alerts Banner ── */}
       {alertGauges.length > 0 && (
         <div className="p-4 rounded-2xl border border-red-500/20 bg-red-500/5">
-          <div className="text-xs font-bold text-red-400 mb-3 uppercase tracking-widest">⚠ Active Flood Predictions</div>
+          <div className="text-xs font-bold text-red-400 mb-3 uppercase tracking-widest">⚠ {t('water_monitor_page.active_flood_predictions')}</div>
           <div className="space-y-2">
             {alertGauges.map(g => {
               const c = alertColor(g.prediction!.alertLevel);
@@ -202,7 +204,7 @@ export default function WaterMonitorPage() {
                   <span className="text-sm font-semibold text-slate-200">{g.riverName} @ {g.stationName}</span>
                   <span className="text-xs text-slate-400">{g.district}</span>
                   <span className={`text-xs ml-auto ${c.text}`}>
-                    T+1hr: <b>{g.prediction!.predictedT1M.toFixed(2)}m</b> → T+2hr: <b>{g.prediction!.predictedT2M.toFixed(2)}m</b>
+                    {t('water_monitor_page.t1hr')} <b>{g.prediction!.predictedT1M.toFixed(2)}m</b> → {t('water_monitor_page.t2hr')} <b>{g.prediction!.predictedT2M.toFixed(2)}m</b>
                   </span>
                   <ConfidenceRing value={g.prediction!.confidence} />
                 </div>
@@ -217,7 +219,7 @@ export default function WaterMonitorPage() {
         {(['ai', 'river', 'rainfall'] as const).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             className={`px-5 py-2.5 text-sm font-semibold rounded-t-xl transition-all ${activeTab === tab ? 'bg-[#131f33] text-cyan-400 border border-b-0 border-cyan-400/20' : 'text-slate-400 hover:text-slate-200'}`}>
-            {tab === 'ai' ? '🤖 AI Predictions' : tab === 'river' ? '🌊 River Gauges' : '🌧 Rainfall'}
+            {tab === 'ai' ? `🤖 ${t('water_monitor_page.tabs.ai_predictions')}` : tab === 'river' ? `🌊 ${t('water_monitor_page.tabs.river_gauges')}` : `🌧 ${t('water_monitor_page.tabs.rainfall')}`}
           </button>
         ))}
       </div>
@@ -255,7 +257,7 @@ export default function WaterMonitorPage() {
                     {/* Current level */}
                     <div className="flex items-end gap-2 mb-2">
                       <span className={`text-3xl font-bold ${c.text}`}>{p.currentLevelM.toFixed(2)}</span>
-                      <span className="text-sm text-slate-400 mb-1">m current</span>
+                      <span className="text-sm text-slate-400 mb-1">{t('water_monitor_page.m_current')}</span>
                       <span className="ml-auto text-lg">{trendIcon(p.trend, p.changeFromLast)}</span>
                     </div>
 
@@ -268,8 +270,8 @@ export default function WaterMonitorPage() {
                       predicted={pred?.predictedT1M}
                     />
                     <div className="flex justify-between text-[10px] text-slate-500 mt-1 mb-3">
-                      <span>Watch: {p.watchThreshold.toFixed(1)}m</span>
-                      {pred && <span className="text-slate-300">Predicted marker: white bar</span>}
+                      <span>{t('water_monitor_page.watch')} {p.watchThreshold.toFixed(1)}m</span>
+                      {pred && <span className="text-slate-300">{t('water_monitor_page.predicted_marker')}</span>}
                     </div>
 
                     {/* AI Predictions */}
@@ -277,13 +279,13 @@ export default function WaterMonitorPage() {
                       <>
                         <div className="flex gap-2 mb-3">
                           <div className="flex-1 p-2 rounded-xl bg-white/5 text-center">
-                            <div className="text-[10px] text-slate-400 mb-0.5">T+1hr</div>
+                            <div className="text-[10px] text-slate-400 mb-0.5">{t('water_monitor_page.t1hr_label')}</div>
                             <div className={`text-sm font-bold ${pred.predictedT1M > p.watchThreshold ? 'text-amber-400' : 'text-slate-100'}`}>
                               {pred.predictedT1M.toFixed(2)} m
                             </div>
                           </div>
                           <div className="flex-1 p-2 rounded-xl bg-white/5 text-center">
-                            <div className="text-[10px] text-slate-400 mb-0.5">T+2hr</div>
+                            <div className="text-[10px] text-slate-400 mb-0.5">{t('water_monitor_page.t2hr_label')}</div>
                             <div className={`text-sm font-bold ${pred.predictedT2M > p.watchThreshold ? 'text-amber-400' : 'text-slate-100'}`}>
                               {pred.predictedT2M.toFixed(2)} m
                             </div>
@@ -298,12 +300,12 @@ export default function WaterMonitorPage() {
                           📊 {pred.reason}
                         </p>
                         <div className="mt-2 text-[10px] text-slate-500">
-                          Model: {pred.modelUsed} · {pred.confidence < 0.75 ? '⚠ Low confidence — alert suppressed' : '✓ Alert threshold active'}
+                          {t('water_monitor_page.model')} {pred.modelUsed} · {pred.confidence < 0.75 ? `⚠ ${t('water_monitor_page.low_confidence')}` : `✓ ${t('water_monitor_page.alert_threshold')}`}
                         </div>
                       </>
                     ) : (
                       <div className="text-xs text-slate-500 italic">
-                        Connect ML service to enable predictions
+                        {t('water_monitor_page.connect_ml')}
                       </div>
                     )}
                   </div>
@@ -312,8 +314,8 @@ export default function WaterMonitorPage() {
               {predictions.length === 0 && !loading && (
                 <div className="col-span-full text-center py-16 text-slate-400">
                   <div className="text-4xl mb-3">🤖</div>
-                  <div className="font-semibold">No predictions yet</div>
-                  <div className="text-sm mt-1">Click "Run AI Prediction" or wait for the next emulator cycle</div>
+                  <div className="font-semibold">{t('water_monitor_page.no_predictions')}</div>
+                  <div className="text-sm mt-1">{t('water_monitor_page.click_run_ai')}</div>
                 </div>
               )}
             </div>
@@ -328,8 +330,8 @@ export default function WaterMonitorPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-cyan-400/10 text-slate-400 text-xs uppercase tracking-wider">
-                  {['River & Station', 'District', 'Level (m)', 'Change', 'Trend', 'Alert Level', 'Status'].map(h => (
-                    <th key={h} className="px-4 py-3 font-semibold text-left">{h}</th>
+                  {[t('water_monitor_page.river_station'), t('water_monitor_page.district'), t('water_monitor_page.level_m'), t('water_monitor_page.change'), t('water_monitor_page.trend'), t('water_monitor_page.alert_level'), t('water_monitor_page.status')].map((h, i) => (
+                    <th key={i} className="px-4 py-3 font-semibold text-left">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -361,7 +363,7 @@ export default function WaterMonitorPage() {
                   );
                 })}
                 {riverData.length === 0 && (
-                  <tr><td colSpan={7} className="px-4 py-8 text-center text-slate-500">No river data</td></tr>
+                  <tr><td colSpan={7} className="px-4 py-8 text-center text-slate-500">{t('water_monitor_page.no_river_data')}</td></tr>
                 )}
               </tbody>
             </table>
@@ -376,8 +378,8 @@ export default function WaterMonitorPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-cyan-400/10 text-slate-400 text-xs uppercase tracking-wider">
-                  {['Station', 'District', 'Current (mm/hr)', '24h Total (mm)', 'Risk'].map(h => (
-                    <th key={h} className="px-4 py-3 font-semibold text-left">{h}</th>
+                  {[t('water_monitor_page.station'), t('water_monitor_page.district'), t('water_monitor_page.current_mmhr'), t('water_monitor_page.total_24h'), t('water_monitor_page.risk')].map((h, i) => (
+                    <th key={i} className="px-4 py-3 font-semibold text-left">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -405,7 +407,7 @@ export default function WaterMonitorPage() {
                   );
                 })}
                 {rainfallData.length === 0 && (
-                  <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500">No rainfall data</td></tr>
+                  <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500">{t('water_monitor_page.no_rainfall_data')}</td></tr>
                 )}
               </tbody>
             </table>
@@ -416,7 +418,7 @@ export default function WaterMonitorPage() {
       {/* ── Setup guide (when ML offline) ── */}
       {!mlStatus.online && (
         <div className="p-5 rounded-2xl border border-amber-500/20 bg-amber-500/5">
-          <div className="text-sm font-bold text-amber-400 mb-2">🔧 ML Service Setup</div>
+          <div className="text-sm font-bold text-amber-400 mb-2">🔧 {t('water_monitor_page.ml_setup_guide')}</div>
           <div className="text-xs text-slate-400 space-y-1 font-mono">
             <div>1. <span className="text-cyan-300">cd suraksha-ml && pip install tensorflow scikit-learn</span></div>
             <div>2. <span className="text-cyan-300">python training/train_lstm.py</span>  ← generates model files (~5 min)</div>

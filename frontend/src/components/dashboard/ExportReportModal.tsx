@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { X, Download } from 'lucide-react';
 import { reportService } from '../../services/api';
+import { useDialog } from '@/components/ui/dialogs/DialogProvider';
 
 interface ExportReportModalProps {
   onClose: () => void;
 }
 
 export default function ExportReportModal({ onClose }: ExportReportModalProps) {
+  const { alert } = useDialog()
   const [format, setFormat] = useState<'pdf' | 'excel' | 'csv'>('pdf');
   const [isExporting, setIsExporting] = useState(false);
   const [filters, setFilters] = useState({
@@ -42,7 +44,7 @@ export default function ExportReportModal({ onClose }: ExportReportModalProps) {
       onClose();
     } catch (error) {
       console.error('Export failed', error);
-      alert('Failed to generate report. Please try again.');
+      await alert('Failed to generate report. Please try again.', { variant: 'danger', title: 'Export failed' });
     } finally {
       setIsExporting(false);
     }

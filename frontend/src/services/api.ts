@@ -51,6 +51,8 @@ export const alertService = {
   getAlerts: () => api.get('/alerts'),
   deactivateAlert: (id: string) => api.patch(`/alerts/${id}/deactivate`),
   deleteAlert: (id: string) => api.delete(`/alerts/${id}`),
+  getDeliveryStats: (id: string) => api.get(`/alerts/${id}/delivery`),
+  acknowledgeAlert: (id: string) => api.post(`/alerts/${id}/acknowledge`),
 };
 
 export const campService = {
@@ -86,6 +88,8 @@ export const userService = {
   bulkImport: (data: any[]) => api.post('/users/bulk-import', data),
   getAuditLogs: () => api.get('/users/audit'),
   toggleFieldResponderApp: (id: string, hasApp: boolean) => api.post(`/users/${id}/field-status`, { hasApp }),
+  getSessions: () => api.get('/users/me/sessions'),
+  deleteSession: (id: string) => api.delete(`/users/me/sessions/${id}`),
   sendAppLink: (id: string) => api.post(`/users/${id}/send-app-link`),
 };
 

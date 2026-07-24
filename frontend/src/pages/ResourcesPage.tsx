@@ -85,32 +85,32 @@ export default function ResourcesPage() {
   }
 
   const stats = [
-    { 
-      label: 'Boats Available', 
-      value: resources.filter(r => r.type.toLowerCase().includes('boat') && r.status === 'AVAILABLE').length, 
-      color: 'text-blue-600' 
+    {
+      label: t('resources_page.total_resources'),
+      value: resources.length,
+      color: 'text-blue-400'
     },
-    { 
-      label: 'Vehicles', 
-      value: resources.filter(r => r.type.toLowerCase().includes('vehicle') || r.type.toLowerCase().includes('truck')).length, 
-      color: 'text-green-600' 
+    {
+      label: t('resources_page.available'),
+      value: resources.filter(r => r.status === 'AVAILABLE').length,
+      color: 'text-green-400'
     },
-    { 
-      label: 'Generators', 
-      value: resources.filter(r => r.type.toLowerCase().includes('generator')).length, 
-      color: 'text-purple-600' 
+    {
+      label: t('resources_page.in_use'),
+      value: resources.filter(r => r.status === 'IN_USE').length,
+      color: 'text-purple-400'
     },
-    { 
-      label: 'Shelter Rooms', 
-      value: resources.filter(r => r.type.toLowerCase().includes('room') || r.type.toLowerCase().includes('shelter')).length, 
-      color: 'text-orange-600' 
+    {
+      label: t('resources_page.maintenance'),
+      value: resources.filter(r => r.status === 'MAINTENANCE').length,
+      color: 'text-orange-400'
     },
   ]
 
   return (
         <>
-          <PageMeta title="Resources | Suraksha" description="Suraksha Resources Page" />
-          <PageBreadcrumb pageTitle="Resources" />
+          <PageMeta title={`${t('nav.resources')} | Suraksha`} description="Suraksha Resources Page" />
+          <PageBreadcrumb pageTitle={t('nav.resources')} />
           <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -119,7 +119,7 @@ export default function ResourcesPage() {
             className="px-6 py-3 bg-brand-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/25 hover:scale-[1.02] transition-all active:scale-95"
           >
             <Plus className="w-5 h-5" />
-            Add Resource
+            {t('resources_page.add_resource')}
           </button>
         </div>
 
@@ -134,18 +134,18 @@ export default function ResourcesPage() {
         </div>
 
         {/* Resources Table */}
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-[1.5rem] overflow-hidden shadow-sm">
+        <div className="bg-[#131f33] border border-cyan-400/10 rounded-[1.5rem] overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-50 dark:bg-gray-800/50/50 border-b border-gray-200 dark:border-gray-800">
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Resource Type</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Owner</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Location</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Capacity</th>
-                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Status</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Contact</th>
-                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Actions</th>
+                <tr className="bg-[#0e1d36] border-b border-white/10">
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.resource_type')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.owner')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.location')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.capacity')}</th>
+                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.status')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.contact')}</th>
+                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -154,7 +154,7 @@ export default function ResourcesPage() {
                     <td colSpan={7} className="px-8 py-20 text-center">
                       <div className="flex flex-col items-center gap-3">
                         <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                        <p className="text-gray-400 dark:text-gray-500 font-medium">Loading resources...</p>
+                        <p className="text-gray-400 dark:text-gray-500 font-medium">{t('resources_page.loading')}</p>
                       </div>
                     </td>
                   </tr>
@@ -165,7 +165,7 @@ export default function ResourcesPage() {
                 ).length === 0 ? (
                   <tr>
                     <td colSpan={7} className="px-8 py-20 text-center text-gray-400 dark:text-gray-500 font-medium">
-                      {searchQuery ? `No matching resources found for "${searchQuery}"` : 'No resources found. Add one to get started!'}
+                      {searchQuery ? `${t('resources_page.no_matching')} "${searchQuery}"` : t('resources_page.no_resources')}
                     </td>
                   </tr>
                 ) : (
@@ -176,7 +176,7 @@ export default function ResourcesPage() {
                       r.location.toLowerCase().includes(searchQuery.toLowerCase())
                     )
                     .map((resource) => (
-                    <tr key={resource.id} className="hover:bg-gray-50 dark:bg-gray-800/50/50 transition-colors group">
+                    <tr key={resource.id} className="hover:bg-white/5 transition-colors group">
                       <td className="px-8 py-6">
                         <span className="text-sm font-bold text-gray-800 dark:text-white/90 group-hover:text-brand-500 transition-colors whitespace-nowrap">{resource.type}</span>
                       </td>
@@ -229,16 +229,16 @@ export default function ResourcesPage() {
         {/* Modal */}
         {showModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-              <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50">
-                <h2 className="text-xl font-black text-gray-800 dark:text-white/90">Add New Resource</h2>
-                <button onClick={() => setShowModal(false)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors">
+            <div className="bg-[#131f33] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-8 py-6 border-b border-white/10 flex items-center justify-between bg-[#0e1d36]">
+                <h2 className="text-xl font-black text-white/90">{t('resources_page.add_new_resource')}</h2>
+                <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
               <form onSubmit={handleAddResource} className="p-8 space-y-5">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Resource Type</label>
+                  <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.resource_type')}</label>
                   <input 
                     type="text" 
                     placeholder="e.g. Boat, Pickup Truck, Generator" 
@@ -250,7 +250,7 @@ export default function ResourcesPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Owner Name</label>
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.owner_name')}</label>
                     <input 
                       type="text" 
                       placeholder="Enter full name" 
@@ -261,7 +261,7 @@ export default function ResourcesPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Location</label>
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.location')}</label>
                     <input 
                       type="text" 
                       placeholder="e.g. Colombo 7" 
@@ -274,23 +274,23 @@ export default function ResourcesPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Capacity</label>
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.capacity')}</label>
                     <input 
                       type="text" 
                       placeholder="e.g. 6 people, 5kW" 
                       required
-                      className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="suraksha-input"
                       value={newResource.capacity}
                       onChange={(e) => setNewResource({...newResource, capacity: e.target.value})}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Contact Number</label>
+                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.contact_number')}</label>
                     <input 
                       type="text" 
                       placeholder="e.g. +94 ..." 
                       required
-                      className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="suraksha-input"
                       value={newResource.contact}
                       onChange={(e) => setNewResource({...newResource, contact: e.target.value})}
                     />
@@ -300,9 +300,9 @@ export default function ResourcesPage() {
                   <button 
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="flex-1 px-6 py-4 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-2xl text-sm font-bold hover:bg-gray-200 dark:bg-gray-700 transition-all"
+                    className="flex-1 px-6 py-4 bg-white/10 border border-white/10 text-slate-300 rounded-2xl text-sm font-bold hover:bg-white/15 transition-all"
                   >
-                    Cancel
+                    {t('resources_page.cancel')}
                   </button>
                   <button 
                     type="submit"
@@ -312,10 +312,10 @@ export default function ResourcesPage() {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        Creating...
+                        {t('resources_page.creating')}
                       </>
                     ) : (
-                      'Create Resource'
+                      t('resources_page.create_resource')
                     )}
                   </button>
                 </div>
@@ -333,7 +333,7 @@ export default function ResourcesPage() {
                     <Package className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-black text-slate-100">Resource Info</h2>
+                    <h2 className="text-lg font-black text-slate-100">{t('resources_page.resource_info')}</h2>
                     <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
                   </div>
                 </div>
@@ -343,23 +343,23 @@ export default function ResourcesPage() {
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Type</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.type')}</p>
                   <p className="font-semibold text-slate-100">{selectedResource.type}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Owner</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.owner')}</p>
                   <p className="font-semibold text-slate-100">{selectedResource.owner}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Location</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.location')}</p>
                   <p className="font-semibold text-slate-100">{selectedResource.location}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Capacity</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.capacity')}</p>
                   <p className="font-semibold text-slate-100">{selectedResource.capacity}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">Contact</p>
+                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.contact')}</p>
                   <p className="font-semibold text-slate-100">{selectedResource.contact}</p>
                 </div>
               </div>
@@ -369,13 +369,13 @@ export default function ResourcesPage() {
                   className="flex-1 bg-[#00AEEF] hover:bg-[#009bd6] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/25"
                 >
                   <Phone className="w-4 h-4" />
-                  Contact Options
+                  {t('resources_page.contact_options')}
                 </button>
                 <button 
                   onClick={() => setSelectedResource(null)}
                   className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold transition-all"
                 >
-                  Close
+                  {t('resources_page.close')}
                 </button>
               </div>
             </div>
@@ -390,7 +390,7 @@ export default function ResourcesPage() {
                   <Phone className="w-8 h-8" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-2">Contact Resource</h3>
+                  <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-2">{t('resources_page.contact_resource')}</h3>
                   <p className="text-2xl font-bold tracking-widest text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 py-3 rounded-xl">{contactModal}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-3 pt-2">
@@ -399,21 +399,21 @@ export default function ResourcesPage() {
                     className="flex flex-col items-center justify-center gap-2 py-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:bg-gray-700 text-slate-700 rounded-2xl font-bold transition-all"
                   >
                     <Copy className="w-5 h-5" />
-                    <span className="text-xs">Copy</span>
+                    <span className="text-xs">{t('resources_page.copy')}</span>
                   </button>
                   <a 
                     href={`tel:${contactModal}`}
                     className="flex flex-col items-center justify-center gap-2 py-4 bg-[#00AEEF] hover:bg-[#009bd6] text-white rounded-2xl font-bold transition-all shadow-lg shadow-cyan-500/25"
                   >
                     <Phone className="w-5 h-5" />
-                    <span className="text-xs">Dial</span>
+                    <span className="text-xs">{t('resources_page.dial')}</span>
                   </a>
                 </div>
                 <button 
                   onClick={() => setContactModal(null)}
                   className="w-full py-3 text-sm font-bold text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-colors"
                 >
-                  Cancel
+                  {t('resources_page.cancel')}
                 </button>
               </div>
             </div>

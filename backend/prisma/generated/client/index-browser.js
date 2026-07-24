@@ -178,7 +178,9 @@ exports.Prisma.AlertScalarFieldEnum = {
   scheduledTime: 'scheduledTime',
   translatedMsgSinhala: 'translatedMsgSinhala',
   translatedMsgTamil: 'translatedMsgTamil',
-  targetSectors: 'targetSectors'
+  targetSectors: 'targetSectors',
+  broadcastRadiusKm: 'broadcastRadiusKm',
+  notifiedCount: 'notifiedCount'
 };
 
 exports.Prisma.SectorScalarFieldEnum = {
@@ -299,9 +301,11 @@ exports.Prisma.MissingPersonScalarFieldEnum = {
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  alertId: 'alertId',
   title: 'title',
   message: 'message',
   read: 'read',
+  readAt: 'readAt',
   createdAt: 'createdAt'
 };
 

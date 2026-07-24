@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDialog } from '@/components/ui/dialogs/DialogProvider';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, ZoomControl, useMap, Circle, Polygon, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -204,6 +205,7 @@ const generateAssignmentArrows = (camps: Camp[], incidents: Incident[]) => {
 };
 
 export default function MapPage() {
+  const { alert } = useDialog()
   const { t } = useTranslation();
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [camps, setCamps] = useState<Camp[]>([]);
@@ -234,7 +236,7 @@ export default function MapPage() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Failed to export route PDF', error);
-      alert('Failed to export route. Please try again.');
+      await alert('Failed to export route. Please try again.', { variant: 'danger', title: 'Export failed' });
     } finally {
       setIsExportingRoute(false);
     }
@@ -365,7 +367,7 @@ export default function MapPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live Monitoring System Active</span>
+              <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">{t('map_page.live_monitoring')}</span>
             </div>
           </div>
         </div>
@@ -374,22 +376,22 @@ export default function MapPage() {
           <div className="xl:col-span-1 flex flex-col gap-6">
             <div className="suraksha-card p-6 flex flex-col gap-4">
               <h3 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 pb-3">
-                <Activity className="w-4 h-4 text-blue-500" /><span>National Operations Summary</span>
+                <Activity className="w-4 h-4 text-blue-500" /><span>{t('map_page.ops_summary')}</span>
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
                   <span className="text-3xl font-black text-slate-800">{activeIncidents.length}</span>
-                  <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1">Total Incidents</span>
+                  <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1">{t('map_page.total_incidents')}</span>
                 </div>
                 <div className="bg-red-50 border border-red-100 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
                   <span className="text-3xl font-black text-red-600">{activeIncidents.filter((i) => ['CRITICAL', 'HIGH'].includes(i.severity)).length}</span>
-                  <span className="text-[9px] font-black text-red-400 uppercase tracking-widest mt-1">Critical/High</span>
+                  <span className="text-[9px] font-black text-red-400 uppercase tracking-widest mt-1">{t('map_page.critical_high')}</span>
                 </div>
               </div>
 
               <div className="space-y-3.5 mt-2">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500 dark:text-gray-400 font-semibold">Active Support Camps</span>
+                  <span className="text-gray-500 dark:text-gray-400 font-semibold">{t('map_page.active_support_camps')}</span>
                   <span className="text-slate-800 font-extrabold">{camps.length}</span>
                 </div>
                 <div className="w-full bg-gray-100 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
@@ -397,7 +399,7 @@ export default function MapPage() {
                 </div>
                 
                 <div className="flex items-center justify-between text-xs mt-2">
-                  <span className="text-gray-500 dark:text-gray-400 font-semibold">Risk Coverage Index</span>
+                  <span className="text-gray-500 dark:text-gray-400 font-semibold">{t('map_page.risk_coverage_index')}</span>
                   <span className="text-blue-600 font-extrabold">94.2%</span>
                 </div>
                 <div className="w-full bg-gray-100 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
@@ -409,11 +411,11 @@ export default function MapPage() {
             {layers.evacuationRoutes && evacRoutes && (
               <div className="suraksha-card p-6 border-l-4 border-l-blue-500 bg-blue-50/30">
                  <h3 className="text-xs font-black text-blue-800 uppercase tracking-widest flex items-center gap-2 mb-3">
-                  <Navigation className="w-4 h-4 text-blue-600" /> Active Evacuation Route
+                  <Navigation className="w-4 h-4 text-blue-600" /> {t('map_page.evacuation_route')}
                 </h3>
-                <p className="text-xs text-blue-700 font-bold mb-4">Primary route active. ETA to safe zone: 45 mins. Alternate routes available.</p>
+                <p className="text-xs text-blue-700 font-bold mb-4">{t('map_page.evacuation_desc')}</p>
                 <button onClick={handleExportRoute} disabled={isExportingRoute} className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-50">
-                  {isExportingRoute ? 'Exporting...' : 'Export Route PDF'}
+                  {isExportingRoute ? t('map_page.exporting') : t('map_page.export_route_pdf')}
                 </button>
               </div>
             )}
@@ -422,13 +424,13 @@ export default function MapPage() {
               <div className="suraksha-card p-6 flex flex-col gap-4 border-l-4 border-l-slate-800 animate-in slide-in-from-left-4 duration-300">
                 <div className="flex justify-between items-start border-b border-gray-200 dark:border-gray-800 pb-3">
                   <div>
-                    <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">🗺️ {selectedZone.province} Province</span>
-                    <h3 className="text-lg font-black text-slate-800 leading-tight">{selectedZone.zoneName} District</h3>
+                    <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">🗺️ {selectedZone.province} {t('map_page.province')}</span>
+                    <h3 className="text-lg font-black text-slate-800 leading-tight">{selectedZone.zoneName} {t('map_page.district')}</h3>
                   </div>
                   <button onClick={() => setSelectedZone(null)} className="text-slate-300 hover:text-gray-600 dark:text-gray-300 font-bold text-sm">✕</button>
                 </div>
                 <button className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl shadow-lg shadow-blue-500/25 transition-all text-center">
-                  📢 Dispatch Local Alert
+                  📢 {t('map_page.dispatch_local_alert')}
                 </button>
               </div>
             )}
@@ -450,8 +452,8 @@ export default function MapPage() {
               {layers.weatherProjections && (
                  <Polygon positions={MOCK_CYCLONE_CONE} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.15, weight: 1, dashArray: '5, 10' }}>
                    <Popup className="font-sans">
-                     <div className="font-bold text-red-600 text-sm">⚠️ Cyclone Path Projection</div>
-                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">DMC Cone of Uncertainty (Next 72h)</div>
+                     <div className="font-bold text-red-600 text-sm">⚠️ {t('map_page.cyclone_path_projection', 'Cyclone Path Projection')}</div>
+                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('map_page.cone_of_uncertainty', 'DMC Cone of Uncertainty (Next 72h)')}</div>
                    </Popup>
                  </Polygon>
               )}
@@ -465,7 +467,7 @@ export default function MapPage() {
 
               {layers.assignmentArrows && assignmentArrows.map(arrow => (
                  <Polyline key={arrow.id} positions={arrow.positions} pathOptions={{ color: '#f59e0b', weight: 2, dashArray: '5, 5', opacity: 0.8 }}>
-                   <Popup><div className="text-xs font-bold text-amber-600">Camp to Incident Assignment Route</div></Popup>
+                   <Popup><div className="text-xs font-bold text-amber-600">{t('map_page.assignment_route', 'Camp to Incident Assignment Route')}</div></Popup>
                  </Polyline>
               ))}
 
@@ -477,8 +479,8 @@ export default function MapPage() {
                         <User className="w-4 h-4 text-blue-500" />
                         <span className="font-black text-slate-800 text-sm">{vol.name}</span>
                       </div>
-                      <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">Skill: <span className="text-blue-600">{vol.skill}</span></div>
-                      <button className="w-full py-1.5 bg-blue-600 text-white rounded text-xs font-bold uppercase hover:bg-blue-700 transition">Assign to nearest</button>
+                      <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">{t('map_page.skill')} <span className="text-blue-600">{vol.skill}</span></div>
+                      <button className="w-full py-1.5 bg-blue-600 text-white rounded text-xs font-bold uppercase hover:bg-blue-700 transition">{t('map_page.assign_nearest')}</button>
                     </div>
                   </Popup>
                 </Marker>
@@ -504,10 +506,10 @@ export default function MapPage() {
                   <Marker key={camp.id} position={[camp.latitude, camp.longitude]} icon={createCampIcon()}>
                     <Popup className="suraksha-popup" minWidth={220}>
                       <div className="p-2 font-sans">
-                        <div className="flex items-center gap-2 mb-3"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Active Safety Hub</span></div>
+                        <div className="flex items-center gap-2 mb-3"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /><span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">{t('map_page.active_safety_hub')}</span></div>
                         <h4 className="font-black text-slate-900 text-sm leading-snug">{camp.name}</h4>
                         <div className="space-y-2 mt-4 mb-2">
-                          <div className="flex justify-between text-[10px] font-black"><span className="text-gray-400 dark:text-gray-500">Occupancy</span><span className="text-slate-800">{camp.currentOccupancy} / {camp.totalCapacity}</span></div>
+                          <div className="flex justify-between text-[10px] font-black"><span className="text-gray-400 dark:text-gray-500">{t('map_page.occupancy')}</span><span className="text-slate-800">{camp.currentOccupancy} / {camp.totalCapacity}</span></div>
                           <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden"><div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(camp.currentOccupancy / camp.totalCapacity) * 100}%` }} /></div>
                         </div>
                       </div>
@@ -524,7 +526,7 @@ export default function MapPage() {
               </button>
               <div className="flex-1 flex flex-col gap-1">
                  <div className="flex justify-between text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Historical Timeline</span>
+                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {t('map_page.historical_timeline')}</span>
                    <span>{timeScrubber}%</span>
                  </div>
                  <input type="range" min="0" max="100" value={timeScrubber} onChange={(e) => setTimeScrubber(parseInt(e.target.value))} className="w-full accent-blue-600 cursor-pointer" />
@@ -532,15 +534,15 @@ export default function MapPage() {
             </div>
 
             <div className="absolute top-6 right-6 z-[1000] flex flex-col gap-2.5 bg-white dark:bg-gray-900/95 backdrop-blur-md p-2 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-2xl">
-              <button onClick={() => setMapMode('incidents')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'incidents' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-gray-50 dark:bg-gray-800/50")}>📍 Incidents Layout</button>
-              <button onClick={() => setMapMode('zones')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'zones' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-gray-50 dark:bg-gray-800/50")}>🗺️ Zone Boundaries</button>
+              <button onClick={() => setMapMode('incidents')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'incidents' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-gray-50 dark:bg-gray-800/50")}>📍 {t('map_page.incidents_layout')}</button>
+              <button onClick={() => setMapMode('zones')} className={cn("px-3.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all", mapMode === 'zones' ? "bg-blue-600 text-white shadow-lg shadow-blue-500/25" : "text-slate-700 hover:bg-gray-50 dark:bg-gray-800/50")}>🗺️ {t('map_page.zone_boundaries')}</button>
             </div>
 
             {mapMode === 'incidents' && (
               <div className="absolute bottom-24 left-6 z-[1000] w-48 bg-white dark:bg-gray-900/95 backdrop-blur-md border border-gray-200 dark:border-gray-800 shadow-2xl rounded-2xl p-4 transition-all">
-                <h4 className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">Legend</h4>
+                <h4 className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">{t('map_page.legend')}</h4>
                 <div className="space-y-2">
-                  {[{ label: 'Critical Response', color: '#ef4444' }, { label: 'High Alert', color: '#f97316' }, { label: 'Relief Hub (Camp)', color: '#10b981', isCamp: true }, { label: 'Volunteer', color: '#3b82f6', isVol: true }].map((item, i) => (
+                  {[{ label: t('map_page.critical_response'), color: '#ef4444' }, { label: t('map_page.high_alert'), color: '#f97316' }, { label: t('map_page.relief_hub'), color: '#10b981', isCamp: true }, { label: t('map_page.volunteer'), color: '#3b82f6', isVol: true }].map((item, i) => (
                     <div key={i} className="flex items-center gap-2.5">
                       <div className={cn("w-2.5 h-2.5 shadow-sm", item.isCamp ? "rounded-sm rotate-45" : item.isVol ? "rounded-full border border-white" : "rounded-full")} style={{ backgroundColor: item.color }} />
                       <span className="text-[10px] font-bold text-gray-600 dark:text-gray-300">{item.label}</span>
@@ -551,12 +553,12 @@ export default function MapPage() {
             )}
 
             <div className="absolute bottom-24 right-6 z-[1000] w-48 bg-white dark:bg-gray-900/95 backdrop-blur-md border border-gray-200 dark:border-gray-800 shadow-2xl rounded-2xl p-4 transition-all">
-              <h4 className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">Layers</h4>
+              <h4 className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-0.5 border-b border-slate-50 pb-2">{t('map_page.layers')}</h4>
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
                 {Object.entries(layers).map(([key, enabled]) => (
                   <label key={key} className="flex items-center gap-2.5 cursor-pointer select-none group">
                     <input type="checkbox" checked={enabled} onChange={() => setLayers(prev => ({ ...prev, [key]: !enabled }))} className="w-3.5 h-3.5 text-blue-600 bg-gray-100 dark:bg-gray-800 border-slate-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer" />
-                    <span className={cn("text-[10px] font-bold transition-all uppercase tracking-wider", enabled ? "text-slate-700" : "text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:text-gray-300")}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                    <span className={cn("text-[10px] font-bold transition-all uppercase tracking-wider", enabled ? "text-slate-700" : "text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:text-gray-300")}>{t(`map_page.layer_${key}`, key.replace(/([A-Z])/g, ' $1').trim())}</span>
                   </label>
                 ))}
               </div>

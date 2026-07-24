@@ -208,6 +208,9 @@ layer(base);
   body {
     @apply relative font-normal font-outfit z-1 bg-[#0e1d36];
   }
+  .light body, .light {
+    background-color: hsl(214 15% 93%);
+  }
 }
 
 @utility menu-item {
@@ -219,7 +222,7 @@ layer(base);
 }
 
 @utility menu-item-inactive {
-  @apply text-slate-400 hover:bg-white/5 hover:text-slate-200 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-200;
+  @apply text-slate-500 hover:bg-gray-100 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-200;
 }
 
 @utility menu-item-icon {
@@ -237,7 +240,7 @@ layer(base);
 }
 
 @utility menu-item-icon-inactive {
-  @apply text-slate-400 group-hover:text-slate-200;
+  @apply text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200;
 }
 
 @utility menu-item-arrow {
@@ -261,7 +264,7 @@ layer(base);
 }
 
 @utility menu-dropdown-item-inactive {
-  @apply text-slate-400 hover:bg-white/5 hover:text-slate-200;
+  @apply text-slate-500 hover:bg-gray-100 hover:text-slate-800 dark:hover:bg-white/5 dark:hover:text-slate-200;
 }
 
 @utility menu-dropdown-badge {
@@ -817,20 +820,20 @@ span.flatpickr-weekday,
 
 @layer base {
   :root {
-    /* === Suraksha Dark Command Center Theme (default) === */
-    --background: 215 45% 6%;        /* #0a1120 deep navy */
-    --foreground: 210 40% 96%;       /* near-white text */
+    /* === Suraksha Dark Command Center Theme (always-on default) === */
+    --background: 215 45% 6%;
+    --foreground: 210 40% 96%;
 
-    --card: 217 38% 11%;             /* #131f33 dark card */
+    --card: 217 38% 11%;
     --card-foreground: 210 40% 96%;
 
     --popover: 217 38% 11%;
     --popover-foreground: 210 40% 96%;
 
-    --primary: 192 91% 36%;          /* #0891b2 cyan-600 */
+    --primary: 192 91% 36%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 217 35% 16%;        /* dark surface */
+    --secondary: 217 35% 16%;
     --secondary-foreground: 210 40% 96%;
 
     --muted: 217 35% 14%;
@@ -842,72 +845,55 @@ span.flatpickr-weekday,
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 192 91% 60% / 0.12;    /* subtle cyan border */
+    --border: 192 91% 60% / 0.12;
     --input: 217 35% 16%;
     --ring: 192 91% 36%;
 
     --radius: 0.75rem;
   }
 
-  .light {
-    /* === Light mode (opt-in via toggle) === */
-    --background: 214 15% 93%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
+  .dark {
+    --background: 215 45% 6%;
+    --foreground: 210 40% 98%;
+    --card: 217 38% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 217 38% 11%;
+    --popover-foreground: 210 40% 98%;
     --primary: 192 91% 36%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 214 15% 88%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 214 15% 88%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217 35% 16%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 35% 14%;
+    --muted-foreground: 215 25% 55%;
     --accent: 192 91% 36% / 0.1;
-    --accent-foreground: 192 91% 36%;
-
-    --destructive: 0 84.2% 60.2%;
+    --accent-foreground: 192 91% 70%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 192 91% 60% / 0.12;
+    --input: 217 35% 16%;
     --ring: 192 91% 36%;
   }
 
-  .dark {
-    /* === Dark mode (same as default :root) === */
-    --background: 215 45% 6%;
-    --foreground: 210 40% 98%;
-
-    --card: 217 38% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 217 38% 11%;
-    --popover-foreground: 210 40% 98%;
-
+  .light {
+    /* === Light mode (applied via .light class on <html>) === */
+    --background: 214 15% 93%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
     --primary: 192 91% 36%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217 35% 16%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 35% 14%;
-    --muted-foreground: 215 25% 55%;
-
+    --primary-foreground: 210 40% 98%;
+    --secondary: 214 15% 88%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 214 15% 88%;
+    --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 192 91% 36% / 0.1;
-    --accent-foreground: 192 91% 70%;
-
-    --destructive: 0 62.8% 30.6%;
+    --accent-foreground: 192 91% 36%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 192 91% 60% / 0.12;
-    --input: 217 35% 16%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 192 91% 36%;
   }
 }
@@ -926,11 +912,11 @@ span.flatpickr-weekday,
 /* Custom Suraksha UI Utility Classes */
 @layer components {
   .suraksha-card {
-    @apply bg-[#131f33] border border-cyan-400/10 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-300 relative overflow-hidden hover:border-cyan-400/25 hover:shadow-[0_4px_32px_rgba(34,211,238,0.06)];
+    @apply bg-white dark:bg-[#131f33] border border-gray-200 dark:border-cyan-400/10 rounded-2xl shadow-sm dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-300 relative overflow-hidden hover:border-cyan-400/25 hover:shadow-[0_4px_32px_rgba(34,211,238,0.06)];
   }
 
   .suraksha-input {
-    @apply w-full h-12 bg-[#1a2540] border border-cyan-400/15 rounded-xl px-5 text-sm font-semibold text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 focus:border-cyan-400/40 transition-all;
+    @apply w-full h-12 bg-gray-50 dark:bg-[#1a2540] border border-gray-300 dark:border-cyan-400/15 rounded-xl px-5 text-sm font-semibold text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 focus:border-cyan-400/40 transition-all;
   }
 
   .suraksha-button {

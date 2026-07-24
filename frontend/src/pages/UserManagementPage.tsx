@@ -113,7 +113,7 @@ export default function UserManagementPage() {
           <div className="flex gap-4">
             <button 
               onClick={() => setIsBulkImportOpen(true)}
-              className="suraksha-button flex items-center gap-3 px-6 h-14 bg-gray-100 dark:bg-gray-800 text-slate-700 hover:bg-gray-200 dark:bg-gray-700"
+              className="suraksha-button flex items-center gap-3 px-6 h-14 bg-white/10 border border-white/20 text-white hover:bg-white/20"
             >
               <Upload className="w-5 h-5" />
               <span className="uppercase tracking-widest text-[11px] font-black">Bulk Import (CSV)</span>
@@ -420,7 +420,7 @@ function RBACMatrixTab({ showToast }: any) {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {roles.map(role => (
-              <tr key={role} className="hover:bg-gray-50 dark:bg-gray-800/50/50">
+              <tr key={role} className="hover:bg-white/5 transition-colors">
                 <td className="px-6 py-6 font-black text-sm text-gray-800 dark:text-white/90">{role}</td>
                 {defaultModules.map(mod => {
                   const pIdx = matrix.findIndex(m => m.role === role && m.module === mod)

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as alertService from '../services/alertService';
+import { notifyAllUsers, notifyAdmins } from '../services/notificationService';
 
 /**
  * @swagger
@@ -39,16 +40,19 @@ export const createAlert = async (req: Request, res: Response) => {
   try {
     const alert = await alertService.createAlert(req.body);
 
-    // Emit socket event for real-time alert with broadcast radius (in km)
+    // Broadcast to ALL connected clients — each client's GlobalAlertListener
+    // checks the user's geolocation against the alert's coordinates and only
+    // shows the popup if they are within the broadcast radius.
     const io = req.app.get('socketio');
-    
-    if (alert.targetSectors && alert.targetSectors.length > 0) {
-      alert.targetSectors.forEach((sectorId: string) => {
-        io.to(`sector_${sectorId}`).emit('new-alert', { ...alert, broadcastRadiusKm: 20 });
-      });
-    } else {
-      io.emit('new-alert', { ...alert, broadcastRadiusKm: 20 });
-    }
+    const radiusKm = req.body.broadcastRadiusKm || 50;
+    io.emit('new-alert', { ...alert, broadcastRadiusKm: radiusKm });
+
+    // Notify all users of the new alert
+    const notifyFn = alert.type === 'EMERGENCY' ? notifyAllUsers : notifyAdmins;
+    notifyFn(
+      `${alert.type} Alert: ${alert.title}`,
+      `${alert.message} — Location: ${alert.location}`
+    ).catch(() => {});
 
     res.status(201).json(alert);
   } catch (error) {
@@ -126,6 +130,24 @@ export const deleteAlert = async (req: any, res: Response) => {
     const { id } = req.params;
     await alertService.deleteAlert(id);
     res.json({ message: 'Alert deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getDeliveryStats = async (req: any, res: Response) => {
+  try {
+    const stats = await alertService.getAlertDeliveryStats(req.params.id);
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const acknowledgeAlert = async (req: any, res: Response) => {
+  try {
+    const result = await alertService.acknowledgeAlert(req.params.id, req.user.userId);
+    res.json({ message: 'Acknowledged', result });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }

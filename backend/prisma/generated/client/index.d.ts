@@ -6593,6 +6593,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type AlertCountOutputType
+   */
+
+  export type AlertCountOutputType = {
+    notifications: number
+  }
+
+  export type AlertCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | AlertCountOutputTypeCountNotificationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AlertCountOutputType without action
+   */
+  export type AlertCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertCountOutputType
+     */
+    select?: AlertCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AlertCountOutputType without action
+   */
+  export type AlertCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+
+  /**
    * Count Type SectorCountOutputType
    */
 
@@ -10207,12 +10238,16 @@ export namespace Prisma {
     latitudes: number | null
     longitudes: number | null
     acknowledgementRate: number | null
+    broadcastRadiusKm: number | null
+    notifiedCount: number | null
   }
 
   export type AlertSumAggregateOutputType = {
     latitudes: number[]
     longitudes: number[]
     acknowledgementRate: number | null
+    broadcastRadiusKm: number | null
+    notifiedCount: number | null
   }
 
   export type AlertMinAggregateOutputType = {
@@ -10227,6 +10262,8 @@ export namespace Prisma {
     scheduledTime: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
+    broadcastRadiusKm: number | null
+    notifiedCount: number | null
   }
 
   export type AlertMaxAggregateOutputType = {
@@ -10241,6 +10278,8 @@ export namespace Prisma {
     scheduledTime: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
+    broadcastRadiusKm: number | null
+    notifiedCount: number | null
   }
 
   export type AlertCountAggregateOutputType = {
@@ -10260,6 +10299,8 @@ export namespace Prisma {
     translatedMsgSinhala: number
     translatedMsgTamil: number
     targetSectors: number
+    broadcastRadiusKm: number
+    notifiedCount: number
     _all: number
   }
 
@@ -10268,12 +10309,16 @@ export namespace Prisma {
     latitudes?: true
     longitudes?: true
     acknowledgementRate?: true
+    broadcastRadiusKm?: true
+    notifiedCount?: true
   }
 
   export type AlertSumAggregateInputType = {
     latitudes?: true
     longitudes?: true
     acknowledgementRate?: true
+    broadcastRadiusKm?: true
+    notifiedCount?: true
   }
 
   export type AlertMinAggregateInputType = {
@@ -10288,6 +10333,8 @@ export namespace Prisma {
     scheduledTime?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
+    broadcastRadiusKm?: true
+    notifiedCount?: true
   }
 
   export type AlertMaxAggregateInputType = {
@@ -10302,6 +10349,8 @@ export namespace Prisma {
     scheduledTime?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
+    broadcastRadiusKm?: true
+    notifiedCount?: true
   }
 
   export type AlertCountAggregateInputType = {
@@ -10321,6 +10370,8 @@ export namespace Prisma {
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
     targetSectors?: true
+    broadcastRadiusKm?: true
+    notifiedCount?: true
     _all?: true
   }
 
@@ -10427,6 +10478,8 @@ export namespace Prisma {
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
     targetSectors: string[]
+    broadcastRadiusKm: number | null
+    notifiedCount: number
     _count: AlertCountAggregateOutputType | null
     _avg: AlertAvgAggregateOutputType | null
     _sum: AlertSumAggregateOutputType | null
@@ -10465,6 +10518,10 @@ export namespace Prisma {
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
+    broadcastRadiusKm?: boolean
+    notifiedCount?: boolean
+    notifications?: boolean | Alert$notificationsArgs<ExtArgs>
+    _count?: boolean | AlertCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alert"]>
 
   export type AlertSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10484,6 +10541,8 @@ export namespace Prisma {
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
+    broadcastRadiusKm?: boolean
+    notifiedCount?: boolean
   }, ExtArgs["result"]["alert"]>
 
   export type AlertSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10503,6 +10562,8 @@ export namespace Prisma {
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
+    broadcastRadiusKm?: boolean
+    notifiedCount?: boolean
   }, ExtArgs["result"]["alert"]>
 
   export type AlertSelectScalar = {
@@ -10522,13 +10583,23 @@ export namespace Prisma {
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
+    broadcastRadiusKm?: boolean
+    notifiedCount?: boolean
   }
 
-  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "type" | "active" | "createdAt" | "updatedAt" | "latitudes" | "locations" | "longitudes" | "acknowledgementRate" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "targetSectors", ExtArgs["result"]["alert"]>
+  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "type" | "active" | "createdAt" | "updatedAt" | "latitudes" | "locations" | "longitudes" | "acknowledgementRate" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "targetSectors" | "broadcastRadiusKm" | "notifiedCount", ExtArgs["result"]["alert"]>
+  export type AlertInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | Alert$notificationsArgs<ExtArgs>
+    _count?: boolean | AlertCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AlertIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AlertIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $AlertPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Alert"
-    objects: {}
+    objects: {
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
@@ -10546,6 +10617,8 @@ export namespace Prisma {
       translatedMsgSinhala: string | null
       translatedMsgTamil: string | null
       targetSectors: string[]
+      broadcastRadiusKm: number | null
+      notifiedCount: number
     }, ExtArgs["result"]["alert"]>
     composites: {}
   }
@@ -10940,6 +11013,7 @@ export namespace Prisma {
    */
   export interface Prisma__AlertClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    notifications<T extends Alert$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Alert$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10985,6 +11059,8 @@ export namespace Prisma {
     readonly translatedMsgSinhala: FieldRef<"Alert", 'String'>
     readonly translatedMsgTamil: FieldRef<"Alert", 'String'>
     readonly targetSectors: FieldRef<"Alert", 'String[]'>
+    readonly broadcastRadiusKm: FieldRef<"Alert", 'Float'>
+    readonly notifiedCount: FieldRef<"Alert", 'Int'>
   }
     
 
@@ -11001,6 +11077,10 @@ export namespace Prisma {
      * Omit specific fields from the Alert
      */
     omit?: AlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
     /**
      * Filter, which Alert to fetch.
      */
@@ -11020,6 +11100,10 @@ export namespace Prisma {
      */
     omit?: AlertOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
+    /**
      * Filter, which Alert to fetch.
      */
     where: AlertWhereUniqueInput
@@ -11037,6 +11121,10 @@ export namespace Prisma {
      * Omit specific fields from the Alert
      */
     omit?: AlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
     /**
      * Filter, which Alert to fetch.
      */
@@ -11086,6 +11174,10 @@ export namespace Prisma {
      */
     omit?: AlertOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
+    /**
      * Filter, which Alert to fetch.
      */
     where?: AlertWhereInput
@@ -11134,6 +11226,10 @@ export namespace Prisma {
      */
     omit?: AlertOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
+    /**
      * Filter, which Alerts to fetch.
      */
     where?: AlertWhereInput
@@ -11176,6 +11272,10 @@ export namespace Prisma {
      * Omit specific fields from the Alert
      */
     omit?: AlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
     /**
      * The data needed to create a Alert.
      */
@@ -11224,6 +11324,10 @@ export namespace Prisma {
      * Omit specific fields from the Alert
      */
     omit?: AlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
     /**
      * The data needed to update a Alert.
      */
@@ -11291,6 +11395,10 @@ export namespace Prisma {
      */
     omit?: AlertOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
+    /**
      * The filter to search for the Alert to update in case it exists.
      */
     where: AlertWhereUniqueInput
@@ -11317,6 +11425,10 @@ export namespace Prisma {
      */
     omit?: AlertOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
+    /**
      * Filter which Alert to delete.
      */
     where: AlertWhereUniqueInput
@@ -11337,6 +11449,30 @@ export namespace Prisma {
   }
 
   /**
+   * Alert.notifications
+   */
+  export type Alert$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
    * Alert without action
    */
   export type AlertDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11348,6 +11484,10 @@ export namespace Prisma {
      * Omit specific fields from the Alert
      */
     omit?: AlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
   }
 
 
@@ -21967,27 +22107,33 @@ export namespace Prisma {
   export type NotificationMinAggregateOutputType = {
     id: string | null
     userId: string | null
+    alertId: string | null
     title: string | null
     message: string | null
     read: boolean | null
+    readAt: Date | null
     createdAt: Date | null
   }
 
   export type NotificationMaxAggregateOutputType = {
     id: string | null
     userId: string | null
+    alertId: string | null
     title: string | null
     message: string | null
     read: boolean | null
+    readAt: Date | null
     createdAt: Date | null
   }
 
   export type NotificationCountAggregateOutputType = {
     id: number
     userId: number
+    alertId: number
     title: number
     message: number
     read: number
+    readAt: number
     createdAt: number
     _all: number
   }
@@ -21996,27 +22142,33 @@ export namespace Prisma {
   export type NotificationMinAggregateInputType = {
     id?: true
     userId?: true
+    alertId?: true
     title?: true
     message?: true
     read?: true
+    readAt?: true
     createdAt?: true
   }
 
   export type NotificationMaxAggregateInputType = {
     id?: true
     userId?: true
+    alertId?: true
     title?: true
     message?: true
     read?: true
+    readAt?: true
     createdAt?: true
   }
 
   export type NotificationCountAggregateInputType = {
     id?: true
     userId?: true
+    alertId?: true
     title?: true
     message?: true
     read?: true
+    readAt?: true
     createdAt?: true
     _all?: true
   }
@@ -22096,9 +22248,11 @@ export namespace Prisma {
   export type NotificationGroupByOutputType = {
     id: string
     userId: string
+    alertId: string | null
     title: string
     message: string
     read: boolean
+    readAt: Date | null
     createdAt: Date
     _count: NotificationCountAggregateOutputType | null
     _min: NotificationMinAggregateOutputType | null
@@ -22122,64 +22276,81 @@ export namespace Prisma {
   export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    alertId?: boolean
     title?: boolean
     message?: boolean
     read?: boolean
+    readAt?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    alert?: boolean | Notification$alertArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    alertId?: boolean
     title?: boolean
     message?: boolean
     read?: boolean
+    readAt?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    alert?: boolean | Notification$alertArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    alertId?: boolean
     title?: boolean
     message?: boolean
     read?: boolean
+    readAt?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    alert?: boolean | Notification$alertArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectScalar = {
     id?: boolean
     userId?: boolean
+    alertId?: boolean
     title?: boolean
     message?: boolean
     read?: boolean
+    readAt?: boolean
     createdAt?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "message" | "read" | "createdAt", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "alertId" | "title" | "message" | "read" | "readAt" | "createdAt", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    alert?: boolean | Notification$alertArgs<ExtArgs>
   }
   export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    alert?: boolean | Notification$alertArgs<ExtArgs>
   }
   export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    alert?: boolean | Notification$alertArgs<ExtArgs>
   }
 
   export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Notification"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      alert: Prisma.$AlertPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
+      alertId: string | null
       title: string
       message: string
       read: boolean
+      readAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["notification"]>
     composites: {}
@@ -22576,6 +22747,7 @@ export namespace Prisma {
   export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    alert<T extends Notification$alertArgs<ExtArgs> = {}>(args?: Subset<T, Notification$alertArgs<ExtArgs>>): Prisma__AlertClient<$Result.GetResult<Prisma.$AlertPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22607,9 +22779,11 @@ export namespace Prisma {
   interface NotificationFieldRefs {
     readonly id: FieldRef<"Notification", 'String'>
     readonly userId: FieldRef<"Notification", 'String'>
+    readonly alertId: FieldRef<"Notification", 'String'>
     readonly title: FieldRef<"Notification", 'String'>
     readonly message: FieldRef<"Notification", 'String'>
     readonly read: FieldRef<"Notification", 'Boolean'>
+    readonly readAt: FieldRef<"Notification", 'DateTime'>
     readonly createdAt: FieldRef<"Notification", 'DateTime'>
   }
     
@@ -23004,6 +23178,25 @@ export namespace Prisma {
      * Limit how many Notifications to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Notification.alert
+   */
+  export type Notification$alertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alert
+     */
+    select?: AlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alert
+     */
+    omit?: AlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertInclude<ExtArgs> | null
+    where?: AlertWhereInput
   }
 
   /**
@@ -73053,7 +73246,9 @@ export namespace Prisma {
     scheduledTime: 'scheduledTime',
     translatedMsgSinhala: 'translatedMsgSinhala',
     translatedMsgTamil: 'translatedMsgTamil',
-    targetSectors: 'targetSectors'
+    targetSectors: 'targetSectors',
+    broadcastRadiusKm: 'broadcastRadiusKm',
+    notifiedCount: 'notifiedCount'
   };
 
   export type AlertScalarFieldEnum = (typeof AlertScalarFieldEnum)[keyof typeof AlertScalarFieldEnum]
@@ -73204,9 +73399,11 @@ export namespace Prisma {
   export const NotificationScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
+    alertId: 'alertId',
     title: 'title',
     message: 'message',
     read: 'read',
+    readAt: 'readAt',
     createdAt: 'createdAt'
   };
 
@@ -74639,6 +74836,9 @@ export namespace Prisma {
     translatedMsgSinhala?: StringNullableFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableFilter<"Alert"> | string | null
     targetSectors?: StringNullableListFilter<"Alert">
+    broadcastRadiusKm?: FloatNullableFilter<"Alert"> | number | null
+    notifiedCount?: IntFilter<"Alert"> | number
+    notifications?: NotificationListRelationFilter
   }
 
   export type AlertOrderByWithRelationInput = {
@@ -74658,6 +74858,9 @@ export namespace Prisma {
     translatedMsgSinhala?: SortOrderInput | SortOrder
     translatedMsgTamil?: SortOrderInput | SortOrder
     targetSectors?: SortOrder
+    broadcastRadiusKm?: SortOrderInput | SortOrder
+    notifiedCount?: SortOrder
+    notifications?: NotificationOrderByRelationAggregateInput
   }
 
   export type AlertWhereUniqueInput = Prisma.AtLeast<{
@@ -74680,6 +74883,9 @@ export namespace Prisma {
     translatedMsgSinhala?: StringNullableFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableFilter<"Alert"> | string | null
     targetSectors?: StringNullableListFilter<"Alert">
+    broadcastRadiusKm?: FloatNullableFilter<"Alert"> | number | null
+    notifiedCount?: IntFilter<"Alert"> | number
+    notifications?: NotificationListRelationFilter
   }, "id">
 
   export type AlertOrderByWithAggregationInput = {
@@ -74699,6 +74905,8 @@ export namespace Prisma {
     translatedMsgSinhala?: SortOrderInput | SortOrder
     translatedMsgTamil?: SortOrderInput | SortOrder
     targetSectors?: SortOrder
+    broadcastRadiusKm?: SortOrderInput | SortOrder
+    notifiedCount?: SortOrder
     _count?: AlertCountOrderByAggregateInput
     _avg?: AlertAvgOrderByAggregateInput
     _max?: AlertMaxOrderByAggregateInput
@@ -74726,6 +74934,8 @@ export namespace Prisma {
     translatedMsgSinhala?: StringNullableWithAggregatesFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableWithAggregatesFilter<"Alert"> | string | null
     targetSectors?: StringNullableListFilter<"Alert">
+    broadcastRadiusKm?: FloatNullableWithAggregatesFilter<"Alert"> | number | null
+    notifiedCount?: IntWithAggregatesFilter<"Alert"> | number
   }
 
   export type SectorWhereInput = {
@@ -75494,21 +75704,27 @@ export namespace Prisma {
     NOT?: NotificationWhereInput | NotificationWhereInput[]
     id?: StringFilter<"Notification"> | string
     userId?: StringFilter<"Notification"> | string
+    alertId?: StringNullableFilter<"Notification"> | string | null
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     read?: BoolFilter<"Notification"> | boolean
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    alert?: XOR<AlertNullableScalarRelationFilter, AlertWhereInput> | null
   }
 
   export type NotificationOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
+    alertId?: SortOrderInput | SortOrder
     title?: SortOrder
     message?: SortOrder
     read?: SortOrder
+    readAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    alert?: AlertOrderByWithRelationInput
   }
 
   export type NotificationWhereUniqueInput = Prisma.AtLeast<{
@@ -75517,19 +75733,24 @@ export namespace Prisma {
     OR?: NotificationWhereInput[]
     NOT?: NotificationWhereInput | NotificationWhereInput[]
     userId?: StringFilter<"Notification"> | string
+    alertId?: StringNullableFilter<"Notification"> | string | null
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     read?: BoolFilter<"Notification"> | boolean
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    alert?: XOR<AlertNullableScalarRelationFilter, AlertWhereInput> | null
   }, "id">
 
   export type NotificationOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
+    alertId?: SortOrderInput | SortOrder
     title?: SortOrder
     message?: SortOrder
     read?: SortOrder
+    readAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: NotificationCountOrderByAggregateInput
     _max?: NotificationMaxOrderByAggregateInput
@@ -75542,9 +75763,11 @@ export namespace Prisma {
     NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Notification"> | string
     userId?: StringWithAggregatesFilter<"Notification"> | string
+    alertId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     title?: StringWithAggregatesFilter<"Notification"> | string
     message?: StringWithAggregatesFilter<"Notification"> | string
     read?: BoolWithAggregatesFilter<"Notification"> | boolean
+    readAt?: DateTimeNullableWithAggregatesFilter<"Notification"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
@@ -79215,6 +79438,9 @@ export namespace Prisma {
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
+    broadcastRadiusKm?: number | null
+    notifiedCount?: number
+    notifications?: NotificationCreateNestedManyWithoutAlertInput
   }
 
   export type AlertUncheckedCreateInput = {
@@ -79234,6 +79460,9 @@ export namespace Prisma {
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
+    broadcastRadiusKm?: number | null
+    notifiedCount?: number
+    notifications?: NotificationUncheckedCreateNestedManyWithoutAlertInput
   }
 
   export type AlertUpdateInput = {
@@ -79253,6 +79482,9 @@ export namespace Prisma {
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
+    broadcastRadiusKm?: NullableFloatFieldUpdateOperationsInput | number | null
+    notifiedCount?: IntFieldUpdateOperationsInput | number
+    notifications?: NotificationUpdateManyWithoutAlertNestedInput
   }
 
   export type AlertUncheckedUpdateInput = {
@@ -79272,6 +79504,9 @@ export namespace Prisma {
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
+    broadcastRadiusKm?: NullableFloatFieldUpdateOperationsInput | number | null
+    notifiedCount?: IntFieldUpdateOperationsInput | number
+    notifications?: NotificationUncheckedUpdateManyWithoutAlertNestedInput
   }
 
   export type AlertCreateManyInput = {
@@ -79291,6 +79526,8 @@ export namespace Prisma {
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
+    broadcastRadiusKm?: number | null
+    notifiedCount?: number
   }
 
   export type AlertUpdateManyMutationInput = {
@@ -79310,6 +79547,8 @@ export namespace Prisma {
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
+    broadcastRadiusKm?: NullableFloatFieldUpdateOperationsInput | number | null
+    notifiedCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type AlertUncheckedUpdateManyInput = {
@@ -79329,6 +79568,8 @@ export namespace Prisma {
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
+    broadcastRadiusKm?: NullableFloatFieldUpdateOperationsInput | number | null
+    notifiedCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type SectorCreateInput = {
@@ -80193,16 +80434,20 @@ export namespace Prisma {
     title: string
     message: string
     read?: boolean
+    readAt?: Date | string | null
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutNotificationsInput
+    alert?: AlertCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateInput = {
     id?: string
     userId: string
+    alertId?: string | null
     title: string
     message: string
     read?: boolean
+    readAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -80211,25 +80456,31 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    alert?: AlertUpdateOneWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    alertId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NotificationCreateManyInput = {
     id?: string
     userId: string
+    alertId?: string | null
     title: string
     message: string
     read?: boolean
+    readAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -80238,15 +80489,18 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NotificationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    alertId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -84398,6 +84652,17 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type AlertCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -84415,12 +84680,16 @@ export namespace Prisma {
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
     targetSectors?: SortOrder
+    broadcastRadiusKm?: SortOrder
+    notifiedCount?: SortOrder
   }
 
   export type AlertAvgOrderByAggregateInput = {
     latitudes?: SortOrder
     longitudes?: SortOrder
     acknowledgementRate?: SortOrder
+    broadcastRadiusKm?: SortOrder
+    notifiedCount?: SortOrder
   }
 
   export type AlertMaxOrderByAggregateInput = {
@@ -84435,6 +84704,8 @@ export namespace Prisma {
     scheduledTime?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
+    broadcastRadiusKm?: SortOrder
+    notifiedCount?: SortOrder
   }
 
   export type AlertMinOrderByAggregateInput = {
@@ -84449,12 +84720,16 @@ export namespace Prisma {
     scheduledTime?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
+    broadcastRadiusKm?: SortOrder
+    notifiedCount?: SortOrder
   }
 
   export type AlertSumOrderByAggregateInput = {
     latitudes?: SortOrder
     longitudes?: SortOrder
     acknowledgementRate?: SortOrder
+    broadcastRadiusKm?: SortOrder
+    notifiedCount?: SortOrder
   }
 
   export type EnumAlertTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -84465,6 +84740,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAlertTypeFilter<$PrismaModel>
     _max?: NestedEnumAlertTypeFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type UserListRelationFilter = {
@@ -84500,17 +84791,6 @@ export namespace Prisma {
     type?: SortOrder
     district?: SortOrder
     province?: SortOrder
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type CampInventoryListRelationFilter = {
@@ -84618,22 +84898,6 @@ export namespace Prisma {
     longitude?: SortOrder
     currentOccupancy?: SortOrder
     totalCapacity?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type ResourceCountOrderByAggregateInput = {
@@ -85075,30 +85339,41 @@ export namespace Prisma {
     age?: SortOrder
   }
 
+  export type AlertNullableScalarRelationFilter = {
+    is?: AlertWhereInput | null
+    isNot?: AlertWhereInput | null
+  }
+
   export type NotificationCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    alertId?: SortOrder
     title?: SortOrder
     message?: SortOrder
     read?: SortOrder
+    readAt?: SortOrder
     createdAt?: SortOrder
   }
 
   export type NotificationMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    alertId?: SortOrder
     title?: SortOrder
     message?: SortOrder
     read?: SortOrder
+    readAt?: SortOrder
     createdAt?: SortOrder
   }
 
   export type NotificationMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    alertId?: SortOrder
     title?: SortOrder
     message?: SortOrder
     read?: SortOrder
+    readAt?: SortOrder
     createdAt?: SortOrder
   }
   export type JsonFilter<$PrismaModel = never> = 
@@ -88319,6 +88594,20 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type NotificationCreateNestedManyWithoutAlertInput = {
+    create?: XOR<NotificationCreateWithoutAlertInput, NotificationUncheckedCreateWithoutAlertInput> | NotificationCreateWithoutAlertInput[] | NotificationUncheckedCreateWithoutAlertInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutAlertInput | NotificationCreateOrConnectWithoutAlertInput[]
+    createMany?: NotificationCreateManyAlertInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutAlertInput = {
+    create?: XOR<NotificationCreateWithoutAlertInput, NotificationUncheckedCreateWithoutAlertInput> | NotificationCreateWithoutAlertInput[] | NotificationUncheckedCreateWithoutAlertInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutAlertInput | NotificationCreateOrConnectWithoutAlertInput[]
+    createMany?: NotificationCreateManyAlertInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type EnumAlertTypeFieldUpdateOperationsInput = {
     set?: $Enums.AlertType
   }
@@ -88341,6 +88630,42 @@ export namespace Prisma {
   export type AlertUpdatetargetSectorsInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NotificationUpdateManyWithoutAlertNestedInput = {
+    create?: XOR<NotificationCreateWithoutAlertInput, NotificationUncheckedCreateWithoutAlertInput> | NotificationCreateWithoutAlertInput[] | NotificationUncheckedCreateWithoutAlertInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutAlertInput | NotificationCreateOrConnectWithoutAlertInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutAlertInput | NotificationUpsertWithWhereUniqueWithoutAlertInput[]
+    createMany?: NotificationCreateManyAlertInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutAlertInput | NotificationUpdateWithWhereUniqueWithoutAlertInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutAlertInput | NotificationUpdateManyWithWhereWithoutAlertInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutAlertNestedInput = {
+    create?: XOR<NotificationCreateWithoutAlertInput, NotificationUncheckedCreateWithoutAlertInput> | NotificationCreateWithoutAlertInput[] | NotificationUncheckedCreateWithoutAlertInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutAlertInput | NotificationCreateOrConnectWithoutAlertInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutAlertInput | NotificationUpsertWithWhereUniqueWithoutAlertInput[]
+    createMany?: NotificationCreateManyAlertInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutAlertInput | NotificationUpdateWithWhereUniqueWithoutAlertInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutAlertInput | NotificationUpdateManyWithWhereWithoutAlertInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutCurrentSectorInput = {
@@ -88485,14 +88810,6 @@ export namespace Prisma {
     connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
     createMany?: HospitalReferralCreateManyCampInputEnvelope
     connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type ReliefCampUpdateservicesInput = {
@@ -89132,12 +89449,28 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type AlertCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<AlertCreateWithoutNotificationsInput, AlertUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: AlertCreateOrConnectWithoutNotificationsInput
+    connect?: AlertWhereUniqueInput
+  }
+
   export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
     create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
     upsert?: UserUpsertWithoutNotificationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type AlertUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<AlertCreateWithoutNotificationsInput, AlertUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: AlertCreateOrConnectWithoutNotificationsInput
+    upsert?: AlertUpsertWithoutNotificationsInput
+    disconnect?: AlertWhereInput | boolean
+    delete?: AlertWhereInput | boolean
+    connect?: AlertWhereUniqueInput
+    update?: XOR<XOR<AlertUpdateToOneWithWhereWithoutNotificationsInput, AlertUpdateWithoutNotificationsInput>, AlertUncheckedUpdateWithoutNotificationsInput>
   }
 
   export type IncidentReportCreateNestedOneWithoutHistoryInput = {
@@ -90966,14 +91299,18 @@ export namespace Prisma {
     title: string
     message: string
     read?: boolean
+    readAt?: Date | string | null
     createdAt?: Date | string
+    alert?: AlertCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateWithoutUserInput = {
     id?: string
+    alertId?: string | null
     title: string
     message: string
     read?: boolean
+    readAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -91572,9 +91909,11 @@ export namespace Prisma {
     NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
     id?: StringFilter<"Notification"> | string
     userId?: StringFilter<"Notification"> | string
+    alertId?: StringNullableFilter<"Notification"> | string | null
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     read?: BoolFilter<"Notification"> | boolean
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
   }
 
@@ -92365,6 +92704,52 @@ export namespace Prisma {
     result?: EnumVerificationResultFilter<"VerifierAction"> | $Enums.VerificationResult
     comment?: StringNullableFilter<"VerifierAction"> | string | null
     createdAt?: DateTimeFilter<"VerifierAction"> | Date | string
+  }
+
+  export type NotificationCreateWithoutAlertInput = {
+    id?: string
+    title: string
+    message: string
+    read?: boolean
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutAlertInput = {
+    id?: string
+    userId: string
+    title: string
+    message: string
+    read?: boolean
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutAlertInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutAlertInput, NotificationUncheckedCreateWithoutAlertInput>
+  }
+
+  export type NotificationCreateManyAlertInputEnvelope = {
+    data: NotificationCreateManyAlertInput | NotificationCreateManyAlertInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutAlertInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutAlertInput, NotificationUncheckedUpdateWithoutAlertInput>
+    create: XOR<NotificationCreateWithoutAlertInput, NotificationUncheckedCreateWithoutAlertInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutAlertInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutAlertInput, NotificationUncheckedUpdateWithoutAlertInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutAlertInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutAlertInput>
   }
 
   export type UserCreateWithoutCurrentSectorInput = {
@@ -94464,6 +94849,53 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
   }
 
+  export type AlertCreateWithoutNotificationsInput = {
+    id?: string
+    title: string
+    message: string
+    type?: $Enums.AlertType
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    latitudes?: AlertCreatelatitudesInput | number[]
+    locations?: AlertCreatelocationsInput | string[]
+    longitudes?: AlertCreatelongitudesInput | number[]
+    acknowledgementRate?: number | null
+    channels?: NullableJsonNullValueInput | InputJsonValue
+    scheduledTime?: Date | string | null
+    translatedMsgSinhala?: string | null
+    translatedMsgTamil?: string | null
+    targetSectors?: AlertCreatetargetSectorsInput | string[]
+    broadcastRadiusKm?: number | null
+    notifiedCount?: number
+  }
+
+  export type AlertUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    title: string
+    message: string
+    type?: $Enums.AlertType
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    latitudes?: AlertCreatelatitudesInput | number[]
+    locations?: AlertCreatelocationsInput | string[]
+    longitudes?: AlertCreatelongitudesInput | number[]
+    acknowledgementRate?: number | null
+    channels?: NullableJsonNullValueInput | InputJsonValue
+    scheduledTime?: Date | string | null
+    translatedMsgSinhala?: string | null
+    translatedMsgTamil?: string | null
+    targetSectors?: AlertCreatetargetSectorsInput | string[]
+    broadcastRadiusKm?: number | null
+    notifiedCount?: number
+  }
+
+  export type AlertCreateOrConnectWithoutNotificationsInput = {
+    where: AlertWhereUniqueInput
+    create: XOR<AlertCreateWithoutNotificationsInput, AlertUncheckedCreateWithoutNotificationsInput>
+  }
+
   export type UserUpsertWithoutNotificationsInput = {
     update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
     create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
@@ -94545,6 +94977,59 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type AlertUpsertWithoutNotificationsInput = {
+    update: XOR<AlertUpdateWithoutNotificationsInput, AlertUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<AlertCreateWithoutNotificationsInput, AlertUncheckedCreateWithoutNotificationsInput>
+    where?: AlertWhereInput
+  }
+
+  export type AlertUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: AlertWhereInput
+    data: XOR<AlertUpdateWithoutNotificationsInput, AlertUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type AlertUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    locations?: AlertUpdatelocationsInput | string[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
+    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    channels?: NullableJsonNullValueInput | InputJsonValue
+    scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
+    translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
+    targetSectors?: AlertUpdatetargetSectorsInput | string[]
+    broadcastRadiusKm?: NullableFloatFieldUpdateOperationsInput | number | null
+    notifiedCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AlertUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: EnumAlertTypeFieldUpdateOperationsInput | $Enums.AlertType
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    latitudes?: AlertUpdatelatitudesInput | number[]
+    locations?: AlertUpdatelocationsInput | string[]
+    longitudes?: AlertUpdatelongitudesInput | number[]
+    acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    channels?: NullableJsonNullValueInput | InputJsonValue
+    scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
+    translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
+    targetSectors?: AlertUpdatetargetSectorsInput | string[]
+    broadcastRadiusKm?: NullableFloatFieldUpdateOperationsInput | number | null
+    notifiedCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type IncidentReportCreateWithoutHistoryInput = {
@@ -98588,9 +99073,11 @@ export namespace Prisma {
 
   export type NotificationCreateManyUserInput = {
     id?: string
+    alertId?: string | null
     title: string
     message: string
     read?: boolean
+    readAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -99008,22 +99495,28 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    alert?: AlertUpdateOneWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    alertId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NotificationUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    alertId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -99559,6 +100052,46 @@ export namespace Prisma {
     helpRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     result?: EnumVerificationResultFieldUpdateOperationsInput | $Enums.VerificationResult
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyAlertInput = {
+    id?: string
+    userId: string
+    title: string
+    message: string
+    read?: boolean
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateWithoutAlertInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutAlertInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutAlertInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

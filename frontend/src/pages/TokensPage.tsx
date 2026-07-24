@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2, BarChart2, ShieldAlert, HeartHandshake, List } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { reliefTokenService, userService } from '@/services/api'
@@ -26,6 +27,7 @@ interface Token {
 }
 
 export default function TokensPage() {
+  const { t } = useTranslation()
   const [tokens, setTokens] = useState<Token[]>([])
   const [users, setUsers] = useState<any[]>([])
   const [donors, setDonors] = useState<any[]>([])
@@ -181,22 +183,22 @@ export default function TokensPage() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex overflow-x-auto gap-2 bg-white dark:bg-gray-900 p-2 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
+        <div className="flex overflow-x-auto gap-2 bg-[#131f33] p-2 rounded-2xl shadow-sm border border-cyan-400/10">
           {[
-            { id: 'directory', label: 'Token Directory', icon: List },
-            { id: 'issue', label: 'Issue Token', icon: Plus },
-            { id: 'scanner', label: 'QR Scanner', icon: QrCode },
-            { id: 'analytics', label: 'Fraud Analytics', icon: ShieldAlert },
-            { id: 'donors', label: 'Donor Campaigns', icon: HeartHandshake },
+            { id: 'directory', label: t('tokens_page.tabs.directory'), icon: List },
+            { id: 'issue', label: t('tokens_page.tabs.issue'), icon: Plus },
+            { id: 'scanner', label: t('tokens_page.tabs.scanner'), icon: QrCode },
+            { id: 'analytics', label: t('tokens_page.tabs.analytics'), icon: ShieldAlert },
+            { id: 'donors', label: t('tokens_page.tabs.campaigns'), icon: HeartHandshake },
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
                 "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
-                activeTab === tab.id 
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/20" 
-                  : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50"
+                activeTab === tab.id
+                  ? "bg-brand-500 text-white shadow-md shadow-cyan-500/20"
+                  : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -213,40 +215,40 @@ export default function TokensPage() {
 
         {!loading && activeTab === 'directory' && (
           <div className="suraksha-card p-8 rounded-[1.5rem]">
-            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">Recent Tokens</h3>
+            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">{t('tokens_page.recent_tokens')}</h3>
             <div className="space-y-4">
               {tokens.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-10">No tokens issued yet.</p>
+                <p className="text-center text-gray-500 dark:text-gray-400 py-10">{t('tokens_page.no_tokens')}</p>
               ) : tokens.map(token => (
-                <div key={token.id} className="p-6 border border-gray-200 dark:border-gray-800 rounded-2xl hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div key={token.id} className="p-6 border border-white/10 rounded-2xl hover:bg-white/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="font-mono text-sm font-bold text-gray-500 dark:text-gray-400">{token.code}</span>
+                      <span className="font-mono text-sm font-bold text-slate-400">{token.code}</span>
                       <span className={cn(
                         "text-[10px] font-bold px-2 py-1 rounded-md tracking-wider uppercase",
-                        token.status === 'ACTIVE' ? "bg-blue-100 text-blue-700" :
-                        token.status === 'PARTIALLY_USED' ? "bg-amber-100 text-amber-700" :
-                        "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
+                        token.status === 'ACTIVE' ? "bg-blue-500/15 text-blue-400" :
+                        token.status === 'PARTIALLY_USED' ? "bg-amber-500/15 text-amber-400" :
+                        "bg-white/10 text-slate-300"
                       )}>{token.status}</span>
                       {token.isHouseholdBundle && (
-                         <span className="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase">Household Bundle</span>
+                         <span className="bg-purple-500/15 text-purple-400 text-[10px] font-bold px-2 py-1 rounded-md uppercase">{t('tokens_page.household_bundle')}</span>
                       )}
                     </div>
-                    <h4 className="font-bold text-lg">{token.user?.name || 'Unknown Recipient'}</h4>
+                    <h4 className="font-bold text-lg text-white/90">{token.user?.name || t('tokens_page.unknown_recipient')}</h4>
                     <div className="flex gap-2 mt-2 flex-wrap">
                       {token.categories.map(c => (
-                        <span key={c} className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 text-[10px] font-bold px-2 py-1 rounded-full">{c}</span>
+                        <span key={c} className="bg-white/8 border border-white/10 text-slate-300 text-[10px] font-bold px-2 py-1 rounded-full">{c}</span>
                       ))}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-bold text-gray-500 dark:text-gray-400 flex items-center justify-end gap-1">
+                    <div className="text-sm font-bold text-slate-400 flex items-center justify-end gap-1">
                       <Clock className="w-3 h-3" />
                       {formatDistanceToNow(new Date(token.createdAt))} ago
                     </div>
                     {token.donor && (
-                      <div className="text-xs font-bold text-emerald-600 mt-2 bg-emerald-50 inline-block px-2 py-1 rounded">
-                        Sponsored by {token.donor.donorName}
+                      <div className="text-xs font-bold text-emerald-400 mt-2 bg-emerald-500/15 inline-block px-2 py-1 rounded">
+                        {t('tokens_page.sponsored_by')} {token.donor.donorName}
                       </div>
                     )}
                   </div>
@@ -259,23 +261,23 @@ export default function TokensPage() {
         {!loading && activeTab === 'issue' && (
           <div className="grid md:grid-cols-2 gap-8">
             <div className="suraksha-card p-8 rounded-[1.5rem]">
-              <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">Issue New Token</h3>
+              <h3 className="text-xl font-black text-gray-800 dark:text-white/90 mb-6">{t('tokens_page.issue_new_token')}</h3>
               <form onSubmit={handleIssueToken} className="space-y-6">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Recipient</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.recipient')}</label>
                   <select 
                     required
                     className="suraksha-input w-full"
                     value={issueData.userId}
                     onChange={(e) => setIssueData({...issueData, userId: e.target.value})}
                   >
-                    <option value="">Select a user...</option>
+                    <option value="">{t('tokens_page.select_user')}</option>
                     {users.map(u => <option key={u.id} value={u.id}>{u.name} ({u.email})</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Token Categories (Multi-select)</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.token_categories')}</label>
                   <div className="flex flex-wrap gap-2">
                     {AVAILABLE_CATEGORIES.map(cat => (
                       <button
@@ -284,9 +286,9 @@ export default function TokensPage() {
                         onClick={() => toggleCategory(cat, 'issue')}
                         className={cn(
                           "px-3 py-1.5 rounded-full text-xs font-bold transition-all border",
-                          issueData.categories.includes(cat) 
-                            ? "bg-blue-600 text-white border-blue-600 shadow-md" 
-                            : "bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:bg-gray-800"
+                          issueData.categories.includes(cat)
+                            ? "bg-cyan-500/30 text-cyan-300 border-cyan-400/50 shadow-md"
+                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
                         )}
                       >
                         {cat}
@@ -295,21 +297,21 @@ export default function TokensPage() {
                   </div>
                 </div>
 
-                <div className="p-4 bg-purple-50 rounded-xl border border-purple-100 space-y-4">
+                <div className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20 space-y-4">
                   <div className="flex items-center gap-2">
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       id="bundle"
                       checked={issueData.isHouseholdBundle}
                       onChange={(e) => setIssueData({...issueData, isHouseholdBundle: e.target.checked})}
-                      className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500"
+                      className="w-4 h-4 rounded text-purple-500 focus:ring-purple-500"
                     />
-                    <label htmlFor="bundle" className="font-bold text-sm text-purple-900">Issue as Household Bundle</label>
+                    <label htmlFor="bundle" className="font-bold text-sm text-purple-300">{t('tokens_page.household_bundle_label')}</label>
                   </div>
                   {issueData.isHouseholdBundle && (
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold text-purple-700 uppercase mb-1">Max Usages</label>
+                        <label className="block text-xs font-bold text-purple-400 uppercase mb-1">{t('tokens_page.max_usages')}</label>
                         <input 
                           type="number" min="1"
                           className="suraksha-input w-full py-2"
@@ -318,11 +320,11 @@ export default function TokensPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-purple-700 uppercase mb-1">Household ID (Optional)</label>
+                        <label className="block text-xs font-bold text-purple-400 uppercase mb-1">{t('tokens_page.household_id')}</label>
                         <input 
                           type="text"
                           className="suraksha-input w-full py-2"
-                          placeholder="Ref ID"
+                          placeholder={t('tokens_page.ref_id')}
                           value={issueData.householdId}
                           onChange={(e) => setIssueData({...issueData, householdId: e.target.value})}
                         />
@@ -332,13 +334,13 @@ export default function TokensPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Donor Sponsorship (Optional)</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.donor_sponsorship')}</label>
                   <select 
                     className="suraksha-input w-full"
                     value={issueData.donorId}
                     onChange={(e) => setIssueData({...issueData, donorId: e.target.value})}
                   >
-                    <option value="">None</option>
+                    <option value="">{t('tokens_page.none')}</option>
                     {donors.map(d => <option key={d.id} value={d.id}>{d.donorName} - {d.targetCategories.join(', ')}</option>)}
                   </select>
                 </div>
@@ -348,26 +350,26 @@ export default function TokensPage() {
                   className="w-full bg-brand-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-blue-500/30 transition-all disabled:opacity-50"
                 >
                   {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <QrCode className="w-5 h-5"/>}
-                  Generate QR Token
+                  {t('tokens_page.generate_qr')}
                 </button>
               </form>
             </div>
 
             {/* QR Code Display Area */}
-            <div className="suraksha-card p-8 rounded-[1.5rem] flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800/50 border-dashed border-2 border-gray-200 dark:border-gray-700">
+            <div className="suraksha-card p-8 rounded-[1.5rem] flex flex-col items-center justify-center border-dashed border-2 border-white/10">
               {generatedToken ? (
                 <div className="text-center space-y-4 animate-in zoom-in">
-                  <h4 className="font-black text-xl text-green-600">Token Generated!</h4>
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-sm inline-block">
+                  <h4 className="font-black text-xl text-green-600">{t('tokens_page.token_generated')}</h4>
+                  <div className="bg-white p-4 rounded-2xl shadow-sm inline-block">
                     <img src={generatedToken.qrCodeData} alt="QR Code" className="w-48 h-48" />
                   </div>
                   <div className="font-mono font-bold text-gray-500 dark:text-gray-400">{generatedToken.code}</div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">Have the recipient screenshot or print this QR code to claim their items at any distribution center.</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">{t('tokens_page.token_instructions')}</p>
                 </div>
               ) : (
                 <div className="text-center text-gray-400 dark:text-gray-500">
                   <QrCode className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p className="font-bold">Generated token QR code will appear here</p>
+                  <p className="font-bold">{t('tokens_page.qr_placeholder')}</p>
                 </div>
               )}
             </div>
@@ -377,16 +379,16 @@ export default function TokensPage() {
         {!loading && activeTab === 'scanner' && (
           <div className="max-w-2xl mx-auto suraksha-card p-8 rounded-[1.5rem]">
              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                   <Search className="w-8 h-8 text-blue-600" />
+                <div className="w-16 h-16 bg-cyan-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                   <Search className="w-8 h-8 text-cyan-400" />
                 </div>
-                <h3 className="text-2xl font-black text-gray-800 dark:text-white/90">Field Scanner Simulator</h3>
+                <h3 className="text-2xl font-black text-gray-800 dark:text-white/90">{t('tokens_page.scanner_title')}</h3>
                 
              </div>
              
              <form onSubmit={handleScanToken} className="space-y-5">
                <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Token Code / SRK Number</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.token_code')}</label>
                   <input 
                     type="text" required autoFocus
                     placeholder="SRK-..."
@@ -398,7 +400,7 @@ export default function TokensPage() {
                
                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Item Type Provided</label>
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.item_type')}</label>
                     <input 
                       type="text" required
                       placeholder="e.g. Rice 5kg"
@@ -408,7 +410,7 @@ export default function TokensPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Quantity</label>
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.quantity')}</label>
                     <input 
                       type="number" min="1" required
                       className="suraksha-input w-full"
@@ -418,18 +420,18 @@ export default function TokensPage() {
                   </div>
                </div>
 
-               <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 space-y-4">
-                  <h4 className="font-bold text-amber-800 flex items-center gap-2"><AlertCircle className="w-4 h-4"/> Location Data (for Fraud Detection)</h4>
+               <div className="bg-amber-500/10 p-4 rounded-xl border border-amber-500/20 space-y-4">
+                  <h4 className="font-bold text-amber-400 flex items-center gap-2"><AlertCircle className="w-4 h-4"/> {t('tokens_page.location_data')}</h4>
                   <div className="grid grid-cols-2 gap-4">
-                    <input 
-                      type="number" step="any" placeholder="Latitude"
-                      className="suraksha-input w-full py-2 bg-white dark:bg-gray-900"
+                    <input
+                      type="number" step="any" placeholder={t('tokens_page.latitude')}
+                      className="suraksha-input w-full py-2"
                       value={scanData.locationLat}
                       onChange={(e) => setScanData({...scanData, locationLat: e.target.value})}
                     />
-                    <input 
-                      type="number" step="any" placeholder="Longitude"
-                      className="suraksha-input w-full py-2 bg-white dark:bg-gray-900"
+                    <input
+                      type="number" step="any" placeholder={t('tokens_page.longitude')}
+                      className="suraksha-input w-full py-2"
                       value={scanData.locationLng}
                       onChange={(e) => setScanData({...scanData, locationLng: e.target.value})}
                     />
@@ -438,10 +440,10 @@ export default function TokensPage() {
 
                <button 
                   type="submit" disabled={isSubmitting}
-                  className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all disabled:opacity-50"
+                  className="w-full bg-brand-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-cyan-500/20 transition-all disabled:opacity-50"
                 >
                   {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin"/> : <CheckCircle2 className="w-5 h-5"/>}
-                  Verify & Submit Claim
+                  {t('tokens_page.verify_submit')}
                 </button>
              </form>
           </div>
@@ -449,11 +451,11 @@ export default function TokensPage() {
 
         {!loading && activeTab === 'analytics' && (
           <div className="space-y-6">
-            <div className="bg-red-50 border border-red-200 p-6 rounded-2xl flex items-start gap-4">
-              <ShieldAlert className="w-8 h-8 text-red-500 mt-1" />
+            <div className="bg-red-500/10 border border-red-500/30 p-6 rounded-2xl flex items-start gap-4">
+              <ShieldAlert className="w-8 h-8 text-red-400 mt-1" />
               <div>
-                <h3 className="text-red-800 font-black text-lg">Fraud Risk Dashboard</h3>
-                <p className="text-red-600/80 text-sm mt-1">Tokens listed below have triggered security heuristics (e.g., rapid consecutive scans, massive location jumps). Please verify recipients manually.</p>
+                <h3 className="text-red-400 font-black text-lg">{t('tokens_page.fraud_dashboard')}</h3>
+                <p className="text-red-400/70 text-sm mt-1">{t('tokens_page.fraud_desc')}</p>
               </div>
             </div>
 
@@ -461,24 +463,27 @@ export default function TokensPage() {
               {fraudAnalytics.length === 0 ? (
                 <div className="suraksha-card p-10 text-center text-emerald-600 font-bold flex flex-col items-center">
                    <CheckCircle2 className="w-12 h-12 mb-2 opacity-50" />
-                   No high-risk tokens detected.
+                   {t('tokens_page.no_high_risk')}
                 </div>
               ) : fraudAnalytics.map((token: any) => (
                 <div key={token.id} className="suraksha-card p-6 border-l-4 border-l-red-500 flex flex-col md:flex-row justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <h4 className="font-black text-lg text-slate-800">{token.code}</h4>
-                      <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded">Risk Score: {(token.fraudRiskScore * 100).toFixed(0)}%</span>
+                      <h4 className="font-black text-lg text-white/90">{token.code}</h4>
+                      <span className="bg-red-500/15 text-red-400 text-xs font-bold px-2 py-1 rounded">{t('tokens_page.risk_score')} {(token.fraudRiskScore * 100).toFixed(0)}%</span>
                     </div>
-                    <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-1">User: {token.user?.name}</p>
-                    <div className="mt-3 text-xs text-gray-400 dark:text-gray-500 font-medium space-y-1">
-                      <p>Total Claims: {token.claims?.length}</p>
-                      <p>Last Claim: {token.claims?.[token.claims.length-1]?.claimedAt ? new Date(token.claims[token.claims.length-1].claimedAt).toLocaleString() : 'N/A'}</p>
+                    <p className="text-sm font-bold text-slate-400 mt-1">{t('tokens_page.user_label')} {token.user?.name}</p>
+                    <div className="mt-3 text-xs text-slate-500 font-medium space-y-1">
+                      <p>{t('tokens_page.total_claims')} {token.claims?.length}</p>
+                      <p>{t('tokens_page.last_claim')} {token.claims?.[token.claims.length-1]?.claimedAt ? new Date(token.claims[token.claims.length-1].claimedAt).toLocaleString() : 'N/A'}</p>
                     </div>
                   </div>
                   <div className="md:text-right">
-                    <button className="bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:bg-gray-700 text-slate-700 font-bold px-4 py-2 rounded-lg text-sm transition-all">
-                      Freeze Token
+                    <button
+                      onClick={() => showToast(`Token ${token.code} freeze requested — contact system admin to apply.`, 'warning')}
+                      className="bg-red-500/15 hover:bg-red-500/25 text-red-400 border border-red-500/30 font-bold px-4 py-2 rounded-lg text-sm transition-all"
+                    >
+                      {t('tokens_page.freeze_token')}
                     </button>
                   </div>
                 </div>
@@ -490,10 +495,10 @@ export default function TokensPage() {
         {!loading && activeTab === 'donors' && (
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 suraksha-card p-6 rounded-[1.5rem] h-fit">
-              <h3 className="text-lg font-black text-gray-800 dark:text-white/90 mb-4">Create Campaign</h3>
+              <h3 className="text-lg font-black text-gray-800 dark:text-white/90 mb-4">{t('tokens_page.create_campaign')}</h3>
               <form onSubmit={handleCreateDonor} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Donor Name / Org</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">{t('tokens_page.donor_name_org')}</label>
                   <input 
                     type="text" required
                     className="suraksha-input w-full"
@@ -502,7 +507,7 @@ export default function TokensPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Contribution (LKR)</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">{t('tokens_page.contribution')}</label>
                   <input 
                     type="number" required
                     className="suraksha-input w-full"
@@ -511,7 +516,7 @@ export default function TokensPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">Targeted Impact Areas</label>
+                  <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.targeted_impact')}</label>
                   <div className="flex flex-wrap gap-2">
                     {AVAILABLE_CATEGORIES.map(cat => (
                       <button
@@ -519,9 +524,9 @@ export default function TokensPage() {
                         onClick={() => toggleCategory(cat, 'donor')}
                         className={cn(
                           "px-2 py-1 rounded border text-[10px] font-bold transition-all",
-                          donorData.targetCategories.includes(cat) 
-                            ? "bg-emerald-600 text-white border-emerald-600" 
-                            : "bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700"
+                          donorData.targetCategories.includes(cat)
+                            ? "bg-emerald-500/25 text-emerald-300 border-emerald-400/50"
+                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
                         )}
                       >
                         {cat}
@@ -534,29 +539,29 @@ export default function TokensPage() {
                   className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-emerald-700 transition-all disabled:opacity-50"
                 >
                   {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin"/> : <Plus className="w-4 h-4"/>}
-                  Create Campaign
+                  {t('tokens_page.create_campaign')}
                 </button>
               </form>
             </div>
 
             <div className="lg:col-span-2 space-y-4">
                {donors.length === 0 ? (
-                 <div className="text-center text-gray-500 dark:text-gray-400 py-10 suraksha-card rounded-2xl">No campaigns yet.</div>
+                 <div className="text-center text-gray-500 dark:text-gray-400 py-10 suraksha-card rounded-2xl">{t('tokens_page.no_campaigns')}</div>
                ) : donors.map((donor: any) => (
                  <div key={donor.id} className="suraksha-card p-6 rounded-[1.5rem] flex flex-col sm:flex-row justify-between gap-4">
                    <div>
-                     <h4 className="font-black text-xl text-slate-800">{donor.donorName}</h4>
-                     <p className="text-emerald-600 font-bold mb-3">LKR {donor.contributionAmount.toLocaleString()}</p>
+                     <h4 className="font-black text-xl text-white/90">{donor.donorName}</h4>
+                     <p className="text-emerald-400 font-bold mb-3">LKR {donor.contributionAmount.toLocaleString()}</p>
                      <div className="flex flex-wrap gap-2">
-                       {donor.targetCategories.map((c: string) => <span key={c} className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">{c}</span>)}
+                       {donor.targetCategories.map((c: string) => <span key={c} className="bg-emerald-500/15 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">{c}</span>)}
                      </div>
                    </div>
                    <div className="sm:text-right flex flex-col justify-between">
-                     <div className="text-gray-500 dark:text-gray-400 text-sm font-bold">
-                       Tokens Issued: {donor.tokens?.length || 0}
+                     <div className="text-slate-400 text-sm font-bold">
+                       {t('tokens_page.tokens_issued')} {donor.tokens?.length || 0}
                      </div>
-                     <div className="text-xs text-gray-400 dark:text-gray-500 mt-2 bg-gray-50 dark:bg-gray-800/50 px-3 py-2 rounded-lg inline-block">
-                       Impact: {donor.tokens?.reduce((acc: number, t: any) => acc + (t.claims?.length || 0), 0) || 0} successful claims
+                     <div className="text-xs text-slate-500 mt-2 bg-white/5 px-3 py-2 rounded-lg inline-block">
+                       {t('tokens_page.impact')} {donor.tokens?.reduce((acc: number, t: any) => acc + (t.claims?.length || 0), 0) || 0} {t('tokens_page.successful_claims')}
                      </div>
                    </div>
                  </div>
@@ -568,9 +573,9 @@ export default function TokensPage() {
         {toast && (
           <div className={cn(
             "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
-            toast.type === 'success' ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : 
-            toast.type === 'error' ? "bg-red-50 text-red-600 border border-red-100" :
-            "bg-amber-50 text-amber-600 border border-amber-100"
+            toast.type === 'success' ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30" :
+            toast.type === 'error' ? "bg-[#131f33] text-red-400 border border-red-500/30" :
+            "bg-[#131f33] text-amber-400 border border-amber-500/30"
           )}>
             {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
             <span className="font-bold text-sm tracking-wide">{toast.message}</span>

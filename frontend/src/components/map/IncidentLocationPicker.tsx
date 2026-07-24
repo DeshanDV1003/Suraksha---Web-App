@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -141,13 +141,13 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
         )}
       </div>
 
-      {error && <div className="text-red-500 text-xs font-semibold px-1">⚠️ {error}</div>}
+      {error && <div className="text-red-500 text-xs font-semibold px-1">âš ï¸ {error}</div>}
 
       {coords ? (
         <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all">
           <div className="relative h-48 w-full z-0">
             <div className="absolute top-3 left-3 bg-white dark:bg-gray-900/90 backdrop-blur-sm shadow border px-2.5 py-1.5 rounded-lg text-[10px] font-black text-blue-600 uppercase tracking-widest z-[1000]">
-              📍 Click map to refine marker
+              ðŸ“ Click map to refine marker
             </div>
             <MapContainer center={coords} zoom={15} style={{ height: '100%', width: '100%' }}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -160,16 +160,17 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
             <div className="bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
               <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Target Safety Zone:</span>
               <span className="bg-blue-50 text-blue-600 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-blue-100">
-                🗺️ {zone.zoneName} District
+                ðŸ—ºï¸ {zone.zoneName} District
               </span>
             </div>
           )}
         </div>
       ) : (
         <div className="rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50/50 p-8 text-center text-gray-400 dark:text-gray-500 text-xs font-bold leading-normal transition-all hover:bg-gray-50 dark:bg-gray-800/50">
-          📍 Type an address above or drag map to place a precise incident coordinate pin.
+          ðŸ“ Type an address above or drag map to place a precise incident coordinate pin.
         </div>
       )}
     </div>
   );
 }
+

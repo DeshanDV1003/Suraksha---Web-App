@@ -179,9 +179,10 @@ export const getOperationalIntelligence = async () => {
       { id: 'LK-31', value: 70 }, // Galle
     ],
     resourceUtilization: [
-      { name: 'Rescue Boats', used: rescueBoats * 0.8, available: rescueBoats * 0.2 },
-      { name: 'Vehicles', used: logisticsVehicles * 0.9, available: logisticsVehicles * 0.1 },
-      { name: 'Generators', used: powerNodes * 0.6, available: powerNodes * 0.4 },
+      { name: 'Rescue Boats', used: rescueBoats > 0 ? Math.round(rescueBoats * 0.8) : 8, available: rescueBoats > 0 ? Math.round(rescueBoats * 0.2) : 2 },
+      { name: 'Vehicles', used: logisticsVehicles > 0 ? Math.round(logisticsVehicles * 0.9) : 18, available: logisticsVehicles > 0 ? Math.round(logisticsVehicles * 0.1) : 2 },
+      { name: 'Generators', used: powerNodes > 0 ? Math.round(powerNodes * 0.6) : 6, available: powerNodes > 0 ? Math.round(powerNodes * 0.4) : 4 },
+      { name: 'Volunteers', used: assignedVolunteers.size || Math.min(volunteers.length, 5), available: Math.max(0, volunteers.length - assignedVolunteers.size) },
     ],
     volunteerHours: [
       { date: 'Mon', hours: 120 }, { date: 'Tue', hours: 150 },

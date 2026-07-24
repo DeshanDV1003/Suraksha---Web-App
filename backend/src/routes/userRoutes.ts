@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUsers, updateUserRole, deleteUser, updateProfile, getMe, getRBACMatrix, updateRBACMatrix, bulkImportUsers, getAuditLogs, toggleFieldResponderApp, sendAppLink } from '../controllers/userController';
+import { getUsers, updateUserRole, deleteUser, updateProfile, getMe, getRBACMatrix, updateRBACMatrix, bulkImportUsers, getAuditLogs, toggleFieldResponderApp, sendAppLink, getSessions, deleteSession } from '../controllers/userController';
 import { authMiddleware, adminMiddleware, officerMiddleware } from '../middleware/auth';
 
 const router = Router();
@@ -19,6 +19,10 @@ router.post('/bulk-import', authMiddleware, adminMiddleware, bulkImportUsers);
 
 // Audit
 router.get('/audit', authMiddleware, adminMiddleware, getAuditLogs);
+
+// Sessions
+router.get('/me/sessions', authMiddleware, getSessions);
+router.delete('/me/sessions/:id', authMiddleware, deleteSession);
 
 // Field Responder
 router.post('/:id/field-status', authMiddleware, officerMiddleware, toggleFieldResponderApp);

@@ -4,6 +4,7 @@ import { processReport } from '../services/mlService';
 import prisma from '../utils/prisma';
 import { geocodeAddress } from '../services/geocodingService';
 import { findZoneForCoordinates } from '../services/zoneService';
+import { notifyAdmins, sendNotification } from '../services/notificationService';
 
 /**
  * @swagger
@@ -155,6 +156,11 @@ export const createIncident = async (req: any, res: Response) => {
           nlpEntities: mlResult.nlp_entities,
           detectedLanguage: mlResult.detected_language,
         });
+        // Push an in-app notification for high/critical classification
+        notifyAdmins(
+          `${severity} Incident Classified`,
+          `"${incident.title}" at ${incident.location} has been classified as ${severity} priority (${Math.round((mlResult.priority_confidence ?? 0) * 100)}% confidence).`
+        ).catch(() => {});
       }
 
       io.emit('incident-updated', {
@@ -164,6 +170,12 @@ export const createIncident = async (req: any, res: Response) => {
       });
 
     }).catch(err => console.error('Async ML processing failed:', err));
+
+    // Notify all admins/responders about the new incident
+    notifyAdmins(
+      'New Incident Reported',
+      `"${incident.title}" reported at ${incident.location}. Awaiting priority classification.`
+    ).catch(() => {});
 
     // Emit initial socket event for real-time update
     const io = req.app.get('socketio');
@@ -261,6 +273,15 @@ export const updateIncidentStatus = async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const { status } = req.body;
     const incident = await incidentService.updateIncidentStatus(id, status);
+
+    // Notify the reporter that their incident status changed
+    if (incident.reporterId) {
+      sendNotification(
+        incident.reporterId,
+        `Incident ${status.replace('_', ' ')}`,
+        `Your report "${incident.title}" has been updated to ${status.toLowerCase().replace('_', ' ')}.`
+      ).catch(() => {});
+    }
 
     // Emit socket event for update
     const io = req.app.get('socketio');

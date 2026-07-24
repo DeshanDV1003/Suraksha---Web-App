@@ -77,18 +77,38 @@ export const deleteUser = async (id: string, deletedByUserId?: string) => {
 };
 
 export const updateProfile = async (userId: string, data: any) => {
-  const { name, phone } = data;
+  const { name, phone, profilePicture } = data;
   return prisma.user.update({
     where: { id: userId },
-    data: { name, phone },
+    data: {
+      ...(name !== undefined && { name }),
+      ...(phone !== undefined && { phone }),
+      ...(profilePicture !== undefined && { profilePicture }),
+    },
     select: {
       id: true,
       email: true,
       name: true,
       role: true,
       phone: true,
+      profilePicture: true,
+      twoFactorEnabled: true,
     }
   });
+};
+
+export const getSessions = async (userId: string) => {
+  return prisma.userSessionLog.findMany({
+    where: { userId },
+    orderBy: { loginTime: 'desc' },
+    take: 10,
+  });
+};
+
+export const deleteSession = async (userId: string, sessionId: string) => {
+  const session = await prisma.userSessionLog.findUnique({ where: { id: sessionId } });
+  if (!session || session.userId !== userId) throw new Error('Session not found');
+  return prisma.userSessionLog.delete({ where: { id: sessionId } });
 };
 
 export const getRBACMatrix = async () => {

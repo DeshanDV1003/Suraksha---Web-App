@@ -1,171 +1,355 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { ShieldAlert, ShieldCheck, HelpCircle, HeartPulse, Search, MapPin } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, HelpCircle, HeartPulse, Search, MapPin, Users, X, ChevronRight, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
-import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
+
 export const FamilySafetyPage = () => {
+  const { t } = useTranslation();
   const [roster, setRoster] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('ALL');
+  const [search, setSearch] = useState('');
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [toast, setToast] = useState<{message: string, type: 'success'|'error'|'warning'} | null>(null);
 
-  useEffect(() => {
-    fetchRoster();
-  }, []);
+  const showToast = (message: string, type: 'success'|'error'|'warning' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   const fetchRoster = async () => {
     try {
       const response = await api.get('/family/roster');
       setRoster(response.data);
     } catch (error) {
-      console.error('Error fetching roster:', error);
-      toast.error('Failed to load safety roster');
+      showToast(t('family_safety_page.failed_load'), 'error');
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => { fetchRoster(); }, []);
+
+  // Refresh selectedUser when roster updates
+  useEffect(() => {
+    if (selectedUser) {
+      const updated = roster.find(r => r.userId === selectedUser.userId);
+      if (updated) setSelectedUser(updated);
+    }
+  }, [roster]);
+
+  const stats = useMemo(() => {
+    const total = roster.length;
+    const safe = roster.filter(r => r.latestCheckIn?.status === 'SAFE').length;
+    const needsHelp = roster.filter(r => ['NEEDS_HELP', 'INJURED', 'TRAPPED'].includes(r.latestCheckIn?.status)).length;
+    const evacuated = roster.filter(r => r.latestCheckIn?.status === 'EVACUATED').length;
+    const unknown = roster.filter(r => !r.latestCheckIn).length;
+    return { total, safe, needsHelp, evacuated, unknown };
+  }, [roster]);
+
+  const filteredRoster = useMemo(() => {
+    return roster.filter(r => {
+      const status = r.latestCheckIn?.status || 'UNKNOWN';
+      const matchesFilter =
+        filter === 'ALL' ? true :
+        filter === 'NEEDS_ATTENTION' ? ['NEEDS_HELP', 'INJURED', 'TRAPPED'].includes(status) :
+        filter === 'UNKNOWN' ? !r.latestCheckIn :
+        status === filter;
+      const matchesSearch =
+        !search ||
+        r.name?.toLowerCase().includes(search.toLowerCase()) ||
+        r.phone?.toLowerCase().includes(search.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
+  }, [roster, filter, search]);
+
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'SAFE': return <ShieldCheck className="w-5 h-5 text-green-500" />;
-      case 'NEEDS_HELP': return <ShieldAlert className="w-5 h-5 text-red-500" />;
-      case 'INJURED': return <HeartPulse className="w-5 h-5 text-orange-500" />;
-      case 'EVACUATED': return <MapPin className="w-5 h-5 text-blue-500" />;
-      default: return <HelpCircle className="w-5 h-5 text-gray-400 dark:text-gray-500" />;
+      case 'SAFE': return <ShieldCheck className="w-4 h-4 text-green-400" />;
+      case 'NEEDS_HELP': return <ShieldAlert className="w-4 h-4 text-red-400" />;
+      case 'INJURED': return <HeartPulse className="w-4 h-4 text-orange-400" />;
+      case 'EVACUATED': return <MapPin className="w-4 h-4 text-blue-400" />;
+      default: return <HelpCircle className="w-4 h-4 text-slate-500" />;
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'SAFE': return 'bg-green-100 text-green-800 border-green-200';
-      case 'NEEDS_HELP': return 'bg-red-100 text-red-800 border-red-200';
-      case 'INJURED': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'EVACUATED': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 dark:bg-gray-800 text-slate-800 border-gray-200 dark:border-gray-700';
+      case 'SAFE': return 'bg-green-500/15 text-green-400 border-green-500/30';
+      case 'NEEDS_HELP': return 'bg-red-500/15 text-red-400 border-red-500/30';
+      case 'INJURED': return 'bg-orange-500/15 text-orange-400 border-orange-500/30';
+      case 'EVACUATED': return 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+      default: return 'bg-white/8 text-slate-400 border-white/15';
     }
   };
 
-  const filteredRoster = roster.filter(r => {
-    if (filter === 'ALL') return true;
-    const userStatus = r.latestCheckIn?.status || 'UNKNOWN';
-    if (filter === 'NEEDS_ATTENTION') {
-      return ['NEEDS_HELP', 'INJURED', 'TRAPPED'].includes(userStatus);
-    }
-    return userStatus === filter;
-  });
+  const FILTERS = [
+    { key: 'ALL', label: t('family_safety_page.filters.all_citizens') },
+    { key: 'NEEDS_ATTENTION', label: t('family_safety_page.filters.needs_attention') },
+    { key: 'SAFE', label: t('family_safety_page.filters.safe') },
+    { key: 'EVACUATED', label: t('family_safety_page.filters.evacuated') },
+    { key: 'UNKNOWN', label: t('family_safety_page.filters.not_checked_in') },
+  ];
+
+  const STAT_CARDS = [
+    { label: t('family_safety_page.stats.total_tracked'), value: stats.total, icon: Users, iconBg: 'bg-cyan-500/15', iconColor: 'text-cyan-400' },
+    { label: t('family_safety_page.stats.safe'), value: stats.safe, icon: ShieldCheck, iconBg: 'bg-green-500/15', iconColor: 'text-green-400' },
+    { label: t('family_safety_page.stats.needs_attention'), value: stats.needsHelp, icon: ShieldAlert, iconBg: 'bg-red-500/15', iconColor: 'text-red-400' },
+    { label: t('family_safety_page.stats.evacuated'), value: stats.evacuated, icon: MapPin, iconBg: 'bg-blue-500/15', iconColor: 'text-blue-400' },
+    { label: t('family_safety_page.stats.unknown_silent'), value: stats.unknown, icon: HelpCircle, iconBg: 'bg-white/8', iconColor: 'text-slate-400' },
+  ];
 
   return (
     <>
       <PageMeta title="Family Safety | Suraksha" description="Suraksha Family Safety Page" />
-      <PageBreadcrumb pageTitle="Family Safety" />
-      <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10 w-full min-w-0">
+      <PageBreadcrumb pageTitle={t('family_safety_page.page_title')} />
+      <div className="space-y-8 animate-in fade-in duration-500 pb-10 w-full min-w-0">
 
-      <div className="flex flex-wrap gap-2 bg-white dark:bg-gray-900 p-2 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 mb-6">
-        {['ALL', 'NEEDS_ATTENTION', 'SAFE', 'EVACUATED', 'UNKNOWN'].map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
-              filter === f 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50'
-            }`}
-          >
-            {f.replace('_', ' ')}
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-[1.5rem] shadow-sm overflow-hidden">
-        <div className="p-8 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50/50">
-          <h2 className="text-xl font-black text-slate-800">Citizen Check-ins & Families</h2>
-          <div className="relative w-64">
-            <Search className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
-            <input 
-              type="text" 
-              placeholder="Search roster..." 
-              className="w-full pl-12 pr-4 py-3 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-semibold"
-            />
-          </div>
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {STAT_CARDS.map(card => (
+            <div key={card.label} className="suraksha-card p-5 rounded-2xl flex items-center gap-4">
+              <div className={cn('p-3 rounded-xl shrink-0', card.iconBg)}>
+                <card.icon className={cn('w-5 h-5', card.iconColor)} />
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{card.label}</p>
+                <p className="text-2xl font-extrabold text-white/90 mt-0.5">{loading ? '—' : card.value}</p>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-gray-50 dark:bg-gray-800/50/50 border-b border-gray-200 dark:border-gray-800">
-              <tr>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Primary Citizen</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Contact</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Primary Status</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Last Known Location</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Family Members</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">Last Updated</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {loading ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Loading roster...</td>
-                </tr>
-              ) : filteredRoster.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">No citizens found in this category</td>
-                </tr>
-              ) : (
-                filteredRoster.map((user) => {
-                  const checkIn = user.latestCheckIn;
-                  const status = checkIn?.status || 'UNKNOWN';
-                  
-                  return (
-                    <tr key={user.userId} className="hover:bg-gray-50 dark:bg-gray-800/50/50 transition-colors group">
-                      <td className="px-8 py-6">
-                        <span className="text-sm font-bold text-gray-800 dark:text-white/90 group-hover:text-blue-500 transition-colors whitespace-nowrap">{user.name}</span>
-                      </td>
-                      <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500">{user.phone || '-'}</span>
-                      </td>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center space-x-2">
-                          {getStatusIcon(status)}
-                          <span className={`text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide whitespace-nowrap inline-block uppercase border ${getStatusColor(status)}`}>
-                            {status}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500">
-                          {checkIn?.latitude ? `${checkIn.latitude.toFixed(4)}, ${checkIn.longitude.toFixed(4)}` : 'Unknown'}
-                          {checkIn?.message && <div className="mt-1 text-[11px] text-gray-400 dark:text-gray-500 italic">"{checkIn.message}"</div>}
-                        </span>
-                      </td>
-                      <td className="px-8 py-6">
-                        <div className="flex flex-col space-y-1">
-                          {user.familyMembers.length === 0 ? (
-                            <span className="text-sm font-semibold text-gray-400 dark:text-gray-500">None registered</span>
-                          ) : (
-                            user.familyMembers.map((member: any) => (
-                              <div key={member.id} className="flex items-center space-x-2 text-sm">
-                                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: member.status === 'SAFE' ? '#10b981' : '#ef4444' }}></span>
-                                <span className="font-semibold text-gray-600 dark:text-gray-300">{member.name}</span>
-                                <span className="text-gray-400 dark:text-gray-500">({member.relation})</span>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">
-                          {checkIn ? format(new Date(checkIn.createdAt), 'MMM d, h:mm a') : 'Never'}
-                        </span>
+
+        {/* Filter tabs */}
+        <div className="flex flex-wrap gap-2 bg-[#131f33] p-2 rounded-2xl border border-cyan-400/10">
+          {FILTERS.map(f => (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={cn(
+                'px-5 py-2.5 rounded-xl font-bold text-sm transition-all',
+                filter === f.key
+                  ? 'bg-brand-500 text-white shadow-md shadow-cyan-500/20'
+                  : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+              )}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Table */}
+        <div className="suraksha-card rounded-2xl overflow-hidden w-full min-w-0">
+            {/* Table header */}
+            <div className="px-8 py-5 border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#0e1d36]">
+              <h2 className="text-lg font-black text-white/90">{t('family_safety_page.table_title')}</h2>
+              <div className="relative w-full sm:w-64">
+                <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder={t('family_safety_page.search_placeholder')}
+                  className="suraksha-input w-full pl-11 py-2.5 text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-[#0e1d36] border-b border-white/10 text-slate-500 text-[10px] uppercase tracking-widest font-black">
+                  <tr>
+                    <th className="px-5 py-4">{t('family_safety_page.citizen')}</th>
+                    <th className="px-5 py-4">{t('family_safety_page.contact')}</th>
+                    <th className="px-5 py-4">{t('family_safety_page.status')}</th>
+                    <th className="px-5 py-4">{t('family_safety_page.family_members')}</th>
+                    <th className="px-5 py-4">{t('family_safety_page.last_updated')}</th>
+                    <th className="px-3 py-4"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {loading ? (
+                    <tr>
+                      <td colSpan={6} className="px-5 py-16 text-center text-slate-500 font-bold">{t('family_safety_page.loading')}</td>
+                    </tr>
+                  ) : filteredRoster.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-5 py-16 text-center text-slate-500 font-bold">
+                        {search ? t('family_safety_page.no_results', { search }) : t('family_safety_page.no_citizens')}
                       </td>
                     </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+                  ) : filteredRoster.map(user => {
+                    const checkIn = user.latestCheckIn;
+                    const status = checkIn?.status || 'UNKNOWN';
+                    const isSelected = selectedUser?.userId === user.userId;
+                    return (
+                      <tr
+                        key={user.userId}
+                        onClick={() => setSelectedUser(isSelected ? null : user)}
+                        className={cn(
+                          'cursor-pointer transition-colors',
+                          isSelected ? 'bg-white/8' : 'hover:bg-white/5'
+                        )}
+                      >
+                        <td className="px-5 py-4">
+                          <span className="text-sm font-bold text-white/90 whitespace-nowrap">{user.name}</span>
+                        </td>
+                        <td className="px-5 py-4">
+                          <span className="text-sm text-slate-400">{user.phone || '—'}</span>
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(status)}
+                            <span className={cn('text-[10px] font-bold px-2.5 py-1 rounded-full tracking-wide uppercase border whitespace-nowrap', getStatusBadge(status))}>
+                              {status.replace('_', ' ')}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-5 py-4">
+                          {user.familyMembers.length === 0 ? (
+                            <span className="text-sm text-slate-500">{t('family_safety_page.none')}</span>
+                          ) : (
+                            <div className="flex flex-col gap-1">
+                              {user.familyMembers.slice(0, 2).map((m: any) => (
+                                <div key={m.id} className="flex items-center gap-2 text-sm">
+                                  <span className={cn('w-2 h-2 rounded-full shrink-0', m.status === 'SAFE' ? 'bg-green-400' : 'bg-red-400')} />
+                                  <span className="text-slate-300 font-semibold truncate max-w-[120px]">{m.name}</span>
+                                </div>
+                              ))}
+                              {user.familyMembers.length > 2 && (
+                                <span className="text-xs text-slate-500">+{user.familyMembers.length - 2} more</span>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-5 py-4">
+                          <span className="text-sm text-slate-400 whitespace-nowrap">
+                            {checkIn ? format(new Date(checkIn.createdAt), 'MMM d, h:mm a') : t('family_safety_page.never')}
+                          </span>
+                        </td>
+                        <td className="px-3 py-4">
+                          <ChevronRight className={cn('w-4 h-4 transition-all', isSelected ? 'text-cyan-400 rotate-90' : 'text-slate-600')} />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        {/* Detail modal — backdrop + centered card, no layout shift */}
+        {selectedUser && (
+          <div
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md"
+            onClick={() => setSelectedUser(null)}
+          >
+            <div
+              className="bg-[#131f33] border border-white/10 w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="px-8 py-5 bg-[#0e1d36] border-b border-white/10 flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-black text-white/90">{selectedUser.name}</h3>
+                  {selectedUser.phone && <p className="text-xs text-slate-400 mt-0.5">{selectedUser.phone}</p>}
+                </div>
+                <button onClick={() => setSelectedUser(null)} className="w-9 h-9 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
+                {/* Primary status */}
+                <div>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">{t('family_safety_page.primary_status')}</p>
+                  {selectedUser.latestCheckIn ? (
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3">
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(selectedUser.latestCheckIn.status)}
+                        <span className={cn('text-xs font-black px-2.5 py-1 rounded-full uppercase border', getStatusBadge(selectedUser.latestCheckIn.status))}>
+                          {selectedUser.latestCheckIn.status.replace('_', ' ')}
+                        </span>
+                      </div>
+                      {selectedUser.latestCheckIn.message && (
+                        <p className="text-sm text-slate-300 italic">"{selectedUser.latestCheckIn.message}"</p>
+                      )}
+                      {selectedUser.latestCheckIn.latitude && (
+                        <div className="flex items-center gap-2 text-xs text-slate-400">
+                          <MapPin className="w-3 h-3 text-cyan-400 shrink-0" />
+                          {selectedUser.latestCheckIn.latitude.toFixed(5)}, {selectedUser.latestCheckIn.longitude.toFixed(5)}
+                        </div>
+                      )}
+                      <p className="text-xs text-slate-500">
+                        Updated {format(new Date(selectedUser.latestCheckIn.createdAt), 'MMM d, yyyy h:mm a')}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-white/5 border border-dashed border-white/10 rounded-xl p-4 text-center">
+                      <HelpCircle className="w-6 h-6 text-slate-600 mx-auto mb-1" />
+                      <p className="text-sm text-slate-500 font-bold">{t('family_safety_page.no_checkin')}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Family members */}
+                <div>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">
+                    {t('family_safety_page.family_members_count', { count: selectedUser.familyMembers.length })}
+                  </p>
+                  {selectedUser.familyMembers.length === 0 ? (
+                    <p className="text-sm text-slate-500">{t('family_safety_page.no_family_members')}</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {selectedUser.familyMembers.map((m: any) => (
+                        <div key={m.id} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                          <div>
+                            <p className="text-sm font-bold text-white/90">{m.name}</p>
+                            <p className="text-xs text-slate-500">{m.relation}</p>
+                          </div>
+                          <span className={cn('text-[10px] font-black px-2.5 py-1 rounded-full uppercase border', getStatusBadge(m.status))}>
+                            {(m.status || 'UNKNOWN').replace('_', ' ')}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Alert banner */}
+                {selectedUser.familyMembers.some((m: any) => ['NEEDS_HELP', 'INJURED', 'TRAPPED'].includes(m.status)) && (
+                  <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
+                    <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-bold text-red-300">{t('family_safety_page.family_attention')}</p>
+                      <p className="text-xs text-red-400/70 mt-0.5">
+                        {selectedUser.familyMembers.filter((m: any) => ['NEEDS_HELP', 'INJURED', 'TRAPPED'].includes(m.status)).map((m: any) => m.name).join(', ')}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className={cn(
+          "fixed bottom-8 right-8 z-[9999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+          toast.type === 'success' ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30" :
+          toast.type === 'error' ? "bg-[#131f33] text-red-400 border border-red-500/30" :
+          "bg-[#131f33] text-amber-400 border border-amber-500/30"
+        )}>
+          <CheckCircle2 className="w-5 h-5" />
+          <span className="font-bold text-sm">{toast.message}</span>
+        </div>
+      )}
     </>
   );
 };

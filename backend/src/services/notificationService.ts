@@ -19,3 +19,16 @@ export const sendNotification = async (userId: string, title: string, message: s
     data: { userId, title, message }
   });
 };
+
+export const notifyAdmins = async (title: string, message: string) => {
+  const admins = await prisma.user.findMany({
+    where: { role: { in: ['ADMIN', 'COORDINATOR', 'RESPONDER'] } },
+    select: { id: true }
+  });
+  await Promise.all(admins.map(a => sendNotification(a.id, title, message)));
+};
+
+export const notifyAllUsers = async (title: string, message: string) => {
+  const users = await prisma.user.findMany({ select: { id: true } });
+  await Promise.all(users.map(u => sendNotification(u.id, title, message)));
+};

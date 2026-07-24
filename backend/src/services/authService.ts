@@ -73,6 +73,8 @@ export const loginUser = async (data: any) => {
       name: user.name,
       role: user.role,
       region: user.region,
+      phone: user.phone,
+      profilePicture: user.profilePicture,
       twoFactorEnabled: user.twoFactorEnabled
     },
   };

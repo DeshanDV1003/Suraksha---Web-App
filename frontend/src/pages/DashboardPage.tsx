@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { 
   AlertTriangle, Users, Clock, Heart, Package, LayoutGrid, 
   TrendingUp, TrendingDown, Download, Filter, MapPin, 
@@ -183,8 +183,8 @@ export default function DashboardPage() {
       subtext: `${secondaryStatsData.familyUpdatesSafe} marked safe in last 24h`,
       icon: Heart,
       color: 'bg-pink-500',
-      cardClass: 'bg-[#fff5f7] border-[#fee2e7]',
-      footerColor: 'text-pink-600'
+      cardClass: 'bg-pink-500/10 border-pink-500/20',
+      footerColor: 'text-pink-400'
     },
     {
       label: t('nav.resources'),
@@ -192,8 +192,8 @@ export default function DashboardPage() {
       subtext: `${secondaryStatsData.resourcesBoats} boats, ${secondaryStatsData.resourcesVehicles} vehicles available`,
       icon: Package,
       color: 'bg-green-500',
-      cardClass: 'bg-[#f0fdf4] border-[#dcfce7]',
-      footerColor: 'text-green-600'
+      cardClass: 'bg-green-500/10 border-green-500/20',
+      footerColor: 'text-green-400'
     },
     {
       label: 'Token Distributions',
@@ -201,8 +201,8 @@ export default function DashboardPage() {
       subtext: '0 duplicates prevented', // Simplified mock text as logic is complex
       icon: LayoutGrid,
       color: 'bg-blue-500',
-      cardClass: 'bg-[#eff6ff] border-[#dbeafe]',
-      footerColor: 'text-blue-600'
+      cardClass: 'bg-blue-500/10 border-blue-500/20',
+      footerColor: 'text-blue-400'
     },
   ]
 
@@ -278,8 +278,8 @@ export default function DashboardPage() {
               <div className="flex-1">
                 <div className="flex flex-col">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-extrabold text-gray-800 dark:text-white/90">{stat.value}</span>
-                    <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</span>
+                    <span className="text-3xl font-extrabold text-white/90">{stat.value}</span>
+                    <span className="text-[10px] font-bold text-white/50 uppercase tracking-wider">{stat.label}</span>
                   </div>
                   <div className={cn("text-[11px] font-semibold mt-1", stat.footerColor)}>{stat.subtext}</div>
                 </div>
@@ -717,3 +717,4 @@ function LayerToggle({ label, color, checked = false, onChange }: { label: strin
     </label>
   )
 }
+

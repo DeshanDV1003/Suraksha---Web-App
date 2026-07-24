@@ -182,7 +182,15 @@ export const getRecommendedIncidents = async (userId: string) => {
 export const listAllVolunteers = async () => {
   return prisma.user.findMany({
     where: { role: 'VOLUNTEER' as any },
-    include: { volunteerProfile: { include: { skills: true, badges: true } } }
+    include: {
+      volunteerProfile: {
+        include: {
+          skills: true,
+          badges: true,
+          checkIns: { orderBy: { checkInTime: 'desc' }, take: 5 }
+        }
+      }
+    }
   });
 };
 

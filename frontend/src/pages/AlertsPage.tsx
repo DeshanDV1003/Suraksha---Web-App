@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { useDialog } from '@/components/ui/dialogs/DialogProvider'
 import { 
   Send, Bell, Radio, MapPin, Users, Info, 
   History, Clock, CheckCircle2, ChevronRight,
@@ -17,49 +18,123 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveCont
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
 
-const categories = [
-  { 
-    label: 'Flood Warning', sub: 'Area-specific', icon: Droplets, color: 'text-blue-600', type: 'EMERGENCY',
-    defaultMsg: 'URGENT: Water levels are rising rapidly in your sector. Please move to the nearest high ground immediately. Follow official evacuation routes.', defaultLoc: 'Flood Zone A'
-  },
-  { 
-    label: 'Shelter Vacancy', sub: 'Nearby only', icon: Landmark, color: 'text-purple-600', type: 'INFO',
-    defaultMsg: 'DMC Update: New shelter vacancies identified at Central Relief Camp. Basic supplies and medical aid are available on-site.', defaultLoc: 'Central District'
-  },
-  { 
-    label: 'Blood Request', sub: 'Type match', icon: Droplets, color: 'text-red-600', type: 'WARNING',
-    defaultMsg: 'CRITICAL: Urgent need for O+ and A+ blood donors at General Hospital due to incoming emergency arrivals. Please report if eligible.', defaultLoc: 'General Hospital'
-  },
-  { 
-    label: 'Medicine Needed', sub: 'Proximity-based', icon: Stethoscope, color: 'text-pink-600', type: 'WARNING',
-    defaultMsg: 'RESOURCE ALERT: Specific medical supplies (Insulin, Asthma inhalers) are running low in the Southern Sector. Donations requested.', defaultLoc: 'Southern Sector'
-  },
-  { 
-    label: 'Road Closure', sub: 'Route-affected', icon: Route, color: 'text-blue-500', type: 'INFO',
-    defaultMsg: 'TRAFFIC ADVISORY: Main bridge at Sector 4 is closed for all vehicles due to structural risks. Please use the Northern Bypass.', defaultLoc: 'Bridge Sector 4'
-  },
-  { 
-    label: 'Volunteer Needed', sub: 'Skill-matched', icon: UserCheck, color: 'text-purple-500', type: 'INFO',
-    defaultMsg: 'VOLUNTEER CALL: Specialized personnel needed for debris clearance and logistics management at Ward 7. Report to Command Post.', defaultLoc: 'Ward 7 Command'
-  },
-]
+
+function DeliveryStats({ alertId, type, notifiedCount }: { alertId: string, type: string, notifiedCount: number }) {
+  const { t } = useTranslation()
+  const [stats, setStats] = useState<{ notifiedCount: number, acknowledgedCount: number, acknowledgementRate: number } | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+
+  const load = useCallback(async () => {
+    if (notifiedCount === 0) return
+    setLoading(true)
+    try {
+      const res = await alertService.getDeliveryStats(alertId)
+      setStats(res.data)
+    } catch { /* silently skip */ }
+    finally { setLoading(false) }
+  }, [alertId, notifiedCount])
+
+  const bgColor = type === 'EMERGENCY' ? 'bg-red-50 border-red-100' : type === 'WARNING' ? 'bg-amber-50 border-amber-100' : 'bg-blue-50 border-blue-100'
+  const textColor = type === 'EMERGENCY' ? 'text-red-800' : type === 'WARNING' ? 'text-amber-800' : 'text-blue-800'
+  const barColor = type === 'EMERGENCY' ? 'bg-red-600' : type === 'WARNING' ? 'bg-amber-500' : 'bg-blue-600'
+  const barBg = type === 'EMERGENCY' ? 'bg-red-200' : type === 'WARNING' ? 'bg-amber-200' : 'bg-blue-200'
+
+  if (notifiedCount === 0) {
+    return (
+      <div className={`mt-4 p-4 rounded-2xl border ${bgColor} flex items-center gap-3`}>
+        <Users className={`w-4 h-4 ${textColor} opacity-50`} />
+        <span className={`text-[10px] font-black uppercase tracking-widest ${textColor} opacity-60`}>{t('alerts_page.no_zone_users')}</span>
+      </div>
+    )
+  }
+
+  const rate = stats?.acknowledgementRate ?? 0
+  const acked = stats?.acknowledgedCount ?? 0
+  const unacked = notifiedCount - acked
+
+  return (
+    <div className={`mt-4 p-4 rounded-2xl border ${bgColor}`}>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex-1">
+          <div className="flex justify-between mb-1.5">
+            <span className={`text-[10px] font-black uppercase tracking-widest ${textColor}`}>
+              {t('alerts_page.delivery_notified', { count: notifiedCount })}
+            </span>
+            {loading ? (
+              <span className={`text-[10px] font-black ${textColor} opacity-50`}>{t('alerts_page.loading_ellipsis')}</span>
+            ) : stats ? (
+              <span className={`text-[10px] font-black ${textColor}`}>{t('alerts_page.acknowledged', { acked, total: notifiedCount, rate })}</span>
+            ) : (
+              <button onClick={load} className={`text-[10px] font-black ${textColor} underline`}>{t('alerts_page.load_stats')}</button>
+            )}
+          </div>
+          <div className={`w-full ${barBg} rounded-full h-1.5`}>
+            <div className={`${barColor} h-1.5 rounded-full transition-all duration-500`} style={{ width: stats ? `${rate}%` : '0%' }} />
+          </div>
+        </div>
+        {stats && unacked > 0 && type === 'EMERGENCY' && (
+          <button
+            onClick={load}
+            className="bg-red-600 hover:bg-red-700 text-white text-[9px] font-black uppercase tracking-widest px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <PhoneCall className="w-3 h-3" /> {t('alerts_page.escalate_count', { count: unacked })}
+          </button>
+        )}
+        {stats && (
+          <button onClick={load} className={`text-[9px] font-black ${textColor} opacity-50 hover:opacity-100 underline whitespace-nowrap`}>
+            {t('alerts_page.refresh')}
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export default function AlertsPage() {
+  const { confirm } = useDialog()
   const { t } = useTranslation()
   const { user } = useAuth()
+
+  const categories = [
+    {
+      label: t('alerts_page.cat_flood_warning'), sub: 'Area-specific', icon: Droplets, color: 'text-blue-600', type: 'EMERGENCY',
+      defaultMsg: 'URGENT: Water levels are rising rapidly in your sector. Please move to the nearest high ground immediately. Follow official evacuation routes.', defaultLoc: 'Flood Zone A'
+    },
+    {
+      label: t('alerts_page.cat_shelter_vacancy'), sub: 'Nearby only', icon: Landmark, color: 'text-purple-600', type: 'INFO',
+      defaultMsg: 'DMC Update: New shelter vacancies identified at Central Relief Camp. Basic supplies and medical aid are available on-site.', defaultLoc: 'Central District'
+    },
+    {
+      label: t('alerts_page.cat_blood_request'), sub: 'Type match', icon: Droplets, color: 'text-red-600', type: 'WARNING',
+      defaultMsg: 'CRITICAL: Urgent need for O+ and A+ blood donors at General Hospital due to incoming emergency arrivals. Please report if eligible.', defaultLoc: 'General Hospital'
+    },
+    {
+      label: t('alerts_page.cat_medicine_needed'), sub: 'Proximity-based', icon: Stethoscope, color: 'text-pink-600', type: 'WARNING',
+      defaultMsg: 'RESOURCE ALERT: Specific medical supplies (Insulin, Asthma inhalers) are running low in the Southern Sector. Donations requested.', defaultLoc: 'Southern Sector'
+    },
+    {
+      label: t('alerts_page.cat_road_closure'), sub: 'Route-affected', icon: Route, color: 'text-blue-500', type: 'INFO',
+      defaultMsg: 'TRAFFIC ADVISORY: Main bridge at Sector 4 is closed for all vehicles due to structural risks. Please use the Northern Bypass.', defaultLoc: 'Bridge Sector 4'
+    },
+    {
+      label: t('alerts_page.cat_volunteer_needed'), sub: 'Skill-matched', icon: UserCheck, color: 'text-purple-500', type: 'INFO',
+      defaultMsg: 'VOLUNTEER CALL: Specialized personnel needed for debris clearance and logistics management at Ward 7. Report to Command Post.', defaultLoc: 'Ward 7 Command'
+    },
+  ]
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [alerts, setAlerts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   
   // Enhanced Form State
-  const [newAlert, setNewAlert] = useState<{ 
-    title: string, message: string, locations: string[], type: string, 
+  const [newAlert, setNewAlert] = useState<{
+    title: string, message: string, locations: string[], type: string,
     channels: { app: boolean, sms: boolean, whatsapp: boolean, email: boolean, radio: boolean },
-    scheduledTime: string, translated: boolean
-  }>({ 
+    scheduledTime: string, translated: boolean, broadcastRadiusKm: number
+  }>({
     title: '', message: '', locations: [], type: 'INFO',
     channels: { app: true, sms: false, whatsapp: false, email: false, radio: false },
-    scheduledTime: '', translated: false
+    scheduledTime: '', translated: false, broadcastRadiusKm: 50
   })
   
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -87,6 +162,7 @@ export default function AlertsPage() {
     e.preventDefault()
     setIsSubmitting(true)
     try {
+      const isAllIsland = newAlert.locations.includes('All Island') || newAlert.locations.length === 0
       const alertData = {
         title: newAlert.title,
         message: newAlert.message,
@@ -94,6 +170,7 @@ export default function AlertsPage() {
         type: newAlert.type,
         channels: newAlert.channels,
         scheduledTime: newAlert.scheduledTime,
+        broadcastRadiusKm: isAllIsland ? null : newAlert.broadcastRadiusKm,
         translatedMsgSinhala: newAlert.translated ? `(Mock Sinhala) ${newAlert.message}` : null,
         translatedMsgTamil: newAlert.translated ? `(Mock Tamil) ${newAlert.message}` : null
       }
@@ -108,10 +185,10 @@ export default function AlertsPage() {
         unread: true
       })
 
-      setNewAlert({ 
+      setNewAlert({
         title: '', message: '', locations: [], type: 'INFO',
         channels: { app: true, sms: false, whatsapp: false, email: false, radio: false },
-        scheduledTime: '', translated: false
+        scheduledTime: '', translated: false, broadcastRadiusKm: 50
       })
       fetchAlerts()
     } catch (err) {
@@ -122,7 +199,7 @@ export default function AlertsPage() {
   }
 
   const handleDeleteAlert = async (id: string) => {
-    if (!confirm('Are you sure you want to permanently delete this broadcast record?')) return
+    if (!await confirm('Are you sure you want to permanently delete this broadcast record?', { variant: 'danger', title: 'Delete broadcast', confirmLabel: 'Delete' })) return
     try {
       await alertService.deleteAlert(id)
       fetchAlerts()
@@ -159,12 +236,12 @@ export default function AlertsPage() {
   return (
         <>
           <PageMeta title="Alerts | Suraksha" description="Suraksha Alerts Page" />
-          <PageBreadcrumb pageTitle="Alerts" />
+          <PageBreadcrumb pageTitle={t('alerts_page.page_title')} />
           <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 px-6 py-3 bg-red-50 text-red-600 rounded-2xl border border-red-100 shadow-sm">
              <Radio className="w-5 h-5 animate-pulse" />
-             <span className="text-[11px] font-black uppercase tracking-widest">Global Node Active</span>
+             <span className="text-[11px] font-black uppercase tracking-widest">{t('alerts_page.global_node_active')}</span>
           </div>
         </div>
 
@@ -173,8 +250,8 @@ export default function AlertsPage() {
             <div className="flex items-center gap-4 text-brand-500">
                <div className="p-3 bg-brand-500 rounded-2xl text-white shadow-lg shadow-blue-500/20"><Bell className="w-6 h-6" /></div>
                <div>
-                 <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Smart Templates</h3>
-                 <p className="text-[10px] font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest">Rapid directive deployment</p>
+                 <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">{t('alerts_page.smart_templates')}</h3>
+                 <p className="text-[10px] font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest">{t('alerts_page.rapid_directive_deployment')}</p>
                </div>
             </div>
             
@@ -197,7 +274,7 @@ export default function AlertsPage() {
           {canBroadcast && (
             <div className="xl:col-span-7 suraksha-card p-10 bg-white dark:bg-gray-900">
               <div className="flex items-center gap-3 mb-10 text-gray-800 dark:text-white/90">
-                 <Send className="w-6 h-6" /> <h3 className="text-2xl font-black">Transmit Directive</h3>
+                 <Send className="w-6 h-6" /> <h3 className="text-2xl font-black">{t('alerts_page.transmit_directive')}</h3>
               </div>
               
               <form onSubmit={handleBroadcast} className="space-y-10">
@@ -205,14 +282,14 @@ export default function AlertsPage() {
                   
                   {/* Channels selection */}
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">Transmission Channels</label>
+                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.transmission_channels')}</label>
                     <div className="flex flex-wrap gap-3">
                       {[
-                        { id: 'app', icon: Bell, label: 'In-App' },
-                        { id: 'sms', icon: Smartphone, label: 'SMS API' },
-                        { id: 'whatsapp', icon: MessageSquare, label: 'WhatsApp' },
-                        { id: 'email', icon: Mail, label: 'Email' },
-                        { id: 'radio', icon: Radio, label: 'DMC Radio' }
+                        { id: 'app', icon: Bell, label: t('alerts_page.in_app') },
+                        { id: 'sms', icon: Smartphone, label: t('alerts_page.sms_api') },
+                        { id: 'whatsapp', icon: MessageSquare, label: t('alerts_page.whatsapp') },
+                        { id: 'email', icon: Mail, label: t('alerts_page.email') },
+                        { id: 'radio', icon: Radio, label: t('alerts_page.dmc_radio') }
                       ].map(ch => (
                         <button 
                           key={ch.id} type="button"
@@ -226,51 +303,76 @@ export default function AlertsPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">Directive Headline</label>
-                    <input required type="text" placeholder="e.g. Flash Flood Emergency Protocol" className="suraksha-input" value={newAlert.title} onChange={(e) => setNewAlert({...newAlert, title: e.target.value})} />
+                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.directive_headline')}</label>
+                    <input required type="text" placeholder={t('alerts_page.headline_placeholder')} className="suraksha-input" value={newAlert.title} onChange={(e) => setNewAlert({...newAlert, title: e.target.value})} />
                   </div>
 
                   <div className="grid grid-cols-2 gap-8">
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">Targeted Areas</label>
-                          <button type="button" onClick={() => setIsMapModalOpen(true)} className="text-[9px] text-blue-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1"><Map className="w-3 h-3" /> Draw Zone</button>
+                          <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.targeted_areas')}</label>
+                          <button type="button" onClick={() => setIsMapModalOpen(true)} className="text-[9px] text-blue-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1"><Map className="w-3 h-3" /> {t('alerts_page.draw_zone')}</button>
                         </div>
                         <AreaMultiSelect selectedLocations={newAlert.locations} onChange={(locations) => setNewAlert({ ...newAlert, locations })} />
                       </div>
                      <div className="space-y-3">
-                       <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">Severity Level</label>
+                       <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.severity_level')}</label>
                        <select className="suraksha-input appearance-none bg-gray-50 dark:bg-gray-800/50 font-black text-[11px] uppercase tracking-widest" value={newAlert.type} onChange={(e) => setNewAlert({...newAlert, type: e.target.value})}>
-                         <option value="INFO">Information (Blue)</option>
-                         <option value="WARNING">Warning (Amber)</option>
-                         <option value="EMERGENCY">Emergency (Red)</option>
+                         <option value="INFO">{t('alerts_page.info_blue')}</option>
+                         <option value="WARNING">{t('alerts_page.warning_amber')}</option>
+                         <option value="EMERGENCY">{t('alerts_page.emergency_red')}</option>
                        </select>
                      </div>
                   </div>
 
+                  {/* Broadcast radius — only relevant when specific areas are selected */}
+                  {newAlert.locations.length > 0 && !newAlert.locations.includes('All Island') && (
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.broadcast_radius')}</label>
+                      <div className="flex gap-2">
+                        {[25, 50, 75, 100].map(km => (
+                          <button
+                            key={km}
+                            type="button"
+                            onClick={() => setNewAlert(prev => ({ ...prev, broadcastRadiusKm: km }))}
+                            className={cn(
+                              'flex-1 py-2.5 rounded-xl text-xs font-black border transition-all',
+                              newAlert.broadcastRadiusKm === km
+                                ? 'bg-cyan-500/20 border-cyan-400/60 text-cyan-300'
+                                : 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-cyan-400/30'
+                            )}
+                          >
+                            {km} km
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-gray-400 pl-1">{t('alerts_page.radius_hint')}</p>
+                    </div>
+                  )}
+
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">Detailed Instructions</label>
-                      <button type="button" onClick={() => setNewAlert(prev => ({...prev, translated: !prev.translated}))} className="text-[9px] text-indigo-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1"><Languages className="w-3 h-3" /> Auto-Translate</button>
+                      <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.detailed_instructions')}</label>
+                      <button type="button" onClick={() => setNewAlert(prev => ({...prev, translated: !prev.translated}))} className="text-[9px] text-indigo-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1"><Languages className="w-3 h-3" /> {t('alerts_page.auto_translate')}</button>
                     </div>
-                    <textarea required rows={5} placeholder="Provide precise evacuation steps or resource allocation info..." className="suraksha-input h-32 py-5 resize-none leading-relaxed font-bold" value={newAlert.message} onChange={(e) => setNewAlert({...newAlert, message: e.target.value})} />
+                    <textarea required rows={5} placeholder={t('alerts_page.instructions_placeholder')} className="suraksha-input h-32 py-5 resize-none leading-relaxed font-bold" value={newAlert.message} onChange={(e) => setNewAlert({...newAlert, message: e.target.value})} />
                     
                     {newAlert.translated && (
                       <div className="grid grid-cols-2 gap-4 mt-2 animate-in slide-in-from-top-2">
                         <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl">
-                           <div className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Sinhala Translation</div>
-                           <div className="text-xs font-bold text-slate-700 font-sinhala">{newAlert.message ? `(Mock Sinhala) ${newAlert.message}` : 'Translating...'}</div>
+                           <div className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">{t('alerts_page.sinhala_translation')}</div>
+                           <div className="text-xs font-bold text-slate-700 font-sinhala">{newAlert.message ? `(Mock Sinhala) ${newAlert.message}` : t('alerts_page.translating')}</div>
                         </div>
                         <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl">
-                           <div className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Tamil Translation</div>
-                           <div className="text-xs font-bold text-slate-700 font-tamil">{newAlert.message ? `(Mock Tamil) ${newAlert.message}` : 'Translating...'}</div>
+                           <div className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">{t('alerts_page.tamil_translation')}</div>
+                           <div className="text-xs font-bold text-slate-700 font-tamil">{newAlert.message ? `(Mock Tamil) ${newAlert.message}` : t('alerts_page.translating')}</div>
                         </div>
                       </div>
                     )}
                   </div>
                   
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">Schedule (Optional)</label>
+                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.schedule_optional')}</label>
                     <div className="relative">
                       <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                       <input type="datetime-local" className="suraksha-input pl-12 font-bold text-sm" value={newAlert.scheduledTime} onChange={(e) => setNewAlert({...newAlert, scheduledTime: e.target.value})} />
@@ -280,8 +382,8 @@ export default function AlertsPage() {
                 </div>
 
                 <button disabled={isSubmitting} className="suraksha-button w-full h-20 text-lg flex items-center justify-center gap-4 transition-all uppercase tracking-widest font-black">
-                   {isSubmitting ? <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" /> : 
-                   <><div className="p-2 bg-white dark:bg-gray-900/20 rounded-xl"><Send className="w-6 h-6" /></div>{newAlert.scheduledTime ? 'Schedule Directive' : t('alerts.new_alert')}</>}
+                   {isSubmitting ? <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" /> :
+                   <><div className="p-2 bg-white dark:bg-gray-900/20 rounded-xl"><Send className="w-6 h-6" /></div>{newAlert.scheduledTime ? t('alerts_page.schedule_directive') : t('alerts.new_alert')}</>}
                 </button>
               </form>
             </div>
@@ -294,7 +396,7 @@ export default function AlertsPage() {
                   <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_#0061ff_0%,_transparent_70%)] animate-pulse" />
                   <div className="relative z-10 space-y-6">
                      <div className="text-center space-y-2 mb-10">
-                        <span className="text-[10px] font-black text-brand-500 uppercase tracking-[0.3em]">Omni-Channel Sync Preview</span>
+                        <span className="text-[10px] font-black text-brand-500 uppercase tracking-[0.3em]">{t('alerts_page.omni_channel_preview')}</span>
                         <div className="w-20 h-1 bg-brand-500 mx-auto rounded-full" />
                      </div>
 
@@ -305,11 +407,11 @@ export default function AlertsPage() {
                            </div>
                            <div>
                              <div className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Suraksha Node</div>
-                             <div className="text-base font-black text-gray-800 dark:text-white/90 leading-tight break-words">{newAlert.title || 'Broadcast Title'}</div>
+                             <div className="text-base font-black text-gray-800 dark:text-white/90 leading-tight break-words">{newAlert.title || t('alerts_page.broadcast_title_placeholder')}</div>
                            </div>
                         </div>
                         <p className="text-sm font-bold text-gray-500 dark:text-gray-400 leading-relaxed mb-6 font-sans">
-                          {newAlert.message || 'The emergency broadcast text will synchronize across all channels...'}
+                          {newAlert.message || t('alerts_page.broadcast_message_placeholder')}
                         </p>
                         
                         <div className="flex gap-2 flex-wrap mb-6">
@@ -321,7 +423,7 @@ export default function AlertsPage() {
                          <div className="flex items-center justify-between pt-5 border-t border-slate-50">
                            <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
                               <MapPin className="w-3.5 h-3.5" />
-                              <span className="text-[11px] font-black uppercase tracking-tight line-clamp-1">{newAlert.locations?.length > 0 ? newAlert.locations.join(', ') : 'All Geo-Sectors'}</span>
+                              <span className="text-[11px] font-black uppercase tracking-tight line-clamp-1">{newAlert.locations?.length > 0 ? newAlert.locations.join(', ') : t('alerts_page.all_geo_sectors')}</span>
                            </div>
                         </div>
                      </div>
@@ -335,39 +437,39 @@ export default function AlertsPage() {
         <div className="space-y-10 pt-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
              <div>
-               <h3 className="text-3xl font-black text-gray-800 dark:text-white/90">Transmission Logs</h3>
+               <h3 className="text-3xl font-black text-gray-800 dark:text-white/90">{t('alerts_page.transmission_logs')}</h3>
                <div className="flex gap-4 mt-4">
-                 <button onClick={() => setActiveTab('ACTIVE')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'ACTIVE' ? 'bg-blue-100 text-blue-700' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:bg-gray-800/50')}>Active & History</button>
-                 <button onClick={() => setActiveTab('SCHEDULED')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'SCHEDULED' ? 'bg-amber-100 text-amber-700' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:bg-gray-800/50')}>Scheduled (Mock)</button>
+                 <button onClick={() => setActiveTab('ACTIVE')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'ACTIVE' ? 'bg-blue-100 text-blue-700' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:bg-gray-800/50')}>{t('alerts_page.active_history')}</button>
+                 <button onClick={() => setActiveTab('SCHEDULED')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'SCHEDULED' ? 'bg-amber-100 text-amber-700' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:bg-gray-800/50')}>{t('alerts_page.scheduled_mock')}</button>
                </div>
              </div>
              
              <div className="flex items-center gap-4">
                 <div className="relative group w-full md:w-64">
                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500 group-focus-within:text-brand-500 transition-colors" />
-                   <input type="text" placeholder="Search logs..." className="suraksha-input pl-12 h-12 bg-white dark:bg-gray-900" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                   <input type="text" placeholder={t('alerts_page.search_logs')} className="suraksha-input pl-12 h-12 bg-white dark:bg-gray-900" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-[#0061ff]/20 cursor-pointer h-12">
-                   <option value="ALL">All Levels</option>
-                   <option value="INFO">Info</option>
-                   <option value="WARNING">Warning</option>
-                   <option value="EMERGENCY">Emergency</option>
+                   <option value="ALL">{t('alerts_page.all_levels')}</option>
+                   <option value="INFO">{t('alerts_page.filter_info')}</option>
+                   <option value="WARNING">{t('alerts_page.filter_warning')}</option>
+                   <option value="EMERGENCY">{t('alerts_page.filter_emergency')}</option>
                 </select>
              </div>
           </div>
 
           <div className="grid grid-cols-1 gap-6">
             {loading ? (
-               <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-[3rem] border border-gray-200 dark:border-gray-800 shadow-sm"><p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] animate-pulse">Decrypting Sync Logs...</p></div>
+               <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-[3rem] border border-gray-200 dark:border-gray-800 shadow-sm"><p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] animate-pulse">{t('alerts_page.decrypting_sync_logs')}</p></div>
             ) : filteredAlerts.length === 0 ? (
               <div className="text-center py-24 bg-white dark:bg-gray-900 rounded-[3rem] border-2 border-dashed border-gray-200 dark:border-gray-700">
                  <div className="p-6 bg-gray-50 dark:bg-gray-800/50 inline-block rounded-full mb-4"><XCircle className="w-10 h-10 text-slate-300" /></div>
-                 <p className="text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest text-xs">No Directive Matches Found</p>
+                 <p className="text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest text-xs">{t('alerts_page.no_directive_matches')}</p>
               </div>
             ) : activeTab === 'SCHEDULED' ? (
               <div className="text-center py-10 bg-amber-50 rounded-[2rem] border border-amber-100">
                 <Calendar className="w-8 h-8 text-amber-400 mx-auto mb-3" />
-                <p className="text-xs font-black text-amber-700 uppercase tracking-widest">Mock: Scheduled Water Distribution Update at 18:00</p>
+                <p className="text-xs font-black text-amber-700 uppercase tracking-widest">{t('alerts_page.mock_scheduled')}</p>
               </div>
             ) : (
               filteredAlerts.map((alert, i) => (
@@ -396,41 +498,26 @@ export default function AlertsPage() {
                       </div>
                       {alert.active && (
                          <div className="flex items-center gap-1.5 text-green-500 text-[9px] font-black uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">
-                            <CheckCircle2 className="w-3 h-3" /> Live Broadcast
+                            <CheckCircle2 className="w-3 h-3" /> {t('alerts_page.live_broadcast')}
                          </div>
                       )}
                     </div>
                     
                     {/* Channels Status */}
                     <div className="flex gap-2 pt-2 border-t border-slate-50">
-                      <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1 mr-2">Dispatched via:</span>
+                      <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1 mr-2">{t('alerts_page.dispatched_via')}</span>
                       <span title="SMS Sent"><Smartphone className="w-4 h-4 text-green-500" /></span>
                       <span title="App Sent"><Bell className="w-4 h-4 text-green-500" /></span>
                       {alert.type === 'EMERGENCY' && <span title="WhatsApp Sent"><MessageSquare className="w-4 h-4 text-green-500" /></span>}
                     </div>
 
-                    {/* Acknowledgement Tracking for Emergencies */}
-                    {alert.type === 'EMERGENCY' && (
-                      <div className="bg-red-50 p-4 rounded-2xl border border-red-100 mt-4 flex items-center justify-between">
-                        <div className="flex-1 mr-6">
-                           <div className="flex justify-between mb-1">
-                             <span className="text-[10px] font-black text-red-800 uppercase tracking-widest">Acknowledgement Rate</span>
-                             <span className="text-[10px] font-black text-red-600">82%</span>
-                           </div>
-                           <div className="w-full bg-red-200 rounded-full h-1.5">
-                             <div className="bg-red-600 h-1.5 rounded-full" style={{ width: '82%' }}></div>
-                           </div>
-                        </div>
-                        <button className="bg-red-600 hover:bg-red-700 text-white text-[9px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors flex items-center gap-2 whitespace-nowrap">
-                          <PhoneCall className="w-3 h-3" /> Escalate 18%
-                        </button>
-                      </div>
-                    )}
+                    {/* Real delivery tracking */}
+                    <DeliveryStats alertId={alert.id} type={alert.type} notifiedCount={alert.notifiedCount ?? 0} />
 
                     {/* Community Feedback (Mocked) */}
                     {alert.active && (
                       <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-200 dark:border-gray-800 mt-4">
-                        <div className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><BarChart2 className="w-3 h-3" /> Community Feedback (Real-time)</div>
+                        <div className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><BarChart2 className="w-3 h-3" /> {t('alerts_page.community_feedback')}</div>
                         <div className="flex gap-4 h-12">
                            {getMockFeedbackData(alert.id).map((data, idx) => (
                              <div key={idx} className="flex-1 flex flex-col justify-end bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-2 relative overflow-hidden group/chart">
@@ -449,7 +536,7 @@ export default function AlertsPage() {
 
                   {canBroadcast && (
                     <div className="flex items-center gap-3 mt-8 md:mt-0 md:ml-10">
-                      <button onClick={() => handleDeactivate(alert.id)} disabled={!alert.active} className="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all disabled:opacity-20">End</button>
+                      <button onClick={() => handleDeactivate(alert.id)} disabled={!alert.active} className="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all disabled:opacity-20">{t('alerts_page.end')}</button>
                       <button onClick={() => handleDeleteAlert(alert.id)} className="p-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors"><Trash2 className="w-5 h-5" /></button>
                     </div>
                   )}
@@ -463,8 +550,8 @@ export default function AlertsPage() {
         {isMapModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
             <div className="bg-white dark:bg-gray-900 rounded-[2rem] p-8 max-w-xl w-full shadow-2xl relative">
-              <h3 className="text-xl font-black text-slate-800 mb-2">Draw Alert Polygon</h3>
-              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-6">Mock Interface: Simulating geospatial polygon drawing for targeted alerts.</p>
+              <h3 className="text-xl font-black text-slate-800 mb-2">{t('alerts_page.draw_alert_polygon')}</h3>
+              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-6">{t('alerts_page.polygon_mock_desc')}</p>
               <div className="h-64 bg-blue-50 border-2 border-dashed border-blue-200 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden">
                  <MapPin className="w-10 h-10 text-blue-400 opacity-50" />
                  <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 100 100">
@@ -472,11 +559,11 @@ export default function AlertsPage() {
                  </svg>
               </div>
               <div className="flex justify-end gap-3">
-                <button onClick={() => setIsMapModalOpen(false)} className="px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-200 dark:bg-gray-700">Cancel</button>
+                <button onClick={() => setIsMapModalOpen(false)} className="px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-200 dark:bg-gray-700">{t('alerts_page.cancel')}</button>
                 <button onClick={() => {
                   setNewAlert(prev => ({...prev, locations: [...prev.locations, 'Geo-Polygon #7A']}))
                   setIsMapModalOpen(false)
-                }} className="px-6 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700">Save Zone</button>
+                }} className="px-6 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700">{t('alerts_page.save_zone')}</button>
               </div>
             </div>
           </div>

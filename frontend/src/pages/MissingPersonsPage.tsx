@@ -1,28 +1,38 @@
 import { useState, useEffect } from 'react'
-import { UserSearch, Plus, X, MapPin, Clock, Loader2, User, Phone, BrainCircuit, Activity, Users, ShieldAlert, CheckCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { UserSearch, Plus, X, MapPin, Loader2, User, Phone, BrainCircuit, Activity, Users, ShieldAlert, CheckCircle2, Trash2, CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { missingPersonService } from '@/services/api'
-import { formatDistanceToNow } from 'date-fns'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
 
 export default function MissingPersonsPage() {
+  const { t } = useTranslation()
   const [persons, setPersons] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedPerson, setSelectedPerson] = useState<any>(null)
-  
-  const [activeTab, setActiveTab] = useState('active') // active, unidentified, cross-reference, ai
+  const [toast, setToast] = useState<{message: string, type: 'success'|'error'|'warning'} | null>(null)
 
-  // AI & Cross Ref State
+  const [activeTab, setActiveTab] = useState('active')
+
   const [aiLoading, setAiLoading] = useState(false)
   const [aiMatches, setAiMatches] = useState<any[]>([])
   const [crossRefLoading, setCrossRefLoading] = useState(false)
   const [crossRefMatches, setCrossRefMatches] = useState<any[]>([])
 
   const [reunificationNotes, setReunificationNotes] = useState('')
+  const [isReunifying, setIsReunifying] = useState(false)
+
+  // Form state
+  const [isUnidentified, setIsUnidentified] = useState(false)
+
+  const showToast = (message: string, type: 'success'|'error'|'warning' = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -38,6 +48,11 @@ export default function MissingPersonsPage() {
       setLoading(true)
       const res = await missingPersonService.getMissing()
       setPersons(res.data)
+      // Refresh selectedPerson if one is open
+      if (selectedPerson) {
+        const updated = res.data.find((p: any) => p.id === selectedPerson.id)
+        if (updated) setSelectedPerson(updated)
+      }
     } catch (error) {
       console.error('Failed to fetch missing persons:', error)
     } finally {
@@ -60,7 +75,7 @@ export default function MissingPersonsPage() {
       lastSeen: formData.get('lastSeen'),
       contactName: formData.get('contactName'),
       contactPhone: formData.get('contactPhone'),
-      isUnidentified: formData.get('isUnidentified') === 'true',
+      isUnidentified,
       photo: selectedImage || ''
     }
 
@@ -69,23 +84,27 @@ export default function MissingPersonsPage() {
       await missingPersonService.reportMissing(data)
       setShowModal(false)
       setSelectedImage(null)
+      setIsUnidentified(false)
+      showToast('Report filed successfully')
       fetchData()
     } catch (error) {
       console.error(error)
-      alert('Failed to report missing person')
+      showToast('Failed to file report', 'error')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handleAiSearch = async () => {
-    if (!selectedImage) return alert('Upload a photo first')
+    if (!selectedImage) { showToast('Upload a photo first', 'warning'); return }
     setAiLoading(true)
+    setAiMatches([])
     try {
       const res = await missingPersonService.searchFace('mock_url')
       setAiMatches(res.data)
+      if (res.data.length === 0) showToast('No matches found in database', 'warning')
     } catch (e) {
-      console.error(e)
+      showToast('AI scan failed', 'error')
     } finally {
       setAiLoading(false)
     }
@@ -93,102 +112,168 @@ export default function MissingPersonsPage() {
 
   const handleCrossReference = async () => {
     setCrossRefLoading(true)
+    setCrossRefMatches([])
     try {
       const res = await missingPersonService.runCrossReference()
       setCrossRefMatches(res.data)
+      if (res.data.length === 0) showToast('No cross-reference matches found', 'warning')
     } catch (e) {
-      console.error(e)
+      showToast('Cross-reference scan failed', 'error')
     } finally {
       setCrossRefLoading(false)
     }
   }
 
   const handleReunify = async (status: string) => {
+    if (!selectedPerson) return
     try {
+      setIsReunifying(true)
       await missingPersonService.triggerReunification(selectedPerson.id, status, reunificationNotes)
       setReunificationNotes('')
-      setSelectedPerson(null)
-      fetchData()
+      showToast(
+        status === 'REUNITED' ? 'Case closed — marked as reunited' :
+        status === 'IN_PROGRESS' ? 'Reunification initiated — contact SMS sent' :
+        'Log note saved'
+      )
+      await fetchData()
     } catch (e) {
-      console.error(e)
+      showToast('Failed to update reunification status', 'error')
+    } finally {
+      setIsReunifying(false)
     }
   }
 
-  const displayedPersons = activeTab === 'unidentified' 
-    ? persons.filter(p => p.isUnidentified) 
+  const handleMarkFound = async (personId: string) => {
+    try {
+      await missingPersonService.updateStatus(personId, 'FOUND')
+      showToast('Person marked as found')
+      fetchData()
+    } catch {
+      showToast('Failed to update status', 'error')
+    }
+  }
+
+  const handleDelete = async (personId: string, name: string) => {
+    if (!window.confirm(`Delete record for "${name}"? This cannot be undone.`)) return
+    try {
+      await missingPersonService.delete(personId)
+      showToast('Record deleted')
+      if (selectedPerson?.id === personId) setSelectedPerson(null)
+      fetchData()
+    } catch {
+      showToast('Failed to delete record', 'error')
+    }
+  }
+
+  const displayedPersons = activeTab === 'unidentified'
+    ? persons.filter(p => p.isUnidentified)
     : persons.filter(p => !p.isUnidentified)
 
+  const statusBadge = (status: string) =>
+    status === 'FOUND'
+      ? 'bg-green-500/15 text-green-400'
+      : 'bg-red-500/15 text-red-400'
+
+  const reunifyBadge = (s: string) =>
+    s === 'NONE' ? 'bg-white/10 text-slate-300' :
+    s === 'IN_PROGRESS' ? 'bg-blue-500/15 text-blue-400' :
+    'bg-green-500/15 text-green-400'
+
   return (
-        <>
-          <PageMeta title="Missing Persons | Suraksha" description="Suraksha Missing Persons Page" />
-          <PageBreadcrumb pageTitle="Missing Persons" />
-          <div className="space-y-8 animate-in fade-in duration-700 pb-10 w-full min-w-0">
-        <div className="flex flex-col md:flex-row md:items-center justify-end gap-4 mb-2">
-          <button 
-            onClick={() => setShowModal(true)}
-            className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 hover:scale-[1.02] transition-all active:scale-95"
+    <>
+      <PageMeta title="Missing Persons | Suraksha" description="Suraksha Missing Persons Page" />
+      <PageBreadcrumb pageTitle="Missing Persons" />
+      <div className="space-y-8 animate-in fade-in duration-700 pb-10 w-full min-w-0">
+
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={() => { setShowModal(true); setSelectedImage(null); setIsUnidentified(false) }}
+            className="flex items-center gap-2 px-8 py-4 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 hover:scale-[1.02] transition-all active:scale-95"
           >
             <Plus className="w-5 h-5" />
-            File New Report
+            {t('missing_persons_page.file_new_report')}
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-2 bg-white dark:bg-gray-900 p-2 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
-          <button onClick={() => setActiveTab('active')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'active' ? "bg-red-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50")}>
-            <Users className="w-4 h-4" /> Active Cases
+        {/* Tabs */}
+        <div className="flex flex-wrap gap-2 bg-[#131f33] p-2 rounded-2xl shadow-sm border border-cyan-400/10">
+          <button onClick={() => setActiveTab('active')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'active' ? "bg-red-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
+            <Users className="w-4 h-4" /> {t('missing_persons_page.tabs.active_cases')}
           </button>
-          <button onClick={() => setActiveTab('unidentified')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'unidentified' ? "bg-red-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50")}>
-            <ShieldAlert className="w-4 h-4" /> Unidentified Registry
+          <button onClick={() => setActiveTab('unidentified')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'unidentified' ? "bg-red-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
+            <ShieldAlert className="w-4 h-4" /> {t('missing_persons_page.tabs.unidentified')}
           </button>
-          <button onClick={() => { setActiveTab('cross-reference'); handleCrossReference(); }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'cross-reference' ? "bg-blue-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50")}>
-            <Activity className="w-4 h-4" /> Cross-Reference Engine
+          <button onClick={() => { setActiveTab('cross-reference'); handleCrossReference() }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'cross-reference' ? "bg-blue-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
+            <Activity className="w-4 h-4" /> {t('missing_persons_page.tabs.cross_reference')}
           </button>
-          <button onClick={() => { setActiveTab('ai'); setAiMatches([]); setSelectedImage(null); }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'ai' ? "bg-purple-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800/50")}>
-            <BrainCircuit className="w-4 h-4" /> AI Face Matcher
+          <button onClick={() => { setActiveTab('ai'); setAiMatches([]); setSelectedImage(null) }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'ai' ? "bg-purple-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
+            <BrainCircuit className="w-4 h-4" /> {t('missing_persons_page.tabs.ai_matcher')}
           </button>
         </div>
 
-        {/* ACTIVE & UNIDENTIFIED TABS */}
+        {/* ACTIVE & UNIDENTIFIED */}
         {(activeTab === 'active' || activeTab === 'unidentified') && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {loading ? (
-              <div className="col-span-full h-64 flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-10 h-10 animate-spin text-red-500" />
+              <div className="col-span-full h-64 flex items-center justify-center">
+                <Loader2 className="w-10 h-10 animate-spin text-red-400" />
               </div>
             ) : displayedPersons.length === 0 ? (
-              <div className="col-span-full bg-white dark:bg-gray-900 border border-dashed border-gray-200 dark:border-gray-700 rounded-[2.5rem] p-20 text-center space-y-4">
-                <UserSearch className="w-16 h-16 text-slate-200 mx-auto" />
-                <h3 className="text-xl font-bold text-slate-700">No Records Found</h3>
+              <div className="col-span-full bg-white/5 border border-dashed border-white/15 rounded-[2.5rem] p-20 text-center space-y-4">
+                <UserSearch className="w-16 h-16 text-slate-600 mx-auto" />
+                <h3 className="text-xl font-bold text-white/60">{t('missing_persons_page.no_records')}</h3>
+                <p className="text-slate-500 text-sm">{t('missing_persons_page.file_report_hint')}</p>
               </div>
             ) : (
               displayedPersons.map((person) => (
-                <div key={person.id} className="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-[2rem] p-6 hover:shadow-2xl hover:shadow-red-500/5 transition-all overflow-hidden">
-                  <div className="relative h-64 -mx-6 -mt-6 mb-6 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center overflow-hidden">
-                      {person.photo ? (
-                        <img src={person.photo} alt={person.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      ) : (
-                        <User className="w-20 h-20 text-slate-200" />
-                      )}
-                      {person.status === 'FOUND' && (
-                        <div className="absolute top-4 right-4 z-20 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">Found</div>
-                      )}
-                      {person.reunificationStatus === 'IN_PROGRESS' && (
-                        <div className="absolute top-4 left-4 z-20 bg-blue-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">Reunifying</div>
-                      )}
+                <div key={person.id} className="group suraksha-card rounded-[2rem] overflow-hidden hover:shadow-2xl hover:shadow-red-500/5 transition-all">
+                  {/* Photo */}
+                  <div className="relative h-56 bg-white/5 flex items-center justify-center overflow-hidden">
+                    {person.photo ? (
+                      <img src={person.photo} alt={person.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <User className="w-20 h-20 text-slate-600" />
+                    )}
+                    {person.status === 'FOUND' && (
+                      <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">{t('missing_persons_page.found_badge')}</div>
+                    )}
+                    {person.reunificationStatus === 'IN_PROGRESS' && (
+                      <div className="absolute top-3 left-3 bg-blue-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">{t('missing_persons_page.reunifying_badge')}</div>
+                    )}
                   </div>
 
-                  <div className="space-y-4">
-                      <div>
-                        <h3 className="text-lg font-black text-slate-900">{person.name}</h3>
-                        <p className="text-xs font-bold text-gray-400 dark:text-gray-500">{person.age ? `${person.age} Years Old` : 'Age Unknown'}</p>
+                  <div className="p-5 space-y-3">
+                    <div>
+                      <h3 className="text-base font-black text-white/90">{person.name}</h3>
+                      <p className="text-xs font-bold text-slate-500">{person.age ? `${person.age} yrs` : t('missing_persons_page.age_unknown')} &bull; {person.gender || t('missing_persons_page.other_unknown')}</p>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs font-bold">
+                      <MapPin className="w-3 h-3 text-red-400 shrink-0" />
+                      <span className="truncate">{person.lastSeen}</span>
+                    </div>
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                      <button onClick={() => setSelectedPerson(person)} className="text-xs font-black text-red-400 uppercase hover:text-red-300 transition-colors">
+                        {t('missing_persons_page.view_file')}
+                      </button>
+                      <div className="flex items-center gap-2">
+                        {person.status === 'MISSING' && (
+                          <button
+                            onClick={() => handleMarkFound(person.id)}
+                            title={t('missing_persons_page.mark_as_found')}
+                            className="w-7 h-7 flex items-center justify-center rounded-full bg-green-500/15 text-green-400 hover:bg-green-500/30 transition-colors"
+                          >
+                            <CheckCheck className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(person.id, person.name)}
+                          title={t('missing_persons_page.delete_record')}
+                          className="w-7 h-7 flex items-center justify-center rounded-full bg-white/8 text-slate-500 hover:bg-red-500/15 hover:text-red-400 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
-                      <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-bold">
-                        <MapPin className="w-4 h-4 text-red-400 shrink-0" />
-                        <span className="truncate">Last seen: {person.lastSeen}</span>
-                      </div>
-                      <div className="pt-4 border-t border-slate-50 flex justify-between items-center">
-                        <button onClick={() => setSelectedPerson(person)} className="text-xs font-black text-red-500 uppercase hover:underline">View File</button>
-                      </div>
+                    </div>
                   </div>
                 </div>
               ))
@@ -196,43 +281,49 @@ export default function MissingPersonsPage() {
           </div>
         )}
 
-        {/* CROSS REFERENCE TAB */}
+        {/* CROSS REFERENCE */}
         {activeTab === 'cross-reference' && (
-          <div className="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-200 dark:border-gray-800 shadow-sm">
+          <div className="suraksha-card p-8 rounded-[2rem]">
             <div className="flex justify-between items-center mb-8">
               <div>
-                <h2 className="text-2xl font-black text-slate-800">Automated Cross-Reference Engine</h2>
-                
+                <h2 className="text-2xl font-black text-white/90">{t('missing_persons_page.cross_ref_title')}</h2>
+                <p className="text-slate-400 text-sm mt-1">{t('missing_persons_page.cross_ref_desc')}</p>
               </div>
-              <button onClick={handleCrossReference} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 flex items-center gap-2">
-                <Activity className="w-5 h-5" /> Run Scan Now
+              <button onClick={handleCrossReference} disabled={crossRefLoading} className="bg-blue-500/20 border border-blue-500/30 text-blue-300 hover:bg-blue-500/30 px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all disabled:opacity-50">
+                <Activity className="w-5 h-5" /> {crossRefLoading ? t('missing_persons_page.scanning') : t('missing_persons_page.run_scan')}
               </button>
             </div>
 
             {crossRefLoading ? (
-              <div className="py-20 flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>
+              <div className="py-20 flex flex-col items-center gap-4">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest animate-pulse">{t('missing_persons_page.cross_referencing')}</span>
+              </div>
             ) : crossRefMatches.length === 0 ? (
-              <div className="text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl"><p className="text-gray-400 dark:text-gray-500 font-bold">No potential matches found at this time.</p></div>
+              <div className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
+                <p className="text-slate-400 font-bold">{t('missing_persons_page.no_matches')}</p>
+                <p className="text-slate-500 text-sm mt-1">{t('missing_persons_page.run_scan_hint')}</p>
+              </div>
             ) : (
               <div className="grid gap-4">
                 {crossRefMatches.map((match, i) => (
-                  <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-3xl items-center">
-                    <div className="flex-1 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-red-100 shadow-sm">
-                      <div className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-1">Missing Person</div>
-                      <div className="font-black text-slate-800 text-lg">{match.missingPerson.name}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{match.missingPerson.age} yrs • {match.missingPerson.gender}</div>
+                  <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-white/5 border border-white/10 rounded-3xl items-center">
+                    <div className="flex-1 bg-red-500/10 border border-red-500/20 p-4 rounded-2xl">
+                      <div className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">{t('missing_persons_page.missing_person')}</div>
+                      <div className="font-black text-white/90 text-lg">{match.missingPerson.name}</div>
+                      <div className="text-sm text-slate-400">{match.missingPerson.age} yrs &bull; {match.missingPerson.gender}</div>
                     </div>
-                    <div className="w-full md:w-32 text-center">
-                      <div className="text-3xl font-black text-blue-600">{match.matchScore}%</div>
-                      <div className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Match Prob.</div>
+                    <div className="w-full md:w-28 text-center shrink-0">
+                      <div className="text-3xl font-black text-blue-400">{match.matchScore}%</div>
+                      <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('missing_persons_page.match')}</div>
                     </div>
-                    <div className="flex-1 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-blue-100 shadow-sm">
-                      <div className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1">Found in {match.matchedRecord.type.replace('_', ' ')}</div>
-                      <div className="font-black text-slate-800 text-lg">{match.matchedRecord.data.name}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{match.matchedRecord.data.age} yrs • {match.matchedRecord.data.gender}</div>
+                    <div className="flex-1 bg-blue-500/10 border border-blue-500/20 p-4 rounded-2xl">
+                      <div className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">{t('missing_persons_page.found_in')} {match.matchedRecord.type.replace('_', ' ')}</div>
+                      <div className="font-black text-white/90 text-lg">{match.matchedRecord.data.name}</div>
+                      <div className="text-sm text-slate-400">{match.matchedRecord.data.age} yrs &bull; {match.matchedRecord.data.gender}</div>
                     </div>
-                    <button onClick={() => setSelectedPerson(match.missingPerson)} className="bg-slate-900 text-white px-6 py-4 rounded-xl font-bold hover:bg-slate-800">
-                      Review
+                    <button onClick={() => setSelectedPerson(match.missingPerson)} className="bg-brand-500 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-cyan-500/20 transition-all shrink-0">
+                      {t('missing_persons_page.review')}
                     </button>
                   </div>
                 ))}
@@ -241,252 +332,340 @@ export default function MissingPersonsPage() {
           </div>
         )}
 
-        {/* AI FACE MATCHER TAB */}
+        {/* AI FACE MATCHER */}
         {activeTab === 'ai' && (
-          <div className="flex flex-col md:flex-row gap-8 bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div className="w-full md:w-1/3 bg-purple-50 p-8 rounded-3xl border border-purple-100 text-center flex flex-col items-center">
-              <BrainCircuit className="w-12 h-12 text-purple-600 mb-4" />
-              <h3 className="text-xl font-black text-purple-900 mb-2">AI Face Scanner</h3>
-              <p className="text-sm text-purple-700/70 mb-8">Upload a photo of an unidentified found individual to cross-reference against the missing persons database.</p>
-              
-              <div className="relative w-full aspect-square bg-white dark:bg-gray-900 rounded-2xl overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-purple-200 hover:border-purple-400 transition-colors cursor-pointer group mb-6">
+          <div className="flex flex-col md:flex-row gap-8 suraksha-card p-8 rounded-[2rem]">
+            {/* Upload panel */}
+            <div className="w-full md:w-1/3 bg-purple-500/10 border border-purple-500/20 p-8 rounded-3xl text-center flex flex-col items-center">
+              <BrainCircuit className="w-12 h-12 text-purple-400 mb-4" />
+              <h3 className="text-xl font-black text-white/90 mb-2">{t('missing_persons_page.ai_scanner_title')}</h3>
+              <p className="text-sm text-slate-400 mb-8">{t('missing_persons_page.ai_scanner_desc')}</p>
+
+              <div className="relative w-full aspect-square bg-white/5 rounded-2xl overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-purple-500/30 hover:border-purple-400/60 transition-colors cursor-pointer group mb-6">
                 {selectedImage ? (
                   <img src={selectedImage} className="w-full h-full object-cover" />
                 ) : (
                   <>
-                    <Plus className="w-8 h-8 text-purple-300 group-hover:text-purple-500 mb-2" />
-                    <span className="font-bold text-purple-400 text-sm">Select Image</span>
+                    <Plus className="w-8 h-8 text-purple-500 group-hover:text-purple-400 mb-2" />
+                    <span className="font-bold text-purple-500 text-sm">{t('missing_persons_page.select_image')}</span>
                   </>
                 )}
                 <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
               </div>
 
-              <button onClick={handleAiSearch} disabled={aiLoading || !selectedImage} className="w-full bg-purple-600 text-white py-4 rounded-xl font-bold hover:bg-purple-700 disabled:opacity-50 flex items-center justify-center gap-2">
-                {aiLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Run AI Scan"}
+              <button
+                onClick={handleAiSearch}
+                disabled={aiLoading || !selectedImage}
+                className="w-full bg-purple-500/80 hover:bg-purple-500 text-white py-4 rounded-xl font-bold disabled:opacity-50 flex items-center justify-center gap-2 transition-all"
+              >
+                {aiLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <BrainCircuit className="w-5 h-5" />}
+                {t('missing_persons_page.run_ai_scan')}
               </button>
             </div>
 
+            {/* Results */}
             <div className="flex-1">
-              <h3 className="text-xl font-black text-slate-800 mb-6">Potential Matches</h3>
+              <h3 className="text-xl font-black text-white/90 mb-6">{t('missing_persons_page.potential_matches')}</h3>
               {aiLoading ? (
-                <div className="py-20 flex flex-col items-center justify-center text-purple-600 gap-4">
+                <div className="py-20 flex flex-col items-center justify-center text-purple-400 gap-4">
                   <Loader2 className="w-10 h-10 animate-spin" />
-                  <span className="text-xs font-bold uppercase tracking-widest animate-pulse">Running Neural Network Analysis...</span>
+                  <span className="text-xs font-bold uppercase tracking-widest animate-pulse">{t('missing_persons_page.neural_analysis')}</span>
                 </div>
               ) : aiMatches.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {aiMatches.map((match, i) => (
-                    <div key={i} className="flex gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-md cursor-pointer transition-shadow" onClick={() => setSelectedPerson(match.person)}>
-                      <div className="w-20 h-20 bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden shrink-0">
-                        {match.person.photo ? <img src={match.person.photo} className="w-full h-full object-cover" /> : <User className="w-full h-full p-4 text-gray-400 dark:text-gray-500" />}
+                    <div
+                      key={i}
+                      className="flex gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/8 cursor-pointer transition-all"
+                      onClick={() => setSelectedPerson(match.person)}
+                    >
+                      <div className="w-20 h-20 bg-white/8 rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
+                        {match.person.photo
+                          ? <img src={match.person.photo} className="w-full h-full object-cover" />
+                          : <User className="w-8 h-8 text-slate-500" />
+                        }
                       </div>
                       <div>
-                        <div className="font-black text-slate-800">{match.person.name}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">{match.person.age} yrs • {match.person.gender}</div>
-                        <div className="mt-2 inline-flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded font-bold text-[10px]">
-                          <CheckCircle className="w-3 h-3" /> {(match.confidence * 100).toFixed(1)}% Match
+                        <div className="font-black text-white/90">{match.person.name}</div>
+                        <div className="text-xs text-slate-400">{match.person.age} yrs &bull; {match.person.gender}</div>
+                        <div className="mt-2 inline-flex items-center gap-1 bg-green-500/15 text-green-400 px-2 py-1 rounded font-bold text-[10px]">
+                          <CheckCircle2 className="w-3 h-3" /> {(match.confidence * 100).toFixed(1)}% Match
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="py-20 text-center bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700">
-                  <p className="text-gray-400 dark:text-gray-500 font-bold">Upload an image to see AI matches.</p>
+                <div className="py-20 text-center bg-white/5 rounded-3xl border border-dashed border-white/10">
+                  <BrainCircuit className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                  <p className="text-slate-400 font-bold">{t('missing_persons_page.upload_run_hint')}</p>
                 </div>
               )}
             </div>
           </div>
         )}
 
-        {/* Create Modal */}
+        {/* CREATE MODAL */}
         {showModal && (
-          <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar rounded-[3rem] shadow-2xl flex flex-col animate-in zoom-in-95 duration-300">
-              <div className="px-10 py-8 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50/50 shrink-0">
-                <h2 className="text-2xl font-black text-slate-900">File Report</h2>
-                <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-all"><X className="w-6 h-6" /></button>
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="bg-[#131f33] border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] shadow-2xl flex flex-col animate-in zoom-in-95 duration-300">
+              <div className="px-10 py-7 border-b border-white/10 flex items-center justify-between bg-[#0e1d36] shrink-0 rounded-t-[2.5rem]">
+                <h2 className="text-2xl font-black text-white/90">{t('missing_persons_page.modal_title')}</h2>
+                <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-all">
+                  <X className="w-6 h-6" />
+                </button>
               </div>
-              <form onSubmit={handleSubmit} className="p-10 space-y-6 flex-1">
-                
-                <div className="bg-red-50 p-4 rounded-xl border border-red-100 mb-6">
+
+              <form onSubmit={handleSubmit} className="p-10 space-y-6">
+                {/* Unidentified toggle */}
+                <div className={cn("p-4 rounded-xl border cursor-pointer transition-all", isUnidentified ? "bg-red-500/15 border-red-500/30" : "bg-white/5 border-white/10")}>
                   <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" name="isUnidentified" value="true" className="w-5 h-5 text-red-600 rounded border-slate-300" />
-                    <span className="font-bold text-red-900">Register as Unidentified Found Person instead</span>
+                    <input
+                      type="checkbox"
+                      checked={isUnidentified}
+                      onChange={e => setIsUnidentified(e.target.checked)}
+                      className="w-5 h-5 rounded accent-red-500"
+                    />
+                    <span className={cn("font-bold", isUnidentified ? "text-red-300" : "text-slate-300")}>
+                      {t('missing_persons_page.register_unidentified')}
+                    </span>
                   </label>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Name / Alias</label>
-                    <input name="name" type="text" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.name_alias')}</label>
+                    <input name="name" type="text" required className="suraksha-input w-full" />
                   </div>
-                  <div>
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Age</label>
-                    <input name="age" type="number" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.age')}</label>
+                    <input name="age" type="number" min="0" max="120" className="suraksha-input w-full" />
                   </div>
-                  <div>
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Gender</label>
-                    <select name="gender" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40">
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.gender')}</label>
+                    <select name="gender" className="suraksha-input w-full">
+                      <option value="Male">{t('missing_persons_page.male')}</option>
+                      <option value="Female">{t('missing_persons_page.female')}</option>
+                      <option value="Other">{t('missing_persons_page.other_unknown')}</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Last Seen Location / Found Location</label>
-                    <input name="lastSeen" type="text" required className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{isUnidentified ? t('missing_persons_page.found_location') : t('missing_persons_page.last_seen_location')}</label>
+                    <input name="lastSeen" type="text" required className="suraksha-input w-full" />
                   </div>
                 </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Description</label>
-                  <textarea name="description" rows={3} required className="suraksha-input resize-none focus:ring-red-500/20 focus:border-red-500/40"></textarea>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.description_label')}</label>
+                  <textarea name="description" rows={3} required className="suraksha-input w-full resize-none" />
                 </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Photo</label>
-                  <div className="mt-2 flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative">
-                      {selectedImage ? <img src={selectedImage} className="w-full h-full object-cover" /> : <Plus className="text-gray-400 dark:text-gray-500" />}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.photo')}</label>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white/5 rounded-xl border-2 border-dashed border-white/20 flex items-center justify-center overflow-hidden relative hover:border-white/40 transition-colors cursor-pointer">
+                      {selectedImage ? <img src={selectedImage} className="w-full h-full object-cover" /> : <Plus className="text-slate-500" />}
                       <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
                     </div>
-                    <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">Upload a clear photo to enable AI matching.</span>
+                    <span className="text-xs text-slate-400 font-bold">{selectedImage ? t('missing_persons_page.photo_selected') : t('missing_persons_page.upload_photo_hint')}</span>
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 dark:border-gray-800 pt-6 mt-6">
-                  <h4 className="font-bold text-slate-800 mb-4">Family Contact (For Reunification)</h4>
+                <div className="border-t border-white/10 pt-6 space-y-4">
+                  <h4 className="font-bold text-white/80">{t('missing_persons_page.family_contact_section')}</h4>
                   <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Contact Name</label>
-                      <input name="contactName" type="text" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.contact_name')}</label>
+                      <input name="contactName" type="text" className="suraksha-input w-full" />
                     </div>
-                    <div>
-                      <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">Contact Phone</label>
-                      <input name="contactPhone" type="tel" className="suraksha-input focus:ring-red-500/20 focus:border-red-500/40" />
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('missing_persons_page.contact_phone')}</label>
+                      <input name="contactPhone" type="tel" className="suraksha-input w-full" />
                     </div>
                   </div>
                 </div>
 
-                <button disabled={isSubmitting} className="w-full py-5 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 mt-6 hover:bg-red-700">
-                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Save Record"}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-5 bg-[#E11D48] text-white rounded-2xl font-bold shadow-xl shadow-red-500/25 hover:bg-red-600 disabled:opacity-50 flex items-center justify-center gap-2 transition-all"
+                >
+                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : <Plus className="w-5 h-5" />}
+                  {t('missing_persons_page.save_record')}
                 </button>
               </form>
             </div>
           </div>
         )}
 
-        {/* Details & Reunification Modal */}
+        {/* DETAIL & REUNIFICATION MODAL */}
         {selectedPerson && (
-          <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-slate-900/60 backdrop-blur-xl p-4 animate-in fade-in duration-500">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-5xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col md:flex-row h-[90vh] max-h-[90vh]">
-              
-              <div className="md:w-1/3 bg-gray-50 dark:bg-gray-800/50 relative overflow-hidden border-r border-gray-200 dark:border-gray-800 flex flex-col">
-                 <div className="h-64 relative shrink-0">
-                   {selectedPerson.photo ? (
-                     <img src={selectedPerson.photo} alt={selectedPerson.name} className="w-full h-full object-cover" />
-                   ) : (
-                     <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-                        <User className="w-20 h-20 text-gray-400 dark:text-gray-500" />
-                     </div>
-                   )}
-                 </div>
-                 
-                 <div className="p-6 flex-1 overflow-y-auto">
-                   <h2 className="text-2xl font-black text-slate-900 leading-tight">{selectedPerson.name}</h2>
-                   <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-1">{selectedPerson.age ? `${selectedPerson.age} yrs` : 'Unknown Age'} • {selectedPerson.gender || 'Unknown'}</p>
-                   
-                   <div className="mt-6 space-y-4">
-                     <div>
-                       <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block">Status</span>
-                       <span className={cn("px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider inline-block mt-1", selectedPerson.status === 'FOUND' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>
-                         {selectedPerson.status}
-                       </span>
-                     </div>
-                     <div>
-                       <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block">Reported Contact</span>
-                       <p className="text-sm font-bold text-slate-800">{selectedPerson.contactName || 'None listed'}</p>
-                       <p className="text-sm font-medium text-gray-600 dark:text-gray-300">{selectedPerson.contactPhone || 'No phone'}</p>
-                     </div>
-                   </div>
-                 </div>
+          <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-slate-900/70 backdrop-blur-xl p-4 animate-in fade-in duration-500">
+            <div className="bg-[#131f33] border border-white/10 w-full max-w-5xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col md:flex-row h-[90vh] max-h-[90vh]">
+
+              {/* Left: Photo + Info */}
+              <div className="md:w-1/3 bg-[#0e1d36] border-b md:border-b-0 md:border-r border-white/10 flex flex-col">
+                <div className="h-56 shrink-0 relative">
+                  {selectedPerson.photo ? (
+                    <img src={selectedPerson.photo} alt={selectedPerson.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-white/5">
+                      <User className="w-20 h-20 text-slate-600" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6 flex-1 overflow-y-auto space-y-4">
+                  <div>
+                    <h2 className="text-2xl font-black text-white/90 leading-tight">{selectedPerson.name}</h2>
+                    <p className="text-sm font-bold text-slate-400 mt-1">
+                      {selectedPerson.age ? `${selectedPerson.age} yrs` : t('missing_persons_page.unknown_age')} &bull; {selectedPerson.gender || t('missing_persons_page.other_unknown')}
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">{t('missing_persons_page.status')}</span>
+                    <span className={cn("px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider inline-block", statusBadge(selectedPerson.status))}>
+                      {selectedPerson.status}
+                    </span>
+                  </div>
+
+                  {selectedPerson.contactName && (
+                    <div>
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">{t('missing_persons_page.family_contact')}</span>
+                      <p className="text-sm font-bold text-white/80">{selectedPerson.contactName}</p>
+                      <p className="text-sm text-slate-300">{selectedPerson.contactPhone || t('missing_persons_page.no_phone')}</p>
+                    </div>
+                  )}
+
+                  {selectedPerson.status === 'MISSING' && (
+                    <button
+                      onClick={() => handleMarkFound(selectedPerson.id)}
+                      className="w-full bg-green-500/15 hover:bg-green-500/25 text-green-400 border border-green-500/30 text-xs font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
+                    >
+                      <CheckCheck className="w-4 h-4" /> {t('missing_persons_page.mark_as_found')}
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => handleDelete(selectedPerson.id, selectedPerson.name)}
+                    className="w-full bg-white/5 hover:bg-red-500/15 text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-500/30 text-xs font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" /> {t('missing_persons_page.delete_record')}
+                  </button>
+                </div>
               </div>
 
-              <div className="flex-1 p-8 md:p-10 overflow-y-auto flex flex-col bg-white dark:bg-gray-900 relative">
-                 <button onClick={() => setSelectedPerson(null)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-300 transition-all z-10"><X className="w-5 h-5" /></button>
-                 
-                 <div className="space-y-8 pb-10">
-                   <div>
-                     <h3 className="text-lg font-black text-slate-800 mb-4 border-b border-gray-200 dark:border-gray-800 pb-2">Case Details</h3>
-                     <div className="grid grid-cols-2 gap-4 text-sm">
-                       <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-800">
-                         <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block">Last Seen</span>
-                         <span className="font-bold text-slate-700">{selectedPerson.lastSeen}</span>
-                       </div>
-                       <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-800">
-                         <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block">Reported Date</span>
-                         <span className="font-bold text-slate-700">{new Date(selectedPerson.createdAt).toLocaleDateString()}</span>
-                       </div>
-                       <div className="col-span-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-800">
-                         <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-1">Description</span>
-                         <span className="text-slate-700">{selectedPerson.description}</span>
-                       </div>
-                     </div>
-                   </div>
+              {/* Right: Case Details + Reunification */}
+              <div className="flex-1 p-8 md:p-10 overflow-y-auto relative">
+                <button
+                  onClick={() => setSelectedPerson(null)}
+                  className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-all z-10"
+                >
+                  <X className="w-5 h-5" />
+                </button>
 
-                   {/* Family Reunification Workflow */}
-                   <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6">
-                     <h3 className="text-lg font-black text-blue-900 mb-2 flex items-center gap-2"><Phone className="w-5 h-5" /> Family Reunification Workflow</h3>
-                     <p className="text-sm text-blue-700 mb-6">Manage the process of returning this individual to their registered family contact.</p>
+                <div className="space-y-8 pb-10">
+                  {/* Case Details */}
+                  <div>
+                    <h3 className="text-lg font-black text-white/90 mb-4 border-b border-white/10 pb-2">{t('missing_persons_page.case_details')}</h3>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block">{t('missing_persons_page.last_seen')}</span>
+                        <span className="font-bold text-white/80 mt-1 block">{selectedPerson.lastSeen}</span>
+                      </div>
+                      <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block">{t('missing_persons_page.reported')}</span>
+                        <span className="font-bold text-white/80 mt-1 block">{new Date(selectedPerson.createdAt).toLocaleDateString()}</span>
+                      </div>
+                      {selectedPerson.description && (
+                        <div className="col-span-2 bg-white/5 p-4 rounded-xl border border-white/10">
+                          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">{t('missing_persons_page.description')}</span>
+                          <span className="text-slate-300 text-sm">{selectedPerson.description}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-                     <div className="space-y-4">
-                       <div className="flex items-center gap-4">
-                         <span className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 w-32">Current State:</span>
-                         <span className={cn("px-3 py-1 rounded-md text-xs font-black uppercase tracking-wider",
-                           selectedPerson.reunificationStatus === 'NONE' ? 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300' :
-                           selectedPerson.reunificationStatus === 'IN_PROGRESS' ? 'bg-blue-200 text-blue-800' :
-                           'bg-green-200 text-green-800'
-                         )}>{selectedPerson.reunificationStatus.replace('_', ' ')}</span>
-                       </div>
-                       
-                       <div className="flex flex-col gap-2">
-                         <textarea 
-                           value={reunificationNotes} onChange={e => setReunificationNotes(e.target.value)}
-                           placeholder="Add an update to the reunification log..." rows={2}
-                           className="w-full bg-white dark:bg-gray-900 border border-blue-200 p-3 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                         />
-                         <div className="flex gap-2">
-                           {selectedPerson.reunificationStatus !== 'IN_PROGRESS' && selectedPerson.reunificationStatus !== 'REUNITED' && (
-                             <button onClick={() => handleReunify('IN_PROGRESS')} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700 shadow-sm">
-                               Initiate Reunification (SMS Contact)
-                             </button>
-                           )}
-                           {selectedPerson.reunificationStatus === 'IN_PROGRESS' && (
-                             <button onClick={() => handleReunify('REUNITED')} className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-green-700 shadow-sm">
-                               Mark as Reunited (Closes Case)
-                             </button>
-                           )}
-                           <button onClick={() => handleReunify(selectedPerson.reunificationStatus)} disabled={!reunificationNotes} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-700 disabled:opacity-50">
-                             Save Log Note
-                           </button>
-                         </div>
-                       </div>
+                  {/* Reunification Workflow */}
+                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+                    <h3 className="text-lg font-black text-blue-300 mb-1 flex items-center gap-2">
+                      <Phone className="w-5 h-5" /> {t('missing_persons_page.reunification_title')}
+                    </h3>
+                    <p className="text-sm text-blue-400/70 mb-6">{t('missing_persons_page.reunification_desc')}</p>
 
-                       {selectedPerson.reunificationNotes && (
-                         <div className="mt-4 bg-white dark:bg-gray-900/50 p-4 rounded-xl border border-blue-100 text-xs text-slate-700 whitespace-pre-wrap max-h-40 overflow-y-auto font-mono">
-                           {selectedPerson.reunificationNotes}
-                         </div>
-                       )}
-                     </div>
-                   </div>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-xs font-bold uppercase tracking-widest text-slate-500 shrink-0">{t('missing_persons_page.current_state')}</span>
+                        <span className={cn("px-3 py-1 rounded-md text-xs font-black uppercase tracking-wider", reunifyBadge(selectedPerson.reunificationStatus))}>
+                          {selectedPerson.reunificationStatus?.replace('_', ' ')}
+                        </span>
+                      </div>
 
-                 </div>
+                      <textarea
+                        value={reunificationNotes}
+                        onChange={e => setReunificationNotes(e.target.value)}
+                        placeholder={t('missing_persons_page.reunification_log_placeholder')}
+                        rows={2}
+                        className="suraksha-input w-full resize-none"
+                      />
+
+                      <div className="flex flex-wrap gap-2">
+                        {selectedPerson.reunificationStatus !== 'IN_PROGRESS' && selectedPerson.reunificationStatus !== 'REUNITED' && (
+                          <button
+                            onClick={() => handleReunify('IN_PROGRESS')}
+                            disabled={isReunifying}
+                            className="bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-blue-300 px-4 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-1.5"
+                          >
+                            {isReunifying ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+                            {t('missing_persons_page.initiate_reunification')}
+                          </button>
+                        )}
+                        {selectedPerson.reunificationStatus === 'IN_PROGRESS' && (
+                          <button
+                            onClick={() => handleReunify('REUNITED')}
+                            disabled={isReunifying}
+                            className="bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-300 px-4 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-1.5"
+                          >
+                            {isReunifying ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
+                            {t('missing_persons_page.mark_reunited')}
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleReunify(selectedPerson.reunificationStatus)}
+                          disabled={!reunificationNotes || isReunifying}
+                          className="bg-white/8 hover:bg-white/15 text-slate-300 border border-white/10 px-4 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+                        >
+                          {t('missing_persons_page.save_log_note')}
+                        </button>
+                      </div>
+
+                      {selectedPerson.reunificationNotes && (
+                        <div className="mt-2 bg-white/5 border border-white/10 p-4 rounded-xl text-xs text-slate-400 whitespace-pre-wrap max-h-40 overflow-y-auto font-mono">
+                          {selectedPerson.reunificationNotes}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
+
+        {/* Toast */}
+        {toast && (
+          <div className={cn(
+            "fixed bottom-8 right-8 z-[9999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
+            toast.type === 'success' ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30" :
+            toast.type === 'error' ? "bg-[#131f33] text-red-400 border border-red-500/30" :
+            "bg-[#131f33] text-amber-400 border border-amber-500/30"
+          )}>
+            {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <ShieldAlert className="w-5 h-5" />}
+            <span className="font-bold text-sm tracking-wide">{toast.message}</span>
+          </div>
+        )}
       </div>
-        </>
-      )
+    </>
+  )
 }

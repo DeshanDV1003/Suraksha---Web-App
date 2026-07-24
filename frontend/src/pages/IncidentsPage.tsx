@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { useDialog } from '@/components/ui/dialogs/DialogProvider'
 import { Plus, Eye, Search, Clock, CheckCircle2, AlertCircle, X, MapPin, AlertTriangle, Shield, Trash2, ChevronDown as LucideChevronDown, GitMerge, FileText, Upload, Activity, Zap, Cpu, History } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { IncidentLocationPicker } from '../components/map/IncidentLocationPicker'
@@ -430,6 +431,7 @@ export default function IncidentsPage() {
 }
 
 function CreateIncidentModal({ onClose, onSuccess }: any) {
+  const { alert } = useDialog()
   const { t } = useTranslation()
   const [formData, setFormData] = useState({
     title: '', description: '', location: '', severity: 'MEDIUM', category: 'FLOOD', latitude: 6.9271, longitude: 79.8612
@@ -443,7 +445,7 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
       await incidentService.createIncident(formData)
       onSuccess(formData)
     } catch (err) {
-      alert('Failed to register incident')
+      await alert('Failed to register incident', { variant: 'danger', title: 'Registration failed' })
     } finally {
       setLoading(false)
     }

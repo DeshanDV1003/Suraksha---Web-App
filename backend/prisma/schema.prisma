@@ -79,13 +79,13 @@ model IncidentReport {
 }
 
 model Alert {
-  id                   String    @id @default(uuid())
+  id                   String         @id @default(uuid())
   title                String
   message              String
-  type                 AlertType @default(INFO)
-  active               Boolean   @default(true)
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  type                 AlertType      @default(INFO)
+  active               Boolean        @default(true)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
   latitudes            Float[]
   locations            String[]
   longitudes           Float[]
@@ -94,7 +94,10 @@ model Alert {
   scheduledTime        DateTime?
   translatedMsgSinhala String?
   translatedMsgTamil   String?
-  targetSectors        String[]  @default([])
+  targetSectors        String[]       @default([])
+  broadcastRadiusKm    Float?
+  notifiedCount        Int            @default(0)
+  notifications        Notification[]
 }
 
 model Sector {
@@ -236,13 +239,16 @@ model MissingPerson {
 }
 
 model Notification {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   userId    String
+  alertId   String?
   title     String
   message   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  read      Boolean   @default(false)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  alert     Alert?    @relation(fields: [alertId], references: [id], onDelete: SetNull)
 }
 
 model MLLog {

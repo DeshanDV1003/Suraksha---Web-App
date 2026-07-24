@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
+import { DialogProvider } from '@/components/ui/dialogs/DialogProvider'
 
 // Template Layout and Pages
 import AppLayout from './layout/AppLayout'
@@ -64,69 +65,95 @@ function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: num
 }
 
 function GlobalAlertListener() {
-  const [activeAlert, setActiveAlert] = useState<{ title: string, message: string, distance?: number } | null>(null);
+  const [activeAlert, setActiveAlert] = useState<{ id: string, title: string, message: string, distance?: number } | null>(null);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const socket = io('http://localhost:3001');
 
     socket.on('new-alert', (alert) => {
+      // Don't interrupt the admin on the alert management page itself
+      if (window.location.pathname === '/suraksha-alerts') return;
+
+      setDismissed(false);
+
+      // All-island or no location data → show to everyone
       if (!alert.latitudes || alert.latitudes.length === 0 || alert.locations?.includes('All Island')) {
-        setActiveAlert({ title: alert.title, message: alert.message });
+        setActiveAlert({ id: alert.id, title: alert.title, message: alert.message });
         return;
       }
 
       if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const userLat = position.coords.latitude;
-          const userLon = position.coords.longitude;
-          
-          let minDistance = Infinity;
-          const radius = alert.broadcastRadiusKm || 20;
-
-          for (let i = 0; i < alert.latitudes.length; i++) {
-            const distance = calculateDistanceKm(userLat, userLon, alert.latitudes[i], alert.longitudes[i]);
-            if (distance < minDistance) {
-              minDistance = distance;
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+            let minDistance = Infinity;
+            const radius = alert.broadcastRadiusKm || 50;
+            for (let i = 0; i < alert.latitudes.length; i++) {
+              const d = calculateDistanceKm(userLat, userLon, alert.latitudes[i], alert.longitudes[i]);
+              if (d < minDistance) minDistance = d;
             }
-          }
-
-          if (minDistance <= radius) {
-            setActiveAlert({ title: alert.title, message: alert.message, distance: minDistance });
-          }
-        }, (error) => {
-          console.warn("Could not get location to verify alert zone.", error);
-        });
+            if (minDistance <= radius) {
+              setActiveAlert({ id: alert.id, title: alert.title, message: alert.message, distance: minDistance });
+            }
+          },
+          () => { /* location denied — skip zone alert, don't show to unverified users */ },
+          { timeout: 5000 }
+        );
       }
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    return () => { socket.disconnect(); };
   }, []);
 
-  if (!activeAlert) return null;
+  if (!activeAlert || dismissed) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-10 px-4 pointer-events-none">
-      <div className="bg-red-500 text-white rounded-[2rem] shadow-2xl p-6 max-w-md w-full pointer-events-auto animate-in slide-in-from-top-10 flex flex-col gap-3 border-4 border-red-400/30">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl animate-pulse">🚨</div>
-          <div>
-            <h3 className="font-black text-lg uppercase tracking-wider">{activeAlert.title}</h3>
-            {activeAlert.distance !== undefined && (
-              <span className="text-[10px] bg-red-900/40 px-2.5 py-1 rounded-md font-bold mt-1 inline-block">
-                📍 {activeAlert.distance.toFixed(1)}km away from you
-              </span>
-            )}
-          </div>
+    <div className="fixed top-4 right-4 z-[9999] max-w-sm w-full pointer-events-auto animate-in slide-in-from-top-4 fade-in duration-300">
+      <div className="bg-red-600 text-white rounded-2xl shadow-2xl shadow-red-900/40 overflow-hidden border border-red-400/30">
+        {/* top bar */}
+        <div className="flex items-center gap-3 px-4 py-3 bg-red-700/50">
+          <span className="text-base animate-pulse">🚨</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] flex-1">Emergency Alert</span>
+          {activeAlert.distance !== undefined && (
+            <span className="text-[9px] bg-red-900/50 px-2 py-0.5 rounded-md font-bold">
+              {activeAlert.distance.toFixed(1)} km away
+            </span>
+          )}
+          <button
+            onClick={() => setDismissed(true)}
+            className="w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white/80 hover:text-white flex-shrink-0"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
         </div>
-        <p className="font-bold text-sm leading-relaxed mt-2">{activeAlert.message}</p>
-        <button 
-          onClick={() => setActiveAlert(null)}
-          className="mt-3 bg-white hover:bg-slate-100 text-red-600 font-extrabold py-3.5 rounded-xl transition-all uppercase tracking-[0.2em] text-xs w-full shadow-lg"
-        >
-          Acknowledge & Close
-        </button>
+        {/* body */}
+        <div className="px-4 py-3">
+          <h3 className="font-black text-sm leading-tight mb-1">{activeAlert.title}</h3>
+          <p className="text-xs text-red-100 font-medium leading-relaxed line-clamp-3">{activeAlert.message}</p>
+        </div>
+        {/* action */}
+        <div className="px-4 pb-3">
+          <button
+            onClick={async () => {
+              setDismissed(true)
+              // Record acknowledgement in backend so delivery stats are real
+              if (activeAlert?.id) {
+                const token = localStorage.getItem('token')
+                if (token) {
+                  fetch(`http://localhost:3001/api/alerts/${activeAlert.id}/acknowledge`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                  }).catch(() => {})
+                }
+              }
+            }}
+            className="w-full bg-white/15 hover:bg-white/25 text-white text-[10px] font-black uppercase tracking-widest py-2 rounded-xl transition-all"
+          >
+            Acknowledge
+          </button>
+        </div>
       </div>
     </div>
   )
@@ -184,6 +211,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalAlertListener />
+      <DialogProvider>
       <AuthProvider>
         <BrowserRouter>
           <Routes>
@@ -195,6 +223,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
+      </DialogProvider>
     </QueryClientProvider>
   )
 }

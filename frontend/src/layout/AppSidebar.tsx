@@ -29,43 +29,43 @@ import {
 import { useSidebar } from "../context/SidebarContext";
 
 type NavItem = {
-  name: string;
+  nameKey: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: { nameKey: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
 const mainItems: NavItem[] = [
-  { icon: <LayoutDashboard className="w-5 h-5" />, name: "Dashboard", path: "/" },
-  { icon: <MapPin className="w-5 h-5" />, name: "Live Map", path: "/map" },
-  { icon: <Waves className="w-5 h-5" />, name: "Water Monitor", path: "/water-monitor" },
-  { icon: <AlertTriangle className="w-5 h-5" />, name: "Incidents", path: "/incidents" },
-  { icon: <Radio className="w-5 h-5" />, name: "Alerts", path: "/suraksha-alerts" },
-  { icon: <BarChart3 className="w-5 h-5" />, name: "Analytics", path: "/reports" },
-  { icon: <Users className="w-5 h-5" />, name: "User Management", path: "/users" },
+  { icon: <LayoutDashboard className="w-5 h-5" />, nameKey: "nav.dashboard", path: "/" },
+  { icon: <MapPin className="w-5 h-5" />, nameKey: "nav.map", path: "/map" },
+  { icon: <Waves className="w-5 h-5" />, nameKey: "nav.water_monitor", path: "/water-monitor" },
+  { icon: <AlertTriangle className="w-5 h-5" />, nameKey: "nav.incidents", path: "/incidents" },
+  { icon: <Radio className="w-5 h-5" />, nameKey: "nav.alerts", path: "/suraksha-alerts" },
+  { icon: <BarChart3 className="w-5 h-5" />, nameKey: "nav.analytics", path: "/reports" },
+  { icon: <Users className="w-5 h-5" />, nameKey: "nav.user_management", path: "/users" },
 ];
 
 const resourceItems: NavItem[] = [
-  { icon: <Package className="w-5 h-5" />, name: "Resources", path: "/resources" },
-  { icon: <Building2 className="w-5 h-5" />, name: "Relief Camps", path: "/camps" },
-  { icon: <QrCode className="w-5 h-5" />, name: "Relief Tokens", path: "/tokens" },
-  { icon: <CreditCard className="w-5 h-5" />, name: "Donations", path: "/donations" },
+  { icon: <Package className="w-5 h-5" />, nameKey: "nav.resources", path: "/resources" },
+  { icon: <Building2 className="w-5 h-5" />, nameKey: "nav.camps", path: "/camps" },
+  { icon: <QrCode className="w-5 h-5" />, nameKey: "nav.relief_tokens", path: "/tokens" },
+  { icon: <CreditCard className="w-5 h-5" />, nameKey: "nav.donations", path: "/donations" },
 ];
 
 const safetyItems: NavItem[] = [
-  { icon: <Shield className="w-5 h-5" />, name: "Volunteers", path: "/volunteers" },
-  { icon: <HandHelping className="w-5 h-5" />, name: "Help Requests", path: "/help-requests" },
-  { icon: <Home className="w-5 h-5" />, name: "Damage Assessment", path: "/damage-assessment" },
-  { icon: <UserSearch className="w-5 h-5" />, name: "Missing Persons", path: "/missing-persons" },
-  { icon: <ShieldCheck className="w-5 h-5" />, name: "Safety Roster", path: "/family-safety" },
-  { icon: <HeartPulse className="w-5 h-5" />, name: "Medical Support", path: "/support" },
-  { icon: <ExternalLink className="w-5 h-5" />, name: "Public Help Portal", path: "/request-help" },
-  { icon: <ExternalLink className="w-5 h-5" />, name: "Public Missing Portal", path: "/missing-portal" },
+  { icon: <Shield className="w-5 h-5" />, nameKey: "nav.volunteers", path: "/volunteers" },
+  { icon: <HandHelping className="w-5 h-5" />, nameKey: "nav.help_requests", path: "/help-requests" },
+  { icon: <Home className="w-5 h-5" />, nameKey: "nav.damage_assessment", path: "/damage-assessment" },
+  { icon: <UserSearch className="w-5 h-5" />, nameKey: "nav.missing_persons", path: "/missing-persons" },
+  { icon: <ShieldCheck className="w-5 h-5" />, nameKey: "nav.family_safety", path: "/family-safety" },
+  { icon: <HeartPulse className="w-5 h-5" />, nameKey: "nav.support", path: "/support" },
+  { icon: <ExternalLink className="w-5 h-5" />, nameKey: "nav.public_help_portal", path: "/request-help" },
+  { icon: <ExternalLink className="w-5 h-5" />, nameKey: "nav.public_missing_portal", path: "/missing-portal" },
 ];
 
 const systemItems: NavItem[] = [
-  { icon: <Settings className="w-5 h-5" />, name: "Settings", path: "/settings" },
-  { icon: <Map className="w-5 h-5" />, name: "River Mappings", path: "/river-mappings" },
+  { icon: <Settings className="w-5 h-5" />, nameKey: "nav.settings", path: "/settings" },
+  { icon: <Map className="w-5 h-5" />, nameKey: "nav.river_mappings", path: "/river-mappings" },
 ];
 
 const AppSidebar: React.FC = () => {
@@ -139,7 +139,7 @@ const AppSidebar: React.FC = () => {
   const renderMenuItems = (items: NavItem[], menuType: string) => (
     <ul className="flex flex-col gap-4">
       {items.map((nav, index) => (
-        <li key={nav.name}>
+        <li key={nav.nameKey}>
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
@@ -163,7 +163,7 @@ const AppSidebar: React.FC = () => {
                 {nav.icon}
               </span>
               {(isExpanded || isHovered || isMobileOpen) && (
-                <span className="menu-item-text">{nav.name}</span>
+                <span className="menu-item-text">{t(nav.nameKey)}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDownIcon
@@ -194,7 +194,7 @@ const AppSidebar: React.FC = () => {
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className="menu-item-text">{nav.name}</span>
+                  <span className="menu-item-text">{t(nav.nameKey)}</span>
                 )}
               </Link>
             )
@@ -214,7 +214,7 @@ const AppSidebar: React.FC = () => {
             >
               <ul className="mt-2 space-y-1 ml-9">
                 {nav.subItems.map((subItem) => (
-                  <li key={subItem.name}>
+                  <li key={subItem.nameKey}>
                     <Link
                       to={subItem.path}
                       className={`menu-dropdown-item ${
@@ -223,7 +223,7 @@ const AppSidebar: React.FC = () => {
                           : "menu-dropdown-item-inactive"
                       }`}
                     >
-                      {subItem.name}
+                      {t(subItem.nameKey)}
                     </Link>
                   </li>
                 ))}
@@ -237,7 +237,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-[#050c1a] border-r border-cyan-400/20 text-slate-200 h-screen transition-all duration-300 ease-in-out z-50
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-[#050c1a] border-r border-gray-200 dark:border-cyan-400/20 text-slate-700 dark:text-slate-200 h-screen transition-all duration-300 ease-in-out z-50
         ${
           isExpanded || isMobileOpen
             ? "w-[290px]"
@@ -271,14 +271,14 @@ const AppSidebar: React.FC = () => {
           <div className="flex flex-col gap-6">
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-cyan-400/50 font-semibold tracking-widest ${
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  t('nav.command_center')
                 ) : (
                   <MoreHorizontal className="w-5 h-5" />
                 )}
@@ -288,14 +288,14 @@ const AppSidebar: React.FC = () => {
             
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-cyan-400/50 font-semibold tracking-widest ${
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Resources"
+                  t('nav.resources')
                 ) : (
                   <MoreHorizontal className="w-5 h-5" />
                 )}
@@ -305,14 +305,14 @@ const AppSidebar: React.FC = () => {
             
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-cyan-400/50 font-semibold tracking-widest ${
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Safety & Support"
+                  t('nav.safety_support')
                 ) : (
                   <MoreHorizontal className="w-5 h-5" />
                 )}
@@ -322,14 +322,14 @@ const AppSidebar: React.FC = () => {
 
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-cyan-400/50 font-semibold tracking-widest ${
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "System"
+                  t('settings_page.system')
                 ) : (
                   <MoreHorizontal className="w-5 h-5" />
                 )}

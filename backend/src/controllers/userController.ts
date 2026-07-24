@@ -152,6 +152,24 @@ export const getMe = async (req: any, res: Response) => {
   }
 };
 
+export const getSessions = async (req: any, res: Response) => {
+  try {
+    const sessions = await userService.getSessions(req.user.userId);
+    res.json(sessions);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const deleteSession = async (req: any, res: Response) => {
+  try {
+    await userService.deleteSession(req.user.userId, req.params.id);
+    res.json({ message: 'Session revoked' });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message || 'Internal server error' });
+  }
+};
+
 export const getRBACMatrix = async (req: any, res: Response) => {
   try {
     const matrix = await userService.getRBACMatrix();
