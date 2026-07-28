@@ -28,52 +28,68 @@ import {
   Brain
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
+import { useAuth } from "@/hooks/useAuth";
 
 type NavItem = {
   nameKey: string;
   icon: React.ReactNode;
   path?: string;
+  roles?: string[];
   subItems?: { nameKey: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
+const ALL_STAFF = ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER'];
+const ALL_ROLES = ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER', 'VOLUNTEER', 'CITIZEN'];
+
 const mainItems: NavItem[] = [
-  { icon: <LayoutDashboard className="w-5 h-5" />, nameKey: "nav.dashboard", path: "/" },
-  { icon: <MapPin className="w-5 h-5" />, nameKey: "nav.map", path: "/map" },
-  { icon: <Waves className="w-5 h-5" />, nameKey: "nav.water_monitor", path: "/water-monitor" },
-  { icon: <AlertTriangle className="w-5 h-5" />, nameKey: "nav.incidents", path: "/incidents" },
-  { icon: <Radio className="w-5 h-5" />, nameKey: "nav.alerts", path: "/suraksha-alerts" },
-  { icon: <BarChart3 className="w-5 h-5" />, nameKey: "nav.analytics", path: "/reports" },
-  { icon: <Users className="w-5 h-5" />, nameKey: "nav.user_management", path: "/users" },
+  { icon: <LayoutDashboard className="w-5 h-5" />, nameKey: "nav.dashboard", path: "/", roles: ALL_STAFF },
+  { icon: <LayoutDashboard className="w-5 h-5" />, nameKey: "nav.dashboard", path: "/citizen-home", roles: ['CITIZEN', 'VOLUNTEER'] },
+  { icon: <MapPin className="w-5 h-5" />, nameKey: "nav.map", path: "/map", roles: ALL_ROLES },
+  { icon: <Waves className="w-5 h-5" />, nameKey: "nav.water_monitor", path: "/water-monitor", roles: ALL_STAFF },
+  { icon: <AlertTriangle className="w-5 h-5" />, nameKey: "nav.incidents", path: "/incidents", roles: ALL_ROLES },
+  { icon: <Radio className="w-5 h-5" />, nameKey: "nav.alerts", path: "/suraksha-alerts", roles: ALL_ROLES },
+  { icon: <BarChart3 className="w-5 h-5" />, nameKey: "nav.analytics", path: "/reports", roles: ['ADMIN', 'DMC_OFFICER'] },
+  { icon: <Users className="w-5 h-5" />, nameKey: "nav.user_management", path: "/users", roles: ['ADMIN'] },
 ];
 
 const resourceItems: NavItem[] = [
-  { icon: <Package className="w-5 h-5" />, nameKey: "nav.resources", path: "/resources" },
-  { icon: <Building2 className="w-5 h-5" />, nameKey: "nav.camps", path: "/camps" },
-  { icon: <QrCode className="w-5 h-5" />, nameKey: "nav.relief_tokens", path: "/tokens" },
-  { icon: <CreditCard className="w-5 h-5" />, nameKey: "nav.donations", path: "/donations" },
+  { icon: <Package className="w-5 h-5" />, nameKey: "nav.resources", path: "/resources", roles: ALL_STAFF },
+  { icon: <Building2 className="w-5 h-5" />, nameKey: "nav.camps", path: "/camps", roles: ALL_ROLES },
+  { icon: <QrCode className="w-5 h-5" />, nameKey: "nav.relief_tokens", path: "/tokens", roles: ALL_ROLES },
+  { icon: <CreditCard className="w-5 h-5" />, nameKey: "nav.donations", path: "/donations", roles: ['ADMIN', 'DMC_OFFICER'] },
 ];
 
 const safetyItems: NavItem[] = [
-  { icon: <Shield className="w-5 h-5" />, nameKey: "nav.volunteers", path: "/volunteers" },
-  { icon: <HandHelping className="w-5 h-5" />, nameKey: "nav.help_requests", path: "/help-requests" },
-  { icon: <Home className="w-5 h-5" />, nameKey: "nav.damage_assessment", path: "/damage-assessment" },
-  { icon: <UserSearch className="w-5 h-5" />, nameKey: "nav.missing_persons", path: "/missing-persons" },
-  { icon: <ShieldCheck className="w-5 h-5" />, nameKey: "nav.family_safety", path: "/family-safety" },
-  { icon: <HeartPulse className="w-5 h-5" />, nameKey: "nav.support", path: "/support" },
-  { icon: <ExternalLink className="w-5 h-5" />, nameKey: "nav.public_help_portal", path: "/request-help" },
-  { icon: <ExternalLink className="w-5 h-5" />, nameKey: "nav.public_missing_portal", path: "/missing-portal" },
+  { icon: <Shield className="w-5 h-5" />, nameKey: "nav.volunteers", path: "/volunteers", roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
+  { icon: <HandHelping className="w-5 h-5" />, nameKey: "nav.help_requests", path: "/help-requests", roles: ALL_ROLES },
+  { icon: <Home className="w-5 h-5" />, nameKey: "nav.damage_assessment", path: "/damage-assessment", roles: ALL_ROLES },
+  { icon: <UserSearch className="w-5 h-5" />, nameKey: "nav.missing_persons", path: "/missing-persons", roles: ALL_ROLES },
+  { icon: <ShieldCheck className="w-5 h-5" />, nameKey: "nav.family_safety", path: "/family-safety", roles: ALL_ROLES },
+  { icon: <HeartPulse className="w-5 h-5" />, nameKey: "nav.support", path: "/support", roles: ALL_ROLES },
+  { icon: <ExternalLink className="w-5 h-5" />, nameKey: "nav.public_help_portal", path: "/request-help", roles: ALL_ROLES },
+  { icon: <ExternalLink className="w-5 h-5" />, nameKey: "nav.public_missing_portal", path: "/missing-portal", roles: ALL_ROLES },
 ];
 
 const systemItems: NavItem[] = [
-  { icon: <Brain className="w-5 h-5" />, nameKey: "nav.ai_research", path: "/ai-research" },
-  { icon: <Settings className="w-5 h-5" />, nameKey: "nav.settings", path: "/settings" },
-  { icon: <Map className="w-5 h-5" />, nameKey: "nav.river_mappings", path: "/river-mappings" },
+  { icon: <Brain className="w-5 h-5" />, nameKey: "nav.ai_research", path: "/ai-research", roles: ['ADMIN', 'DMC_OFFICER'] },
+  { icon: <Settings className="w-5 h-5" />, nameKey: "nav.settings", path: "/settings", roles: ALL_ROLES },
+  { icon: <Map className="w-5 h-5" />, nameKey: "nav.river_mappings", path: "/river-mappings", roles: ['ADMIN', 'DMC_OFFICER'] },
 ];
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const role = user?.role || 'CITIZEN';
+
+  const filterByRole = (items: NavItem[]) =>
+    items.filter(item => !item.roles || item.roles.includes(role));
+
+  const filteredMain     = filterByRole(mainItems);
+  const filteredResource = filterByRole(resourceItems);
+  const filteredSafety   = filterByRole(safetyItems);
+  const filteredSystem   = filterByRole(systemItems);
 
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: string;
@@ -285,59 +301,47 @@ const AppSidebar: React.FC = () => {
                   <MoreHorizontal className="w-5 h-5" />
                 )}
               </h2>
-              {renderMenuItems(mainItems, "main")}
-            </div>
-            
-            <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  t('nav.resources')
-                ) : (
-                  <MoreHorizontal className="w-5 h-5" />
-                )}
-              </h2>
-              {renderMenuItems(resourceItems, "resource")}
-            </div>
-            
-            <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  t('nav.safety_support')
-                ) : (
-                  <MoreHorizontal className="w-5 h-5" />
-                )}
-              </h2>
-              {renderMenuItems(safetyItems, "safety")}
+              {renderMenuItems(filteredMain, "main")}
             </div>
 
+            {filteredResource.length > 0 && (
             <div>
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
+                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  t('settings_page.system')
-                ) : (
-                  <MoreHorizontal className="w-5 h-5" />
-                )}
+                {isExpanded || isHovered || isMobileOpen ? t('nav.resources') : <MoreHorizontal className="w-5 h-5" />}
               </h2>
-              {renderMenuItems(systemItems, "system")}
+              {renderMenuItems(filteredResource, "resource")}
             </div>
+            )}
+
+            {filteredSafety.length > 0 && (
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
+                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? t('nav.safety_support') : <MoreHorizontal className="w-5 h-5" />}
+              </h2>
+              {renderMenuItems(filteredSafety, "safety")}
+            </div>
+            )}
+
+            {filteredSystem.length > 0 && (
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
+                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? t('settings_page.system') : <MoreHorizontal className="w-5 h-5" />}
+              </h2>
+              {renderMenuItems(filteredSystem, "system")}
+            </div>
+            )}
           </div>
         </nav>
       </div>

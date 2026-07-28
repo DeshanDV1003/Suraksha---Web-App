@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
+import { GoogleLogin } from '@react-oauth/google'
 import loginBg from '@/pictures/login_bg.png'
 import logo from '@/pictures/Full logo.png'
 
 export default function LoginPage() {
-  const { login, user } = useAuth()
+  const { login, googleLogin, user } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,6 +18,7 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [resetEmailSent, setResetEmailSent] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('rememberedEmail')
@@ -77,6 +79,19 @@ export default function LoginPage() {
       setError('Failed to send reset link. Please try again.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    if (!credentialResponse.credential) return
+    setGoogleLoading(true)
+    setError('')
+    try {
+      await googleLogin(credentialResponse.credential)
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Google Sign-In failed. Please try again.')
+    } finally {
+      setGoogleLoading(false)
     }
   }
 
@@ -270,6 +285,39 @@ export default function LoginPage() {
             </button>
           )}
         </form>
+        )}
+
+        {/* Google Sign-In — only shown on the normal login form, not 2FA or forgot password */}
+        {!isForgotPassword && !requires2FA && (
+          <>
+            <div className="relative flex items-center py-1">
+              <div className="flex-grow border-t border-white/25" />
+              <span className="px-3 text-xs text-white/50 font-medium tracking-wide uppercase">or continue with</span>
+              <div className="flex-grow border-t border-white/25" />
+            </div>
+
+            <div className="flex flex-col items-center gap-2">
+              {googleLoading ? (
+                <div className="flex items-center gap-2 text-white/70 text-sm py-3">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Signing in with Google…
+                </div>
+              ) : (
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => setError('Google Sign-In was cancelled or failed.')}
+                  theme="filled_black"
+                  shape="rectangular"
+                  size="large"
+                  width="320"
+                  text="signin_with"
+                />
+              )}
+              <p className="text-[11px] text-white/40 text-center mt-1">
+                Google Sign-In is available for <span className="text-white/60">citizens</span> and <span className="text-white/60">volunteers</span> only
+              </p>
+            </div>
+          </>
         )}
 
         <div className="text-center pt-2">

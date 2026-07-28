@@ -304,6 +304,11 @@ export type RiverWaterLevel = $Result.DefaultSelection<Prisma.$RiverWaterLevelPa
  */
 export type DownstreamMapping = $Result.DefaultSelection<Prisma.$DownstreamMappingPayload>
 /**
+ * Model IncidentDuplicateLink
+ * 
+ */
+export type IncidentDuplicateLink = $Result.DefaultSelection<Prisma.$IncidentDuplicateLinkPayload>
+/**
  * Model PublicSafePlace
  * 
  */
@@ -1345,6 +1350,16 @@ export class PrismaClient<
   get downstreamMapping(): Prisma.DownstreamMappingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.incidentDuplicateLink`: Exposes CRUD operations for the **IncidentDuplicateLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncidentDuplicateLinks
+    * const incidentDuplicateLinks = await prisma.incidentDuplicateLink.findMany()
+    * ```
+    */
+  get incidentDuplicateLink(): Prisma.IncidentDuplicateLinkDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.publicSafePlace`: Exposes CRUD operations for the **PublicSafePlace** model.
     * Example usage:
     * ```ts
@@ -1861,6 +1876,7 @@ export namespace Prisma {
     RainfallReading: 'RainfallReading',
     RiverWaterLevel: 'RiverWaterLevel',
     DownstreamMapping: 'DownstreamMapping',
+    IncidentDuplicateLink: 'IncidentDuplicateLink',
     PublicSafePlace: 'PublicSafePlace',
     AuthorityContact: 'AuthorityContact'
   };
@@ -1878,7 +1894,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "publicSafePlace" | "authorityContact"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6174,6 +6190,80 @@ export namespace Prisma {
           }
         }
       }
+      IncidentDuplicateLink: {
+        payload: Prisma.$IncidentDuplicateLinkPayload<ExtArgs>
+        fields: Prisma.IncidentDuplicateLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncidentDuplicateLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncidentDuplicateLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.IncidentDuplicateLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncidentDuplicateLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>
+          }
+          findMany: {
+            args: Prisma.IncidentDuplicateLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>[]
+          }
+          create: {
+            args: Prisma.IncidentDuplicateLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>
+          }
+          createMany: {
+            args: Prisma.IncidentDuplicateLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.IncidentDuplicateLinkCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>[]
+          }
+          delete: {
+            args: Prisma.IncidentDuplicateLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>
+          }
+          update: {
+            args: Prisma.IncidentDuplicateLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.IncidentDuplicateLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncidentDuplicateLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.IncidentDuplicateLinkUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>[]
+          }
+          upsert: {
+            args: Prisma.IncidentDuplicateLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentDuplicateLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.IncidentDuplicateLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncidentDuplicateLink>
+          }
+          groupBy: {
+            args: Prisma.IncidentDuplicateLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncidentDuplicateLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncidentDuplicateLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<IncidentDuplicateLinkCountAggregateOutputType> | number
+          }
+        }
+      }
       PublicSafePlace: {
         payload: Prisma.$PublicSafePlacePayload<ExtArgs>
         fields: Prisma.PublicSafePlaceFieldRefs
@@ -6468,6 +6558,7 @@ export namespace Prisma {
     rainfallReading?: RainfallReadingOmit
     riverWaterLevel?: RiverWaterLevelOmit
     downstreamMapping?: DownstreamMappingOmit
+    incidentDuplicateLink?: IncidentDuplicateLinkOmit
     publicSafePlace?: PublicSafePlaceOmit
     authorityContact?: AuthorityContactOmit
   }
@@ -6717,6 +6808,8 @@ export namespace Prisma {
     verifications: number
     tasks: number
     verifierActions: number
+    duplicateLinks: number
+    canonicalLinks: number
   }
 
   export type IncidentReportCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6725,6 +6818,8 @@ export namespace Prisma {
     verifications?: boolean | IncidentReportCountOutputTypeCountVerificationsArgs
     tasks?: boolean | IncidentReportCountOutputTypeCountTasksArgs
     verifierActions?: boolean | IncidentReportCountOutputTypeCountVerifierActionsArgs
+    duplicateLinks?: boolean | IncidentReportCountOutputTypeCountDuplicateLinksArgs
+    canonicalLinks?: boolean | IncidentReportCountOutputTypeCountCanonicalLinksArgs
   }
 
   // Custom InputTypes
@@ -6771,6 +6866,20 @@ export namespace Prisma {
    */
   export type IncidentReportCountOutputTypeCountVerifierActionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VerifierActionWhereInput
+  }
+
+  /**
+   * IncidentReportCountOutputType without action
+   */
+  export type IncidentReportCountOutputTypeCountDuplicateLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidentDuplicateLinkWhereInput
+  }
+
+  /**
+   * IncidentReportCountOutputType without action
+   */
+  export type IncidentReportCountOutputTypeCountCanonicalLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidentDuplicateLinkWhereInput
   }
 
 
@@ -7265,6 +7374,8 @@ export namespace Prisma {
     password: string | null
     name: string | null
     phone: string | null
+    googleId: string | null
+    pushToken: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7286,6 +7397,8 @@ export namespace Prisma {
     password: string | null
     name: string | null
     phone: string | null
+    googleId: string | null
+    pushToken: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7307,6 +7420,8 @@ export namespace Prisma {
     password: number
     name: number
     phone: number
+    googleId: number
+    pushToken: number
     role: number
     createdAt: number
     updatedAt: number
@@ -7330,6 +7445,8 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
+    googleId?: true
+    pushToken?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -7351,6 +7468,8 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
+    googleId?: true
+    pushToken?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -7372,6 +7491,8 @@ export namespace Prisma {
     password?: true
     name?: true
     phone?: true
+    googleId?: true
+    pushToken?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -7463,9 +7584,11 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
-    password: string
+    password: string | null
     name: string
     phone: string | null
+    googleId: string | null
+    pushToken: string | null
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
@@ -7504,6 +7627,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
+    googleId?: boolean
+    pushToken?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7543,6 +7668,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
+    googleId?: boolean
+    pushToken?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7565,6 +7692,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
+    googleId?: boolean
+    pushToken?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7587,6 +7716,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     phone?: boolean
+    googleId?: boolean
+    pushToken?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7602,7 +7733,7 @@ export namespace Prisma {
     currentSectorId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "role" | "createdAt" | "updatedAt" | "region" | "hasMobileApp" | "isFieldActive" | "lastCheckInTime" | "nic" | "twoFactorEnabled" | "twoFactorGracePeriodEnds" | "twoFactorSecret" | "profilePicture" | "currentSectorId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phone" | "googleId" | "pushToken" | "role" | "createdAt" | "updatedAt" | "region" | "hasMobileApp" | "isFieldActive" | "lastCheckInTime" | "nic" | "twoFactorEnabled" | "twoFactorGracePeriodEnds" | "twoFactorSecret" | "profilePicture" | "currentSectorId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     damageReports?: boolean | User$damageReportsArgs<ExtArgs>
     donations?: boolean | User$donationsArgs<ExtArgs>
@@ -7654,9 +7785,11 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
-      password: string
+      password: string | null
       name: string
       phone: string | null
+      googleId: string | null
+      pushToken: string | null
       role: $Enums.Role
       createdAt: Date
       updatedAt: Date
@@ -8115,6 +8248,8 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly googleId: FieldRef<"User", 'String'>
+    readonly pushToken: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -9272,6 +9407,8 @@ export namespace Prisma {
     verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
     tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
     verifierActions?: boolean | IncidentReport$verifierActionsArgs<ExtArgs>
+    duplicateLinks?: boolean | IncidentReport$duplicateLinksArgs<ExtArgs>
+    canonicalLinks?: boolean | IncidentReport$canonicalLinksArgs<ExtArgs>
     _count?: boolean | IncidentReportCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidentReport"]>
 
@@ -9358,6 +9495,8 @@ export namespace Prisma {
     verifications?: boolean | IncidentReport$verificationsArgs<ExtArgs>
     tasks?: boolean | IncidentReport$tasksArgs<ExtArgs>
     verifierActions?: boolean | IncidentReport$verifierActionsArgs<ExtArgs>
+    duplicateLinks?: boolean | IncidentReport$duplicateLinksArgs<ExtArgs>
+    canonicalLinks?: boolean | IncidentReport$canonicalLinksArgs<ExtArgs>
     _count?: boolean | IncidentReportCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IncidentReportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9377,6 +9516,8 @@ export namespace Prisma {
       verifications: Prisma.$ReportVerificationPayload<ExtArgs>[]
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       verifierActions: Prisma.$VerifierActionPayload<ExtArgs>[]
+      duplicateLinks: Prisma.$IncidentDuplicateLinkPayload<ExtArgs>[]
+      canonicalLinks: Prisma.$IncidentDuplicateLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9801,6 +9942,8 @@ export namespace Prisma {
     verifications<T extends IncidentReport$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportVerificationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     tasks<T extends IncidentReport$tasksArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     verifierActions<T extends IncidentReport$verifierActionsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$verifierActionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerifierActionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    duplicateLinks<T extends IncidentReport$duplicateLinksArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$duplicateLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    canonicalLinks<T extends IncidentReport$canonicalLinksArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReport$canonicalLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10383,6 +10526,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VerifierActionScalarFieldEnum | VerifierActionScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentReport.duplicateLinks
+   */
+  export type IncidentReport$duplicateLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    where?: IncidentDuplicateLinkWhereInput
+    orderBy?: IncidentDuplicateLinkOrderByWithRelationInput | IncidentDuplicateLinkOrderByWithRelationInput[]
+    cursor?: IncidentDuplicateLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncidentDuplicateLinkScalarFieldEnum | IncidentDuplicateLinkScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentReport.canonicalLinks
+   */
+  export type IncidentReport$canonicalLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    where?: IncidentDuplicateLinkWhereInput
+    orderBy?: IncidentDuplicateLinkOrderByWithRelationInput | IncidentDuplicateLinkOrderByWithRelationInput[]
+    cursor?: IncidentDuplicateLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncidentDuplicateLinkScalarFieldEnum | IncidentDuplicateLinkScalarFieldEnum[]
   }
 
   /**
@@ -73348,6 +73539,1145 @@ export namespace Prisma {
 
 
   /**
+   * Model IncidentDuplicateLink
+   */
+
+  export type AggregateIncidentDuplicateLink = {
+    _count: IncidentDuplicateLinkCountAggregateOutputType | null
+    _avg: IncidentDuplicateLinkAvgAggregateOutputType | null
+    _sum: IncidentDuplicateLinkSumAggregateOutputType | null
+    _min: IncidentDuplicateLinkMinAggregateOutputType | null
+    _max: IncidentDuplicateLinkMaxAggregateOutputType | null
+  }
+
+  export type IncidentDuplicateLinkAvgAggregateOutputType = {
+    score: number | null
+    distanceM: number | null
+  }
+
+  export type IncidentDuplicateLinkSumAggregateOutputType = {
+    score: number | null
+    distanceM: number | null
+  }
+
+  export type IncidentDuplicateLinkMinAggregateOutputType = {
+    id: string | null
+    reportId: string | null
+    canonicalId: string | null
+    score: number | null
+    distanceM: number | null
+    status: string | null
+    createdAt: Date | null
+  }
+
+  export type IncidentDuplicateLinkMaxAggregateOutputType = {
+    id: string | null
+    reportId: string | null
+    canonicalId: string | null
+    score: number | null
+    distanceM: number | null
+    status: string | null
+    createdAt: Date | null
+  }
+
+  export type IncidentDuplicateLinkCountAggregateOutputType = {
+    id: number
+    reportId: number
+    canonicalId: number
+    score: number
+    distanceM: number
+    status: number
+    reasons: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type IncidentDuplicateLinkAvgAggregateInputType = {
+    score?: true
+    distanceM?: true
+  }
+
+  export type IncidentDuplicateLinkSumAggregateInputType = {
+    score?: true
+    distanceM?: true
+  }
+
+  export type IncidentDuplicateLinkMinAggregateInputType = {
+    id?: true
+    reportId?: true
+    canonicalId?: true
+    score?: true
+    distanceM?: true
+    status?: true
+    createdAt?: true
+  }
+
+  export type IncidentDuplicateLinkMaxAggregateInputType = {
+    id?: true
+    reportId?: true
+    canonicalId?: true
+    score?: true
+    distanceM?: true
+    status?: true
+    createdAt?: true
+  }
+
+  export type IncidentDuplicateLinkCountAggregateInputType = {
+    id?: true
+    reportId?: true
+    canonicalId?: true
+    score?: true
+    distanceM?: true
+    status?: true
+    reasons?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type IncidentDuplicateLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncidentDuplicateLink to aggregate.
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentDuplicateLinks to fetch.
+     */
+    orderBy?: IncidentDuplicateLinkOrderByWithRelationInput | IncidentDuplicateLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncidentDuplicateLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentDuplicateLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentDuplicateLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncidentDuplicateLinks
+    **/
+    _count?: true | IncidentDuplicateLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncidentDuplicateLinkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncidentDuplicateLinkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncidentDuplicateLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncidentDuplicateLinkMaxAggregateInputType
+  }
+
+  export type GetIncidentDuplicateLinkAggregateType<T extends IncidentDuplicateLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncidentDuplicateLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncidentDuplicateLink[P]>
+      : GetScalarType<T[P], AggregateIncidentDuplicateLink[P]>
+  }
+
+
+
+
+  export type IncidentDuplicateLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidentDuplicateLinkWhereInput
+    orderBy?: IncidentDuplicateLinkOrderByWithAggregationInput | IncidentDuplicateLinkOrderByWithAggregationInput[]
+    by: IncidentDuplicateLinkScalarFieldEnum[] | IncidentDuplicateLinkScalarFieldEnum
+    having?: IncidentDuplicateLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncidentDuplicateLinkCountAggregateInputType | true
+    _avg?: IncidentDuplicateLinkAvgAggregateInputType
+    _sum?: IncidentDuplicateLinkSumAggregateInputType
+    _min?: IncidentDuplicateLinkMinAggregateInputType
+    _max?: IncidentDuplicateLinkMaxAggregateInputType
+  }
+
+  export type IncidentDuplicateLinkGroupByOutputType = {
+    id: string
+    reportId: string
+    canonicalId: string
+    score: number
+    distanceM: number | null
+    status: string
+    reasons: string[]
+    createdAt: Date
+    _count: IncidentDuplicateLinkCountAggregateOutputType | null
+    _avg: IncidentDuplicateLinkAvgAggregateOutputType | null
+    _sum: IncidentDuplicateLinkSumAggregateOutputType | null
+    _min: IncidentDuplicateLinkMinAggregateOutputType | null
+    _max: IncidentDuplicateLinkMaxAggregateOutputType | null
+  }
+
+  type GetIncidentDuplicateLinkGroupByPayload<T extends IncidentDuplicateLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncidentDuplicateLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncidentDuplicateLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncidentDuplicateLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], IncidentDuplicateLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncidentDuplicateLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    reportId?: boolean
+    canonicalId?: boolean
+    score?: boolean
+    distanceM?: boolean
+    status?: boolean
+    reasons?: boolean
+    createdAt?: boolean
+    report?: boolean | IncidentReportDefaultArgs<ExtArgs>
+    canonical?: boolean | IncidentReportDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["incidentDuplicateLink"]>
+
+  export type IncidentDuplicateLinkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    reportId?: boolean
+    canonicalId?: boolean
+    score?: boolean
+    distanceM?: boolean
+    status?: boolean
+    reasons?: boolean
+    createdAt?: boolean
+    report?: boolean | IncidentReportDefaultArgs<ExtArgs>
+    canonical?: boolean | IncidentReportDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["incidentDuplicateLink"]>
+
+  export type IncidentDuplicateLinkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    reportId?: boolean
+    canonicalId?: boolean
+    score?: boolean
+    distanceM?: boolean
+    status?: boolean
+    reasons?: boolean
+    createdAt?: boolean
+    report?: boolean | IncidentReportDefaultArgs<ExtArgs>
+    canonical?: boolean | IncidentReportDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["incidentDuplicateLink"]>
+
+  export type IncidentDuplicateLinkSelectScalar = {
+    id?: boolean
+    reportId?: boolean
+    canonicalId?: boolean
+    score?: boolean
+    distanceM?: boolean
+    status?: boolean
+    reasons?: boolean
+    createdAt?: boolean
+  }
+
+  export type IncidentDuplicateLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reportId" | "canonicalId" | "score" | "distanceM" | "status" | "reasons" | "createdAt", ExtArgs["result"]["incidentDuplicateLink"]>
+  export type IncidentDuplicateLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    report?: boolean | IncidentReportDefaultArgs<ExtArgs>
+    canonical?: boolean | IncidentReportDefaultArgs<ExtArgs>
+  }
+  export type IncidentDuplicateLinkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    report?: boolean | IncidentReportDefaultArgs<ExtArgs>
+    canonical?: boolean | IncidentReportDefaultArgs<ExtArgs>
+  }
+  export type IncidentDuplicateLinkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    report?: boolean | IncidentReportDefaultArgs<ExtArgs>
+    canonical?: boolean | IncidentReportDefaultArgs<ExtArgs>
+  }
+
+  export type $IncidentDuplicateLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncidentDuplicateLink"
+    objects: {
+      report: Prisma.$IncidentReportPayload<ExtArgs>
+      canonical: Prisma.$IncidentReportPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      reportId: string
+      canonicalId: string
+      score: number
+      distanceM: number | null
+      status: string
+      reasons: string[]
+      createdAt: Date
+    }, ExtArgs["result"]["incidentDuplicateLink"]>
+    composites: {}
+  }
+
+  type IncidentDuplicateLinkGetPayload<S extends boolean | null | undefined | IncidentDuplicateLinkDefaultArgs> = $Result.GetResult<Prisma.$IncidentDuplicateLinkPayload, S>
+
+  type IncidentDuplicateLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncidentDuplicateLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncidentDuplicateLinkCountAggregateInputType | true
+    }
+
+  export interface IncidentDuplicateLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncidentDuplicateLink'], meta: { name: 'IncidentDuplicateLink' } }
+    /**
+     * Find zero or one IncidentDuplicateLink that matches the filter.
+     * @param {IncidentDuplicateLinkFindUniqueArgs} args - Arguments to find a IncidentDuplicateLink
+     * @example
+     * // Get one IncidentDuplicateLink
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncidentDuplicateLinkFindUniqueArgs>(args: SelectSubset<T, IncidentDuplicateLinkFindUniqueArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one IncidentDuplicateLink that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncidentDuplicateLinkFindUniqueOrThrowArgs} args - Arguments to find a IncidentDuplicateLink
+     * @example
+     * // Get one IncidentDuplicateLink
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncidentDuplicateLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, IncidentDuplicateLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first IncidentDuplicateLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkFindFirstArgs} args - Arguments to find a IncidentDuplicateLink
+     * @example
+     * // Get one IncidentDuplicateLink
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncidentDuplicateLinkFindFirstArgs>(args?: SelectSubset<T, IncidentDuplicateLinkFindFirstArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first IncidentDuplicateLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkFindFirstOrThrowArgs} args - Arguments to find a IncidentDuplicateLink
+     * @example
+     * // Get one IncidentDuplicateLink
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncidentDuplicateLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, IncidentDuplicateLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more IncidentDuplicateLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncidentDuplicateLinks
+     * const incidentDuplicateLinks = await prisma.incidentDuplicateLink.findMany()
+     * 
+     * // Get first 10 IncidentDuplicateLinks
+     * const incidentDuplicateLinks = await prisma.incidentDuplicateLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incidentDuplicateLinkWithIdOnly = await prisma.incidentDuplicateLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncidentDuplicateLinkFindManyArgs>(args?: SelectSubset<T, IncidentDuplicateLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a IncidentDuplicateLink.
+     * @param {IncidentDuplicateLinkCreateArgs} args - Arguments to create a IncidentDuplicateLink.
+     * @example
+     * // Create one IncidentDuplicateLink
+     * const IncidentDuplicateLink = await prisma.incidentDuplicateLink.create({
+     *   data: {
+     *     // ... data to create a IncidentDuplicateLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncidentDuplicateLinkCreateArgs>(args: SelectSubset<T, IncidentDuplicateLinkCreateArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many IncidentDuplicateLinks.
+     * @param {IncidentDuplicateLinkCreateManyArgs} args - Arguments to create many IncidentDuplicateLinks.
+     * @example
+     * // Create many IncidentDuplicateLinks
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncidentDuplicateLinkCreateManyArgs>(args?: SelectSubset<T, IncidentDuplicateLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many IncidentDuplicateLinks and returns the data saved in the database.
+     * @param {IncidentDuplicateLinkCreateManyAndReturnArgs} args - Arguments to create many IncidentDuplicateLinks.
+     * @example
+     * // Create many IncidentDuplicateLinks
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many IncidentDuplicateLinks and only return the `id`
+     * const incidentDuplicateLinkWithIdOnly = await prisma.incidentDuplicateLink.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends IncidentDuplicateLinkCreateManyAndReturnArgs>(args?: SelectSubset<T, IncidentDuplicateLinkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a IncidentDuplicateLink.
+     * @param {IncidentDuplicateLinkDeleteArgs} args - Arguments to delete one IncidentDuplicateLink.
+     * @example
+     * // Delete one IncidentDuplicateLink
+     * const IncidentDuplicateLink = await prisma.incidentDuplicateLink.delete({
+     *   where: {
+     *     // ... filter to delete one IncidentDuplicateLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncidentDuplicateLinkDeleteArgs>(args: SelectSubset<T, IncidentDuplicateLinkDeleteArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one IncidentDuplicateLink.
+     * @param {IncidentDuplicateLinkUpdateArgs} args - Arguments to update one IncidentDuplicateLink.
+     * @example
+     * // Update one IncidentDuplicateLink
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncidentDuplicateLinkUpdateArgs>(args: SelectSubset<T, IncidentDuplicateLinkUpdateArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more IncidentDuplicateLinks.
+     * @param {IncidentDuplicateLinkDeleteManyArgs} args - Arguments to filter IncidentDuplicateLinks to delete.
+     * @example
+     * // Delete a few IncidentDuplicateLinks
+     * const { count } = await prisma.incidentDuplicateLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncidentDuplicateLinkDeleteManyArgs>(args?: SelectSubset<T, IncidentDuplicateLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncidentDuplicateLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncidentDuplicateLinks
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncidentDuplicateLinkUpdateManyArgs>(args: SelectSubset<T, IncidentDuplicateLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncidentDuplicateLinks and returns the data updated in the database.
+     * @param {IncidentDuplicateLinkUpdateManyAndReturnArgs} args - Arguments to update many IncidentDuplicateLinks.
+     * @example
+     * // Update many IncidentDuplicateLinks
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more IncidentDuplicateLinks and only return the `id`
+     * const incidentDuplicateLinkWithIdOnly = await prisma.incidentDuplicateLink.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends IncidentDuplicateLinkUpdateManyAndReturnArgs>(args: SelectSubset<T, IncidentDuplicateLinkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one IncidentDuplicateLink.
+     * @param {IncidentDuplicateLinkUpsertArgs} args - Arguments to update or create a IncidentDuplicateLink.
+     * @example
+     * // Update or create a IncidentDuplicateLink
+     * const incidentDuplicateLink = await prisma.incidentDuplicateLink.upsert({
+     *   create: {
+     *     // ... data to create a IncidentDuplicateLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncidentDuplicateLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncidentDuplicateLinkUpsertArgs>(args: SelectSubset<T, IncidentDuplicateLinkUpsertArgs<ExtArgs>>): Prisma__IncidentDuplicateLinkClient<$Result.GetResult<Prisma.$IncidentDuplicateLinkPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of IncidentDuplicateLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkCountArgs} args - Arguments to filter IncidentDuplicateLinks to count.
+     * @example
+     * // Count the number of IncidentDuplicateLinks
+     * const count = await prisma.incidentDuplicateLink.count({
+     *   where: {
+     *     // ... the filter for the IncidentDuplicateLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncidentDuplicateLinkCountArgs>(
+      args?: Subset<T, IncidentDuplicateLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncidentDuplicateLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncidentDuplicateLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncidentDuplicateLinkAggregateArgs>(args: Subset<T, IncidentDuplicateLinkAggregateArgs>): Prisma.PrismaPromise<GetIncidentDuplicateLinkAggregateType<T>>
+
+    /**
+     * Group by IncidentDuplicateLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentDuplicateLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncidentDuplicateLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncidentDuplicateLinkGroupByArgs['orderBy'] }
+        : { orderBy?: IncidentDuplicateLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncidentDuplicateLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncidentDuplicateLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncidentDuplicateLink model
+   */
+  readonly fields: IncidentDuplicateLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncidentDuplicateLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncidentDuplicateLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    report<T extends IncidentReportDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReportDefaultArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    canonical<T extends IncidentReportDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IncidentReportDefaultArgs<ExtArgs>>): Prisma__IncidentReportClient<$Result.GetResult<Prisma.$IncidentReportPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncidentDuplicateLink model
+   */ 
+  interface IncidentDuplicateLinkFieldRefs {
+    readonly id: FieldRef<"IncidentDuplicateLink", 'String'>
+    readonly reportId: FieldRef<"IncidentDuplicateLink", 'String'>
+    readonly canonicalId: FieldRef<"IncidentDuplicateLink", 'String'>
+    readonly score: FieldRef<"IncidentDuplicateLink", 'Float'>
+    readonly distanceM: FieldRef<"IncidentDuplicateLink", 'Float'>
+    readonly status: FieldRef<"IncidentDuplicateLink", 'String'>
+    readonly reasons: FieldRef<"IncidentDuplicateLink", 'String[]'>
+    readonly createdAt: FieldRef<"IncidentDuplicateLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncidentDuplicateLink findUnique
+   */
+  export type IncidentDuplicateLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentDuplicateLink to fetch.
+     */
+    where: IncidentDuplicateLinkWhereUniqueInput
+  }
+
+  /**
+   * IncidentDuplicateLink findUniqueOrThrow
+   */
+  export type IncidentDuplicateLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentDuplicateLink to fetch.
+     */
+    where: IncidentDuplicateLinkWhereUniqueInput
+  }
+
+  /**
+   * IncidentDuplicateLink findFirst
+   */
+  export type IncidentDuplicateLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentDuplicateLink to fetch.
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentDuplicateLinks to fetch.
+     */
+    orderBy?: IncidentDuplicateLinkOrderByWithRelationInput | IncidentDuplicateLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncidentDuplicateLinks.
+     */
+    cursor?: IncidentDuplicateLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentDuplicateLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentDuplicateLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncidentDuplicateLinks.
+     */
+    distinct?: IncidentDuplicateLinkScalarFieldEnum | IncidentDuplicateLinkScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentDuplicateLink findFirstOrThrow
+   */
+  export type IncidentDuplicateLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentDuplicateLink to fetch.
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentDuplicateLinks to fetch.
+     */
+    orderBy?: IncidentDuplicateLinkOrderByWithRelationInput | IncidentDuplicateLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncidentDuplicateLinks.
+     */
+    cursor?: IncidentDuplicateLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentDuplicateLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentDuplicateLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncidentDuplicateLinks.
+     */
+    distinct?: IncidentDuplicateLinkScalarFieldEnum | IncidentDuplicateLinkScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentDuplicateLink findMany
+   */
+  export type IncidentDuplicateLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentDuplicateLinks to fetch.
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentDuplicateLinks to fetch.
+     */
+    orderBy?: IncidentDuplicateLinkOrderByWithRelationInput | IncidentDuplicateLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncidentDuplicateLinks.
+     */
+    cursor?: IncidentDuplicateLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentDuplicateLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentDuplicateLinks.
+     */
+    skip?: number
+    distinct?: IncidentDuplicateLinkScalarFieldEnum | IncidentDuplicateLinkScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentDuplicateLink create
+   */
+  export type IncidentDuplicateLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IncidentDuplicateLink.
+     */
+    data: XOR<IncidentDuplicateLinkCreateInput, IncidentDuplicateLinkUncheckedCreateInput>
+  }
+
+  /**
+   * IncidentDuplicateLink createMany
+   */
+  export type IncidentDuplicateLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncidentDuplicateLinks.
+     */
+    data: IncidentDuplicateLinkCreateManyInput | IncidentDuplicateLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncidentDuplicateLink createManyAndReturn
+   */
+  export type IncidentDuplicateLinkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * The data used to create many IncidentDuplicateLinks.
+     */
+    data: IncidentDuplicateLinkCreateManyInput | IncidentDuplicateLinkCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IncidentDuplicateLink update
+   */
+  export type IncidentDuplicateLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IncidentDuplicateLink.
+     */
+    data: XOR<IncidentDuplicateLinkUpdateInput, IncidentDuplicateLinkUncheckedUpdateInput>
+    /**
+     * Choose, which IncidentDuplicateLink to update.
+     */
+    where: IncidentDuplicateLinkWhereUniqueInput
+  }
+
+  /**
+   * IncidentDuplicateLink updateMany
+   */
+  export type IncidentDuplicateLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncidentDuplicateLinks.
+     */
+    data: XOR<IncidentDuplicateLinkUpdateManyMutationInput, IncidentDuplicateLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which IncidentDuplicateLinks to update
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * Limit how many IncidentDuplicateLinks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncidentDuplicateLink updateManyAndReturn
+   */
+  export type IncidentDuplicateLinkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * The data used to update IncidentDuplicateLinks.
+     */
+    data: XOR<IncidentDuplicateLinkUpdateManyMutationInput, IncidentDuplicateLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which IncidentDuplicateLinks to update
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * Limit how many IncidentDuplicateLinks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IncidentDuplicateLink upsert
+   */
+  export type IncidentDuplicateLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IncidentDuplicateLink to update in case it exists.
+     */
+    where: IncidentDuplicateLinkWhereUniqueInput
+    /**
+     * In case the IncidentDuplicateLink found by the `where` argument doesn't exist, create a new IncidentDuplicateLink with this data.
+     */
+    create: XOR<IncidentDuplicateLinkCreateInput, IncidentDuplicateLinkUncheckedCreateInput>
+    /**
+     * In case the IncidentDuplicateLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncidentDuplicateLinkUpdateInput, IncidentDuplicateLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * IncidentDuplicateLink delete
+   */
+  export type IncidentDuplicateLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+    /**
+     * Filter which IncidentDuplicateLink to delete.
+     */
+    where: IncidentDuplicateLinkWhereUniqueInput
+  }
+
+  /**
+   * IncidentDuplicateLink deleteMany
+   */
+  export type IncidentDuplicateLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncidentDuplicateLinks to delete
+     */
+    where?: IncidentDuplicateLinkWhereInput
+    /**
+     * Limit how many IncidentDuplicateLinks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncidentDuplicateLink without action
+   */
+  export type IncidentDuplicateLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentDuplicateLink
+     */
+    select?: IncidentDuplicateLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentDuplicateLink
+     */
+    omit?: IncidentDuplicateLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentDuplicateLinkInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model PublicSafePlace
    */
 
@@ -75568,6 +76898,8 @@ export namespace Prisma {
     password: 'password',
     name: 'name',
     phone: 'phone',
+    googleId: 'googleId',
+    pushToken: 'pushToken',
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -76435,6 +77767,20 @@ export namespace Prisma {
   export type DownstreamMappingScalarFieldEnum = (typeof DownstreamMappingScalarFieldEnum)[keyof typeof DownstreamMappingScalarFieldEnum]
 
 
+  export const IncidentDuplicateLinkScalarFieldEnum: {
+    id: 'id',
+    reportId: 'reportId',
+    canonicalId: 'canonicalId',
+    score: 'score',
+    distanceM: 'distanceM',
+    status: 'status',
+    reasons: 'reasons',
+    createdAt: 'createdAt'
+  };
+
+  export type IncidentDuplicateLinkScalarFieldEnum = (typeof IncidentDuplicateLinkScalarFieldEnum)[keyof typeof IncidentDuplicateLinkScalarFieldEnum]
+
+
   export const PublicSafePlaceScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -76917,9 +78263,11 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
+    googleId?: StringNullableFilter<"User"> | string | null
+    pushToken?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -76955,9 +78303,11 @@ export namespace Prisma {
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
+    googleId?: SortOrderInput | SortOrder
+    pushToken?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -76993,13 +78343,15 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    googleId?: string
     nic?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
+    pushToken?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -77029,14 +78381,16 @@ export namespace Prisma {
     currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
     sessionLogs?: UserSessionLogListRelationFilter
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
-  }, "id" | "email" | "nic">
+  }, "id" | "email" | "googleId" | "nic">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
+    googleId?: SortOrderInput | SortOrder
+    pushToken?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -77061,9 +78415,11 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    password?: StringWithAggregatesFilter<"User"> | string
+    password?: StringNullableWithAggregatesFilter<"User"> | string | null
     name?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    googleId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    pushToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -77111,6 +78467,8 @@ export namespace Prisma {
     verifications?: ReportVerificationListRelationFilter
     tasks?: TaskListRelationFilter
     verifierActions?: VerifierActionListRelationFilter
+    duplicateLinks?: IncidentDuplicateLinkListRelationFilter
+    canonicalLinks?: IncidentDuplicateLinkListRelationFilter
   }
 
   export type IncidentReportOrderByWithRelationInput = {
@@ -77142,6 +78500,8 @@ export namespace Prisma {
     verifications?: ReportVerificationOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
     verifierActions?: VerifierActionOrderByRelationAggregateInput
+    duplicateLinks?: IncidentDuplicateLinkOrderByRelationAggregateInput
+    canonicalLinks?: IncidentDuplicateLinkOrderByRelationAggregateInput
   }
 
   export type IncidentReportWhereUniqueInput = Prisma.AtLeast<{
@@ -77176,6 +78536,8 @@ export namespace Prisma {
     verifications?: ReportVerificationListRelationFilter
     tasks?: TaskListRelationFilter
     verifierActions?: VerifierActionListRelationFilter
+    duplicateLinks?: IncidentDuplicateLinkListRelationFilter
+    canonicalLinks?: IncidentDuplicateLinkListRelationFilter
   }, "id">
 
   export type IncidentReportOrderByWithAggregationInput = {
@@ -81438,6 +82800,81 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"DownstreamMapping"> | Date | string
   }
 
+  export type IncidentDuplicateLinkWhereInput = {
+    AND?: IncidentDuplicateLinkWhereInput | IncidentDuplicateLinkWhereInput[]
+    OR?: IncidentDuplicateLinkWhereInput[]
+    NOT?: IncidentDuplicateLinkWhereInput | IncidentDuplicateLinkWhereInput[]
+    id?: StringFilter<"IncidentDuplicateLink"> | string
+    reportId?: StringFilter<"IncidentDuplicateLink"> | string
+    canonicalId?: StringFilter<"IncidentDuplicateLink"> | string
+    score?: FloatFilter<"IncidentDuplicateLink"> | number
+    distanceM?: FloatNullableFilter<"IncidentDuplicateLink"> | number | null
+    status?: StringFilter<"IncidentDuplicateLink"> | string
+    reasons?: StringNullableListFilter<"IncidentDuplicateLink">
+    createdAt?: DateTimeFilter<"IncidentDuplicateLink"> | Date | string
+    report?: XOR<IncidentReportScalarRelationFilter, IncidentReportWhereInput>
+    canonical?: XOR<IncidentReportScalarRelationFilter, IncidentReportWhereInput>
+  }
+
+  export type IncidentDuplicateLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    reportId?: SortOrder
+    canonicalId?: SortOrder
+    score?: SortOrder
+    distanceM?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reasons?: SortOrder
+    createdAt?: SortOrder
+    report?: IncidentReportOrderByWithRelationInput
+    canonical?: IncidentReportOrderByWithRelationInput
+  }
+
+  export type IncidentDuplicateLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: IncidentDuplicateLinkWhereInput | IncidentDuplicateLinkWhereInput[]
+    OR?: IncidentDuplicateLinkWhereInput[]
+    NOT?: IncidentDuplicateLinkWhereInput | IncidentDuplicateLinkWhereInput[]
+    reportId?: StringFilter<"IncidentDuplicateLink"> | string
+    canonicalId?: StringFilter<"IncidentDuplicateLink"> | string
+    score?: FloatFilter<"IncidentDuplicateLink"> | number
+    distanceM?: FloatNullableFilter<"IncidentDuplicateLink"> | number | null
+    status?: StringFilter<"IncidentDuplicateLink"> | string
+    reasons?: StringNullableListFilter<"IncidentDuplicateLink">
+    createdAt?: DateTimeFilter<"IncidentDuplicateLink"> | Date | string
+    report?: XOR<IncidentReportScalarRelationFilter, IncidentReportWhereInput>
+    canonical?: XOR<IncidentReportScalarRelationFilter, IncidentReportWhereInput>
+  }, "id">
+
+  export type IncidentDuplicateLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    reportId?: SortOrder
+    canonicalId?: SortOrder
+    score?: SortOrder
+    distanceM?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reasons?: SortOrder
+    createdAt?: SortOrder
+    _count?: IncidentDuplicateLinkCountOrderByAggregateInput
+    _avg?: IncidentDuplicateLinkAvgOrderByAggregateInput
+    _max?: IncidentDuplicateLinkMaxOrderByAggregateInput
+    _min?: IncidentDuplicateLinkMinOrderByAggregateInput
+    _sum?: IncidentDuplicateLinkSumOrderByAggregateInput
+  }
+
+  export type IncidentDuplicateLinkScalarWhereWithAggregatesInput = {
+    AND?: IncidentDuplicateLinkScalarWhereWithAggregatesInput | IncidentDuplicateLinkScalarWhereWithAggregatesInput[]
+    OR?: IncidentDuplicateLinkScalarWhereWithAggregatesInput[]
+    NOT?: IncidentDuplicateLinkScalarWhereWithAggregatesInput | IncidentDuplicateLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncidentDuplicateLink"> | string
+    reportId?: StringWithAggregatesFilter<"IncidentDuplicateLink"> | string
+    canonicalId?: StringWithAggregatesFilter<"IncidentDuplicateLink"> | string
+    score?: FloatWithAggregatesFilter<"IncidentDuplicateLink"> | number
+    distanceM?: FloatNullableWithAggregatesFilter<"IncidentDuplicateLink"> | number | null
+    status?: StringWithAggregatesFilter<"IncidentDuplicateLink"> | string
+    reasons?: StringNullableListFilter<"IncidentDuplicateLink">
+    createdAt?: DateTimeWithAggregatesFilter<"IncidentDuplicateLink"> | Date | string
+  }
+
   export type PublicSafePlaceWhereInput = {
     AND?: PublicSafePlaceWhereInput | PublicSafePlaceWhereInput[]
     OR?: PublicSafePlaceWhereInput[]
@@ -81612,9 +83049,11 @@ export namespace Prisma {
   export type UserCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -81649,9 +83088,11 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -81686,9 +83127,11 @@ export namespace Prisma {
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81723,9 +83166,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81760,9 +83205,11 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -81781,9 +83228,11 @@ export namespace Prisma {
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81801,9 +83250,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81847,6 +83298,8 @@ export namespace Prisma {
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateInput = {
@@ -81877,6 +83330,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUpdateInput = {
@@ -81907,6 +83362,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateInput = {
@@ -81937,6 +83394,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportCreateManyInput = {
@@ -86637,6 +88096,81 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IncidentDuplicateLinkCreateInput = {
+    id?: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+    report: IncidentReportCreateNestedOneWithoutDuplicateLinksInput
+    canonical: IncidentReportCreateNestedOneWithoutCanonicalLinksInput
+  }
+
+  export type IncidentDuplicateLinkUncheckedCreateInput = {
+    id?: string
+    reportId: string
+    canonicalId: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type IncidentDuplicateLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    report?: IncidentReportUpdateOneRequiredWithoutDuplicateLinksNestedInput
+    canonical?: IncidentReportUpdateOneRequiredWithoutCanonicalLinksNestedInput
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reportId?: StringFieldUpdateOperationsInput | string
+    canonicalId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentDuplicateLinkCreateManyInput = {
+    id?: string
+    reportId: string
+    canonicalId: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type IncidentDuplicateLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reportId?: StringFieldUpdateOperationsInput | string
+    canonicalId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PublicSafePlaceCreateInput = {
     id?: string
     name: string
@@ -87060,6 +88594,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
+    googleId?: SortOrder
+    pushToken?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -87081,6 +88617,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
+    googleId?: SortOrder
+    pushToken?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -87102,6 +88640,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     phone?: SortOrder
+    googleId?: SortOrder
+    pushToken?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -87277,11 +88817,21 @@ export namespace Prisma {
     none?: VerifierActionWhereInput
   }
 
+  export type IncidentDuplicateLinkListRelationFilter = {
+    every?: IncidentDuplicateLinkWhereInput
+    some?: IncidentDuplicateLinkWhereInput
+    none?: IncidentDuplicateLinkWhereInput
+  }
+
   export type IncidentHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type VerifierActionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type IncidentDuplicateLinkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -90397,6 +91947,47 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type IncidentDuplicateLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    reportId?: SortOrder
+    canonicalId?: SortOrder
+    score?: SortOrder
+    distanceM?: SortOrder
+    status?: SortOrder
+    reasons?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type IncidentDuplicateLinkAvgOrderByAggregateInput = {
+    score?: SortOrder
+    distanceM?: SortOrder
+  }
+
+  export type IncidentDuplicateLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    reportId?: SortOrder
+    canonicalId?: SortOrder
+    score?: SortOrder
+    distanceM?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type IncidentDuplicateLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    reportId?: SortOrder
+    canonicalId?: SortOrder
+    score?: SortOrder
+    distanceM?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type IncidentDuplicateLinkSumOrderByAggregateInput = {
+    score?: SortOrder
+    distanceM?: SortOrder
+  }
+
   export type PublicSafePlaceCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -91239,6 +92830,20 @@ export namespace Prisma {
     connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
   }
 
+  export type IncidentDuplicateLinkCreateNestedManyWithoutReportInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutReportInput, IncidentDuplicateLinkUncheckedCreateWithoutReportInput> | IncidentDuplicateLinkCreateWithoutReportInput[] | IncidentDuplicateLinkUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutReportInput | IncidentDuplicateLinkCreateOrConnectWithoutReportInput[]
+    createMany?: IncidentDuplicateLinkCreateManyReportInputEnvelope
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+  }
+
+  export type IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput> | IncidentDuplicateLinkCreateWithoutCanonicalInput[] | IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput | IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput[]
+    createMany?: IncidentDuplicateLinkCreateManyCanonicalInputEnvelope
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+  }
+
   export type AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput = {
     create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
     connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
@@ -91278,6 +92883,20 @@ export namespace Prisma {
     connectOrCreate?: VerifierActionCreateOrConnectWithoutIncidentInput | VerifierActionCreateOrConnectWithoutIncidentInput[]
     createMany?: VerifierActionCreateManyIncidentInputEnvelope
     connect?: VerifierActionWhereUniqueInput | VerifierActionWhereUniqueInput[]
+  }
+
+  export type IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutReportInput, IncidentDuplicateLinkUncheckedCreateWithoutReportInput> | IncidentDuplicateLinkCreateWithoutReportInput[] | IncidentDuplicateLinkUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutReportInput | IncidentDuplicateLinkCreateOrConnectWithoutReportInput[]
+    createMany?: IncidentDuplicateLinkCreateManyReportInputEnvelope
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+  }
+
+  export type IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput> | IncidentDuplicateLinkCreateWithoutCanonicalInput[] | IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput | IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput[]
+    createMany?: IncidentDuplicateLinkCreateManyCanonicalInputEnvelope
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -91389,6 +93008,34 @@ export namespace Prisma {
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
   }
 
+  export type IncidentDuplicateLinkUpdateManyWithoutReportNestedInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutReportInput, IncidentDuplicateLinkUncheckedCreateWithoutReportInput> | IncidentDuplicateLinkCreateWithoutReportInput[] | IncidentDuplicateLinkUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutReportInput | IncidentDuplicateLinkCreateOrConnectWithoutReportInput[]
+    upsert?: IncidentDuplicateLinkUpsertWithWhereUniqueWithoutReportInput | IncidentDuplicateLinkUpsertWithWhereUniqueWithoutReportInput[]
+    createMany?: IncidentDuplicateLinkCreateManyReportInputEnvelope
+    set?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    disconnect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    delete?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    update?: IncidentDuplicateLinkUpdateWithWhereUniqueWithoutReportInput | IncidentDuplicateLinkUpdateWithWhereUniqueWithoutReportInput[]
+    updateMany?: IncidentDuplicateLinkUpdateManyWithWhereWithoutReportInput | IncidentDuplicateLinkUpdateManyWithWhereWithoutReportInput[]
+    deleteMany?: IncidentDuplicateLinkScalarWhereInput | IncidentDuplicateLinkScalarWhereInput[]
+  }
+
+  export type IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput> | IncidentDuplicateLinkCreateWithoutCanonicalInput[] | IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput | IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput[]
+    upsert?: IncidentDuplicateLinkUpsertWithWhereUniqueWithoutCanonicalInput | IncidentDuplicateLinkUpsertWithWhereUniqueWithoutCanonicalInput[]
+    createMany?: IncidentDuplicateLinkCreateManyCanonicalInputEnvelope
+    set?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    disconnect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    delete?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    update?: IncidentDuplicateLinkUpdateWithWhereUniqueWithoutCanonicalInput | IncidentDuplicateLinkUpdateWithWhereUniqueWithoutCanonicalInput[]
+    updateMany?: IncidentDuplicateLinkUpdateManyWithWhereWithoutCanonicalInput | IncidentDuplicateLinkUpdateManyWithWhereWithoutCanonicalInput[]
+    deleteMany?: IncidentDuplicateLinkScalarWhereInput | IncidentDuplicateLinkScalarWhereInput[]
+  }
+
   export type AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput = {
     create?: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
     connectOrCreate?: AfterActionReportCreateOrConnectWithoutIncidentInput
@@ -91467,6 +93114,34 @@ export namespace Prisma {
     update?: VerifierActionUpdateWithWhereUniqueWithoutIncidentInput | VerifierActionUpdateWithWhereUniqueWithoutIncidentInput[]
     updateMany?: VerifierActionUpdateManyWithWhereWithoutIncidentInput | VerifierActionUpdateManyWithWhereWithoutIncidentInput[]
     deleteMany?: VerifierActionScalarWhereInput | VerifierActionScalarWhereInput[]
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutReportInput, IncidentDuplicateLinkUncheckedCreateWithoutReportInput> | IncidentDuplicateLinkCreateWithoutReportInput[] | IncidentDuplicateLinkUncheckedCreateWithoutReportInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutReportInput | IncidentDuplicateLinkCreateOrConnectWithoutReportInput[]
+    upsert?: IncidentDuplicateLinkUpsertWithWhereUniqueWithoutReportInput | IncidentDuplicateLinkUpsertWithWhereUniqueWithoutReportInput[]
+    createMany?: IncidentDuplicateLinkCreateManyReportInputEnvelope
+    set?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    disconnect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    delete?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    update?: IncidentDuplicateLinkUpdateWithWhereUniqueWithoutReportInput | IncidentDuplicateLinkUpdateWithWhereUniqueWithoutReportInput[]
+    updateMany?: IncidentDuplicateLinkUpdateManyWithWhereWithoutReportInput | IncidentDuplicateLinkUpdateManyWithWhereWithoutReportInput[]
+    deleteMany?: IncidentDuplicateLinkScalarWhereInput | IncidentDuplicateLinkScalarWhereInput[]
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput = {
+    create?: XOR<IncidentDuplicateLinkCreateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput> | IncidentDuplicateLinkCreateWithoutCanonicalInput[] | IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput[]
+    connectOrCreate?: IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput | IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput[]
+    upsert?: IncidentDuplicateLinkUpsertWithWhereUniqueWithoutCanonicalInput | IncidentDuplicateLinkUpsertWithWhereUniqueWithoutCanonicalInput[]
+    createMany?: IncidentDuplicateLinkCreateManyCanonicalInputEnvelope
+    set?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    disconnect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    delete?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    connect?: IncidentDuplicateLinkWhereUniqueInput | IncidentDuplicateLinkWhereUniqueInput[]
+    update?: IncidentDuplicateLinkUpdateWithWhereUniqueWithoutCanonicalInput | IncidentDuplicateLinkUpdateWithWhereUniqueWithoutCanonicalInput[]
+    updateMany?: IncidentDuplicateLinkUpdateManyWithWhereWithoutCanonicalInput | IncidentDuplicateLinkUpdateManyWithWhereWithoutCanonicalInput[]
+    deleteMany?: IncidentDuplicateLinkScalarWhereInput | IncidentDuplicateLinkScalarWhereInput[]
   }
 
   export type AlertCreatelatitudesInput = {
@@ -93236,6 +94911,43 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type IncidentDuplicateLinkCreatereasonsInput = {
+    set: string[]
+  }
+
+  export type IncidentReportCreateNestedOneWithoutDuplicateLinksInput = {
+    create?: XOR<IncidentReportCreateWithoutDuplicateLinksInput, IncidentReportUncheckedCreateWithoutDuplicateLinksInput>
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutDuplicateLinksInput
+    connect?: IncidentReportWhereUniqueInput
+  }
+
+  export type IncidentReportCreateNestedOneWithoutCanonicalLinksInput = {
+    create?: XOR<IncidentReportCreateWithoutCanonicalLinksInput, IncidentReportUncheckedCreateWithoutCanonicalLinksInput>
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutCanonicalLinksInput
+    connect?: IncidentReportWhereUniqueInput
+  }
+
+  export type IncidentDuplicateLinkUpdatereasonsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type IncidentReportUpdateOneRequiredWithoutDuplicateLinksNestedInput = {
+    create?: XOR<IncidentReportCreateWithoutDuplicateLinksInput, IncidentReportUncheckedCreateWithoutDuplicateLinksInput>
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutDuplicateLinksInput
+    upsert?: IncidentReportUpsertWithoutDuplicateLinksInput
+    connect?: IncidentReportWhereUniqueInput
+    update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutDuplicateLinksInput, IncidentReportUpdateWithoutDuplicateLinksInput>, IncidentReportUncheckedUpdateWithoutDuplicateLinksInput>
+  }
+
+  export type IncidentReportUpdateOneRequiredWithoutCanonicalLinksNestedInput = {
+    create?: XOR<IncidentReportCreateWithoutCanonicalLinksInput, IncidentReportUncheckedCreateWithoutCanonicalLinksInput>
+    connectOrCreate?: IncidentReportCreateOrConnectWithoutCanonicalLinksInput
+    upsert?: IncidentReportUpsertWithoutCanonicalLinksInput
+    connect?: IncidentReportWhereUniqueInput
+    update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutCanonicalLinksInput, IncidentReportUpdateWithoutCanonicalLinksInput>, IncidentReportUncheckedUpdateWithoutCanonicalLinksInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -94087,6 +95799,8 @@ export namespace Prisma {
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutReporterInput = {
@@ -94116,6 +95830,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutReporterInput = {
@@ -95212,9 +96928,11 @@ export namespace Prisma {
   export type UserCreateWithoutReportsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -95248,9 +96966,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutReportsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -95376,6 +97096,66 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type IncidentDuplicateLinkCreateWithoutReportInput = {
+    id?: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+    canonical: IncidentReportCreateNestedOneWithoutCanonicalLinksInput
+  }
+
+  export type IncidentDuplicateLinkUncheckedCreateWithoutReportInput = {
+    id?: string
+    canonicalId: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type IncidentDuplicateLinkCreateOrConnectWithoutReportInput = {
+    where: IncidentDuplicateLinkWhereUniqueInput
+    create: XOR<IncidentDuplicateLinkCreateWithoutReportInput, IncidentDuplicateLinkUncheckedCreateWithoutReportInput>
+  }
+
+  export type IncidentDuplicateLinkCreateManyReportInputEnvelope = {
+    data: IncidentDuplicateLinkCreateManyReportInput | IncidentDuplicateLinkCreateManyReportInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncidentDuplicateLinkCreateWithoutCanonicalInput = {
+    id?: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+    report: IncidentReportCreateNestedOneWithoutDuplicateLinksInput
+  }
+
+  export type IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput = {
+    id?: string
+    reportId: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type IncidentDuplicateLinkCreateOrConnectWithoutCanonicalInput = {
+    where: IncidentDuplicateLinkWhereUniqueInput
+    create: XOR<IncidentDuplicateLinkCreateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput>
+  }
+
+  export type IncidentDuplicateLinkCreateManyCanonicalInputEnvelope = {
+    data: IncidentDuplicateLinkCreateManyCanonicalInput | IncidentDuplicateLinkCreateManyCanonicalInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AfterActionReportUpsertWithoutIncidentInput = {
     update: XOR<AfterActionReportUpdateWithoutIncidentInput, AfterActionReportUncheckedUpdateWithoutIncidentInput>
     create: XOR<AfterActionReportCreateWithoutIncidentInput, AfterActionReportUncheckedCreateWithoutIncidentInput>
@@ -95467,9 +97247,11 @@ export namespace Prisma {
   export type UserUpdateWithoutReportsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -95503,9 +97285,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutReportsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -95597,6 +97381,52 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"VerifierAction"> | Date | string
   }
 
+  export type IncidentDuplicateLinkUpsertWithWhereUniqueWithoutReportInput = {
+    where: IncidentDuplicateLinkWhereUniqueInput
+    update: XOR<IncidentDuplicateLinkUpdateWithoutReportInput, IncidentDuplicateLinkUncheckedUpdateWithoutReportInput>
+    create: XOR<IncidentDuplicateLinkCreateWithoutReportInput, IncidentDuplicateLinkUncheckedCreateWithoutReportInput>
+  }
+
+  export type IncidentDuplicateLinkUpdateWithWhereUniqueWithoutReportInput = {
+    where: IncidentDuplicateLinkWhereUniqueInput
+    data: XOR<IncidentDuplicateLinkUpdateWithoutReportInput, IncidentDuplicateLinkUncheckedUpdateWithoutReportInput>
+  }
+
+  export type IncidentDuplicateLinkUpdateManyWithWhereWithoutReportInput = {
+    where: IncidentDuplicateLinkScalarWhereInput
+    data: XOR<IncidentDuplicateLinkUpdateManyMutationInput, IncidentDuplicateLinkUncheckedUpdateManyWithoutReportInput>
+  }
+
+  export type IncidentDuplicateLinkScalarWhereInput = {
+    AND?: IncidentDuplicateLinkScalarWhereInput | IncidentDuplicateLinkScalarWhereInput[]
+    OR?: IncidentDuplicateLinkScalarWhereInput[]
+    NOT?: IncidentDuplicateLinkScalarWhereInput | IncidentDuplicateLinkScalarWhereInput[]
+    id?: StringFilter<"IncidentDuplicateLink"> | string
+    reportId?: StringFilter<"IncidentDuplicateLink"> | string
+    canonicalId?: StringFilter<"IncidentDuplicateLink"> | string
+    score?: FloatFilter<"IncidentDuplicateLink"> | number
+    distanceM?: FloatNullableFilter<"IncidentDuplicateLink"> | number | null
+    status?: StringFilter<"IncidentDuplicateLink"> | string
+    reasons?: StringNullableListFilter<"IncidentDuplicateLink">
+    createdAt?: DateTimeFilter<"IncidentDuplicateLink"> | Date | string
+  }
+
+  export type IncidentDuplicateLinkUpsertWithWhereUniqueWithoutCanonicalInput = {
+    where: IncidentDuplicateLinkWhereUniqueInput
+    update: XOR<IncidentDuplicateLinkUpdateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedUpdateWithoutCanonicalInput>
+    create: XOR<IncidentDuplicateLinkCreateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedCreateWithoutCanonicalInput>
+  }
+
+  export type IncidentDuplicateLinkUpdateWithWhereUniqueWithoutCanonicalInput = {
+    where: IncidentDuplicateLinkWhereUniqueInput
+    data: XOR<IncidentDuplicateLinkUpdateWithoutCanonicalInput, IncidentDuplicateLinkUncheckedUpdateWithoutCanonicalInput>
+  }
+
+  export type IncidentDuplicateLinkUpdateManyWithWhereWithoutCanonicalInput = {
+    where: IncidentDuplicateLinkScalarWhereInput
+    data: XOR<IncidentDuplicateLinkUpdateManyMutationInput, IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalInput>
+  }
+
   export type NotificationCreateWithoutAlertInput = {
     id?: string
     title: string
@@ -95646,9 +97476,11 @@ export namespace Prisma {
   export type UserCreateWithoutCurrentSectorInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -95682,9 +97514,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutCurrentSectorInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -95747,9 +97581,11 @@ export namespace Prisma {
     NOT?: UserScalarWhereInput | UserScalarWhereInput[]
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
     name?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
+    googleId?: StringNullableFilter<"User"> | string | null
+    pushToken?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -96151,9 +97987,11 @@ export namespace Prisma {
   export type UserCreateWithoutCreatedTasksInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -96187,9 +98025,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -96228,9 +98068,11 @@ export namespace Prisma {
   export type UserCreateWithoutAssignedTasksInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -96264,9 +98106,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -96329,6 +98173,8 @@ export namespace Prisma {
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutTasksInput = {
@@ -96358,6 +98204,8 @@ export namespace Prisma {
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutTasksInput = {
@@ -96379,9 +98227,11 @@ export namespace Prisma {
   export type UserUpdateWithoutCreatedTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -96415,9 +98265,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -96462,9 +98314,11 @@ export namespace Prisma {
   export type UserUpdateWithoutAssignedTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -96498,9 +98352,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -96569,6 +98425,8 @@ export namespace Prisma {
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutTasksInput = {
@@ -96598,6 +98456,8 @@ export namespace Prisma {
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type VolunteerBadgeCreateWithoutVolunteerInput = {
@@ -96655,9 +98515,11 @@ export namespace Prisma {
   export type UserCreateWithoutVolunteerProfileInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -96691,9 +98553,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutVolunteerProfileInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -96873,9 +98737,11 @@ export namespace Prisma {
   export type UserUpdateWithoutVolunteerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -96909,9 +98775,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutVolunteerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97027,9 +98895,11 @@ export namespace Prisma {
   export type UserCreateWithoutHelpRequestsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -97063,9 +98933,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutHelpRequestsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -97167,9 +99039,11 @@ export namespace Prisma {
   export type UserUpdateWithoutHelpRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97203,9 +99077,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutHelpRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97398,6 +99274,8 @@ export namespace Prisma {
     reporter: UserCreateNestedOneWithoutReportsInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutVerificationsInput = {
@@ -97427,6 +99305,8 @@ export namespace Prisma {
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutVerificationsInput = {
@@ -97437,9 +99317,11 @@ export namespace Prisma {
   export type UserCreateWithoutVerificationsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -97473,9 +99355,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutVerificationsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -97549,6 +99433,8 @@ export namespace Prisma {
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutVerificationsInput = {
@@ -97578,6 +99464,8 @@ export namespace Prisma {
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type UserUpsertWithoutVerificationsInput = {
@@ -97594,9 +99482,11 @@ export namespace Prisma {
   export type UserUpdateWithoutVerificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97630,9 +99520,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutVerificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97666,9 +99558,11 @@ export namespace Prisma {
   export type UserCreateWithoutNotificationsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -97702,9 +99596,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutNotificationsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -97801,9 +99697,11 @@ export namespace Prisma {
   export type UserUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97837,9 +99735,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -97950,6 +99850,8 @@ export namespace Prisma {
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutHistoryInput = {
@@ -97979,6 +99881,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutHistoryInput = {
@@ -98024,6 +99928,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutHistoryInput = {
@@ -98053,14 +99959,18 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type UserCreateWithoutLocationLogsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98094,9 +100004,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutLocationLogsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98146,9 +100058,11 @@ export namespace Prisma {
   export type UserUpdateWithoutLocationLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -98182,9 +100096,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutLocationLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -98241,9 +100157,11 @@ export namespace Prisma {
   export type UserCreateWithoutReliefTokensInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98277,9 +100195,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutReliefTokensInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98394,9 +100314,11 @@ export namespace Prisma {
   export type UserUpdateWithoutReliefTokensInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -98430,9 +100352,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutReliefTokensInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -98619,6 +100543,8 @@ export namespace Prisma {
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutDamageAssessmentsInput = {
@@ -98648,6 +100574,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutDamageAssessmentsInput = {
@@ -98658,9 +100586,11 @@ export namespace Prisma {
   export type UserCreateWithoutDamageReportsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98694,9 +100624,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutDamageReportsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98770,6 +100702,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutDamageAssessmentsInput = {
@@ -98799,6 +100733,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type UserUpsertWithoutDamageReportsInput = {
@@ -98815,9 +100751,11 @@ export namespace Prisma {
   export type UserUpdateWithoutDamageReportsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -98851,9 +100789,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutDamageReportsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -98887,9 +100827,11 @@ export namespace Prisma {
   export type UserCreateWithoutLocalVerifierInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -98923,9 +100865,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutLocalVerifierInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -99003,9 +100947,11 @@ export namespace Prisma {
   export type UserUpdateWithoutLocalVerifierInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -99039,9 +100985,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutLocalVerifierInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -99158,6 +101106,8 @@ export namespace Prisma {
     reporter: UserCreateNestedOneWithoutReportsInput
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutVerifierActionsInput = {
@@ -99187,6 +101137,8 @@ export namespace Prisma {
     history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutVerifierActionsInput = {
@@ -99314,6 +101266,8 @@ export namespace Prisma {
     reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutVerifierActionsInput = {
@@ -99343,6 +101297,8 @@ export namespace Prisma {
     history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type LocalVerifierUpsertWithoutActionsInput = {
@@ -99387,9 +101343,11 @@ export namespace Prisma {
   export type UserCreateWithoutSupportRequestsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -99423,9 +101381,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSupportRequestsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -99475,9 +101435,11 @@ export namespace Prisma {
   export type UserUpdateWithoutSupportRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -99511,9 +101473,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSupportRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -99571,6 +101535,8 @@ export namespace Prisma {
     verifications?: ReportVerificationCreateNestedManyWithoutReportInput
     tasks?: TaskCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportUncheckedCreateWithoutAarInput = {
@@ -99600,6 +101566,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
     tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
     verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
   }
 
   export type IncidentReportCreateOrConnectWithoutAarInput = {
@@ -99645,6 +101613,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutAarInput = {
@@ -99674,6 +101644,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type ResourceExpenditureCreateWithoutResourceCostInput = {
@@ -99875,9 +101847,11 @@ export namespace Prisma {
   export type UserCreateWithoutSessionLogsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -99911,9 +101885,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSessionLogsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -99963,9 +101939,11 @@ export namespace Prisma {
   export type UserUpdateWithoutSessionLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -99999,9 +101977,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSessionLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101270,9 +103250,11 @@ export namespace Prisma {
   export type UserCreateWithoutDonationsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101306,9 +103288,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutDonationsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101411,9 +103395,11 @@ export namespace Prisma {
   export type UserUpdateWithoutDonationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101447,9 +103433,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutDonationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101483,9 +103471,11 @@ export namespace Prisma {
   export type UserCreateWithoutSafetyCheckInsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101519,9 +103509,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSafetyCheckInsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101571,9 +103563,11 @@ export namespace Prisma {
   export type UserUpdateWithoutSafetyCheckInsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101607,9 +103601,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSafetyCheckInsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101643,9 +103639,11 @@ export namespace Prisma {
   export type UserCreateWithoutFamilyMembersInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101679,9 +103677,11 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutFamilyMembersInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101731,9 +103731,11 @@ export namespace Prisma {
   export type UserUpdateWithoutFamilyMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101767,9 +103769,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutFamilyMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -101858,6 +103862,286 @@ export namespace Prisma {
     scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
     maxParticipants?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type IncidentReportCreateWithoutDuplicateLinksInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
+    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
+    reporter: UserCreateNestedOneWithoutReportsInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
+    verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    canonicalLinks?: IncidentDuplicateLinkCreateNestedManyWithoutCanonicalInput
+  }
+
+  export type IncidentReportUncheckedCreateWithoutDuplicateLinksInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    reporterId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
+    damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
+    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutCanonicalInput
+  }
+
+  export type IncidentReportCreateOrConnectWithoutDuplicateLinksInput = {
+    where: IncidentReportWhereUniqueInput
+    create: XOR<IncidentReportCreateWithoutDuplicateLinksInput, IncidentReportUncheckedCreateWithoutDuplicateLinksInput>
+  }
+
+  export type IncidentReportCreateWithoutCanonicalLinksInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportCreateNestedOneWithoutIncidentInput
+    damageAssessments?: DamageAssessmentCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryCreateNestedManyWithoutIncidentInput
+    reporter: UserCreateNestedOneWithoutReportsInput
+    verifications?: ReportVerificationCreateNestedManyWithoutReportInput
+    tasks?: TaskCreateNestedManyWithoutIncidentInput
+    verifierActions?: VerifierActionCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkCreateNestedManyWithoutReportInput
+  }
+
+  export type IncidentReportUncheckedCreateWithoutCanonicalLinksInput = {
+    id?: string
+    title: string
+    description: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: $Enums.Status
+    severity?: $Enums.Severity
+    category: string
+    images?: IncidentReportCreateimagesInput | string[]
+    reporterId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    province?: string | null
+    zoneId?: string | null
+    zoneName?: string | null
+    mlConfidence?: number | null
+    detectedLanguage?: string | null
+    languageConfidence?: number | null
+    translatedText?: string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportUncheckedCreateNestedOneWithoutIncidentInput
+    damageAssessments?: DamageAssessmentUncheckedCreateNestedManyWithoutIncidentInput
+    history?: IncidentHistoryUncheckedCreateNestedManyWithoutIncidentInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutReportInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutIncidentInput
+    verifierActions?: VerifierActionUncheckedCreateNestedManyWithoutIncidentInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedCreateNestedManyWithoutReportInput
+  }
+
+  export type IncidentReportCreateOrConnectWithoutCanonicalLinksInput = {
+    where: IncidentReportWhereUniqueInput
+    create: XOR<IncidentReportCreateWithoutCanonicalLinksInput, IncidentReportUncheckedCreateWithoutCanonicalLinksInput>
+  }
+
+  export type IncidentReportUpsertWithoutDuplicateLinksInput = {
+    update: XOR<IncidentReportUpdateWithoutDuplicateLinksInput, IncidentReportUncheckedUpdateWithoutDuplicateLinksInput>
+    create: XOR<IncidentReportCreateWithoutDuplicateLinksInput, IncidentReportUncheckedCreateWithoutDuplicateLinksInput>
+    where?: IncidentReportWhereInput
+  }
+
+  export type IncidentReportUpdateToOneWithWhereWithoutDuplicateLinksInput = {
+    where?: IncidentReportWhereInput
+    data: XOR<IncidentReportUpdateWithoutDuplicateLinksInput, IncidentReportUncheckedUpdateWithoutDuplicateLinksInput>
+  }
+
+  export type IncidentReportUpdateWithoutDuplicateLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
+    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
+    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
+    verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
+  }
+
+  export type IncidentReportUncheckedUpdateWithoutDuplicateLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    reporterId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
+    damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
+    verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
+  }
+
+  export type IncidentReportUpsertWithoutCanonicalLinksInput = {
+    update: XOR<IncidentReportUpdateWithoutCanonicalLinksInput, IncidentReportUncheckedUpdateWithoutCanonicalLinksInput>
+    create: XOR<IncidentReportCreateWithoutCanonicalLinksInput, IncidentReportUncheckedCreateWithoutCanonicalLinksInput>
+    where?: IncidentReportWhereInput
+  }
+
+  export type IncidentReportUpdateToOneWithWhereWithoutCanonicalLinksInput = {
+    where?: IncidentReportWhereInput
+    data: XOR<IncidentReportUpdateWithoutCanonicalLinksInput, IncidentReportUncheckedUpdateWithoutCanonicalLinksInput>
+  }
+
+  export type IncidentReportUpdateWithoutCanonicalLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportUpdateOneWithoutIncidentNestedInput
+    damageAssessments?: DamageAssessmentUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUpdateManyWithoutIncidentNestedInput
+    reporter?: UserUpdateOneRequiredWithoutReportsNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
+    tasks?: TaskUpdateManyWithoutIncidentNestedInput
+    verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+  }
+
+  export type IncidentReportUncheckedUpdateWithoutCanonicalLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    severity?: EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+    category?: StringFieldUpdateOperationsInput | string
+    images?: IncidentReportUpdateimagesInput | string[]
+    reporterId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneId?: NullableStringFieldUpdateOperationsInput | string | null
+    zoneName?: NullableStringFieldUpdateOperationsInput | string | null
+    mlConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    detectedLanguage?: NullableStringFieldUpdateOperationsInput | string | null
+    languageConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    translatedText?: NullableStringFieldUpdateOperationsInput | string | null
+    nlpEntities?: NullableJsonNullValueInput | InputJsonValue
+    aar?: AfterActionReportUncheckedUpdateOneWithoutIncidentNestedInput
+    damageAssessments?: DamageAssessmentUncheckedUpdateManyWithoutIncidentNestedInput
+    history?: IncidentHistoryUncheckedUpdateManyWithoutIncidentNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
+    verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
   }
 
   export type DamageAssessmentCreateManyReportedByInput = {
@@ -102306,6 +104590,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUpdateManyWithoutReportNestedInput
     tasks?: TaskUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateWithoutReporterInput = {
@@ -102335,6 +104621,8 @@ export namespace Prisma {
     verifications?: ReportVerificationUncheckedUpdateManyWithoutReportNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutIncidentNestedInput
     verifierActions?: VerifierActionUncheckedUpdateManyWithoutIncidentNestedInput
+    duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
+    canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
   export type IncidentReportUncheckedUpdateManyWithoutReporterInput = {
@@ -102742,6 +105030,26 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type IncidentDuplicateLinkCreateManyReportInput = {
+    id?: string
+    canonicalId: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+  }
+
+  export type IncidentDuplicateLinkCreateManyCanonicalInput = {
+    id?: string
+    reportId: string
+    score: number
+    distanceM?: number | null
+    status?: string
+    reasons?: IncidentDuplicateLinkCreatereasonsInput | string[]
+    createdAt?: Date | string
+  }
+
   export type DamageAssessmentUpdateWithoutIncidentInput = {
     id?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -102946,6 +105254,66 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IncidentDuplicateLinkUpdateWithoutReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    canonical?: IncidentReportUpdateOneRequiredWithoutCanonicalLinksNestedInput
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateWithoutReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    canonicalId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateManyWithoutReportInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    canonicalId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentDuplicateLinkUpdateWithoutCanonicalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    report?: IncidentReportUpdateOneRequiredWithoutDuplicateLinksNestedInput
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateWithoutCanonicalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reportId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reportId?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
+    distanceM?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    reasons?: IncidentDuplicateLinkUpdatereasonsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type NotificationCreateManyAlertInput = {
     id?: string
     userId: string
@@ -102989,9 +105357,11 @@ export namespace Prisma {
   export type UserCreateManyCurrentSectorInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     name: string
     phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -103009,9 +105379,11 @@ export namespace Prisma {
   export type UserUpdateWithoutCurrentSectorInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -103045,9 +105417,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutCurrentSectorInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -103081,9 +105455,11 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyWithoutCurrentSectorInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

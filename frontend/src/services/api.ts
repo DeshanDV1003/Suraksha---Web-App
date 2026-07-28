@@ -33,6 +33,7 @@ api.interceptors.response.use(
 export const authService = {
   login: (data: any) => api.post('/auth/login', data),
   register: (data: any) => api.post('/auth/register', data),
+  googleLogin: (idToken: string) => api.post('/auth/google', { idToken }),
   changePassword: (data: any) => api.post('/auth/change-password', data),
   setup2FA: () => api.post('/auth/2fa/setup'),
   verify2FA: (token: string) => api.post('/auth/2fa/verify', { token }),
@@ -44,6 +45,11 @@ export const incidentService = {
   createIncident: (data: any) => api.post('/incidents', data),
   updateStatus: (id: string, status: string) => api.patch(`/incidents/${id}/status`, { status }),
   deleteIncident: (id: string) => api.delete(`/incidents/${id}`),
+  // Duplicate detection
+  getPendingDuplicates: () => api.get('/incidents/duplicates/pending'),
+  getDuplicatesForIncident: (id: string) => api.get(`/incidents/${id}/duplicates`),
+  resolveDuplicateLink: (linkId: string, status: 'CONFIRMED' | 'DISMISSED') =>
+    api.patch(`/incidents/duplicates/${linkId}`, { status }),
 };
 
 export const alertService = {
@@ -223,6 +229,8 @@ export const mapService = {
   getVolunteerLocations: () => api.get('/map/volunteers'),
   createThreatProjection: (data: any) => api.post('/map/projections', data),
   getThreatProjections: () => api.get('/map/projections'),
+  getSafeRoute: (data: { fromLat: number; fromLng: number; toLat?: number; toLng?: number; destType?: string }) =>
+    api.post('/map/safe-route', data),
 };
 
 // ── Research AI features ──────────────────────────────────────────────────────

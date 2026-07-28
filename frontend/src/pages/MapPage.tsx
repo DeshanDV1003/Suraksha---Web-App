@@ -9,7 +9,8 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import {
   Layers, Zap, Search, Shield, AlertTriangle, TrendingUp, Activity,
-  Heart, Home, Play, Pause, Navigation, Clock, User, ShieldCheck
+  Heart, Home, Play, Pause, Navigation, Clock, User, ShieldCheck,
+  Route, ChevronDown, Loader2, CheckCircle, AlertCircle, XCircle, MapPin as MapPinIcon
 } from 'lucide-react';
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
@@ -256,7 +257,32 @@ export default function MapPage() {
     weatherProjections: false,
     evacuationRoutes: false,
     assignmentArrows: false,
+    safeRoutes: false,
   });
+
+  // Safe route state
+  const [routeFinderOpen, setRouteFinderOpen] = useState(false);
+  const [routeFromLat, setRouteFromLat] = useState('');
+  const [routeFromLng, setRouteFromLng] = useState('');
+  const [routeDestType, setRouteDestType] = useState<'SAFE_ZONE' | 'CAMP' | 'CUSTOM'>('SAFE_ZONE');
+  const [routeData, setRouteData] = useState<any>(null);
+  const [routeLoading, setRouteLoading] = useState(false);
+  const [routeError, setRouteError] = useState('');
+  const [selectedRouteIdx, setSelectedRouteIdx] = useState(0);
+
+  const handleComputeRoutes = async () => {
+    const lat = parseFloat(routeFromLat);
+    const lng = parseFloat(routeFromLng);
+    if (isNaN(lat) || isNaN(lng)) { setRouteError('Enter valid coordinates for your start location.'); return; }
+    setRouteLoading(true); setRouteError(''); setRouteData(null);
+    try {
+      const res = await mapService.getSafeRoute({ fromLat: lat, fromLng: lng, destType: routeDestType });
+      setRouteData(res.data);
+      setSelectedRouteIdx(0);
+    } catch (e: any) {
+      setRouteError(e.response?.data?.message || 'Failed to compute routes. Try again.');
+    } finally { setRouteLoading(false); }
+  };
 
   // Safe zone danger zones state
   const [activeDangerZones, setActiveDangerZones] = useState<any[]>([]);
@@ -453,6 +479,144 @@ export default function MapPage() {
               </div>
             )}
 
+            {/* ── Safe Route Finder Panel ──────────────────────────────── */}
+            {layers.safeRoutes && (
+              <div className="suraksha-card p-5 border-l-4 border-l-emerald-500">
+                <button
+                  onClick={() => setRouteFinderOpen(o => !o)}
+                  className="w-full flex items-center justify-between"
+                >
+                  <h3 className="text-xs font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                    <Route className="w-4 h-4" /> Safe Route Finder
+                  </h3>
+                  <ChevronDown className={cn('w-4 h-4 text-slate-400 transition-transform', routeFinderOpen && 'rotate-180')} />
+                </button>
+
+                {routeFinderOpen && (
+                  <div className="mt-4 space-y-3">
+                    <div>
+                      <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Your Location (from search or manual)</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="number"
+                          placeholder="Lat e.g. 6.927"
+                          value={routeFromLat}
+                          onChange={e => setRouteFromLat(e.target.value)}
+                          className="bg-[#0f172a] border border-cyan-400/20 text-slate-100 text-xs rounded-xl px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Lng e.g. 79.861"
+                          value={routeFromLng}
+                          onChange={e => setRouteFromLng(e.target.value)}
+                          className="bg-[#0f172a] border border-cyan-400/20 text-slate-100 text-xs rounded-xl px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                        />
+                      </div>
+                      <p className="text-[9px] text-slate-500 mt-1">Tip: Search a location above to auto-fill.</p>
+                    </div>
+
+                    <div>
+                      <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Route To</label>
+                      <select
+                        value={routeDestType}
+                        onChange={e => setRouteDestType(e.target.value as any)}
+                        className="w-full bg-[#0f172a] border border-cyan-400/20 text-slate-100 text-xs rounded-xl px-3 py-2 appearance-none focus:outline-none"
+                      >
+                        <option value="SAFE_ZONE">Nearest Safe Zone (Public Place)</option>
+                        <option value="CAMP">Nearest Relief Camp</option>
+                      </select>
+                    </div>
+
+                    {routeError && (
+                      <p className="text-[10px] text-red-400 font-bold flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> {routeError}
+                      </p>
+                    )}
+
+                    <button
+                      onClick={handleComputeRoutes}
+                      disabled={routeLoading}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                      {routeLoading ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Calculating…</> : <><Route className="w-3.5 h-3.5" /> Find Safe Routes</>}
+                    </button>
+
+                    {/* Route results */}
+                    {routeData && (
+                      <div className="space-y-2 mt-1">
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                          Destination: <span className="text-emerald-400">{routeData.destination.name}</span>
+                          {' '}· {routeData.directDistKm} km straight-line
+                        </p>
+                        {routeData.routes.map((route: any, idx: number) => {
+                          const isSelected = idx === selectedRouteIdx;
+                          const riskColors: Record<string, string> = {
+                            LOW: 'text-emerald-400', MODERATE: 'text-amber-400',
+                            HIGH: 'text-orange-400', CRITICAL: 'text-red-400',
+                          };
+                          const RiskIcon = route.risk === 'LOW' ? CheckCircle : route.risk === 'MODERATE' ? AlertCircle : XCircle;
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => setSelectedRouteIdx(idx)}
+                              className={cn(
+                                'w-full text-left p-3 rounded-xl border transition-all',
+                                isSelected
+                                  ? 'bg-emerald-500/10 border-emerald-400/40'
+                                  : 'bg-[#0f172a] border-slate-700/50 hover:border-slate-500',
+                              )}
+                            >
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-[10px] font-black text-slate-200">{route.name}</span>
+                                <span className={cn('text-[9px] font-black uppercase', riskColors[route.risk])}>
+                                  {route.risk}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 mb-1.5">
+                                {/* Score bar */}
+                                <div className="flex-1 h-1 bg-slate-700 rounded-full overflow-hidden">
+                                  <div
+                                    className={cn('h-full rounded-full', route.score >= 80 ? 'bg-emerald-400' : route.score >= 60 ? 'bg-amber-400' : route.score >= 40 ? 'bg-orange-400' : 'bg-red-500')}
+                                    style={{ width: `${route.score}%` }}
+                                  />
+                                </div>
+                                <span className="text-[10px] font-black text-slate-300 w-8 text-right">{route.score}%</span>
+                              </div>
+                              <div className="flex items-center gap-3 text-[9px] text-slate-500 font-bold">
+                                <span>{route.estimatedKm} km</span>
+                                {route.hazardsNearby.length > 0 ? (
+                                  <span className="text-amber-500">⚠ {route.hazardsNearby.length} hazard{route.hazardsNearby.length > 1 ? 's' : ''}</span>
+                                ) : (
+                                  <span className="text-emerald-500">✓ Clear path</span>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                        {/* Hazard legend */}
+                        {routeData.hazards.length > 0 && (
+                          <div className="p-2.5 bg-red-500/5 border border-red-500/15 rounded-xl">
+                            <p className="text-[9px] font-black text-red-400 uppercase tracking-widest mb-1.5">
+                              Active Hazards Considered ({routeData.hazards.length})
+                            </p>
+                            <div className="space-y-0.5 max-h-20 overflow-y-auto">
+                              {routeData.hazards.slice(0, 6).map((h: any) => (
+                                <p key={h.id} className="text-[9px] text-slate-500 flex items-center gap-1">
+                                  <span>{h.type === 'FLOOD' ? '🌊' : h.type === 'THREAT' ? '⚡' : '⚠'}</span>
+                                  <span className="truncate">{h.name}</span>
+                                </p>
+                              ))}
+                              {routeData.hazards.length > 6 && <p className="text-[9px] text-slate-600">+{routeData.hazards.length - 6} more</p>}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {layers.evacuationRoutes && evacRoutes && (
               <div className="suraksha-card p-6 border-l-4 border-l-blue-500 bg-blue-50/30">
                  <h3 className="text-xs font-black text-blue-800 uppercase tracking-widest flex items-center gap-2 mb-3">
@@ -485,7 +649,13 @@ export default function MapPage() {
             <MapContainer center={SRI_LANKA_CENTER} zoom={DEFAULT_ZOOM} maxBounds={SRI_LANKA_BOUNDS} maxBoundsViscosity={0.9} minZoom={7} maxZoom={17} style={{ flex: 1, width: '100%' }} className="z-0" zoomControl={false}>
               <ZoomControl position="bottomright" />
               <TileLayer attribution='&copy; OpenStreetMap' url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
-              <MapAddressSearch onLocationFound={(loc) => setSearchedPin(loc)} />
+              <MapAddressSearch onLocationFound={(loc) => {
+                setSearchedPin(loc);
+                if (loc.latitude && loc.longitude) {
+                  setRouteFromLat(String(loc.latitude.toFixed(6)));
+                  setRouteFromLng(String(loc.longitude.toFixed(6)));
+                }
+              }} />
 
               {districtGeoJSON && (
                 <GeoJSON key={`${mapMode}-${selectedZone?.zoneId}-${hoveredZoneId}`} data={districtGeoJSON} style={getZoneStyle} onEachFeature={(feature, layer) => {
@@ -509,6 +679,59 @@ export default function MapPage() {
                    <Polyline positions={evacRoutes.alternate} pathOptions={{ color: '#64748b', weight: 3, dashArray: '10, 10', opacity: 0.8 }} />
                  </>
               )}
+
+              {/* ── Safe Routes Layer ─────────────────────────────────── */}
+              {layers.safeRoutes && routeData && routeData.routes.map((route: any, idx: number) => {
+                const isSelected = idx === selectedRouteIdx;
+                const colors = ['#16a34a', '#d97706', '#9333ea'];
+                const color = colors[idx] || '#6b7280';
+                return (
+                  <React.Fragment key={`route-${idx}`}>
+                    <Polyline
+                      positions={route.waypoints as [number, number][]}
+                      pathOptions={{
+                        color,
+                        weight: isSelected ? 6 : 3,
+                        opacity: isSelected ? 0.95 : 0.45,
+                        dashArray: isSelected ? undefined : '8 6',
+                      }}
+                    >
+                      <Popup className="suraksha-popup" minWidth={220}>
+                        <div className="p-2 font-sans">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-black text-sm" style={{ color }}>{route.name}</span>
+                            <span className={cn('text-[9px] font-black text-white px-2 py-0.5 rounded-md tracking-wider',
+                              route.risk === 'LOW' ? 'bg-green-500' : route.risk === 'MODERATE' ? 'bg-amber-500' : route.risk === 'HIGH' ? 'bg-orange-500' : 'bg-red-600'
+                            )}>{route.risk} RISK</span>
+                          </div>
+                          <p className="text-xs text-gray-500">Safety Score: <strong>{route.score}%</strong> · {route.estimatedKm} km</p>
+                          {route.hazardsNearby.length > 0 && (
+                            <div className="mt-2">
+                              <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest mb-1">Hazards Nearby:</p>
+                              {route.hazardsNearby.slice(0, 3).map((h: any, i: number) => (
+                                <p key={i} className="text-[11px] text-gray-500">⚠ {h.name} ({h.distanceKm} km)</p>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </Popup>
+                    </Polyline>
+                    {/* Start + End markers for selected route */}
+                    {isSelected && (
+                      <>
+                        <Marker
+                          position={route.waypoints[0] as [number, number]}
+                          icon={L.divIcon({ className: '', html: `<div style="background:#1e3a5f;color:#fff;font-size:10px;font-weight:900;padding:4px 8px;border-radius:8px;border:2px solid white;white-space:nowrap;">📍 START</div>`, iconAnchor: [30, 12] })}
+                        />
+                        <Marker
+                          position={route.waypoints[route.waypoints.length - 1] as [number, number]}
+                          icon={L.divIcon({ className: '', html: `<div style="background:#16a34a;color:#fff;font-size:10px;font-weight:900;padding:4px 8px;border-radius:8px;border:2px solid white;white-space:nowrap;">🛡 ${routeData.destination.name.slice(0, 18)}</div>`, iconAnchor: [30, 12] })}
+                        />
+                      </>
+                    )}
+                  </React.Fragment>
+                );
+              })}
 
               {layers.assignmentArrows && assignmentArrows.map(arrow => (
                  <Polyline key={arrow.id} positions={arrow.positions} pathOptions={{ color: '#f59e0b', weight: 2, dashArray: '5, 5', opacity: 0.8 }}>
@@ -655,9 +878,9 @@ export default function MapPage() {
               <div className="absolute bottom-24 left-6 z-[1000] w-48 bg-white dark:bg-[#1a2540] border border-gray-200 dark:border-slate-600/50 shadow-2xl rounded-2xl p-4 transition-all">
                 <h4 className="text-[9px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-3 pl-0.5 border-b border-gray-200 dark:border-slate-600/50 pb-2">{t('map_page.legend')}</h4>
                 <div className="space-y-2">
-                  {[{ label: t('map_page.critical_response'), color: '#ef4444' }, { label: t('map_page.high_alert'), color: '#f97316' }, { label: t('map_page.relief_hub'), color: '#10b981', isCamp: true }, { label: t('map_page.volunteer'), color: '#3b82f6', isVol: true }, { label: 'Safe Zone', color: '#16a34a' }, { label: 'Danger Zone', color: '#ef4444', isDanger: true }].map((item: any, i) => (
+                  {[{ label: t('map_page.critical_response'), color: '#ef4444' }, { label: t('map_page.high_alert'), color: '#f97316' }, { label: t('map_page.relief_hub'), color: '#10b981', isCamp: true }, { label: t('map_page.volunteer'), color: '#3b82f6', isVol: true }, { label: 'Safe Zone', color: '#16a34a' }, { label: 'Danger Zone', color: '#ef4444', isDanger: true }, ...(layers.safeRoutes && routeData ? [{ label: 'Primary Route', color: '#16a34a', isRoute: true }, { label: 'Alt Route', color: '#d97706', isRoute: true }] : [])].map((item: any, i) => (
                     <div key={i} className="flex items-center gap-2.5">
-                      <div className={cn("w-2.5 h-2.5 shadow-sm", item.isCamp ? "rounded-sm rotate-45" : item.isVol ? "rounded-full border border-white" : item.isDanger ? "rounded-full opacity-40 border-2 border-red-500" : "rounded-full")} style={{ backgroundColor: item.color }} />
+                      <div className={cn("w-2.5 h-2.5 shadow-sm", item.isCamp ? "rounded-sm rotate-45" : item.isVol ? "rounded-full border border-white" : item.isDanger ? "rounded-full opacity-40 border-2 border-red-500" : item.isRoute ? "h-0.5 w-5 rounded" : "rounded-full")} style={{ backgroundColor: item.color }} />
                       <span className="text-[10px] font-bold text-gray-600 dark:text-slate-300">{item.label}</span>
                     </div>
                   ))}

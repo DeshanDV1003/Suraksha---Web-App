@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useDialog } from '@/components/ui/dialogs/DialogProvider'
-import { Plus, Eye, Search, Clock, CheckCircle2, AlertCircle, X, MapPin, AlertTriangle, Shield, Trash2, ChevronDown as LucideChevronDown, GitMerge, FileText, Upload, Activity, Zap, Cpu, History, Loader2 } from 'lucide-react'
+import { Plus, Eye, Search, Clock, CheckCircle2, AlertCircle, X, MapPin, AlertTriangle, Shield, Trash2, ChevronDown as LucideChevronDown, GitMerge, FileText, Upload, Activity, Zap, Cpu, History, Loader2, Ban } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { IncidentLocationPicker } from '../components/map/IncidentLocationPicker'
 import { incidentService, aiService } from '../services/api'
+
 import { formatDistanceToNow, differenceInMinutes, format } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
@@ -95,9 +96,10 @@ export default function IncidentsPage() {
     }
   }
 
-  const confirmMerge = async (sourceId: string, targetId: string) => {
-    // In a real app, hit an API to merge. Here we'll delete the source to simulate.
+  const confirmMerge = async (sourceId: string, targetId: string, linkId?: string) => {
     try {
+      // Mark link as CONFIRMED before deleting the source
+      if (linkId) await incidentService.resolveDuplicateLink(linkId, 'CONFIRMED').catch(() => {});
       await incidentService.deleteIncident(sourceId)
       fetchIncidents()
       addNotification({ id: Date.now().toString(), title: 'Incidents Merged', message: 'Duplicate incident successfully merged into primary record.', type: 'info', time: 'Just now', unread: true })
@@ -107,16 +109,30 @@ export default function IncidentsPage() {
     }
   }
 
-  // Find duplicates
-  const detectDuplicates = (incident: any) => {
-    if (incident.status !== 'PENDING') return null;
-    return incidents.find(i =>
-      i.id !== incident.id &&
-      i.status === 'PENDING' &&
-      i.category === incident.category &&
-      i.latitude && incident.latitude &&
-      getDistance(i.latitude, i.longitude, incident.latitude, incident.longitude) < 500
-    )
+  const dismissDuplicate = async (linkId: string) => {
+    try {
+      await incidentService.resolveDuplicateLink(linkId, 'DISMISSED')
+      fetchIncidents()
+    } catch (err) {
+      console.error('Dismiss failed', err)
+    }
+  }
+
+  // Get the best-scoring pending duplicate link for an incident (from server data)
+  const getServerDuplicate = (incident: any): { link: any; peer: any } | null => {
+    // duplicateLinks: this incident is the newer (possible duplicate)
+    if (incident.duplicateLinks?.length) {
+      const link = incident.duplicateLinks[0];
+      const peer = incidents.find(i => i.id === link.canonicalId);
+      if (peer) return { link, peer };
+    }
+    // canonicalLinks: this incident is the primary; another report is flagged as its duplicate
+    if (incident.canonicalLinks?.length) {
+      const link = incident.canonicalLinks[0];
+      const peer = incidents.find(i => i.id === link.reportId);
+      if (peer) return { link, peer };
+    }
+    return null;
   }
 
   const filteredIncidents = incidents.filter(i => {
@@ -230,7 +246,8 @@ export default function IncidentsPage() {
                   filteredIncidents.map((incident) => {
                     const minutesAge = differenceInMinutes(new Date(), new Date(incident.createdAt));
                     const isSlaBreached = incident.status === 'PENDING' && minutesAge > SLA_THRESHOLDS[incident.severity as keyof typeof SLA_THRESHOLDS];
-                    const duplicate = detectDuplicates(incident);
+                    const serverDup = getServerDuplicate(incident);
+                    const duplicate = serverDup?.peer ?? null;
 
                     return (
                       <tr key={incident.id} className={cn("hover:bg-cyan-500/5 transition-all group border-l-4 border-b border-cyan-400/5", isSlaBreached ? "bg-red-500/5 border-l-red-500 hover:bg-red-500/10" : "border-l-transparent hover:border-l-cyan-400")}>
@@ -241,9 +258,10 @@ export default function IncidentsPage() {
                               <AlertTriangle className="w-3 h-3" /> <span className="text-[9px]">SLA BREACH</span>
                             </div>
                           )}
-                          {duplicate && (
-                            <div className="flex items-center gap-1 text-amber-600 mt-1">
-                              <GitMerge className="w-3 h-3" /> <span className="text-[9px]">DUPLICATE</span>
+                          {duplicate && serverDup && (
+                            <div className="flex items-center gap-1 text-amber-500 mt-1">
+                              <GitMerge className="w-3 h-3" />
+                              <span className="text-[9px]">POSSIBLE DUPLICATE · {serverDup.link.score}%</span>
                             </div>
                           )}
                         </td>
@@ -304,14 +322,23 @@ export default function IncidentsPage() {
                         </td>
                         <td className="px-4 py-6 text-right">
                           <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                            {duplicate && isOfficer && (
-                              <button
-                                onClick={() => setMergeCandidate({ source: incident, target: duplicate })}
-                                className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500 hover:bg-amber-100 hover:shadow-xl transition-all border border-transparent"
-                                title="Merge Duplicate"
-                              >
-                                <GitMerge className="w-5 h-5" />
-                              </button>
+                            {duplicate && serverDup && isOfficer && (
+                              <>
+                                <button
+                                  onClick={() => setMergeCandidate({ source: incident, target: duplicate, link: serverDup.link })}
+                                  className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 hover:bg-amber-500/20 hover:shadow-xl transition-all border border-amber-500/20"
+                                  title={`Merge Duplicate (${serverDup.link.score}% match)`}
+                                >
+                                  <GitMerge className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => dismissDuplicate(serverDup.link.id)}
+                                  className="w-10 h-10 rounded-xl bg-slate-500/10 flex items-center justify-center text-slate-400 hover:bg-slate-500/20 transition-all border border-slate-500/20"
+                                  title="Dismiss — not a duplicate"
+                                >
+                                  <Ban className="w-4 h-4" />
+                                </button>
+                              </>
                             )}
                             <button
                               onClick={() => { setSelectedIncident(incident); setIsDetailsModalOpen(true); }}
@@ -383,24 +410,46 @@ export default function IncidentsPage() {
                   <GitMerge className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-slate-800">Merge Incidents</h3>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Duplicate Detected within 500m</p>
+                  <h3 className="text-xl font-black text-slate-100">Merge Incidents</h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Possible Duplicate Detected</p>
                 </div>
               </div>
+              {/* Similarity score bar */}
+              {mergeCandidate.link && (
+                <div className="mb-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest">Similarity Score</span>
+                    <span className="text-lg font-black text-amber-400">{mergeCandidate.link.score}%</span>
+                  </div>
+                  <div className="w-full bg-slate-700/50 rounded-full h-1.5">
+                    <div className="bg-amber-400 h-1.5 rounded-full transition-all" style={{ width: `${mergeCandidate.link.score}%` }} />
+                  </div>
+                  {mergeCandidate.link.reasons?.length > 0 && (
+                    <div className="flex gap-1 mt-2 flex-wrap">
+                      {mergeCandidate.link.reasons.map((r: string) => (
+                        <span key={r} className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">{r}</span>
+                      ))}
+                      {mergeCandidate.link.distanceM != null && (
+                        <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-400">{Math.round(mergeCandidate.link.distanceM)}m apart</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
               <div className="space-y-4 mb-8">
                 <div className="p-4 bg-[#0f172a] rounded-2xl border border-cyan-400/20">
                   <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Source (Will be deleted)</div>
-                  <div className="font-bold text-slate-800">{mergeCandidate.source.title}</div>
+                  <div className="font-bold text-slate-100">{mergeCandidate.source.title}</div>
                 </div>
                 <div className="flex justify-center"><LucideChevronDown className="w-6 h-6 text-slate-300" /></div>
-                <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                <div className="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20">
                   <div className="text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1">Target (Will be kept)</div>
-                  <div className="font-bold text-blue-900">{mergeCandidate.target.title}</div>
+                  <div className="font-bold text-blue-200">{mergeCandidate.target.title}</div>
                 </div>
               </div>
               <div className="flex gap-4">
                 <button onClick={() => setMergeCandidate(null)} className="flex-1 px-6 py-4 rounded-2xl bg-[#0f172a] text-slate-300 font-bold text-xs uppercase tracking-widest hover:bg-cyan-400/20 transition-colors">Cancel</button>
-                <button onClick={() => confirmMerge(mergeCandidate.source.id, mergeCandidate.target.id)} className="flex-1 px-6 py-4 rounded-2xl bg-amber-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-amber-600 shadow-lg shadow-amber-500/25 transition-all">Merge Records</button>
+                <button onClick={() => confirmMerge(mergeCandidate.source.id, mergeCandidate.target.id, mergeCandidate.link?.id)} className="flex-1 px-6 py-4 rounded-2xl bg-amber-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-amber-600 shadow-lg shadow-amber-500/25 transition-all">Merge Records</button>
               </div>
             </div>
           </div>

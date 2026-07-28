@@ -5,6 +5,12 @@ import prisma from '../utils/prisma';
 import { geocodeAddress } from '../services/geocodingService';
 import { findZoneForCoordinates } from '../services/zoneService';
 import { notifyAdmins, sendNotification } from '../services/notificationService';
+import {
+  detectAndSaveDuplicates,
+  getDuplicateLinksForIncident,
+  getAllPendingDuplicateLinks,
+  updateDuplicateLinkStatus,
+} from '../services/duplicateDetectionService';
 
 /**
  * @swagger
@@ -104,6 +110,9 @@ export const createIncident = async (req: any, res: Response) => {
       province,
       reporterId
     });
+
+    // Run duplicate detection asynchronously — fire and forget
+    detectAndSaveDuplicates(incident).catch(() => {});
 
     // Run ML/NLP asynchronously — don't make the user wait
     processReport({ ...req.body, images: incident.images }).then(async (mlResult) => {
@@ -348,6 +357,40 @@ export const getIncidentById = async (req: any, res: Response) => {
     const { id } = req.params;
     const incident = await incidentService.getIncidentById(id);
     res.json(incident);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+// ── Duplicate detection endpoints ─────────────────────────────────────────────
+
+export const getPendingDuplicates = async (_req: Request, res: Response) => {
+  try {
+    const links = await getAllPendingDuplicateLinks();
+    res.json(links);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getDuplicatesForIncident = async (req: Request, res: Response) => {
+  try {
+    const links = await getDuplicateLinksForIncident(req.params.id as string);
+    res.json(links);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const resolveDuplicateLink = async (req: Request, res: Response) => {
+  try {
+    const linkId = String(req.params.linkId);
+    const status = String(req.body.status);
+    if (!['CONFIRMED', 'DISMISSED'].includes(status)) {
+      return res.status(400).json({ message: 'status must be CONFIRMED or DISMISSED' });
+    }
+    const link = await updateDuplicateLinkStatus(linkId, status as 'CONFIRMED' | 'DISMISSED');
+    res.json(link);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }

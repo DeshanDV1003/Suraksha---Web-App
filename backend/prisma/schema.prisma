@@ -12,9 +12,11 @@ datasource db {
 model User {
   id                       String                        @id @default(uuid())
   email                    String                        @unique
-  password                 String
+  password                 String?
   name                     String
   phone                    String?
+  googleId                 String?                       @unique
+  pushToken                String?
   role                     Role                          @default(CITIZEN)
   createdAt                DateTime                      @default(now())
   updatedAt                DateTime                      @updatedAt
@@ -76,6 +78,8 @@ model IncidentReport {
   verifications     ReportVerification[]
   tasks             Task[]
   verifierActions   VerifierAction[]
+  duplicateLinks    IncidentDuplicateLink[] @relation("DuplicateOf")
+  canonicalLinks    IncidentDuplicateLink[] @relation("CanonicalFor")
 }
 
 model Alert {
@@ -962,6 +966,19 @@ enum WaterTrend {
   RISING
   FALLING
   STABLE
+}
+
+model IncidentDuplicateLink {
+  id          String         @id @default(uuid())
+  reportId    String
+  canonicalId String
+  score       Float
+  distanceM   Float?
+  status      String         @default("PENDING")
+  reasons     String[]
+  createdAt   DateTime       @default(now())
+  report      IncidentReport @relation("DuplicateOf",   fields: [reportId],    references: [id], onDelete: Cascade)
+  canonical   IncidentReport @relation("CanonicalFor",  fields: [canonicalId], references: [id], onDelete: Cascade)
 }
 
 model PublicSafePlace {

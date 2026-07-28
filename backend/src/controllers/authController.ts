@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as authService from '../services/authService';
+import { googleLoginUser } from '../services/authService';
 
 /**
  * @swagger
@@ -119,6 +120,32 @@ export const changePassword = async (req: any, res: Response) => {
     res.json({ message: 'Password updated successfully' });
   } catch (error: any) {
     res.status(400).json({ message: error.message || 'Internal server error' });
+  }
+};
+
+export const savePushToken = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { pushToken } = req.body;
+    if (!pushToken) return res.status(400).json({ message: 'pushToken is required' });
+    const prisma = (await import('../utils/prisma')).default;
+    await prisma.user.update({ where: { id: userId }, data: { pushToken } });
+    res.json({ message: 'Push token saved' });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message || 'Internal server error' });
+  }
+};
+
+export const googleLogin = async (req: Request, res: Response) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) return res.status(400).json({ message: 'idToken is required' });
+    const ipAddress = req.ip || req.socket.remoteAddress;
+    const device = req.headers['user-agent'];
+    const result = await googleLoginUser(idToken, ipAddress, device);
+    res.json(result);
+  } catch (error: any) {
+    res.status(401).json({ message: error.message || 'Google Sign-In failed' });
   }
 };
 

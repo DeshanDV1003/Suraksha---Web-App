@@ -1,8 +1,10 @@
 import express from 'express';
 import * as mapController from '../controllers/mapController';
+import { authMiddleware } from '../middleware/auth';
 
 const router = express.Router();
 
+router.post('/safe-route', authMiddleware, mapController.getSafeRoute);
 router.post('/routes', mapController.createEvacuationRoute);
 router.get('/routes', mapController.getEvacuationRoutes);
 router.post('/routes/export/pdf', mapController.exportRoutePdf);

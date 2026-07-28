@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as alertService from '../services/alertService';
-import { notifyAllUsers, notifyAdmins } from '../services/notificationService';
+import { notifyAdmins, sendAlertPushToAll } from '../services/notificationService';
 
 /**
  * @swagger
@@ -47,12 +47,15 @@ export const createAlert = async (req: Request, res: Response) => {
     const radiusKm = req.body.broadcastRadiusKm || 50;
     io.emit('new-alert', { ...alert, broadcastRadiusKm: radiusKm });
 
-    // Notify all users of the new alert
-    const notifyFn = alert.type === 'EMERGENCY' ? notifyAllUsers : notifyAdmins;
-    notifyFn(
-      `${alert.type} Alert: ${alert.title}`,
-      `${alert.message} — Location: ${alert.location}`
-    ).catch(() => {});
+    // Notify users — EMERGENCY alerts go to everyone (including mobile push),
+    // other types only notify admin/staff roles
+    const pushTitle = `🚨 ${alert.title}`;
+    const pushBody = `${alert.message}${alert.location ? ` — ${alert.location}` : ''}`;
+    if (alert.type === 'EMERGENCY') {
+      sendAlertPushToAll(pushTitle, pushBody, { alertId: alert.id, type: alert.type }).catch(() => {});
+    } else {
+      notifyAdmins(pushTitle, pushBody).catch(() => {});
+    }
 
     res.status(201).json(alert);
   } catch (error) {

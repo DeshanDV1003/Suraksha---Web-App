@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import { 
-  createIncident, 
-  getIncidents, 
-  getUserIncidents, 
+import {
+  createIncident,
+  getIncidents,
+  getUserIncidents,
   updateIncidentStatus,
   getIncidentById,
-  deleteIncident
+  deleteIncident,
+  getPendingDuplicates,
+  getDuplicatesForIncident,
+  resolveDuplicateLink,
 } from '../controllers/incidentController';
 import { authMiddleware, adminMiddleware } from '../middleware/auth';
 
@@ -14,6 +17,10 @@ const router = Router();
 router.post('/', authMiddleware, createIncident);
 router.get('/', authMiddleware, getIncidents);
 router.get('/my', authMiddleware, getUserIncidents);
+// Duplicate detection — must come before /:id to avoid route conflict
+router.get('/duplicates/pending', authMiddleware, adminMiddleware, getPendingDuplicates);
+router.get('/:id/duplicates', authMiddleware, getDuplicatesForIncident);
+router.patch('/duplicates/:linkId', authMiddleware, adminMiddleware, resolveDuplicateLink);
 router.get('/:id', authMiddleware, getIncidentById);
 router.patch('/:id/status', authMiddleware, updateIncidentStatus);
 router.delete('/:id', authMiddleware, adminMiddleware, deleteIncident);

@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect } from 'react'
 import { useAppStore } from '@/store/useAppStore'
-import { authService } from '../services/api'
+import { authService, userService } from '../services/api'
 
 interface AuthContextType {
   user: any
   login: (credentials: any) => Promise<any>
+  googleLogin: (idToken: string) => Promise<void>
   logout: () => void
   updateUser: (userData: any) => void
 }
@@ -18,8 +19,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const savedUser = localStorage.getItem('user')
     const token = localStorage.getItem('token')
     if (savedUser && token) {
+      // Restore from cache immediately so UI isn't blank
       setUser(JSON.parse(savedUser))
       setAuthenticated(true)
+      // Then refresh from server to pick up any new fields (e.g. profilePicture)
+      userService.getMe()
+        .then(res => {
+          const fresh = res.data
+          localStorage.setItem('user', JSON.stringify(fresh))
+          setUser(fresh)
+        })
+        .catch(() => { /* token expired — leave cached user, logout on next protected request */ })
     }
   }, [setUser, setAuthenticated])
 
@@ -43,6 +53,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
+  const googleLogin = async (idToken: string) => {
+    try {
+      const res = await authService.googleLogin(idToken)
+      const { token, user: userData } = res.data
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(userData))
+      setUser(userData)
+      setAuthenticated(true)
+    } catch (error) {
+      throw error
+    }
+  }
+
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
@@ -57,7 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, login, googleLogin, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

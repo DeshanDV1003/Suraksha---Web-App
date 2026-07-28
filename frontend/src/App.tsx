@@ -45,6 +45,7 @@ import PublicMissingPortal from '@/pages/PublicMissingPortal'
 import RiverMappingsPage from '@/pages/RiverMappingsPage'
 import AIResearchPage from '@/pages/AIResearchPage'
 import WaterMonitorPage from '@/pages/WaterMonitorPage'
+import CitizenDashboardPage from '@/pages/CitizenDashboardPage'
 
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
@@ -160,9 +161,26 @@ function GlobalAlertListener() {
   )
 }
 
+// Roles that get full admin/staff access
+const STAFF_ROLES = ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER']
+const CITIZEN_ROLES = ['CITIZEN', 'VOLUNTEER']
+
+// Guard: redirects citizen/volunteer away from staff-only pages
+function StaffOnly({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/login" />
+  if (CITIZEN_ROLES.includes(user.role)) return <Navigate to="/citizen-home" replace />
+  return <>{children}</>
+}
+
 const ProtectedRoutes = () => {
   const { user } = useAuth()
   if (!user) return <Navigate to="/login" />
+
+  // Redirect root based on role
+  const homeRoute = CITIZEN_ROLES.includes(user.role)
+    ? <Navigate to="/citizen-home" replace />
+    : <DashboardPage />
 
   return (
     <Routes>
@@ -183,27 +201,34 @@ const ProtectedRoutes = () => {
         <Route path="/line-chart" element={<LineChart />} />
         <Route path="/bar-chart" element={<BarChart />} />
 
-        {/* Suraksha Routes */}
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/map" element={<MapPage />} />
-        <Route path="/incidents" element={<IncidentsPage />} />
-        <Route path="/suraksha-alerts" element={<AlertsPage />} />
-        <Route path="/reports" element={<ReportsPage />} />
-        <Route path="/users" element={<UserManagementPage />} />
-        <Route path="/resources" element={<ResourcesPage />} />
-        <Route path="/camps" element={<CampsPage />} />
-        <Route path="/tokens" element={<TokensPage />} />
-        <Route path="/volunteers" element={<VolunteerPage />} />
-        <Route path="/help-requests" element={<HelpRequestsPage />} />
+        {/* ── Root redirect by role ── */}
+        <Route path="/" element={homeRoute} />
+
+        {/* ── Citizen / Volunteer dashboard ── */}
+        <Route path="/citizen-home" element={<CitizenDashboardPage />} />
+
+        {/* ── Staff-only routes (redirect citizens away) ── */}
+        <Route path="/reports"        element={<StaffOnly><ReportsPage /></StaffOnly>} />
+        <Route path="/users"          element={<StaffOnly><UserManagementPage /></StaffOnly>} />
+        <Route path="/resources"      element={<StaffOnly><ResourcesPage /></StaffOnly>} />
+        <Route path="/donations"      element={<StaffOnly><DonationsPage /></StaffOnly>} />
+        <Route path="/river-mappings" element={<StaffOnly><RiverMappingsPage /></StaffOnly>} />
+        <Route path="/ai-research"    element={<StaffOnly><AIResearchPage /></StaffOnly>} />
+        <Route path="/water-monitor"  element={<StaffOnly><WaterMonitorPage /></StaffOnly>} />
+
+        {/* ── Shared routes (all authenticated roles) ── */}
+        <Route path="/map"              element={<MapPage />} />
+        <Route path="/incidents"        element={<IncidentsPage />} />
+        <Route path="/suraksha-alerts"  element={<AlertsPage />} />
+        <Route path="/camps"            element={<CampsPage />} />
+        <Route path="/tokens"           element={<TokensPage />} />
+        <Route path="/volunteers"       element={<VolunteerPage />} />
+        <Route path="/help-requests"    element={<HelpRequestsPage />} />
         <Route path="/damage-assessment" element={<DamageAssessmentPage />} />
-        <Route path="/missing-persons" element={<MissingPersonsPage />} />
-        <Route path="/support" element={<SupportPage />} />
-        <Route path="/donations" element={<DonationsPage />} />
-        <Route path="/family-safety" element={<FamilySafetyPage />} />
-        <Route path="/water-monitor" element={<WaterMonitorPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/river-mappings" element={<RiverMappingsPage />} />
-        <Route path="/ai-research" element={<AIResearchPage />} />
+        <Route path="/missing-persons"  element={<MissingPersonsPage />} />
+        <Route path="/support"          element={<SupportPage />} />
+        <Route path="/family-safety"    element={<FamilySafetyPage />} />
+        <Route path="/settings"         element={<SettingsPage />} />
       </Route>
     </Routes>
   )

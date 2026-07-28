@@ -123,6 +123,8 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   phone: 'phone',
+  googleId: 'googleId',
+  pushToken: 'pushToken',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -816,6 +818,17 @@ exports.Prisma.DownstreamMappingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.IncidentDuplicateLinkScalarFieldEnum = {
+  id: 'id',
+  reportId: 'reportId',
+  canonicalId: 'canonicalId',
+  score: 'score',
+  distanceM: 'distanceM',
+  status: 'status',
+  reasons: 'reasons',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.PublicSafePlaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1099,6 +1112,7 @@ exports.Prisma.ModelName = {
   RainfallReading: 'RainfallReading',
   RiverWaterLevel: 'RiverWaterLevel',
   DownstreamMapping: 'DownstreamMapping',
+  IncidentDuplicateLink: 'IncidentDuplicateLink',
   PublicSafePlace: 'PublicSafePlace',
   AuthorityContact: 'AuthorityContact'
 };

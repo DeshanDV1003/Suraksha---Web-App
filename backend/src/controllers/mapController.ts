@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as mapService from '../services/mapService';
+import { computeSafeRoutes } from '../services/safeRouteService';
 
 export const createEvacuationRoute = async (req: Request, res: Response) => {
   try {
@@ -52,6 +53,26 @@ export const getThreatProjections = async (req: Request, res: Response) => {
     res.json(projs);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getSafeRoute = async (req: Request, res: Response) => {
+  try {
+    const { fromLat, fromLng, toLat, toLng, destType } = req.body;
+    if (fromLat == null || fromLng == null) {
+      return res.status(400).json({ message: 'fromLat and fromLng are required' });
+    }
+    const result = await computeSafeRoutes({
+      fromLat:  parseFloat(fromLat),
+      fromLng:  parseFloat(fromLng),
+      toLat:    toLat != null ? parseFloat(toLat) : undefined,
+      toLng:    toLng != null ? parseFloat(toLng) : undefined,
+      destType: destType || 'SAFE_ZONE',
+    });
+    res.json(result);
+  } catch (error: any) {
+    console.error('Safe route error:', error);
+    res.status(500).json({ message: error.message || 'Internal server error' });
   }
 };
 

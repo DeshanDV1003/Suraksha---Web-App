@@ -3,8 +3,16 @@ import prisma from '../utils/prisma';
 export const getAllIncidents = async () => {
   return prisma.incidentReport.findMany({
     include: {
-      reporter: { select: { name: true } },
-      verifications: { include: { user: { select: { name: true } } } }
+      reporter:      { select: { name: true } },
+      verifications: { include: { user: { select: { name: true } } } },
+      duplicateLinks: {
+        where:   { status: 'PENDING' },
+        select:  { id: true, canonicalId: true, score: true, distanceM: true, reasons: true, status: true },
+      },
+      canonicalLinks: {
+        where:   { status: 'PENDING' },
+        select:  { id: true, reportId: true, score: true, distanceM: true, reasons: true, status: true },
+      },
     },
     orderBy: { createdAt: 'desc' }
   });

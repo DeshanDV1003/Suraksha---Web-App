@@ -3,6 +3,9 @@ import jwt from 'jsonwebtoken';
 import prisma from '../utils/prisma';
 import speakeasy from 'speakeasy';
 import qrcode from 'qrcode';
+import { OAuth2Client } from 'google-auth-library';
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const registerUser = async (data: any) => {
   const { email, password, name, role, phone, region } = data;
@@ -30,6 +33,7 @@ export const loginUser = async (data: any) => {
   
   if (!user) throw new Error('Invalid credentials');
 
+  if (!user.password) throw new Error('This account uses Google Sign-In. Please sign in with Google.');
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new Error('Invalid credentials');
 
@@ -84,6 +88,7 @@ export const updatePassword = async (userId: string, currentPassword: string, ne
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) throw new Error('User not found');
 
+  if (!user.password) throw new Error('This account uses Google Sign-In. Password cannot be changed here.');
   const isMatch = await bcrypt.compare(currentPassword, user.password);
   if (!isMatch) throw new Error('Current password is incorrect');
 
@@ -129,6 +134,67 @@ export const verify2FA = async (userId: string, token: string) => {
     });
     return { success: true };
   }
-  
+
   throw new Error('Invalid 2FA token');
+};
+
+const GOOGLE_ALLOWED_ROLES = ['CITIZEN', 'VOLUNTEER'];
+
+export const googleLoginUser = async (idToken: string, ipAddress?: string, device?: string) => {
+  if (!process.env.GOOGLE_CLIENT_ID) {
+    throw new Error('Google Sign-In is not configured on this server.');
+  }
+
+  const ticket = await googleClient.verifyIdToken({
+    idToken,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+  const payload = ticket.getPayload();
+  if (!payload || !payload.email) throw new Error('Invalid Google token');
+
+  const email = payload.email.toLowerCase().trim();
+  const googleId = payload.sub;
+  const name = payload.name || email.split('@')[0];
+  const profilePicture = payload.picture || null;
+
+  // Find by googleId first, then by email
+  let user = await prisma.user.findFirst({ where: { googleId } })
+    ?? await prisma.user.findFirst({ where: { email } });
+
+  if (user) {
+    if (!GOOGLE_ALLOWED_ROLES.includes(user.role)) {
+      throw new Error('Google Sign-In is only available for citizens and volunteers. Please use your email and password to log in.');
+    }
+    // Link googleId if not yet linked
+    if (!user.googleId) {
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: { googleId, profilePicture: user.profilePicture || profilePicture },
+      });
+    }
+  } else {
+    // New user — create as CITIZEN
+    user = await prisma.user.create({
+      data: { email, name, googleId, profilePicture, role: 'CITIZEN', password: null },
+    });
+  }
+
+  await prisma.userSessionLog.create({
+    data: { userId: user.id, ipAddress, device, location: 'Google OAuth' },
+  });
+
+  const token = jwt.sign(
+    { userId: user.id, role: user.role },
+    process.env.JWT_SECRET || 'secret',
+    { expiresIn: '7d' }
+  );
+
+  return {
+    token,
+    user: {
+      id: user.id, email: user.email, name: user.name, role: user.role,
+      region: user.region, phone: user.phone, profilePicture: user.profilePicture,
+      twoFactorEnabled: user.twoFactorEnabled,
+    },
+  };
 };
