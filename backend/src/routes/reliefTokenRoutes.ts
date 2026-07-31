@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { 
-  issueReliefToken, 
-  claimReliefToken, 
+import {
+  issueReliefToken,
+  claimReliefToken,
   getReliefTokens,
+  getMyReliefTokens,
   getReliefTokenByCode,
   createDonorCampaign,
   getDonorCampaigns,
@@ -14,6 +15,7 @@ const router = Router();
 
 // Tokens Core — static routes MUST come before /:code wildcard
 router.get('/', authMiddleware, officerMiddleware, getReliefTokens);
+router.get('/my', authMiddleware, getMyReliefTokens);
 router.post('/issue', authMiddleware, officerMiddleware, issueReliefToken);
 router.post('/claim', authMiddleware, claimReliefToken);
 

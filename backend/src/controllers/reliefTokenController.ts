@@ -39,6 +39,15 @@ export const getReliefTokenByCode = async (req: Request, res: Response) => {
   }
 };
 
+export const getMyReliefTokens = async (req: any, res: Response) => {
+  try {
+    const tokens = await reliefTokenService.getReliefTokensByUser(req.user.userId);
+    res.json(tokens);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 export const createDonorCampaign = async (req: Request, res: Response) => {
   try {
     const campaign = await reliefTokenService.createDonorCampaign(req.body);

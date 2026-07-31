@@ -101,6 +101,14 @@ export const getReliefTokens = async () => {
   });
 };
 
+export const getReliefTokensByUser = async (userId: string) => {
+  return prisma.reliefToken.findMany({
+    where: { userId },
+    include: { claims: true },
+    orderBy: { createdAt: 'desc' }
+  });
+};
+
 export const getReliefTokenByCode = async (code: string) => {
   return prisma.reliefToken.findUnique({
     where: { code },
