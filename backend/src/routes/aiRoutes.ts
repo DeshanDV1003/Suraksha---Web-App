@@ -12,9 +12,28 @@ import {
 
 const router = Router();
 
+// ── Health check — ping the ML service ───────────────────────────────────────
+router.get('/health', authenticateToken, async (_req: Request, res: Response) => {
+  try {
+    const axios = await import('axios');
+    const ML = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+    const r = await axios.default.get(`${ML}/health`, { timeout: 4000 });
+    res.json({ online: true, ...r.data });
+  } catch {
+    res.json({ online: false });
+  }
+});
+
 // ── F5 + F3 — Analyze a report (multitask + uncertainty) ─────────────────────
 router.post('/analyze-report', authenticateToken, async (req: Request, res: Response) => {
-  const result = await analyzeReport(req.body);
+  const result = await analyzeReport({
+    text: req.body.text,
+    latitude: req.body.latitude ?? null,
+    longitude: req.body.longitude ?? null,
+    detectedLanguage: req.body.detected_language || req.body.detectedLanguage || 'en',
+    languageConfidence: req.body.language_confidence ?? 0.7,
+    priorityConfidence: req.body.priority_confidence ?? 0.5,
+  });
   if (!result) return res.status(503).json({ message: 'ML service unavailable' });
   res.json(result);
 });

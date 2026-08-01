@@ -25,7 +25,8 @@ import {
   Settings,
   Map,
   Waves,
-  Brain
+  Brain,
+  ClipboardList,
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
 import { useAuth } from "@/hooks/useAuth";
@@ -61,6 +62,7 @@ const resourceItems: NavItem[] = [
 
 const safetyItems: NavItem[] = [
   { icon: <Shield className="w-5 h-5" />, nameKey: "nav.volunteers", path: "/volunteers", roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
+  { icon: <ClipboardList className="w-5 h-5" />, nameKey: "nav.tasks", path: "/tasks", roles: ['ADMIN', 'DMC_OFFICER'] },
   { icon: <HandHelping className="w-5 h-5" />, nameKey: "nav.help_requests", path: "/help-requests", roles: ALL_ROLES },
   { icon: <Home className="w-5 h-5" />, nameKey: "nav.damage_assessment", path: "/damage-assessment", roles: ALL_ROLES },
   { icon: <UserSearch className="w-5 h-5" />, nameKey: "nav.missing_persons", path: "/missing-persons", roles: ALL_ROLES },

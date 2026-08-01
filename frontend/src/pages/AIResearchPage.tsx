@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import {
   Brain, Zap, AlertTriangle, Map, Users, FileText, Activity,
   RefreshCw, ChevronDown, CheckCircle2, XCircle, Loader2,
-  TrendingUp, TrendingDown, Minus, Shield, Info, Target, BarChart2
+  Shield, Target, HelpCircle, Wifi, WifiOff, Terminal
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { aiService } from '@/services/api'
@@ -36,7 +36,7 @@ const MetricBar = ({ value, max = 1, color = 'bg-cyan-500' }: { value: number; m
   </div>
 )
 
-const SectionCard = ({ title, icon: Icon, children, loading, onRefresh }: { title: string; icon: any; children: React.ReactNode; loading?: boolean; onRefresh?: () => void }) => (
+const SectionCard = ({ title, icon: Icon, children, loading, error, onRefresh }: { title: string; icon: any; children: React.ReactNode; loading?: boolean; error?: string | null; onRefresh?: () => void }) => (
   <div className="bg-white dark:bg-[#131f33] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden">
     <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-white/5">
       <div className="flex items-center gap-2.5">
@@ -56,6 +56,14 @@ const SectionCard = ({ title, icon: Icon, children, loading, onRefresh }: { titl
         <div className="flex items-center justify-center py-10">
           <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
         </div>
+      ) : error ? (
+        <div className="flex items-start gap-3 p-4 bg-red-500/5 border border-red-500/20 rounded-xl">
+          <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-bold text-red-400 mb-0.5">ML service error</p>
+            <p className="text-xs text-red-300/70">{error}</p>
+          </div>
+        </div>
       ) : children}
     </div>
   </div>
@@ -66,15 +74,18 @@ const SectionCard = ({ title, icon: Icon, children, loading, onRefresh }: { titl
 function HotspotPanel() {
   const [data, setData] = useState<HotspotData[]>([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false)
 
   const load = useCallback(async () => {
-    setLoading(true)
+    setLoading(true); setError(null)
     try {
       const res = await aiService.getHotspots()
-      setData(res.data)
-    } catch { /* silent */ }
-    finally { setLoading(false) }
+      setData(Array.isArray(res.data) ? res.data : [])
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to load hotspot data')
+      setData([])
+    } finally { setLoading(false) }
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -83,9 +94,9 @@ function HotspotPanel() {
   const high = data.filter(d => ['CRITICAL', 'HIGH'].includes(d.risk_level)).length
 
   return (
-    <SectionCard title="F7 + F8 — Hotspot Forecast & Bias Correction" icon={Map} loading={loading} onRefresh={load}>
+    <SectionCard title="F7 + F8 — Hotspot Forecast & Bias Correction" icon={Map} loading={loading} error={error} onRefresh={load}>
       {data.length === 0 ? (
-        <p className="text-slate-500 text-sm text-center py-4">No hotspot data — ML service may be offline.</p>
+        <p className="text-slate-500 text-sm text-center py-4">No hotspot data — no incidents in the last 7 days.</p>
       ) : (
         <>
           <div className="flex gap-4 mb-4 pb-4 border-b border-white/5">
@@ -128,21 +139,24 @@ function HotspotPanel() {
 function SituationSummaryPanel() {
   const [data, setData] = useState<SummaryData | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [hours, setHours] = useState(2)
 
   const load = useCallback(async () => {
-    setLoading(true)
+    setLoading(true); setError(null)
     try {
       const res = await aiService.getSituationSummary(hours)
       setData(res.data)
-    } catch { /* silent */ }
-    finally { setLoading(false) }
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to load situation summary')
+      setData(null)
+    } finally { setLoading(false) }
   }, [hours])
 
   useEffect(() => { load() }, [load])
 
   return (
-    <SectionCard title="F16 — Grounded Situation Summary" icon={FileText} loading={loading} onRefresh={load}>
+    <SectionCard title="F16 — Grounded Situation Summary" icon={FileText} loading={loading} error={error} onRefresh={load}>
       <div className="flex gap-2 mb-4">
         {[1, 2, 6, 12, 24].map(h => (
           <button key={h} onClick={() => setHours(h)}
@@ -153,7 +167,7 @@ function SituationSummaryPanel() {
         ))}
       </div>
       {!data ? (
-        <p className="text-slate-500 text-sm text-center py-4">ML service may be offline.</p>
+        <p className="text-slate-500 text-sm text-center py-4">No data in this time window.</p>
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
@@ -191,22 +205,25 @@ function SituationSummaryPanel() {
 function DriftPanel() {
   const [data, setData] = useState<DriftData | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
-    setLoading(true)
+    setLoading(true); setError(null)
     try {
       const res = await aiService.getDriftStatus(24)
       setData(res.data)
-    } catch { /* silent */ }
-    finally { setLoading(false) }
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to load drift data')
+      setData(null)
+    } finally { setLoading(false) }
   }, [])
 
   useEffect(() => { load() }, [load])
 
   return (
-    <SectionCard title="F15 — Concept Drift & Emerging Events" icon={Activity} loading={loading} onRefresh={load}>
+    <SectionCard title="F15 — Concept Drift & Emerging Events" icon={Activity} loading={loading} error={error} onRefresh={load}>
       {!data ? (
-        <p className="text-slate-500 text-sm text-center py-4">ML service may be offline.</p>
+        <p className="text-slate-500 text-sm text-center py-4">No incident data available for drift analysis.</p>
       ) : (
         <>
           <div className="flex items-center gap-4 mb-5">
@@ -260,14 +277,17 @@ function DriftPanel() {
 function OptimizationPanel() {
   const [data, setData] = useState<OptimizationData | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
-    setLoading(true)
+    setLoading(true); setError(null)
     try {
       const res = await aiService.optimizeResources()
       setData(res.data)
-    } catch { /* silent */ }
-    finally { setLoading(false) }
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to load optimization data')
+      setData(null)
+    } finally { setLoading(false) }
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -275,9 +295,9 @@ function OptimizationPanel() {
   const metrics = data?.pareto_metrics ?? {}
 
   return (
-    <SectionCard title="F10 — Multi-Objective Resource Allocation" icon={Target} loading={loading} onRefresh={load}>
+    <SectionCard title="F10 — Multi-Objective Resource Allocation" icon={Target} loading={loading} error={error} onRefresh={load}>
       {!data ? (
-        <p className="text-slate-500 text-sm text-center py-4">ML service may be offline.</p>
+        <p className="text-slate-500 text-sm text-center py-4">No pending help requests or resources to optimize.</p>
       ) : (
         <>
           <p className="text-sm text-slate-300 mb-5 leading-relaxed">{data.summary}</p>
@@ -322,15 +342,18 @@ function OptimizationPanel() {
 function TeamComposerPanel() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [disasterType, setDisasterType] = useState('FLOOD')
 
   const load = useCallback(async () => {
-    setLoading(true)
+    setLoading(true); setError(null)
     try {
       const res = await aiService.composeTeam({ disaster_type: disasterType })
       setData(res.data)
-    } catch { /* silent */ }
-    finally { setLoading(false) }
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to compose team')
+      setData(null)
+    } finally { setLoading(false) }
   }, [disasterType])
 
   useEffect(() => { load() }, [load])
@@ -338,7 +361,7 @@ function TeamComposerPanel() {
   const types = ['FLOOD', 'LANDSLIDE', 'FIRE', 'CYCLONE', 'BUILDING_COLLAPSE', 'MEDICAL']
 
   return (
-    <SectionCard title="F12 — Adaptive Team Composition" icon={Users} loading={loading} onRefresh={load}>
+    <SectionCard title="F12 — Adaptive Team Composition" icon={Users} loading={loading} error={error} onRefresh={load}>
       <div className="flex flex-wrap gap-1.5 mb-4">
         {types.map(t => (
           <button key={t} onClick={() => setDisasterType(t)}
@@ -349,7 +372,7 @@ function TeamComposerPanel() {
         ))}
       </div>
       {!data ? (
-        <p className="text-slate-500 text-sm text-center py-4">Select a disaster type and load.</p>
+        <p className="text-slate-500 text-sm text-center py-4">No volunteers registered to compose a team from.</p>
       ) : (
         <>
           <div className="flex gap-3 mb-4">
@@ -398,15 +421,17 @@ function AnalyzeReportPanel() {
   const [lang, setLang] = useState('en')
   const [result, setResult] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const analyze = async () => {
     if (!text.trim()) return
-    setLoading(true)
+    setLoading(true); setError(null); setResult(null)
     try {
       const res = await aiService.analyzeReport({ text, detected_language: lang })
       setResult(res.data)
-    } catch { /* silent */ }
-    finally { setLoading(false) }
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Analysis failed')
+    } finally { setLoading(false) }
   }
 
   const uncertainty = result?.uncertainty
@@ -419,7 +444,7 @@ function AnalyzeReportPanel() {
   }
 
   return (
-    <SectionCard title="F5 + F3 — Multitask Analysis & Uncertainty Triage" icon={Brain} loading={loading}>
+    <SectionCard title="F5 + F3 — Multitask Analysis & Uncertainty Triage" icon={Brain} loading={loading} error={error}>
       <div className="space-y-3">
         <div className="flex gap-2 mb-1">
           {['en', 'si', 'ta'].map(l => (
@@ -505,24 +530,127 @@ function AnalyzeReportPanel() {
   )
 }
 
+function ClarificationPanel() {
+  const [text, setText] = useState('')
+  const [disasterType, setDisasterType] = useState('FLOOD')
+  const [result, setResult] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const generate = async () => {
+    if (!text.trim()) return
+    setLoading(true); setError(null); setResult(null)
+    try {
+      const res = await aiService.getClarificationQuestions({ text, disaster_type: disasterType })
+      setResult(res.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to generate questions')
+    } finally { setLoading(false) }
+  }
+
+  return (
+    <SectionCard title="F4 — Clarification Question Generator" icon={HelpCircle} loading={loading} error={error}>
+      <div className="space-y-3">
+        <div className="flex flex-wrap gap-1.5 mb-1">
+          {['FLOOD', 'LANDSLIDE', 'FIRE', 'CYCLONE', 'MEDICAL', 'DEFAULT'].map(t => (
+            <button key={t} onClick={() => setDisasterType(t)}
+              className={cn('px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all',
+                disasterType === t ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-white/5 text-slate-400 hover:bg-white/10')}>
+              {t}
+            </button>
+          ))}
+        </div>
+        <textarea
+          className="w-full bg-[#0a1628] border border-white/10 text-white/90 placeholder-slate-600 p-4 rounded-xl font-medium outline-none focus:ring-2 focus:ring-cyan-500/40 resize-none"
+          rows={3}
+          placeholder="Paste a short disaster report to generate targeted clarification questions..."
+          value={text}
+          onChange={e => setText(e.target.value)}
+        />
+        <button onClick={generate} disabled={loading || !text.trim()}
+          className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <HelpCircle className="w-4 h-4" />}
+          Generate Questions
+        </button>
+      </div>
+      {result && (
+        <div className="mt-5 space-y-3 border-t border-white/5 pt-5">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+            {result.questions?.length || 0} Clarification Questions
+          </p>
+          {(result.questions || []).map((q: string, i: number) => (
+            <div key={i} className="flex gap-3 p-3 bg-white/5 rounded-xl">
+              <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+              <p className="text-sm text-slate-300 leading-relaxed">{q}</p>
+            </div>
+          ))}
+          {result.strategy && (
+            <p className="text-xs text-slate-500 pt-2 border-t border-white/5">Strategy: <span className="text-cyan-400/70">{result.strategy}</span></p>
+          )}
+        </div>
+      )}
+    </SectionCard>
+  )
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AIResearchPage() {
+  const [mlOnline, setMlOnline] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    aiService.getHealth()
+      .then(r => setMlOnline(r.data?.online === true))
+      .catch(() => setMlOnline(false))
+  }, [])
+
   return (
     <div>
       <PageMeta title="AI Research Features — SURAKSHA" />
       <PageBreadcrumb pageTitle="AI Research Features" />
 
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center">
-            <Brain className="w-5 h-5 text-cyan-400" />
+      <div className="mb-6">
+        <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center">
+              <Brain className="w-5 h-5 text-cyan-400" />
+            </div>
+            <div>
+              <h1 className="text-xl font-black text-gray-900 dark:text-white/90">AI Research Features</h1>
+              <p className="text-sm text-gray-500 dark:text-slate-400">9 advanced AI/ML capabilities integrated into SURAKSHA</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-black text-gray-900 dark:text-white/90">AI Research Features</h1>
-            <p className="text-sm text-gray-500 dark:text-slate-400">16 advanced AI/ML capabilities integrated into SURAKSHA</p>
+
+          {/* ML service status pill */}
+          <div className={cn(
+            'flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-bold self-center',
+            mlOnline === null ? 'bg-white/5 border-white/10 text-slate-500'
+            : mlOnline ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+            : 'bg-red-500/10 border-red-500/30 text-red-400'
+          )}>
+            {mlOnline === null
+              ? <><Loader2 className="w-4 h-4 animate-spin" /> Checking ML service…</>
+              : mlOnline
+              ? <><Wifi className="w-4 h-4" /> ML Service Online</>
+              : <><WifiOff className="w-4 h-4" /> ML Service Offline</>
+            }
           </div>
         </div>
+
+        {/* Offline banner with start command */}
+        {mlOnline === false && (
+          <div className="mb-4 p-4 bg-amber-500/5 border border-amber-500/20 rounded-2xl flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm font-bold text-amber-400 mb-1">Python ML service is not running</p>
+              <p className="text-xs text-amber-300/70 mb-2">All AI panels require the FastAPI ML service at <code className="bg-black/30 px-1 rounded">http://127.0.0.1:8000</code>. Start it with:</p>
+              <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl px-3 py-2 font-mono text-xs text-cyan-300">
+                <Terminal className="w-3.5 h-3.5 shrink-0 text-slate-500" />
+                cd "Suraksha - Web App/suraksha-ml" &amp;&amp; uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Feature index chips */}
         <div className="flex flex-wrap gap-2">
@@ -547,6 +675,7 @@ export default function AIResearchPage() {
         {/* Left column */}
         <div className="space-y-6">
           <AnalyzeReportPanel />
+          <ClarificationPanel />
           <TeamComposerPanel />
           <DriftPanel />
         </div>

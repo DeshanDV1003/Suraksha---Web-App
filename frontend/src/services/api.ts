@@ -121,6 +121,7 @@ export const volunteerService = {
   getRecommendedIncidents: () => api.get('/volunteers/recommended-incidents'),
   listVolunteers: () => api.get('/volunteers'),
   createTask: (data: any) => api.post('/volunteers/tasks', data),
+  getAllTasks: () => api.get('/volunteers/tasks/all'),
   getMyTasks: () => api.get('/volunteers/tasks/my'),
   updateTaskStatus: (id: string, status: string) => api.patch(`/volunteers/tasks/${id}/status`, { status }),
 };
@@ -235,6 +236,9 @@ export const mapService = {
 
 // ── Research AI features ──────────────────────────────────────────────────────
 export const aiService = {
+  // Health check for ML service
+  getHealth: () => api.get('/ai/health'),
+
   // F5 + F3: Full multitask analysis + uncertainty triage
   analyzeReport: (data: {
     text: string; latitude?: number | null; longitude?: number | null;

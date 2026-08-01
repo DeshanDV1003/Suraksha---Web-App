@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { 
+import {
   getVolunteerProfile,
   addSkill,
   addTraining,
@@ -9,6 +9,7 @@ import {
   getRecommendedIncidents,
   listVolunteers,
   createTask,
+  getAllTasks,
   getMyTasks,
   updateTaskStatus
 } from '../controllers/volunteerController';
@@ -34,8 +35,9 @@ router.get('/recommended-incidents', authMiddleware, getRecommendedIncidents);
 // Admin/Officer specific
 router.get('/', authMiddleware, officerMiddleware, listVolunteers);
 
-// Legacy Tasks
+// Tasks
 router.post('/tasks', authMiddleware, officerMiddleware, createTask);
+router.get('/tasks/all', authMiddleware, officerMiddleware, getAllTasks);
 router.get('/tasks/my', authMiddleware, getMyTasks);
 router.patch('/tasks/:id/status', authMiddleware, updateTaskStatus);
 

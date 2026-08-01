@@ -34,6 +34,7 @@ import CampsPage from '@/pages/CampsPage'
 import TokensPage from '@/pages/TokensPage'
 import SettingsPage from '@/pages/SettingsPage'
 import VolunteerPage from './pages/VolunteerPage'
+import TaskManagementPage from './pages/TaskManagementPage'
 import HelpRequestsPage from './pages/HelpRequestsPage'
 import DamageAssessmentPage from './pages/DamageAssessmentPage'
 import MissingPersonsPage from './pages/MissingPersonsPage'
@@ -223,6 +224,7 @@ const ProtectedRoutes = () => {
         <Route path="/camps"            element={<CampsPage />} />
         <Route path="/tokens"           element={<TokensPage />} />
         <Route path="/volunteers"       element={<VolunteerPage />} />
+        <Route path="/tasks"            element={<StaffOnly><TaskManagementPage /></StaffOnly>} />
         <Route path="/help-requests"    element={<HelpRequestsPage />} />
         <Route path="/damage-assessment" element={<DamageAssessmentPage />} />
         <Route path="/missing-persons"  element={<MissingPersonsPage />} />

@@ -90,6 +90,13 @@ export const createTask = async (req: any, res: Response) => {
   } catch (error) { res.status(500).json({ message: 'Internal server error', error }); }
 };
 
+export const getAllTasks = async (req: any, res: Response) => {
+  try {
+    const tasks = await volunteerService.getAllTasks();
+    res.json(tasks);
+  } catch (error) { res.status(500).json({ message: 'Internal server error', error }); }
+};
+
 export const getMyTasks = async (req: any, res: Response) => {
   try {
     const tasks = await volunteerService.getTasksByVolunteer(req.user.userId);

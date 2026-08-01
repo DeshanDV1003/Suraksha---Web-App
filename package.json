@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
+    "dev:all": "concurrently --names \"DB,BACKEND,FRONTEND\" --prefix-colors \"cyan,green,magenta\" \"D:\\\\PostgreSQL\\\\pgsql\\\\bin\\\\pg_ctl -D D:\\\\OdooData\\\\pgdata start\" \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
     "install-all": "npm install",
     "build": "npm run build --workspaces",
     "start": "npm run start --workspace=backend",

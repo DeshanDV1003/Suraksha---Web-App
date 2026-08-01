@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import { campService } from '../services/api'
 import { useAppStore } from '@/store/useAppStore'
 import { useTranslation } from 'react-i18next'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
@@ -55,6 +55,19 @@ const createCampIcon = () => {
   });
 };
 
+const createPickerIcon = () =>
+  L.divIcon({
+    className: '',
+    html: `<div style="width:28px;height:28px;background:#06b6d4;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,0.4)"></div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+  })
+
+function LocationPicker({ onPick }: { onPick: (lat: number, lng: number) => void }) {
+  useMapEvents({ click: (e) => onPick(e.latlng.lat, e.latlng.lng) })
+  return null
+}
+
 export default function CampsPage() {
   const { t } = useTranslation()
   const { searchQuery } = useAppStore()
@@ -64,6 +77,8 @@ export default function CampsPage() {
   const [selectedCampId, setSelectedCampId] = useState<string | null>(null)
   
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showMapPicker, setShowMapPicker] = useState(false)
+  const [pickedLatLng, setPickedLatLng] = useState<{ lat: number; lng: number } | null>(null)
   const [newCamp, setNewCamp] = useState({
     name: '',
     location: '',
@@ -91,9 +106,14 @@ export default function CampsPage() {
     e.preventDefault()
     try {
       setIsSubmitting(true)
-      await campService.createCamp(newCamp)
+      await campService.createCamp({
+        ...newCamp,
+        ...(pickedLatLng ? { latitude: pickedLatLng.lat, longitude: pickedLatLng.lng } : {}),
+      })
       setShowModal(false)
       setNewCamp({ name: '', location: '', totalCapacity: '', services: [] })
+      setPickedLatLng(null)
+      setShowMapPicker(false)
       fetchCamps()
     } catch (error) {
       console.error('Failed to add camp:', error)
@@ -225,7 +245,7 @@ export default function CampsPage() {
             <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
               <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between bg-[#0f172a]">
                 <h2 className="text-xl font-black text-white/90">{t('camps_page.register_new_camp')}</h2>
-                <button onClick={() => setShowModal(false)} className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
+                <button onClick={() => { setShowModal(false); setShowMapPicker(false); setPickedLatLng(null); }} className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -237,7 +257,64 @@ export default function CampsPage() {
                    </div>
                    <div className="space-y-2">
                      <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('camps_page.location')}</label>
-                     <input required className="suraksha-input" value={newCamp.location} onChange={(e) => setNewCamp({...newCamp, location: e.target.value})} />
+                     <div className="flex gap-2">
+                       <input
+                         required
+                         className="suraksha-input flex-1"
+                         placeholder="e.g. Homagama, Colombo"
+                         value={newCamp.location}
+                         onChange={(e) => setNewCamp({...newCamp, location: e.target.value})}
+                       />
+                       <button
+                         type="button"
+                         onClick={() => setShowMapPicker(v => !v)}
+                         className={cn(
+                           "px-4 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap flex items-center gap-1.5",
+                           showMapPicker
+                             ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-300"
+                             : "bg-[#0f172a] border-white/10 text-slate-400 hover:border-cyan-400/30 hover:text-slate-200"
+                         )}
+                       >
+                         <MapPin className="w-3.5 h-3.5" />
+                         {pickedLatLng ? 'Change Pin' : 'Pick on Map'}
+                       </button>
+                     </div>
+
+                     {/* Coordinates badge */}
+                     {pickedLatLng && (
+                       <div className="flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-400/30 rounded-xl text-xs text-cyan-300 font-bold">
+                         <MapPin className="w-3 h-3 shrink-0" />
+                         {pickedLatLng.lat.toFixed(5)}, {pickedLatLng.lng.toFixed(5)}
+                         <button type="button" onClick={() => setPickedLatLng(null)} className="ml-auto text-cyan-400/60 hover:text-red-400 transition-colors">
+                           <X className="w-3.5 h-3.5" />
+                         </button>
+                       </div>
+                     )}
+
+                     {/* Map picker */}
+                     {showMapPicker && (
+                       <div className="rounded-2xl overflow-hidden border border-cyan-400/30 mt-1" style={{ height: 260 }}>
+                         <MapContainer
+                           center={[7.8731, 80.7718]}
+                           zoom={8}
+                           style={{ height: '100%', width: '100%', cursor: 'crosshair' }}
+                           zoomControl={true}
+                         >
+                           <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+                           <LocationPicker onPick={(lat, lng) => {
+                             setPickedLatLng({ lat, lng })
+                             if (!newCamp.location) {
+                               setNewCamp(prev => ({ ...prev, location: `${lat.toFixed(4)}, ${lng.toFixed(4)}` }))
+                             }
+                           }} />
+                           {pickedLatLng && (
+                             <Marker position={[pickedLatLng.lat, pickedLatLng.lng]} icon={createPickerIcon()}>
+                               <Popup>Camp location</Popup>
+                             </Marker>
+                           )}
+                         </MapContainer>
+                       </div>
+                     )}
                    </div>
                    <div className="space-y-2">
                      <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('camps_page.total_capacity')}</label>
@@ -256,7 +333,7 @@ export default function CampsPage() {
                    </div>
                  </div>
                  <div className="pt-4 flex gap-4">
-                   <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-6 py-4 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-cyan-900/20 transition-all">{t('camps_page.cancel')}</button>
+                   <button type="button" onClick={() => { setShowModal(false); setShowMapPicker(false); setPickedLatLng(null); }} className="flex-1 px-6 py-4 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-cyan-900/20 transition-all">{t('camps_page.cancel')}</button>
                    <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-4 bg-brand-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25">{t('camps_page.create_camp')}</button>
                  </div>
               </form>

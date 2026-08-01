@@ -196,5 +196,13 @@ export const listAllVolunteers = async () => {
 
 // Kept legacy for compatibility
 export const createTask = async (data: any) => prisma.task.create({ data });
+export const getAllTasks = async () => prisma.task.findMany({
+  include: {
+    incident: { select: { id: true, category: true, location: true } },
+    assignedTo: { select: { id: true, name: true, email: true } },
+    assignedBy: { select: { id: true, name: true } },
+  },
+  orderBy: { createdAt: 'desc' },
+});
 export const getTasksByVolunteer = async (userId: string) => prisma.task.findMany({ where: { assignedToId: userId }, include: { incident: true }, orderBy: { createdAt: 'desc' } });
 export const updateTaskStatus = async (id: string, status: any) => prisma.task.update({ where: { id }, data: { status } });
