@@ -55,28 +55,55 @@ export async function getPrediction(
       return null;
     }
 
-    // Get rainfall data for the same time range if available
-    const rainfallMap = new Map<string, number>();
+    // Get rainfall/weather data for the same district & time window
+    // Keyed by hour (YYYY-MM-DDTHH) for fast lookup against each reading
+    interface WeatherSnapshot { mm_hr: number; cum24: number; humidity: number; temp: number }
+    const weatherMap = new Map<string, WeatherSnapshot>();
     try {
+      const since = new Date(readings[0].recordedAt.getTime() - 60 * 60 * 1000);
       const rainfallReadings = await prisma.rainfallReading.findMany({
-        where:   { district: readings[0].district },
+        where:   { district: readings[0].district, recordedAt: { gte: since } },
+        orderBy: { recordedAt: 'desc' },
+        take:    24,
+      });
+      // Also pull station-level readings written by the simulator (SIMULATED_CSV source)
+      const stationReadings = await prisma.rainfallReading.findMany({
+        where:   { stationName: readings[0].stationName, source: 'SIMULATED_CSV', recordedAt: { gte: since } },
         orderBy: { recordedAt: 'desc' },
         take:    12,
       });
-      rainfallReadings.forEach(r => {
-        rainfallMap.set(r.recordedAt.toISOString().slice(0, 13), r.rainfallMmPerHour);
-      });
-    } catch { /* rainfall optional */ }
+      const allRain = [...stationReadings, ...rainfallReadings];
+      for (const r of allRain) {
+        const key = r.recordedAt.toISOString().slice(0, 13);
+        if (!weatherMap.has(key)) {
+          weatherMap.set(key, {
+            mm_hr:    r.rainfallMmPerHour,
+            cum24:    r.cumulativeRain24h,
+            humidity: 75, // RainfallReading has no humidity column; use seasonal default
+            temp:     28,
+          });
+        }
+      }
+    } catch { /* weather enrichment optional */ }
+
+    // Seasonal defaults based on month (Sri Lanka climate)
+    const month = readings[readings.length - 1].recordedAt.getMonth() + 1;
+    const seasonalHumidity = (month >= 5 && month <= 9) ? 82 : (month >= 10 && month <= 12) ? 85 : 76;
+    const seasonalTemp     = (month >= 3 && month <= 5) ? 30 : (month >= 12 || month <= 2) ? 27 : 29;
 
     // Build reading payload for ML service
-    const readingPayload = readings.map(r => ({
-      water_level_m:      r.waterLevelMetres,
-      rainfall_mm_hr:     rainfallMap.get(r.recordedAt.toISOString().slice(0, 13)) ?? 0,
-      rainfall_24h_total: 0, // enriched from rainfall table if available
-      humidity_pct:       75,
-      temp_c:             28,
-      month:              r.recordedAt.getMonth() + 1,
-    }));
+    const readingPayload = readings.map(r => {
+      const key     = r.recordedAt.toISOString().slice(0, 13);
+      const weather = weatherMap.get(key);
+      return {
+        water_level_m:      r.waterLevelMetres,
+        rainfall_mm_hr:     weather?.mm_hr    ?? 0,
+        rainfall_24h_total: weather?.cum24    ?? 0,
+        humidity_pct:       weather?.humidity ?? seasonalHumidity,
+        temp_c:             weather?.temp     ?? seasonalTemp,
+        month:              r.recordedAt.getMonth() + 1,
+      };
+    });
 
     const body = {
       gauge_id: gaugeId,

@@ -858,6 +858,45 @@ exports.Prisma.AuthorityContactScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RescueVehicleScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  name: 'name',
+  capacity: 'capacity',
+  area: 'area',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  status: 'status',
+  contactPhone: 'contactPhone',
+  operatorName: 'operatorName',
+  assignedById: 'assignedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RescueMissionScalarFieldEnum = {
+  id: 'id',
+  vehicleId: 'vehicleId',
+  area: 'area',
+  destinationCampId: 'destinationCampId',
+  status: 'status',
+  evacuatedCount: 'evacuatedCount',
+  assignedById: 'assignedById',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.SafeZoneCheckInScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  missionId: 'missionId',
+  campId: 'campId',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1053,6 +1092,22 @@ exports.WaterTrend = exports.$Enums.WaterTrend = {
   STABLE: 'STABLE'
 };
 
+exports.VehicleType = exports.$Enums.VehicleType = {
+  BUS: 'BUS',
+  VAN: 'VAN',
+  BOAT: 'BOAT',
+  TRUCK: 'TRUCK',
+  HELICOPTER: 'HELICOPTER',
+  AMBULANCE: 'AMBULANCE'
+};
+
+exports.MissionStatus = exports.$Enums.MissionStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   IncidentReport: 'IncidentReport',
@@ -1114,7 +1169,10 @@ exports.Prisma.ModelName = {
   DownstreamMapping: 'DownstreamMapping',
   IncidentDuplicateLink: 'IncidentDuplicateLink',
   PublicSafePlace: 'PublicSafePlace',
-  AuthorityContact: 'AuthorityContact'
+  AuthorityContact: 'AuthorityContact',
+  RescueVehicle: 'RescueVehicle',
+  RescueMission: 'RescueMission',
+  SafeZoneCheckIn: 'SafeZoneCheckIn'
 };
 
 /**

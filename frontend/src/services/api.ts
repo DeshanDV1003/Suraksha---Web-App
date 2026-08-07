@@ -268,4 +268,24 @@ export const aiService = {
   getDriftStatus: (hours?: number) => api.get(`/ai/drift-status${hours ? `?hours=${hours}` : ''}`),
 };
 
+export const rescueService = {
+  // Vehicles
+  getVehicles: () => api.get('/rescue/vehicles'),
+  getVehiclesByArea: (area: string) => api.get(`/rescue/vehicles/area/${encodeURIComponent(area)}`),
+  createVehicle: (data: any) => api.post('/rescue/vehicles', data),
+  updateVehicleStatus: (id: string, status: string) => api.patch(`/rescue/vehicles/${id}/status`, { status }),
+  deleteVehicle: (id: string) => api.delete(`/rescue/vehicles/${id}`),
+  // Missions
+  getMissions: () => api.get('/rescue/missions'),
+  getMissionsByArea: (area: string) => api.get(`/rescue/missions/area/${encodeURIComponent(area)}`),
+  createMission: (data: any) => api.post('/rescue/missions', data),
+  updateMissionStatus: (id: string, status: string, evacuatedCount?: number) =>
+    api.patch(`/rescue/missions/${id}/status`, { status, evacuatedCount }),
+  // Safe zone
+  markSafeZone: (data: { missionId?: string; campId?: string; notes?: string }) =>
+    api.post('/rescue/safe-zone', data),
+  getMyZoneStatus: () => api.get('/rescue/safe-zone/me'),
+  getAllSafeZoneCheckIns: () => api.get('/rescue/safe-zone'),
+};
+
 export default api;

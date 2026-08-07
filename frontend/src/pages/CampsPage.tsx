@@ -1,19 +1,40 @@
 import { useEffect, useState } from 'react'
 import { useDialog } from '@/components/ui/dialogs/DialogProvider'
-import { 
-  Building2, Users, PieChart, AlertTriangle, 
-  Utensils, Droplets, Heart, Zap, Bath, 
-  UserCheck, Baby, Accessibility, Clock, MapPin, Plus, X, Loader2, ListTodo, Stethoscope, ArrowRightLeft, ShieldAlert
+import {
+  Building2, Users, PieChart, AlertTriangle,
+  Utensils, Droplets, Heart, Zap, Bath,
+  UserCheck, Baby, Accessibility, Clock, MapPin, Plus, X, Loader2, ListTodo, Stethoscope, ArrowRightLeft, ShieldAlert, Navigation,
+  Anchor, Bus, Truck, Wind, Ambulance, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Waves, Phone, Copy
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { campService } from '../services/api'
+import { campService, rescueService } from '../services/api'
 import { useAppStore } from '@/store/useAppStore'
+import { useAuth } from '@/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
+
+const VEHICLE_ICONS: Record<string, any> = {
+  BOAT: Anchor, BUS: Bus, VAN: Bus, TRUCK: Truck,
+  HELICOPTER: Wind, AMBULANCE: Ambulance,
+}
+const VEHICLE_COLORS: Record<string, string> = {
+  BOAT: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
+  BUS: 'text-green-400 bg-green-500/10 border-green-500/30',
+  VAN: 'text-green-400 bg-green-500/10 border-green-500/30',
+  TRUCK: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
+  HELICOPTER: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  AMBULANCE: 'text-red-400 bg-red-500/10 border-red-500/30',
+}
+const MISSION_STATUS_COLOR: Record<string, string> = {
+  PENDING: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
+  IN_PROGRESS: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+  COMPLETED: 'bg-green-500/15 text-green-400 border-green-500/30',
+  CANCELLED: 'bg-red-500/15 text-red-400 border-red-500/30',
+}
 
 const servicesList = [
   { name: 'food', icon: Utensils },
@@ -68,14 +89,261 @@ function LocationPicker({ onPick }: { onPick: (lat: number, lng: number) => void
   return null
 }
 
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLng = ((lng2 - lng1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLng / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+function RescueDetailModal({
+  mission, userLocation, onClose
+}: {
+  mission: any; userLocation: { lat: number; lng: number } | null; onClose: () => void
+}) {
+  const [copied, setCopied] = useState(false)
+  const [routeCoords, setRouteCoords] = useState<[number, number][]>([])
+  const [routeInfo, setRouteInfo] = useState<{ distanceKm: number; durationMin: number } | null>(null)
+  const [routeLoading, setRouteLoading] = useState(false)
+
+  const vehicle = mission.vehicle
+  const VIcon = VEHICLE_ICONS[vehicle?.type] || Bus
+  const vcol = VEHICLE_COLORS[vehicle?.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
+  const hasCoords = vehicle?.latitude && vehicle?.longitude
+  const distKm = (userLocation && hasCoords)
+    ? haversineKm(userLocation.lat, userLocation.lng, vehicle.latitude, vehicle.longitude)
+    : null
+
+  // Fetch OSRM walking route
+  useEffect(() => {
+    if (!userLocation || !hasCoords) return
+    setRouteLoading(true)
+    const url = `https://router.project-osrm.org/route/v1/foot/${userLocation.lng},${userLocation.lat};${vehicle.longitude},${vehicle.latitude}?geometries=geojson&overview=full`
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        const route = data.routes?.[0]
+        if (route) {
+          const coords: [number, number][] = route.geometry.coordinates.map(([lng, lat]: number[]) => [lat, lng])
+          setRouteCoords(coords)
+          setRouteInfo({
+            distanceKm: +(route.distance / 1000).toFixed(2),
+            durationMin: Math.round(route.duration / 60),
+          })
+        }
+      })
+      .catch(() => {})
+      .finally(() => setRouteLoading(false))
+  }, [])
+
+  const isFull = mission.evacuatedCount >= vehicle?.capacity
+  const spotsLeft = Math.max(0, (vehicle?.capacity || 0) - (mission.evacuatedCount || 0))
+
+  return (
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+      <div className="bg-[#131f33] border border-blue-500/20 w-full max-w-2xl rounded-[1.5rem] shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="px-6 py-5 border-b border-blue-500/20 flex items-center justify-between sticky top-0 bg-[#131f33] z-10">
+          <div className="flex items-center gap-3">
+            <div className={cn('p-2.5 rounded-xl border', vcol)}>
+              <VIcon className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="font-black text-white/90 text-base">{vehicle?.name}</h3>
+              <p className="text-xs text-gray-400 font-bold">{vehicle?.type} · {mission.area}</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-5">
+          {/* Status strip */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Status</p>
+              <span className={cn('text-xs font-black px-2.5 py-1 rounded-full border uppercase', MISSION_STATUS_COLOR[mission.status])}>
+                {mission.status.replace('_', ' ')}
+              </span>
+            </div>
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Capacity</p>
+              <p className={cn('text-lg font-black', isFull ? 'text-red-400' : 'text-green-400')}>
+                {isFull ? 'FULL' : `${spotsLeft} left`}
+              </p>
+              <p className="text-[10px] text-gray-500">{vehicle?.capacity} total</p>
+            </div>
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Distance</p>
+              {routeInfo ? (
+                <>
+                  <p className="text-lg font-black text-cyan-400">{routeInfo.distanceKm} km</p>
+                  <p className="text-[10px] text-gray-500">~{routeInfo.durationMin} min walk</p>
+                </>
+              ) : distKm !== null ? (
+                <p className="text-lg font-black text-cyan-400">{distKm.toFixed(1)} km</p>
+              ) : (
+                <p className="text-lg font-black text-gray-500">—</p>
+              )}
+            </div>
+          </div>
+
+          {/* Map with route */}
+          {hasCoords ? (
+            <div className="rounded-2xl overflow-hidden border border-white/10" style={{ height: 300 }}>
+              {routeLoading && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0f172a]/80 rounded-2xl">
+                  <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
+                </div>
+              )}
+              <MapContainer
+                center={userLocation ? [userLocation.lat, userLocation.lng] : [vehicle.latitude, vehicle.longitude]}
+                zoom={13}
+                style={{ height: '100%', width: '100%', background: '#0f172a' }}
+                zoomControl={true}
+              >
+                <TileLayer
+                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                  attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+                />
+                {/* User location marker */}
+                {userLocation && (
+                  <Marker
+                    position={[userLocation.lat, userLocation.lng]}
+                    icon={L.divIcon({
+                      className: '',
+                      html: `<div style="width:16px;height:16px;background:#06b6d4;border:3px solid white;border-radius:50%;box-shadow:0 0 0 4px rgba(6,182,212,0.3)"></div>`,
+                      iconSize: [16, 16], iconAnchor: [8, 8],
+                    })}
+                  >
+                    <Popup><span style={{fontWeight:'bold',color:'#06b6d4'}}>📍 Your Location</span></Popup>
+                  </Marker>
+                )}
+                {/* Vehicle pickup marker */}
+                <Marker
+                  position={[vehicle.latitude, vehicle.longitude]}
+                  icon={L.divIcon({
+                    className: '',
+                    html: `<div style="background:#3b82f6;width:36px;height:36px;border-radius:10px;border:3px solid white;box-shadow:0 4px 12px rgba(59,130,246,0.5);display:flex;align-items:center;justify-content:center;transform:rotate(45deg)"><span style="transform:rotate(-45deg);font-size:16px">⛵</span></div>`,
+                    iconSize: [36, 36], iconAnchor: [18, 18],
+                  })}
+                >
+                  <Popup>
+                    <span style={{fontWeight:'bold'}}>🚨 {vehicle.name}</span><br/>
+                    <span style={{fontSize:'12px'}}>{mission.area}</span>
+                  </Popup>
+                </Marker>
+                {/* Route polyline */}
+                {routeCoords.length > 0 && (
+                  <RoutePolyline coords={routeCoords} />
+                )}
+              </MapContainer>
+            </div>
+          ) : (
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-6 text-center">
+              <MapPin className="w-8 h-8 text-gray-600 mx-auto mb-2" />
+              <p className="text-sm text-gray-500 font-bold">No GPS coordinates set for this vehicle.</p>
+              <p className="text-xs text-gray-600 mt-1">Admin needs to set the pickup location.</p>
+            </div>
+          )}
+
+          {/* Route steps info */}
+          {routeInfo && (
+            <div className="bg-[#0f172a] rounded-2xl border border-blue-500/20 p-4 flex items-center gap-4">
+              <div className="w-8 h-8 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
+                <Navigation className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-sm font-black text-white/90">Safe Route to Pickup Point</p>
+                <p className="text-xs text-gray-400 font-bold">
+                  {routeInfo.distanceKm} km · Approx. {routeInfo.durationMin} minutes on foot
+                  · Follow the blue route on the map
+                </p>
+              </div>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&origin=${userLocation?.lat},${userLocation?.lng}&destination=${vehicle.latitude},${vehicle.longitude}&travelmode=walking`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-black hover:bg-blue-500/25 transition-all flex-shrink-0"
+              >
+                <Navigation className="w-3.5 h-3.5" />
+                Google Maps
+              </a>
+            </div>
+          )}
+
+          {/* Full warning */}
+          {isFull && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 flex items-center gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-black text-red-400">This vehicle is at full capacity</p>
+                <p className="text-xs text-red-400/70 mt-0.5">Please check other available rescue transport options below.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Contact */}
+          {vehicle?.contactPhone && (
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 space-y-3">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Contact Rescue Unit</p>
+              <p className="text-2xl font-black text-white/90 tracking-wider">{vehicle.contactPhone}</p>
+              {vehicle.operatorName && <p className="text-xs text-gray-500">{vehicle.operatorName}</p>}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { navigator.clipboard.writeText(vehicle.contactPhone); setCopied(true); setTimeout(() => setCopied(false), 2000) }}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-black text-gray-300 hover:bg-white/10 transition-all"
+                >
+                  {copied ? <CheckCircle2 className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? 'Copied!' : 'Copy Number'}
+                </button>
+                <a
+                  href={`tel:${vehicle.contactPhone}`}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-green-500/15 border border-green-500/30 text-xs font-black text-green-400 hover:bg-green-500/25 transition-all"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  Call Now
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Separate component so Leaflet hooks work inside MapContainer
+function RoutePolyline({ coords }: { coords: [number, number][] }) {
+  const map = useMapEvents({})
+  useEffect(() => {
+    if (!map || coords.length < 2) return
+    const poly = L.polyline(coords, { color: '#3b82f6', weight: 4, opacity: 0.85, dashArray: '8 4' }).addTo(map)
+    map.fitBounds(poly.getBounds(), { padding: [40, 40] })
+    return () => { map.removeLayer(poly) }
+  }, [coords])
+  return null
+}
+
 export default function CampsPage() {
   const { t } = useTranslation()
   const { searchQuery } = useAppStore()
+  const { user } = useAuth()
+  const isCitizen = (user as any)?.role === 'CITIZEN'
   const [camps, setCamps] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [selectedCampId, setSelectedCampId] = useState<string | null>(null)
-  
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'granted' | 'denied'>('idle')
+  const [showLocationPicker, setShowLocationPicker] = useState(true)
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showMapPicker, setShowMapPicker] = useState(false)
   const [pickedLatLng, setPickedLatLng] = useState<{ lat: number; lng: number } | null>(null)
@@ -85,6 +353,38 @@ export default function CampsPage() {
     totalCapacity: '',
     services: [] as string[]
   })
+
+  // Rescue transport state
+  const [selectedMission, setSelectedMission] = useState<any>(null)
+  const [vehicles, setVehicles] = useState<any[]>([])
+  const [missions, setMissions] = useState<any[]>([])
+  const [myCheckIn, setMyCheckIn] = useState<any>(null)
+  const [showRescueAdmin, setShowRescueAdmin] = useState(false)
+  const [rescueTab, setRescueTab] = useState<'vehicles' | 'missions'>('missions')
+  const [markingSafe, setMarkingSafe] = useState(false)
+  const [showVehicleForm, setShowVehicleForm] = useState(false)
+  const [showMissionForm, setShowMissionForm] = useState(false)
+  const [vehicleForm, setVehicleForm] = useState({ type: 'BOAT', name: '', capacity: '', area: '', operatorName: '', contactPhone: '', latitude: '', longitude: '' })
+  const [showVehicleMapPicker, setShowVehicleMapPicker] = useState(false)
+  const [missionForm, setMissionForm] = useState({ vehicleId: '', area: '', destinationCampId: '', notes: '' })
+
+  const fetchRescueData = async () => {
+    try {
+      const [vRes, mRes] = await Promise.all([rescueService.getVehicles(), rescueService.getMissions()])
+      setVehicles(vRes.data)
+      setMissions(mRes.data)
+    } catch (err) { console.error('Failed to fetch rescue data', err) }
+  }
+
+  const fetchMyCheckIn = async () => {
+    try {
+      const res = await rescueService.getMyZoneStatus()
+      setMyCheckIn(res.data)
+    } catch {}
+  }
+
+  useEffect(() => { fetchRescueData() }, [])
+  useEffect(() => { if (isCitizen) fetchMyCheckIn() }, [isCitizen])
 
   const fetchCamps = async () => {
     try {
@@ -101,6 +401,32 @@ export default function CampsPage() {
   useEffect(() => {
     fetchCamps()
   }, [])
+
+  useEffect(() => {
+    if (!isCitizen) return
+    // Load saved location from localStorage first (instant, accurate)
+    const saved = localStorage.getItem('suraksha_user_location')
+    if (saved) {
+      try {
+        const { lat, lng } = JSON.parse(saved)
+        setUserLocation({ lat, lng })
+        setLocationStatus('granted')
+        setShowLocationPicker(false)
+        return
+      } catch { localStorage.removeItem('suraksha_user_location') }
+    }
+    // No saved location — show the map picker immediately
+    setLocationStatus('denied')
+    setShowLocationPicker(true)
+  }, [isCitizen])
+
+  const nearestCamps = userLocation
+    ? camps
+        .filter(c => c.latitude && c.longitude)
+        .map(c => ({ ...c, distanceKm: haversineKm(userLocation.lat, userLocation.lng, c.latitude, c.longitude) }))
+        .sort((a, b) => a.distanceKm - b.distanceKm)
+        .slice(0, 5)
+    : []
 
   const handleAddCamp = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -148,15 +474,550 @@ export default function CampsPage() {
           <PageMeta title="Camps | Suraksha" description="Suraksha Camps Page" />
           <PageBreadcrumb pageTitle="Camps" />
           <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
-        <div className="flex items-center justify-between">
-          <button 
-            onClick={() => setShowModal(true)}
-            className="suraksha-button flex items-center gap-2"
-          >
-            <Plus className="w-5 h-5" />
-            {t('camps.new_camp')}
-          </button>
-        </div>
+        {!isCitizen && (
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setShowModal(true)}
+              className="suraksha-button flex items-center gap-2"
+            >
+              <Plus className="w-5 h-5" />
+              {t('camps.new_camp')}
+            </button>
+          </div>
+        )}
+
+        {isCitizen && (
+          <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-6 space-y-4">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h3 className="font-black text-white/90 flex items-center gap-2 text-base">
+                <Navigation className="w-5 h-5 text-cyan-400" />
+                Nearest Relief Camps
+              </h3>
+              {userLocation && !showLocationPicker && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-green-400 font-black bg-green-500/10 border border-green-500/30 px-2.5 py-1 rounded-full">
+                    📍 {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+                  </span>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem('suraksha_user_location')
+                      setShowLocationPicker(true)
+                    }}
+                    className="text-[10px] text-cyan-400 font-black hover:text-cyan-300 transition-colors underline"
+                  >
+                    Change
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Map picker — shown on first visit (no saved location) or when user clicks Change */}
+            {showLocationPicker && (
+              <div className="space-y-2">
+                <p className="text-sm font-bold text-cyan-300 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  Tap your current location on the map to find nearest camps
+                </p>
+                <div className="rounded-2xl overflow-hidden border border-cyan-400/30" style={{ height: 300 }}>
+                  <MapContainer
+                    center={userLocation ? [userLocation.lat, userLocation.lng] : [7.8731, 80.7718]}
+                    zoom={userLocation ? 12 : 8}
+                    style={{ height: '100%', width: '100%' }}
+                  >
+                    <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
+                    <LocationPicker onPick={(lat, lng) => {
+                      setUserLocation({ lat, lng })
+                      setLocationStatus('granted')
+                      setShowLocationPicker(false)
+                      localStorage.setItem('suraksha_user_location', JSON.stringify({ lat, lng }))
+                    }} />
+                    {userLocation && (
+                      <Marker
+                        position={[userLocation.lat, userLocation.lng]}
+                        icon={L.divIcon({
+                          className: '',
+                          html: `<div style="width:18px;height:18px;background:#06b6d4;border:3px solid white;border-radius:50%;box-shadow:0 0 0 6px rgba(6,182,212,0.25)"></div>`,
+                          iconSize: [18, 18], iconAnchor: [9, 9],
+                        })}
+                      />
+                    )}
+                  </MapContainer>
+                </div>
+              </div>
+            )}
+
+            {locationStatus === 'granted' && !showLocationPicker && nearestCamps.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {nearestCamps.map((camp: any, i: number) => {
+                  const available = camp.totalCapacity - camp.currentOccupancy
+                  const isFull = available <= 0
+                  return (
+                    <div key={camp.id} className={`p-4 rounded-2xl border ${i === 0 ? 'border-cyan-400/40 bg-cyan-400/5' : 'border-white/10 bg-[#0f172a]'}`}>
+                      {i === 0 && <span className="text-[9px] text-cyan-400 font-black uppercase tracking-widest">Closest</span>}
+                      <h4 className="font-black text-white/90 text-sm mt-1">{camp.name}</h4>
+                      <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
+                        <MapPin className="w-3 h-3 flex-shrink-0" /> {camp.location}
+                      </p>
+                      <div className="flex items-center justify-between mt-3">
+                        <span className="text-lg font-black text-cyan-400">{camp.distanceKm.toFixed(1)} km</span>
+                        <span className={`text-[9px] font-black px-2 py-1 rounded-full ${isFull ? 'bg-red-500/15 text-red-400' : 'bg-green-500/15 text-green-400'}`}>
+                          {isFull ? 'FULL' : `${available} spots`}
+                        </span>
+                      </div>
+                      <a
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${camp.latitude},${camp.longitude}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+                      >
+                        <Navigation className="w-3.5 h-3.5" />
+                        Get Directions
+                      </a>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            {locationStatus === 'granted' && !showLocationPicker && nearestCamps.length === 0 && (
+              <p className="text-sm text-gray-400 font-bold">No camps found near your location.</p>
+            )}
+          </div>
+        )}
+
+        {/* ── RESCUE TRANSPORT — Citizen View ─────────────────────────────────── */}
+        {isCitizen && (() => {
+          // Sort active missions: nearest with GPS first, then others; full ones pushed to bottom
+          const activeMissions = missions
+            .filter(m => m.status !== 'COMPLETED' && m.status !== 'CANCELLED')
+            .map(m => {
+              const dist = (userLocation && m.vehicle?.latitude && m.vehicle?.longitude)
+                ? haversineKm(userLocation.lat, userLocation.lng, m.vehicle.latitude, m.vehicle.longitude)
+                : null
+              const isFull = (m.evacuatedCount || 0) >= (m.vehicle?.capacity || Infinity)
+              return { ...m, _dist: dist, _isFull: isFull }
+            })
+            .sort((a, b) => {
+              if (a._isFull !== b._isFull) return a._isFull ? 1 : -1
+              if (a._dist !== null && b._dist !== null) return a._dist - b._dist
+              if (a._dist !== null) return -1
+              if (b._dist !== null) return 1
+              return 0
+            })
+
+          return (
+            <div className="suraksha-card bg-[#131f33] border border-blue-500/20 p-6 space-y-5">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <h3 className="font-black text-white/90 flex items-center gap-2 text-base">
+                  <Waves className="w-5 h-5 text-blue-400" />
+                  Available Rescue Transport
+                </h3>
+                {myCheckIn && (
+                  <span className="flex items-center gap-1.5 text-xs font-black text-green-400 bg-green-500/10 border border-green-500/30 px-3 py-1.5 rounded-full">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    You're marked SAFE
+                  </span>
+                )}
+              </div>
+
+              {activeMissions.length === 0 ? (
+                <p className="text-sm text-gray-400 font-bold py-2">No active rescue missions right now. Check back shortly.</p>
+              ) : (
+                <div className="space-y-3">
+                  {activeMissions.map((mission: any, idx: number) => {
+                    const VIcon = VEHICLE_ICONS[mission.vehicle?.type] || Bus
+                    const vcol = VEHICLE_COLORS[mission.vehicle?.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
+                    const spotsLeft = Math.max(0, (mission.vehicle?.capacity || 0) - (mission.evacuatedCount || 0))
+                    return (
+                      <button
+                        key={mission.id}
+                        onClick={() => setSelectedMission(mission)}
+                        className={cn(
+                          'w-full text-left flex items-start gap-4 p-4 rounded-2xl border transition-all hover:border-blue-400/40 hover:bg-blue-500/5 cursor-pointer',
+                          idx === 0 && !mission._isFull ? 'border-blue-400/30 bg-blue-500/5' : 'border-white/10 bg-[#0f172a]',
+                          mission._isFull && 'opacity-60'
+                        )}
+                      >
+                        <div className={cn('p-2.5 rounded-xl border flex-shrink-0', vcol)}>
+                          <VIcon className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {idx === 0 && !mission._isFull && (
+                              <span className="text-[9px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">Nearest</span>
+                            )}
+                            <span className="font-black text-white/90 text-sm">{mission.vehicle?.name}</span>
+                            <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase', MISSION_STATUS_COLOR[mission.status])}>
+                              {mission.status.replace('_', ' ')}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-400 font-bold mt-0.5">
+                            <MapPin className="w-3 h-3 inline mr-0.5" />{mission.area}
+                          </p>
+                          <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                            {mission._dist !== null && (
+                              <span className="text-xs font-black text-cyan-400">{mission._dist.toFixed(1)} km away</span>
+                            )}
+                            <span className={cn('text-xs font-black', mission._isFull ? 'text-red-400' : 'text-green-400')}>
+                              {mission._isFull ? '⚠ FULL' : `${spotsLeft} spots available`}
+                            </span>
+                            {mission.vehicle?.contactPhone && (
+                              <span className="text-xs text-gray-500 flex items-center gap-1">
+                                <Phone className="w-3 h-3" />{mission.vehicle.contactPhone}
+                              </span>
+                            )}
+                          </div>
+                          {mission.notes && <p className="text-xs text-gray-500 mt-1 italic">{mission.notes}</p>}
+                        </div>
+                        <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase">{mission.vehicle?.type}</span>
+                          <span className="text-[10px] text-blue-400 font-bold">Tap for route →</span>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
+              {/* Mark yourself safe */}
+              {!myCheckIn ? (
+                <div className="pt-3 border-t border-white/10">
+                  <p className="text-xs text-gray-400 font-bold mb-3">Have you reached a safe location? Let authorities know.</p>
+                  <button
+                    onClick={async () => {
+                      setMarkingSafe(true)
+                      try {
+                        const activeMission = activeMissions.find(m => !m._isFull)
+                        await rescueService.markSafeZone({ missionId: activeMission?.id })
+                        await fetchMyCheckIn()
+                      } catch (err) { console.error(err) }
+                      finally { setMarkingSafe(false) }
+                    }}
+                    disabled={markingSafe}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-500/15 border border-green-500/30 text-green-400 text-sm font-black hover:bg-green-500/25 transition-all"
+                  >
+                    {markingSafe ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+                    I'm Now in a Safe Zone
+                  </button>
+                </div>
+              ) : (
+                <div className="pt-3 border-t border-white/10 flex items-center gap-3 text-green-400">
+                  <CheckCircle2 className="w-5 h-5" />
+                  <div>
+                    <p className="text-sm font-black">You have been marked as safe</p>
+                    <p className="text-xs text-green-400/70">Authorities have been notified of your safety.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })()}
+
+        {/* ── RESCUE ADMIN PANEL ─────────────────────────────────────────────── */}
+        {!isCitizen && (
+          <div className="suraksha-card bg-[#131f33] border border-blue-500/20 overflow-hidden">
+            <button
+              onClick={() => setShowRescueAdmin(v => !v)}
+              className="w-full flex items-center justify-between px-7 py-5 hover:bg-white/5 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Waves className="w-5 h-5 text-blue-400" />
+                <span className="font-black text-white/90 text-base">Rescue Transport Management</span>
+                <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                  {missions.filter(m => m.status === 'IN_PROGRESS').length} Active
+                </span>
+              </div>
+              {showRescueAdmin ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+            </button>
+
+            {showRescueAdmin && (
+              <div className="border-t border-blue-500/20 p-7 space-y-6">
+                {/* Tabs */}
+                <div className="flex gap-2">
+                  {(['missions', 'vehicles'] as const).map(tab => (
+                    <button key={tab} onClick={() => setRescueTab(tab)}
+                      className={cn('px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all border',
+                        rescueTab === tab
+                          ? 'bg-blue-500/15 text-blue-400 border-blue-500/30'
+                          : 'bg-white/5 text-gray-500 border-white/10 hover:bg-white/10'
+                      )}>
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+
+                {/* ── MISSIONS TAB ── */}
+                {rescueTab === 'missions' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest">All Rescue Missions</p>
+                      <button onClick={() => setShowMissionForm(v => !v)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-black hover:bg-blue-500/25 transition-all">
+                        <Plus className="w-3.5 h-3.5" /> Assign Mission
+                      </button>
+                    </div>
+
+                    {showMissionForm && (
+                      <div className="bg-[#0f172a] rounded-2xl border border-blue-500/20 p-5 space-y-4">
+                        <h4 className="text-sm font-black text-white/90">Create Rescue Mission</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Vehicle</label>
+                            <select className="suraksha-input w-full text-sm"
+                              value={missionForm.vehicleId}
+                              onChange={e => setMissionForm(p => ({ ...p, vehicleId: e.target.value }))}>
+                              <option value="">Select vehicle…</option>
+                              {vehicles.filter(v => v.status === 'AVAILABLE').map((v: any) => (
+                                <option key={v.id} value={v.id}>{v.name} ({v.type}) — {v.area}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Pickup Area</label>
+                            <input className="suraksha-input w-full text-sm" placeholder="e.g. Kelani Valley, Colombo"
+                              value={missionForm.area} onChange={e => setMissionForm(p => ({ ...p, area: e.target.value }))} />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Destination Camp (optional)</label>
+                            <select className="suraksha-input w-full text-sm"
+                              value={missionForm.destinationCampId}
+                              onChange={e => setMissionForm(p => ({ ...p, destinationCampId: e.target.value }))}>
+                              <option value="">Select camp…</option>
+                              {camps.map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                            </select>
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Notes</label>
+                            <input className="suraksha-input w-full text-sm" placeholder="Optional instructions…"
+                              value={missionForm.notes} onChange={e => setMissionForm(p => ({ ...p, notes: e.target.value }))} />
+                          </div>
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={async () => {
+                              if (!missionForm.vehicleId || !missionForm.area) return
+                              try {
+                                await rescueService.createMission({
+                                  vehicleId: missionForm.vehicleId,
+                                  area: missionForm.area,
+                                  destinationCampId: missionForm.destinationCampId || undefined,
+                                  notes: missionForm.notes || undefined,
+                                })
+                                setMissionForm({ vehicleId: '', area: '', destinationCampId: '', notes: '' })
+                                setShowMissionForm(false)
+                                fetchRescueData()
+                              } catch (err) { console.error(err) }
+                            }}
+                            className="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-black hover:bg-blue-700 transition-all">
+                            Assign Mission
+                          </button>
+                          <button onClick={() => setShowMissionForm(false)}
+                            className="px-4 py-2 rounded-xl bg-white/5 text-gray-400 text-xs font-black hover:bg-white/10 transition-all">
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-3">
+                      {missions.length === 0 ? (
+                        <p className="text-sm text-gray-500 font-bold py-4 text-center">No missions yet. Assign one above.</p>
+                      ) : missions.map((m: any) => {
+                        const VIcon = VEHICLE_ICONS[m.vehicle?.type] || Bus
+                        const vcol = VEHICLE_COLORS[m.vehicle?.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
+                        return (
+                          <div key={m.id} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 bg-[#0f172a]">
+                            <div className={cn('p-2.5 rounded-xl border flex-shrink-0', vcol)}>
+                              <VIcon className="w-5 h-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <span className="font-black text-white/90 text-sm">{m.vehicle?.name}</span>
+                                <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase', MISSION_STATUS_COLOR[m.status])}>
+                                  {m.status.replace('_', ' ')}
+                                </span>
+                              </div>
+                              <p className="text-xs text-gray-400 font-bold">
+                                <MapPin className="w-3 h-3 inline mr-0.5" />{m.area}
+                                {m.evacuatedCount > 0 && <span className="ml-2 text-green-400">· {m.evacuatedCount} evacuated</span>}
+                              </p>
+                              {m.notes && <p className="text-xs text-gray-500 italic mt-0.5">{m.notes}</p>}
+                              <p className="text-[10px] text-gray-600 mt-1">
+                                {m.safeZoneCheckIns?.length || 0} citizens marked safe · Assigned by {m.assignedBy?.name}
+                              </p>
+                            </div>
+                            <div className="flex flex-col gap-1.5 flex-shrink-0">
+                              {m.status === 'PENDING' && (
+                                <button onClick={async () => { await rescueService.updateMissionStatus(m.id, 'IN_PROGRESS'); fetchRescueData() }}
+                                  className="px-3 py-1.5 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 text-[10px] font-black hover:bg-blue-500/25 transition-all">
+                                  Start
+                                </button>
+                              )}
+                              {m.status === 'IN_PROGRESS' && (
+                                <button onClick={async () => { await rescueService.updateMissionStatus(m.id, 'COMPLETED', m.safeZoneCheckIns?.length); fetchRescueData() }}
+                                  className="px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/30 text-green-400 text-[10px] font-black hover:bg-green-500/25 transition-all">
+                                  ✓ Complete
+                                </button>
+                              )}
+                              {m.status !== 'COMPLETED' && m.status !== 'CANCELLED' && (
+                                <button onClick={async () => { await rescueService.updateMissionStatus(m.id, 'CANCELLED'); fetchRescueData() }}
+                                  className="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-black hover:bg-red-500/20 transition-all">
+                                  Cancel
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── VEHICLES TAB ── */}
+                {rescueTab === 'vehicles' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Registered Vehicles</p>
+                      <button onClick={() => setShowVehicleForm(v => !v)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-black hover:bg-blue-500/25 transition-all">
+                        <Plus className="w-3.5 h-3.5" /> Add Vehicle
+                      </button>
+                    </div>
+
+                    {showVehicleForm && (
+                      <div className="bg-[#0f172a] rounded-2xl border border-blue-500/20 p-5 space-y-4">
+                        <h4 className="text-sm font-black text-white/90">Register Rescue Vehicle</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Type</label>
+                            <select className="suraksha-input w-full text-sm"
+                              value={vehicleForm.type}
+                              onChange={e => setVehicleForm(p => ({ ...p, type: e.target.value }))}>
+                              {['BOAT', 'BUS', 'VAN', 'TRUCK', 'HELICOPTER', 'AMBULANCE'].map(t => (
+                                <option key={t} value={t}>{t}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Name / Unit</label>
+                            <input className="suraksha-input w-full text-sm" placeholder="e.g. SL Army Boat Unit 3"
+                              value={vehicleForm.name} onChange={e => setVehicleForm(p => ({ ...p, name: e.target.value }))} />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Capacity</label>
+                            <input type="number" className="suraksha-input w-full text-sm" placeholder="e.g. 25"
+                              value={vehicleForm.capacity} onChange={e => setVehicleForm(p => ({ ...p, capacity: e.target.value }))} />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Deployed Area</label>
+                            <input className="suraksha-input w-full text-sm" placeholder="e.g. Kelani Valley"
+                              value={vehicleForm.area} onChange={e => setVehicleForm(p => ({ ...p, area: e.target.value }))} />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Operator / Unit</label>
+                            <input className="suraksha-input w-full text-sm" placeholder="e.g. SL Army"
+                              value={vehicleForm.operatorName} onChange={e => setVehicleForm(p => ({ ...p, operatorName: e.target.value }))} />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Contact Phone</label>
+                            <input className="suraksha-input w-full text-sm" placeholder="+94XXXXXXXXX"
+                              value={vehicleForm.contactPhone} onChange={e => setVehicleForm(p => ({ ...p, contactPhone: e.target.value }))} />
+                          </div>
+                        </div>
+                        {/* Pickup location picker */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Pickup Location on Map</label>
+                            <button type="button" onClick={() => setShowVehicleMapPicker(v => !v)}
+                              className="text-[10px] font-black text-blue-400 hover:text-blue-300 transition-colors">
+                              {showVehicleMapPicker ? 'Hide Map' : 'Pick on Map'}
+                            </button>
+                          </div>
+                          {vehicleForm.latitude && vehicleForm.longitude && (
+                            <p className="text-[11px] text-cyan-400 font-bold">
+                              📍 {parseFloat(vehicleForm.latitude).toFixed(4)}, {parseFloat(vehicleForm.longitude).toFixed(4)}
+                            </p>
+                          )}
+                          {showVehicleMapPicker && (
+                            <div className="rounded-2xl overflow-hidden border border-white/10" style={{ height: 220 }}>
+                              <MapContainer center={[7.8731, 80.7718]} zoom={8} style={{ height: '100%', width: '100%' }}>
+                                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
+                                <LocationPicker onPick={(lat, lng) => {
+                                  setVehicleForm(p => ({ ...p, latitude: String(lat), longitude: String(lng) }))
+                                  setShowVehicleMapPicker(false)
+                                }} />
+                                {vehicleForm.latitude && vehicleForm.longitude && (
+                                  <Marker position={[parseFloat(vehicleForm.latitude), parseFloat(vehicleForm.longitude)]} icon={createPickerIcon()} />
+                                )}
+                              </MapContainer>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={async () => {
+                              if (!vehicleForm.name || !vehicleForm.area || !vehicleForm.capacity) return
+                              try {
+                                await rescueService.createVehicle({
+                                  ...vehicleForm,
+                                  capacity: Number(vehicleForm.capacity),
+                                  latitude: vehicleForm.latitude ? Number(vehicleForm.latitude) : undefined,
+                                  longitude: vehicleForm.longitude ? Number(vehicleForm.longitude) : undefined,
+                                })
+                                setVehicleForm({ type: 'BOAT', name: '', capacity: '', area: '', operatorName: '', contactPhone: '', latitude: '', longitude: '' })
+                                setShowVehicleForm(false)
+                                fetchRescueData()
+                              } catch (err) { console.error(err) }
+                            }}
+                            className="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-black hover:bg-blue-700 transition-all">
+                            Register Vehicle
+                          </button>
+                          <button onClick={() => setShowVehicleForm(false)}
+                            className="px-4 py-2 rounded-xl bg-white/5 text-gray-400 text-xs font-black hover:bg-white/10 transition-all">
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      {vehicles.length === 0 ? (
+                        <p className="text-sm text-gray-500 font-bold py-4 text-center">No vehicles registered yet.</p>
+                      ) : vehicles.map((v: any) => {
+                        const VIcon = VEHICLE_ICONS[v.type] || Bus
+                        const vcol = VEHICLE_COLORS[v.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
+                        return (
+                          <div key={v.id} className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 bg-[#0f172a]">
+                            <div className={cn('p-2.5 rounded-xl border flex-shrink-0', vcol)}>
+                              <VIcon className="w-5 h-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="font-black text-white/90 text-sm">{v.name}</span>
+                                <span className="text-[9px] font-black px-2 py-0.5 rounded-full border uppercase bg-gray-500/10 text-gray-400 border-gray-500/30">{v.type}</span>
+                                <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase',
+                                  v.status === 'AVAILABLE' ? 'bg-green-500/15 text-green-400 border-green-500/30' : 'bg-orange-500/15 text-orange-400 border-orange-500/30')}>
+                                  {v.status.replace('_', ' ')}
+                                </span>
+                              </div>
+                              <p className="text-xs text-gray-400 font-bold mt-0.5">
+                                <MapPin className="w-3 h-3 inline mr-0.5" />{v.area} · Capacity: {v.capacity}
+                                {v.operatorName && ` · ${v.operatorName}`}
+                              </p>
+                            </div>
+                            <button onClick={async () => { await rescueService.deleteVehicle(v.id); fetchRescueData() }}
+                              className="text-red-400/60 hover:text-red-400 transition-colors flex-shrink-0">
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
@@ -229,7 +1090,7 @@ export default function CampsPage() {
                         <span className="text-sm font-bold">{t('camps_page.wait_time')} <span className="text-gray-800 dark:text-white/90 font-extrabold">{camp.waitTime || 'N/A'}</span></span>
                     </div>
                     <button onClick={() => setSelectedCampId(camp.id)} className="text-sm font-bold text-brand-500 hover:underline">
-                      {t('camps_page.manage_camp')}
+                      {isCitizen ? 'View Details' : t('camps_page.manage_camp')}
                     </button>
                   </div>
                 </div>
@@ -238,7 +1099,8 @@ export default function CampsPage() {
           )}
         </div>
 
-        {selectedCampId && <CampDetailsModal campId={selectedCampId} onClose={() => { setSelectedCampId(null); fetchCamps(); }} />}
+        {selectedCampId && <CampDetailsModal campId={selectedCampId} onClose={() => { setSelectedCampId(null); fetchCamps(); }} isCitizen={isCitizen} />}
+        {selectedMission && <RescueDetailModal mission={selectedMission} userLocation={userLocation} onClose={() => setSelectedMission(null)} />}
 
         {showModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
@@ -345,21 +1207,35 @@ export default function CampsPage() {
       )
 }
 
-function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => void }) {
+function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: string, onClose: () => void, isCitizen?: boolean }) {
   const { t } = useTranslation()
   const [camp, setCamp] = useState<any>(null)
+  const [campError, setCampError] = useState(false)
   const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'RESIDENTS' | 'INVENTORY' | 'SCHEDULE' | 'REFERRALS'>('OVERVIEW')
 
   const fetchCamp = async () => {
-    const res = await campService.getCampById(campId)
-    setCamp(res.data)
+    try {
+      const res = await campService.getCampById(campId)
+      setCamp(res.data)
+    } catch {
+      setCampError(true)
+    }
   }
 
   const [showTransferModal, setShowTransferModal] = useState(false)
-  
+
   useEffect(() => {
     fetchCamp()
   }, [campId])
+
+  if (campError) return (
+    <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 flex flex-col items-center gap-4 max-w-sm w-full text-center shadow-xl">
+        <p className="text-red-500 font-semibold">Failed to load camp details.</p>
+        <button onClick={onClose} className="suraksha-button px-6">Close</button>
+      </div>
+    </div>
+  )
 
   if (!camp) return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
@@ -390,10 +1266,12 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
         <div className="flex px-8 border-b border-cyan-400/20 shrink-0 overflow-x-auto bg-[#0f172a]">
           {[
             { id: 'OVERVIEW', label: t('camps_page.tabs.overview'), icon: Building2 },
-            { id: 'RESIDENTS', label: t('camps_page.tabs.digital_roll'), icon: Users },
-            { id: 'INVENTORY', label: t('camps_page.tabs.supply_inventory'), icon: PieChart },
-            { id: 'SCHEDULE', label: t('camps_page.tabs.services_schedule'), icon: ListTodo },
-            { id: 'REFERRALS', label: t('camps_page.tabs.hospital_referrals'), icon: Stethoscope },
+            ...(!isCitizen ? [
+              { id: 'RESIDENTS', label: t('camps_page.tabs.digital_roll'), icon: Users },
+              { id: 'INVENTORY', label: t('camps_page.tabs.supply_inventory'), icon: PieChart },
+              { id: 'SCHEDULE', label: t('camps_page.tabs.services_schedule'), icon: ListTodo },
+              { id: 'REFERRALS', label: t('camps_page.tabs.hospital_referrals'), icon: Stethoscope },
+            ] : []),
           ].map(tab => (
             <button
               key={tab.id}
@@ -415,7 +1293,7 @@ function CampDetailsModal({ campId, onClose }: { campId: string, onClose: () => 
                     <h4 className="text-red-400 font-black text-lg flex items-center gap-2"><ShieldAlert className="w-5 h-5"/> {t('camps_page.overview.capacity_surge_alert')}</h4>
                     <p className="text-red-300 text-sm mt-1">This camp is at {Math.round(occupancyRate * 100)}% capacity. Recommend immediate inter-camp transfers.</p>
                   </div>
-                  <button onClick={() => setShowTransferModal(true)} className="bg-red-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest whitespace-nowrap">{t('camps_page.overview.initiate_transfer')}</button>
+                  {!isCitizen && <button onClick={() => setShowTransferModal(true)} className="bg-red-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest whitespace-nowrap">{t('camps_page.overview.initiate_transfer')}</button>}
                 </div>
               )}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

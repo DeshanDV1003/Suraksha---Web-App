@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const { user, logout } = useAuth();
 
   function toggleDropdown() {
@@ -21,10 +22,12 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
       >
-        {(user as any)?.profilePicture ? (
+        {(user as any)?.profilePicture && !imgError ? (
           <img
             src={(user as any).profilePicture}
             alt={user?.name || 'User'}
+            referrerPolicy="no-referrer"
+            onError={() => setImgError(true)}
             className="mr-3 overflow-hidden rounded-full h-10 w-10 object-cover border-2 border-brand-500"
           />
         ) : (

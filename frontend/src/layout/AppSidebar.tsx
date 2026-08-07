@@ -56,7 +56,7 @@ const mainItems: NavItem[] = [
 const resourceItems: NavItem[] = [
   { icon: <Package className="w-5 h-5" />, nameKey: "nav.resources", path: "/resources", roles: ALL_STAFF },
   { icon: <Building2 className="w-5 h-5" />, nameKey: "nav.camps", path: "/camps", roles: ALL_ROLES },
-  { icon: <QrCode className="w-5 h-5" />, nameKey: "nav.relief_tokens", path: "/tokens", roles: ALL_ROLES },
+  { icon: <QrCode className="w-5 h-5" />, nameKey: "nav.relief_tokens", path: "/tokens", roles: ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER', 'VOLUNTEER'] },
   { icon: <CreditCard className="w-5 h-5" />, nameKey: "nav.donations", path: "/donations", roles: ['ADMIN', 'DMC_OFFICER'] },
 ];
 

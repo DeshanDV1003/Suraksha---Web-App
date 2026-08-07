@@ -165,13 +165,14 @@ export const googleLoginUser = async (idToken: string, ipAddress?: string, devic
     if (!GOOGLE_ALLOWED_ROLES.includes(user.role)) {
       throw new Error('Google Sign-In is only available for citizens and volunteers. Please use your email and password to log in.');
     }
-    // Link googleId if not yet linked
-    if (!user.googleId) {
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: { googleId, profilePicture: user.profilePicture || profilePicture },
-      });
-    }
+    // Always refresh googleId and profile picture from the current Google token
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        googleId,
+        profilePicture: profilePicture || user.profilePicture,
+      },
+    });
   } else {
     // New user — create as CITIZEN
     user = await prisma.user.create({

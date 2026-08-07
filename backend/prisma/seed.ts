@@ -14,8 +14,36 @@ const RIVERS   = ['Mahaweli','Kelani','Kalu','Gin','Nilwala','Deduru Oya','Walaw
 const STATIONS = ['Peradeniya','Hanwella','Norwood','Alawwa','Putupaula','Ellagawa','Magura','Daraniyagala'];
 const CATS     = ['Flood','Landslide','Cyclone','Fire','Medical Emergency','Infrastructure Failure','Drought','Tsunami Warning'];
 const SVCS     = ['Food','Water','First Aid','Shelter','Counseling','Sanitation','Baby Care','Medication'];
-const lat = (i: number) => 6.0 + (i % 20) * 0.3;
-const lng = (i: number) => 80.0 + (i % 20) * 0.15;
+// Inland district centroids — coastal districts use inland town coords to avoid sea placement
+const DISTRICT_COORDS: [number, number][] = [
+  [6.9271, 79.8612], // Colombo
+  [7.0873, 79.9996], // Gampaha
+  [6.6300, 80.1300], // Kalutara (inland)
+  [7.2906, 80.6337], // Kandy
+  [7.4675, 80.6234], // Matale
+  [6.9497, 80.7891], // Nuwara Eliya
+  [6.2200, 80.3500], // Galle (inland – Baddegama)
+  [6.1400, 80.6000], // Matara (inland – Akuressa)
+  [6.3500, 81.0000], // Hambantota (inland – Tissamaharama)
+  [9.6615, 80.0255], // Jaffna
+  [9.3803, 80.3770], // Kilinochchi
+  [8.9761, 79.9044], // Mannar
+  [8.7514, 80.4971], // Vavuniya
+  [9.0000, 80.8000], // Mullaitivu (inland)
+  [7.7102, 81.5500], // Batticaloa (slightly inland)
+  [7.2987, 81.5000], // Ampara (slightly inland)
+  [8.5000, 81.0000], // Trincomalee (inland)
+  [7.4818, 80.3609], // Kurunegala
+  [8.0362, 79.9000], // Puttalam (slightly inland)
+  [8.3408, 80.4164], // Anuradhapura
+  [7.9403, 81.0188], // Polonnaruwa
+  [6.9934, 81.0550], // Badulla
+  [6.8667, 81.3471], // Monaragala
+  [6.6934, 80.3849], // Ratnapura
+  [7.2513, 80.3464], // Kegalle
+];
+const lat = (i: number) => DISTRICT_COORDS[i % DISTRICT_COORDS.length][0] + (Math.sin(i * 1.7) * 0.025);
+const lng = (i: number) => DISTRICT_COORDS[i % DISTRICT_COORDS.length][1] + (Math.cos(i * 1.3) * 0.025);
 
 async function hash(p: string) { return bcrypt.hash(p, 10); }
 

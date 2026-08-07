@@ -174,6 +174,14 @@ function StaffOnly({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+// Guard: redirects citizens (but not volunteers/staff) away
+function NonCitizenOnly({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/login" />
+  if (user.role === 'CITIZEN') return <Navigate to="/citizen-home" replace />
+  return <>{children}</>
+}
+
 const ProtectedRoutes = () => {
   const { user } = useAuth()
   if (!user) return <Navigate to="/login" />
@@ -222,7 +230,7 @@ const ProtectedRoutes = () => {
         <Route path="/incidents"        element={<IncidentsPage />} />
         <Route path="/suraksha-alerts"  element={<AlertsPage />} />
         <Route path="/camps"            element={<CampsPage />} />
-        <Route path="/tokens"           element={<TokensPage />} />
+        <Route path="/tokens"           element={<NonCitizenOnly><TokensPage /></NonCitizenOnly>} />
         <Route path="/volunteers"       element={<VolunteerPage />} />
         <Route path="/tasks"            element={<StaffOnly><TaskManagementPage /></StaffOnly>} />
         <Route path="/help-requests"    element={<HelpRequestsPage />} />

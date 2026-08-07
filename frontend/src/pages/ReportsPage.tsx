@@ -109,19 +109,6 @@ export default function ReportsPage() {
     ]
   }, [data])
 
-  if (loading || !data) {
-    return (
-          <>
-            <PageMeta title="Reports | Suraksha" description="Suraksha Reports Page" />
-            <PageBreadcrumb pageTitle="Reports" />
-            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-            <div className="w-12 h-12 border-4 border-blue-100 border-t-[#0061ff] rounded-full animate-spin" />
-            <p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em]">{t('reports_page.loading')}</p>
-          </div>
-          </>
-        )
-  }
-
   if (error) {
     return (
       <div className="suraksha-card p-20 flex flex-col items-center text-center gap-6">
@@ -134,6 +121,19 @@ export default function ReportsPage() {
         </div>
         <button onClick={() => window.location.reload()} className="suraksha-button px-10">{t('reports_page.retry_sync')}</button>
       </div>
+    )
+  }
+
+  if (loading || !data) {
+    return (
+      <>
+        <PageMeta title="Reports | Suraksha" description="Suraksha Reports Page" />
+        <PageBreadcrumb pageTitle="Reports" />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+          <div className="w-12 h-12 border-4 border-blue-100 border-t-[#0061ff] rounded-full animate-spin" />
+          <p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em]">{t('reports_page.loading')}</p>
+        </div>
+      </>
     )
   }
 
@@ -199,7 +199,7 @@ export default function ReportsPage() {
             <Activity className="w-6 h-6 text-brand-500" />
             <h3 className="text-xl font-black text-gray-800 dark:text-white/90">{t('reports_page.resource_utilization')}</h3>
           </div>
-          <div className="h-[300px]">
+          <div className="h-[300px]" style={{ minWidth: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.resourceUtilization || []} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9"/>
@@ -244,7 +244,7 @@ export default function ReportsPage() {
             <h3 className="text-xl font-black text-gray-800 dark:text-white/90">{t('reports_page.priority_breakdown')}</h3>
           </div>
           {data.incidents.total > 0 ? (
-            <div className="h-[180px]">
+            <div className="h-[180px]" style={{ minWidth: 0 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={dynamicPriorityData} cx="50%" cy="50%" innerRadius={45} outerRadius={72} paddingAngle={3} dataKey="value">
@@ -278,7 +278,7 @@ export default function ReportsPage() {
             <h3 className="text-xl font-black text-gray-800 dark:text-white/90 uppercase tracking-tighter">{t('reports_page.volunteer_hours')}</h3>
             <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('reports_page.seven_day')}</span>
           </div>
-          <div className="h-[260px] w-full">
+          <div className="h-[260px] w-full" style={{ minWidth: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data.volunteerHours || []}>
                 <defs>
@@ -303,7 +303,7 @@ export default function ReportsPage() {
             <h3 className="text-xl font-black text-gray-800 dark:text-white/90 uppercase tracking-tighter">{t('reports_page.incident_frequency')}</h3>
             <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('reports_page.seven_day')}</span>
           </div>
-          <div className="h-[260px] w-full">
+          <div className="h-[260px] w-full" style={{ minWidth: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.weeklyTrends}>
                 <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="#f8fafc" />

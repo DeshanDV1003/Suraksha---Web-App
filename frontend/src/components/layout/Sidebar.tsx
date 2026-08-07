@@ -67,7 +67,7 @@ export function Sidebar() {
   const resourceNavigation = [
     { name: t('nav.resources'), href: '/resources', icon: Package, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
     { name: t('nav.camps'), href: '/camps', icon: Building2, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
-    { name: t('nav.tokens'), href: '/tokens', icon: QrCode, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER', 'CITIZEN'] },
+    { name: t('nav.tokens'), href: '/tokens', icon: QrCode, roles: ['ADMIN', 'DMC_OFFICER', 'VOLUNTEER'] },
     { name: 'Donations', href: '/donations', icon: CreditCard, roles: ['ADMIN', 'DMC_OFFICER'] },
   ].filter(item => item.roles.includes(role))
 

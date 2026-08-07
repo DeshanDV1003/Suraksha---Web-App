@@ -3,11 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { UserSearch, Plus, X, MapPin, Loader2, User, Phone, BrainCircuit, Activity, Users, ShieldAlert, CheckCircle2, Trash2, CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { missingPersonService } from '@/services/api'
+import { useAuth } from '@/hooks/useAuth'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
 
 export default function MissingPersonsPage() {
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const isCitizen = (user as any)?.role === 'CITIZEN'
   const [persons, setPersons] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -200,14 +203,18 @@ export default function MissingPersonsPage() {
           <button onClick={() => setActiveTab('active')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'active' ? "bg-red-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
             <Users className="w-4 h-4" /> {t('missing_persons_page.tabs.active_cases')}
           </button>
-          <button onClick={() => setActiveTab('unidentified')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'unidentified' ? "bg-red-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
-            <ShieldAlert className="w-4 h-4" /> {t('missing_persons_page.tabs.unidentified')}
-          </button>
-          <button onClick={() => { setActiveTab('cross-reference'); handleCrossReference() }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'cross-reference' ? "bg-blue-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
-            <Activity className="w-4 h-4" /> {t('missing_persons_page.tabs.cross_reference')}
-          </button>
+          {!isCitizen && (
+            <button onClick={() => setActiveTab('unidentified')} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'unidentified' ? "bg-red-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
+              <ShieldAlert className="w-4 h-4" /> {t('missing_persons_page.tabs.unidentified')}
+            </button>
+          )}
+          {!isCitizen && (
+            <button onClick={() => { setActiveTab('cross-reference'); handleCrossReference() }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'cross-reference' ? "bg-blue-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
+              <Activity className="w-4 h-4" /> {t('missing_persons_page.tabs.cross_reference')}
+            </button>
+          )}
           <button onClick={() => { setActiveTab('ai'); setAiMatches([]); setSelectedImage(null) }} className={cn("flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all", activeTab === 'ai' ? "bg-purple-500/80 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
-            <BrainCircuit className="w-4 h-4" /> {t('missing_persons_page.tabs.ai_matcher')}
+            <BrainCircuit className="w-4 h-4" /> {isCitizen ? 'Search by Photo' : t('missing_persons_page.tabs.ai_matcher')}
           </button>
         </div>
 
@@ -255,24 +262,26 @@ export default function MissingPersonsPage() {
                       <button onClick={() => setSelectedPerson(person)} className="text-xs font-black text-red-400 uppercase hover:text-red-300 transition-colors">
                         {t('missing_persons_page.view_file')}
                       </button>
-                      <div className="flex items-center gap-2">
-                        {person.status === 'MISSING' && (
+                      {!isCitizen && (
+                        <div className="flex items-center gap-2">
+                          {person.status === 'MISSING' && (
+                            <button
+                              onClick={() => handleMarkFound(person.id)}
+                              title={t('missing_persons_page.mark_as_found')}
+                              className="w-7 h-7 flex items-center justify-center rounded-full bg-green-500/15 text-green-400 hover:bg-green-500/30 transition-colors"
+                            >
+                              <CheckCheck className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                           <button
-                            onClick={() => handleMarkFound(person.id)}
-                            title={t('missing_persons_page.mark_as_found')}
-                            className="w-7 h-7 flex items-center justify-center rounded-full bg-green-500/15 text-green-400 hover:bg-green-500/30 transition-colors"
+                            onClick={() => handleDelete(person.id, person.name)}
+                            title={t('missing_persons_page.delete_record')}
+                            className="w-7 h-7 flex items-center justify-center rounded-full bg-white/8 text-slate-500 hover:bg-red-500/15 hover:text-red-400 transition-colors"
                           >
-                            <CheckCheck className="w-3.5 h-3.5" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                        )}
-                        <button
-                          onClick={() => handleDelete(person.id, person.name)}
-                          title={t('missing_persons_page.delete_record')}
-                          className="w-7 h-7 flex items-center justify-center rounded-full bg-white/8 text-slate-500 hover:bg-red-500/15 hover:text-red-400 transition-colors"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -417,20 +426,22 @@ export default function MissingPersonsPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="p-10 space-y-6">
-                {/* Unidentified toggle */}
-                <div className={cn("p-4 rounded-xl border cursor-pointer transition-all", isUnidentified ? "bg-red-500/15 border-red-500/30" : "bg-white/5 border-white/10")}>
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={isUnidentified}
-                      onChange={e => setIsUnidentified(e.target.checked)}
-                      className="w-5 h-5 rounded accent-red-500"
-                    />
-                    <span className={cn("font-bold", isUnidentified ? "text-red-300" : "text-slate-300")}>
-                      {t('missing_persons_page.register_unidentified')}
-                    </span>
-                  </label>
-                </div>
+                {/* Unidentified toggle — staff only */}
+                {!isCitizen && (
+                  <div className={cn("p-4 rounded-xl border cursor-pointer transition-all", isUnidentified ? "bg-red-500/15 border-red-500/30" : "bg-white/5 border-white/10")}>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={isUnidentified}
+                        onChange={e => setIsUnidentified(e.target.checked)}
+                        className="w-5 h-5 rounded accent-red-500"
+                      />
+                      <span className={cn("font-bold", isUnidentified ? "text-red-300" : "text-slate-300")}>
+                        {t('missing_persons_page.register_unidentified')}
+                      </span>
+                    </label>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
@@ -538,7 +549,7 @@ export default function MissingPersonsPage() {
                     </div>
                   )}
 
-                  {selectedPerson.status === 'MISSING' && (
+                  {!isCitizen && selectedPerson.status === 'MISSING' && (
                     <button
                       onClick={() => handleMarkFound(selectedPerson.id)}
                       className="w-full bg-green-500/15 hover:bg-green-500/25 text-green-400 border border-green-500/30 text-xs font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
@@ -547,12 +558,14 @@ export default function MissingPersonsPage() {
                     </button>
                   )}
 
-                  <button
-                    onClick={() => handleDelete(selectedPerson.id, selectedPerson.name)}
-                    className="w-full bg-white/5 hover:bg-red-500/15 text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-500/30 text-xs font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
-                  >
-                    <Trash2 className="w-4 h-4" /> {t('missing_persons_page.delete_record')}
-                  </button>
+                  {!isCitizen && (
+                    <button
+                      onClick={() => handleDelete(selectedPerson.id, selectedPerson.name)}
+                      className="w-full bg-white/5 hover:bg-red-500/15 text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-500/30 text-xs font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
+                    >
+                      <Trash2 className="w-4 h-4" /> {t('missing_persons_page.delete_record')}
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -587,8 +600,8 @@ export default function MissingPersonsPage() {
                     </div>
                   </div>
 
-                  {/* Reunification Workflow */}
-                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+                  {/* Reunification Workflow — staff only */}
+                  {!isCitizen && <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
                     <h3 className="text-lg font-black text-blue-300 mb-1 flex items-center gap-2">
                       <Phone className="w-5 h-5" /> {t('missing_persons_page.reunification_title')}
                     </h3>
@@ -646,7 +659,7 @@ export default function MissingPersonsPage() {
                         </div>
                       )}
                     </div>
-                  </div>
+                  </div>}
                 </div>
               </div>
             </div>

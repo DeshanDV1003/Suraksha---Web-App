@@ -33,7 +33,9 @@ import waterRoutes from './routes/waterRoutes';
 import reportRoutes from './routes/reportRoutes';
 import aiRoutes from './routes/aiRoutes';
 import safeZoneRoutes from './routes/safeZoneRoutes';
+import rescueRoutes from './routes/rescueRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
+import { setupBackupCron, runBackup } from './services/backupService';
 import { setIO } from './utils/socketInstance';
 
 dotenv.config();
@@ -83,6 +85,7 @@ app.use('/api/water', waterRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/safe-zones', safeZoneRoutes);
+app.use('/api/rescue', rescueRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -126,6 +129,19 @@ waterNamespace.on('connection', (socket) => {
 
 // Start the water data fetch cron job
 setupWaterDataCron();
+
+// Start daily DB backup cron (02:00 AM → D:\SurakshaBackups)
+setupBackupCron();
+
+// Manual backup trigger (admin only)
+app.post('/api/admin/backup', async (req, res) => {
+  try {
+    await runBackup();
+    res.json({ success: true, message: 'Backup completed successfully', location: 'D:\\SurakshaBackups' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {

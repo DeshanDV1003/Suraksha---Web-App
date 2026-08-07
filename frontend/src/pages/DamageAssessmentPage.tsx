@@ -4,12 +4,30 @@ import { useDialog } from '@/components/ui/dialogs/DialogProvider'
 import { Home, Plus, X, CheckCircle2, Loader2, Camera, TrendingUp, ChevronDown, Sparkles, MapPin, ShieldCheck, Map, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { damageAssessmentService, incidentService } from '@/services/api'
+import { useAuth } from '@/hooks/useAuth'
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
+
+const pickerIcon = L.divIcon({
+  className: '',
+  html: `<div style="width:28px;height:28px;background:#06b6d4;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,0.4)"></div>`,
+  iconSize: [28, 28],
+  iconAnchor: [14, 28],
+})
+
+function MapClickHandler({ onPick }: { onPick: (lat: number, lng: number) => void }) {
+  useMapEvents({ click: e => onPick(e.latlng.lat, e.latlng.lng) })
+  return null
+}
 
 export default function DamageAssessmentPage() {
   const { alert } = useDialog()
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const isCitizen = (user as any)?.role === 'CITIZEN'
   const [assessments, setAssessments] = useState<any[]>([])
   const [incidents, setIncidents] = useState<any[]>([])
   const [reports, setReports] = useState<any[]>([])
@@ -19,6 +37,9 @@ export default function DamageAssessmentPage() {
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null)
 
   const [activeTab, setActiveTab] = useState('verification')
+  const [showMapPicker, setShowMapPicker] = useState(false)
+  const [pickedLatLng, setPickedLatLng] = useState<{ lat: number; lng: number } | null>(null)
+  const [geocoding, setGeocoding] = useState(false)
 
   // AI state
   const [aiLoading, setAiLoading] = useState(false)
@@ -28,6 +49,8 @@ export default function DamageAssessmentPage() {
   const [formState, setFormState] = useState({
     incidentId: '',
     location: '',
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
     category: 'RESIDENTIAL',
     structuralDamage: 'MINOR',
     cropDamage: 'NONE',
@@ -85,13 +108,35 @@ export default function DamageAssessmentPage() {
 
   const handleOpenModal = () => {
     setFormState({
-      incidentId: '', location: '', category: 'RESIDENTIAL',
-      structuralDamage: 'MINOR', cropDamage: 'NONE', affectedPersons: 1,
-      estimatedLoss: '', propertyOwnershipStatus: 'Owned',
+      incidentId: '', location: '', latitude: undefined, longitude: undefined,
+      category: 'RESIDENTIAL', structuralDamage: 'MINOR', cropDamage: 'NONE',
+      affectedPersons: 1, estimatedLoss: '', propertyOwnershipStatus: 'Owned',
       familyVulnerabilityScore: 5, incomeBracket: '< 50,000 LKR', notes: '',
     })
     setAiData(null)
+    setPickedLatLng(null)
+    setShowMapPicker(false)
     setShowModal(true)
+  }
+
+  const handleMapPick = async (lat: number, lng: number) => {
+    setPickedLatLng({ lat, lng })
+    setFormState(p => ({ ...p, latitude: lat, longitude: lng }))
+    setGeocoding(true)
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+        { headers: { 'Accept-Language': 'en' } }
+      )
+      const data = await res.json()
+      const addr = data.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`
+      setFormState(p => ({ ...p, location: addr }))
+    } catch {
+      setFormState(p => ({ ...p, location: `${lat.toFixed(5)}, ${lng.toFixed(5)}` }))
+    } finally {
+      setGeocoding(false)
+      setShowMapPicker(false)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,6 +196,11 @@ export default function DamageAssessmentPage() {
     }
   }
 
+  // Citizens only see their own submissions; admins/staff see all
+  const displayedAssessments = isCitizen
+    ? assessments.filter(a => a.reportedById === (user as any)?.id)
+    : assessments
+
   const inputClass = "suraksha-input w-full"
   const selectClass = "suraksha-input w-full appearance-none cursor-pointer pr-10"
 
@@ -174,8 +224,8 @@ export default function DamageAssessmentPage() {
         {/* Tabs */}
         <div className="flex gap-2 bg-[#131f33] p-2 rounded-2xl shadow-sm border border-cyan-400/10">
           {[
-            { id: 'verification', label: t('damage_assessment_page.tabs.verification'), icon: ShieldCheck },
-            { id: 'reports', label: t('damage_assessment_page.tabs.district_reports'), icon: Map },
+            { id: 'verification', label: isCitizen ? 'My Reports' : t('damage_assessment_page.tabs.verification'), icon: ShieldCheck },
+            ...(!isCitizen ? [{ id: 'reports', label: t('damage_assessment_page.tabs.district_reports'), icon: Map }] : []),
           ].map(tab => (
             <button
               key={tab.id}
@@ -201,15 +251,15 @@ export default function DamageAssessmentPage() {
                 <div className="h-64 flex items-center justify-center">
                   <Loader2 className="w-10 h-10 animate-spin text-cyan-400" />
                 </div>
-              ) : assessments.length === 0 ? (
+              ) : displayedAssessments.length === 0 ? (
                 <div className="bg-white/5 border border-dashed border-white/15 rounded-[2.5rem] p-20 text-center space-y-4">
                   <Home className="w-16 h-16 text-slate-600 mx-auto" />
-                  <h3 className="text-xl font-bold text-white/70">{t('damage_assessment_page.no_assessments')}</h3>
-                  <p className="text-slate-500 max-w-xs mx-auto">{t('damage_assessment_page.no_assessments_desc')}</p>
+                  <h3 className="text-xl font-bold text-white/70">{isCitizen ? 'No reports submitted yet' : t('damage_assessment_page.no_assessments')}</h3>
+                  <p className="text-slate-500 max-w-xs mx-auto">{isCitizen ? 'Use the button above to submit your first damage report.' : t('damage_assessment_page.no_assessments_desc')}</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-6">
-                  {assessments.map((item) => (
+                  {displayedAssessments.map((item) => (
                     <div key={item.id} className="suraksha-card rounded-[2rem] p-8 hover:shadow-2xl hover:shadow-blue-500/5 transition-all">
                       <div className="flex flex-col gap-6">
                         {/* Header */}
@@ -265,8 +315,8 @@ export default function DamageAssessmentPage() {
                           <p className="text-sm text-slate-400 italic border-l-2 border-white/10 pl-3">{item.notes}</p>
                         )}
 
-                        {/* Verification Actions */}
-                        {item.status !== 'APPROVED' && item.status !== 'REJECTED' && (
+                        {/* Verification Actions — admin/staff only */}
+                        {!isCitizen && item.status !== 'APPROVED' && item.status !== 'REJECTED' && (
                           <div className="pt-4 border-t border-white/10 flex gap-2 flex-wrap">
                             {item.status === 'PENDING_REVIEW' && (
                               <button
@@ -301,30 +351,54 @@ export default function DamageAssessmentPage() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              <div className="bg-[#0a1628] border border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
-                <div className="w-12 h-12 bg-cyan-500/15 rounded-2xl flex items-center justify-center">
-                  <ShieldCheck className="w-6 h-6 text-cyan-400" />
+              {isCitizen ? (
+                <div className="bg-[#0a1628] border border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
+                  <div className="w-12 h-12 bg-cyan-500/15 rounded-2xl flex items-center justify-center">
+                    <Home className="w-6 h-6 text-cyan-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white/90">My Reports</h3>
+                  <p className="text-sm text-slate-400">Use the button above to submit a new damage report. Our team will review your submission and contact you about compensation eligibility.</p>
+                  <div className="space-y-4">
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Submitted</span>
+                      <span className="text-xl font-black text-cyan-400">{displayedAssessments.length}</span>
+                    </div>
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Under Review</span>
+                      <span className="text-xl font-black text-orange-400">{displayedAssessments.filter(a => a.status === 'PENDING_REVIEW' || a.status === 'SENIOR_REVIEW').length}</span>
+                    </div>
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Approved</span>
+                      <span className="text-xl font-black text-green-400">{displayedAssessments.filter(a => a.status === 'APPROVED').length}</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-black text-white/90">{t('damage_assessment_page.verification_queue')}</h3>
-                <div className="space-y-4">
-                  <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                    <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.pending_review')}</span>
-                    <span className="text-xl font-black text-orange-400">{assessments.filter(a => a.status === 'PENDING_REVIEW').length}</span>
+              ) : (
+                <div className="bg-[#0a1628] border border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
+                  <div className="w-12 h-12 bg-cyan-500/15 rounded-2xl flex items-center justify-center">
+                    <ShieldCheck className="w-6 h-6 text-cyan-400" />
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                    <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.senior_review')}</span>
-                    <span className="text-xl font-black text-purple-400">{assessments.filter(a => a.status === 'SENIOR_REVIEW').length}</span>
-                  </div>
-                  <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                    <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.approved')}</span>
-                    <span className="text-xl font-black text-green-400">{assessments.filter(a => a.status === 'APPROVED').length}</span>
-                  </div>
-                  <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                    <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.total')}</span>
-                    <span className="text-xl font-black text-white/90">{assessments.length}</span>
+                  <h3 className="text-2xl font-black text-white/90">{t('damage_assessment_page.verification_queue')}</h3>
+                  <div className="space-y-4">
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.pending_review')}</span>
+                      <span className="text-xl font-black text-orange-400">{assessments.filter(a => a.status === 'PENDING_REVIEW').length}</span>
+                    </div>
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.senior_review')}</span>
+                      <span className="text-xl font-black text-purple-400">{assessments.filter(a => a.status === 'SENIOR_REVIEW').length}</span>
+                    </div>
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.approved')}</span>
+                      <span className="text-xl font-black text-green-400">{assessments.filter(a => a.status === 'APPROVED').length}</span>
+                    </div>
+                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
+                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.total')}</span>
+                      <span className="text-xl font-black text-white/90">{assessments.length}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}
@@ -344,12 +418,14 @@ export default function DamageAssessmentPage() {
                       <h3 className="text-xl font-black text-white/90">{report.name}</h3>
                       <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">{report.totalStructures} {t('damage_assessment_page.structures_assessed')}</p>
                     </div>
-                    <button
-                      onClick={() => alert(`Report for ${report.name} submitted to government portal successfully.`, { variant: 'success', title: 'Submitted' })}
-                      className="bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow hover:shadow-cyan-500/20 hover:scale-105 transition-all"
-                    >
-                      {t('damage_assessment_page.submit_to_govt')}
-                    </button>
+                    {!isCitizen && (
+                      <button
+                        onClick={() => alert(`Report for ${report.name} submitted to government portal successfully.`, { variant: 'success', title: 'Submitted' })}
+                        className="bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow hover:shadow-cyan-500/20 hover:scale-105 transition-all"
+                      >
+                        {t('damage_assessment_page.submit_to_govt')}
+                      </button>
+                    )}
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between bg-white/5 p-3 rounded-xl border border-white/10 text-sm font-bold">
@@ -461,16 +537,53 @@ export default function DamageAssessmentPage() {
                   <div className="space-y-1.5 sm:col-span-2">
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('damage_assessment_page.location_address')}</label>
                     <div className="flex gap-2">
-                      <input
-                        type="text" placeholder="e.g. 42 Main St, Colombo" required
-                        className="suraksha-input flex-1"
-                        value={formState.location}
-                        onChange={e => setFormState(p => ({ ...p, location: e.target.value }))}
-                      />
-                      <button type="button" className="bg-white/8 px-4 rounded-xl text-slate-300 hover:bg-white/15 flex items-center justify-center transition-all">
+                      <div className="relative flex-1">
+                        <input
+                          type="text" placeholder="e.g. 42 Main St, Colombo" required
+                          className="suraksha-input w-full"
+                          value={formState.location}
+                          onChange={e => setFormState(p => ({ ...p, location: e.target.value }))}
+                        />
+                        {geocoding && (
+                          <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-cyan-400" />
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowMapPicker(v => !v)}
+                        title="Pick from map"
+                        className={cn(
+                          "px-4 rounded-xl flex items-center justify-center transition-all border",
+                          showMapPicker
+                            ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-300"
+                            : "bg-white/8 border-white/10 text-slate-300 hover:bg-white/15"
+                        )}
+                      >
                         <MapPin className="w-5 h-5"/>
                       </button>
                     </div>
+                    {showMapPicker && (
+                      <div className="mt-2 rounded-2xl overflow-hidden border border-cyan-400/30 h-56">
+                        <MapContainer
+                          center={[7.8731, 80.7718]}
+                          zoom={7}
+                          style={{ height: '100%', width: '100%' }}
+                          zoomControl={true}
+                        >
+                          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                          <MapClickHandler onPick={handleMapPick} />
+                          {pickedLatLng && (
+                            <Marker position={[pickedLatLng.lat, pickedLatLng.lng]} icon={pickerIcon} />
+                          )}
+                        </MapContainer>
+                      </div>
+                    )}
+                    {pickedLatLng && !showMapPicker && (
+                      <p className="text-[10px] text-cyan-400 font-bold px-1">
+                        📍 {pickedLatLng.lat.toFixed(5)}, {pickedLatLng.lng.toFixed(5)}
+                        <button type="button" onClick={() => { setPickedLatLng(null); setFormState(p => ({ ...p, latitude: undefined, longitude: undefined })) }} className="ml-2 text-slate-500 hover:text-red-400 underline">clear</button>
+                      </p>
+                    )}
                   </div>
 
                   {/* Category */}

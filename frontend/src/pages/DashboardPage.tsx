@@ -47,12 +47,13 @@ function HeatmapLayer({ points, isVisible }: { points: [number, number, number][
 function AISituationSummaryWidget() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
     setLoading(true)
     aiService.getSituationSummary(2)
       .then(res => setData(res.data))
-      .catch(() => {})
+      .catch(() => setFailed(true))
       .finally(() => setLoading(false))
   }, [])
 
@@ -62,6 +63,12 @@ function AISituationSummaryWidget() {
         <CloudLightning className="w-4 h-4 text-cyan-400 animate-pulse" />
       </div>
       <p className="text-sm text-gray-500">Generating AI situation summary…</p>
+    </div>
+  )
+
+  if (failed) return (
+    <div className="suraksha-card p-4 flex items-center gap-3 text-sm text-slate-400">
+      <span className="text-yellow-500">⚠</span> AI summary unavailable — ML service offline
     </div>
   )
 
@@ -422,7 +429,7 @@ export default function DashboardPage() {
                 SLA Breaches: 2
               </div>
             </div>
-            <div className="h-[200px] w-full">
+            <div className="h-[200px] w-full" style={{ minWidth: 0 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={responseTimeTrend}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -488,7 +495,7 @@ export default function DashboardPage() {
                 Reallocate
               </button>
             </div>
-            <div className="h-[200px] w-full">
+            <div className="h-[200px] w-full" style={{ minWidth: 0 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={resourceBalance} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />

@@ -1,6 +1,8 @@
 import prisma from '../utils/prisma';
 import { geocodeAddress } from './geocodingService';
 import geohash from 'ngeohash';
+import { sendExpoPush } from './notificationService';
+import { sendSMS, sendWhatsApp, sendAlertEmail } from './channelDeliveryService';
 
 export const createAlert = async (data: any) => {
   const locations: string[] = data.locations || [];
@@ -54,10 +56,12 @@ export const createAlert = async (data: any) => {
   // Priority 2: Users whose currentSectorId falls in geohash grid  (mobile users with live GPS)
   // Priority 3: Users whose registered region matches selected locations (always populated)
   // Both P2 and P3 are combined so we never miss anyone.
-  let usersToNotify: { id: string }[] = [];
+  let usersToNotify: { id: string; phone: string | null; email: string }[] = [];
+
+  const userSelect = { id: true, phone: true, email: true };
 
   if (locations.includes('All Island')) {
-    usersToNotify = await prisma.user.findMany({ select: { id: true } });
+    usersToNotify = await prisma.user.findMany({ select: userSelect });
   } else {
     const conditions: any[] = [];
 
@@ -74,7 +78,7 @@ export const createAlert = async (data: any) => {
     if (conditions.length > 0) {
       usersToNotify = await prisma.user.findMany({
         where: { OR: conditions },
-        select: { id: true },
+        select: userSelect,
       });
     }
   }
@@ -92,6 +96,34 @@ export const createAlert = async (data: any) => {
         read: false,
       })),
     });
+  }
+
+  // Dispatch to all selected channels
+  if (notifiedCount > 0) {
+    const userIds = usersToNotify.map(u => u.id);
+    const phones = usersToNotify.map(u => u.phone).filter((p): p is string => !!p);
+    const emails = usersToNotify.map(u => u.email).filter((e): e is string => !!e);
+
+    // channels is stored as JSON object: { app, sms, whatsapp, email, radio }
+    const channels: Record<string, boolean> = data.channels || {};
+
+    // IN-APP + mobile push (always sent regardless of channel toggle, as it's the base)
+    await sendExpoPush(userIds, alert.title, alert.message, { alertId: alert.id, type: alert.type });
+
+    // SMS
+    if (channels.sms) {
+      await sendSMS(phones, alert.title, alert.message);
+    }
+
+    // WhatsApp
+    if (channels.whatsapp) {
+      await sendWhatsApp(phones, alert.title, alert.message);
+    }
+
+    // Email
+    if (channels.email) {
+      await sendAlertEmail(emails, alert.title, alert.message, locations);
+    }
   }
 
   // Store the real notifiedCount on the alert

@@ -318,6 +318,21 @@ export type PublicSafePlace = $Result.DefaultSelection<Prisma.$PublicSafePlacePa
  * 
  */
 export type AuthorityContact = $Result.DefaultSelection<Prisma.$AuthorityContactPayload>
+/**
+ * Model RescueVehicle
+ * 
+ */
+export type RescueVehicle = $Result.DefaultSelection<Prisma.$RescueVehiclePayload>
+/**
+ * Model RescueMission
+ * 
+ */
+export type RescueMission = $Result.DefaultSelection<Prisma.$RescueMissionPayload>
+/**
+ * Model SafeZoneCheckIn
+ * 
+ */
+export type SafeZoneCheckIn = $Result.DefaultSelection<Prisma.$SafeZoneCheckInPayload>
 
 /**
  * Enums
@@ -554,6 +569,28 @@ export const WaterTrend: {
 
 export type WaterTrend = (typeof WaterTrend)[keyof typeof WaterTrend]
 
+
+export const VehicleType: {
+  BUS: 'BUS',
+  VAN: 'VAN',
+  BOAT: 'BOAT',
+  TRUCK: 'TRUCK',
+  HELICOPTER: 'HELICOPTER',
+  AMBULANCE: 'AMBULANCE'
+};
+
+export type VehicleType = (typeof VehicleType)[keyof typeof VehicleType]
+
+
+export const MissionStatus: {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type MissionStatus = (typeof MissionStatus)[keyof typeof MissionStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -643,6 +680,14 @@ export const RiverStatus: typeof $Enums.RiverStatus
 export type WaterTrend = $Enums.WaterTrend
 
 export const WaterTrend: typeof $Enums.WaterTrend
+
+export type VehicleType = $Enums.VehicleType
+
+export const VehicleType: typeof $Enums.VehicleType
+
+export type MissionStatus = $Enums.MissionStatus
+
+export const MissionStatus: typeof $Enums.MissionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1378,6 +1423,36 @@ export class PrismaClient<
     * ```
     */
   get authorityContact(): Prisma.AuthorityContactDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rescueVehicle`: Exposes CRUD operations for the **RescueVehicle** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RescueVehicles
+    * const rescueVehicles = await prisma.rescueVehicle.findMany()
+    * ```
+    */
+  get rescueVehicle(): Prisma.RescueVehicleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rescueMission`: Exposes CRUD operations for the **RescueMission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RescueMissions
+    * const rescueMissions = await prisma.rescueMission.findMany()
+    * ```
+    */
+  get rescueMission(): Prisma.RescueMissionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.safeZoneCheckIn`: Exposes CRUD operations for the **SafeZoneCheckIn** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SafeZoneCheckIns
+    * const safeZoneCheckIns = await prisma.safeZoneCheckIn.findMany()
+    * ```
+    */
+  get safeZoneCheckIn(): Prisma.SafeZoneCheckInDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1878,7 +1953,10 @@ export namespace Prisma {
     DownstreamMapping: 'DownstreamMapping',
     IncidentDuplicateLink: 'IncidentDuplicateLink',
     PublicSafePlace: 'PublicSafePlace',
-    AuthorityContact: 'AuthorityContact'
+    AuthorityContact: 'AuthorityContact',
+    RescueVehicle: 'RescueVehicle',
+    RescueMission: 'RescueMission',
+    SafeZoneCheckIn: 'SafeZoneCheckIn'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1894,7 +1972,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6412,6 +6490,228 @@ export namespace Prisma {
           }
         }
       }
+      RescueVehicle: {
+        payload: Prisma.$RescueVehiclePayload<ExtArgs>
+        fields: Prisma.RescueVehicleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RescueVehicleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RescueVehicleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>
+          }
+          findFirst: {
+            args: Prisma.RescueVehicleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RescueVehicleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>
+          }
+          findMany: {
+            args: Prisma.RescueVehicleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>[]
+          }
+          create: {
+            args: Prisma.RescueVehicleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>
+          }
+          createMany: {
+            args: Prisma.RescueVehicleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RescueVehicleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>[]
+          }
+          delete: {
+            args: Prisma.RescueVehicleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>
+          }
+          update: {
+            args: Prisma.RescueVehicleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>
+          }
+          deleteMany: {
+            args: Prisma.RescueVehicleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RescueVehicleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RescueVehicleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>[]
+          }
+          upsert: {
+            args: Prisma.RescueVehicleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueVehiclePayload>
+          }
+          aggregate: {
+            args: Prisma.RescueVehicleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRescueVehicle>
+          }
+          groupBy: {
+            args: Prisma.RescueVehicleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RescueVehicleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RescueVehicleCountArgs<ExtArgs>
+            result: $Utils.Optional<RescueVehicleCountAggregateOutputType> | number
+          }
+        }
+      }
+      RescueMission: {
+        payload: Prisma.$RescueMissionPayload<ExtArgs>
+        fields: Prisma.RescueMissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RescueMissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RescueMissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>
+          }
+          findFirst: {
+            args: Prisma.RescueMissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RescueMissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>
+          }
+          findMany: {
+            args: Prisma.RescueMissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>[]
+          }
+          create: {
+            args: Prisma.RescueMissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>
+          }
+          createMany: {
+            args: Prisma.RescueMissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RescueMissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>[]
+          }
+          delete: {
+            args: Prisma.RescueMissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>
+          }
+          update: {
+            args: Prisma.RescueMissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.RescueMissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RescueMissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RescueMissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.RescueMissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RescueMissionPayload>
+          }
+          aggregate: {
+            args: Prisma.RescueMissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRescueMission>
+          }
+          groupBy: {
+            args: Prisma.RescueMissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RescueMissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RescueMissionCountArgs<ExtArgs>
+            result: $Utils.Optional<RescueMissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SafeZoneCheckIn: {
+        payload: Prisma.$SafeZoneCheckInPayload<ExtArgs>
+        fields: Prisma.SafeZoneCheckInFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SafeZoneCheckInFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SafeZoneCheckInFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>
+          }
+          findFirst: {
+            args: Prisma.SafeZoneCheckInFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SafeZoneCheckInFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>
+          }
+          findMany: {
+            args: Prisma.SafeZoneCheckInFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>[]
+          }
+          create: {
+            args: Prisma.SafeZoneCheckInCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>
+          }
+          createMany: {
+            args: Prisma.SafeZoneCheckInCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SafeZoneCheckInCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>[]
+          }
+          delete: {
+            args: Prisma.SafeZoneCheckInDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>
+          }
+          update: {
+            args: Prisma.SafeZoneCheckInUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>
+          }
+          deleteMany: {
+            args: Prisma.SafeZoneCheckInDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SafeZoneCheckInUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SafeZoneCheckInUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>[]
+          }
+          upsert: {
+            args: Prisma.SafeZoneCheckInUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SafeZoneCheckInPayload>
+          }
+          aggregate: {
+            args: Prisma.SafeZoneCheckInAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSafeZoneCheckIn>
+          }
+          groupBy: {
+            args: Prisma.SafeZoneCheckInGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SafeZoneCheckInGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SafeZoneCheckInCountArgs<ExtArgs>
+            result: $Utils.Optional<SafeZoneCheckInCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -6561,6 +6861,9 @@ export namespace Prisma {
     incidentDuplicateLink?: IncidentDuplicateLinkOmit
     publicSafePlace?: PublicSafePlaceOmit
     authorityContact?: AuthorityContactOmit
+    rescueVehicle?: RescueVehicleOmit
+    rescueMission?: RescueMissionOmit
+    safeZoneCheckIn?: SafeZoneCheckInOmit
   }
 
   /* Types for Logging */
@@ -6669,6 +6972,8 @@ export namespace Prisma {
     createdTasks: number
     assignedTasks: number
     sessionLogs: number
+    assignedRescues: number
+    safeZoneCheckIns: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6686,6 +6991,8 @@ export namespace Prisma {
     createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
     assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
     sessionLogs?: boolean | UserCountOutputTypeCountSessionLogsArgs
+    assignedRescues?: boolean | UserCountOutputTypeCountAssignedRescuesArgs
+    safeZoneCheckIns?: boolean | UserCountOutputTypeCountSafeZoneCheckInsArgs
   }
 
   // Custom InputTypes
@@ -6795,6 +7102,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSessionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserSessionLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedRescuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RescueMissionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSafeZoneCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SafeZoneCheckInWhereInput
   }
 
 
@@ -7355,6 +7676,68 @@ export namespace Prisma {
 
 
   /**
+   * Count Type RescueVehicleCountOutputType
+   */
+
+  export type RescueVehicleCountOutputType = {
+    missions: number
+  }
+
+  export type RescueVehicleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    missions?: boolean | RescueVehicleCountOutputTypeCountMissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RescueVehicleCountOutputType without action
+   */
+  export type RescueVehicleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicleCountOutputType
+     */
+    select?: RescueVehicleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RescueVehicleCountOutputType without action
+   */
+  export type RescueVehicleCountOutputTypeCountMissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RescueMissionWhereInput
+  }
+
+
+  /**
+   * Count Type RescueMissionCountOutputType
+   */
+
+  export type RescueMissionCountOutputType = {
+    safeZoneCheckIns: number
+  }
+
+  export type RescueMissionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    safeZoneCheckIns?: boolean | RescueMissionCountOutputTypeCountSafeZoneCheckInsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RescueMissionCountOutputType without action
+   */
+  export type RescueMissionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMissionCountOutputType
+     */
+    select?: RescueMissionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RescueMissionCountOutputType without action
+   */
+  export type RescueMissionCountOutputTypeCountSafeZoneCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SafeZoneCheckInWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -7659,6 +8042,8 @@ export namespace Prisma {
     currentSector?: boolean | User$currentSectorArgs<ExtArgs>
     sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
     volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
+    assignedRescues?: boolean | User$assignedRescuesArgs<ExtArgs>
+    safeZoneCheckIns?: boolean | User$safeZoneCheckInsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7752,6 +8137,8 @@ export namespace Prisma {
     currentSector?: boolean | User$currentSectorArgs<ExtArgs>
     sessionLogs?: boolean | User$sessionLogsArgs<ExtArgs>
     volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
+    assignedRescues?: boolean | User$assignedRescuesArgs<ExtArgs>
+    safeZoneCheckIns?: boolean | User$safeZoneCheckInsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7781,6 +8168,8 @@ export namespace Prisma {
       currentSector: Prisma.$SectorPayload<ExtArgs> | null
       sessionLogs: Prisma.$UserSessionLogPayload<ExtArgs>[]
       volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
+      assignedRescues: Prisma.$RescueMissionPayload<ExtArgs>[]
+      safeZoneCheckIns: Prisma.$SafeZoneCheckInPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8214,6 +8603,8 @@ export namespace Prisma {
     currentSector<T extends User$currentSectorArgs<ExtArgs> = {}>(args?: Subset<T, User$currentSectorArgs<ExtArgs>>): Prisma__SectorClient<$Result.GetResult<Prisma.$SectorPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     sessionLogs<T extends User$sessionLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSessionLogPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    assignedRescues<T extends User$assignedRescuesArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedRescuesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    safeZoneCheckIns<T extends User$safeZoneCheckInsArgs<ExtArgs> = {}>(args?: Subset<T, User$safeZoneCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9049,6 +9440,54 @@ export namespace Prisma {
      */
     include?: VolunteerProfileInclude<ExtArgs> | null
     where?: VolunteerProfileWhereInput
+  }
+
+  /**
+   * User.assignedRescues
+   */
+  export type User$assignedRescuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    where?: RescueMissionWhereInput
+    orderBy?: RescueMissionOrderByWithRelationInput | RescueMissionOrderByWithRelationInput[]
+    cursor?: RescueMissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RescueMissionScalarFieldEnum | RescueMissionScalarFieldEnum[]
+  }
+
+  /**
+   * User.safeZoneCheckIns
+   */
+  export type User$safeZoneCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    where?: SafeZoneCheckInWhereInput
+    orderBy?: SafeZoneCheckInOrderByWithRelationInput | SafeZoneCheckInOrderByWithRelationInput[]
+    cursor?: SafeZoneCheckInWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SafeZoneCheckInScalarFieldEnum | SafeZoneCheckInScalarFieldEnum[]
   }
 
   /**
@@ -76879,6 +77318,3528 @@ export namespace Prisma {
 
 
   /**
+   * Model RescueVehicle
+   */
+
+  export type AggregateRescueVehicle = {
+    _count: RescueVehicleCountAggregateOutputType | null
+    _avg: RescueVehicleAvgAggregateOutputType | null
+    _sum: RescueVehicleSumAggregateOutputType | null
+    _min: RescueVehicleMinAggregateOutputType | null
+    _max: RescueVehicleMaxAggregateOutputType | null
+  }
+
+  export type RescueVehicleAvgAggregateOutputType = {
+    capacity: number | null
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type RescueVehicleSumAggregateOutputType = {
+    capacity: number | null
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type RescueVehicleMinAggregateOutputType = {
+    id: string | null
+    type: $Enums.VehicleType | null
+    name: string | null
+    capacity: number | null
+    area: string | null
+    latitude: number | null
+    longitude: number | null
+    status: string | null
+    contactPhone: string | null
+    operatorName: string | null
+    assignedById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RescueVehicleMaxAggregateOutputType = {
+    id: string | null
+    type: $Enums.VehicleType | null
+    name: string | null
+    capacity: number | null
+    area: string | null
+    latitude: number | null
+    longitude: number | null
+    status: string | null
+    contactPhone: string | null
+    operatorName: string | null
+    assignedById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RescueVehicleCountAggregateOutputType = {
+    id: number
+    type: number
+    name: number
+    capacity: number
+    area: number
+    latitude: number
+    longitude: number
+    status: number
+    contactPhone: number
+    operatorName: number
+    assignedById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RescueVehicleAvgAggregateInputType = {
+    capacity?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type RescueVehicleSumAggregateInputType = {
+    capacity?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type RescueVehicleMinAggregateInputType = {
+    id?: true
+    type?: true
+    name?: true
+    capacity?: true
+    area?: true
+    latitude?: true
+    longitude?: true
+    status?: true
+    contactPhone?: true
+    operatorName?: true
+    assignedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RescueVehicleMaxAggregateInputType = {
+    id?: true
+    type?: true
+    name?: true
+    capacity?: true
+    area?: true
+    latitude?: true
+    longitude?: true
+    status?: true
+    contactPhone?: true
+    operatorName?: true
+    assignedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RescueVehicleCountAggregateInputType = {
+    id?: true
+    type?: true
+    name?: true
+    capacity?: true
+    area?: true
+    latitude?: true
+    longitude?: true
+    status?: true
+    contactPhone?: true
+    operatorName?: true
+    assignedById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RescueVehicleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RescueVehicle to aggregate.
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueVehicles to fetch.
+     */
+    orderBy?: RescueVehicleOrderByWithRelationInput | RescueVehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RescueVehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueVehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueVehicles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RescueVehicles
+    **/
+    _count?: true | RescueVehicleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RescueVehicleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RescueVehicleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RescueVehicleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RescueVehicleMaxAggregateInputType
+  }
+
+  export type GetRescueVehicleAggregateType<T extends RescueVehicleAggregateArgs> = {
+        [P in keyof T & keyof AggregateRescueVehicle]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRescueVehicle[P]>
+      : GetScalarType<T[P], AggregateRescueVehicle[P]>
+  }
+
+
+
+
+  export type RescueVehicleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RescueVehicleWhereInput
+    orderBy?: RescueVehicleOrderByWithAggregationInput | RescueVehicleOrderByWithAggregationInput[]
+    by: RescueVehicleScalarFieldEnum[] | RescueVehicleScalarFieldEnum
+    having?: RescueVehicleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RescueVehicleCountAggregateInputType | true
+    _avg?: RescueVehicleAvgAggregateInputType
+    _sum?: RescueVehicleSumAggregateInputType
+    _min?: RescueVehicleMinAggregateInputType
+    _max?: RescueVehicleMaxAggregateInputType
+  }
+
+  export type RescueVehicleGroupByOutputType = {
+    id: string
+    type: $Enums.VehicleType
+    name: string
+    capacity: number
+    area: string
+    latitude: number | null
+    longitude: number | null
+    status: string
+    contactPhone: string | null
+    operatorName: string | null
+    assignedById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RescueVehicleCountAggregateOutputType | null
+    _avg: RescueVehicleAvgAggregateOutputType | null
+    _sum: RescueVehicleSumAggregateOutputType | null
+    _min: RescueVehicleMinAggregateOutputType | null
+    _max: RescueVehicleMaxAggregateOutputType | null
+  }
+
+  type GetRescueVehicleGroupByPayload<T extends RescueVehicleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RescueVehicleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RescueVehicleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RescueVehicleGroupByOutputType[P]>
+            : GetScalarType<T[P], RescueVehicleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RescueVehicleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    capacity?: boolean
+    area?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    status?: boolean
+    contactPhone?: boolean
+    operatorName?: boolean
+    assignedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    missions?: boolean | RescueVehicle$missionsArgs<ExtArgs>
+    _count?: boolean | RescueVehicleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rescueVehicle"]>
+
+  export type RescueVehicleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    capacity?: boolean
+    area?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    status?: boolean
+    contactPhone?: boolean
+    operatorName?: boolean
+    assignedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rescueVehicle"]>
+
+  export type RescueVehicleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    capacity?: boolean
+    area?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    status?: boolean
+    contactPhone?: boolean
+    operatorName?: boolean
+    assignedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rescueVehicle"]>
+
+  export type RescueVehicleSelectScalar = {
+    id?: boolean
+    type?: boolean
+    name?: boolean
+    capacity?: boolean
+    area?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    status?: boolean
+    contactPhone?: boolean
+    operatorName?: boolean
+    assignedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RescueVehicleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "name" | "capacity" | "area" | "latitude" | "longitude" | "status" | "contactPhone" | "operatorName" | "assignedById" | "createdAt" | "updatedAt", ExtArgs["result"]["rescueVehicle"]>
+  export type RescueVehicleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    missions?: boolean | RescueVehicle$missionsArgs<ExtArgs>
+    _count?: boolean | RescueVehicleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RescueVehicleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RescueVehicleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $RescueVehiclePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RescueVehicle"
+    objects: {
+      missions: Prisma.$RescueMissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: $Enums.VehicleType
+      name: string
+      capacity: number
+      area: string
+      latitude: number | null
+      longitude: number | null
+      status: string
+      contactPhone: string | null
+      operatorName: string | null
+      assignedById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["rescueVehicle"]>
+    composites: {}
+  }
+
+  type RescueVehicleGetPayload<S extends boolean | null | undefined | RescueVehicleDefaultArgs> = $Result.GetResult<Prisma.$RescueVehiclePayload, S>
+
+  type RescueVehicleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RescueVehicleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RescueVehicleCountAggregateInputType | true
+    }
+
+  export interface RescueVehicleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RescueVehicle'], meta: { name: 'RescueVehicle' } }
+    /**
+     * Find zero or one RescueVehicle that matches the filter.
+     * @param {RescueVehicleFindUniqueArgs} args - Arguments to find a RescueVehicle
+     * @example
+     * // Get one RescueVehicle
+     * const rescueVehicle = await prisma.rescueVehicle.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RescueVehicleFindUniqueArgs>(args: SelectSubset<T, RescueVehicleFindUniqueArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one RescueVehicle that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RescueVehicleFindUniqueOrThrowArgs} args - Arguments to find a RescueVehicle
+     * @example
+     * // Get one RescueVehicle
+     * const rescueVehicle = await prisma.rescueVehicle.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RescueVehicleFindUniqueOrThrowArgs>(args: SelectSubset<T, RescueVehicleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first RescueVehicle that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleFindFirstArgs} args - Arguments to find a RescueVehicle
+     * @example
+     * // Get one RescueVehicle
+     * const rescueVehicle = await prisma.rescueVehicle.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RescueVehicleFindFirstArgs>(args?: SelectSubset<T, RescueVehicleFindFirstArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first RescueVehicle that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleFindFirstOrThrowArgs} args - Arguments to find a RescueVehicle
+     * @example
+     * // Get one RescueVehicle
+     * const rescueVehicle = await prisma.rescueVehicle.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RescueVehicleFindFirstOrThrowArgs>(args?: SelectSubset<T, RescueVehicleFindFirstOrThrowArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more RescueVehicles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RescueVehicles
+     * const rescueVehicles = await prisma.rescueVehicle.findMany()
+     * 
+     * // Get first 10 RescueVehicles
+     * const rescueVehicles = await prisma.rescueVehicle.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rescueVehicleWithIdOnly = await prisma.rescueVehicle.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RescueVehicleFindManyArgs>(args?: SelectSubset<T, RescueVehicleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a RescueVehicle.
+     * @param {RescueVehicleCreateArgs} args - Arguments to create a RescueVehicle.
+     * @example
+     * // Create one RescueVehicle
+     * const RescueVehicle = await prisma.rescueVehicle.create({
+     *   data: {
+     *     // ... data to create a RescueVehicle
+     *   }
+     * })
+     * 
+     */
+    create<T extends RescueVehicleCreateArgs>(args: SelectSubset<T, RescueVehicleCreateArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many RescueVehicles.
+     * @param {RescueVehicleCreateManyArgs} args - Arguments to create many RescueVehicles.
+     * @example
+     * // Create many RescueVehicles
+     * const rescueVehicle = await prisma.rescueVehicle.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RescueVehicleCreateManyArgs>(args?: SelectSubset<T, RescueVehicleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RescueVehicles and returns the data saved in the database.
+     * @param {RescueVehicleCreateManyAndReturnArgs} args - Arguments to create many RescueVehicles.
+     * @example
+     * // Create many RescueVehicles
+     * const rescueVehicle = await prisma.rescueVehicle.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RescueVehicles and only return the `id`
+     * const rescueVehicleWithIdOnly = await prisma.rescueVehicle.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RescueVehicleCreateManyAndReturnArgs>(args?: SelectSubset<T, RescueVehicleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a RescueVehicle.
+     * @param {RescueVehicleDeleteArgs} args - Arguments to delete one RescueVehicle.
+     * @example
+     * // Delete one RescueVehicle
+     * const RescueVehicle = await prisma.rescueVehicle.delete({
+     *   where: {
+     *     // ... filter to delete one RescueVehicle
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RescueVehicleDeleteArgs>(args: SelectSubset<T, RescueVehicleDeleteArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one RescueVehicle.
+     * @param {RescueVehicleUpdateArgs} args - Arguments to update one RescueVehicle.
+     * @example
+     * // Update one RescueVehicle
+     * const rescueVehicle = await prisma.rescueVehicle.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RescueVehicleUpdateArgs>(args: SelectSubset<T, RescueVehicleUpdateArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more RescueVehicles.
+     * @param {RescueVehicleDeleteManyArgs} args - Arguments to filter RescueVehicles to delete.
+     * @example
+     * // Delete a few RescueVehicles
+     * const { count } = await prisma.rescueVehicle.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RescueVehicleDeleteManyArgs>(args?: SelectSubset<T, RescueVehicleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RescueVehicles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RescueVehicles
+     * const rescueVehicle = await prisma.rescueVehicle.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RescueVehicleUpdateManyArgs>(args: SelectSubset<T, RescueVehicleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RescueVehicles and returns the data updated in the database.
+     * @param {RescueVehicleUpdateManyAndReturnArgs} args - Arguments to update many RescueVehicles.
+     * @example
+     * // Update many RescueVehicles
+     * const rescueVehicle = await prisma.rescueVehicle.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RescueVehicles and only return the `id`
+     * const rescueVehicleWithIdOnly = await prisma.rescueVehicle.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RescueVehicleUpdateManyAndReturnArgs>(args: SelectSubset<T, RescueVehicleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one RescueVehicle.
+     * @param {RescueVehicleUpsertArgs} args - Arguments to update or create a RescueVehicle.
+     * @example
+     * // Update or create a RescueVehicle
+     * const rescueVehicle = await prisma.rescueVehicle.upsert({
+     *   create: {
+     *     // ... data to create a RescueVehicle
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RescueVehicle we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RescueVehicleUpsertArgs>(args: SelectSubset<T, RescueVehicleUpsertArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of RescueVehicles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleCountArgs} args - Arguments to filter RescueVehicles to count.
+     * @example
+     * // Count the number of RescueVehicles
+     * const count = await prisma.rescueVehicle.count({
+     *   where: {
+     *     // ... the filter for the RescueVehicles we want to count
+     *   }
+     * })
+    **/
+    count<T extends RescueVehicleCountArgs>(
+      args?: Subset<T, RescueVehicleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RescueVehicleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RescueVehicle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RescueVehicleAggregateArgs>(args: Subset<T, RescueVehicleAggregateArgs>): Prisma.PrismaPromise<GetRescueVehicleAggregateType<T>>
+
+    /**
+     * Group by RescueVehicle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueVehicleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RescueVehicleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RescueVehicleGroupByArgs['orderBy'] }
+        : { orderBy?: RescueVehicleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RescueVehicleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRescueVehicleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RescueVehicle model
+   */
+  readonly fields: RescueVehicleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RescueVehicle.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RescueVehicleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    missions<T extends RescueVehicle$missionsArgs<ExtArgs> = {}>(args?: Subset<T, RescueVehicle$missionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RescueVehicle model
+   */ 
+  interface RescueVehicleFieldRefs {
+    readonly id: FieldRef<"RescueVehicle", 'String'>
+    readonly type: FieldRef<"RescueVehicle", 'VehicleType'>
+    readonly name: FieldRef<"RescueVehicle", 'String'>
+    readonly capacity: FieldRef<"RescueVehicle", 'Int'>
+    readonly area: FieldRef<"RescueVehicle", 'String'>
+    readonly latitude: FieldRef<"RescueVehicle", 'Float'>
+    readonly longitude: FieldRef<"RescueVehicle", 'Float'>
+    readonly status: FieldRef<"RescueVehicle", 'String'>
+    readonly contactPhone: FieldRef<"RescueVehicle", 'String'>
+    readonly operatorName: FieldRef<"RescueVehicle", 'String'>
+    readonly assignedById: FieldRef<"RescueVehicle", 'String'>
+    readonly createdAt: FieldRef<"RescueVehicle", 'DateTime'>
+    readonly updatedAt: FieldRef<"RescueVehicle", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RescueVehicle findUnique
+   */
+  export type RescueVehicleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueVehicle to fetch.
+     */
+    where: RescueVehicleWhereUniqueInput
+  }
+
+  /**
+   * RescueVehicle findUniqueOrThrow
+   */
+  export type RescueVehicleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueVehicle to fetch.
+     */
+    where: RescueVehicleWhereUniqueInput
+  }
+
+  /**
+   * RescueVehicle findFirst
+   */
+  export type RescueVehicleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueVehicle to fetch.
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueVehicles to fetch.
+     */
+    orderBy?: RescueVehicleOrderByWithRelationInput | RescueVehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RescueVehicles.
+     */
+    cursor?: RescueVehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueVehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueVehicles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RescueVehicles.
+     */
+    distinct?: RescueVehicleScalarFieldEnum | RescueVehicleScalarFieldEnum[]
+  }
+
+  /**
+   * RescueVehicle findFirstOrThrow
+   */
+  export type RescueVehicleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueVehicle to fetch.
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueVehicles to fetch.
+     */
+    orderBy?: RescueVehicleOrderByWithRelationInput | RescueVehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RescueVehicles.
+     */
+    cursor?: RescueVehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueVehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueVehicles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RescueVehicles.
+     */
+    distinct?: RescueVehicleScalarFieldEnum | RescueVehicleScalarFieldEnum[]
+  }
+
+  /**
+   * RescueVehicle findMany
+   */
+  export type RescueVehicleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueVehicles to fetch.
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueVehicles to fetch.
+     */
+    orderBy?: RescueVehicleOrderByWithRelationInput | RescueVehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RescueVehicles.
+     */
+    cursor?: RescueVehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueVehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueVehicles.
+     */
+    skip?: number
+    distinct?: RescueVehicleScalarFieldEnum | RescueVehicleScalarFieldEnum[]
+  }
+
+  /**
+   * RescueVehicle create
+   */
+  export type RescueVehicleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RescueVehicle.
+     */
+    data: XOR<RescueVehicleCreateInput, RescueVehicleUncheckedCreateInput>
+  }
+
+  /**
+   * RescueVehicle createMany
+   */
+  export type RescueVehicleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RescueVehicles.
+     */
+    data: RescueVehicleCreateManyInput | RescueVehicleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RescueVehicle createManyAndReturn
+   */
+  export type RescueVehicleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * The data used to create many RescueVehicles.
+     */
+    data: RescueVehicleCreateManyInput | RescueVehicleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RescueVehicle update
+   */
+  export type RescueVehicleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RescueVehicle.
+     */
+    data: XOR<RescueVehicleUpdateInput, RescueVehicleUncheckedUpdateInput>
+    /**
+     * Choose, which RescueVehicle to update.
+     */
+    where: RescueVehicleWhereUniqueInput
+  }
+
+  /**
+   * RescueVehicle updateMany
+   */
+  export type RescueVehicleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RescueVehicles.
+     */
+    data: XOR<RescueVehicleUpdateManyMutationInput, RescueVehicleUncheckedUpdateManyInput>
+    /**
+     * Filter which RescueVehicles to update
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * Limit how many RescueVehicles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RescueVehicle updateManyAndReturn
+   */
+  export type RescueVehicleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * The data used to update RescueVehicles.
+     */
+    data: XOR<RescueVehicleUpdateManyMutationInput, RescueVehicleUncheckedUpdateManyInput>
+    /**
+     * Filter which RescueVehicles to update
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * Limit how many RescueVehicles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RescueVehicle upsert
+   */
+  export type RescueVehicleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RescueVehicle to update in case it exists.
+     */
+    where: RescueVehicleWhereUniqueInput
+    /**
+     * In case the RescueVehicle found by the `where` argument doesn't exist, create a new RescueVehicle with this data.
+     */
+    create: XOR<RescueVehicleCreateInput, RescueVehicleUncheckedCreateInput>
+    /**
+     * In case the RescueVehicle was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RescueVehicleUpdateInput, RescueVehicleUncheckedUpdateInput>
+  }
+
+  /**
+   * RescueVehicle delete
+   */
+  export type RescueVehicleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+    /**
+     * Filter which RescueVehicle to delete.
+     */
+    where: RescueVehicleWhereUniqueInput
+  }
+
+  /**
+   * RescueVehicle deleteMany
+   */
+  export type RescueVehicleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RescueVehicles to delete
+     */
+    where?: RescueVehicleWhereInput
+    /**
+     * Limit how many RescueVehicles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RescueVehicle.missions
+   */
+  export type RescueVehicle$missionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    where?: RescueMissionWhereInput
+    orderBy?: RescueMissionOrderByWithRelationInput | RescueMissionOrderByWithRelationInput[]
+    cursor?: RescueMissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RescueMissionScalarFieldEnum | RescueMissionScalarFieldEnum[]
+  }
+
+  /**
+   * RescueVehicle without action
+   */
+  export type RescueVehicleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueVehicle
+     */
+    select?: RescueVehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueVehicle
+     */
+    omit?: RescueVehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueVehicleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RescueMission
+   */
+
+  export type AggregateRescueMission = {
+    _count: RescueMissionCountAggregateOutputType | null
+    _avg: RescueMissionAvgAggregateOutputType | null
+    _sum: RescueMissionSumAggregateOutputType | null
+    _min: RescueMissionMinAggregateOutputType | null
+    _max: RescueMissionMaxAggregateOutputType | null
+  }
+
+  export type RescueMissionAvgAggregateOutputType = {
+    evacuatedCount: number | null
+  }
+
+  export type RescueMissionSumAggregateOutputType = {
+    evacuatedCount: number | null
+  }
+
+  export type RescueMissionMinAggregateOutputType = {
+    id: string | null
+    vehicleId: string | null
+    area: string | null
+    destinationCampId: string | null
+    status: $Enums.MissionStatus | null
+    evacuatedCount: number | null
+    assignedById: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type RescueMissionMaxAggregateOutputType = {
+    id: string | null
+    vehicleId: string | null
+    area: string | null
+    destinationCampId: string | null
+    status: $Enums.MissionStatus | null
+    evacuatedCount: number | null
+    assignedById: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type RescueMissionCountAggregateOutputType = {
+    id: number
+    vehicleId: number
+    area: number
+    destinationCampId: number
+    status: number
+    evacuatedCount: number
+    assignedById: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    completedAt: number
+    _all: number
+  }
+
+
+  export type RescueMissionAvgAggregateInputType = {
+    evacuatedCount?: true
+  }
+
+  export type RescueMissionSumAggregateInputType = {
+    evacuatedCount?: true
+  }
+
+  export type RescueMissionMinAggregateInputType = {
+    id?: true
+    vehicleId?: true
+    area?: true
+    destinationCampId?: true
+    status?: true
+    evacuatedCount?: true
+    assignedById?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+  }
+
+  export type RescueMissionMaxAggregateInputType = {
+    id?: true
+    vehicleId?: true
+    area?: true
+    destinationCampId?: true
+    status?: true
+    evacuatedCount?: true
+    assignedById?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+  }
+
+  export type RescueMissionCountAggregateInputType = {
+    id?: true
+    vehicleId?: true
+    area?: true
+    destinationCampId?: true
+    status?: true
+    evacuatedCount?: true
+    assignedById?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+    _all?: true
+  }
+
+  export type RescueMissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RescueMission to aggregate.
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueMissions to fetch.
+     */
+    orderBy?: RescueMissionOrderByWithRelationInput | RescueMissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RescueMissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueMissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueMissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RescueMissions
+    **/
+    _count?: true | RescueMissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RescueMissionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RescueMissionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RescueMissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RescueMissionMaxAggregateInputType
+  }
+
+  export type GetRescueMissionAggregateType<T extends RescueMissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateRescueMission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRescueMission[P]>
+      : GetScalarType<T[P], AggregateRescueMission[P]>
+  }
+
+
+
+
+  export type RescueMissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RescueMissionWhereInput
+    orderBy?: RescueMissionOrderByWithAggregationInput | RescueMissionOrderByWithAggregationInput[]
+    by: RescueMissionScalarFieldEnum[] | RescueMissionScalarFieldEnum
+    having?: RescueMissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RescueMissionCountAggregateInputType | true
+    _avg?: RescueMissionAvgAggregateInputType
+    _sum?: RescueMissionSumAggregateInputType
+    _min?: RescueMissionMinAggregateInputType
+    _max?: RescueMissionMaxAggregateInputType
+  }
+
+  export type RescueMissionGroupByOutputType = {
+    id: string
+    vehicleId: string
+    area: string
+    destinationCampId: string | null
+    status: $Enums.MissionStatus
+    evacuatedCount: number
+    assignedById: string
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    completedAt: Date | null
+    _count: RescueMissionCountAggregateOutputType | null
+    _avg: RescueMissionAvgAggregateOutputType | null
+    _sum: RescueMissionSumAggregateOutputType | null
+    _min: RescueMissionMinAggregateOutputType | null
+    _max: RescueMissionMaxAggregateOutputType | null
+  }
+
+  type GetRescueMissionGroupByPayload<T extends RescueMissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RescueMissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RescueMissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RescueMissionGroupByOutputType[P]>
+            : GetScalarType<T[P], RescueMissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RescueMissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vehicleId?: boolean
+    area?: boolean
+    destinationCampId?: boolean
+    status?: boolean
+    evacuatedCount?: boolean
+    assignedById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    vehicle?: boolean | RescueVehicleDefaultArgs<ExtArgs>
+    assignedBy?: boolean | UserDefaultArgs<ExtArgs>
+    safeZoneCheckIns?: boolean | RescueMission$safeZoneCheckInsArgs<ExtArgs>
+    _count?: boolean | RescueMissionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rescueMission"]>
+
+  export type RescueMissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vehicleId?: boolean
+    area?: boolean
+    destinationCampId?: boolean
+    status?: boolean
+    evacuatedCount?: boolean
+    assignedById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    vehicle?: boolean | RescueVehicleDefaultArgs<ExtArgs>
+    assignedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rescueMission"]>
+
+  export type RescueMissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vehicleId?: boolean
+    area?: boolean
+    destinationCampId?: boolean
+    status?: boolean
+    evacuatedCount?: boolean
+    assignedById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    vehicle?: boolean | RescueVehicleDefaultArgs<ExtArgs>
+    assignedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rescueMission"]>
+
+  export type RescueMissionSelectScalar = {
+    id?: boolean
+    vehicleId?: boolean
+    area?: boolean
+    destinationCampId?: boolean
+    status?: boolean
+    evacuatedCount?: boolean
+    assignedById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+  }
+
+  export type RescueMissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vehicleId" | "area" | "destinationCampId" | "status" | "evacuatedCount" | "assignedById" | "notes" | "createdAt" | "updatedAt" | "completedAt", ExtArgs["result"]["rescueMission"]>
+  export type RescueMissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vehicle?: boolean | RescueVehicleDefaultArgs<ExtArgs>
+    assignedBy?: boolean | UserDefaultArgs<ExtArgs>
+    safeZoneCheckIns?: boolean | RescueMission$safeZoneCheckInsArgs<ExtArgs>
+    _count?: boolean | RescueMissionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RescueMissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vehicle?: boolean | RescueVehicleDefaultArgs<ExtArgs>
+    assignedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RescueMissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vehicle?: boolean | RescueVehicleDefaultArgs<ExtArgs>
+    assignedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RescueMissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RescueMission"
+    objects: {
+      vehicle: Prisma.$RescueVehiclePayload<ExtArgs>
+      assignedBy: Prisma.$UserPayload<ExtArgs>
+      safeZoneCheckIns: Prisma.$SafeZoneCheckInPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      vehicleId: string
+      area: string
+      destinationCampId: string | null
+      status: $Enums.MissionStatus
+      evacuatedCount: number
+      assignedById: string
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+      completedAt: Date | null
+    }, ExtArgs["result"]["rescueMission"]>
+    composites: {}
+  }
+
+  type RescueMissionGetPayload<S extends boolean | null | undefined | RescueMissionDefaultArgs> = $Result.GetResult<Prisma.$RescueMissionPayload, S>
+
+  type RescueMissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RescueMissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RescueMissionCountAggregateInputType | true
+    }
+
+  export interface RescueMissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RescueMission'], meta: { name: 'RescueMission' } }
+    /**
+     * Find zero or one RescueMission that matches the filter.
+     * @param {RescueMissionFindUniqueArgs} args - Arguments to find a RescueMission
+     * @example
+     * // Get one RescueMission
+     * const rescueMission = await prisma.rescueMission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RescueMissionFindUniqueArgs>(args: SelectSubset<T, RescueMissionFindUniqueArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one RescueMission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RescueMissionFindUniqueOrThrowArgs} args - Arguments to find a RescueMission
+     * @example
+     * // Get one RescueMission
+     * const rescueMission = await prisma.rescueMission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RescueMissionFindUniqueOrThrowArgs>(args: SelectSubset<T, RescueMissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first RescueMission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionFindFirstArgs} args - Arguments to find a RescueMission
+     * @example
+     * // Get one RescueMission
+     * const rescueMission = await prisma.rescueMission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RescueMissionFindFirstArgs>(args?: SelectSubset<T, RescueMissionFindFirstArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first RescueMission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionFindFirstOrThrowArgs} args - Arguments to find a RescueMission
+     * @example
+     * // Get one RescueMission
+     * const rescueMission = await prisma.rescueMission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RescueMissionFindFirstOrThrowArgs>(args?: SelectSubset<T, RescueMissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more RescueMissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RescueMissions
+     * const rescueMissions = await prisma.rescueMission.findMany()
+     * 
+     * // Get first 10 RescueMissions
+     * const rescueMissions = await prisma.rescueMission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rescueMissionWithIdOnly = await prisma.rescueMission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RescueMissionFindManyArgs>(args?: SelectSubset<T, RescueMissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a RescueMission.
+     * @param {RescueMissionCreateArgs} args - Arguments to create a RescueMission.
+     * @example
+     * // Create one RescueMission
+     * const RescueMission = await prisma.rescueMission.create({
+     *   data: {
+     *     // ... data to create a RescueMission
+     *   }
+     * })
+     * 
+     */
+    create<T extends RescueMissionCreateArgs>(args: SelectSubset<T, RescueMissionCreateArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many RescueMissions.
+     * @param {RescueMissionCreateManyArgs} args - Arguments to create many RescueMissions.
+     * @example
+     * // Create many RescueMissions
+     * const rescueMission = await prisma.rescueMission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RescueMissionCreateManyArgs>(args?: SelectSubset<T, RescueMissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RescueMissions and returns the data saved in the database.
+     * @param {RescueMissionCreateManyAndReturnArgs} args - Arguments to create many RescueMissions.
+     * @example
+     * // Create many RescueMissions
+     * const rescueMission = await prisma.rescueMission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RescueMissions and only return the `id`
+     * const rescueMissionWithIdOnly = await prisma.rescueMission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RescueMissionCreateManyAndReturnArgs>(args?: SelectSubset<T, RescueMissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a RescueMission.
+     * @param {RescueMissionDeleteArgs} args - Arguments to delete one RescueMission.
+     * @example
+     * // Delete one RescueMission
+     * const RescueMission = await prisma.rescueMission.delete({
+     *   where: {
+     *     // ... filter to delete one RescueMission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RescueMissionDeleteArgs>(args: SelectSubset<T, RescueMissionDeleteArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one RescueMission.
+     * @param {RescueMissionUpdateArgs} args - Arguments to update one RescueMission.
+     * @example
+     * // Update one RescueMission
+     * const rescueMission = await prisma.rescueMission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RescueMissionUpdateArgs>(args: SelectSubset<T, RescueMissionUpdateArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more RescueMissions.
+     * @param {RescueMissionDeleteManyArgs} args - Arguments to filter RescueMissions to delete.
+     * @example
+     * // Delete a few RescueMissions
+     * const { count } = await prisma.rescueMission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RescueMissionDeleteManyArgs>(args?: SelectSubset<T, RescueMissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RescueMissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RescueMissions
+     * const rescueMission = await prisma.rescueMission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RescueMissionUpdateManyArgs>(args: SelectSubset<T, RescueMissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RescueMissions and returns the data updated in the database.
+     * @param {RescueMissionUpdateManyAndReturnArgs} args - Arguments to update many RescueMissions.
+     * @example
+     * // Update many RescueMissions
+     * const rescueMission = await prisma.rescueMission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RescueMissions and only return the `id`
+     * const rescueMissionWithIdOnly = await prisma.rescueMission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RescueMissionUpdateManyAndReturnArgs>(args: SelectSubset<T, RescueMissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one RescueMission.
+     * @param {RescueMissionUpsertArgs} args - Arguments to update or create a RescueMission.
+     * @example
+     * // Update or create a RescueMission
+     * const rescueMission = await prisma.rescueMission.upsert({
+     *   create: {
+     *     // ... data to create a RescueMission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RescueMission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RescueMissionUpsertArgs>(args: SelectSubset<T, RescueMissionUpsertArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of RescueMissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionCountArgs} args - Arguments to filter RescueMissions to count.
+     * @example
+     * // Count the number of RescueMissions
+     * const count = await prisma.rescueMission.count({
+     *   where: {
+     *     // ... the filter for the RescueMissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends RescueMissionCountArgs>(
+      args?: Subset<T, RescueMissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RescueMissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RescueMission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RescueMissionAggregateArgs>(args: Subset<T, RescueMissionAggregateArgs>): Prisma.PrismaPromise<GetRescueMissionAggregateType<T>>
+
+    /**
+     * Group by RescueMission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RescueMissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RescueMissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RescueMissionGroupByArgs['orderBy'] }
+        : { orderBy?: RescueMissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RescueMissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRescueMissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RescueMission model
+   */
+  readonly fields: RescueMissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RescueMission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RescueMissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    vehicle<T extends RescueVehicleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RescueVehicleDefaultArgs<ExtArgs>>): Prisma__RescueVehicleClient<$Result.GetResult<Prisma.$RescueVehiclePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    assignedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    safeZoneCheckIns<T extends RescueMission$safeZoneCheckInsArgs<ExtArgs> = {}>(args?: Subset<T, RescueMission$safeZoneCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RescueMission model
+   */ 
+  interface RescueMissionFieldRefs {
+    readonly id: FieldRef<"RescueMission", 'String'>
+    readonly vehicleId: FieldRef<"RescueMission", 'String'>
+    readonly area: FieldRef<"RescueMission", 'String'>
+    readonly destinationCampId: FieldRef<"RescueMission", 'String'>
+    readonly status: FieldRef<"RescueMission", 'MissionStatus'>
+    readonly evacuatedCount: FieldRef<"RescueMission", 'Int'>
+    readonly assignedById: FieldRef<"RescueMission", 'String'>
+    readonly notes: FieldRef<"RescueMission", 'String'>
+    readonly createdAt: FieldRef<"RescueMission", 'DateTime'>
+    readonly updatedAt: FieldRef<"RescueMission", 'DateTime'>
+    readonly completedAt: FieldRef<"RescueMission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RescueMission findUnique
+   */
+  export type RescueMissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueMission to fetch.
+     */
+    where: RescueMissionWhereUniqueInput
+  }
+
+  /**
+   * RescueMission findUniqueOrThrow
+   */
+  export type RescueMissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueMission to fetch.
+     */
+    where: RescueMissionWhereUniqueInput
+  }
+
+  /**
+   * RescueMission findFirst
+   */
+  export type RescueMissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueMission to fetch.
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueMissions to fetch.
+     */
+    orderBy?: RescueMissionOrderByWithRelationInput | RescueMissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RescueMissions.
+     */
+    cursor?: RescueMissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueMissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueMissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RescueMissions.
+     */
+    distinct?: RescueMissionScalarFieldEnum | RescueMissionScalarFieldEnum[]
+  }
+
+  /**
+   * RescueMission findFirstOrThrow
+   */
+  export type RescueMissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueMission to fetch.
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueMissions to fetch.
+     */
+    orderBy?: RescueMissionOrderByWithRelationInput | RescueMissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RescueMissions.
+     */
+    cursor?: RescueMissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueMissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueMissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RescueMissions.
+     */
+    distinct?: RescueMissionScalarFieldEnum | RescueMissionScalarFieldEnum[]
+  }
+
+  /**
+   * RescueMission findMany
+   */
+  export type RescueMissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * Filter, which RescueMissions to fetch.
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RescueMissions to fetch.
+     */
+    orderBy?: RescueMissionOrderByWithRelationInput | RescueMissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RescueMissions.
+     */
+    cursor?: RescueMissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RescueMissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RescueMissions.
+     */
+    skip?: number
+    distinct?: RescueMissionScalarFieldEnum | RescueMissionScalarFieldEnum[]
+  }
+
+  /**
+   * RescueMission create
+   */
+  export type RescueMissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RescueMission.
+     */
+    data: XOR<RescueMissionCreateInput, RescueMissionUncheckedCreateInput>
+  }
+
+  /**
+   * RescueMission createMany
+   */
+  export type RescueMissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RescueMissions.
+     */
+    data: RescueMissionCreateManyInput | RescueMissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RescueMission createManyAndReturn
+   */
+  export type RescueMissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many RescueMissions.
+     */
+    data: RescueMissionCreateManyInput | RescueMissionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RescueMission update
+   */
+  export type RescueMissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RescueMission.
+     */
+    data: XOR<RescueMissionUpdateInput, RescueMissionUncheckedUpdateInput>
+    /**
+     * Choose, which RescueMission to update.
+     */
+    where: RescueMissionWhereUniqueInput
+  }
+
+  /**
+   * RescueMission updateMany
+   */
+  export type RescueMissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RescueMissions.
+     */
+    data: XOR<RescueMissionUpdateManyMutationInput, RescueMissionUncheckedUpdateManyInput>
+    /**
+     * Filter which RescueMissions to update
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * Limit how many RescueMissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RescueMission updateManyAndReturn
+   */
+  export type RescueMissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * The data used to update RescueMissions.
+     */
+    data: XOR<RescueMissionUpdateManyMutationInput, RescueMissionUncheckedUpdateManyInput>
+    /**
+     * Filter which RescueMissions to update
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * Limit how many RescueMissions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RescueMission upsert
+   */
+  export type RescueMissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RescueMission to update in case it exists.
+     */
+    where: RescueMissionWhereUniqueInput
+    /**
+     * In case the RescueMission found by the `where` argument doesn't exist, create a new RescueMission with this data.
+     */
+    create: XOR<RescueMissionCreateInput, RescueMissionUncheckedCreateInput>
+    /**
+     * In case the RescueMission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RescueMissionUpdateInput, RescueMissionUncheckedUpdateInput>
+  }
+
+  /**
+   * RescueMission delete
+   */
+  export type RescueMissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    /**
+     * Filter which RescueMission to delete.
+     */
+    where: RescueMissionWhereUniqueInput
+  }
+
+  /**
+   * RescueMission deleteMany
+   */
+  export type RescueMissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RescueMissions to delete
+     */
+    where?: RescueMissionWhereInput
+    /**
+     * Limit how many RescueMissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RescueMission.safeZoneCheckIns
+   */
+  export type RescueMission$safeZoneCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    where?: SafeZoneCheckInWhereInput
+    orderBy?: SafeZoneCheckInOrderByWithRelationInput | SafeZoneCheckInOrderByWithRelationInput[]
+    cursor?: SafeZoneCheckInWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SafeZoneCheckInScalarFieldEnum | SafeZoneCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * RescueMission without action
+   */
+  export type RescueMissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SafeZoneCheckIn
+   */
+
+  export type AggregateSafeZoneCheckIn = {
+    _count: SafeZoneCheckInCountAggregateOutputType | null
+    _min: SafeZoneCheckInMinAggregateOutputType | null
+    _max: SafeZoneCheckInMaxAggregateOutputType | null
+  }
+
+  export type SafeZoneCheckInMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    missionId: string | null
+    campId: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type SafeZoneCheckInMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    missionId: string | null
+    campId: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type SafeZoneCheckInCountAggregateOutputType = {
+    id: number
+    userId: number
+    missionId: number
+    campId: number
+    notes: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SafeZoneCheckInMinAggregateInputType = {
+    id?: true
+    userId?: true
+    missionId?: true
+    campId?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type SafeZoneCheckInMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    missionId?: true
+    campId?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type SafeZoneCheckInCountAggregateInputType = {
+    id?: true
+    userId?: true
+    missionId?: true
+    campId?: true
+    notes?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SafeZoneCheckInAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SafeZoneCheckIn to aggregate.
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafeZoneCheckIns to fetch.
+     */
+    orderBy?: SafeZoneCheckInOrderByWithRelationInput | SafeZoneCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SafeZoneCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafeZoneCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafeZoneCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SafeZoneCheckIns
+    **/
+    _count?: true | SafeZoneCheckInCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SafeZoneCheckInMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SafeZoneCheckInMaxAggregateInputType
+  }
+
+  export type GetSafeZoneCheckInAggregateType<T extends SafeZoneCheckInAggregateArgs> = {
+        [P in keyof T & keyof AggregateSafeZoneCheckIn]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSafeZoneCheckIn[P]>
+      : GetScalarType<T[P], AggregateSafeZoneCheckIn[P]>
+  }
+
+
+
+
+  export type SafeZoneCheckInGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SafeZoneCheckInWhereInput
+    orderBy?: SafeZoneCheckInOrderByWithAggregationInput | SafeZoneCheckInOrderByWithAggregationInput[]
+    by: SafeZoneCheckInScalarFieldEnum[] | SafeZoneCheckInScalarFieldEnum
+    having?: SafeZoneCheckInScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SafeZoneCheckInCountAggregateInputType | true
+    _min?: SafeZoneCheckInMinAggregateInputType
+    _max?: SafeZoneCheckInMaxAggregateInputType
+  }
+
+  export type SafeZoneCheckInGroupByOutputType = {
+    id: string
+    userId: string
+    missionId: string | null
+    campId: string | null
+    notes: string | null
+    createdAt: Date
+    _count: SafeZoneCheckInCountAggregateOutputType | null
+    _min: SafeZoneCheckInMinAggregateOutputType | null
+    _max: SafeZoneCheckInMaxAggregateOutputType | null
+  }
+
+  type GetSafeZoneCheckInGroupByPayload<T extends SafeZoneCheckInGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SafeZoneCheckInGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SafeZoneCheckInGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SafeZoneCheckInGroupByOutputType[P]>
+            : GetScalarType<T[P], SafeZoneCheckInGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SafeZoneCheckInSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    missionId?: boolean
+    campId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    mission?: boolean | SafeZoneCheckIn$missionArgs<ExtArgs>
+  }, ExtArgs["result"]["safeZoneCheckIn"]>
+
+  export type SafeZoneCheckInSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    missionId?: boolean
+    campId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    mission?: boolean | SafeZoneCheckIn$missionArgs<ExtArgs>
+  }, ExtArgs["result"]["safeZoneCheckIn"]>
+
+  export type SafeZoneCheckInSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    missionId?: boolean
+    campId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    mission?: boolean | SafeZoneCheckIn$missionArgs<ExtArgs>
+  }, ExtArgs["result"]["safeZoneCheckIn"]>
+
+  export type SafeZoneCheckInSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    missionId?: boolean
+    campId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }
+
+  export type SafeZoneCheckInOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "missionId" | "campId" | "notes" | "createdAt", ExtArgs["result"]["safeZoneCheckIn"]>
+  export type SafeZoneCheckInInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    mission?: boolean | SafeZoneCheckIn$missionArgs<ExtArgs>
+  }
+  export type SafeZoneCheckInIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    mission?: boolean | SafeZoneCheckIn$missionArgs<ExtArgs>
+  }
+  export type SafeZoneCheckInIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    mission?: boolean | SafeZoneCheckIn$missionArgs<ExtArgs>
+  }
+
+  export type $SafeZoneCheckInPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SafeZoneCheckIn"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      mission: Prisma.$RescueMissionPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      missionId: string | null
+      campId: string | null
+      notes: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["safeZoneCheckIn"]>
+    composites: {}
+  }
+
+  type SafeZoneCheckInGetPayload<S extends boolean | null | undefined | SafeZoneCheckInDefaultArgs> = $Result.GetResult<Prisma.$SafeZoneCheckInPayload, S>
+
+  type SafeZoneCheckInCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SafeZoneCheckInFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SafeZoneCheckInCountAggregateInputType | true
+    }
+
+  export interface SafeZoneCheckInDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SafeZoneCheckIn'], meta: { name: 'SafeZoneCheckIn' } }
+    /**
+     * Find zero or one SafeZoneCheckIn that matches the filter.
+     * @param {SafeZoneCheckInFindUniqueArgs} args - Arguments to find a SafeZoneCheckIn
+     * @example
+     * // Get one SafeZoneCheckIn
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SafeZoneCheckInFindUniqueArgs>(args: SelectSubset<T, SafeZoneCheckInFindUniqueArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one SafeZoneCheckIn that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SafeZoneCheckInFindUniqueOrThrowArgs} args - Arguments to find a SafeZoneCheckIn
+     * @example
+     * // Get one SafeZoneCheckIn
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SafeZoneCheckInFindUniqueOrThrowArgs>(args: SelectSubset<T, SafeZoneCheckInFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first SafeZoneCheckIn that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInFindFirstArgs} args - Arguments to find a SafeZoneCheckIn
+     * @example
+     * // Get one SafeZoneCheckIn
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SafeZoneCheckInFindFirstArgs>(args?: SelectSubset<T, SafeZoneCheckInFindFirstArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first SafeZoneCheckIn that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInFindFirstOrThrowArgs} args - Arguments to find a SafeZoneCheckIn
+     * @example
+     * // Get one SafeZoneCheckIn
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SafeZoneCheckInFindFirstOrThrowArgs>(args?: SelectSubset<T, SafeZoneCheckInFindFirstOrThrowArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more SafeZoneCheckIns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SafeZoneCheckIns
+     * const safeZoneCheckIns = await prisma.safeZoneCheckIn.findMany()
+     * 
+     * // Get first 10 SafeZoneCheckIns
+     * const safeZoneCheckIns = await prisma.safeZoneCheckIn.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const safeZoneCheckInWithIdOnly = await prisma.safeZoneCheckIn.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SafeZoneCheckInFindManyArgs>(args?: SelectSubset<T, SafeZoneCheckInFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a SafeZoneCheckIn.
+     * @param {SafeZoneCheckInCreateArgs} args - Arguments to create a SafeZoneCheckIn.
+     * @example
+     * // Create one SafeZoneCheckIn
+     * const SafeZoneCheckIn = await prisma.safeZoneCheckIn.create({
+     *   data: {
+     *     // ... data to create a SafeZoneCheckIn
+     *   }
+     * })
+     * 
+     */
+    create<T extends SafeZoneCheckInCreateArgs>(args: SelectSubset<T, SafeZoneCheckInCreateArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many SafeZoneCheckIns.
+     * @param {SafeZoneCheckInCreateManyArgs} args - Arguments to create many SafeZoneCheckIns.
+     * @example
+     * // Create many SafeZoneCheckIns
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SafeZoneCheckInCreateManyArgs>(args?: SelectSubset<T, SafeZoneCheckInCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SafeZoneCheckIns and returns the data saved in the database.
+     * @param {SafeZoneCheckInCreateManyAndReturnArgs} args - Arguments to create many SafeZoneCheckIns.
+     * @example
+     * // Create many SafeZoneCheckIns
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SafeZoneCheckIns and only return the `id`
+     * const safeZoneCheckInWithIdOnly = await prisma.safeZoneCheckIn.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SafeZoneCheckInCreateManyAndReturnArgs>(args?: SelectSubset<T, SafeZoneCheckInCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a SafeZoneCheckIn.
+     * @param {SafeZoneCheckInDeleteArgs} args - Arguments to delete one SafeZoneCheckIn.
+     * @example
+     * // Delete one SafeZoneCheckIn
+     * const SafeZoneCheckIn = await prisma.safeZoneCheckIn.delete({
+     *   where: {
+     *     // ... filter to delete one SafeZoneCheckIn
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SafeZoneCheckInDeleteArgs>(args: SelectSubset<T, SafeZoneCheckInDeleteArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one SafeZoneCheckIn.
+     * @param {SafeZoneCheckInUpdateArgs} args - Arguments to update one SafeZoneCheckIn.
+     * @example
+     * // Update one SafeZoneCheckIn
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SafeZoneCheckInUpdateArgs>(args: SelectSubset<T, SafeZoneCheckInUpdateArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more SafeZoneCheckIns.
+     * @param {SafeZoneCheckInDeleteManyArgs} args - Arguments to filter SafeZoneCheckIns to delete.
+     * @example
+     * // Delete a few SafeZoneCheckIns
+     * const { count } = await prisma.safeZoneCheckIn.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SafeZoneCheckInDeleteManyArgs>(args?: SelectSubset<T, SafeZoneCheckInDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SafeZoneCheckIns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SafeZoneCheckIns
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SafeZoneCheckInUpdateManyArgs>(args: SelectSubset<T, SafeZoneCheckInUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SafeZoneCheckIns and returns the data updated in the database.
+     * @param {SafeZoneCheckInUpdateManyAndReturnArgs} args - Arguments to update many SafeZoneCheckIns.
+     * @example
+     * // Update many SafeZoneCheckIns
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SafeZoneCheckIns and only return the `id`
+     * const safeZoneCheckInWithIdOnly = await prisma.safeZoneCheckIn.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SafeZoneCheckInUpdateManyAndReturnArgs>(args: SelectSubset<T, SafeZoneCheckInUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one SafeZoneCheckIn.
+     * @param {SafeZoneCheckInUpsertArgs} args - Arguments to update or create a SafeZoneCheckIn.
+     * @example
+     * // Update or create a SafeZoneCheckIn
+     * const safeZoneCheckIn = await prisma.safeZoneCheckIn.upsert({
+     *   create: {
+     *     // ... data to create a SafeZoneCheckIn
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SafeZoneCheckIn we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SafeZoneCheckInUpsertArgs>(args: SelectSubset<T, SafeZoneCheckInUpsertArgs<ExtArgs>>): Prisma__SafeZoneCheckInClient<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of SafeZoneCheckIns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInCountArgs} args - Arguments to filter SafeZoneCheckIns to count.
+     * @example
+     * // Count the number of SafeZoneCheckIns
+     * const count = await prisma.safeZoneCheckIn.count({
+     *   where: {
+     *     // ... the filter for the SafeZoneCheckIns we want to count
+     *   }
+     * })
+    **/
+    count<T extends SafeZoneCheckInCountArgs>(
+      args?: Subset<T, SafeZoneCheckInCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SafeZoneCheckInCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SafeZoneCheckIn.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SafeZoneCheckInAggregateArgs>(args: Subset<T, SafeZoneCheckInAggregateArgs>): Prisma.PrismaPromise<GetSafeZoneCheckInAggregateType<T>>
+
+    /**
+     * Group by SafeZoneCheckIn.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SafeZoneCheckInGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SafeZoneCheckInGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SafeZoneCheckInGroupByArgs['orderBy'] }
+        : { orderBy?: SafeZoneCheckInGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SafeZoneCheckInGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSafeZoneCheckInGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SafeZoneCheckIn model
+   */
+  readonly fields: SafeZoneCheckInFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SafeZoneCheckIn.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SafeZoneCheckInClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    mission<T extends SafeZoneCheckIn$missionArgs<ExtArgs> = {}>(args?: Subset<T, SafeZoneCheckIn$missionArgs<ExtArgs>>): Prisma__RescueMissionClient<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SafeZoneCheckIn model
+   */ 
+  interface SafeZoneCheckInFieldRefs {
+    readonly id: FieldRef<"SafeZoneCheckIn", 'String'>
+    readonly userId: FieldRef<"SafeZoneCheckIn", 'String'>
+    readonly missionId: FieldRef<"SafeZoneCheckIn", 'String'>
+    readonly campId: FieldRef<"SafeZoneCheckIn", 'String'>
+    readonly notes: FieldRef<"SafeZoneCheckIn", 'String'>
+    readonly createdAt: FieldRef<"SafeZoneCheckIn", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SafeZoneCheckIn findUnique
+   */
+  export type SafeZoneCheckInFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafeZoneCheckIn to fetch.
+     */
+    where: SafeZoneCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafeZoneCheckIn findUniqueOrThrow
+   */
+  export type SafeZoneCheckInFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafeZoneCheckIn to fetch.
+     */
+    where: SafeZoneCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafeZoneCheckIn findFirst
+   */
+  export type SafeZoneCheckInFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafeZoneCheckIn to fetch.
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafeZoneCheckIns to fetch.
+     */
+    orderBy?: SafeZoneCheckInOrderByWithRelationInput | SafeZoneCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SafeZoneCheckIns.
+     */
+    cursor?: SafeZoneCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafeZoneCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafeZoneCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SafeZoneCheckIns.
+     */
+    distinct?: SafeZoneCheckInScalarFieldEnum | SafeZoneCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * SafeZoneCheckIn findFirstOrThrow
+   */
+  export type SafeZoneCheckInFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafeZoneCheckIn to fetch.
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafeZoneCheckIns to fetch.
+     */
+    orderBy?: SafeZoneCheckInOrderByWithRelationInput | SafeZoneCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SafeZoneCheckIns.
+     */
+    cursor?: SafeZoneCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafeZoneCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafeZoneCheckIns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SafeZoneCheckIns.
+     */
+    distinct?: SafeZoneCheckInScalarFieldEnum | SafeZoneCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * SafeZoneCheckIn findMany
+   */
+  export type SafeZoneCheckInFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * Filter, which SafeZoneCheckIns to fetch.
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SafeZoneCheckIns to fetch.
+     */
+    orderBy?: SafeZoneCheckInOrderByWithRelationInput | SafeZoneCheckInOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SafeZoneCheckIns.
+     */
+    cursor?: SafeZoneCheckInWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SafeZoneCheckIns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SafeZoneCheckIns.
+     */
+    skip?: number
+    distinct?: SafeZoneCheckInScalarFieldEnum | SafeZoneCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * SafeZoneCheckIn create
+   */
+  export type SafeZoneCheckInCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SafeZoneCheckIn.
+     */
+    data: XOR<SafeZoneCheckInCreateInput, SafeZoneCheckInUncheckedCreateInput>
+  }
+
+  /**
+   * SafeZoneCheckIn createMany
+   */
+  export type SafeZoneCheckInCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SafeZoneCheckIns.
+     */
+    data: SafeZoneCheckInCreateManyInput | SafeZoneCheckInCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SafeZoneCheckIn createManyAndReturn
+   */
+  export type SafeZoneCheckInCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * The data used to create many SafeZoneCheckIns.
+     */
+    data: SafeZoneCheckInCreateManyInput | SafeZoneCheckInCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SafeZoneCheckIn update
+   */
+  export type SafeZoneCheckInUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SafeZoneCheckIn.
+     */
+    data: XOR<SafeZoneCheckInUpdateInput, SafeZoneCheckInUncheckedUpdateInput>
+    /**
+     * Choose, which SafeZoneCheckIn to update.
+     */
+    where: SafeZoneCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafeZoneCheckIn updateMany
+   */
+  export type SafeZoneCheckInUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SafeZoneCheckIns.
+     */
+    data: XOR<SafeZoneCheckInUpdateManyMutationInput, SafeZoneCheckInUncheckedUpdateManyInput>
+    /**
+     * Filter which SafeZoneCheckIns to update
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * Limit how many SafeZoneCheckIns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SafeZoneCheckIn updateManyAndReturn
+   */
+  export type SafeZoneCheckInUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * The data used to update SafeZoneCheckIns.
+     */
+    data: XOR<SafeZoneCheckInUpdateManyMutationInput, SafeZoneCheckInUncheckedUpdateManyInput>
+    /**
+     * Filter which SafeZoneCheckIns to update
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * Limit how many SafeZoneCheckIns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SafeZoneCheckIn upsert
+   */
+  export type SafeZoneCheckInUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SafeZoneCheckIn to update in case it exists.
+     */
+    where: SafeZoneCheckInWhereUniqueInput
+    /**
+     * In case the SafeZoneCheckIn found by the `where` argument doesn't exist, create a new SafeZoneCheckIn with this data.
+     */
+    create: XOR<SafeZoneCheckInCreateInput, SafeZoneCheckInUncheckedCreateInput>
+    /**
+     * In case the SafeZoneCheckIn was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SafeZoneCheckInUpdateInput, SafeZoneCheckInUncheckedUpdateInput>
+  }
+
+  /**
+   * SafeZoneCheckIn delete
+   */
+  export type SafeZoneCheckInDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+    /**
+     * Filter which SafeZoneCheckIn to delete.
+     */
+    where: SafeZoneCheckInWhereUniqueInput
+  }
+
+  /**
+   * SafeZoneCheckIn deleteMany
+   */
+  export type SafeZoneCheckInDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SafeZoneCheckIns to delete
+     */
+    where?: SafeZoneCheckInWhereInput
+    /**
+     * Limit how many SafeZoneCheckIns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SafeZoneCheckIn.mission
+   */
+  export type SafeZoneCheckIn$missionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RescueMission
+     */
+    select?: RescueMissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RescueMission
+     */
+    omit?: RescueMissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RescueMissionInclude<ExtArgs> | null
+    where?: RescueMissionWhereInput
+  }
+
+  /**
+   * SafeZoneCheckIn without action
+   */
+  export type SafeZoneCheckInDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SafeZoneCheckIn
+     */
+    select?: SafeZoneCheckInSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SafeZoneCheckIn
+     */
+    omit?: SafeZoneCheckInOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SafeZoneCheckInInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -77816,6 +81777,54 @@ export namespace Prisma {
   export type AuthorityContactScalarFieldEnum = (typeof AuthorityContactScalarFieldEnum)[keyof typeof AuthorityContactScalarFieldEnum]
 
 
+  export const RescueVehicleScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    name: 'name',
+    capacity: 'capacity',
+    area: 'area',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    status: 'status',
+    contactPhone: 'contactPhone',
+    operatorName: 'operatorName',
+    assignedById: 'assignedById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RescueVehicleScalarFieldEnum = (typeof RescueVehicleScalarFieldEnum)[keyof typeof RescueVehicleScalarFieldEnum]
+
+
+  export const RescueMissionScalarFieldEnum: {
+    id: 'id',
+    vehicleId: 'vehicleId',
+    area: 'area',
+    destinationCampId: 'destinationCampId',
+    status: 'status',
+    evacuatedCount: 'evacuatedCount',
+    assignedById: 'assignedById',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    completedAt: 'completedAt'
+  };
+
+  export type RescueMissionScalarFieldEnum = (typeof RescueMissionScalarFieldEnum)[keyof typeof RescueMissionScalarFieldEnum]
+
+
+  export const SafeZoneCheckInScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    missionId: 'missionId',
+    campId: 'campId',
+    notes: 'notes',
+    createdAt: 'createdAt'
+  };
+
+  export type SafeZoneCheckInScalarFieldEnum = (typeof SafeZoneCheckInScalarFieldEnum)[keyof typeof SafeZoneCheckInScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -78252,6 +82261,34 @@ export namespace Prisma {
    */
   export type ListEnumWaterTrendFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WaterTrend[]'>
     
+
+
+  /**
+   * Reference to a field of type 'VehicleType'
+   */
+  export type EnumVehicleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleType'>
+    
+
+
+  /**
+   * Reference to a field of type 'VehicleType[]'
+   */
+  export type ListEnumVehicleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissionStatus'
+   */
+  export type EnumMissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissionStatus[]'
+   */
+  export type ListEnumMissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissionStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -78298,6 +82335,8 @@ export namespace Prisma {
     currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
     sessionLogs?: UserSessionLogListRelationFilter
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
+    assignedRescues?: RescueMissionListRelationFilter
+    safeZoneCheckIns?: SafeZoneCheckInListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -78338,6 +82377,8 @@ export namespace Prisma {
     currentSector?: SectorOrderByWithRelationInput
     sessionLogs?: UserSessionLogOrderByRelationAggregateInput
     volunteerProfile?: VolunteerProfileOrderByWithRelationInput
+    assignedRescues?: RescueMissionOrderByRelationAggregateInput
+    safeZoneCheckIns?: SafeZoneCheckInOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -78381,6 +82422,8 @@ export namespace Prisma {
     currentSector?: XOR<SectorNullableScalarRelationFilter, SectorWhereInput> | null
     sessionLogs?: UserSessionLogListRelationFilter
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
+    assignedRescues?: RescueMissionListRelationFilter
+    safeZoneCheckIns?: SafeZoneCheckInListRelationFilter
   }, "id" | "email" | "googleId" | "nic">
 
   export type UserOrderByWithAggregationInput = {
@@ -83046,6 +87089,259 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"AuthorityContact"> | Date | string
   }
 
+  export type RescueVehicleWhereInput = {
+    AND?: RescueVehicleWhereInput | RescueVehicleWhereInput[]
+    OR?: RescueVehicleWhereInput[]
+    NOT?: RescueVehicleWhereInput | RescueVehicleWhereInput[]
+    id?: StringFilter<"RescueVehicle"> | string
+    type?: EnumVehicleTypeFilter<"RescueVehicle"> | $Enums.VehicleType
+    name?: StringFilter<"RescueVehicle"> | string
+    capacity?: IntFilter<"RescueVehicle"> | number
+    area?: StringFilter<"RescueVehicle"> | string
+    latitude?: FloatNullableFilter<"RescueVehicle"> | number | null
+    longitude?: FloatNullableFilter<"RescueVehicle"> | number | null
+    status?: StringFilter<"RescueVehicle"> | string
+    contactPhone?: StringNullableFilter<"RescueVehicle"> | string | null
+    operatorName?: StringNullableFilter<"RescueVehicle"> | string | null
+    assignedById?: StringNullableFilter<"RescueVehicle"> | string | null
+    createdAt?: DateTimeFilter<"RescueVehicle"> | Date | string
+    updatedAt?: DateTimeFilter<"RescueVehicle"> | Date | string
+    missions?: RescueMissionListRelationFilter
+  }
+
+  export type RescueVehicleOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    capacity?: SortOrder
+    area?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    status?: SortOrder
+    contactPhone?: SortOrderInput | SortOrder
+    operatorName?: SortOrderInput | SortOrder
+    assignedById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    missions?: RescueMissionOrderByRelationAggregateInput
+  }
+
+  export type RescueVehicleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RescueVehicleWhereInput | RescueVehicleWhereInput[]
+    OR?: RescueVehicleWhereInput[]
+    NOT?: RescueVehicleWhereInput | RescueVehicleWhereInput[]
+    type?: EnumVehicleTypeFilter<"RescueVehicle"> | $Enums.VehicleType
+    name?: StringFilter<"RescueVehicle"> | string
+    capacity?: IntFilter<"RescueVehicle"> | number
+    area?: StringFilter<"RescueVehicle"> | string
+    latitude?: FloatNullableFilter<"RescueVehicle"> | number | null
+    longitude?: FloatNullableFilter<"RescueVehicle"> | number | null
+    status?: StringFilter<"RescueVehicle"> | string
+    contactPhone?: StringNullableFilter<"RescueVehicle"> | string | null
+    operatorName?: StringNullableFilter<"RescueVehicle"> | string | null
+    assignedById?: StringNullableFilter<"RescueVehicle"> | string | null
+    createdAt?: DateTimeFilter<"RescueVehicle"> | Date | string
+    updatedAt?: DateTimeFilter<"RescueVehicle"> | Date | string
+    missions?: RescueMissionListRelationFilter
+  }, "id">
+
+  export type RescueVehicleOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    capacity?: SortOrder
+    area?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    status?: SortOrder
+    contactPhone?: SortOrderInput | SortOrder
+    operatorName?: SortOrderInput | SortOrder
+    assignedById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RescueVehicleCountOrderByAggregateInput
+    _avg?: RescueVehicleAvgOrderByAggregateInput
+    _max?: RescueVehicleMaxOrderByAggregateInput
+    _min?: RescueVehicleMinOrderByAggregateInput
+    _sum?: RescueVehicleSumOrderByAggregateInput
+  }
+
+  export type RescueVehicleScalarWhereWithAggregatesInput = {
+    AND?: RescueVehicleScalarWhereWithAggregatesInput | RescueVehicleScalarWhereWithAggregatesInput[]
+    OR?: RescueVehicleScalarWhereWithAggregatesInput[]
+    NOT?: RescueVehicleScalarWhereWithAggregatesInput | RescueVehicleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RescueVehicle"> | string
+    type?: EnumVehicleTypeWithAggregatesFilter<"RescueVehicle"> | $Enums.VehicleType
+    name?: StringWithAggregatesFilter<"RescueVehicle"> | string
+    capacity?: IntWithAggregatesFilter<"RescueVehicle"> | number
+    area?: StringWithAggregatesFilter<"RescueVehicle"> | string
+    latitude?: FloatNullableWithAggregatesFilter<"RescueVehicle"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"RescueVehicle"> | number | null
+    status?: StringWithAggregatesFilter<"RescueVehicle"> | string
+    contactPhone?: StringNullableWithAggregatesFilter<"RescueVehicle"> | string | null
+    operatorName?: StringNullableWithAggregatesFilter<"RescueVehicle"> | string | null
+    assignedById?: StringNullableWithAggregatesFilter<"RescueVehicle"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RescueVehicle"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RescueVehicle"> | Date | string
+  }
+
+  export type RescueMissionWhereInput = {
+    AND?: RescueMissionWhereInput | RescueMissionWhereInput[]
+    OR?: RescueMissionWhereInput[]
+    NOT?: RescueMissionWhereInput | RescueMissionWhereInput[]
+    id?: StringFilter<"RescueMission"> | string
+    vehicleId?: StringFilter<"RescueMission"> | string
+    area?: StringFilter<"RescueMission"> | string
+    destinationCampId?: StringNullableFilter<"RescueMission"> | string | null
+    status?: EnumMissionStatusFilter<"RescueMission"> | $Enums.MissionStatus
+    evacuatedCount?: IntFilter<"RescueMission"> | number
+    assignedById?: StringFilter<"RescueMission"> | string
+    notes?: StringNullableFilter<"RescueMission"> | string | null
+    createdAt?: DateTimeFilter<"RescueMission"> | Date | string
+    updatedAt?: DateTimeFilter<"RescueMission"> | Date | string
+    completedAt?: DateTimeNullableFilter<"RescueMission"> | Date | string | null
+    vehicle?: XOR<RescueVehicleScalarRelationFilter, RescueVehicleWhereInput>
+    assignedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    safeZoneCheckIns?: SafeZoneCheckInListRelationFilter
+  }
+
+  export type RescueMissionOrderByWithRelationInput = {
+    id?: SortOrder
+    vehicleId?: SortOrder
+    area?: SortOrder
+    destinationCampId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    evacuatedCount?: SortOrder
+    assignedById?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    vehicle?: RescueVehicleOrderByWithRelationInput
+    assignedBy?: UserOrderByWithRelationInput
+    safeZoneCheckIns?: SafeZoneCheckInOrderByRelationAggregateInput
+  }
+
+  export type RescueMissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RescueMissionWhereInput | RescueMissionWhereInput[]
+    OR?: RescueMissionWhereInput[]
+    NOT?: RescueMissionWhereInput | RescueMissionWhereInput[]
+    vehicleId?: StringFilter<"RescueMission"> | string
+    area?: StringFilter<"RescueMission"> | string
+    destinationCampId?: StringNullableFilter<"RescueMission"> | string | null
+    status?: EnumMissionStatusFilter<"RescueMission"> | $Enums.MissionStatus
+    evacuatedCount?: IntFilter<"RescueMission"> | number
+    assignedById?: StringFilter<"RescueMission"> | string
+    notes?: StringNullableFilter<"RescueMission"> | string | null
+    createdAt?: DateTimeFilter<"RescueMission"> | Date | string
+    updatedAt?: DateTimeFilter<"RescueMission"> | Date | string
+    completedAt?: DateTimeNullableFilter<"RescueMission"> | Date | string | null
+    vehicle?: XOR<RescueVehicleScalarRelationFilter, RescueVehicleWhereInput>
+    assignedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    safeZoneCheckIns?: SafeZoneCheckInListRelationFilter
+  }, "id">
+
+  export type RescueMissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    vehicleId?: SortOrder
+    area?: SortOrder
+    destinationCampId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    evacuatedCount?: SortOrder
+    assignedById?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    _count?: RescueMissionCountOrderByAggregateInput
+    _avg?: RescueMissionAvgOrderByAggregateInput
+    _max?: RescueMissionMaxOrderByAggregateInput
+    _min?: RescueMissionMinOrderByAggregateInput
+    _sum?: RescueMissionSumOrderByAggregateInput
+  }
+
+  export type RescueMissionScalarWhereWithAggregatesInput = {
+    AND?: RescueMissionScalarWhereWithAggregatesInput | RescueMissionScalarWhereWithAggregatesInput[]
+    OR?: RescueMissionScalarWhereWithAggregatesInput[]
+    NOT?: RescueMissionScalarWhereWithAggregatesInput | RescueMissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RescueMission"> | string
+    vehicleId?: StringWithAggregatesFilter<"RescueMission"> | string
+    area?: StringWithAggregatesFilter<"RescueMission"> | string
+    destinationCampId?: StringNullableWithAggregatesFilter<"RescueMission"> | string | null
+    status?: EnumMissionStatusWithAggregatesFilter<"RescueMission"> | $Enums.MissionStatus
+    evacuatedCount?: IntWithAggregatesFilter<"RescueMission"> | number
+    assignedById?: StringWithAggregatesFilter<"RescueMission"> | string
+    notes?: StringNullableWithAggregatesFilter<"RescueMission"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RescueMission"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RescueMission"> | Date | string
+    completedAt?: DateTimeNullableWithAggregatesFilter<"RescueMission"> | Date | string | null
+  }
+
+  export type SafeZoneCheckInWhereInput = {
+    AND?: SafeZoneCheckInWhereInput | SafeZoneCheckInWhereInput[]
+    OR?: SafeZoneCheckInWhereInput[]
+    NOT?: SafeZoneCheckInWhereInput | SafeZoneCheckInWhereInput[]
+    id?: StringFilter<"SafeZoneCheckIn"> | string
+    userId?: StringFilter<"SafeZoneCheckIn"> | string
+    missionId?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    campId?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    notes?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    createdAt?: DateTimeFilter<"SafeZoneCheckIn"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    mission?: XOR<RescueMissionNullableScalarRelationFilter, RescueMissionWhereInput> | null
+  }
+
+  export type SafeZoneCheckInOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    missionId?: SortOrderInput | SortOrder
+    campId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    mission?: RescueMissionOrderByWithRelationInput
+  }
+
+  export type SafeZoneCheckInWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SafeZoneCheckInWhereInput | SafeZoneCheckInWhereInput[]
+    OR?: SafeZoneCheckInWhereInput[]
+    NOT?: SafeZoneCheckInWhereInput | SafeZoneCheckInWhereInput[]
+    userId?: StringFilter<"SafeZoneCheckIn"> | string
+    missionId?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    campId?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    notes?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    createdAt?: DateTimeFilter<"SafeZoneCheckIn"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    mission?: XOR<RescueMissionNullableScalarRelationFilter, RescueMissionWhereInput> | null
+  }, "id">
+
+  export type SafeZoneCheckInOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    missionId?: SortOrderInput | SortOrder
+    campId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SafeZoneCheckInCountOrderByAggregateInput
+    _max?: SafeZoneCheckInMaxOrderByAggregateInput
+    _min?: SafeZoneCheckInMinOrderByAggregateInput
+  }
+
+  export type SafeZoneCheckInScalarWhereWithAggregatesInput = {
+    AND?: SafeZoneCheckInScalarWhereWithAggregatesInput | SafeZoneCheckInScalarWhereWithAggregatesInput[]
+    OR?: SafeZoneCheckInScalarWhereWithAggregatesInput[]
+    NOT?: SafeZoneCheckInScalarWhereWithAggregatesInput | SafeZoneCheckInScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SafeZoneCheckIn"> | string
+    userId?: StringWithAggregatesFilter<"SafeZoneCheckIn"> | string
+    missionId?: StringNullableWithAggregatesFilter<"SafeZoneCheckIn"> | string | null
+    campId?: StringNullableWithAggregatesFilter<"SafeZoneCheckIn"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"SafeZoneCheckIn"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SafeZoneCheckIn"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -83083,6 +87379,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -83122,6 +87420,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -83161,6 +87461,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -83200,6 +87502,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -88374,6 +92678,283 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RescueVehicleCreateInput = {
+    id?: string
+    type: $Enums.VehicleType
+    name: string
+    capacity: number
+    area: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: string
+    contactPhone?: string | null
+    operatorName?: string | null
+    assignedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    missions?: RescueMissionCreateNestedManyWithoutVehicleInput
+  }
+
+  export type RescueVehicleUncheckedCreateInput = {
+    id?: string
+    type: $Enums.VehicleType
+    name: string
+    capacity: number
+    area: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: string
+    contactPhone?: string | null
+    operatorName?: string | null
+    assignedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    missions?: RescueMissionUncheckedCreateNestedManyWithoutVehicleInput
+  }
+
+  export type RescueVehicleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    name?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    area?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    missions?: RescueMissionUpdateManyWithoutVehicleNestedInput
+  }
+
+  export type RescueVehicleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    name?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    area?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    missions?: RescueMissionUncheckedUpdateManyWithoutVehicleNestedInput
+  }
+
+  export type RescueVehicleCreateManyInput = {
+    id?: string
+    type: $Enums.VehicleType
+    name: string
+    capacity: number
+    area: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: string
+    contactPhone?: string | null
+    operatorName?: string | null
+    assignedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RescueVehicleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    name?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    area?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RescueVehicleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    name?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    area?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RescueMissionCreateInput = {
+    id?: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    vehicle: RescueVehicleCreateNestedOneWithoutMissionsInput
+    assignedBy: UserCreateNestedOneWithoutAssignedRescuesInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutMissionInput
+  }
+
+  export type RescueMissionUncheckedCreateInput = {
+    id?: string
+    vehicleId: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    assignedById: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutMissionInput
+  }
+
+  export type RescueMissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    vehicle?: RescueVehicleUpdateOneRequiredWithoutMissionsNestedInput
+    assignedBy?: UserUpdateOneRequiredWithoutAssignedRescuesNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutMissionNestedInput
+  }
+
+  export type RescueMissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vehicleId?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    assignedById?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutMissionNestedInput
+  }
+
+  export type RescueMissionCreateManyInput = {
+    id?: string
+    vehicleId: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    assignedById: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RescueMissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RescueMissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vehicleId?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    assignedById?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SafeZoneCheckInCreateInput = {
+    id?: string
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSafeZoneCheckInsInput
+    mission?: RescueMissionCreateNestedOneWithoutSafeZoneCheckInsInput
+  }
+
+  export type SafeZoneCheckInUncheckedCreateInput = {
+    id?: string
+    userId: string
+    missionId?: string | null
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SafeZoneCheckInUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSafeZoneCheckInsNestedInput
+    mission?: RescueMissionUpdateOneWithoutSafeZoneCheckInsNestedInput
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    missionId?: NullableStringFieldUpdateOperationsInput | string | null
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafeZoneCheckInCreateManyInput = {
+    id?: string
+    userId: string
+    missionId?: string | null
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SafeZoneCheckInUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    missionId?: NullableStringFieldUpdateOperationsInput | string | null
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -88531,6 +93112,18 @@ export namespace Prisma {
     isNot?: VolunteerProfileWhereInput | null
   }
 
+  export type RescueMissionListRelationFilter = {
+    every?: RescueMissionWhereInput
+    some?: RescueMissionWhereInput
+    none?: RescueMissionWhereInput
+  }
+
+  export type SafeZoneCheckInListRelationFilter = {
+    every?: SafeZoneCheckInWhereInput
+    some?: SafeZoneCheckInWhereInput
+    none?: SafeZoneCheckInWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -88585,6 +93178,14 @@ export namespace Prisma {
   }
 
   export type UserSessionLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RescueMissionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SafeZoneCheckInOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -92087,6 +96688,187 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type EnumVehicleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeFilter<$PrismaModel> | $Enums.VehicleType
+  }
+
+  export type RescueVehicleCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    capacity?: SortOrder
+    area?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    status?: SortOrder
+    contactPhone?: SortOrder
+    operatorName?: SortOrder
+    assignedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RescueVehicleAvgOrderByAggregateInput = {
+    capacity?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type RescueVehicleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    capacity?: SortOrder
+    area?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    status?: SortOrder
+    contactPhone?: SortOrder
+    operatorName?: SortOrder
+    assignedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RescueVehicleMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    name?: SortOrder
+    capacity?: SortOrder
+    area?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    status?: SortOrder
+    contactPhone?: SortOrder
+    operatorName?: SortOrder
+    assignedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RescueVehicleSumOrderByAggregateInput = {
+    capacity?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type EnumVehicleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeWithAggregatesFilter<$PrismaModel> | $Enums.VehicleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleTypeFilter<$PrismaModel>
+    _max?: NestedEnumVehicleTypeFilter<$PrismaModel>
+  }
+
+  export type EnumMissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissionStatus | EnumMissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissionStatusFilter<$PrismaModel> | $Enums.MissionStatus
+  }
+
+  export type RescueVehicleScalarRelationFilter = {
+    is?: RescueVehicleWhereInput
+    isNot?: RescueVehicleWhereInput
+  }
+
+  export type RescueMissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    vehicleId?: SortOrder
+    area?: SortOrder
+    destinationCampId?: SortOrder
+    status?: SortOrder
+    evacuatedCount?: SortOrder
+    assignedById?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type RescueMissionAvgOrderByAggregateInput = {
+    evacuatedCount?: SortOrder
+  }
+
+  export type RescueMissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    vehicleId?: SortOrder
+    area?: SortOrder
+    destinationCampId?: SortOrder
+    status?: SortOrder
+    evacuatedCount?: SortOrder
+    assignedById?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type RescueMissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    vehicleId?: SortOrder
+    area?: SortOrder
+    destinationCampId?: SortOrder
+    status?: SortOrder
+    evacuatedCount?: SortOrder
+    assignedById?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type RescueMissionSumOrderByAggregateInput = {
+    evacuatedCount?: SortOrder
+  }
+
+  export type EnumMissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissionStatus | EnumMissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.MissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumMissionStatusFilter<$PrismaModel>
+  }
+
+  export type RescueMissionNullableScalarRelationFilter = {
+    is?: RescueMissionWhereInput | null
+    isNot?: RescueMissionWhereInput | null
+  }
+
+  export type SafeZoneCheckInCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    missionId?: SortOrder
+    campId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SafeZoneCheckInMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    missionId?: SortOrder
+    campId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SafeZoneCheckInMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    missionId?: SortOrder
+    campId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type DamageAssessmentCreateNestedManyWithoutReportedByInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -92203,6 +96985,20 @@ export namespace Prisma {
     connect?: VolunteerProfileWhereUniqueInput
   }
 
+  export type RescueMissionCreateNestedManyWithoutAssignedByInput = {
+    create?: XOR<RescueMissionCreateWithoutAssignedByInput, RescueMissionUncheckedCreateWithoutAssignedByInput> | RescueMissionCreateWithoutAssignedByInput[] | RescueMissionUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutAssignedByInput | RescueMissionCreateOrConnectWithoutAssignedByInput[]
+    createMany?: RescueMissionCreateManyAssignedByInputEnvelope
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+  }
+
+  export type SafeZoneCheckInCreateNestedManyWithoutUserInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutUserInput, SafeZoneCheckInUncheckedCreateWithoutUserInput> | SafeZoneCheckInCreateWithoutUserInput[] | SafeZoneCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutUserInput | SafeZoneCheckInCreateOrConnectWithoutUserInput[]
+    createMany?: SafeZoneCheckInCreateManyUserInputEnvelope
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+  }
+
   export type DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -92311,6 +97107,20 @@ export namespace Prisma {
     create?: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: VolunteerProfileCreateOrConnectWithoutUserInput
     connect?: VolunteerProfileWhereUniqueInput
+  }
+
+  export type RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput = {
+    create?: XOR<RescueMissionCreateWithoutAssignedByInput, RescueMissionUncheckedCreateWithoutAssignedByInput> | RescueMissionCreateWithoutAssignedByInput[] | RescueMissionUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutAssignedByInput | RescueMissionCreateOrConnectWithoutAssignedByInput[]
+    createMany?: RescueMissionCreateManyAssignedByInputEnvelope
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+  }
+
+  export type SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutUserInput, SafeZoneCheckInUncheckedCreateWithoutUserInput> | SafeZoneCheckInCreateWithoutUserInput[] | SafeZoneCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutUserInput | SafeZoneCheckInCreateOrConnectWithoutUserInput[]
+    createMany?: SafeZoneCheckInCreateManyUserInputEnvelope
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -92563,6 +97373,34 @@ export namespace Prisma {
     update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
   }
 
+  export type RescueMissionUpdateManyWithoutAssignedByNestedInput = {
+    create?: XOR<RescueMissionCreateWithoutAssignedByInput, RescueMissionUncheckedCreateWithoutAssignedByInput> | RescueMissionCreateWithoutAssignedByInput[] | RescueMissionUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutAssignedByInput | RescueMissionCreateOrConnectWithoutAssignedByInput[]
+    upsert?: RescueMissionUpsertWithWhereUniqueWithoutAssignedByInput | RescueMissionUpsertWithWhereUniqueWithoutAssignedByInput[]
+    createMany?: RescueMissionCreateManyAssignedByInputEnvelope
+    set?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    disconnect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    delete?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    update?: RescueMissionUpdateWithWhereUniqueWithoutAssignedByInput | RescueMissionUpdateWithWhereUniqueWithoutAssignedByInput[]
+    updateMany?: RescueMissionUpdateManyWithWhereWithoutAssignedByInput | RescueMissionUpdateManyWithWhereWithoutAssignedByInput[]
+    deleteMany?: RescueMissionScalarWhereInput | RescueMissionScalarWhereInput[]
+  }
+
+  export type SafeZoneCheckInUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutUserInput, SafeZoneCheckInUncheckedCreateWithoutUserInput> | SafeZoneCheckInCreateWithoutUserInput[] | SafeZoneCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutUserInput | SafeZoneCheckInCreateOrConnectWithoutUserInput[]
+    upsert?: SafeZoneCheckInUpsertWithWhereUniqueWithoutUserInput | SafeZoneCheckInUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SafeZoneCheckInCreateManyUserInputEnvelope
+    set?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    disconnect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    delete?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    update?: SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput | SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SafeZoneCheckInUpdateManyWithWhereWithoutUserInput | SafeZoneCheckInUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
+  }
+
   export type DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -92777,6 +97615,34 @@ export namespace Prisma {
     delete?: VolunteerProfileWhereInput | boolean
     connect?: VolunteerProfileWhereUniqueInput
     update?: XOR<XOR<VolunteerProfileUpdateToOneWithWhereWithoutUserInput, VolunteerProfileUpdateWithoutUserInput>, VolunteerProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput = {
+    create?: XOR<RescueMissionCreateWithoutAssignedByInput, RescueMissionUncheckedCreateWithoutAssignedByInput> | RescueMissionCreateWithoutAssignedByInput[] | RescueMissionUncheckedCreateWithoutAssignedByInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutAssignedByInput | RescueMissionCreateOrConnectWithoutAssignedByInput[]
+    upsert?: RescueMissionUpsertWithWhereUniqueWithoutAssignedByInput | RescueMissionUpsertWithWhereUniqueWithoutAssignedByInput[]
+    createMany?: RescueMissionCreateManyAssignedByInputEnvelope
+    set?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    disconnect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    delete?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    update?: RescueMissionUpdateWithWhereUniqueWithoutAssignedByInput | RescueMissionUpdateWithWhereUniqueWithoutAssignedByInput[]
+    updateMany?: RescueMissionUpdateManyWithWhereWithoutAssignedByInput | RescueMissionUpdateManyWithWhereWithoutAssignedByInput[]
+    deleteMany?: RescueMissionScalarWhereInput | RescueMissionScalarWhereInput[]
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutUserInput, SafeZoneCheckInUncheckedCreateWithoutUserInput> | SafeZoneCheckInCreateWithoutUserInput[] | SafeZoneCheckInUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutUserInput | SafeZoneCheckInCreateOrConnectWithoutUserInput[]
+    upsert?: SafeZoneCheckInUpsertWithWhereUniqueWithoutUserInput | SafeZoneCheckInUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SafeZoneCheckInCreateManyUserInputEnvelope
+    set?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    disconnect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    delete?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    update?: SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput | SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SafeZoneCheckInUpdateManyWithWhereWithoutUserInput | SafeZoneCheckInUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
   }
 
   export type IncidentReportCreateimagesInput = {
@@ -94948,6 +99814,156 @@ export namespace Prisma {
     update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutCanonicalLinksInput, IncidentReportUpdateWithoutCanonicalLinksInput>, IncidentReportUncheckedUpdateWithoutCanonicalLinksInput>
   }
 
+  export type RescueMissionCreateNestedManyWithoutVehicleInput = {
+    create?: XOR<RescueMissionCreateWithoutVehicleInput, RescueMissionUncheckedCreateWithoutVehicleInput> | RescueMissionCreateWithoutVehicleInput[] | RescueMissionUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutVehicleInput | RescueMissionCreateOrConnectWithoutVehicleInput[]
+    createMany?: RescueMissionCreateManyVehicleInputEnvelope
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+  }
+
+  export type RescueMissionUncheckedCreateNestedManyWithoutVehicleInput = {
+    create?: XOR<RescueMissionCreateWithoutVehicleInput, RescueMissionUncheckedCreateWithoutVehicleInput> | RescueMissionCreateWithoutVehicleInput[] | RescueMissionUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutVehicleInput | RescueMissionCreateOrConnectWithoutVehicleInput[]
+    createMany?: RescueMissionCreateManyVehicleInputEnvelope
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+  }
+
+  export type EnumVehicleTypeFieldUpdateOperationsInput = {
+    set?: $Enums.VehicleType
+  }
+
+  export type RescueMissionUpdateManyWithoutVehicleNestedInput = {
+    create?: XOR<RescueMissionCreateWithoutVehicleInput, RescueMissionUncheckedCreateWithoutVehicleInput> | RescueMissionCreateWithoutVehicleInput[] | RescueMissionUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutVehicleInput | RescueMissionCreateOrConnectWithoutVehicleInput[]
+    upsert?: RescueMissionUpsertWithWhereUniqueWithoutVehicleInput | RescueMissionUpsertWithWhereUniqueWithoutVehicleInput[]
+    createMany?: RescueMissionCreateManyVehicleInputEnvelope
+    set?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    disconnect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    delete?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    update?: RescueMissionUpdateWithWhereUniqueWithoutVehicleInput | RescueMissionUpdateWithWhereUniqueWithoutVehicleInput[]
+    updateMany?: RescueMissionUpdateManyWithWhereWithoutVehicleInput | RescueMissionUpdateManyWithWhereWithoutVehicleInput[]
+    deleteMany?: RescueMissionScalarWhereInput | RescueMissionScalarWhereInput[]
+  }
+
+  export type RescueMissionUncheckedUpdateManyWithoutVehicleNestedInput = {
+    create?: XOR<RescueMissionCreateWithoutVehicleInput, RescueMissionUncheckedCreateWithoutVehicleInput> | RescueMissionCreateWithoutVehicleInput[] | RescueMissionUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutVehicleInput | RescueMissionCreateOrConnectWithoutVehicleInput[]
+    upsert?: RescueMissionUpsertWithWhereUniqueWithoutVehicleInput | RescueMissionUpsertWithWhereUniqueWithoutVehicleInput[]
+    createMany?: RescueMissionCreateManyVehicleInputEnvelope
+    set?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    disconnect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    delete?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    connect?: RescueMissionWhereUniqueInput | RescueMissionWhereUniqueInput[]
+    update?: RescueMissionUpdateWithWhereUniqueWithoutVehicleInput | RescueMissionUpdateWithWhereUniqueWithoutVehicleInput[]
+    updateMany?: RescueMissionUpdateManyWithWhereWithoutVehicleInput | RescueMissionUpdateManyWithWhereWithoutVehicleInput[]
+    deleteMany?: RescueMissionScalarWhereInput | RescueMissionScalarWhereInput[]
+  }
+
+  export type RescueVehicleCreateNestedOneWithoutMissionsInput = {
+    create?: XOR<RescueVehicleCreateWithoutMissionsInput, RescueVehicleUncheckedCreateWithoutMissionsInput>
+    connectOrCreate?: RescueVehicleCreateOrConnectWithoutMissionsInput
+    connect?: RescueVehicleWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAssignedRescuesInput = {
+    create?: XOR<UserCreateWithoutAssignedRescuesInput, UserUncheckedCreateWithoutAssignedRescuesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedRescuesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SafeZoneCheckInCreateNestedManyWithoutMissionInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutMissionInput, SafeZoneCheckInUncheckedCreateWithoutMissionInput> | SafeZoneCheckInCreateWithoutMissionInput[] | SafeZoneCheckInUncheckedCreateWithoutMissionInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutMissionInput | SafeZoneCheckInCreateOrConnectWithoutMissionInput[]
+    createMany?: SafeZoneCheckInCreateManyMissionInputEnvelope
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+  }
+
+  export type SafeZoneCheckInUncheckedCreateNestedManyWithoutMissionInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutMissionInput, SafeZoneCheckInUncheckedCreateWithoutMissionInput> | SafeZoneCheckInCreateWithoutMissionInput[] | SafeZoneCheckInUncheckedCreateWithoutMissionInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutMissionInput | SafeZoneCheckInCreateOrConnectWithoutMissionInput[]
+    createMany?: SafeZoneCheckInCreateManyMissionInputEnvelope
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+  }
+
+  export type EnumMissionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MissionStatus
+  }
+
+  export type RescueVehicleUpdateOneRequiredWithoutMissionsNestedInput = {
+    create?: XOR<RescueVehicleCreateWithoutMissionsInput, RescueVehicleUncheckedCreateWithoutMissionsInput>
+    connectOrCreate?: RescueVehicleCreateOrConnectWithoutMissionsInput
+    upsert?: RescueVehicleUpsertWithoutMissionsInput
+    connect?: RescueVehicleWhereUniqueInput
+    update?: XOR<XOR<RescueVehicleUpdateToOneWithWhereWithoutMissionsInput, RescueVehicleUpdateWithoutMissionsInput>, RescueVehicleUncheckedUpdateWithoutMissionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAssignedRescuesNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedRescuesInput, UserUncheckedCreateWithoutAssignedRescuesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedRescuesInput
+    upsert?: UserUpsertWithoutAssignedRescuesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedRescuesInput, UserUpdateWithoutAssignedRescuesInput>, UserUncheckedUpdateWithoutAssignedRescuesInput>
+  }
+
+  export type SafeZoneCheckInUpdateManyWithoutMissionNestedInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutMissionInput, SafeZoneCheckInUncheckedCreateWithoutMissionInput> | SafeZoneCheckInCreateWithoutMissionInput[] | SafeZoneCheckInUncheckedCreateWithoutMissionInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutMissionInput | SafeZoneCheckInCreateOrConnectWithoutMissionInput[]
+    upsert?: SafeZoneCheckInUpsertWithWhereUniqueWithoutMissionInput | SafeZoneCheckInUpsertWithWhereUniqueWithoutMissionInput[]
+    createMany?: SafeZoneCheckInCreateManyMissionInputEnvelope
+    set?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    disconnect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    delete?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    update?: SafeZoneCheckInUpdateWithWhereUniqueWithoutMissionInput | SafeZoneCheckInUpdateWithWhereUniqueWithoutMissionInput[]
+    updateMany?: SafeZoneCheckInUpdateManyWithWhereWithoutMissionInput | SafeZoneCheckInUpdateManyWithWhereWithoutMissionInput[]
+    deleteMany?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateManyWithoutMissionNestedInput = {
+    create?: XOR<SafeZoneCheckInCreateWithoutMissionInput, SafeZoneCheckInUncheckedCreateWithoutMissionInput> | SafeZoneCheckInCreateWithoutMissionInput[] | SafeZoneCheckInUncheckedCreateWithoutMissionInput[]
+    connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutMissionInput | SafeZoneCheckInCreateOrConnectWithoutMissionInput[]
+    upsert?: SafeZoneCheckInUpsertWithWhereUniqueWithoutMissionInput | SafeZoneCheckInUpsertWithWhereUniqueWithoutMissionInput[]
+    createMany?: SafeZoneCheckInCreateManyMissionInputEnvelope
+    set?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    disconnect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    delete?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+    update?: SafeZoneCheckInUpdateWithWhereUniqueWithoutMissionInput | SafeZoneCheckInUpdateWithWhereUniqueWithoutMissionInput[]
+    updateMany?: SafeZoneCheckInUpdateManyWithWhereWithoutMissionInput | SafeZoneCheckInUpdateManyWithWhereWithoutMissionInput[]
+    deleteMany?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutSafeZoneCheckInsInput = {
+    create?: XOR<UserCreateWithoutSafeZoneCheckInsInput, UserUncheckedCreateWithoutSafeZoneCheckInsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSafeZoneCheckInsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RescueMissionCreateNestedOneWithoutSafeZoneCheckInsInput = {
+    create?: XOR<RescueMissionCreateWithoutSafeZoneCheckInsInput, RescueMissionUncheckedCreateWithoutSafeZoneCheckInsInput>
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutSafeZoneCheckInsInput
+    connect?: RescueMissionWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSafeZoneCheckInsNestedInput = {
+    create?: XOR<UserCreateWithoutSafeZoneCheckInsInput, UserUncheckedCreateWithoutSafeZoneCheckInsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSafeZoneCheckInsInput
+    upsert?: UserUpsertWithoutSafeZoneCheckInsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSafeZoneCheckInsInput, UserUpdateWithoutSafeZoneCheckInsInput>, UserUncheckedUpdateWithoutSafeZoneCheckInsInput>
+  }
+
+  export type RescueMissionUpdateOneWithoutSafeZoneCheckInsNestedInput = {
+    create?: XOR<RescueMissionCreateWithoutSafeZoneCheckInsInput, RescueMissionUncheckedCreateWithoutSafeZoneCheckInsInput>
+    connectOrCreate?: RescueMissionCreateOrConnectWithoutSafeZoneCheckInsInput
+    upsert?: RescueMissionUpsertWithoutSafeZoneCheckInsInput
+    disconnect?: RescueMissionWhereInput | boolean
+    delete?: RescueMissionWhereInput | boolean
+    connect?: RescueMissionWhereUniqueInput
+    update?: XOR<XOR<RescueMissionUpdateToOneWithWhereWithoutSafeZoneCheckInsInput, RescueMissionUpdateWithoutSafeZoneCheckInsInput>, RescueMissionUncheckedUpdateWithoutSafeZoneCheckInsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -95582,6 +100598,40 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumWaterTrendFilter<$PrismaModel>
     _max?: NestedEnumWaterTrendFilter<$PrismaModel>
+  }
+
+  export type NestedEnumVehicleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeFilter<$PrismaModel> | $Enums.VehicleType
+  }
+
+  export type NestedEnumVehicleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeWithAggregatesFilter<$PrismaModel> | $Enums.VehicleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleTypeFilter<$PrismaModel>
+    _max?: NestedEnumVehicleTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissionStatus | EnumMissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissionStatusFilter<$PrismaModel> | $Enums.MissionStatus
+  }
+
+  export type NestedEnumMissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissionStatus | EnumMissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissionStatus[] | ListEnumMissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.MissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumMissionStatusFilter<$PrismaModel>
   }
 
   export type DamageAssessmentCreateWithoutReportedByInput = {
@@ -96233,6 +101283,70 @@ export namespace Prisma {
     create: XOR<VolunteerProfileCreateWithoutUserInput, VolunteerProfileUncheckedCreateWithoutUserInput>
   }
 
+  export type RescueMissionCreateWithoutAssignedByInput = {
+    id?: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    vehicle: RescueVehicleCreateNestedOneWithoutMissionsInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutMissionInput
+  }
+
+  export type RescueMissionUncheckedCreateWithoutAssignedByInput = {
+    id?: string
+    vehicleId: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutMissionInput
+  }
+
+  export type RescueMissionCreateOrConnectWithoutAssignedByInput = {
+    where: RescueMissionWhereUniqueInput
+    create: XOR<RescueMissionCreateWithoutAssignedByInput, RescueMissionUncheckedCreateWithoutAssignedByInput>
+  }
+
+  export type RescueMissionCreateManyAssignedByInputEnvelope = {
+    data: RescueMissionCreateManyAssignedByInput | RescueMissionCreateManyAssignedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SafeZoneCheckInCreateWithoutUserInput = {
+    id?: string
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    mission?: RescueMissionCreateNestedOneWithoutSafeZoneCheckInsInput
+  }
+
+  export type SafeZoneCheckInUncheckedCreateWithoutUserInput = {
+    id?: string
+    missionId?: string | null
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SafeZoneCheckInCreateOrConnectWithoutUserInput = {
+    where: SafeZoneCheckInWhereUniqueInput
+    create: XOR<SafeZoneCheckInCreateWithoutUserInput, SafeZoneCheckInUncheckedCreateWithoutUserInput>
+  }
+
+  export type SafeZoneCheckInCreateManyUserInputEnvelope = {
+    data: SafeZoneCheckInCreateManyUserInput | SafeZoneCheckInCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput = {
     where: DamageAssessmentWhereUniqueInput
     update: XOR<DamageAssessmentUpdateWithoutReportedByInput, DamageAssessmentUncheckedUpdateWithoutReportedByInput>
@@ -96802,6 +101916,67 @@ export namespace Prisma {
     wellbeingLogs?: VolunteerWellbeingUncheckedUpdateManyWithoutVolunteerNestedInput
   }
 
+  export type RescueMissionUpsertWithWhereUniqueWithoutAssignedByInput = {
+    where: RescueMissionWhereUniqueInput
+    update: XOR<RescueMissionUpdateWithoutAssignedByInput, RescueMissionUncheckedUpdateWithoutAssignedByInput>
+    create: XOR<RescueMissionCreateWithoutAssignedByInput, RescueMissionUncheckedCreateWithoutAssignedByInput>
+  }
+
+  export type RescueMissionUpdateWithWhereUniqueWithoutAssignedByInput = {
+    where: RescueMissionWhereUniqueInput
+    data: XOR<RescueMissionUpdateWithoutAssignedByInput, RescueMissionUncheckedUpdateWithoutAssignedByInput>
+  }
+
+  export type RescueMissionUpdateManyWithWhereWithoutAssignedByInput = {
+    where: RescueMissionScalarWhereInput
+    data: XOR<RescueMissionUpdateManyMutationInput, RescueMissionUncheckedUpdateManyWithoutAssignedByInput>
+  }
+
+  export type RescueMissionScalarWhereInput = {
+    AND?: RescueMissionScalarWhereInput | RescueMissionScalarWhereInput[]
+    OR?: RescueMissionScalarWhereInput[]
+    NOT?: RescueMissionScalarWhereInput | RescueMissionScalarWhereInput[]
+    id?: StringFilter<"RescueMission"> | string
+    vehicleId?: StringFilter<"RescueMission"> | string
+    area?: StringFilter<"RescueMission"> | string
+    destinationCampId?: StringNullableFilter<"RescueMission"> | string | null
+    status?: EnumMissionStatusFilter<"RescueMission"> | $Enums.MissionStatus
+    evacuatedCount?: IntFilter<"RescueMission"> | number
+    assignedById?: StringFilter<"RescueMission"> | string
+    notes?: StringNullableFilter<"RescueMission"> | string | null
+    createdAt?: DateTimeFilter<"RescueMission"> | Date | string
+    updatedAt?: DateTimeFilter<"RescueMission"> | Date | string
+    completedAt?: DateTimeNullableFilter<"RescueMission"> | Date | string | null
+  }
+
+  export type SafeZoneCheckInUpsertWithWhereUniqueWithoutUserInput = {
+    where: SafeZoneCheckInWhereUniqueInput
+    update: XOR<SafeZoneCheckInUpdateWithoutUserInput, SafeZoneCheckInUncheckedUpdateWithoutUserInput>
+    create: XOR<SafeZoneCheckInCreateWithoutUserInput, SafeZoneCheckInUncheckedCreateWithoutUserInput>
+  }
+
+  export type SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput = {
+    where: SafeZoneCheckInWhereUniqueInput
+    data: XOR<SafeZoneCheckInUpdateWithoutUserInput, SafeZoneCheckInUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SafeZoneCheckInUpdateManyWithWhereWithoutUserInput = {
+    where: SafeZoneCheckInScalarWhereInput
+    data: XOR<SafeZoneCheckInUpdateManyMutationInput, SafeZoneCheckInUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SafeZoneCheckInScalarWhereInput = {
+    AND?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
+    OR?: SafeZoneCheckInScalarWhereInput[]
+    NOT?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
+    id?: StringFilter<"SafeZoneCheckIn"> | string
+    userId?: StringFilter<"SafeZoneCheckIn"> | string
+    missionId?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    campId?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    notes?: StringNullableFilter<"SafeZoneCheckIn"> | string | null
+    createdAt?: DateTimeFilter<"SafeZoneCheckIn"> | Date | string
+  }
+
   export type AfterActionReportCreateWithoutIncidentInput = {
     id?: string
     timeline: JsonNullValueInput | InputJsonValue
@@ -96961,6 +102136,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsInput = {
@@ -96999,6 +102176,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsInput = {
@@ -97280,6 +102459,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsInput = {
@@ -97318,6 +102499,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReportVerificationUpsertWithWhereUniqueWithoutReportInput = {
@@ -97509,6 +102692,8 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCurrentSectorInput = {
@@ -97547,6 +102732,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCurrentSectorInput = {
@@ -98020,6 +103207,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -98058,6 +103247,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -98101,6 +103292,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -98139,6 +103332,8 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -98260,6 +103455,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -98298,6 +103495,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAssignedTasksInput = {
@@ -98347,6 +103546,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -98385,6 +103586,8 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type IncidentReportUpsertWithoutTasksInput = {
@@ -98548,6 +103751,8 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVolunteerProfileInput = {
@@ -98586,6 +103791,8 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVolunteerProfileInput = {
@@ -98770,6 +103977,8 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVolunteerProfileInput = {
@@ -98808,6 +104017,8 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VolunteerSkillUpsertWithWhereUniqueWithoutVolunteerInput = {
@@ -98928,6 +104139,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHelpRequestsInput = {
@@ -98966,6 +104179,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHelpRequestsInput = {
@@ -99072,6 +104287,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHelpRequestsInput = {
@@ -99110,6 +104327,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HelpRequestEscalationUpsertWithWhereUniqueWithoutHelpRequestInput = {
@@ -99350,6 +104569,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -99388,6 +104609,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -99515,6 +104738,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -99553,6 +104778,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -99591,6 +104818,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -99629,6 +104858,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -99730,6 +104961,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -99768,6 +105001,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AlertUpsertWithoutNotificationsInput = {
@@ -99999,6 +105234,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLocationLogsInput = {
@@ -100037,6 +105274,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLocationLogsInput = {
@@ -100091,6 +105330,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocationLogsInput = {
@@ -100129,6 +105370,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DonorCampaignCreateWithoutTokensInput = {
@@ -100190,6 +105433,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReliefTokensInput = {
@@ -100228,6 +105473,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReliefTokensInput = {
@@ -100347,6 +105594,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReliefTokensInput = {
@@ -100385,6 +105634,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReliefTokenClaimUpsertWithWhereUniqueWithoutTokenInput = {
@@ -100619,6 +105870,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDamageReportsInput = {
@@ -100657,6 +105910,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDamageReportsInput = {
@@ -100784,6 +106039,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDamageReportsInput = {
@@ -100822,6 +106079,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLocalVerifierInput = {
@@ -100860,6 +106119,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLocalVerifierInput = {
@@ -100898,6 +106159,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLocalVerifierInput = {
@@ -100980,6 +106243,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocalVerifierInput = {
@@ -101018,6 +106283,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutVerifierInput = {
@@ -101376,6 +106643,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSupportRequestsInput = {
@@ -101414,6 +106683,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSupportRequestsInput = {
@@ -101468,6 +106739,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportRequestsInput = {
@@ -101506,6 +106779,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type IncidentReportCreateWithoutAarInput = {
@@ -101880,6 +107155,8 @@ export namespace Prisma {
     assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionLogsInput = {
@@ -101918,6 +107195,8 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionLogsInput = {
@@ -101972,6 +107251,8 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionLogsInput = {
@@ -102010,6 +107291,8 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReliefCampCreateWithoutResidentsInput = {
@@ -103283,6 +108566,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDonationsInput = {
@@ -103321,6 +108606,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDonationsInput = {
@@ -103428,6 +108715,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDonationsInput = {
@@ -103466,6 +108755,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSafetyCheckInsInput = {
@@ -103504,6 +108795,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSafetyCheckInsInput = {
@@ -103542,6 +108835,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSafetyCheckInsInput = {
@@ -103596,6 +108891,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSafetyCheckInsInput = {
@@ -103634,6 +108931,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutFamilyMembersInput = {
@@ -103672,6 +108971,8 @@ export namespace Prisma {
     currentSector?: SectorCreateNestedOneWithoutUsersInput
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFamilyMembersInput = {
@@ -103710,6 +109011,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFamilyMembersInput = {
@@ -103764,6 +109067,8 @@ export namespace Prisma {
     currentSector?: SectorUpdateOneWithoutUsersNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFamilyMembersInput = {
@@ -103802,6 +109107,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GroupTherapySessionCreateWithoutParticipantsInput = {
@@ -104144,6 +109451,606 @@ export namespace Prisma {
     duplicateLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutReportNestedInput
   }
 
+  export type RescueMissionCreateWithoutVehicleInput = {
+    id?: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    assignedBy: UserCreateNestedOneWithoutAssignedRescuesInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutMissionInput
+  }
+
+  export type RescueMissionUncheckedCreateWithoutVehicleInput = {
+    id?: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    assignedById: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutMissionInput
+  }
+
+  export type RescueMissionCreateOrConnectWithoutVehicleInput = {
+    where: RescueMissionWhereUniqueInput
+    create: XOR<RescueMissionCreateWithoutVehicleInput, RescueMissionUncheckedCreateWithoutVehicleInput>
+  }
+
+  export type RescueMissionCreateManyVehicleInputEnvelope = {
+    data: RescueMissionCreateManyVehicleInput | RescueMissionCreateManyVehicleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RescueMissionUpsertWithWhereUniqueWithoutVehicleInput = {
+    where: RescueMissionWhereUniqueInput
+    update: XOR<RescueMissionUpdateWithoutVehicleInput, RescueMissionUncheckedUpdateWithoutVehicleInput>
+    create: XOR<RescueMissionCreateWithoutVehicleInput, RescueMissionUncheckedCreateWithoutVehicleInput>
+  }
+
+  export type RescueMissionUpdateWithWhereUniqueWithoutVehicleInput = {
+    where: RescueMissionWhereUniqueInput
+    data: XOR<RescueMissionUpdateWithoutVehicleInput, RescueMissionUncheckedUpdateWithoutVehicleInput>
+  }
+
+  export type RescueMissionUpdateManyWithWhereWithoutVehicleInput = {
+    where: RescueMissionScalarWhereInput
+    data: XOR<RescueMissionUpdateManyMutationInput, RescueMissionUncheckedUpdateManyWithoutVehicleInput>
+  }
+
+  export type RescueVehicleCreateWithoutMissionsInput = {
+    id?: string
+    type: $Enums.VehicleType
+    name: string
+    capacity: number
+    area: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: string
+    contactPhone?: string | null
+    operatorName?: string | null
+    assignedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RescueVehicleUncheckedCreateWithoutMissionsInput = {
+    id?: string
+    type: $Enums.VehicleType
+    name: string
+    capacity: number
+    area: string
+    latitude?: number | null
+    longitude?: number | null
+    status?: string
+    contactPhone?: string | null
+    operatorName?: string | null
+    assignedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RescueVehicleCreateOrConnectWithoutMissionsInput = {
+    where: RescueVehicleWhereUniqueInput
+    create: XOR<RescueVehicleCreateWithoutMissionsInput, RescueVehicleUncheckedCreateWithoutMissionsInput>
+  }
+
+  export type UserCreateWithoutAssignedRescuesInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name: string
+    phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedRescuesInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name: string
+    phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedRescuesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedRescuesInput, UserUncheckedCreateWithoutAssignedRescuesInput>
+  }
+
+  export type SafeZoneCheckInCreateWithoutMissionInput = {
+    id?: string
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSafeZoneCheckInsInput
+  }
+
+  export type SafeZoneCheckInUncheckedCreateWithoutMissionInput = {
+    id?: string
+    userId: string
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SafeZoneCheckInCreateOrConnectWithoutMissionInput = {
+    where: SafeZoneCheckInWhereUniqueInput
+    create: XOR<SafeZoneCheckInCreateWithoutMissionInput, SafeZoneCheckInUncheckedCreateWithoutMissionInput>
+  }
+
+  export type SafeZoneCheckInCreateManyMissionInputEnvelope = {
+    data: SafeZoneCheckInCreateManyMissionInput | SafeZoneCheckInCreateManyMissionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RescueVehicleUpsertWithoutMissionsInput = {
+    update: XOR<RescueVehicleUpdateWithoutMissionsInput, RescueVehicleUncheckedUpdateWithoutMissionsInput>
+    create: XOR<RescueVehicleCreateWithoutMissionsInput, RescueVehicleUncheckedCreateWithoutMissionsInput>
+    where?: RescueVehicleWhereInput
+  }
+
+  export type RescueVehicleUpdateToOneWithWhereWithoutMissionsInput = {
+    where?: RescueVehicleWhereInput
+    data: XOR<RescueVehicleUpdateWithoutMissionsInput, RescueVehicleUncheckedUpdateWithoutMissionsInput>
+  }
+
+  export type RescueVehicleUpdateWithoutMissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    name?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    area?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RescueVehicleUncheckedUpdateWithoutMissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    name?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    area?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutAssignedRescuesInput = {
+    update: XOR<UserUpdateWithoutAssignedRescuesInput, UserUncheckedUpdateWithoutAssignedRescuesInput>
+    create: XOR<UserCreateWithoutAssignedRescuesInput, UserUncheckedCreateWithoutAssignedRescuesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedRescuesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedRescuesInput, UserUncheckedUpdateWithoutAssignedRescuesInput>
+  }
+
+  export type UserUpdateWithoutAssignedRescuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedRescuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type SafeZoneCheckInUpsertWithWhereUniqueWithoutMissionInput = {
+    where: SafeZoneCheckInWhereUniqueInput
+    update: XOR<SafeZoneCheckInUpdateWithoutMissionInput, SafeZoneCheckInUncheckedUpdateWithoutMissionInput>
+    create: XOR<SafeZoneCheckInCreateWithoutMissionInput, SafeZoneCheckInUncheckedCreateWithoutMissionInput>
+  }
+
+  export type SafeZoneCheckInUpdateWithWhereUniqueWithoutMissionInput = {
+    where: SafeZoneCheckInWhereUniqueInput
+    data: XOR<SafeZoneCheckInUpdateWithoutMissionInput, SafeZoneCheckInUncheckedUpdateWithoutMissionInput>
+  }
+
+  export type SafeZoneCheckInUpdateManyWithWhereWithoutMissionInput = {
+    where: SafeZoneCheckInScalarWhereInput
+    data: XOR<SafeZoneCheckInUpdateManyMutationInput, SafeZoneCheckInUncheckedUpdateManyWithoutMissionInput>
+  }
+
+  export type UserCreateWithoutSafeZoneCheckInsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name: string
+    phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+  }
+
+  export type UserUncheckedCreateWithoutSafeZoneCheckInsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name: string
+    phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+  }
+
+  export type UserCreateOrConnectWithoutSafeZoneCheckInsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSafeZoneCheckInsInput, UserUncheckedCreateWithoutSafeZoneCheckInsInput>
+  }
+
+  export type RescueMissionCreateWithoutSafeZoneCheckInsInput = {
+    id?: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    vehicle: RescueVehicleCreateNestedOneWithoutMissionsInput
+    assignedBy: UserCreateNestedOneWithoutAssignedRescuesInput
+  }
+
+  export type RescueMissionUncheckedCreateWithoutSafeZoneCheckInsInput = {
+    id?: string
+    vehicleId: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    assignedById: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RescueMissionCreateOrConnectWithoutSafeZoneCheckInsInput = {
+    where: RescueMissionWhereUniqueInput
+    create: XOR<RescueMissionCreateWithoutSafeZoneCheckInsInput, RescueMissionUncheckedCreateWithoutSafeZoneCheckInsInput>
+  }
+
+  export type UserUpsertWithoutSafeZoneCheckInsInput = {
+    update: XOR<UserUpdateWithoutSafeZoneCheckInsInput, UserUncheckedUpdateWithoutSafeZoneCheckInsInput>
+    create: XOR<UserCreateWithoutSafeZoneCheckInsInput, UserUncheckedCreateWithoutSafeZoneCheckInsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSafeZoneCheckInsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSafeZoneCheckInsInput, UserUncheckedUpdateWithoutSafeZoneCheckInsInput>
+  }
+
+  export type UserUpdateWithoutSafeZoneCheckInsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSafeZoneCheckInsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+  }
+
+  export type RescueMissionUpsertWithoutSafeZoneCheckInsInput = {
+    update: XOR<RescueMissionUpdateWithoutSafeZoneCheckInsInput, RescueMissionUncheckedUpdateWithoutSafeZoneCheckInsInput>
+    create: XOR<RescueMissionCreateWithoutSafeZoneCheckInsInput, RescueMissionUncheckedCreateWithoutSafeZoneCheckInsInput>
+    where?: RescueMissionWhereInput
+  }
+
+  export type RescueMissionUpdateToOneWithWhereWithoutSafeZoneCheckInsInput = {
+    where?: RescueMissionWhereInput
+    data: XOR<RescueMissionUpdateWithoutSafeZoneCheckInsInput, RescueMissionUncheckedUpdateWithoutSafeZoneCheckInsInput>
+  }
+
+  export type RescueMissionUpdateWithoutSafeZoneCheckInsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    vehicle?: RescueVehicleUpdateOneRequiredWithoutMissionsNestedInput
+    assignedBy?: UserUpdateOneRequiredWithoutAssignedRescuesNestedInput
+  }
+
+  export type RescueMissionUncheckedUpdateWithoutSafeZoneCheckInsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vehicleId?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    assignedById?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type DamageAssessmentCreateManyReportedByInput = {
     id?: string
     incidentId?: string | null
@@ -104341,6 +110248,27 @@ export namespace Prisma {
     device?: string | null
     location?: string | null
     loginTime?: Date | string
+  }
+
+  export type RescueMissionCreateManyAssignedByInput = {
+    id?: string
+    vehicleId: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type SafeZoneCheckInCreateManyUserInput = {
+    id?: string
+    missionId?: string | null
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
   }
 
   export type DamageAssessmentUpdateWithoutReportedByInput = {
@@ -104962,6 +110890,71 @@ export namespace Prisma {
     loginTime?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RescueMissionUpdateWithoutAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    vehicle?: RescueVehicleUpdateOneRequiredWithoutMissionsNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutMissionNestedInput
+  }
+
+  export type RescueMissionUncheckedUpdateWithoutAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vehicleId?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutMissionNestedInput
+  }
+
+  export type RescueMissionUncheckedUpdateManyWithoutAssignedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vehicleId?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SafeZoneCheckInUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mission?: RescueMissionUpdateOneWithoutSafeZoneCheckInsNestedInput
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    missionId?: NullableStringFieldUpdateOperationsInput | string | null
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    missionId?: NullableStringFieldUpdateOperationsInput | string | null
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DamageAssessmentCreateManyIncidentInput = {
     id?: string
     reportedById: string
@@ -105412,6 +111405,8 @@ export namespace Prisma {
     assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCurrentSectorInput = {
@@ -105450,6 +111445,8 @@ export namespace Prisma {
     assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCurrentSectorInput = {
@@ -106246,6 +112243,92 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     attendanceStatus?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RescueMissionCreateManyVehicleInput = {
+    id?: string
+    area: string
+    destinationCampId?: string | null
+    status?: $Enums.MissionStatus
+    evacuatedCount?: number
+    assignedById: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RescueMissionUpdateWithoutVehicleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedBy?: UserUpdateOneRequiredWithoutAssignedRescuesNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutMissionNestedInput
+  }
+
+  export type RescueMissionUncheckedUpdateWithoutVehicleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    assignedById?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutMissionNestedInput
+  }
+
+  export type RescueMissionUncheckedUpdateManyWithoutVehicleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    destinationCampId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMissionStatusFieldUpdateOperationsInput | $Enums.MissionStatus
+    evacuatedCount?: IntFieldUpdateOperationsInput | number
+    assignedById?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SafeZoneCheckInCreateManyMissionInput = {
+    id?: string
+    userId: string
+    campId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SafeZoneCheckInUpdateWithoutMissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSafeZoneCheckInsNestedInput
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateWithoutMissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SafeZoneCheckInUncheckedUpdateManyWithoutMissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

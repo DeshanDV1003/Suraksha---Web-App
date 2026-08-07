@@ -26,7 +26,7 @@ export const sendNotification = async (userId: string, title: string, message: s
 };
 
 // Send Expo push notifications to a list of users who have push tokens
-const sendExpoPush = async (
+export const sendExpoPush = async (
   userIds: string[],
   title: string,
   body: string,

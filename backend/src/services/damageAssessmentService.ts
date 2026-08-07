@@ -61,8 +61,8 @@ const calculateCompensation = (data: any) => {
   else if (data.structuralDamage === 'MODERATE') score += 10;
 
   const eligible = score >= 60; // Threshold
-  
-  return { score, eligible };
+
+  return { score: Math.min(100, score), eligible };
 };
 
 export const createDamageAssessment = async (userId: string, data: any) => {

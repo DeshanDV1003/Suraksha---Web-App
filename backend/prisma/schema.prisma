@@ -47,6 +47,8 @@ model User {
   currentSector            Sector?                       @relation(fields: [currentSectorId], references: [id])
   sessionLogs              UserSessionLog[]
   volunteerProfile         VolunteerProfile?
+  assignedRescues          RescueMission[]   @relation("AssignedRescues")
+  safeZoneCheckIns         SafeZoneCheckIn[] @relation("SafeZoneCheckIns")
 }
 
 model IncidentReport {
@@ -1008,4 +1010,65 @@ model AuthorityContact {
   sector   String?
   isActive Boolean  @default(true)
   createdAt DateTime @default(now())
+}
+
+enum VehicleType {
+  BUS
+  VAN
+  BOAT
+  TRUCK
+  HELICOPTER
+  AMBULANCE
+}
+
+enum MissionStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model RescueVehicle {
+  id           String         @id @default(uuid())
+  type         VehicleType
+  name         String
+  capacity     Int
+  area         String
+  latitude     Float?
+  longitude    Float?
+  status       String         @default("AVAILABLE")
+  contactPhone String?
+  operatorName String?
+  assignedById String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  missions     RescueMission[]
+}
+
+model RescueMission {
+  id                String        @id @default(uuid())
+  vehicleId         String
+  area              String
+  destinationCampId String?
+  status            MissionStatus @default(PENDING)
+  evacuatedCount    Int           @default(0)
+  assignedById      String
+  notes             String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  completedAt       DateTime?
+  vehicle           RescueVehicle @relation(fields: [vehicleId], references: [id])
+  assignedBy        User          @relation("AssignedRescues", fields: [assignedById], references: [id])
+  safeZoneCheckIns  SafeZoneCheckIn[]
+}
+
+model SafeZoneCheckIn {
+  id        String        @id @default(uuid())
+  userId    String
+  missionId String?
+  campId    String?
+  notes     String?
+  createdAt DateTime      @default(now())
+  user      User          @relation("SafeZoneCheckIns", fields: [userId], references: [id])
+  mission   RescueMission? @relation(fields: [missionId], references: [id])
 }
