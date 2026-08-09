@@ -94,6 +94,11 @@ export type IncidentHistory = $Result.DefaultSelection<Prisma.$IncidentHistoryPa
  */
 export type ResourceRequestMatch = $Result.DefaultSelection<Prisma.$ResourceRequestMatchPayload>
 /**
+ * Model CampSupplyRequest
+ * 
+ */
+export type CampSupplyRequest = $Result.DefaultSelection<Prisma.$CampSupplyRequestPayload>
+/**
  * Model AuditLog
  * 
  */
@@ -532,6 +537,7 @@ export const SafetyStatus: {
   SAFE: 'SAFE',
   NEEDS_HELP: 'NEEDS_HELP',
   UNKNOWN: 'UNKNOWN',
+  MISSING: 'MISSING',
   INJURED: 'INJURED',
   EVACUATED: 'EVACUATED',
   TRAPPED: 'TRAPPED',
@@ -973,6 +979,16 @@ export class PrismaClient<
     * ```
     */
   get resourceRequestMatch(): Prisma.ResourceRequestMatchDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.campSupplyRequest`: Exposes CRUD operations for the **CampSupplyRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CampSupplyRequests
+    * const campSupplyRequests = await prisma.campSupplyRequest.findMany()
+    * ```
+    */
+  get campSupplyRequest(): Prisma.CampSupplyRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
@@ -1909,6 +1925,7 @@ export namespace Prisma {
     MLLog: 'MLLog',
     IncidentHistory: 'IncidentHistory',
     ResourceRequestMatch: 'ResourceRequestMatch',
+    CampSupplyRequest: 'CampSupplyRequest',
     AuditLog: 'AuditLog',
     LocationLog: 'LocationLog',
     ReliefToken: 'ReliefToken',
@@ -1972,7 +1989,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "campSupplyRequest" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3157,6 +3174,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ResourceRequestMatchCountArgs<ExtArgs>
             result: $Utils.Optional<ResourceRequestMatchCountAggregateOutputType> | number
+          }
+        }
+      }
+      CampSupplyRequest: {
+        payload: Prisma.$CampSupplyRequestPayload<ExtArgs>
+        fields: Prisma.CampSupplyRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CampSupplyRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CampSupplyRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.CampSupplyRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CampSupplyRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>
+          }
+          findMany: {
+            args: Prisma.CampSupplyRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>[]
+          }
+          create: {
+            args: Prisma.CampSupplyRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>
+          }
+          createMany: {
+            args: Prisma.CampSupplyRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CampSupplyRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.CampSupplyRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>
+          }
+          update: {
+            args: Prisma.CampSupplyRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.CampSupplyRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CampSupplyRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CampSupplyRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.CampSupplyRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampSupplyRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.CampSupplyRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCampSupplyRequest>
+          }
+          groupBy: {
+            args: Prisma.CampSupplyRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CampSupplyRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CampSupplyRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<CampSupplyRequestCountAggregateOutputType> | number
           }
         }
       }
@@ -6816,6 +6907,7 @@ export namespace Prisma {
     mLLog?: MLLogOmit
     incidentHistory?: IncidentHistoryOmit
     resourceRequestMatch?: ResourceRequestMatchOmit
+    campSupplyRequest?: CampSupplyRequestOmit
     auditLog?: AuditLogOmit
     locationLog?: LocationLogOmit
     reliefToken?: ReliefTokenOmit
@@ -6974,6 +7066,7 @@ export namespace Prisma {
     sessionLogs: number
     assignedRescues: number
     safeZoneCheckIns: number
+    supplyRequests: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6993,6 +7086,7 @@ export namespace Prisma {
     sessionLogs?: boolean | UserCountOutputTypeCountSessionLogsArgs
     assignedRescues?: boolean | UserCountOutputTypeCountAssignedRescuesArgs
     safeZoneCheckIns?: boolean | UserCountOutputTypeCountSafeZoneCheckInsArgs
+    supplyRequests?: boolean | UserCountOutputTypeCountSupplyRequestsArgs
   }
 
   // Custom InputTypes
@@ -7116,6 +7210,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSafeZoneCheckInsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SafeZoneCheckInWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSupplyRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampSupplyRequestWhereInput
   }
 
 
@@ -7278,6 +7379,7 @@ export namespace Prisma {
     transfersIn: number
     donations: number
     referrals: number
+    supplyRequests: number
   }
 
   export type ReliefCampCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7288,6 +7390,7 @@ export namespace Prisma {
     transfersIn?: boolean | ReliefCampCountOutputTypeCountTransfersInArgs
     donations?: boolean | ReliefCampCountOutputTypeCountDonationsArgs
     referrals?: boolean | ReliefCampCountOutputTypeCountReferralsArgs
+    supplyRequests?: boolean | ReliefCampCountOutputTypeCountSupplyRequestsArgs
   }
 
   // Custom InputTypes
@@ -7348,6 +7451,13 @@ export namespace Prisma {
    */
   export type ReliefCampCountOutputTypeCountReferralsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HospitalReferralWhereInput
+  }
+
+  /**
+   * ReliefCampCountOutputType without action
+   */
+  export type ReliefCampCountOutputTypeCountSupplyRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampSupplyRequestWhereInput
   }
 
 
@@ -8044,6 +8154,7 @@ export namespace Prisma {
     volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     assignedRescues?: boolean | User$assignedRescuesArgs<ExtArgs>
     safeZoneCheckIns?: boolean | User$safeZoneCheckInsArgs<ExtArgs>
+    supplyRequests?: boolean | User$supplyRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8139,6 +8250,7 @@ export namespace Prisma {
     volunteerProfile?: boolean | User$volunteerProfileArgs<ExtArgs>
     assignedRescues?: boolean | User$assignedRescuesArgs<ExtArgs>
     safeZoneCheckIns?: boolean | User$safeZoneCheckInsArgs<ExtArgs>
+    supplyRequests?: boolean | User$supplyRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8170,6 +8282,7 @@ export namespace Prisma {
       volunteerProfile: Prisma.$VolunteerProfilePayload<ExtArgs> | null
       assignedRescues: Prisma.$RescueMissionPayload<ExtArgs>[]
       safeZoneCheckIns: Prisma.$SafeZoneCheckInPayload<ExtArgs>[]
+      supplyRequests: Prisma.$CampSupplyRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8605,6 +8718,7 @@ export namespace Prisma {
     volunteerProfile<T extends User$volunteerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$volunteerProfileArgs<ExtArgs>>): Prisma__VolunteerProfileClient<$Result.GetResult<Prisma.$VolunteerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     assignedRescues<T extends User$assignedRescuesArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedRescuesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RescueMissionPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     safeZoneCheckIns<T extends User$safeZoneCheckInsArgs<ExtArgs> = {}>(args?: Subset<T, User$safeZoneCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SafeZoneCheckInPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    supplyRequests<T extends User$supplyRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$supplyRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9488,6 +9602,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SafeZoneCheckInScalarFieldEnum | SafeZoneCheckInScalarFieldEnum[]
+  }
+
+  /**
+   * User.supplyRequests
+   */
+  export type User$supplyRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    where?: CampSupplyRequestWhereInput
+    orderBy?: CampSupplyRequestOrderByWithRelationInput | CampSupplyRequestOrderByWithRelationInput[]
+    cursor?: CampSupplyRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampSupplyRequestScalarFieldEnum | CampSupplyRequestScalarFieldEnum[]
   }
 
   /**
@@ -13651,6 +13789,7 @@ export namespace Prisma {
     transfersIn?: boolean | ReliefCamp$transfersInArgs<ExtArgs>
     donations?: boolean | ReliefCamp$donationsArgs<ExtArgs>
     referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
+    supplyRequests?: boolean | ReliefCamp$supplyRequestsArgs<ExtArgs>
     _count?: boolean | ReliefCampCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["reliefCamp"]>
 
@@ -13708,6 +13847,7 @@ export namespace Prisma {
     transfersIn?: boolean | ReliefCamp$transfersInArgs<ExtArgs>
     donations?: boolean | ReliefCamp$donationsArgs<ExtArgs>
     referrals?: boolean | ReliefCamp$referralsArgs<ExtArgs>
+    supplyRequests?: boolean | ReliefCamp$supplyRequestsArgs<ExtArgs>
     _count?: boolean | ReliefCampCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ReliefCampIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -13723,6 +13863,7 @@ export namespace Prisma {
       transfersIn: Prisma.$CampTransferRequestPayload<ExtArgs>[]
       donations: Prisma.$DonationPayload<ExtArgs>[]
       referrals: Prisma.$HospitalReferralPayload<ExtArgs>[]
+      supplyRequests: Prisma.$CampSupplyRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14138,6 +14279,7 @@ export namespace Prisma {
     transfersIn<T extends ReliefCamp$transfersInArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$transfersInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampTransferRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     donations<T extends ReliefCamp$donationsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     referrals<T extends ReliefCamp$referralsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$referralsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HospitalReferralPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    supplyRequests<T extends ReliefCamp$supplyRequestsArgs<ExtArgs> = {}>(args?: Subset<T, ReliefCamp$supplyRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14732,6 +14874,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: HospitalReferralScalarFieldEnum | HospitalReferralScalarFieldEnum[]
+  }
+
+  /**
+   * ReliefCamp.supplyRequests
+   */
+  export type ReliefCamp$supplyRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    where?: CampSupplyRequestWhereInput
+    orderBy?: CampSupplyRequestOrderByWithRelationInput | CampSupplyRequestOrderByWithRelationInput[]
+    cursor?: CampSupplyRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampSupplyRequestScalarFieldEnum | CampSupplyRequestScalarFieldEnum[]
   }
 
   /**
@@ -27191,6 +27357,1190 @@ export namespace Prisma {
      * Omit specific fields from the ResourceRequestMatch
      */
     omit?: ResourceRequestMatchOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CampSupplyRequest
+   */
+
+  export type AggregateCampSupplyRequest = {
+    _count: CampSupplyRequestCountAggregateOutputType | null
+    _avg: CampSupplyRequestAvgAggregateOutputType | null
+    _sum: CampSupplyRequestSumAggregateOutputType | null
+    _min: CampSupplyRequestMinAggregateOutputType | null
+    _max: CampSupplyRequestMaxAggregateOutputType | null
+  }
+
+  export type CampSupplyRequestAvgAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type CampSupplyRequestSumAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type CampSupplyRequestMinAggregateOutputType = {
+    id: string | null
+    campId: string | null
+    requesterId: string | null
+    itemType: string | null
+    quantity: number | null
+    urgency: string | null
+    status: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CampSupplyRequestMaxAggregateOutputType = {
+    id: string | null
+    campId: string | null
+    requesterId: string | null
+    itemType: string | null
+    quantity: number | null
+    urgency: string | null
+    status: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CampSupplyRequestCountAggregateOutputType = {
+    id: number
+    campId: number
+    requesterId: number
+    itemType: number
+    quantity: number
+    urgency: number
+    status: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CampSupplyRequestAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type CampSupplyRequestSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type CampSupplyRequestMinAggregateInputType = {
+    id?: true
+    campId?: true
+    requesterId?: true
+    itemType?: true
+    quantity?: true
+    urgency?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CampSupplyRequestMaxAggregateInputType = {
+    id?: true
+    campId?: true
+    requesterId?: true
+    itemType?: true
+    quantity?: true
+    urgency?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CampSupplyRequestCountAggregateInputType = {
+    id?: true
+    campId?: true
+    requesterId?: true
+    itemType?: true
+    quantity?: true
+    urgency?: true
+    status?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CampSupplyRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CampSupplyRequest to aggregate.
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampSupplyRequests to fetch.
+     */
+    orderBy?: CampSupplyRequestOrderByWithRelationInput | CampSupplyRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CampSupplyRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampSupplyRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampSupplyRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CampSupplyRequests
+    **/
+    _count?: true | CampSupplyRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CampSupplyRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CampSupplyRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CampSupplyRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CampSupplyRequestMaxAggregateInputType
+  }
+
+  export type GetCampSupplyRequestAggregateType<T extends CampSupplyRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateCampSupplyRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCampSupplyRequest[P]>
+      : GetScalarType<T[P], AggregateCampSupplyRequest[P]>
+  }
+
+
+
+
+  export type CampSupplyRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampSupplyRequestWhereInput
+    orderBy?: CampSupplyRequestOrderByWithAggregationInput | CampSupplyRequestOrderByWithAggregationInput[]
+    by: CampSupplyRequestScalarFieldEnum[] | CampSupplyRequestScalarFieldEnum
+    having?: CampSupplyRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CampSupplyRequestCountAggregateInputType | true
+    _avg?: CampSupplyRequestAvgAggregateInputType
+    _sum?: CampSupplyRequestSumAggregateInputType
+    _min?: CampSupplyRequestMinAggregateInputType
+    _max?: CampSupplyRequestMaxAggregateInputType
+  }
+
+  export type CampSupplyRequestGroupByOutputType = {
+    id: string
+    campId: string | null
+    requesterId: string
+    itemType: string
+    quantity: number
+    urgency: string
+    status: string
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CampSupplyRequestCountAggregateOutputType | null
+    _avg: CampSupplyRequestAvgAggregateOutputType | null
+    _sum: CampSupplyRequestSumAggregateOutputType | null
+    _min: CampSupplyRequestMinAggregateOutputType | null
+    _max: CampSupplyRequestMaxAggregateOutputType | null
+  }
+
+  type GetCampSupplyRequestGroupByPayload<T extends CampSupplyRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CampSupplyRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CampSupplyRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CampSupplyRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], CampSupplyRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CampSupplyRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campId?: boolean
+    requesterId?: boolean
+    itemType?: boolean
+    quantity?: boolean
+    urgency?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    camp?: boolean | CampSupplyRequest$campArgs<ExtArgs>
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campSupplyRequest"]>
+
+  export type CampSupplyRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campId?: boolean
+    requesterId?: boolean
+    itemType?: boolean
+    quantity?: boolean
+    urgency?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    camp?: boolean | CampSupplyRequest$campArgs<ExtArgs>
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campSupplyRequest"]>
+
+  export type CampSupplyRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campId?: boolean
+    requesterId?: boolean
+    itemType?: boolean
+    quantity?: boolean
+    urgency?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    camp?: boolean | CampSupplyRequest$campArgs<ExtArgs>
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campSupplyRequest"]>
+
+  export type CampSupplyRequestSelectScalar = {
+    id?: boolean
+    campId?: boolean
+    requesterId?: boolean
+    itemType?: boolean
+    quantity?: boolean
+    urgency?: boolean
+    status?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CampSupplyRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "campId" | "requesterId" | "itemType" | "quantity" | "urgency" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["campSupplyRequest"]>
+  export type CampSupplyRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    camp?: boolean | CampSupplyRequest$campArgs<ExtArgs>
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CampSupplyRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    camp?: boolean | CampSupplyRequest$campArgs<ExtArgs>
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CampSupplyRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    camp?: boolean | CampSupplyRequest$campArgs<ExtArgs>
+    requester?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CampSupplyRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CampSupplyRequest"
+    objects: {
+      camp: Prisma.$ReliefCampPayload<ExtArgs> | null
+      requester: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      campId: string | null
+      requesterId: string
+      itemType: string
+      quantity: number
+      urgency: string
+      status: string
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["campSupplyRequest"]>
+    composites: {}
+  }
+
+  type CampSupplyRequestGetPayload<S extends boolean | null | undefined | CampSupplyRequestDefaultArgs> = $Result.GetResult<Prisma.$CampSupplyRequestPayload, S>
+
+  type CampSupplyRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CampSupplyRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CampSupplyRequestCountAggregateInputType | true
+    }
+
+  export interface CampSupplyRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CampSupplyRequest'], meta: { name: 'CampSupplyRequest' } }
+    /**
+     * Find zero or one CampSupplyRequest that matches the filter.
+     * @param {CampSupplyRequestFindUniqueArgs} args - Arguments to find a CampSupplyRequest
+     * @example
+     * // Get one CampSupplyRequest
+     * const campSupplyRequest = await prisma.campSupplyRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CampSupplyRequestFindUniqueArgs>(args: SelectSubset<T, CampSupplyRequestFindUniqueArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one CampSupplyRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CampSupplyRequestFindUniqueOrThrowArgs} args - Arguments to find a CampSupplyRequest
+     * @example
+     * // Get one CampSupplyRequest
+     * const campSupplyRequest = await prisma.campSupplyRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CampSupplyRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, CampSupplyRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first CampSupplyRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestFindFirstArgs} args - Arguments to find a CampSupplyRequest
+     * @example
+     * // Get one CampSupplyRequest
+     * const campSupplyRequest = await prisma.campSupplyRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CampSupplyRequestFindFirstArgs>(args?: SelectSubset<T, CampSupplyRequestFindFirstArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first CampSupplyRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestFindFirstOrThrowArgs} args - Arguments to find a CampSupplyRequest
+     * @example
+     * // Get one CampSupplyRequest
+     * const campSupplyRequest = await prisma.campSupplyRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CampSupplyRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, CampSupplyRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more CampSupplyRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CampSupplyRequests
+     * const campSupplyRequests = await prisma.campSupplyRequest.findMany()
+     * 
+     * // Get first 10 CampSupplyRequests
+     * const campSupplyRequests = await prisma.campSupplyRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const campSupplyRequestWithIdOnly = await prisma.campSupplyRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CampSupplyRequestFindManyArgs>(args?: SelectSubset<T, CampSupplyRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a CampSupplyRequest.
+     * @param {CampSupplyRequestCreateArgs} args - Arguments to create a CampSupplyRequest.
+     * @example
+     * // Create one CampSupplyRequest
+     * const CampSupplyRequest = await prisma.campSupplyRequest.create({
+     *   data: {
+     *     // ... data to create a CampSupplyRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends CampSupplyRequestCreateArgs>(args: SelectSubset<T, CampSupplyRequestCreateArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many CampSupplyRequests.
+     * @param {CampSupplyRequestCreateManyArgs} args - Arguments to create many CampSupplyRequests.
+     * @example
+     * // Create many CampSupplyRequests
+     * const campSupplyRequest = await prisma.campSupplyRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CampSupplyRequestCreateManyArgs>(args?: SelectSubset<T, CampSupplyRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CampSupplyRequests and returns the data saved in the database.
+     * @param {CampSupplyRequestCreateManyAndReturnArgs} args - Arguments to create many CampSupplyRequests.
+     * @example
+     * // Create many CampSupplyRequests
+     * const campSupplyRequest = await prisma.campSupplyRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CampSupplyRequests and only return the `id`
+     * const campSupplyRequestWithIdOnly = await prisma.campSupplyRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CampSupplyRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, CampSupplyRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a CampSupplyRequest.
+     * @param {CampSupplyRequestDeleteArgs} args - Arguments to delete one CampSupplyRequest.
+     * @example
+     * // Delete one CampSupplyRequest
+     * const CampSupplyRequest = await prisma.campSupplyRequest.delete({
+     *   where: {
+     *     // ... filter to delete one CampSupplyRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CampSupplyRequestDeleteArgs>(args: SelectSubset<T, CampSupplyRequestDeleteArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one CampSupplyRequest.
+     * @param {CampSupplyRequestUpdateArgs} args - Arguments to update one CampSupplyRequest.
+     * @example
+     * // Update one CampSupplyRequest
+     * const campSupplyRequest = await prisma.campSupplyRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CampSupplyRequestUpdateArgs>(args: SelectSubset<T, CampSupplyRequestUpdateArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more CampSupplyRequests.
+     * @param {CampSupplyRequestDeleteManyArgs} args - Arguments to filter CampSupplyRequests to delete.
+     * @example
+     * // Delete a few CampSupplyRequests
+     * const { count } = await prisma.campSupplyRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CampSupplyRequestDeleteManyArgs>(args?: SelectSubset<T, CampSupplyRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CampSupplyRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CampSupplyRequests
+     * const campSupplyRequest = await prisma.campSupplyRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CampSupplyRequestUpdateManyArgs>(args: SelectSubset<T, CampSupplyRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CampSupplyRequests and returns the data updated in the database.
+     * @param {CampSupplyRequestUpdateManyAndReturnArgs} args - Arguments to update many CampSupplyRequests.
+     * @example
+     * // Update many CampSupplyRequests
+     * const campSupplyRequest = await prisma.campSupplyRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CampSupplyRequests and only return the `id`
+     * const campSupplyRequestWithIdOnly = await prisma.campSupplyRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CampSupplyRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, CampSupplyRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one CampSupplyRequest.
+     * @param {CampSupplyRequestUpsertArgs} args - Arguments to update or create a CampSupplyRequest.
+     * @example
+     * // Update or create a CampSupplyRequest
+     * const campSupplyRequest = await prisma.campSupplyRequest.upsert({
+     *   create: {
+     *     // ... data to create a CampSupplyRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CampSupplyRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CampSupplyRequestUpsertArgs>(args: SelectSubset<T, CampSupplyRequestUpsertArgs<ExtArgs>>): Prisma__CampSupplyRequestClient<$Result.GetResult<Prisma.$CampSupplyRequestPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of CampSupplyRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestCountArgs} args - Arguments to filter CampSupplyRequests to count.
+     * @example
+     * // Count the number of CampSupplyRequests
+     * const count = await prisma.campSupplyRequest.count({
+     *   where: {
+     *     // ... the filter for the CampSupplyRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends CampSupplyRequestCountArgs>(
+      args?: Subset<T, CampSupplyRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CampSupplyRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CampSupplyRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CampSupplyRequestAggregateArgs>(args: Subset<T, CampSupplyRequestAggregateArgs>): Prisma.PrismaPromise<GetCampSupplyRequestAggregateType<T>>
+
+    /**
+     * Group by CampSupplyRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampSupplyRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CampSupplyRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CampSupplyRequestGroupByArgs['orderBy'] }
+        : { orderBy?: CampSupplyRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CampSupplyRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCampSupplyRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CampSupplyRequest model
+   */
+  readonly fields: CampSupplyRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CampSupplyRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CampSupplyRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    camp<T extends CampSupplyRequest$campArgs<ExtArgs> = {}>(args?: Subset<T, CampSupplyRequest$campArgs<ExtArgs>>): Prisma__ReliefCampClient<$Result.GetResult<Prisma.$ReliefCampPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    requester<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CampSupplyRequest model
+   */ 
+  interface CampSupplyRequestFieldRefs {
+    readonly id: FieldRef<"CampSupplyRequest", 'String'>
+    readonly campId: FieldRef<"CampSupplyRequest", 'String'>
+    readonly requesterId: FieldRef<"CampSupplyRequest", 'String'>
+    readonly itemType: FieldRef<"CampSupplyRequest", 'String'>
+    readonly quantity: FieldRef<"CampSupplyRequest", 'Int'>
+    readonly urgency: FieldRef<"CampSupplyRequest", 'String'>
+    readonly status: FieldRef<"CampSupplyRequest", 'String'>
+    readonly notes: FieldRef<"CampSupplyRequest", 'String'>
+    readonly createdAt: FieldRef<"CampSupplyRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"CampSupplyRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CampSupplyRequest findUnique
+   */
+  export type CampSupplyRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which CampSupplyRequest to fetch.
+     */
+    where: CampSupplyRequestWhereUniqueInput
+  }
+
+  /**
+   * CampSupplyRequest findUniqueOrThrow
+   */
+  export type CampSupplyRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which CampSupplyRequest to fetch.
+     */
+    where: CampSupplyRequestWhereUniqueInput
+  }
+
+  /**
+   * CampSupplyRequest findFirst
+   */
+  export type CampSupplyRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which CampSupplyRequest to fetch.
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampSupplyRequests to fetch.
+     */
+    orderBy?: CampSupplyRequestOrderByWithRelationInput | CampSupplyRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CampSupplyRequests.
+     */
+    cursor?: CampSupplyRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampSupplyRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampSupplyRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CampSupplyRequests.
+     */
+    distinct?: CampSupplyRequestScalarFieldEnum | CampSupplyRequestScalarFieldEnum[]
+  }
+
+  /**
+   * CampSupplyRequest findFirstOrThrow
+   */
+  export type CampSupplyRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which CampSupplyRequest to fetch.
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampSupplyRequests to fetch.
+     */
+    orderBy?: CampSupplyRequestOrderByWithRelationInput | CampSupplyRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CampSupplyRequests.
+     */
+    cursor?: CampSupplyRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampSupplyRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampSupplyRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CampSupplyRequests.
+     */
+    distinct?: CampSupplyRequestScalarFieldEnum | CampSupplyRequestScalarFieldEnum[]
+  }
+
+  /**
+   * CampSupplyRequest findMany
+   */
+  export type CampSupplyRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which CampSupplyRequests to fetch.
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampSupplyRequests to fetch.
+     */
+    orderBy?: CampSupplyRequestOrderByWithRelationInput | CampSupplyRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CampSupplyRequests.
+     */
+    cursor?: CampSupplyRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampSupplyRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampSupplyRequests.
+     */
+    skip?: number
+    distinct?: CampSupplyRequestScalarFieldEnum | CampSupplyRequestScalarFieldEnum[]
+  }
+
+  /**
+   * CampSupplyRequest create
+   */
+  export type CampSupplyRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CampSupplyRequest.
+     */
+    data: XOR<CampSupplyRequestCreateInput, CampSupplyRequestUncheckedCreateInput>
+  }
+
+  /**
+   * CampSupplyRequest createMany
+   */
+  export type CampSupplyRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CampSupplyRequests.
+     */
+    data: CampSupplyRequestCreateManyInput | CampSupplyRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CampSupplyRequest createManyAndReturn
+   */
+  export type CampSupplyRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many CampSupplyRequests.
+     */
+    data: CampSupplyRequestCreateManyInput | CampSupplyRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CampSupplyRequest update
+   */
+  export type CampSupplyRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CampSupplyRequest.
+     */
+    data: XOR<CampSupplyRequestUpdateInput, CampSupplyRequestUncheckedUpdateInput>
+    /**
+     * Choose, which CampSupplyRequest to update.
+     */
+    where: CampSupplyRequestWhereUniqueInput
+  }
+
+  /**
+   * CampSupplyRequest updateMany
+   */
+  export type CampSupplyRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CampSupplyRequests.
+     */
+    data: XOR<CampSupplyRequestUpdateManyMutationInput, CampSupplyRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which CampSupplyRequests to update
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * Limit how many CampSupplyRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CampSupplyRequest updateManyAndReturn
+   */
+  export type CampSupplyRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update CampSupplyRequests.
+     */
+    data: XOR<CampSupplyRequestUpdateManyMutationInput, CampSupplyRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which CampSupplyRequests to update
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * Limit how many CampSupplyRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CampSupplyRequest upsert
+   */
+  export type CampSupplyRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CampSupplyRequest to update in case it exists.
+     */
+    where: CampSupplyRequestWhereUniqueInput
+    /**
+     * In case the CampSupplyRequest found by the `where` argument doesn't exist, create a new CampSupplyRequest with this data.
+     */
+    create: XOR<CampSupplyRequestCreateInput, CampSupplyRequestUncheckedCreateInput>
+    /**
+     * In case the CampSupplyRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CampSupplyRequestUpdateInput, CampSupplyRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * CampSupplyRequest delete
+   */
+  export type CampSupplyRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
+    /**
+     * Filter which CampSupplyRequest to delete.
+     */
+    where: CampSupplyRequestWhereUniqueInput
+  }
+
+  /**
+   * CampSupplyRequest deleteMany
+   */
+  export type CampSupplyRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CampSupplyRequests to delete
+     */
+    where?: CampSupplyRequestWhereInput
+    /**
+     * Limit how many CampSupplyRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CampSupplyRequest.camp
+   */
+  export type CampSupplyRequest$campArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReliefCamp
+     */
+    select?: ReliefCampSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReliefCamp
+     */
+    omit?: ReliefCampOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReliefCampInclude<ExtArgs> | null
+    where?: ReliefCampWhereInput
+  }
+
+  /**
+   * CampSupplyRequest without action
+   */
+  export type CampSupplyRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampSupplyRequest
+     */
+    select?: CampSupplyRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampSupplyRequest
+     */
+    omit?: CampSupplyRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampSupplyRequestInclude<ExtArgs> | null
   }
 
 
@@ -67415,8 +68765,18 @@ export namespace Prisma {
 
   export type AggregateFamilyMember = {
     _count: FamilyMemberCountAggregateOutputType | null
+    _avg: FamilyMemberAvgAggregateOutputType | null
+    _sum: FamilyMemberSumAggregateOutputType | null
     _min: FamilyMemberMinAggregateOutputType | null
     _max: FamilyMemberMaxAggregateOutputType | null
+  }
+
+  export type FamilyMemberAvgAggregateOutputType = {
+    age: number | null
+  }
+
+  export type FamilyMemberSumAggregateOutputType = {
+    age: number | null
   }
 
   export type FamilyMemberMinAggregateOutputType = {
@@ -67424,8 +68784,10 @@ export namespace Prisma {
     primaryUserId: string | null
     name: string | null
     relation: string | null
+    age: number | null
     status: $Enums.SafetyStatus | null
     notes: string | null
+    phone: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -67435,8 +68797,10 @@ export namespace Prisma {
     primaryUserId: string | null
     name: string | null
     relation: string | null
+    age: number | null
     status: $Enums.SafetyStatus | null
     notes: string | null
+    phone: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -67446,21 +68810,33 @@ export namespace Prisma {
     primaryUserId: number
     name: number
     relation: number
+    age: number
     status: number
     notes: number
+    phone: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type FamilyMemberAvgAggregateInputType = {
+    age?: true
+  }
+
+  export type FamilyMemberSumAggregateInputType = {
+    age?: true
+  }
+
   export type FamilyMemberMinAggregateInputType = {
     id?: true
     primaryUserId?: true
     name?: true
     relation?: true
+    age?: true
     status?: true
     notes?: true
+    phone?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -67470,8 +68846,10 @@ export namespace Prisma {
     primaryUserId?: true
     name?: true
     relation?: true
+    age?: true
     status?: true
     notes?: true
+    phone?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -67481,8 +68859,10 @@ export namespace Prisma {
     primaryUserId?: true
     name?: true
     relation?: true
+    age?: true
     status?: true
     notes?: true
+    phone?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -67526,6 +68906,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: FamilyMemberAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FamilyMemberSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: FamilyMemberMinAggregateInputType
@@ -67556,6 +68948,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: FamilyMemberCountAggregateInputType | true
+    _avg?: FamilyMemberAvgAggregateInputType
+    _sum?: FamilyMemberSumAggregateInputType
     _min?: FamilyMemberMinAggregateInputType
     _max?: FamilyMemberMaxAggregateInputType
   }
@@ -67565,11 +68959,15 @@ export namespace Prisma {
     primaryUserId: string
     name: string
     relation: string
+    age: number | null
     status: $Enums.SafetyStatus
     notes: string | null
+    phone: string | null
     createdAt: Date
     updatedAt: Date
     _count: FamilyMemberCountAggregateOutputType | null
+    _avg: FamilyMemberAvgAggregateOutputType | null
+    _sum: FamilyMemberSumAggregateOutputType | null
     _min: FamilyMemberMinAggregateOutputType | null
     _max: FamilyMemberMaxAggregateOutputType | null
   }
@@ -67593,8 +68991,10 @@ export namespace Prisma {
     primaryUserId?: boolean
     name?: boolean
     relation?: boolean
+    age?: boolean
     status?: boolean
     notes?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     primaryUser?: boolean | UserDefaultArgs<ExtArgs>
@@ -67605,8 +69005,10 @@ export namespace Prisma {
     primaryUserId?: boolean
     name?: boolean
     relation?: boolean
+    age?: boolean
     status?: boolean
     notes?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     primaryUser?: boolean | UserDefaultArgs<ExtArgs>
@@ -67617,8 +69019,10 @@ export namespace Prisma {
     primaryUserId?: boolean
     name?: boolean
     relation?: boolean
+    age?: boolean
     status?: boolean
     notes?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     primaryUser?: boolean | UserDefaultArgs<ExtArgs>
@@ -67629,13 +69033,15 @@ export namespace Prisma {
     primaryUserId?: boolean
     name?: boolean
     relation?: boolean
+    age?: boolean
     status?: boolean
     notes?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type FamilyMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "primaryUserId" | "name" | "relation" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["familyMember"]>
+  export type FamilyMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "primaryUserId" | "name" | "relation" | "age" | "status" | "notes" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["familyMember"]>
   export type FamilyMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     primaryUser?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -67656,8 +69062,10 @@ export namespace Prisma {
       primaryUserId: string
       name: string
       relation: string
+      age: number | null
       status: $Enums.SafetyStatus
       notes: string | null
+      phone: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["familyMember"]>
@@ -68088,8 +69496,10 @@ export namespace Prisma {
     readonly primaryUserId: FieldRef<"FamilyMember", 'String'>
     readonly name: FieldRef<"FamilyMember", 'String'>
     readonly relation: FieldRef<"FamilyMember", 'String'>
+    readonly age: FieldRef<"FamilyMember", 'Int'>
     readonly status: FieldRef<"FamilyMember", 'SafetyStatus'>
     readonly notes: FieldRef<"FamilyMember", 'String'>
+    readonly phone: FieldRef<"FamilyMember", 'String'>
     readonly createdAt: FieldRef<"FamilyMember", 'DateTime'>
     readonly updatedAt: FieldRef<"FamilyMember", 'DateTime'>
   }
@@ -81123,6 +82533,22 @@ export namespace Prisma {
   export type ResourceRequestMatchScalarFieldEnum = (typeof ResourceRequestMatchScalarFieldEnum)[keyof typeof ResourceRequestMatchScalarFieldEnum]
 
 
+  export const CampSupplyRequestScalarFieldEnum: {
+    id: 'id',
+    campId: 'campId',
+    requesterId: 'requesterId',
+    itemType: 'itemType',
+    quantity: 'quantity',
+    urgency: 'urgency',
+    status: 'status',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CampSupplyRequestScalarFieldEnum = (typeof CampSupplyRequestScalarFieldEnum)[keyof typeof CampSupplyRequestScalarFieldEnum]
+
+
   export const AuditLogScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -81639,8 +83065,10 @@ export namespace Prisma {
     primaryUserId: 'primaryUserId',
     name: 'name',
     relation: 'relation',
+    age: 'age',
     status: 'status',
     notes: 'notes',
+    phone: 'phone',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -82337,6 +83765,7 @@ export namespace Prisma {
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
     assignedRescues?: RescueMissionListRelationFilter
     safeZoneCheckIns?: SafeZoneCheckInListRelationFilter
+    supplyRequests?: CampSupplyRequestListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -82379,6 +83808,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileOrderByWithRelationInput
     assignedRescues?: RescueMissionOrderByRelationAggregateInput
     safeZoneCheckIns?: SafeZoneCheckInOrderByRelationAggregateInput
+    supplyRequests?: CampSupplyRequestOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -82424,6 +83854,7 @@ export namespace Prisma {
     volunteerProfile?: XOR<VolunteerProfileNullableScalarRelationFilter, VolunteerProfileWhereInput> | null
     assignedRescues?: RescueMissionListRelationFilter
     safeZoneCheckIns?: SafeZoneCheckInListRelationFilter
+    supplyRequests?: CampSupplyRequestListRelationFilter
   }, "id" | "email" | "googleId" | "nic">
 
   export type UserOrderByWithAggregationInput = {
@@ -82844,6 +84275,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestListRelationFilter
     donations?: DonationListRelationFilter
     referrals?: HospitalReferralListRelationFilter
+    supplyRequests?: CampSupplyRequestListRelationFilter
   }
 
   export type ReliefCampOrderByWithRelationInput = {
@@ -82866,6 +84298,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestOrderByRelationAggregateInput
     donations?: DonationOrderByRelationAggregateInput
     referrals?: HospitalReferralOrderByRelationAggregateInput
+    supplyRequests?: CampSupplyRequestOrderByRelationAggregateInput
   }
 
   export type ReliefCampWhereUniqueInput = Prisma.AtLeast<{
@@ -82891,6 +84324,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestListRelationFilter
     donations?: DonationListRelationFilter
     referrals?: HospitalReferralListRelationFilter
+    supplyRequests?: CampSupplyRequestListRelationFilter
   }, "id">
 
   export type ReliefCampOrderByWithAggregationInput = {
@@ -83775,6 +85209,91 @@ export namespace Prisma {
     matchScore?: FloatWithAggregatesFilter<"ResourceRequestMatch"> | number
     status?: StringWithAggregatesFilter<"ResourceRequestMatch"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ResourceRequestMatch"> | Date | string
+  }
+
+  export type CampSupplyRequestWhereInput = {
+    AND?: CampSupplyRequestWhereInput | CampSupplyRequestWhereInput[]
+    OR?: CampSupplyRequestWhereInput[]
+    NOT?: CampSupplyRequestWhereInput | CampSupplyRequestWhereInput[]
+    id?: StringFilter<"CampSupplyRequest"> | string
+    campId?: StringNullableFilter<"CampSupplyRequest"> | string | null
+    requesterId?: StringFilter<"CampSupplyRequest"> | string
+    itemType?: StringFilter<"CampSupplyRequest"> | string
+    quantity?: IntFilter<"CampSupplyRequest"> | number
+    urgency?: StringFilter<"CampSupplyRequest"> | string
+    status?: StringFilter<"CampSupplyRequest"> | string
+    notes?: StringNullableFilter<"CampSupplyRequest"> | string | null
+    createdAt?: DateTimeFilter<"CampSupplyRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"CampSupplyRequest"> | Date | string
+    camp?: XOR<ReliefCampNullableScalarRelationFilter, ReliefCampWhereInput> | null
+    requester?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CampSupplyRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    campId?: SortOrderInput | SortOrder
+    requesterId?: SortOrder
+    itemType?: SortOrder
+    quantity?: SortOrder
+    urgency?: SortOrder
+    status?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    camp?: ReliefCampOrderByWithRelationInput
+    requester?: UserOrderByWithRelationInput
+  }
+
+  export type CampSupplyRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CampSupplyRequestWhereInput | CampSupplyRequestWhereInput[]
+    OR?: CampSupplyRequestWhereInput[]
+    NOT?: CampSupplyRequestWhereInput | CampSupplyRequestWhereInput[]
+    campId?: StringNullableFilter<"CampSupplyRequest"> | string | null
+    requesterId?: StringFilter<"CampSupplyRequest"> | string
+    itemType?: StringFilter<"CampSupplyRequest"> | string
+    quantity?: IntFilter<"CampSupplyRequest"> | number
+    urgency?: StringFilter<"CampSupplyRequest"> | string
+    status?: StringFilter<"CampSupplyRequest"> | string
+    notes?: StringNullableFilter<"CampSupplyRequest"> | string | null
+    createdAt?: DateTimeFilter<"CampSupplyRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"CampSupplyRequest"> | Date | string
+    camp?: XOR<ReliefCampNullableScalarRelationFilter, ReliefCampWhereInput> | null
+    requester?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type CampSupplyRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    campId?: SortOrderInput | SortOrder
+    requesterId?: SortOrder
+    itemType?: SortOrder
+    quantity?: SortOrder
+    urgency?: SortOrder
+    status?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CampSupplyRequestCountOrderByAggregateInput
+    _avg?: CampSupplyRequestAvgOrderByAggregateInput
+    _max?: CampSupplyRequestMaxOrderByAggregateInput
+    _min?: CampSupplyRequestMinOrderByAggregateInput
+    _sum?: CampSupplyRequestSumOrderByAggregateInput
+  }
+
+  export type CampSupplyRequestScalarWhereWithAggregatesInput = {
+    AND?: CampSupplyRequestScalarWhereWithAggregatesInput | CampSupplyRequestScalarWhereWithAggregatesInput[]
+    OR?: CampSupplyRequestScalarWhereWithAggregatesInput[]
+    NOT?: CampSupplyRequestScalarWhereWithAggregatesInput | CampSupplyRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CampSupplyRequest"> | string
+    campId?: StringNullableWithAggregatesFilter<"CampSupplyRequest"> | string | null
+    requesterId?: StringWithAggregatesFilter<"CampSupplyRequest"> | string
+    itemType?: StringWithAggregatesFilter<"CampSupplyRequest"> | string
+    quantity?: IntWithAggregatesFilter<"CampSupplyRequest"> | number
+    urgency?: StringWithAggregatesFilter<"CampSupplyRequest"> | string
+    status?: StringWithAggregatesFilter<"CampSupplyRequest"> | string
+    notes?: StringNullableWithAggregatesFilter<"CampSupplyRequest"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CampSupplyRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CampSupplyRequest"> | Date | string
   }
 
   export type AuditLogWhereInput = {
@@ -86389,8 +87908,10 @@ export namespace Prisma {
     primaryUserId?: StringFilter<"FamilyMember"> | string
     name?: StringFilter<"FamilyMember"> | string
     relation?: StringFilter<"FamilyMember"> | string
+    age?: IntNullableFilter<"FamilyMember"> | number | null
     status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
     notes?: StringNullableFilter<"FamilyMember"> | string | null
+    phone?: StringNullableFilter<"FamilyMember"> | string | null
     createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
     updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
     primaryUser?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -86401,8 +87922,10 @@ export namespace Prisma {
     primaryUserId?: SortOrder
     name?: SortOrder
     relation?: SortOrder
+    age?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     primaryUser?: UserOrderByWithRelationInput
@@ -86416,8 +87939,10 @@ export namespace Prisma {
     primaryUserId?: StringFilter<"FamilyMember"> | string
     name?: StringFilter<"FamilyMember"> | string
     relation?: StringFilter<"FamilyMember"> | string
+    age?: IntNullableFilter<"FamilyMember"> | number | null
     status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
     notes?: StringNullableFilter<"FamilyMember"> | string | null
+    phone?: StringNullableFilter<"FamilyMember"> | string | null
     createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
     updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
     primaryUser?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -86428,13 +87953,17 @@ export namespace Prisma {
     primaryUserId?: SortOrder
     name?: SortOrder
     relation?: SortOrder
+    age?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: FamilyMemberCountOrderByAggregateInput
+    _avg?: FamilyMemberAvgOrderByAggregateInput
     _max?: FamilyMemberMaxOrderByAggregateInput
     _min?: FamilyMemberMinOrderByAggregateInput
+    _sum?: FamilyMemberSumOrderByAggregateInput
   }
 
   export type FamilyMemberScalarWhereWithAggregatesInput = {
@@ -86445,8 +87974,10 @@ export namespace Prisma {
     primaryUserId?: StringWithAggregatesFilter<"FamilyMember"> | string
     name?: StringWithAggregatesFilter<"FamilyMember"> | string
     relation?: StringWithAggregatesFilter<"FamilyMember"> | string
+    age?: IntNullableWithAggregatesFilter<"FamilyMember"> | number | null
     status?: EnumSafetyStatusWithAggregatesFilter<"FamilyMember"> | $Enums.SafetyStatus
     notes?: StringNullableWithAggregatesFilter<"FamilyMember"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"FamilyMember"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"FamilyMember"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"FamilyMember"> | Date | string
   }
@@ -87381,6 +88912,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -87422,6 +88954,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUpdateInput = {
@@ -87463,6 +88996,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -87504,6 +89038,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -88011,6 +89546,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateInput = {
@@ -88033,6 +89569,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUpdateInput = {
@@ -88055,6 +89592,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateInput = {
@@ -88077,6 +89615,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateManyInput = {
@@ -89049,6 +90588,95 @@ export namespace Prisma {
     matchScore?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampSupplyRequestCreateInput = {
+    id?: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    camp?: ReliefCampCreateNestedOneWithoutSupplyRequestsInput
+    requester: UserCreateNestedOneWithoutSupplyRequestsInput
+  }
+
+  export type CampSupplyRequestUncheckedCreateInput = {
+    id?: string
+    campId?: string | null
+    requesterId: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CampSupplyRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    camp?: ReliefCampUpdateOneWithoutSupplyRequestsNestedInput
+    requester?: UserUpdateOneRequiredWithoutSupplyRequestsNestedInput
+  }
+
+  export type CampSupplyRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterId?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampSupplyRequestCreateManyInput = {
+    id?: string
+    campId?: string | null
+    requesterId: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CampSupplyRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampSupplyRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    requesterId?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AuditLogCreateInput = {
@@ -91874,8 +93502,10 @@ export namespace Prisma {
     id?: string
     name: string
     relation: string
+    age?: number | null
     status: $Enums.SafetyStatus
     notes?: string | null
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     primaryUser: UserCreateNestedOneWithoutFamilyMembersInput
@@ -91886,8 +93516,10 @@ export namespace Prisma {
     primaryUserId: string
     name: string
     relation: string
+    age?: number | null
     status: $Enums.SafetyStatus
     notes?: string | null
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -91896,8 +93528,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     primaryUser?: UserUpdateOneRequiredWithoutFamilyMembersNestedInput
@@ -91908,8 +93542,10 @@ export namespace Prisma {
     primaryUserId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -91919,8 +93555,10 @@ export namespace Prisma {
     primaryUserId: string
     name: string
     relation: string
+    age?: number | null
     status: $Enums.SafetyStatus
     notes?: string | null
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -91929,8 +93567,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -91940,8 +93580,10 @@ export namespace Prisma {
     primaryUserId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -93124,6 +94766,12 @@ export namespace Prisma {
     none?: SafeZoneCheckInWhereInput
   }
 
+  export type CampSupplyRequestListRelationFilter = {
+    every?: CampSupplyRequestWhereInput
+    some?: CampSupplyRequestWhereInput
+    none?: CampSupplyRequestWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -93186,6 +94834,10 @@ export namespace Prisma {
   }
 
   export type SafeZoneCheckInOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CampSupplyRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -94465,6 +96117,58 @@ export namespace Prisma {
 
   export type ResourceRequestMatchSumOrderByAggregateInput = {
     matchScore?: SortOrder
+  }
+
+  export type ReliefCampNullableScalarRelationFilter = {
+    is?: ReliefCampWhereInput | null
+    isNot?: ReliefCampWhereInput | null
+  }
+
+  export type CampSupplyRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    campId?: SortOrder
+    requesterId?: SortOrder
+    itemType?: SortOrder
+    quantity?: SortOrder
+    urgency?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CampSupplyRequestAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type CampSupplyRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    campId?: SortOrder
+    requesterId?: SortOrder
+    itemType?: SortOrder
+    quantity?: SortOrder
+    urgency?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CampSupplyRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    campId?: SortOrder
+    requesterId?: SortOrder
+    itemType?: SortOrder
+    quantity?: SortOrder
+    urgency?: SortOrder
+    status?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CampSupplyRequestSumOrderByAggregateInput = {
+    quantity?: SortOrder
   }
 
   export type AuditLogCountOrderByAggregateInput = {
@@ -96090,11 +97794,6 @@ export namespace Prisma {
     not?: NestedEnumDonationStatusFilter<$PrismaModel> | $Enums.DonationStatus
   }
 
-  export type ReliefCampNullableScalarRelationFilter = {
-    is?: ReliefCampWhereInput | null
-    isNot?: ReliefCampWhereInput | null
-  }
-
   export type DonationCountOrderByAggregateInput = {
     id?: SortOrder
     donorId?: SortOrder
@@ -96233,10 +97932,16 @@ export namespace Prisma {
     primaryUserId?: SortOrder
     name?: SortOrder
     relation?: SortOrder
+    age?: SortOrder
     status?: SortOrder
     notes?: SortOrder
+    phone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type FamilyMemberAvgOrderByAggregateInput = {
+    age?: SortOrder
   }
 
   export type FamilyMemberMaxOrderByAggregateInput = {
@@ -96244,8 +97949,10 @@ export namespace Prisma {
     primaryUserId?: SortOrder
     name?: SortOrder
     relation?: SortOrder
+    age?: SortOrder
     status?: SortOrder
     notes?: SortOrder
+    phone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -96255,10 +97962,16 @@ export namespace Prisma {
     primaryUserId?: SortOrder
     name?: SortOrder
     relation?: SortOrder
+    age?: SortOrder
     status?: SortOrder
     notes?: SortOrder
+    phone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type FamilyMemberSumOrderByAggregateInput = {
+    age?: SortOrder
   }
 
   export type GroupTherapySessionScalarRelationFilter = {
@@ -96999,6 +98712,13 @@ export namespace Prisma {
     connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
   }
 
+  export type CampSupplyRequestCreateNestedManyWithoutRequesterInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutRequesterInput, CampSupplyRequestUncheckedCreateWithoutRequesterInput> | CampSupplyRequestCreateWithoutRequesterInput[] | CampSupplyRequestUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutRequesterInput | CampSupplyRequestCreateOrConnectWithoutRequesterInput[]
+    createMany?: CampSupplyRequestCreateManyRequesterInputEnvelope
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+  }
+
   export type DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -97121,6 +98841,13 @@ export namespace Prisma {
     connectOrCreate?: SafeZoneCheckInCreateOrConnectWithoutUserInput | SafeZoneCheckInCreateOrConnectWithoutUserInput[]
     createMany?: SafeZoneCheckInCreateManyUserInputEnvelope
     connect?: SafeZoneCheckInWhereUniqueInput | SafeZoneCheckInWhereUniqueInput[]
+  }
+
+  export type CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutRequesterInput, CampSupplyRequestUncheckedCreateWithoutRequesterInput> | CampSupplyRequestCreateWithoutRequesterInput[] | CampSupplyRequestUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutRequesterInput | CampSupplyRequestCreateOrConnectWithoutRequesterInput[]
+    createMany?: CampSupplyRequestCreateManyRequesterInputEnvelope
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -97401,6 +99128,20 @@ export namespace Prisma {
     deleteMany?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
   }
 
+  export type CampSupplyRequestUpdateManyWithoutRequesterNestedInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutRequesterInput, CampSupplyRequestUncheckedCreateWithoutRequesterInput> | CampSupplyRequestCreateWithoutRequesterInput[] | CampSupplyRequestUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutRequesterInput | CampSupplyRequestCreateOrConnectWithoutRequesterInput[]
+    upsert?: CampSupplyRequestUpsertWithWhereUniqueWithoutRequesterInput | CampSupplyRequestUpsertWithWhereUniqueWithoutRequesterInput[]
+    createMany?: CampSupplyRequestCreateManyRequesterInputEnvelope
+    set?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    disconnect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    delete?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    update?: CampSupplyRequestUpdateWithWhereUniqueWithoutRequesterInput | CampSupplyRequestUpdateWithWhereUniqueWithoutRequesterInput[]
+    updateMany?: CampSupplyRequestUpdateManyWithWhereWithoutRequesterInput | CampSupplyRequestUpdateManyWithWhereWithoutRequesterInput[]
+    deleteMany?: CampSupplyRequestScalarWhereInput | CampSupplyRequestScalarWhereInput[]
+  }
+
   export type DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput = {
     create?: XOR<DamageAssessmentCreateWithoutReportedByInput, DamageAssessmentUncheckedCreateWithoutReportedByInput> | DamageAssessmentCreateWithoutReportedByInput[] | DamageAssessmentUncheckedCreateWithoutReportedByInput[]
     connectOrCreate?: DamageAssessmentCreateOrConnectWithoutReportedByInput | DamageAssessmentCreateOrConnectWithoutReportedByInput[]
@@ -97643,6 +99384,20 @@ export namespace Prisma {
     update?: SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput | SafeZoneCheckInUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SafeZoneCheckInUpdateManyWithWhereWithoutUserInput | SafeZoneCheckInUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SafeZoneCheckInScalarWhereInput | SafeZoneCheckInScalarWhereInput[]
+  }
+
+  export type CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutRequesterInput, CampSupplyRequestUncheckedCreateWithoutRequesterInput> | CampSupplyRequestCreateWithoutRequesterInput[] | CampSupplyRequestUncheckedCreateWithoutRequesterInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutRequesterInput | CampSupplyRequestCreateOrConnectWithoutRequesterInput[]
+    upsert?: CampSupplyRequestUpsertWithWhereUniqueWithoutRequesterInput | CampSupplyRequestUpsertWithWhereUniqueWithoutRequesterInput[]
+    createMany?: CampSupplyRequestCreateManyRequesterInputEnvelope
+    set?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    disconnect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    delete?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    update?: CampSupplyRequestUpdateWithWhereUniqueWithoutRequesterInput | CampSupplyRequestUpdateWithWhereUniqueWithoutRequesterInput[]
+    updateMany?: CampSupplyRequestUpdateManyWithWhereWithoutRequesterInput | CampSupplyRequestUpdateManyWithWhereWithoutRequesterInput[]
+    deleteMany?: CampSupplyRequestScalarWhereInput | CampSupplyRequestScalarWhereInput[]
   }
 
   export type IncidentReportCreateimagesInput = {
@@ -98195,6 +99950,13 @@ export namespace Prisma {
     connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
   }
 
+  export type CampSupplyRequestCreateNestedManyWithoutCampInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutCampInput, CampSupplyRequestUncheckedCreateWithoutCampInput> | CampSupplyRequestCreateWithoutCampInput[] | CampSupplyRequestUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutCampInput | CampSupplyRequestCreateOrConnectWithoutCampInput[]
+    createMany?: CampSupplyRequestCreateManyCampInputEnvelope
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+  }
+
   export type CampInventoryUncheckedCreateNestedManyWithoutCampInput = {
     create?: XOR<CampInventoryCreateWithoutCampInput, CampInventoryUncheckedCreateWithoutCampInput> | CampInventoryCreateWithoutCampInput[] | CampInventoryUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampInventoryCreateOrConnectWithoutCampInput | CampInventoryCreateOrConnectWithoutCampInput[]
@@ -98242,6 +100004,13 @@ export namespace Prisma {
     connectOrCreate?: HospitalReferralCreateOrConnectWithoutCampInput | HospitalReferralCreateOrConnectWithoutCampInput[]
     createMany?: HospitalReferralCreateManyCampInputEnvelope
     connect?: HospitalReferralWhereUniqueInput | HospitalReferralWhereUniqueInput[]
+  }
+
+  export type CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutCampInput, CampSupplyRequestUncheckedCreateWithoutCampInput> | CampSupplyRequestCreateWithoutCampInput[] | CampSupplyRequestUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutCampInput | CampSupplyRequestCreateOrConnectWithoutCampInput[]
+    createMany?: CampSupplyRequestCreateManyCampInputEnvelope
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
   }
 
   export type ReliefCampUpdateservicesInput = {
@@ -98347,6 +100116,20 @@ export namespace Prisma {
     deleteMany?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
   }
 
+  export type CampSupplyRequestUpdateManyWithoutCampNestedInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutCampInput, CampSupplyRequestUncheckedCreateWithoutCampInput> | CampSupplyRequestCreateWithoutCampInput[] | CampSupplyRequestUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutCampInput | CampSupplyRequestCreateOrConnectWithoutCampInput[]
+    upsert?: CampSupplyRequestUpsertWithWhereUniqueWithoutCampInput | CampSupplyRequestUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: CampSupplyRequestCreateManyCampInputEnvelope
+    set?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    disconnect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    delete?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    update?: CampSupplyRequestUpdateWithWhereUniqueWithoutCampInput | CampSupplyRequestUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: CampSupplyRequestUpdateManyWithWhereWithoutCampInput | CampSupplyRequestUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: CampSupplyRequestScalarWhereInput | CampSupplyRequestScalarWhereInput[]
+  }
+
   export type CampInventoryUncheckedUpdateManyWithoutCampNestedInput = {
     create?: XOR<CampInventoryCreateWithoutCampInput, CampInventoryUncheckedCreateWithoutCampInput> | CampInventoryCreateWithoutCampInput[] | CampInventoryUncheckedCreateWithoutCampInput[]
     connectOrCreate?: CampInventoryCreateOrConnectWithoutCampInput | CampInventoryCreateOrConnectWithoutCampInput[]
@@ -98443,6 +100226,20 @@ export namespace Prisma {
     update?: HospitalReferralUpdateWithWhereUniqueWithoutCampInput | HospitalReferralUpdateWithWhereUniqueWithoutCampInput[]
     updateMany?: HospitalReferralUpdateManyWithWhereWithoutCampInput | HospitalReferralUpdateManyWithWhereWithoutCampInput[]
     deleteMany?: HospitalReferralScalarWhereInput | HospitalReferralScalarWhereInput[]
+  }
+
+  export type CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput = {
+    create?: XOR<CampSupplyRequestCreateWithoutCampInput, CampSupplyRequestUncheckedCreateWithoutCampInput> | CampSupplyRequestCreateWithoutCampInput[] | CampSupplyRequestUncheckedCreateWithoutCampInput[]
+    connectOrCreate?: CampSupplyRequestCreateOrConnectWithoutCampInput | CampSupplyRequestCreateOrConnectWithoutCampInput[]
+    upsert?: CampSupplyRequestUpsertWithWhereUniqueWithoutCampInput | CampSupplyRequestUpsertWithWhereUniqueWithoutCampInput[]
+    createMany?: CampSupplyRequestCreateManyCampInputEnvelope
+    set?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    disconnect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    delete?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    connect?: CampSupplyRequestWhereUniqueInput | CampSupplyRequestWhereUniqueInput[]
+    update?: CampSupplyRequestUpdateWithWhereUniqueWithoutCampInput | CampSupplyRequestUpdateWithWhereUniqueWithoutCampInput[]
+    updateMany?: CampSupplyRequestUpdateManyWithWhereWithoutCampInput | CampSupplyRequestUpdateManyWithWhereWithoutCampInput[]
+    deleteMany?: CampSupplyRequestScalarWhereInput | CampSupplyRequestScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCreatedTasksInput = {
@@ -98917,6 +100714,36 @@ export namespace Prisma {
     upsert?: IncidentReportUpsertWithoutHistoryInput
     connect?: IncidentReportWhereUniqueInput
     update?: XOR<XOR<IncidentReportUpdateToOneWithWhereWithoutHistoryInput, IncidentReportUpdateWithoutHistoryInput>, IncidentReportUncheckedUpdateWithoutHistoryInput>
+  }
+
+  export type ReliefCampCreateNestedOneWithoutSupplyRequestsInput = {
+    create?: XOR<ReliefCampCreateWithoutSupplyRequestsInput, ReliefCampUncheckedCreateWithoutSupplyRequestsInput>
+    connectOrCreate?: ReliefCampCreateOrConnectWithoutSupplyRequestsInput
+    connect?: ReliefCampWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSupplyRequestsInput = {
+    create?: XOR<UserCreateWithoutSupplyRequestsInput, UserUncheckedCreateWithoutSupplyRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSupplyRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ReliefCampUpdateOneWithoutSupplyRequestsNestedInput = {
+    create?: XOR<ReliefCampCreateWithoutSupplyRequestsInput, ReliefCampUncheckedCreateWithoutSupplyRequestsInput>
+    connectOrCreate?: ReliefCampCreateOrConnectWithoutSupplyRequestsInput
+    upsert?: ReliefCampUpsertWithoutSupplyRequestsInput
+    disconnect?: ReliefCampWhereInput | boolean
+    delete?: ReliefCampWhereInput | boolean
+    connect?: ReliefCampWhereUniqueInput
+    update?: XOR<XOR<ReliefCampUpdateToOneWithWhereWithoutSupplyRequestsInput, ReliefCampUpdateWithoutSupplyRequestsInput>, ReliefCampUncheckedUpdateWithoutSupplyRequestsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSupplyRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutSupplyRequestsInput, UserUncheckedCreateWithoutSupplyRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSupplyRequestsInput
+    upsert?: UserUpsertWithoutSupplyRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSupplyRequestsInput, UserUpdateWithoutSupplyRequestsInput>, UserUncheckedUpdateWithoutSupplyRequestsInput>
   }
 
   export type UserCreateNestedOneWithoutLocationLogsInput = {
@@ -100748,8 +102575,10 @@ export namespace Prisma {
     id?: string
     name: string
     relation: string
+    age?: number | null
     status: $Enums.SafetyStatus
     notes?: string | null
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -100758,8 +102587,10 @@ export namespace Prisma {
     id?: string
     name: string
     relation: string
+    age?: number | null
     status: $Enums.SafetyStatus
     notes?: string | null
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -101347,6 +103178,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CampSupplyRequestCreateWithoutRequesterInput = {
+    id?: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    camp?: ReliefCampCreateNestedOneWithoutSupplyRequestsInput
+  }
+
+  export type CampSupplyRequestUncheckedCreateWithoutRequesterInput = {
+    id?: string
+    campId?: string | null
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CampSupplyRequestCreateOrConnectWithoutRequesterInput = {
+    where: CampSupplyRequestWhereUniqueInput
+    create: XOR<CampSupplyRequestCreateWithoutRequesterInput, CampSupplyRequestUncheckedCreateWithoutRequesterInput>
+  }
+
+  export type CampSupplyRequestCreateManyRequesterInputEnvelope = {
+    data: CampSupplyRequestCreateManyRequesterInput | CampSupplyRequestCreateManyRequesterInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DamageAssessmentUpsertWithWhereUniqueWithoutReportedByInput = {
     where: DamageAssessmentWhereUniqueInput
     update: XOR<DamageAssessmentUpdateWithoutReportedByInput, DamageAssessmentUncheckedUpdateWithoutReportedByInput>
@@ -101456,8 +103321,10 @@ export namespace Prisma {
     primaryUserId?: StringFilter<"FamilyMember"> | string
     name?: StringFilter<"FamilyMember"> | string
     relation?: StringFilter<"FamilyMember"> | string
+    age?: IntNullableFilter<"FamilyMember"> | number | null
     status?: EnumSafetyStatusFilter<"FamilyMember"> | $Enums.SafetyStatus
     notes?: StringNullableFilter<"FamilyMember"> | string | null
+    phone?: StringNullableFilter<"FamilyMember"> | string | null
     createdAt?: DateTimeFilter<"FamilyMember"> | Date | string
     updatedAt?: DateTimeFilter<"FamilyMember"> | Date | string
   }
@@ -101977,6 +103844,38 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SafeZoneCheckIn"> | Date | string
   }
 
+  export type CampSupplyRequestUpsertWithWhereUniqueWithoutRequesterInput = {
+    where: CampSupplyRequestWhereUniqueInput
+    update: XOR<CampSupplyRequestUpdateWithoutRequesterInput, CampSupplyRequestUncheckedUpdateWithoutRequesterInput>
+    create: XOR<CampSupplyRequestCreateWithoutRequesterInput, CampSupplyRequestUncheckedCreateWithoutRequesterInput>
+  }
+
+  export type CampSupplyRequestUpdateWithWhereUniqueWithoutRequesterInput = {
+    where: CampSupplyRequestWhereUniqueInput
+    data: XOR<CampSupplyRequestUpdateWithoutRequesterInput, CampSupplyRequestUncheckedUpdateWithoutRequesterInput>
+  }
+
+  export type CampSupplyRequestUpdateManyWithWhereWithoutRequesterInput = {
+    where: CampSupplyRequestScalarWhereInput
+    data: XOR<CampSupplyRequestUpdateManyMutationInput, CampSupplyRequestUncheckedUpdateManyWithoutRequesterInput>
+  }
+
+  export type CampSupplyRequestScalarWhereInput = {
+    AND?: CampSupplyRequestScalarWhereInput | CampSupplyRequestScalarWhereInput[]
+    OR?: CampSupplyRequestScalarWhereInput[]
+    NOT?: CampSupplyRequestScalarWhereInput | CampSupplyRequestScalarWhereInput[]
+    id?: StringFilter<"CampSupplyRequest"> | string
+    campId?: StringNullableFilter<"CampSupplyRequest"> | string | null
+    requesterId?: StringFilter<"CampSupplyRequest"> | string
+    itemType?: StringFilter<"CampSupplyRequest"> | string
+    quantity?: IntFilter<"CampSupplyRequest"> | number
+    urgency?: StringFilter<"CampSupplyRequest"> | string
+    status?: StringFilter<"CampSupplyRequest"> | string
+    notes?: StringNullableFilter<"CampSupplyRequest"> | string | null
+    createdAt?: DateTimeFilter<"CampSupplyRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"CampSupplyRequest"> | Date | string
+  }
+
   export type AfterActionReportCreateWithoutIncidentInput = {
     id?: string
     timeline: JsonNullValueInput | InputJsonValue
@@ -102138,6 +104037,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutReportsInput = {
@@ -102178,6 +104078,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutReportsInput = {
@@ -102461,6 +104362,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsInput = {
@@ -102501,6 +104403,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type ReportVerificationUpsertWithWhereUniqueWithoutReportInput = {
@@ -102694,6 +104597,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutCurrentSectorInput = {
@@ -102734,6 +104638,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutCurrentSectorInput = {
@@ -102994,6 +104899,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CampSupplyRequestCreateWithoutCampInput = {
+    id?: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requester: UserCreateNestedOneWithoutSupplyRequestsInput
+  }
+
+  export type CampSupplyRequestUncheckedCreateWithoutCampInput = {
+    id?: string
+    requesterId: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CampSupplyRequestCreateOrConnectWithoutCampInput = {
+    where: CampSupplyRequestWhereUniqueInput
+    create: XOR<CampSupplyRequestCreateWithoutCampInput, CampSupplyRequestUncheckedCreateWithoutCampInput>
+  }
+
+  export type CampSupplyRequestCreateManyCampInputEnvelope = {
+    data: CampSupplyRequestCreateManyCampInput | CampSupplyRequestCreateManyCampInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CampInventoryUpsertWithWhereUniqueWithoutCampInput = {
     where: CampInventoryWhereUniqueInput
     update: XOR<CampInventoryUpdateWithoutCampInput, CampInventoryUncheckedUpdateWithoutCampInput>
@@ -103171,6 +105110,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"HospitalReferral"> | Date | string
   }
 
+  export type CampSupplyRequestUpsertWithWhereUniqueWithoutCampInput = {
+    where: CampSupplyRequestWhereUniqueInput
+    update: XOR<CampSupplyRequestUpdateWithoutCampInput, CampSupplyRequestUncheckedUpdateWithoutCampInput>
+    create: XOR<CampSupplyRequestCreateWithoutCampInput, CampSupplyRequestUncheckedCreateWithoutCampInput>
+  }
+
+  export type CampSupplyRequestUpdateWithWhereUniqueWithoutCampInput = {
+    where: CampSupplyRequestWhereUniqueInput
+    data: XOR<CampSupplyRequestUpdateWithoutCampInput, CampSupplyRequestUncheckedUpdateWithoutCampInput>
+  }
+
+  export type CampSupplyRequestUpdateManyWithWhereWithoutCampInput = {
+    where: CampSupplyRequestScalarWhereInput
+    data: XOR<CampSupplyRequestUpdateManyMutationInput, CampSupplyRequestUncheckedUpdateManyWithoutCampInput>
+  }
+
   export type UserCreateWithoutCreatedTasksInput = {
     id?: string
     email: string
@@ -103209,6 +105164,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -103249,6 +105205,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -103294,6 +105251,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -103334,6 +105292,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -103457,6 +105416,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -103497,6 +105457,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUpsertWithoutAssignedTasksInput = {
@@ -103548,6 +105509,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -103588,6 +105550,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type IncidentReportUpsertWithoutTasksInput = {
@@ -103753,6 +105716,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutVolunteerProfileInput = {
@@ -103793,6 +105757,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutVolunteerProfileInput = {
@@ -103979,6 +105944,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVolunteerProfileInput = {
@@ -104019,6 +105985,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type VolunteerSkillUpsertWithWhereUniqueWithoutVolunteerInput = {
@@ -104141,6 +106108,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutHelpRequestsInput = {
@@ -104181,6 +106149,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutHelpRequestsInput = {
@@ -104289,6 +106258,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHelpRequestsInput = {
@@ -104329,6 +106299,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type HelpRequestEscalationUpsertWithWhereUniqueWithoutHelpRequestInput = {
@@ -104571,6 +106542,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -104611,6 +106583,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -104740,6 +106713,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -104780,6 +106754,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -104820,6 +106795,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -104860,6 +106836,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -104963,6 +106940,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -105003,6 +106981,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type AlertUpsertWithoutNotificationsInput = {
@@ -105198,6 +107177,290 @@ export namespace Prisma {
     canonicalLinks?: IncidentDuplicateLinkUncheckedUpdateManyWithoutCanonicalNestedInput
   }
 
+  export type ReliefCampCreateWithoutSupplyRequestsInput = {
+    id?: string
+    name: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    currentOccupancy?: number
+    totalCapacity: number
+    services?: ReliefCampCreateservicesInput | string[]
+    status?: string
+    waitTime?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventory?: CampInventoryCreateNestedManyWithoutCampInput
+    residents?: CampResidentCreateNestedManyWithoutCampInput
+    schedules?: CampScheduleCreateNestedManyWithoutCampInput
+    transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
+    transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
+    donations?: DonationCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+  }
+
+  export type ReliefCampUncheckedCreateWithoutSupplyRequestsInput = {
+    id?: string
+    name: string
+    location: string
+    latitude?: number | null
+    longitude?: number | null
+    currentOccupancy?: number
+    totalCapacity: number
+    services?: ReliefCampCreateservicesInput | string[]
+    status?: string
+    waitTime?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    inventory?: CampInventoryUncheckedCreateNestedManyWithoutCampInput
+    residents?: CampResidentUncheckedCreateNestedManyWithoutCampInput
+    schedules?: CampScheduleUncheckedCreateNestedManyWithoutCampInput
+    transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
+    transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
+    donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+  }
+
+  export type ReliefCampCreateOrConnectWithoutSupplyRequestsInput = {
+    where: ReliefCampWhereUniqueInput
+    create: XOR<ReliefCampCreateWithoutSupplyRequestsInput, ReliefCampUncheckedCreateWithoutSupplyRequestsInput>
+  }
+
+  export type UserCreateWithoutSupplyRequestsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name: string
+    phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    damageReports?: DamageAssessmentCreateNestedManyWithoutReportedByInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestCreateNestedManyWithoutUserInput
+    reports?: IncidentReportCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssignedToInput
+    currentSector?: SectorCreateNestedOneWithoutUsersInput
+    sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSupplyRequestsInput = {
+    id?: string
+    email: string
+    password?: string | null
+    name: string
+    phone?: string | null
+    googleId?: string | null
+    pushToken?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    region?: string | null
+    hasMobileApp?: boolean
+    isFieldActive?: boolean
+    lastCheckInTime?: Date | string | null
+    nic?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorGracePeriodEnds?: Date | string | null
+    twoFactorSecret?: string | null
+    profilePicture?: string | null
+    currentSectorId?: string | null
+    damageReports?: DamageAssessmentUncheckedCreateNestedManyWithoutReportedByInput
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutPrimaryUserInput
+    helpRequests?: HelpRequestUncheckedCreateNestedManyWithoutUserInput
+    reports?: IncidentReportUncheckedCreateNestedManyWithoutReporterInput
+    localVerifier?: LocalVerifierUncheckedCreateNestedOneWithoutUserInput
+    locationLogs?: LocationLogUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    supportRequests?: PsychologicalSupportRequestUncheckedCreateNestedManyWithoutUserInput
+    reliefTokens?: ReliefTokenUncheckedCreateNestedManyWithoutUserInput
+    verifications?: ReportVerificationUncheckedCreateNestedManyWithoutUserInput
+    safetyCheckIns?: SafetyCheckInUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutAssignedByInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssignedToInput
+    sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
+    volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
+    assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSupplyRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSupplyRequestsInput, UserUncheckedCreateWithoutSupplyRequestsInput>
+  }
+
+  export type ReliefCampUpsertWithoutSupplyRequestsInput = {
+    update: XOR<ReliefCampUpdateWithoutSupplyRequestsInput, ReliefCampUncheckedUpdateWithoutSupplyRequestsInput>
+    create: XOR<ReliefCampCreateWithoutSupplyRequestsInput, ReliefCampUncheckedCreateWithoutSupplyRequestsInput>
+    where?: ReliefCampWhereInput
+  }
+
+  export type ReliefCampUpdateToOneWithWhereWithoutSupplyRequestsInput = {
+    where?: ReliefCampWhereInput
+    data: XOR<ReliefCampUpdateWithoutSupplyRequestsInput, ReliefCampUncheckedUpdateWithoutSupplyRequestsInput>
+  }
+
+  export type ReliefCampUpdateWithoutSupplyRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currentOccupancy?: IntFieldUpdateOperationsInput | number
+    totalCapacity?: IntFieldUpdateOperationsInput | number
+    services?: ReliefCampUpdateservicesInput | string[]
+    status?: StringFieldUpdateOperationsInput | string
+    waitTime?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventory?: CampInventoryUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUpdateManyWithoutCampNestedInput
+    schedules?: CampScheduleUpdateManyWithoutCampNestedInput
+    transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
+    transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
+    donations?: DonationUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+  }
+
+  export type ReliefCampUncheckedUpdateWithoutSupplyRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currentOccupancy?: IntFieldUpdateOperationsInput | number
+    totalCapacity?: IntFieldUpdateOperationsInput | number
+    services?: ReliefCampUpdateservicesInput | string[]
+    status?: StringFieldUpdateOperationsInput | string
+    waitTime?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inventory?: CampInventoryUncheckedUpdateManyWithoutCampNestedInput
+    residents?: CampResidentUncheckedUpdateManyWithoutCampNestedInput
+    schedules?: CampScheduleUncheckedUpdateManyWithoutCampNestedInput
+    transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
+    transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+  }
+
+  export type UserUpsertWithoutSupplyRequestsInput = {
+    update: XOR<UserUpdateWithoutSupplyRequestsInput, UserUncheckedUpdateWithoutSupplyRequestsInput>
+    create: XOR<UserCreateWithoutSupplyRequestsInput, UserUncheckedCreateWithoutSupplyRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSupplyRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSupplyRequestsInput, UserUncheckedUpdateWithoutSupplyRequestsInput>
+  }
+
+  export type UserUpdateWithoutSupplyRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssignedToNestedInput
+    currentSector?: SectorUpdateOneWithoutUsersNestedInput
+    sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSupplyRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    hasMobileApp?: BoolFieldUpdateOperationsInput | boolean
+    isFieldActive?: BoolFieldUpdateOperationsInput | boolean
+    lastCheckInTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nic?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorGracePeriodEnds?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    currentSectorId?: NullableStringFieldUpdateOperationsInput | string | null
+    damageReports?: DamageAssessmentUncheckedUpdateManyWithoutReportedByNestedInput
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutPrimaryUserNestedInput
+    helpRequests?: HelpRequestUncheckedUpdateManyWithoutUserNestedInput
+    reports?: IncidentReportUncheckedUpdateManyWithoutReporterNestedInput
+    localVerifier?: LocalVerifierUncheckedUpdateOneWithoutUserNestedInput
+    locationLogs?: LocationLogUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    supportRequests?: PsychologicalSupportRequestUncheckedUpdateManyWithoutUserNestedInput
+    reliefTokens?: ReliefTokenUncheckedUpdateManyWithoutUserNestedInput
+    verifications?: ReportVerificationUncheckedUpdateManyWithoutUserNestedInput
+    safetyCheckIns?: SafetyCheckInUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+    sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
+    volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
+    assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutLocationLogsInput = {
     id?: string
     email: string
@@ -105236,6 +107499,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutLocationLogsInput = {
@@ -105276,6 +107540,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutLocationLogsInput = {
@@ -105332,6 +107597,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocationLogsInput = {
@@ -105372,6 +107638,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type DonorCampaignCreateWithoutTokensInput = {
@@ -105435,6 +107702,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutReliefTokensInput = {
@@ -105475,6 +107743,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutReliefTokensInput = {
@@ -105596,6 +107865,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReliefTokensInput = {
@@ -105636,6 +107906,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type ReliefTokenClaimUpsertWithWhereUniqueWithoutTokenInput = {
@@ -105872,6 +108143,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutDamageReportsInput = {
@@ -105912,6 +108184,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutDamageReportsInput = {
@@ -106041,6 +108314,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDamageReportsInput = {
@@ -106081,6 +108355,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserCreateWithoutLocalVerifierInput = {
@@ -106121,6 +108396,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutLocalVerifierInput = {
@@ -106161,6 +108437,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutLocalVerifierInput = {
@@ -106245,6 +108522,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocalVerifierInput = {
@@ -106285,6 +108563,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type VerifierActionUpsertWithWhereUniqueWithoutVerifierInput = {
@@ -106645,6 +108924,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutSupportRequestsInput = {
@@ -106685,6 +108965,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutSupportRequestsInput = {
@@ -106741,6 +109022,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportRequestsInput = {
@@ -106781,6 +109063,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type IncidentReportCreateWithoutAarInput = {
@@ -107157,6 +109440,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutSessionLogsInput = {
@@ -107197,6 +109481,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutSessionLogsInput = {
@@ -107253,6 +109538,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionLogsInput = {
@@ -107293,6 +109579,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type ReliefCampCreateWithoutResidentsInput = {
@@ -107314,6 +109601,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutResidentsInput = {
@@ -107335,6 +109623,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutResidentsInput = {
@@ -107372,6 +109661,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutResidentsInput = {
@@ -107393,6 +109683,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutInventoryInput = {
@@ -107414,6 +109705,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutInventoryInput = {
@@ -107435,6 +109727,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutInventoryInput = {
@@ -107472,6 +109765,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutInventoryInput = {
@@ -107493,6 +109787,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutSchedulesInput = {
@@ -107514,6 +109809,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutSchedulesInput = {
@@ -107535,6 +109831,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutSchedulesInput = {
@@ -107572,6 +109869,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutSchedulesInput = {
@@ -107593,6 +109891,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutReferralsInput = {
@@ -107614,6 +109913,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutReferralsInput = {
@@ -107635,6 +109935,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutReferralsInput = {
@@ -107672,6 +109973,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutReferralsInput = {
@@ -107693,6 +109995,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampCreateWithoutTransfersOutInput = {
@@ -107714,6 +110017,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutTransfersOutInput = {
@@ -107735,6 +110039,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutTransfersOutInput = {
@@ -107761,6 +110066,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     donations?: DonationCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutTransfersInInput = {
@@ -107782,6 +110088,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     donations?: DonationUncheckedCreateNestedManyWithoutCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutTransfersInInput = {
@@ -107819,6 +110126,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutTransfersOutInput = {
@@ -107840,6 +110148,7 @@ export namespace Prisma {
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUpsertWithoutTransfersInInput = {
@@ -107872,6 +110181,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     donations?: DonationUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutTransfersInInput = {
@@ -107893,6 +110203,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     donations?: DonationUncheckedUpdateManyWithoutCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefTokenCreateWithoutDonorInput = {
@@ -108502,6 +110813,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestCreateNestedManyWithoutToCampInput
     referrals?: HospitalReferralCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampUncheckedCreateWithoutDonationsInput = {
@@ -108523,6 +110835,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUncheckedCreateNestedManyWithoutFromCampInput
     transfersIn?: CampTransferRequestUncheckedCreateNestedManyWithoutToCampInput
     referrals?: HospitalReferralUncheckedCreateNestedManyWithoutCampInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutCampInput
   }
 
   export type ReliefCampCreateOrConnectWithoutDonationsInput = {
@@ -108568,6 +110881,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutDonationsInput = {
@@ -108608,6 +110922,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutDonationsInput = {
@@ -108645,6 +110960,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUpdateManyWithoutToCampNestedInput
     referrals?: HospitalReferralUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutCampNestedInput
   }
 
   export type ReliefCampUncheckedUpdateWithoutDonationsInput = {
@@ -108666,6 +110982,7 @@ export namespace Prisma {
     transfersOut?: CampTransferRequestUncheckedUpdateManyWithoutFromCampNestedInput
     transfersIn?: CampTransferRequestUncheckedUpdateManyWithoutToCampNestedInput
     referrals?: HospitalReferralUncheckedUpdateManyWithoutCampNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutCampNestedInput
   }
 
   export type UserUpsertWithoutDonationsInput = {
@@ -108717,6 +111034,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDonationsInput = {
@@ -108757,6 +111075,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserCreateWithoutSafetyCheckInsInput = {
@@ -108797,6 +111116,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutSafetyCheckInsInput = {
@@ -108837,6 +111157,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutSafetyCheckInsInput = {
@@ -108893,6 +111214,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSafetyCheckInsInput = {
@@ -108933,6 +111255,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserCreateWithoutFamilyMembersInput = {
@@ -108973,6 +111296,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutFamilyMembersInput = {
@@ -109013,6 +111337,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutFamilyMembersInput = {
@@ -109069,6 +111394,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFamilyMembersInput = {
@@ -109109,6 +111435,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type GroupTherapySessionCreateWithoutParticipantsInput = {
@@ -109580,6 +111907,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     safeZoneCheckIns?: SafeZoneCheckInCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutAssignedRescuesInput = {
@@ -109620,6 +111948,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedCreateNestedManyWithoutUserInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutAssignedRescuesInput = {
@@ -109745,6 +112074,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedRescuesInput = {
@@ -109785,6 +112115,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type SafeZoneCheckInUpsertWithWhereUniqueWithoutMissionInput = {
@@ -109841,6 +112172,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionCreateNestedManyWithoutAssignedByInput
+    supplyRequests?: CampSupplyRequestCreateNestedManyWithoutRequesterInput
   }
 
   export type UserUncheckedCreateWithoutSafeZoneCheckInsInput = {
@@ -109881,6 +112213,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUncheckedCreateNestedManyWithoutUserInput
     volunteerProfile?: VolunteerProfileUncheckedCreateNestedOneWithoutUserInput
     assignedRescues?: RescueMissionUncheckedCreateNestedManyWithoutAssignedByInput
+    supplyRequests?: CampSupplyRequestUncheckedCreateNestedManyWithoutRequesterInput
   }
 
   export type UserCreateOrConnectWithoutSafeZoneCheckInsInput = {
@@ -109970,6 +112303,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSafeZoneCheckInsInput = {
@@ -110010,6 +112344,7 @@ export namespace Prisma {
     sessionLogs?: UserSessionLogUncheckedUpdateManyWithoutUserNestedInput
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type RescueMissionUpsertWithoutSafeZoneCheckInsInput = {
@@ -110100,8 +112435,10 @@ export namespace Prisma {
     id?: string
     name: string
     relation: string
+    age?: number | null
     status: $Enums.SafetyStatus
     notes?: string | null
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -110271,6 +112608,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type CampSupplyRequestCreateManyRequesterInput = {
+    id?: string
+    campId?: string | null
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DamageAssessmentUpdateWithoutReportedByInput = {
     id?: StringFieldUpdateOperationsInput | string
     location?: StringFieldUpdateOperationsInput | string
@@ -110410,8 +112759,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -110420,8 +112771,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -110430,8 +112783,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     relation?: StringFieldUpdateOperationsInput | string
+    age?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -110955,6 +113310,42 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CampSupplyRequestUpdateWithoutRequesterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    camp?: ReliefCampUpdateOneWithoutSupplyRequestsNestedInput
+  }
+
+  export type CampSupplyRequestUncheckedUpdateWithoutRequesterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampSupplyRequestUncheckedUpdateManyWithoutRequesterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campId?: NullableStringFieldUpdateOperationsInput | string | null
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DamageAssessmentCreateManyIncidentInput = {
     id?: string
     reportedById: string
@@ -111407,6 +113798,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCurrentSectorInput = {
@@ -111447,6 +113839,7 @@ export namespace Prisma {
     volunteerProfile?: VolunteerProfileUncheckedUpdateOneWithoutUserNestedInput
     assignedRescues?: RescueMissionUncheckedUpdateManyWithoutAssignedByNestedInput
     safeZoneCheckIns?: SafeZoneCheckInUncheckedUpdateManyWithoutUserNestedInput
+    supplyRequests?: CampSupplyRequestUncheckedUpdateManyWithoutRequesterNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCurrentSectorInput = {
@@ -111537,6 +113930,18 @@ export namespace Prisma {
     outcome?: string | null
     status?: $Enums.ReferralStatus
     createdAt?: Date | string
+  }
+
+  export type CampSupplyRequestCreateManyCampInput = {
+    id?: string
+    requesterId: string
+    itemType: string
+    quantity?: number
+    urgency?: string
+    status?: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type CampInventoryUpdateWithoutCampInput = {
@@ -111741,6 +114146,42 @@ export namespace Prisma {
     outcome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumReferralStatusFieldUpdateOperationsInput | $Enums.ReferralStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampSupplyRequestUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requester?: UserUpdateOneRequiredWithoutSupplyRequestsNestedInput
+  }
+
+  export type CampSupplyRequestUncheckedUpdateWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampSupplyRequestUncheckedUpdateManyWithoutCampInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requesterId?: StringFieldUpdateOperationsInput | string
+    itemType?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    urgency?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VolunteerBadgeCreateManyVolunteerInput = {

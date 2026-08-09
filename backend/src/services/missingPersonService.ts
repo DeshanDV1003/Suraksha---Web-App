@@ -78,11 +78,8 @@ export const runCrossReference = async () => {
       if (person.name.toLowerCase().includes(resident.name.toLowerCase()) || resident.name.toLowerCase().includes(person.name.toLowerCase())) {
         score += 50;
       }
-      if (person.age && resident.age && Math.abs(person.age - resident.age) <= 3) {
-        score += 30;
-      }
-      if (person.gender === resident.gender) {
-        score += 20;
+      if (resident.nic && person.nic && resident.nic === person.nic) {
+        score += 50;
       }
 
       if (score >= 50) {

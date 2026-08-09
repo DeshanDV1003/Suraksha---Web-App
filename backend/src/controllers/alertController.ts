@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as alertService from '../services/alertService';
-import { notifyAdmins, sendAlertPushToAll } from '../services/notificationService';
+import { notifyAdmins, sendAlertPushToAll, sendAlertPushToRegion } from '../services/notificationService';
 
 /**
  * @swagger
@@ -50,9 +50,13 @@ export const createAlert = async (req: Request, res: Response) => {
     // Notify users — EMERGENCY alerts go to everyone (including mobile push),
     // other types only notify admin/staff roles
     const pushTitle = `🚨 ${alert.title}`;
-    const pushBody = `${alert.message}${alert.location ? ` — ${alert.location}` : ''}`;
+    const pushBody = `${alert.message}${alert.locations?.length ? ` — ${alert.locations[0]}` : ''}`;
     if (alert.type === 'EMERGENCY') {
+      // EMERGENCY: push to everyone
       sendAlertPushToAll(pushTitle, pushBody, { alertId: alert.id, type: alert.type }).catch(() => {});
+    } else if ((alert.type as string) === 'WARNING' || (alert.type as string) === 'FLOOD' || (alert.type as string) === 'EVACUATION') {
+      // WARNING/FLOOD/EVACUATION: push to affected regions only
+      sendAlertPushToRegion(pushTitle, pushBody, alert.locations, { alertId: alert.id, type: alert.type }).catch(() => {});
     } else {
       notifyAdmins(pushTitle, pushBody).catch(() => {});
     }

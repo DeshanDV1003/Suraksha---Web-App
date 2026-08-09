@@ -14,6 +14,10 @@ export const FamilySafetyPage = () => {
   const [filter, setFilter] = useState('ALL');
   const [search, setSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [overridingMember, setOverridingMember] = useState<string | null>(null);
+  const [overrideStatus, setOverrideStatus] = useState('');
+  const [overrideNotes, setOverrideNotes] = useState('');
+  const [savingOverride, setSavingOverride] = useState(false);
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'|'warning'} | null>(null);
 
   const showToast = (message: string, type: 'success'|'error'|'warning' = 'success') => {
@@ -86,6 +90,22 @@ export const FamilySafetyPage = () => {
       default: return 'bg-white/8 text-slate-400 border-white/15';
     }
   };
+
+  const handleOverrideSave = async (memberId: string) => {
+    setSavingOverride(true);
+    try {
+      await api.patch(`/family/admin/members/${memberId}`, { status: overrideStatus, notes: overrideNotes });
+      showToast('Member status updated', 'success');
+      setOverridingMember(null);
+      await fetchRoster();
+    } catch {
+      showToast('Failed to update member status', 'error');
+    } finally {
+      setSavingOverride(false);
+    }
+  };
+
+  const MEMBER_STATUSES = ['SAFE', 'NEEDS_HELP', 'INJURED', 'EVACUATED', 'TRAPPED', 'MISSING'];
 
   const FILTERS = [
     { key: 'ALL', label: t('family_safety_page.filters.all_citizens') },
@@ -306,14 +326,67 @@ export const FamilySafetyPage = () => {
                   ) : (
                     <div className="space-y-2">
                       {selectedUser.familyMembers.map((m: any) => (
-                        <div key={m.id} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                          <div>
-                            <p className="text-sm font-bold text-white/90">{m.name}</p>
-                            <p className="text-xs text-slate-500">{m.relation}</p>
+                        <div key={m.id} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-bold text-white/90">{m.name}</p>
+                              <p className="text-xs text-slate-500">{m.relation}{m.age ? ` · ${m.age}y` : ''}{m.phone ? ` · ${m.phone}` : ''}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={cn('text-[10px] font-black px-2.5 py-1 rounded-full uppercase border', getStatusBadge(m.status))}>
+                                {(m.status || 'UNKNOWN').replace('_', ' ')}
+                              </span>
+                              <button
+                                onClick={() => {
+                                  if (overridingMember === m.id) {
+                                    setOverridingMember(null);
+                                  } else {
+                                    setOverridingMember(m.id);
+                                    setOverrideStatus(m.status || 'SAFE');
+                                    setOverrideNotes(m.notes || '');
+                                  }
+                                }}
+                                className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/25 transition-colors"
+                              >
+                                Override
+                              </button>
+                            </div>
                           </div>
-                          <span className={cn('text-[10px] font-black px-2.5 py-1 rounded-full uppercase border', getStatusBadge(m.status))}>
-                            {(m.status || 'UNKNOWN').replace('_', ' ')}
-                          </span>
+                          {overridingMember === m.id && (
+                            <div className="bg-[#0e1d36] border border-cyan-400/15 rounded-xl p-3 space-y-2 mt-1">
+                              <select
+                                value={overrideStatus}
+                                onChange={e => setOverrideStatus(e.target.value)}
+                                className="w-full bg-[#131f33] border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-cyan-500/50"
+                              >
+                                {MEMBER_STATUSES.map(s => (
+                                  <option key={s} value={s}>{s.replace('_', ' ')}</option>
+                                ))}
+                              </select>
+                              <input
+                                type="text"
+                                value={overrideNotes}
+                                onChange={e => setOverrideNotes(e.target.value)}
+                                placeholder="Admin notes (optional)"
+                                className="w-full bg-[#131f33] border border-white/10 text-white text-sm rounded-lg px-3 py-2 placeholder-slate-600 focus:outline-none focus:border-cyan-500/50"
+                              />
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleOverrideSave(m.id)}
+                                  disabled={savingOverride}
+                                  className="flex-1 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-xs font-bold py-2 rounded-lg transition-colors"
+                                >
+                                  {savingOverride ? 'Saving…' : 'Save Override'}
+                                </button>
+                                <button
+                                  onClick={() => setOverridingMember(null)}
+                                  className="px-3 py-2 text-slate-400 hover:text-white text-xs font-bold rounded-lg hover:bg-white/5 transition-colors"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

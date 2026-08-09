@@ -339,6 +339,19 @@ exports.Prisma.ResourceRequestMatchScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CampSupplyRequestScalarFieldEnum = {
+  id: 'id',
+  campId: 'campId',
+  requesterId: 'requesterId',
+  itemType: 'itemType',
+  quantity: 'quantity',
+  urgency: 'urgency',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -747,8 +760,10 @@ exports.Prisma.FamilyMemberScalarFieldEnum = {
   primaryUserId: 'primaryUserId',
   name: 'name',
   relation: 'relation',
+  age: 'age',
   status: 'status',
   notes: 'notes',
+  phone: 'phone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1066,6 +1081,7 @@ exports.SafetyStatus = exports.$Enums.SafetyStatus = {
   SAFE: 'SAFE',
   NEEDS_HELP: 'NEEDS_HELP',
   UNKNOWN: 'UNKNOWN',
+  MISSING: 'MISSING',
   INJURED: 'INJURED',
   EVACUATED: 'EVACUATED',
   TRAPPED: 'TRAPPED',
@@ -1125,6 +1141,7 @@ exports.Prisma.ModelName = {
   MLLog: 'MLLog',
   IncidentHistory: 'IncidentHistory',
   ResourceRequestMatch: 'ResourceRequestMatch',
+  CampSupplyRequest: 'CampSupplyRequest',
   AuditLog: 'AuditLog',
   LocationLog: 'LocationLog',
   ReliefToken: 'ReliefToken',

@@ -49,6 +49,7 @@ model User {
   volunteerProfile         VolunteerProfile?
   assignedRescues          RescueMission[]   @relation("AssignedRescues")
   safeZoneCheckIns         SafeZoneCheckIn[] @relation("SafeZoneCheckIns")
+  supplyRequests           CampSupplyRequest[] @relation("SupplyRequesters")
 }
 
 model IncidentReport {
@@ -136,6 +137,7 @@ model ReliefCamp {
   transfersIn      CampTransferRequest[] @relation("TransfersIn")
   donations        Donation[]
   referrals        HospitalReferral[]
+  supplyRequests   CampSupplyRequest[]
 }
 
 model Resource {
@@ -284,6 +286,21 @@ model ResourceRequestMatch {
   matchScore Float
   status     String
   createdAt  DateTime @default(now())
+}
+
+model CampSupplyRequest {
+  id          String      @id @default(uuid())
+  campId      String?
+  camp        ReliefCamp? @relation(fields: [campId], references: [id])
+  requesterId String
+  requester   User        @relation("SupplyRequesters", fields: [requesterId], references: [id])
+  itemType    String
+  quantity    Int         @default(1)
+  urgency     String      @default("MEDIUM")
+  status      String      @default("PENDING")
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model AuditLog {
@@ -731,8 +748,10 @@ model FamilyMember {
   primaryUserId String
   name          String
   relation      String
+  age           Int?
   status        SafetyStatus
   notes         String?
+  phone         String?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   primaryUser   User         @relation(fields: [primaryUserId], references: [id])
@@ -944,6 +963,7 @@ enum SafetyStatus {
   SAFE
   NEEDS_HELP
   UNKNOWN
+  MISSING
   INJURED
   EVACUATED
   TRAPPED

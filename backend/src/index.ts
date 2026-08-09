@@ -34,6 +34,8 @@ import reportRoutes from './routes/reportRoutes';
 import aiRoutes from './routes/aiRoutes';
 import safeZoneRoutes from './routes/safeZoneRoutes';
 import rescueRoutes from './routes/rescueRoutes';
+import chatbotRoutes from './routes/chatbotRoutes';
+import supplyRequestRoutes from './routes/supplyRequestRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
 import { setupBackupCron, runBackup } from './services/backupService';
 import { setIO } from './utils/socketInstance';
@@ -86,6 +88,8 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/safe-zones', safeZoneRoutes);
 app.use('/api/rescue', rescueRoutes);
+app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/supply-requests', supplyRequestRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 

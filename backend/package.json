@@ -17,6 +17,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@prisma/adapter-pg": "^6.4.1",
     "@prisma/client": "^6.4.1",
     "@prisma/config": "^6.4.1",

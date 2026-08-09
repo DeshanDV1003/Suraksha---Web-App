@@ -127,6 +127,24 @@ export const updateReferral = async (req: Request, res: Response) => {
 };
 
 // --- Transfers ---
+export const getAllTransfers = async (_req: Request, res: Response) => {
+  try {
+    const transfers = await campService.getAllTransferRequests();
+    res.json(transfers);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const getTransferSuggestions = async (_req: Request, res: Response) => {
+  try {
+    const suggestions = await campService.getTransferSuggestions();
+    res.json(suggestions);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 export const createTransfer = async (req: Request, res: Response) => {
   try {
     const { toCampId, peopleCount } = req.body;

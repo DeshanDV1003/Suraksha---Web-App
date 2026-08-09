@@ -319,9 +319,16 @@ export default function MapPage() {
         
         setIncidents(incs);
         setCamps(campRes.data);
-        setVolunteers(generateMockVolunteers(incs));
         setEvacRoutes(generateEvacRoutes());
         setAssignmentArrows(generateAssignmentArrows(campRes.data, incs));
+
+        // Real volunteer positions — falls back to empty array silently
+        try {
+          const volRes = await axios.get('http://localhost:3001/api/location/field-team', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setVolunteers(volRes.data || []);
+        } catch { setVolunteers([]); }
       } catch (err) {
         console.error('Failed to load static datasets for map:', err);
       }
@@ -740,15 +747,27 @@ export default function MapPage() {
               ))}
 
               {layers.volunteers && volunteers.map(vol => (
-                <Marker key={vol.id} position={[vol.latitude, vol.longitude]} icon={createVolunteerIcon(vol.skill)}>
+                <Marker
+                  key={vol.id}
+                  position={[vol.latitude, vol.longitude]}
+                  icon={createVolunteerIcon(vol.user?.role === 'FIELD_RESPONDER' ? 'Rescue' : 'General')}
+                >
                   <Popup className="suraksha-popup">
                     <div className="font-sans p-1">
                       <div className="flex items-center gap-2 mb-2">
                         <User className="w-4 h-4 text-blue-500" />
-                        <span className="font-black text-slate-800 text-sm">{vol.name}</span>
+                        <span className="font-black text-slate-800 text-sm">{vol.user?.name || 'Field Personnel'}</span>
                       </div>
-                      <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">{t('map_page.skill')} <span className="text-blue-600">{vol.skill}</span></div>
-                      <button className="w-full py-1.5 bg-blue-600 text-white rounded text-xs font-bold uppercase hover:bg-blue-700 transition">{t('map_page.assign_nearest')}</button>
+                      <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+                        {vol.user?.role?.replace('_', ' ')}
+                        {vol.user?.isFieldActive && <span className="ml-2 text-green-600">● ACTIVE</span>}
+                      </div>
+                      <div className="text-[10px] text-gray-400 mb-2">
+                        Last ping: {new Date(vol.createdAt).toLocaleTimeString()}
+                      </div>
+                      <div className="text-[10px] text-gray-400">
+                        {vol.latitude.toFixed(5)}, {vol.longitude.toFixed(5)}
+                      </div>
                     </div>
                   </Popup>
                 </Marker>

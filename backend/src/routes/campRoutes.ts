@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { 
+import {
   createCamp, getCamps, getCampById, updateOccupancy,
   getResidents, addResident, checkoutResident,
   updateInventory, addSchedule, deleteSchedule,
-  addReferral, updateReferral, createTransfer, updateTransfer
+  addReferral, updateReferral, createTransfer, updateTransfer,
+  getAllTransfers, getTransferSuggestions,
 } from '../controllers/campController';
 import { authMiddleware, officerMiddleware } from '../middleware/auth';
 
@@ -31,7 +32,9 @@ router.delete('/schedule/:scheduleId', authMiddleware, officerMiddleware, delete
 router.post('/:id/referrals', authMiddleware, officerMiddleware, addReferral);
 router.patch('/referrals/:referralId', authMiddleware, officerMiddleware, updateReferral);
 
-// Transfers
+// Transfers — specific routes BEFORE the /:id wildcard
+router.get('/transfers/all', authMiddleware, officerMiddleware, getAllTransfers);
+router.get('/transfers/suggestions', authMiddleware, officerMiddleware, getTransferSuggestions);
 router.post('/:id/transfers', authMiddleware, officerMiddleware, createTransfer);
 router.patch('/transfers/:transferId', authMiddleware, officerMiddleware, updateTransfer);
 

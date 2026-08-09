@@ -81,6 +81,14 @@ export const campService = {
   // Transfers
   createTransfer: (id: string, toCampId: string, peopleCount: number) => api.post(`/camps/${id}/transfers`, { toCampId, peopleCount }),
   updateTransfer: (transferId: string, status: string) => api.patch(`/camps/transfers/${transferId}`, { status }),
+  getAllTransfers: () => api.get('/camps/transfers/all'),
+  getTransferSuggestions: () => api.get('/camps/transfers/suggestions'),
+};
+
+export const supplyRequestService = {
+  create: (data: any) => api.post('/supply-requests', data),
+  getAll: (params?: any) => api.get('/supply-requests', { params }),
+  updateStatus: (id: string, status: string) => api.patch(`/supply-requests/${id}/status`, { status }),
 };
 
 export const userService = {

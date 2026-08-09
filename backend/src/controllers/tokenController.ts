@@ -54,8 +54,8 @@ export const getTokens = async (req: Request, res: Response) => {
  */
 export const createToken = async (req: Request, res: Response) => {
   try {
-    const { userId, type } = req.body;
-    const token = await tokenService.createToken(userId, type);
+    const { userId } = req.body;
+    const token = await tokenService.createToken(userId);
     res.status(201).json(token);
   } catch (error: any) {
     res.status(400).json({ message: error.message });

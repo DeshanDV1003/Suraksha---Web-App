@@ -32,7 +32,7 @@ export const getOperationalIntelligence = async (req: Request, res: Response) =>
 export const generateAAR = async (req: Request, res: Response) => {
   try {
     const { incidentId } = req.params;
-    const aar = await analyticsService.generateAAR(incidentId);
+    const aar = await analyticsService.generateAAR(String(incidentId));
     res.json(aar);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

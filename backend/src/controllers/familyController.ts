@@ -26,24 +26,24 @@ export const updateFamilyMemberStatus = async (req: any, res: Response): Promise
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const { name, relation, status, notes } = req.body;
+    const { name, relation, status, notes, age, phone } = req.body;
 
     if (id) {
-      // Update existing
-      const member = await prisma.familyMember.updateMany({
+      await prisma.familyMember.updateMany({
         where: { id, primaryUserId: userId },
-        data: { name, relation, status, notes }
+        data: { name, relation, status, notes, age: age ? parseInt(age) : undefined, phone }
       });
       return res.json({ message: 'Family member updated successfully' });
     } else {
-      // Create new
       const newMember = await prisma.familyMember.create({
         data: {
           primaryUserId: userId,
           name,
           relation,
           status,
-          notes
+          notes,
+          age: age ? parseInt(age) : undefined,
+          phone,
         }
       });
       return res.status(201).json(newMember);
@@ -72,6 +72,20 @@ export const getMyFamilyStatus = async (req: any, res: Response): Promise<any> =
     });
   } catch (error) {
     return res.status(500).json({ message: 'Error fetching family status', error });
+  }
+};
+
+export const adminOverrideFamilyMember = async (req: any, res: Response): Promise<any> => {
+  try {
+    const { id } = req.params;
+    const { status, notes } = req.body;
+    await prisma.familyMember.update({
+      where: { id },
+      data: { status, notes },
+    });
+    return res.json({ message: 'Family member status updated by admin' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error overriding family member status', error });
   }
 };
 

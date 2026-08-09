@@ -201,6 +201,46 @@ export const createTransferRequest = async (fromCampId: string, toCampId: string
   });
 };
 
+export const getAllTransferRequests = async () => {
+  return prisma.campTransferRequest.findMany({
+    include: {
+      fromCamp: { select: { id: true, name: true, location: true, currentOccupancy: true, totalCapacity: true } },
+      toCamp:   { select: { id: true, name: true, location: true, currentOccupancy: true, totalCapacity: true } },
+    },
+    orderBy: { requestDate: 'desc' },
+  });
+};
+
+// Haversine distance in km
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+export const getTransferSuggestions = async () => {
+  const camps = await prisma.reliefCamp.findMany();
+  const fullCamps = camps.filter(c => c.status === 'FULL' || c.currentOccupancy >= c.totalCapacity);
+  const availableCamps = camps.filter(c => c.status !== 'FULL' && c.currentOccupancy < c.totalCapacity && c.latitude && c.longitude);
+
+  return fullCamps.map(fc => {
+    const available = fc.latitude && fc.longitude
+      ? availableCamps
+          .map(ac => ({
+            ...ac,
+            distanceKm: haversineKm(fc.latitude!, fc.longitude!, ac.latitude!, ac.longitude!),
+            freeCapacity: ac.totalCapacity - ac.currentOccupancy,
+          }))
+          .sort((a, b) => a.distanceKm - b.distanceKm)
+          .slice(0, 3)
+      : availableCamps.slice(0, 3).map(ac => ({ ...ac, distanceKm: null, freeCapacity: ac.totalCapacity - ac.currentOccupancy }));
+
+    return { fullCamp: fc, suggestions: available };
+  });
+};
+
 export const updateTransferRequestStatus = async (requestId: string, status: string) => {
   const req = await prisma.campTransferRequest.update({
     where: { id: requestId },

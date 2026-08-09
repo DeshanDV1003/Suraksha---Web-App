@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import AppHeader from "./AppHeader";
 import Backdrop from "./Backdrop";
 import AppSidebar from "./AppSidebar";
+import ChatbotWidget from "../components/chatbot/ChatbotWidget";
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
@@ -22,6 +23,7 @@ const LayoutContent: React.FC = () => {
           <Outlet />
         </div>
       </div>
+      <ChatbotWidget />
     </div>
   );
 };

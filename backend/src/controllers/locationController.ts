@@ -71,6 +71,35 @@ export const getUserLastLocation = async (req: Request, res: Response) => {
   }
 };
 
+// Returns latest location ping for every volunteer / field responder active in the last 2 hours
+import prisma from '../utils/prisma';
+
+export const getFieldTeamLocations = async (_req: Request, res: Response) => {
+  try {
+    const cutoff = new Date(Date.now() - 2 * 60 * 60 * 1000);
+    const logs = await prisma.locationLog.findMany({
+      where: {
+        createdAt: { gte: cutoff },
+        user: { role: { in: ['VOLUNTEER', 'FIELD_RESPONDER'] as any } },
+      },
+      orderBy: { createdAt: 'desc' },
+      include: { user: { select: { id: true, name: true, role: true, isFieldActive: true } } },
+    });
+
+    // Keep only the latest ping per user
+    const seen = new Set<string>();
+    const latest = logs.filter(l => {
+      if (seen.has(l.userId)) return false;
+      seen.add(l.userId);
+      return true;
+    });
+
+    res.json(latest);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 // Newly added geocoding services
 import { geocodeAddress, reverseGeocode } from '../services/geocodingService';
 import { findZoneForCoordinates } from '../services/zoneService';

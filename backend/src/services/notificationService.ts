@@ -78,9 +78,31 @@ export const sendAlertPushToAll = async (
   alertData?: Record<string, any>
 ) => {
   const users = await prisma.user.findMany({ select: { id: true } });
-  // Save in-app notifications
   await Promise.all(users.map(u => sendNotification(u.id, title, body)));
-  // Send Expo push to users who have a push token
   const userIds = users.map(u => u.id);
   await sendExpoPush(userIds, title, body, alertData);
+};
+
+export const sendAlertPushToRegion = async (
+  title: string,
+  body: string,
+  locations: string[],
+  alertData?: Record<string, any>
+) => {
+  if (!locations || locations.length === 0) {
+    return sendAlertPushToAll(title, body, alertData);
+  }
+  // Match users whose region matches any of the alert's locations (district-level)
+  const users = await prisma.user.findMany({
+    where: { region: { in: locations } },
+    select: { id: true },
+  });
+  // Also always notify admins regardless of region
+  const admins = await prisma.user.findMany({
+    where: { role: { in: ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER'] as any } },
+    select: { id: true },
+  });
+  const allIds = [...new Set([...users.map(u => u.id), ...admins.map(u => u.id)])];
+  await Promise.all(allIds.map(id => sendNotification(id, title, body)));
+  await sendExpoPush(allIds, title, body, alertData);
 };

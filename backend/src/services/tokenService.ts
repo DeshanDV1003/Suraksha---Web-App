@@ -1,7 +1,7 @@
 import prisma from '../utils/prisma';
 
 export const listTokens = async () => {
-  return prisma.token.findMany({
+  return prisma.reliefToken.findMany({
     include: {
       user: { select: { name: true } }
     },
@@ -9,25 +9,28 @@ export const listTokens = async () => {
   });
 };
 
-export const createToken = async (userId: string, type: string) => {
+export const createToken = async (userId: string) => {
   const code = `SRK-${Date.now()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-  return prisma.token.create({
+  return prisma.reliefToken.create({
     data: {
       userId,
-      type,
       code,
+      qrCodeData: code,
       status: 'ACTIVE'
     }
   });
 };
 
 export const useToken = async (code: string) => {
-  const token = await prisma.token.findUnique({ where: { code } });
+  const token = await prisma.reliefToken.findUnique({ where: { code } });
   if (!token) throw new Error('Invalid token code');
-  if (token.status === 'USED') throw new Error('Token already used');
+  if (token.status === 'FULLY_USED') throw new Error('Token already used');
 
-  return prisma.token.update({
+  const newCount = token.usageCount + 1;
+  const newStatus = newCount >= token.maxUsage ? 'FULLY_USED' : 'PARTIALLY_USED';
+
+  return prisma.reliefToken.update({
     where: { id: token.id },
-    data: { status: 'USED' }
+    data: { usageCount: newCount, status: newStatus }
   });
 };

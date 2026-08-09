@@ -9,11 +9,13 @@ import {
   getPendingDuplicates,
   getDuplicatesForIncident,
   resolveDuplicateLink,
+  triggerSOS,
 } from '../controllers/incidentController';
 import { authMiddleware, adminMiddleware } from '../middleware/auth';
 
 const router = Router();
 
+router.post('/sos', authMiddleware, triggerSOS);
 router.post('/', authMiddleware, createIncident);
 router.get('/', authMiddleware, getIncidents);
 router.get('/my', authMiddleware, getUserIncidents);

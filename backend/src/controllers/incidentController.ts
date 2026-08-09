@@ -4,7 +4,7 @@ import { processReport } from '../services/mlService';
 import prisma from '../utils/prisma';
 import { geocodeAddress } from '../services/geocodingService';
 import { findZoneForCoordinates } from '../services/zoneService';
-import { notifyAdmins, sendNotification } from '../services/notificationService';
+import { notifyAdmins, sendNotification, sendExpoPush } from '../services/notificationService';
 import {
   detectAndSaveDuplicates,
   getDuplicateLinksForIncident,
@@ -393,5 +393,52 @@ export const resolveDuplicateLink = async (req: Request, res: Response) => {
     res.json(link);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
+export const triggerSOS = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { latitude, longitude } = req.body;
+    const location = latitude && longitude
+      ? `SOS at ${parseFloat(latitude).toFixed(4)}, ${parseFloat(longitude).toFixed(4)}`
+      : 'SOS — location unknown';
+
+    const incident = await prisma.incidentReport.create({
+      data: {
+        title: '🆘 SOS EMERGENCY',
+        description: 'Citizen triggered SOS panic button — immediate assistance required.',
+        location,
+        latitude: latitude ? parseFloat(latitude) : null,
+        longitude: longitude ? parseFloat(longitude) : null,
+        severity: 'CRITICAL',
+        status: 'PENDING',
+        category: 'SOS',
+        reporterId: userId,
+        images: [],
+      },
+    });
+
+    // Push to all admins and field responders
+    const targets = await prisma.user.findMany({
+      where: {
+        role: { in: ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER', 'VOLUNTEER'] as any },
+        pushToken: { not: null },
+      },
+      select: { id: true },
+    });
+    const targetIds = targets.map((u: any) => u.id);
+
+    await Promise.all(targetIds.map((id: string) =>
+      sendNotification(id, '🆘 SOS PANIC', `Emergency: ${location}`).catch(() => {})
+    ));
+    await sendExpoPush(targetIds, '🆘 SOS PANIC', `Emergency: ${location}`, {
+      incidentId: incident.id,
+      type: 'SOS',
+    }).catch(() => {});
+
+    res.status(201).json({ ok: true, incidentId: incident.id });
+  } catch (error) {
+    res.status(500).json({ message: 'SOS failed', error });
   }
 };

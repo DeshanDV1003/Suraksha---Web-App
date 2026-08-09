@@ -7,7 +7,7 @@ import {
   Anchor, Bus, Truck, Wind, Ambulance, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Waves, Phone, Copy
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { campService, rescueService } from '../services/api'
+import { campService, rescueService, supplyRequestService } from '../services/api'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
@@ -331,6 +331,261 @@ function RoutePolyline({ coords }: { coords: [number, number][] }) {
   return null
 }
 
+function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, markingSafe, onClose }: {
+  camp: any
+  userLocation: { lat: number; lng: number }
+  missions: any[]
+  myCheckIn: any
+  onMarkSafe: () => void
+  markingSafe: boolean
+  onClose: () => void
+}) {
+  const [routeCoords, setRouteCoords] = useState<[number, number][]>([])
+  const [routeInfo, setRouteInfo] = useState<{ distanceKm: number; durationMin: number } | null>(null)
+  const [routeLoading, setRouteLoading] = useState(true)
+  const [selectedRescue, setSelectedRescue] = useState<any>(null)
+
+  useEffect(() => {
+    if (!camp.latitude || !camp.longitude) { setRouteLoading(false); return }
+    const url = `https://router.project-osrm.org/route/v1/driving/${userLocation.lng},${userLocation.lat};${camp.longitude},${camp.latitude}?geometries=geojson&overview=full`
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        const route = data.routes?.[0]
+        if (route) {
+          setRouteCoords(route.geometry.coordinates.map(([lng, lat]: number[]) => [lat, lng]))
+          setRouteInfo({ distanceKm: +(route.distance / 1000).toFixed(1), durationMin: Math.round(route.duration / 60) })
+        }
+      })
+      .catch(() => {})
+      .finally(() => setRouteLoading(false))
+  }, [])
+
+  const available = camp.totalCapacity - camp.currentOccupancy
+
+  // Active rescue missions — prefer ones going to this camp, then any active
+  const rescueMissions = missions
+    .filter(m => m.status !== 'COMPLETED' && m.status !== 'CANCELLED')
+    .map(m => {
+      const dist = (m.vehicle?.latitude && m.vehicle?.longitude)
+        ? haversineKm(userLocation.lat, userLocation.lng, m.vehicle.latitude, m.vehicle.longitude)
+        : null
+      const isFull = (m.evacuatedCount || 0) >= (m.vehicle?.capacity || Infinity)
+      const isForThisCamp = m.destinationCampId === camp.id
+      return { ...m, _dist: dist, _isFull: isFull, _isForThisCamp: isForThisCamp }
+    })
+    .sort((a, b) => {
+      if (a._isForThisCamp !== b._isForThisCamp) return a._isForThisCamp ? -1 : 1
+      if (a._isFull !== b._isFull) return a._isFull ? 1 : -1
+      if (a._dist !== null && b._dist !== null) return a._dist - b._dist
+      return 0
+    })
+
+  return (
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+      <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-2xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+
+        {/* Header */}
+        <div className="px-6 py-5 border-b border-cyan-400/20 flex items-center justify-between bg-[#0f172a] sticky top-0 z-10">
+          <div>
+            <h3 className="font-black text-white/90 text-base">{camp.name}</h3>
+            <p className="text-xs text-gray-400 font-bold flex items-center gap-1 mt-0.5">
+              <MapPin className="w-3 h-3" />{camp.location}
+            </p>
+          </div>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-5 space-y-5">
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Distance</p>
+              <p className="text-lg font-black text-cyan-400">
+                {routeInfo ? `${routeInfo.distanceKm} km` : `${haversineKm(userLocation.lat, userLocation.lng, camp.latitude, camp.longitude).toFixed(1)} km`}
+              </p>
+              {routeInfo && <p className="text-[10px] text-gray-500">~{routeInfo.durationMin} min drive</p>}
+            </div>
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Capacity</p>
+              <p className={`text-lg font-black ${available <= 0 ? 'text-red-400' : 'text-green-400'}`}>
+                {available <= 0 ? 'FULL' : `${available} spots`}
+              </p>
+              <p className="text-[10px] text-gray-500">{camp.totalCapacity} total</p>
+            </div>
+            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Wait Time</p>
+              <p className="text-lg font-black text-white/80">{camp.waitTime || 'N/A'}</p>
+            </div>
+          </div>
+
+          {/* Map */}
+          <div className="rounded-2xl overflow-hidden border border-white/10 relative" style={{ height: 280 }}>
+            {routeLoading && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#0f172a]/90 gap-2">
+                <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
+                <span className="text-xs text-gray-400 font-bold">Calculating route…</span>
+              </div>
+            )}
+            {camp.latitude && camp.longitude ? (
+              <MapContainer
+                center={[(userLocation.lat + camp.latitude) / 2, (userLocation.lng + camp.longitude) / 2]}
+                zoom={10}
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
+                <Marker position={[userLocation.lat, userLocation.lng]} icon={L.divIcon({
+                  className: '',
+                  html: `<div style="width:16px;height:16px;background:#06b6d4;border:3px solid white;border-radius:50%;box-shadow:0 0 0 5px rgba(6,182,212,0.3)"></div>`,
+                  iconSize: [16, 16], iconAnchor: [8, 8],
+                })}>
+                  <Popup><strong style={{color:'#06b6d4'}}>📍 Your Location</strong></Popup>
+                </Marker>
+                <Marker position={[camp.latitude, camp.longitude]} icon={createCampIcon()}>
+                  <Popup><strong>{camp.name}</strong><br/><span style={{fontSize:'11px'}}>{camp.location}</span></Popup>
+                </Marker>
+                {/* Rescue vehicle markers */}
+                {rescueMissions.filter(m => m.vehicle?.latitude && m.vehicle?.longitude).map((m: any) => {
+                  const VIcon = VEHICLE_ICONS[m.vehicle?.type] || Bus
+                  return (
+                    <Marker key={m.id} position={[m.vehicle.latitude, m.vehicle.longitude]} icon={L.divIcon({
+                      className: '',
+                      html: `<div style="background:#3b82f6;width:32px;height:32px;border-radius:8px;border:2px solid white;box-shadow:0 4px 10px rgba(59,130,246,0.5);display:flex;align-items:center;justify-content:center;font-size:14px">${m.vehicle.type === 'BOAT' ? '⛵' : m.vehicle.type === 'HELICOPTER' ? '🚁' : m.vehicle.type === 'AMBULANCE' ? '🚑' : '🚌'}</div>`,
+                      iconSize: [32, 32], iconAnchor: [16, 16],
+                    })}>
+                      <Popup>
+                        <strong>{m.vehicle.name}</strong><br/>
+                        <span style={{fontSize:'11px'}}>{m.area} · {Math.max(0, m.vehicle.capacity - m.evacuatedCount)} spots left</span>
+                      </Popup>
+                    </Marker>
+                  )
+                })}
+                {routeCoords.length > 0 && <RoutePolyline coords={routeCoords} />}
+              </MapContainer>
+            ) : (
+              <div className="flex items-center justify-center h-full bg-[#0f172a]">
+                <p className="text-sm text-gray-500">No GPS coordinates for this camp.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Route info bar */}
+          {routeInfo && (
+            <div className="bg-[#0f172a] rounded-2xl border border-cyan-400/20 p-4 flex items-center gap-4">
+              <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center flex-shrink-0">
+                <Navigation className="w-4 h-4 text-cyan-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-black text-white/90">Route to {camp.name}</p>
+                <p className="text-xs text-gray-400">{routeInfo.distanceKm} km · ~{routeInfo.durationMin} min by road</p>
+              </div>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${camp.latitude},${camp.longitude}&travelmode=driving`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-400 text-xs font-black hover:bg-cyan-500/25 transition-all flex-shrink-0"
+              >
+                <Navigation className="w-3.5 h-3.5" /> Google Maps
+              </a>
+            </div>
+          )}
+
+          {/* ── Available Rescue Transport ── */}
+          <div className="space-y-3">
+            <p className="text-[11px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
+              <Waves className="w-3.5 h-3.5 text-blue-400" /> Available Rescue Transport
+            </p>
+            {rescueMissions.length === 0 ? (
+              <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+                <p className="text-xs text-gray-500 font-bold">No active rescue missions right now.</p>
+                <p className="text-[10px] text-gray-600 mt-1">Travel by road or check back shortly.</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {rescueMissions.map((m: any) => {
+                  const VIcon = VEHICLE_ICONS[m.vehicle?.type] || Bus
+                  const vcol = VEHICLE_COLORS[m.vehicle?.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
+                  const spotsLeft = Math.max(0, (m.vehicle?.capacity || 0) - (m.evacuatedCount || 0))
+                  const isSelected = selectedRescue?.id === m.id
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setSelectedRescue(isSelected ? null : m)}
+                      disabled={m._isFull}
+                      className={cn(
+                        'w-full text-left flex items-start gap-3 p-4 rounded-2xl border transition-all',
+                        isSelected ? 'border-blue-400/50 bg-blue-500/10' : 'border-white/10 bg-[#0f172a] hover:border-blue-400/30',
+                        m._isFull && 'opacity-50 cursor-not-allowed'
+                      )}
+                    >
+                      <div className={cn('p-2 rounded-xl border flex-shrink-0', vcol)}>
+                        <VIcon className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {m._isForThisCamp && (
+                            <span className="text-[9px] font-black text-green-400 bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-full uppercase">Going here</span>
+                          )}
+                          <span className="font-black text-white/90 text-sm">{m.vehicle?.name}</span>
+                          <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase', MISSION_STATUS_COLOR[m.status])}>
+                            {m.status.replace('_', ' ')}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-0.5"><MapPin className="w-3 h-3 inline" /> {m.area}</p>
+                        <div className="flex items-center gap-3 mt-1">
+                          {m._dist !== null && <span className="text-xs font-black text-cyan-400">{m._dist.toFixed(1)} km away</span>}
+                          <span className={cn('text-xs font-black', m._isFull ? 'text-red-400' : 'text-green-400')}>
+                            {m._isFull ? '⚠ FULL' : `${spotsLeft} spots`}
+                          </span>
+                          {m.vehicle?.contactPhone && (
+                            <a href={`tel:${m.vehicle.contactPhone}`} onClick={e => e.stopPropagation()} className="text-xs text-blue-400 flex items-center gap-1 font-bold hover:text-blue-300">
+                              <Phone className="w-3 h-3" />{m.vehicle.contactPhone}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-blue-400 font-bold flex-shrink-0 mt-1">{isSelected ? '✓ Selected' : 'Select →'}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* ── Mark as Safely Arrived ── */}
+          <div className="border-t border-white/10 pt-4">
+            {myCheckIn ? (
+              <div className="flex items-center gap-3 p-4 rounded-2xl bg-green-500/10 border border-green-500/30">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-black text-green-400">You have been marked as safely arrived</p>
+                  <p className="text-xs text-green-400/70 mt-0.5">Authorities have been notified of your safety.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <p className="text-xs text-gray-400 font-bold">Have you arrived at a safe location?</p>
+                <button
+                  onClick={onMarkSafe}
+                  disabled={markingSafe}
+                  className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-green-500/15 border border-green-500/30 text-green-400 font-black hover:bg-green-500/25 transition-all"
+                >
+                  {markingSafe ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+                  Mark Me as Safely Arrived
+                </button>
+                {selectedRescue && (
+                  <p className="text-[10px] text-gray-500 text-center">Using {selectedRescue.vehicle?.name} · Contact: {selectedRescue.vehicle?.contactPhone || 'N/A'}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function CampsPage() {
   const { t } = useTranslation()
   const { searchQuery } = useAppStore()
@@ -354,6 +609,8 @@ export default function CampsPage() {
     services: [] as string[]
   })
 
+  const [selectedCampRoute, setSelectedCampRoute] = useState<any>(null)
+
   // Rescue transport state
   const [selectedMission, setSelectedMission] = useState<any>(null)
   const [vehicles, setVehicles] = useState<any[]>([])
@@ -367,6 +624,34 @@ export default function CampsPage() {
   const [vehicleForm, setVehicleForm] = useState({ type: 'BOAT', name: '', capacity: '', area: '', operatorName: '', contactPhone: '', latitude: '', longitude: '' })
   const [showVehicleMapPicker, setShowVehicleMapPicker] = useState(false)
   const [missionForm, setMissionForm] = useState({ vehicleId: '', area: '', destinationCampId: '', notes: '' })
+
+  // Transfer management state
+  const [showTransferPanel, setShowTransferPanel] = useState(false)
+  const [allTransfers, setAllTransfers] = useState<any[]>([])
+  const [transferSuggestions, setTransferSuggestions] = useState<any[]>([])
+  const [loadingTransfers, setLoadingTransfers] = useState(false)
+
+  // Supply requests state
+  const [showSupplyPanel, setShowSupplyPanel] = useState(false)
+  const [supplyRequests, setSupplyRequests] = useState<any[]>([])
+  const [loadingSupply, setLoadingSupply] = useState(false)
+
+  const fetchTransferData = async () => {
+    setLoadingTransfers(true)
+    try {
+      const [tRes, sRes] = await Promise.all([campService.getAllTransfers(), campService.getTransferSuggestions()])
+      setAllTransfers(tRes.data)
+      setTransferSuggestions(sRes.data)
+    } catch { /* non-critical */ } finally { setLoadingTransfers(false) }
+  }
+
+  const fetchSupplyRequests = async () => {
+    setLoadingSupply(true)
+    try {
+      const res = await supplyRequestService.getAll()
+      setSupplyRequests(res.data)
+    } catch { /* non-critical */ } finally { setLoadingSupply(false) }
+  }
 
   const fetchRescueData = async () => {
     try {
@@ -404,20 +689,44 @@ export default function CampsPage() {
 
   useEffect(() => {
     if (!isCitizen) return
-    // Load saved location from localStorage first (instant, accurate)
-    const saved = localStorage.getItem('suraksha_user_location')
-    if (saved) {
+    if (!navigator.geolocation) {
+      setLocationStatus('denied')
+      setShowLocationPicker(true)
+      return
+    }
+    setLocationStatus('loading')
+
+    // Show cached location instantly while GPS acquires
+    const cached = localStorage.getItem('suraksha_user_location')
+    if (cached) {
       try {
-        const { lat, lng } = JSON.parse(saved)
+        const { lat, lng } = JSON.parse(cached)
         setUserLocation({ lat, lng })
         setLocationStatus('granted')
         setShowLocationPicker(false)
-        return
       } catch { localStorage.removeItem('suraksha_user_location') }
     }
-    // No saved location — show the map picker immediately
-    setLocationStatus('denied')
-    setShowLocationPicker(true)
+
+    // Start watching real-time GPS position
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords
+        setUserLocation({ lat, lng })
+        setLocationStatus('granted')
+        setShowLocationPicker(false)
+        localStorage.setItem('suraksha_user_location', JSON.stringify({ lat, lng }))
+      },
+      () => {
+        // GPS failed — fall back to manual picker if no cached location
+        if (!cached) {
+          setLocationStatus('denied')
+          setShowLocationPicker(true)
+        }
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    )
+
+    return () => navigator.geolocation.clearWatch(watchId)
   }, [isCitizen])
 
   const nearestCamps = userLocation
@@ -493,22 +802,32 @@ export default function CampsPage() {
                 <Navigation className="w-5 h-5 text-cyan-400" />
                 Nearest Relief Camps
               </h3>
-              {userLocation && !showLocationPicker && (
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-green-400 font-black bg-green-500/10 border border-green-500/30 px-2.5 py-1 rounded-full">
-                    📍 {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+              <div className="flex items-center gap-2">
+                {locationStatus === 'loading' && !userLocation && (
+                  <span className="text-[10px] text-yellow-400 font-black bg-yellow-500/10 border border-yellow-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                    <Loader2 className="w-3 h-3 animate-spin" /> Detecting GPS…
                   </span>
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem('suraksha_user_location')
-                      setShowLocationPicker(true)
-                    }}
-                    className="text-[10px] text-cyan-400 font-black hover:text-cyan-300 transition-colors underline"
-                  >
-                    Change
-                  </button>
-                </div>
-              )}
+                )}
+                {userLocation && (
+                  <>
+                    <span className="text-[10px] text-green-400 font-black bg-green-500/10 border border-green-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
+                      Live · {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+                    </span>
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem('suraksha_user_location')
+                        setUserLocation(null)
+                        setShowLocationPicker(true)
+                        setLocationStatus('denied')
+                      }}
+                      className="text-[10px] text-cyan-400 font-black hover:text-cyan-300 transition-colors underline"
+                    >
+                      Change
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Map picker — shown on first visit (no saved location) or when user clicks Change */}
@@ -524,7 +843,7 @@ export default function CampsPage() {
                     zoom={userLocation ? 12 : 8}
                     style={{ height: '100%', width: '100%' }}
                   >
-                    <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
+                    <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
                     <LocationPicker onPick={(lat, lng) => {
                       setUserLocation({ lat, lng })
                       setLocationStatus('granted')
@@ -564,15 +883,13 @@ export default function CampsPage() {
                           {isFull ? 'FULL' : `${available} spots`}
                         </span>
                       </div>
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${camp.latitude},${camp.longitude}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => setSelectedCampRoute(camp)}
                         className="mt-3 flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                       >
                         <Navigation className="w-3.5 h-3.5" />
-                        Get Directions
-                      </a>
+                        View Route
+                      </button>
                     </div>
                   )
                 })}
@@ -841,9 +1158,17 @@ export default function CampsPage() {
                                 {m.evacuatedCount > 0 && <span className="ml-2 text-green-400">· {m.evacuatedCount} evacuated</span>}
                               </p>
                               {m.notes && <p className="text-xs text-gray-500 italic mt-0.5">{m.notes}</p>}
-                              <p className="text-[10px] text-gray-600 mt-1">
-                                {m.safeZoneCheckIns?.length || 0} citizens marked safe · Assigned by {m.assignedBy?.name}
-                              </p>
+                              <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                                {(m.safeZoneCheckIns?.length || 0) > 0 ? (
+                                  <span className="flex items-center gap-1 text-[10px] font-black text-green-400 bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-full">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    {m.safeZoneCheckIns.length} citizen{m.safeZoneCheckIns.length > 1 ? 's' : ''} marked safe
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] text-gray-600">No check-ins yet</span>
+                                )}
+                                {m.assignedBy?.name && <span className="text-[10px] text-gray-600">Assigned by {m.assignedBy.name}</span>}
+                              </div>
                             </div>
                             <div className="flex flex-col gap-1.5 flex-shrink-0">
                               {m.status === 'PENDING' && (
@@ -854,8 +1179,9 @@ export default function CampsPage() {
                               )}
                               {m.status === 'IN_PROGRESS' && (
                                 <button onClick={async () => { await rescueService.updateMissionStatus(m.id, 'COMPLETED', m.safeZoneCheckIns?.length); fetchRescueData() }}
-                                  className="px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/30 text-green-400 text-[10px] font-black hover:bg-green-500/25 transition-all">
-                                  ✓ Complete
+                                  className="px-3 py-1.5 rounded-lg bg-green-500/15 border border-green-500/30 text-green-400 text-[10px] font-black hover:bg-green-500/25 transition-all flex items-center gap-1">
+                                  <CheckCircle2 className="w-3 h-3" />
+                                  Job Done {m.safeZoneCheckIns?.length > 0 ? `(${m.safeZoneCheckIns.length} safe)` : ''}
                                 </button>
                               )}
                               {m.status !== 'COMPLETED' && m.status !== 'CANCELLED' && (
@@ -1019,6 +1345,197 @@ export default function CampsPage() {
           </div>
         )}
 
+        {/* ── TRANSFER MANAGEMENT PANEL ────────────────────────────────────── */}
+        {!isCitizen && (
+          <div className="suraksha-card bg-[#131f33] border border-orange-500/20 overflow-hidden">
+            <button
+              onClick={() => { setShowTransferPanel(v => !v); if (!showTransferPanel) fetchTransferData(); }}
+              className="w-full flex items-center justify-between px-7 py-5 hover:bg-white/5 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <ArrowRightLeft className="w-5 h-5 text-orange-400" />
+                <span className="font-black text-white/90 text-base">Inter-Camp Transfer Management</span>
+                <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-orange-500/15 text-orange-400 border border-orange-500/30">
+                  {allTransfers.filter(t => t.status === 'PENDING').length} Pending
+                </span>
+              </div>
+              {showTransferPanel ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+            </button>
+
+            {showTransferPanel && (
+              <div className="border-t border-orange-500/20 p-7 space-y-8">
+                {loadingTransfers ? (
+                  <div className="flex items-center gap-3 text-slate-400"><Loader2 className="w-5 h-5 animate-spin" /> Loading transfer data…</div>
+                ) : (
+                  <>
+                    {/* Suggestions for full camps */}
+                    {transferSuggestions.length > 0 && (
+                      <div>
+                        <p className="text-[10px] font-black text-orange-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                          <AlertTriangle className="w-3.5 h-3.5" /> Full Camps — Transfer Suggestions
+                        </p>
+                        <div className="space-y-4">
+                          {transferSuggestions.map((s: any, i: number) => (
+                            <div key={i} className="bg-red-500/8 border border-red-500/20 rounded-xl p-4">
+                              <div className="flex items-center justify-between mb-3">
+                                <div>
+                                  <p className="font-black text-red-300 text-sm">{s.fullCamp.name}</p>
+                                  <p className="text-xs text-red-400/70">{s.fullCamp.currentOccupancy}/{s.fullCamp.totalCapacity} residents · {s.fullCamp.location}</p>
+                                </div>
+                                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">FULL</span>
+                              </div>
+                              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Suggested destinations</p>
+                              <div className="space-y-2">
+                                {s.suggestions.map((dest: any) => (
+                                  <div key={dest.id} className="flex items-center justify-between bg-green-500/8 border border-green-500/15 rounded-lg px-3 py-2">
+                                    <div>
+                                      <p className="text-sm font-bold text-green-300">{dest.name}</p>
+                                      <p className="text-xs text-green-400/70">
+                                        {dest.freeCapacity} free · {dest.distanceKm != null ? `${dest.distanceKm.toFixed(1)} km away` : dest.location}
+                                      </p>
+                                    </div>
+                                    <button
+                                      onClick={async () => {
+                                        const count = parseInt(prompt(`Transfer how many people from ${s.fullCamp.name} to ${dest.name}?`) || '0');
+                                        if (!count || count <= 0) return;
+                                        try { await campService.createTransfer(s.fullCamp.id, dest.id, count); fetchTransferData(); } catch {}
+                                      }}
+                                      className="text-[10px] font-black px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-500 transition-colors"
+                                    >
+                                      Transfer →
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* All transfer requests */}
+                    <div>
+                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">All Transfer Requests</p>
+                      {allTransfers.length === 0 ? (
+                        <p className="text-sm text-slate-500 font-bold">No transfer requests yet.</p>
+                      ) : (
+                        <div className="space-y-2">
+                          {allTransfers.map((tr: any) => (
+                            <div key={tr.id} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-white/90 truncate">
+                                  {tr.fromCamp?.name} → {tr.toCamp?.name}
+                                </p>
+                                <p className="text-xs text-slate-400">{tr.peopleCount} people · {new Date(tr.requestDate).toLocaleDateString()}</p>
+                              </div>
+                              <div className="flex items-center gap-2 ml-3">
+                                <span className={cn('text-[10px] font-black px-2 py-0.5 rounded-full border',
+                                  tr.status === 'APPROVED' ? 'bg-green-500/15 text-green-400 border-green-500/30' :
+                                  tr.status === 'COMPLETED' ? 'bg-blue-500/15 text-blue-400 border-blue-500/30' :
+                                  tr.status === 'REJECTED' ? 'bg-red-500/15 text-red-400 border-red-500/30' :
+                                  'bg-yellow-500/15 text-yellow-400 border-yellow-500/30'
+                                )}>{tr.status}</span>
+                                {tr.status === 'PENDING' && (
+                                  <>
+                                    <button onClick={async () => { await campService.updateTransfer(tr.id, 'APPROVED'); fetchTransferData(); }}
+                                      className="text-[10px] font-black px-2.5 py-1 rounded-lg bg-green-600 text-white hover:bg-green-500 transition-colors">Approve</button>
+                                    <button onClick={async () => { await campService.updateTransfer(tr.id, 'REJECTED'); fetchTransferData(); }}
+                                      className="text-[10px] font-black px-2.5 py-1 rounded-lg bg-red-600/70 text-white hover:bg-red-500 transition-colors">Reject</button>
+                                  </>
+                                )}
+                                {tr.status === 'APPROVED' && (
+                                  <button onClick={async () => { await campService.updateTransfer(tr.id, 'COMPLETED'); fetchTransferData(); }}
+                                    className="text-[10px] font-black px-2.5 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors">Mark Done</button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── SUPPLY REQUEST MANAGEMENT PANEL ──────────────────────────────── */}
+        {!isCitizen && (
+          <div className="suraksha-card bg-[#131f33] border border-purple-500/20 overflow-hidden">
+            <button
+              onClick={() => { setShowSupplyPanel(v => !v); if (!showSupplyPanel) fetchSupplyRequests(); }}
+              className="w-full flex items-center justify-between px-7 py-5 hover:bg-white/5 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Utensils className="w-5 h-5 text-purple-400" />
+                <span className="font-black text-white/90 text-base">Supply Requests</span>
+                <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30">
+                  {supplyRequests.filter(r => r.status === 'PENDING').length} Pending
+                </span>
+              </div>
+              {showSupplyPanel ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+            </button>
+
+            {showSupplyPanel && (
+              <div className="border-t border-purple-500/20 p-7">
+                {loadingSupply ? (
+                  <div className="flex items-center gap-3 text-slate-400"><Loader2 className="w-5 h-5 animate-spin" /> Loading supply requests…</div>
+                ) : supplyRequests.length === 0 ? (
+                  <p className="text-sm text-slate-500 font-bold">No supply requests yet.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {supplyRequests.map((r: any) => (
+                      <div key={r.id} className="flex items-start justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3 gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <span className={cn('text-[10px] font-black px-2 py-0.5 rounded-full border',
+                              r.urgency === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                              r.urgency === 'HIGH' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                              r.urgency === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
+                              'bg-green-500/20 text-green-400 border-green-500/30'
+                            )}>{r.urgency}</span>
+                            <p className="text-sm font-bold text-white/90 truncate">{r.itemType} × {r.quantity}</p>
+                          </div>
+                          <p className="text-xs text-slate-400">
+                            {r.requester?.name}{r.camp ? ` · ${r.camp.name}` : ''} · {new Date(r.createdAt).toLocaleDateString()}
+                          </p>
+                          {r.notes && <p className="text-xs text-slate-500 italic mt-0.5">"{r.notes}"</p>}
+                        </div>
+                        <div className="flex flex-col gap-1 items-end">
+                          <span className={cn('text-[10px] font-black px-2 py-0.5 rounded-full border',
+                            r.status === 'FULFILLED' ? 'bg-green-500/15 text-green-400 border-green-500/30' :
+                            r.status === 'DISPATCHED' ? 'bg-blue-500/15 text-blue-400 border-blue-500/30' :
+                            r.status === 'APPROVED' ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30' :
+                            r.status === 'REJECTED' ? 'bg-red-500/15 text-red-400 border-red-500/30' :
+                            'bg-yellow-500/15 text-yellow-400 border-yellow-500/30'
+                          )}>{r.status}</span>
+                          {r.status === 'PENDING' && (
+                            <div className="flex gap-1 mt-1">
+                              <button onClick={async () => { await supplyRequestService.updateStatus(r.id, 'APPROVED'); fetchSupplyRequests(); }}
+                                className="text-[9px] font-black px-2 py-1 rounded-lg bg-green-600 text-white hover:bg-green-500 transition-colors">Approve</button>
+                              <button onClick={async () => { await supplyRequestService.updateStatus(r.id, 'REJECTED'); fetchSupplyRequests(); }}
+                                className="text-[9px] font-black px-2 py-1 rounded-lg bg-red-600/70 text-white hover:bg-red-500 transition-colors">Reject</button>
+                            </div>
+                          )}
+                          {r.status === 'APPROVED' && (
+                            <button onClick={async () => { await supplyRequestService.updateStatus(r.id, 'DISPATCHED'); fetchSupplyRequests(); }}
+                              className="text-[9px] font-black px-2 py-1 mt-1 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors">Dispatch</button>
+                          )}
+                          {r.status === 'DISPATCHED' && (
+                            <button onClick={async () => { await supplyRequestService.updateStatus(r.id, 'FULFILLED'); fetchSupplyRequests(); }}
+                              className="text-[9px] font-black px-2 py-1 mt-1 rounded-lg bg-cyan-600 text-white hover:bg-cyan-500 transition-colors">Fulfilled</button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
             <div key={i} className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all">
@@ -1101,6 +1618,25 @@ export default function CampsPage() {
 
         {selectedCampId && <CampDetailsModal campId={selectedCampId} onClose={() => { setSelectedCampId(null); fetchCamps(); }} isCitizen={isCitizen} />}
         {selectedMission && <RescueDetailModal mission={selectedMission} userLocation={userLocation} onClose={() => setSelectedMission(null)} />}
+        {selectedCampRoute && userLocation && (
+          <CampRouteModal
+            camp={selectedCampRoute}
+            userLocation={userLocation}
+            missions={missions}
+            myCheckIn={myCheckIn}
+            onMarkSafe={async () => {
+              setMarkingSafe(true)
+              try {
+                const m = missions.find(m => m.status !== 'COMPLETED' && m.status !== 'CANCELLED' && !(m.evacuatedCount >= m.vehicle?.capacity))
+                await rescueService.markSafeZone({ missionId: m?.id })
+                await fetchMyCheckIn()
+              } catch (err) { console.error(err) }
+              finally { setMarkingSafe(false) }
+            }}
+            markingSafe={markingSafe}
+            onClose={() => setSelectedCampRoute(null)}
+          />
+        )}
 
         {showModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">

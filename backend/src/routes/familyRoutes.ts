@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { updateMySafetyStatus, updateFamilyMemberStatus, getMyFamilyStatus, getSafetyRoster } from '../controllers/familyController';
+import { updateMySafetyStatus, updateFamilyMemberStatus, getMyFamilyStatus, getSafetyRoster, adminOverrideFamilyMember } from '../controllers/familyController';
 import { authMiddleware, officerMiddleware } from '../middleware/auth';
 
 const router = Router();
@@ -12,5 +12,6 @@ router.get('/my-status', authMiddleware, getMyFamilyStatus);
 
 // Officer endpoints
 router.get('/roster', authMiddleware, officerMiddleware, getSafetyRoster);
+router.patch('/admin/members/:id', authMiddleware, officerMiddleware, adminOverrideFamilyMember);
 
 export default router;

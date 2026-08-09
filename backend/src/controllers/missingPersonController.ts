@@ -57,9 +57,9 @@ export const searchFace = async (req: Request, res: Response) => {
 
 export const triggerReunification = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const { status, notes } = req.body;
-    const person = await missingPersonService.triggerReunification(id, status, notes);
+    const person = await missingPersonService.triggerReunification(id, String(status ?? ''), String(notes ?? ''));
     res.json(person);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
