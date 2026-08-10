@@ -146,15 +146,15 @@ function RescueDetailModal({
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-[#131f33] border border-blue-500/20 w-full max-w-2xl rounded-[1.5rem] shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#131f33] border border-blue-500/20 w-full max-w-2xl rounded-[1.5rem] shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-blue-500/20 flex items-center justify-between sticky top-0 bg-[#131f33] z-10">
+        <div className="px-6 py-5 border-b border-blue-500/20 flex items-center justify-between sticky top-0 bg-white dark:bg-[#131f33] z-10">
           <div className="flex items-center gap-3">
             <div className={cn('p-2.5 rounded-xl border', vcol)}>
               <VIcon className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-black text-white/90 text-base">{vehicle?.name}</h3>
+              <h3 className="font-black text-slate-800 dark:text-white/90 text-base">{vehicle?.name}</h3>
               <p className="text-xs text-gray-400 font-bold">{vehicle?.type} · {mission.area}</p>
             </div>
           </div>
@@ -166,20 +166,20 @@ function RescueDetailModal({
         <div className="p-6 space-y-5">
           {/* Status strip */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Status</p>
               <span className={cn('text-xs font-black px-2.5 py-1 rounded-full border uppercase', MISSION_STATUS_COLOR[mission.status])}>
                 {mission.status.replace('_', ' ')}
               </span>
             </div>
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Capacity</p>
               <p className={cn('text-lg font-black', isFull ? 'text-red-400' : 'text-green-400')}>
                 {isFull ? 'FULL' : `${spotsLeft} left`}
               </p>
               <p className="text-[10px] text-gray-500">{vehicle?.capacity} total</p>
             </div>
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Distance</p>
               {routeInfo ? (
                 <>
@@ -246,7 +246,7 @@ function RescueDetailModal({
               </MapContainer>
             </div>
           ) : (
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-6 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-6 text-center">
               <MapPin className="w-8 h-8 text-gray-600 mx-auto mb-2" />
               <p className="text-sm text-gray-500 font-bold">No GPS coordinates set for this vehicle.</p>
               <p className="text-xs text-gray-600 mt-1">Admin needs to set the pickup location.</p>
@@ -255,12 +255,12 @@ function RescueDetailModal({
 
           {/* Route steps info */}
           {routeInfo && (
-            <div className="bg-[#0f172a] rounded-2xl border border-blue-500/20 p-4 flex items-center gap-4">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-blue-500/20 p-4 flex items-center gap-4">
               <div className="w-8 h-8 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
                 <Navigation className="w-4 h-4 text-blue-400" />
               </div>
               <div>
-                <p className="text-sm font-black text-white/90">Safe Route to Pickup Point</p>
+                <p className="text-sm font-black text-slate-800 dark:text-white/90">Safe Route to Pickup Point</p>
                 <p className="text-xs text-gray-400 font-bold">
                   {routeInfo.distanceKm} km · Approx. {routeInfo.durationMin} minutes on foot
                   · Follow the blue route on the map
@@ -291,9 +291,9 @@ function RescueDetailModal({
 
           {/* Contact */}
           {vehicle?.contactPhone && (
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 space-y-3">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 space-y-3">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Contact Rescue Unit</p>
-              <p className="text-2xl font-black text-white/90 tracking-wider">{vehicle.contactPhone}</p>
+              <p className="text-2xl font-black text-slate-800 dark:text-white/90 tracking-wider">{vehicle.contactPhone}</p>
               {vehicle.operatorName && <p className="text-xs text-gray-500">{vehicle.operatorName}</p>}
               <div className="flex gap-2">
                 <button
@@ -383,12 +383,12 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-2xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+      <div className="bg-white dark:bg-[#131f33] border border-cyan-400/20 w-full max-w-2xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-cyan-400/20 flex items-center justify-between bg-[#0f172a] sticky top-0 z-10">
+        <div className="px-6 py-5 border-b border-cyan-400/20 flex items-center justify-between bg-slate-50 dark:bg-[#0f172a] sticky top-0 z-10">
           <div>
-            <h3 className="font-black text-white/90 text-base">{camp.name}</h3>
+            <h3 className="font-black text-slate-800 dark:text-white/90 text-base">{camp.name}</h3>
             <p className="text-xs text-gray-400 font-bold flex items-center gap-1 mt-0.5">
               <MapPin className="w-3 h-3" />{camp.location}
             </p>
@@ -401,21 +401,21 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
         <div className="p-5 space-y-5">
           {/* Stats row */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Distance</p>
               <p className="text-lg font-black text-cyan-400">
                 {routeInfo ? `${routeInfo.distanceKm} km` : `${haversineKm(userLocation.lat, userLocation.lng, camp.latitude, camp.longitude).toFixed(1)} km`}
               </p>
               {routeInfo && <p className="text-[10px] text-gray-500">~{routeInfo.durationMin} min drive</p>}
             </div>
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Capacity</p>
               <p className={`text-lg font-black ${available <= 0 ? 'text-red-400' : 'text-green-400'}`}>
                 {available <= 0 ? 'FULL' : `${available} spots`}
               </p>
               <p className="text-[10px] text-gray-500">{camp.totalCapacity} total</p>
             </div>
-            <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Wait Time</p>
               <p className="text-lg font-black text-white/80">{camp.waitTime || 'N/A'}</p>
             </div>
@@ -465,7 +465,7 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
                 {routeCoords.length > 0 && <RoutePolyline coords={routeCoords} />}
               </MapContainer>
             ) : (
-              <div className="flex items-center justify-center h-full bg-[#0f172a]">
+              <div className="flex items-center justify-center h-full bg-slate-100 dark:bg-[#0f172a]">
                 <p className="text-sm text-gray-500">No GPS coordinates for this camp.</p>
               </div>
             )}
@@ -473,12 +473,12 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
 
           {/* Route info bar */}
           {routeInfo && (
-            <div className="bg-[#0f172a] rounded-2xl border border-cyan-400/20 p-4 flex items-center gap-4">
+            <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-cyan-400/20 p-4 flex items-center gap-4">
               <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center flex-shrink-0">
                 <Navigation className="w-4 h-4 text-cyan-400" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-black text-white/90">Route to {camp.name}</p>
+                <p className="text-sm font-black text-slate-800 dark:text-white/90">Route to {camp.name}</p>
                 <p className="text-xs text-gray-400">{routeInfo.distanceKm} km · ~{routeInfo.durationMin} min by road</p>
               </div>
               <a
@@ -497,7 +497,7 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
               <Waves className="w-3.5 h-3.5 text-blue-400" /> Available Rescue Transport
             </p>
             {rescueMissions.length === 0 ? (
-              <div className="bg-[#0f172a] rounded-2xl border border-white/10 p-4 text-center">
+              <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 p-4 text-center">
                 <p className="text-xs text-gray-500 font-bold">No active rescue missions right now.</p>
                 <p className="text-[10px] text-gray-600 mt-1">Travel by road or check back shortly.</p>
               </div>
@@ -515,7 +515,7 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
                       disabled={m._isFull}
                       className={cn(
                         'w-full text-left flex items-start gap-3 p-4 rounded-2xl border transition-all',
-                        isSelected ? 'border-blue-400/50 bg-blue-500/10' : 'border-white/10 bg-[#0f172a] hover:border-blue-400/30',
+                        isSelected ? 'border-blue-400/50 bg-blue-500/10' : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0f172a] hover:border-blue-400/30',
                         m._isFull && 'opacity-50 cursor-not-allowed'
                       )}
                     >
@@ -796,9 +796,9 @@ export default function CampsPage() {
         )}
 
         {isCitizen && (
-          <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-6 space-y-4">
+          <div className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 p-6 space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <h3 className="font-black text-white/90 flex items-center gap-2 text-base">
+              <h3 className="font-black text-slate-800 dark:text-white/90 flex items-center gap-2 text-base">
                 <Navigation className="w-5 h-5 text-cyan-400" />
                 Nearest Relief Camps
               </h3>
@@ -871,9 +871,9 @@ export default function CampsPage() {
                   const available = camp.totalCapacity - camp.currentOccupancy
                   const isFull = available <= 0
                   return (
-                    <div key={camp.id} className={`p-4 rounded-2xl border ${i === 0 ? 'border-cyan-400/40 bg-cyan-400/5' : 'border-white/10 bg-[#0f172a]'}`}>
+                    <div key={camp.id} className={`p-4 rounded-2xl border ${i === 0 ? 'border-cyan-400/40 bg-cyan-400/5' : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0f172a]'}`}>
                       {i === 0 && <span className="text-[9px] text-cyan-400 font-black uppercase tracking-widest">Closest</span>}
-                      <h4 className="font-black text-white/90 text-sm mt-1">{camp.name}</h4>
+                      <h4 className="font-black text-slate-800 dark:text-white/90 text-sm mt-1">{camp.name}</h4>
                       <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
                         <MapPin className="w-3 h-3 flex-shrink-0" /> {camp.location}
                       </p>
@@ -922,9 +922,9 @@ export default function CampsPage() {
             })
 
           return (
-            <div className="suraksha-card bg-[#131f33] border border-blue-500/20 p-6 space-y-5">
+            <div className="suraksha-card bg-white dark:bg-[#131f33] border border-blue-500/20 p-6 space-y-5">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <h3 className="font-black text-white/90 flex items-center gap-2 text-base">
+                <h3 className="font-black text-slate-800 dark:text-white/90 flex items-center gap-2 text-base">
                   <Waves className="w-5 h-5 text-blue-400" />
                   Available Rescue Transport
                 </h3>
@@ -950,7 +950,7 @@ export default function CampsPage() {
                         onClick={() => setSelectedMission(mission)}
                         className={cn(
                           'w-full text-left flex items-start gap-4 p-4 rounded-2xl border transition-all hover:border-blue-400/40 hover:bg-blue-500/5 cursor-pointer',
-                          idx === 0 && !mission._isFull ? 'border-blue-400/30 bg-blue-500/5' : 'border-white/10 bg-[#0f172a]',
+                          idx === 0 && !mission._isFull ? 'border-blue-400/30 bg-blue-500/5' : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0f172a]',
                           mission._isFull && 'opacity-60'
                         )}
                       >
@@ -1031,14 +1031,14 @@ export default function CampsPage() {
 
         {/* ── RESCUE ADMIN PANEL ─────────────────────────────────────────────── */}
         {!isCitizen && (
-          <div className="suraksha-card bg-[#131f33] border border-blue-500/20 overflow-hidden">
+          <div className="suraksha-card bg-white dark:bg-[#131f33] border border-blue-500/20 overflow-hidden">
             <button
               onClick={() => setShowRescueAdmin(v => !v)}
-              className="w-full flex items-center justify-between px-7 py-5 hover:bg-white/5 transition-colors"
+              className="w-full flex items-center justify-between px-7 py-5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <Waves className="w-5 h-5 text-blue-400" />
-                <span className="font-black text-white/90 text-base">Rescue Transport Management</span>
+                <span className="font-black text-slate-800 dark:text-white/90 text-base">Rescue Transport Management</span>
                 <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
                   {missions.filter(m => m.status === 'IN_PROGRESS').length} Active
                 </span>
@@ -1074,8 +1074,8 @@ export default function CampsPage() {
                     </div>
 
                     {showMissionForm && (
-                      <div className="bg-[#0f172a] rounded-2xl border border-blue-500/20 p-5 space-y-4">
-                        <h4 className="text-sm font-black text-white/90">Create Rescue Mission</h4>
+                      <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-blue-500/20 p-5 space-y-4">
+                        <h4 className="text-sm font-black text-slate-800 dark:text-white/90">Create Rescue Mission</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <div className="space-y-1.5">
                             <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Vehicle</label>
@@ -1142,13 +1142,13 @@ export default function CampsPage() {
                         const VIcon = VEHICLE_ICONS[m.vehicle?.type] || Bus
                         const vcol = VEHICLE_COLORS[m.vehicle?.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
                         return (
-                          <div key={m.id} className="flex items-start gap-4 p-4 rounded-2xl border border-white/10 bg-[#0f172a]">
+                          <div key={m.id} className="flex items-start gap-4 p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0f172a]">
                             <div className={cn('p-2.5 rounded-xl border flex-shrink-0', vcol)}>
                               <VIcon className="w-5 h-5" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex flex-wrap items-center gap-2 mb-1">
-                                <span className="font-black text-white/90 text-sm">{m.vehicle?.name}</span>
+                                <span className="font-black text-slate-800 dark:text-white/90 text-sm">{m.vehicle?.name}</span>
                                 <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase', MISSION_STATUS_COLOR[m.status])}>
                                   {m.status.replace('_', ' ')}
                                 </span>
@@ -1210,8 +1210,8 @@ export default function CampsPage() {
                     </div>
 
                     {showVehicleForm && (
-                      <div className="bg-[#0f172a] rounded-2xl border border-blue-500/20 p-5 space-y-4">
-                        <h4 className="text-sm font-black text-white/90">Register Rescue Vehicle</h4>
+                      <div className="bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-blue-500/20 p-5 space-y-4">
+                        <h4 className="text-sm font-black text-slate-800 dark:text-white/90">Register Rescue Vehicle</h4>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                           <div className="space-y-1.5">
                             <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Type</label>
@@ -1312,13 +1312,13 @@ export default function CampsPage() {
                         const VIcon = VEHICLE_ICONS[v.type] || Bus
                         const vcol = VEHICLE_COLORS[v.type] || 'text-gray-400 bg-gray-500/10 border-gray-500/30'
                         return (
-                          <div key={v.id} className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 bg-[#0f172a]">
+                          <div key={v.id} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0f172a]">
                             <div className={cn('p-2.5 rounded-xl border flex-shrink-0', vcol)}>
                               <VIcon className="w-5 h-5" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-black text-white/90 text-sm">{v.name}</span>
+                                <span className="font-black text-slate-800 dark:text-white/90 text-sm">{v.name}</span>
                                 <span className="text-[9px] font-black px-2 py-0.5 rounded-full border uppercase bg-gray-500/10 text-gray-400 border-gray-500/30">{v.type}</span>
                                 <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase',
                                   v.status === 'AVAILABLE' ? 'bg-green-500/15 text-green-400 border-green-500/30' : 'bg-orange-500/15 text-orange-400 border-orange-500/30')}>
@@ -1347,14 +1347,14 @@ export default function CampsPage() {
 
         {/* ── TRANSFER MANAGEMENT PANEL ────────────────────────────────────── */}
         {!isCitizen && (
-          <div className="suraksha-card bg-[#131f33] border border-orange-500/20 overflow-hidden">
+          <div className="suraksha-card bg-white dark:bg-[#131f33] border border-orange-500/20 overflow-hidden">
             <button
               onClick={() => { setShowTransferPanel(v => !v); if (!showTransferPanel) fetchTransferData(); }}
-              className="w-full flex items-center justify-between px-7 py-5 hover:bg-white/5 transition-colors"
+              className="w-full flex items-center justify-between px-7 py-5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <ArrowRightLeft className="w-5 h-5 text-orange-400" />
-                <span className="font-black text-white/90 text-base">Inter-Camp Transfer Management</span>
+                <span className="font-black text-slate-800 dark:text-white/90 text-base">Inter-Camp Transfer Management</span>
                 <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-orange-500/15 text-orange-400 border border-orange-500/30">
                   {allTransfers.filter(t => t.status === 'PENDING').length} Pending
                 </span>
@@ -1421,9 +1421,9 @@ export default function CampsPage() {
                       ) : (
                         <div className="space-y-2">
                           {allTransfers.map((tr: any) => (
-                            <div key={tr.id} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                            <div key={tr.id} className="flex items-center justify-between bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3">
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-white/90 truncate">
+                                <p className="text-sm font-bold text-slate-800 dark:text-white/90 truncate">
                                   {tr.fromCamp?.name} → {tr.toCamp?.name}
                                 </p>
                                 <p className="text-xs text-slate-400">{tr.peopleCount} people · {new Date(tr.requestDate).toLocaleDateString()}</p>
@@ -1462,14 +1462,14 @@ export default function CampsPage() {
 
         {/* ── SUPPLY REQUEST MANAGEMENT PANEL ──────────────────────────────── */}
         {!isCitizen && (
-          <div className="suraksha-card bg-[#131f33] border border-purple-500/20 overflow-hidden">
+          <div className="suraksha-card bg-white dark:bg-[#131f33] border border-purple-500/20 overflow-hidden">
             <button
               onClick={() => { setShowSupplyPanel(v => !v); if (!showSupplyPanel) fetchSupplyRequests(); }}
-              className="w-full flex items-center justify-between px-7 py-5 hover:bg-white/5 transition-colors"
+              className="w-full flex items-center justify-between px-7 py-5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <Utensils className="w-5 h-5 text-purple-400" />
-                <span className="font-black text-white/90 text-base">Supply Requests</span>
+                <span className="font-black text-slate-800 dark:text-white/90 text-base">Supply Requests</span>
                 <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30">
                   {supplyRequests.filter(r => r.status === 'PENDING').length} Pending
                 </span>
@@ -1486,7 +1486,7 @@ export default function CampsPage() {
                 ) : (
                   <div className="space-y-2">
                     {supplyRequests.map((r: any) => (
-                      <div key={r.id} className="flex items-start justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3 gap-3">
+                      <div key={r.id} className="flex items-start justify-between bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
                             <span className={cn('text-[10px] font-black px-2 py-0.5 rounded-full border',
@@ -1495,7 +1495,7 @@ export default function CampsPage() {
                               r.urgency === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
                               'bg-green-500/20 text-green-400 border-green-500/30'
                             )}>{r.urgency}</span>
-                            <p className="text-sm font-bold text-white/90 truncate">{r.itemType} × {r.quantity}</p>
+                            <p className="text-sm font-bold text-slate-800 dark:text-white/90 truncate">{r.itemType} × {r.quantity}</p>
                           </div>
                           <p className="text-xs text-slate-400">
                             {r.requester?.name}{r.camp ? ` · ${r.camp.name}` : ''} · {new Date(r.createdAt).toLocaleDateString()}
@@ -1538,7 +1538,7 @@ export default function CampsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
-            <div key={i} className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all">
+            <div key={i} className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col items-center justify-center text-center space-y-1 hover:shadow-lg transition-all">
                <div className={cn("text-3xl font-black", stat.color)}>{stat.value}</div>
                <div className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{stat.label}</div>
             </div>
@@ -1547,12 +1547,12 @@ export default function CampsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {loading ? (
-            <div className="lg:col-span-2 flex flex-col items-center justify-center py-20 bg-[#131f33] border border-cyan-400/20 rounded-[1.5rem] shadow-sm space-y-3">
+            <div className="lg:col-span-2 flex flex-col items-center justify-center py-20 bg-white dark:bg-[#131f33] border border-cyan-400/20 rounded-[1.5rem] shadow-sm space-y-3">
               <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
               <p className="text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest text-xs">{t('camps_page.loading')}</p>
             </div>
           ) : camps.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.location.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
-             <div className="lg:col-span-2 text-center py-24 bg-[#131f33] border border-cyan-400/20 rounded-[1.5rem] border border-dashed border-gray-200 dark:border-gray-700">
+             <div className="lg:col-span-2 text-center py-24 bg-white dark:bg-[#131f33] border border-cyan-400/20 rounded-[1.5rem] border border-dashed border-gray-200 dark:border-gray-700">
                <div className="bg-gray-50 dark:bg-gray-800/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building2 className="w-10 h-10 text-slate-300" />
                </div>
@@ -1566,7 +1566,7 @@ export default function CampsPage() {
               const barColor = status === 'HIGH' ? 'bg-red-500' : status === 'MODERATE' ? 'bg-yellow-500' : 'bg-green-500'
 
               return (
-                <div key={idx} className="suraksha-card bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col space-y-6 hover:shadow-lg transition-all relative group rounded-[1.5rem]">
+                <div key={idx} className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 p-7 flex flex-col space-y-6 hover:shadow-lg transition-all relative group rounded-[1.5rem]">
                   <div className="absolute top-7 right-7">
                     <span className={cn("text-[10px] font-bold px-3 py-1 rounded-full tracking-wide uppercase border", statusColor)}>{status}</span>
                   </div>
@@ -1601,7 +1601,7 @@ export default function CampsPage() {
                       }) : <span className="text-xs text-slate-300 italic">{t('camps_page.no_services')}</span>}
                     </div>
                   </div>
-                  <div className="pt-6 border-t border-slate-50 flex items-center justify-between mt-auto">
+                  <div className="pt-6 border-t border-slate-200 flex items-center justify-between mt-auto">
                     <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
                         <Clock className="w-4 h-4 text-slate-300" />
                         <span className="text-sm font-bold">{t('camps_page.wait_time')} <span className="text-gray-800 dark:text-white/90 font-extrabold">{camp.waitTime || 'N/A'}</span></span>
@@ -1640,9 +1640,9 @@ export default function CampsPage() {
 
         {showModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
-              <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between bg-[#0f172a]">
-                <h2 className="text-xl font-black text-white/90">{t('camps_page.register_new_camp')}</h2>
+            <div className="bg-white dark:bg-[#131f33] border border-cyan-400/20 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
+              <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between bg-slate-50 dark:bg-[#0f172a]">
+                <h2 className="text-xl font-black text-slate-800 dark:text-white/90">{t('camps_page.register_new_camp')}</h2>
                 <button onClick={() => { setShowModal(false); setShowMapPicker(false); setPickedLatLng(null); }} className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
                   <X className="w-6 h-6" />
                 </button>
@@ -1670,7 +1670,7 @@ export default function CampsPage() {
                            "px-4 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap flex items-center gap-1.5",
                            showMapPicker
                              ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-300"
-                             : "bg-[#0f172a] border-white/10 text-slate-400 hover:border-cyan-400/30 hover:text-slate-200"
+                             : "bg-slate-50 dark:bg-[#0f172a] border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-cyan-400/30 hover:text-slate-700 dark:hover:text-slate-200"
                          )}
                        >
                          <MapPin className="w-3.5 h-3.5" />
@@ -1723,7 +1723,7 @@ export default function CampsPage() {
                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('camps_page.services_available')}</label>
                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                      {servicesList.map((service) => (
-                       <button key={service.name} type="button" onClick={() => toggleService(service.name)} className={cn("flex flex-col items-center justify-center p-4 rounded-2xl border transition-all space-y-2", newCamp.services.includes(service.name) ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-300 shadow-sm" : "bg-[#0f172a] border-white/10 text-slate-400 hover:border-cyan-400/30 hover:text-slate-200")}>
+                       <button key={service.name} type="button" onClick={() => toggleService(service.name)} className={cn("flex flex-col items-center justify-center p-4 rounded-2xl border transition-all space-y-2", newCamp.services.includes(service.name) ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-300 shadow-sm" : "bg-slate-50 dark:bg-[#0f172a] border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-cyan-400/30 hover:text-slate-700 dark:hover:text-slate-200")}>
                          <service.icon className="w-6 h-6" />
                          <span className="text-[10px] font-bold uppercase tracking-wider">{service.name}</span>
                        </button>
@@ -1731,7 +1731,7 @@ export default function CampsPage() {
                    </div>
                  </div>
                  <div className="pt-4 flex gap-4">
-                   <button type="button" onClick={() => { setShowModal(false); setShowMapPicker(false); setPickedLatLng(null); }} className="flex-1 px-6 py-4 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-cyan-900/20 transition-all">{t('camps_page.cancel')}</button>
+                   <button type="button" onClick={() => { setShowModal(false); setShowMapPicker(false); setPickedLatLng(null); }} className="flex-1 px-6 py-4 bg-slate-100 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 text-slate-600 dark:text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-cyan-900/20 transition-all">{t('camps_page.cancel')}</button>
                    <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-4 bg-brand-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25">{t('camps_page.create_camp')}</button>
                  </div>
               </form>
@@ -1784,10 +1784,10 @@ function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: stri
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-6xl rounded-[1.5rem] shadow-2xl flex flex-col h-[90vh] animate-in zoom-in-95 duration-200">
-        
+      <div className="bg-white dark:bg-[#131f33] border border-cyan-400/20 w-full max-w-6xl rounded-[1.5rem] shadow-2xl flex flex-col h-[90vh] animate-in zoom-in-95 duration-200">
+
         {/* Header */}
-        <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between shrink-0 bg-[#0f172a] rounded-t-[1.5rem]">
+        <div className="px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-[#0f172a] rounded-t-[1.5rem]">
           <div>
             <h2 className="text-2xl font-black text-gray-800 dark:text-white/90 flex items-center gap-3">
               {camp.name}
@@ -1795,11 +1795,11 @@ function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: stri
             </h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 font-bold mt-1 flex items-center gap-1"><MapPin className="w-3 h-3"/> {camp.location}</p>
           </div>
-          <button onClick={onClose} className="bg-[#131f33] border border-cyan-400/20 text-cyan-400/70 p-2 rounded-full hover:bg-cyan-900/20"><X className="w-5 h-5"/></button>
+          <button onClick={onClose} className="bg-slate-100 dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 text-slate-500 dark:text-cyan-400/70 p-2 rounded-full hover:bg-slate-200 dark:hover:bg-cyan-900/20"><X className="w-5 h-5"/></button>
         </div>
 
         {/* Tabs Navigation */}
-        <div className="flex px-8 border-b border-cyan-400/20 shrink-0 overflow-x-auto bg-[#0f172a]">
+        <div className="flex px-8 border-b border-cyan-400/20 shrink-0 overflow-x-auto bg-slate-50 dark:bg-[#0f172a]">
           {[
             { id: 'OVERVIEW', label: t('camps_page.tabs.overview'), icon: Building2 },
             ...(!isCitizen ? [
@@ -1820,7 +1820,7 @@ function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: stri
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-8 bg-[#0f172a]">
+        <div className="flex-1 overflow-y-auto p-8 bg-slate-50 dark:bg-[#0f172a]">
           {activeTab === 'OVERVIEW' && (
             <div className="space-y-6">
               {isSurging && (
@@ -1833,7 +1833,7 @@ function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: stri
                 </div>
               )}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 space-y-6">
+                <div className="suraksha-card p-6 bg-white dark:bg-[#131f33] border border-cyan-400/20 space-y-6">
                   <div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">{t('camps_page.overview.current_occupancy')}</h4>
                     <div className="text-3xl font-black text-gray-800 dark:text-white/90">{camp.currentOccupancy} <span className="text-lg text-gray-400 dark:text-gray-500">/ {camp.totalCapacity}</span></div>
@@ -1844,18 +1844,18 @@ function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: stri
                   <div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">{t('camps_page.overview.transfers')}</h4>
                     <div className="flex gap-4">
-                      <div className="bg-[#0f172a] p-4 rounded-xl border border-cyan-400/20 flex-1 text-center">
+                      <div className="bg-slate-100 dark:bg-[#0f172a] p-4 rounded-xl border border-slate-200 dark:border-cyan-400/20 flex-1 text-center">
                         <div className="text-2xl font-black text-blue-600">{camp.transfersIn?.length || 0}</div>
                         <div className="text-[9px] uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.overview.pending_inbound')}</div>
                       </div>
-                      <div className="bg-[#0f172a] p-4 rounded-xl border border-cyan-400/20 flex-1 text-center">
+                      <div className="bg-slate-100 dark:bg-[#0f172a] p-4 rounded-xl border border-slate-200 dark:border-cyan-400/20 flex-1 text-center">
                         <div className="text-2xl font-black text-orange-600">{camp.transfersOut?.length || 0}</div>
                         <div className="text-[9px] uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.overview.pending_outbound')}</div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 overflow-hidden h-64 lg:h-auto relative min-h-[300px]">
+                <div className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 overflow-hidden h-64 lg:h-auto relative min-h-[300px]">
                   {camp.latitude && camp.longitude ? (
                     <MapContainer center={[camp.latitude, camp.longitude]} zoom={15} style={{ height: '100%', width: '100%' }} zoomControl={false}>
                       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
@@ -1911,7 +1911,7 @@ function ResidentsTab({ campId, residents, refresh }: any) {
 
   return (
     <div className="space-y-6">
-      <form onSubmit={handleAdd} className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
+      <form onSubmit={handleAdd} className="suraksha-card p-6 bg-white dark:bg-[#131f33] border border-cyan-400/20 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
          <div className="flex-1 w-full space-y-1">
            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.residents.full_name')}</label>
            <input required className="suraksha-input" value={name} onChange={e=>setName(e.target.value)} placeholder="Resident Name" />
@@ -1922,9 +1922,9 @@ function ResidentsTab({ campId, residents, refresh }: any) {
          </div>
          <button type="submit" className="suraksha-button h-12 px-8 w-full md:w-auto">{t('camps_page.residents.register_resident')}</button>
       </form>
-      <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 overflow-hidden shadow-sm">
+      <div className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 overflow-hidden shadow-sm">
         <table className="w-full text-sm">
-          <thead className="bg-[#0f172a]">
+          <thead className="bg-slate-50 dark:bg-[#0f172a]">
             <tr>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.residents.name')}</th>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.residents.nic')}</th>
@@ -1932,7 +1932,7 @@ function ResidentsTab({ campId, residents, refresh }: any) {
               <th className="p-4 text-right text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.residents.action')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-slate-100 dark:divide-white/5">
             {residents.map((r: any) => (
               <tr key={r.id}>
                 <td className="p-4 font-bold flex items-center gap-2">
@@ -1981,8 +1981,8 @@ function InventoryTab({ campId, inventory, refresh }: any) {
               <div className="text-[10px] uppercase font-bold tracking-widest opacity-60 mb-6">{t('camps_page.inventory.threshold')} {inv.threshold}</div>
               
               <div className="flex gap-2">
-                <button onClick={() => handleUpdate(type, (inv.quantity + 50).toString())} className="flex-1 bg-[#131f33] border border-cyan-400/20/50 hover:bg-[#131f33] border border-cyan-400/20 text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">+50</button>
-                <button onClick={() => handleUpdate(type, Math.max(0, inv.quantity - 10).toString())} className="flex-1 bg-[#131f33] border border-cyan-400/20/50 hover:bg-[#131f33] border border-cyan-400/20 text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">-10</button>
+                <button onClick={() => handleUpdate(type, (inv.quantity + 50).toString())} className="flex-1 bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 text-slate-700 dark:text-white text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">+50</button>
+                <button onClick={() => handleUpdate(type, Math.max(0, inv.quantity - 10).toString())} className="flex-1 bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 text-slate-700 dark:text-white text-xs font-black uppercase tracking-widest py-2 rounded-xl transition-colors shadow-sm">-10</button>
               </div>
            </div>
          )
@@ -2010,7 +2010,7 @@ function ScheduleTab({ campId, schedules, refresh }: any) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
        <div className="lg:col-span-1">
-         <form onSubmit={handleAdd} className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 space-y-4 shadow-sm">
+         <form onSubmit={handleAdd} className="suraksha-card p-6 bg-white dark:bg-[#131f33] border border-cyan-400/20 space-y-4 shadow-sm">
            <h3 className="font-black uppercase tracking-widest text-sm mb-4">{t('camps_page.schedule.add_entry')}</h3>
            <input required className="suraksha-input" placeholder="Activity Name" value={form.activityName} onChange={e=>setForm({...form, activityName: e.target.value})} />
            <div className="flex gap-2">
@@ -2027,9 +2027,9 @@ function ScheduleTab({ campId, schedules, refresh }: any) {
          </form>
        </div>
        <div className="lg:col-span-2">
-         <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 shadow-sm p-6 space-y-4">
+         <div className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 shadow-sm p-6 space-y-4">
            {schedules.map((s: any) => (
-             <div key={s.id} className="flex items-center justify-between p-4 bg-[#0f172a] border border-cyan-400/20 rounded-2xl">
+             <div key={s.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 rounded-2xl">
                <div className="flex items-center gap-4">
                  <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-black text-xs">{s.startTime}</div>
                  <div>
@@ -2065,7 +2065,7 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
 
   return (
     <div className="space-y-6">
-       <form onSubmit={handleAdd} className="suraksha-card p-6 bg-[#131f33] border border-cyan-400/20 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
+       <form onSubmit={handleAdd} className="suraksha-card p-6 bg-white dark:bg-[#131f33] border border-cyan-400/20 flex flex-col md:flex-row items-end gap-4 shadow-sm border-blue-100">
          <div className="flex-1 w-full space-y-1">
            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.referrals.patient_name')}</label>
            <input required className="suraksha-input" value={form.patientName} onChange={e=>setForm({...form, patientName: e.target.value})} placeholder="Name" />
@@ -2086,9 +2086,9 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
          <button type="submit" className="suraksha-button h-12 px-8 w-full md:w-auto">{t('camps_page.referrals.log_referral')}</button>
       </form>
 
-      <div className="suraksha-card bg-[#131f33] border border-cyan-400/20 overflow-hidden shadow-sm">
+      <div className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 overflow-hidden shadow-sm">
         <table className="w-full text-sm">
-          <thead className="bg-[#0f172a]">
+          <thead className="bg-slate-50 dark:bg-[#0f172a]">
             <tr>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.referrals.patient')}</th>
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.referrals.hospital')}</th>
@@ -2096,7 +2096,7 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
               <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.referrals.status')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-slate-100 dark:divide-white/5">
             {referrals.map((r: any) => (
               <tr key={r.id}>
                 <td className="p-4 font-bold">{r.patientName}</td>
@@ -2106,7 +2106,7 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
                 </td>
                 <td className="p-4">
                    <select 
-                     className="text-xs font-bold bg-[#0f172a] border border-cyan-400/20 text-cyan-400 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-400/50"
+                     className="text-xs font-bold bg-slate-100 dark:bg-[#0f172a] border border-slate-300 dark:border-cyan-400/20 text-slate-700 dark:text-cyan-400 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-400/50"
                      value={r.status}
                      onChange={(e) => handleUpdate(r.id, e.target.value)}
                    >
@@ -2161,7 +2161,7 @@ function TransferModal({ fromCamp, onClose, refresh }: any) {
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
-      <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-md rounded-[1.5rem] p-8 shadow-2xl">
+      <div className="bg-white dark:bg-[#131f33] border border-cyan-400/20 w-full max-w-md rounded-[1.5rem] p-8 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
            <h3 className="text-xl font-black text-gray-800 dark:text-white/90 flex items-center gap-2"><ArrowRightLeft className="w-5 h-5"/> {t('camps_page.transfer.title')}</h3>
            <button onClick={onClose}><X className="w-5 h-5 text-gray-400 dark:text-gray-500"/></button>
@@ -2181,7 +2181,7 @@ function TransferModal({ fromCamp, onClose, refresh }: any) {
              <input required type="number" max={fromCamp.currentOccupancy} className="suraksha-input" value={peopleCount} onChange={e=>setPeopleCount(e.target.value)} placeholder="0" />
            </div>
            <div className="pt-4 flex gap-4">
-             <button type="button" onClick={onClose} className="flex-1 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 hover:bg-cyan-900/20 rounded-xl py-3 font-bold text-sm transition-colors">{t('camps_page.transfer.cancel')}</button>
+             <button type="button" onClick={onClose} className="flex-1 bg-slate-100 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 text-slate-600 dark:text-cyan-400/70 hover:bg-slate-200 dark:hover:bg-cyan-900/20 rounded-xl py-3 font-bold text-sm transition-colors">{t('camps_page.transfer.cancel')}</button>
              <button type="submit" disabled={loading || !toCampId} className="flex-1 bg-red-600 text-white rounded-xl py-3 font-bold text-sm">{t('camps_page.transfer.submit')}</button>
            </div>
         </form>

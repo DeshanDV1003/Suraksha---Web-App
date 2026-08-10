@@ -358,15 +358,15 @@ export default function DashboardPage() {
         </div>
 
         {/* Predictive Threat Forecast Widget (HIGH) */}
-        <div className="suraksha-card p-8 bg-gradient-to-r from-[#1e293b] to-[#334155] text-white">
+        <div className="suraksha-card p-8 bg-gradient-to-r from-slate-100 to-slate-200 dark:from-[#1e293b] dark:to-[#334155] text-slate-800 dark:text-white">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-500/20 rounded-lg">
-                <ShieldAlert className="w-6 h-6 text-blue-400" />
+                <ShieldAlert className="w-6 h-6 text-blue-500 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">Predictive Threat Forecast</h3>
-                <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold">AI-powered 72h risk analysis based on meteorological & historical data</p>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Predictive Threat Forecast</h3>
+                <p className="text-slate-500 dark:text-gray-400 text-xs font-semibold">AI-powered 72h risk analysis based on meteorological & historical data</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -374,33 +374,33 @@ export default function DashboardPage() {
                 <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
               </span>
-              <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">Live Model Active</span>
+              <span className="text-xs font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider">Live Model Active</span>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {threatForecasts.map((forecast, i) => (
-              <div key={i} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-5 rounded-2xl">
+              <div key={i} className="bg-white/70 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 p-5 rounded-2xl">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="text-sm font-extrabold text-white">{forecast.district}</span>
+                  <span className="text-sm font-extrabold text-slate-800 dark:text-white">{forecast.district}</span>
                   <span className={cn(
                     "text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-wider",
-                    forecast.severity === 'CRITICAL' ? "bg-red-500/20 text-red-400" :
-                    forecast.severity === 'HIGH' ? "bg-orange-500/20 text-orange-400" :
-                    "bg-yellow-500/20 text-yellow-400"
+                    forecast.severity === 'CRITICAL' ? "bg-red-500/20 text-red-500 dark:text-red-400" :
+                    forecast.severity === 'HIGH' ? "bg-orange-500/20 text-orange-500 dark:text-orange-400" :
+                    "bg-yellow-500/20 text-yellow-600 dark:text-yellow-400"
                   )}>{forecast.severity}</span>
                 </div>
-                <div className="text-xl font-bold mb-1 flex items-center gap-2">
-                  <CloudLightning className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                <div className="text-xl font-bold mb-1 flex items-center gap-2 text-slate-700 dark:text-white">
+                  <CloudLightning className="w-5 h-5 text-slate-400 dark:text-gray-500" />
                   {forecast.threatType}
                 </div>
-                <div className="flex items-center justify-between mt-4 text-xs font-semibold text-gray-400 dark:text-gray-500">
+                <div className="flex items-center justify-between mt-4 text-xs font-semibold text-slate-500 dark:text-gray-400">
                   <span>{Math.round(forecast.confidence * 100)}% Conf.</span>
                   <span>{formatDistanceToNow(new Date(forecast.forecastTime))}</span>
                 </div>
-                <div className="w-full bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
-                  <div 
-                    className={cn("h-full", 
+                <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+                  <div
+                    className={cn("h-full",
                       forecast.severity === 'CRITICAL' ? "bg-red-500" :
                       forecast.severity === 'HIGH' ? "bg-orange-500" :
                       "bg-yellow-500")}
@@ -410,7 +410,7 @@ export default function DashboardPage() {
               </div>
             ))}
             {threatForecasts.length === 0 && (
-              <div className="col-span-full py-8 text-center text-gray-400 dark:text-gray-500 text-sm font-semibold">
+              <div className="col-span-full py-8 text-center text-slate-400 dark:text-gray-500 text-sm font-semibold">
                 Loading forecast models...
               </div>
             )}

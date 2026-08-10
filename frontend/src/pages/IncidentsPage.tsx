@@ -163,13 +163,13 @@ export default function IncidentsPage() {
         </div>
 
         {/* Filters */}
-        <div className="suraksha-card p-6 flex flex-wrap gap-4 items-center bg-[#131f33] border border-cyan-400/10">
+        <div className="suraksha-card p-6 flex flex-wrap gap-4 items-center bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/10">
           <div className="flex gap-4">
             <div className="relative group">
               <select
                 value={severityFilter}
                 onChange={(e) => setSeverityFilter(e.target.value)}
-                className="bg-[#0f172a] border border-cyan-400/20 rounded-xl px-5 py-3 text-[11px] font-black appearance-none focus:outline-none focus:ring-2 focus:ring-[#0061ff]/10 cursor-pointer min-w-[150px] text-slate-100 uppercase tracking-widest"
+                className="bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 rounded-xl px-5 py-3 text-[11px] font-black appearance-none focus:outline-none focus:ring-2 focus:ring-[#0061ff]/10 cursor-pointer min-w-[150px] text-slate-800 dark:text-slate-100 uppercase tracking-widest"
               >
                 {severities.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
@@ -179,7 +179,7 @@ export default function IncidentsPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-[#0f172a] border border-cyan-400/20 rounded-xl px-5 py-3 text-[11px] font-black appearance-none focus:outline-none focus:ring-2 focus:ring-[#0061ff]/10 cursor-pointer min-w-[150px] text-slate-100 uppercase tracking-widest"
+                className="bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 rounded-xl px-5 py-3 text-[11px] font-black appearance-none focus:outline-none focus:ring-2 focus:ring-[#0061ff]/10 cursor-pointer min-w-[150px] text-slate-800 dark:text-slate-100 uppercase tracking-widest"
               >
                 {statuses.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
@@ -190,7 +190,7 @@ export default function IncidentsPage() {
                 onClick={() => setShowOnlyMine(!showOnlyMine)}
                 className={cn(
                   "px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border",
-                  showOnlyMine ? "bg-cyan-500 text-white border-cyan-500" : "bg-[#131f33] border border-cyan-400/20 text-slate-400 border-cyan-400/20 hover:bg-[#0f172a]"
+                  showOnlyMine ? "bg-cyan-500 text-white border-cyan-500" : "bg-slate-50 dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#0f172a]"
                 )}
               >
                 {showOnlyMine ? 'Showing My Reports' : 'Show All Reports'}
@@ -209,21 +209,21 @@ export default function IncidentsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-[#131f33] border border-cyan-400/10 overflow-hidden">
+        <div className="rounded-2xl bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/10 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-cyan-400/10 text-slate-400 border-b border-cyan-400/10">
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('incidents.tracker_id')}</th>
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('incidents.details')}</th>
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.priority')}</th>
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.review_status')}</th>
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">Type</th>
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">{t('incidents.age')}</th>
-                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right">{t('incidents.operations')}</th>
+                <tr className="border-b border-slate-200 dark:border-cyan-400/10 bg-slate-50 dark:bg-white/[0.02]">
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{t('incidents.tracker_id')}</th>
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{t('incidents.details')}</th>
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 text-center">{t('incidents.priority')}</th>
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 text-center">{t('incidents.review_status')}</th>
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 text-center">Type</th>
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 text-center">{t('incidents.age')}</th>
+                  <th className="px-4 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 text-right">{t('incidents.operations')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-cyan-400/5 font-bold">
+              <tbody className="divide-y divide-slate-100 dark:divide-cyan-400/5 font-bold">
                 {loading ? (
                   <tr>
                     <td colSpan={7} className="px-8 py-20 text-center">
@@ -250,8 +250,8 @@ export default function IncidentsPage() {
                     const duplicate = serverDup?.peer ?? null;
 
                     return (
-                      <tr key={incident.id} className={cn("hover:bg-cyan-500/5 transition-all group border-l-4 border-b border-cyan-400/5", isSlaBreached ? "bg-red-500/5 border-l-red-500 hover:bg-red-500/10" : "border-l-transparent hover:border-l-cyan-400")}>
-                        <td className="px-4 py-6 text-[11px] text-slate-400 uppercase tracking-widest font-black">
+                      <tr key={incident.id} className={cn("hover:bg-slate-50 dark:hover:bg-cyan-500/5 transition-all group border-l-4 border-b border-slate-100 dark:border-cyan-400/5", isSlaBreached ? "bg-red-50 dark:bg-red-500/5 border-l-red-500 hover:bg-red-100 dark:hover:bg-red-500/10" : "border-l-transparent hover:border-l-cyan-400")}>
+                        <td className="px-4 py-6 text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black">
                           #DM-{incident.id.slice(0, 6)}
                           {isSlaBreached && (
                             <div className="flex items-center gap-1 text-red-600 mt-1 animate-pulse">
@@ -266,12 +266,12 @@ export default function IncidentsPage() {
                           )}
                         </td>
                         <td className="px-4 py-6">
-                          <div className="text-base text-slate-100 font-black group-hover:text-brand-500 transition-colors flex items-center gap-2">
+                          <div className="text-base text-slate-800 dark:text-slate-100 font-black group-hover:text-brand-500 transition-colors flex items-center gap-2">
                             {incident.title}
                             {incident.severity === 'CRITICAL' && <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />}
                           </div>
-                          <div className="text-[12px] text-slate-400 mt-1 font-bold flex items-center gap-1.5 leading-none">
-                            <MapPin className="w-3 h-3 text-slate-300" />
+                          <div className="text-[12px] text-slate-500 dark:text-slate-400 mt-1 font-bold flex items-center gap-1.5 leading-none">
+                            <MapPin className="w-3 h-3 text-slate-400 dark:text-slate-300" />
                             {incident.location}
                           </div>
                         </td>
@@ -317,7 +317,7 @@ export default function IncidentsPage() {
                             <Activity className="w-3 h-3" /> {incident.category}
                           </button>
                         </td>
-                        <td className="px-4 py-6 text-center text-[10px] font-black text-slate-400 whitespace-nowrap uppercase tracking-widest">
+                        <td className="px-4 py-6 text-center text-[10px] font-black text-slate-500 dark:text-slate-400 whitespace-nowrap uppercase tracking-widest">
                           {formatDistanceToNow(new Date(incident.createdAt))}
                         </td>
                         <td className="px-4 py-6 text-right">
@@ -342,7 +342,7 @@ export default function IncidentsPage() {
                             )}
                             <button
                               onClick={() => { setSelectedIncident(incident); setIsDetailsModalOpen(true); }}
-                              className="w-10 h-10 rounded-xl bg-[#0f172a] flex items-center justify-center text-slate-400 hover:bg-[#131f33] border border-cyan-400/20 hover:text-brand-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all border border-transparent hover:border-cyan-400/20"
+                              className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-[#0f172a] flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 hover:text-brand-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all"
                             >
                               <Eye className="w-5 h-5" />
                             </button>
@@ -404,14 +404,14 @@ export default function IncidentsPage() {
         {mergeCandidate && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setMergeCandidate(null)} />
-            <div className="relative w-full max-w-md bg-[#131f33] border border-cyan-400/20 rounded-[2.5rem] shadow-2xl overflow-hidden p-8 border border-cyan-400/20">
-              <div className="flex items-center gap-4 border-b border-cyan-400/20 pb-4 mb-6">
+            <div className="relative w-full max-w-md bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 rounded-[2.5rem] shadow-2xl overflow-hidden p-8">
+              <div className="flex items-center gap-4 border-b border-slate-200 dark:border-cyan-400/20 pb-4 mb-6">
                 <div className="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500">
                   <GitMerge className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-slate-100">Merge Incidents</h3>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Possible Duplicate Detected</p>
+                  <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">Merge Incidents</h3>
+                  <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Possible Duplicate Detected</p>
                 </div>
               </div>
               {/* Similarity score bar */}
@@ -421,7 +421,7 @@ export default function IncidentsPage() {
                     <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest">Similarity Score</span>
                     <span className="text-lg font-black text-amber-400">{mergeCandidate.link.score}%</span>
                   </div>
-                  <div className="w-full bg-slate-700/50 rounded-full h-1.5">
+                  <div className="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-1.5">
                     <div className="bg-amber-400 h-1.5 rounded-full transition-all" style={{ width: `${mergeCandidate.link.score}%` }} />
                   </div>
                   {mergeCandidate.link.reasons?.length > 0 && (
@@ -437,9 +437,9 @@ export default function IncidentsPage() {
                 </div>
               )}
               <div className="space-y-4 mb-8">
-                <div className="p-4 bg-[#0f172a] rounded-2xl border border-cyan-400/20">
-                  <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Source (Will be deleted)</div>
-                  <div className="font-bold text-slate-100">{mergeCandidate.source.title}</div>
+                <div className="p-4 bg-slate-50 dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-cyan-400/20">
+                  <div className="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Source (Will be deleted)</div>
+                  <div className="font-bold text-slate-800 dark:text-slate-100">{mergeCandidate.source.title}</div>
                 </div>
                 <div className="flex justify-center"><LucideChevronDown className="w-6 h-6 text-slate-300" /></div>
                 <div className="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20">
@@ -448,7 +448,7 @@ export default function IncidentsPage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <button onClick={() => setMergeCandidate(null)} className="flex-1 px-6 py-4 rounded-2xl bg-[#0f172a] text-slate-300 font-bold text-xs uppercase tracking-widest hover:bg-cyan-400/20 transition-colors">Cancel</button>
+                <button onClick={() => setMergeCandidate(null)} className="flex-1 px-6 py-4 rounded-2xl bg-slate-100 dark:bg-[#0f172a] text-slate-600 dark:text-slate-300 font-bold text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-cyan-400/20 transition-colors">Cancel</button>
                 <button onClick={() => confirmMerge(mergeCandidate.source.id, mergeCandidate.target.id, mergeCandidate.link?.id)} className="flex-1 px-6 py-4 rounded-2xl bg-amber-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-amber-600 shadow-lg shadow-amber-500/25 transition-all">Merge Records</button>
               </div>
             </div>
@@ -459,16 +459,16 @@ export default function IncidentsPage() {
         {incidentToDelete && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setIncidentToDelete(null)} />
-            <div className="relative w-full max-w-sm bg-[#131f33] border border-cyan-400/20 rounded-[2.5rem] shadow-2xl overflow-hidden p-8 text-center border border-cyan-400/20">
+            <div className="relative w-full max-w-sm bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 rounded-[2.5rem] shadow-2xl overflow-hidden p-8 text-center">
               <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Trash2 className="w-8 h-8 text-red-500" />
               </div>
-              <h3 className="text-2xl font-black text-slate-800 mb-2">Delete Report?</h3>
-              <p className="text-sm font-bold text-slate-400 mb-8 px-2">
+              <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100 mb-2">Delete Report?</h3>
+              <p className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-8 px-2">
                 This action cannot be undone. This incident report will be permanently removed from the system.
               </p>
               <div className="flex gap-4">
-                <button onClick={() => setIncidentToDelete(null)} className="flex-1 px-6 py-4 rounded-2xl bg-[#0f172a] text-slate-300 font-bold text-xs uppercase tracking-widest hover:bg-cyan-400/20 transition-colors">Cancel</button>
+                <button onClick={() => setIncidentToDelete(null)} className="flex-1 px-6 py-4 rounded-2xl bg-slate-100 dark:bg-[#0f172a] text-slate-600 dark:text-slate-300 font-bold text-xs uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-cyan-400/20 transition-colors">Cancel</button>
                 <button onClick={confirmDelete} className="flex-1 px-6 py-4 rounded-2xl bg-red-500 text-white font-bold text-xs uppercase tracking-widest hover:bg-red-600 shadow-lg shadow-red-500/25 transition-all">Delete</button>
               </div>
             </div>
@@ -502,18 +502,18 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="suraksha-card w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar bg-[#131f33] border border-cyan-400/20 p-8 sm:p-10 space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-8 duration-500 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-slate-50 pb-6 shrink-0">
+      <div className="suraksha-card w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 p-8 sm:p-10 space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-8 duration-500 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-6 shrink-0">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-brand-500">
               <Shield className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-slate-100">{t('incidents.modals.new_directive')}</h2>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-0.5 italic">Emergency Resource Protocol #SR-99</p>
+              <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">{t('incidents.modals.new_directive')}</h2>
+              <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5 italic">Emergency Resource Protocol #SR-99</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2.5 hover:bg-[#0f172a] rounded-xl transition-colors text-slate-300 hover:text-slate-300">
+          <button onClick={onClose} className="p-2.5 hover:bg-slate-100 dark:hover:bg-[#0f172a] rounded-xl transition-colors text-slate-500 dark:text-slate-300">
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -521,14 +521,14 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-x-6 gap-y-5">
             <div className="col-span-2 space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.directive_title')}</label>
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.directive_title')}</label>
               <input required className="suraksha-input" placeholder="Flood Alert: Region 7 Sector B" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
             </div>
             <div className="col-span-2 space-y-1.5">
               <IncidentLocationPicker value={{ address: formData.location, latitude: formData.latitude, longitude: formData.longitude }} onChange={(loc) => { setFormData(prev => ({ ...prev, location: loc.address, latitude: loc.latitude, longitude: loc.longitude })); }} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.category')}</label>
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.category')}</label>
               <div className="relative">
                 <select className="suraksha-input appearance-none cursor-pointer pr-10" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
                   <option value="FLOOD">Flood response</option>
@@ -541,7 +541,7 @@ function CreateIncidentModal({ onClose, onSuccess }: any) {
               </div>
             </div>
             <div className="col-span-2 space-y-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.briefing')}</label>
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1 italic">{t('incidents.modals.briefing')}</label>
               <textarea required className="suraksha-input min-h-[120px] py-4" placeholder="Provide detailed description of the situation, required resources, and population density at risk..." value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}></textarea>
             </div>
           </div>
@@ -670,31 +670,31 @@ function IncidentDetailsModal({ incident, onClose }: any) {
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="suraksha-card w-full max-w-5xl bg-[#131f33] border border-cyan-400/20 p-0 overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl rounded-[3rem]">
+      <div className="suraksha-card w-full max-w-5xl bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 p-0 overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl rounded-[3rem]">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full min-h-[600px] max-h-[90vh]">
           {/* Info Side */}
           <div className="p-8 md:p-10 space-y-8 flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest">Incident Profile #{incident.id.slice(0, 8)}</span>
-              <button onClick={onClose} className="p-2 hover:bg-[#0f172a] rounded-xl md:hidden"><X className="w-6 h-6" /></button>
+              <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-[#0f172a] rounded-xl md:hidden"><X className="w-6 h-6" /></button>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-3xl font-black text-slate-100 leading-[1.1]">{incident.title}</h2>
-              <div className="flex items-center gap-2 text-slate-400 font-bold">
+              <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 leading-[1.1]">{incident.title}</h2>
+              <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-bold">
                 <MapPin className="w-5 h-5 text-brand-500" /> {incident.location}
               </div>
             </div>
 
             <div className="flex items-center gap-6">
               <div className="space-y-1">
-                <div className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em]">Priority Matrix</div>
+                <div className="text-[9px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em]">Priority Matrix</div>
                 <div className={cn("font-black text-lg uppercase", incident.severity === 'CRITICAL' ? 'text-red-600' : 'text-orange-500')}>{incident.severity}</div>
               </div>
               <div className="w-px h-10 bg-gray-100 dark:bg-gray-800" />
               <div className="space-y-1">
-                <div className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em]">Response Status</div>
-                <div className="font-black text-slate-100 text-lg uppercase">{incident.status}</div>
+                <div className="text-[9px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em]">Response Status</div>
+                <div className="font-black text-slate-800 dark:text-slate-100 text-lg uppercase">{incident.status}</div>
               </div>
             </div>
 
@@ -708,22 +708,22 @@ function IncidentDetailsModal({ incident, onClose }: any) {
                 <p className="text-sm font-bold text-indigo-700 mb-4">{aiRecommendation}</p>
                 <div className="flex gap-2">
                   <button className="flex-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-indigo-700 transition-colors">One-Click Dispatch</button>
-                  <button className="px-4 bg-[#131f33] border border-cyan-400/20 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-50 transition-colors border border-indigo-200">Modify</button>
+                  <button className="px-4 bg-slate-100 dark:bg-[#131f33] border border-indigo-200 dark:border-cyan-400/20 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-50 transition-colors">Modify</button>
                 </div>
               </div>
             )}
 
             <div className="space-y-3 flex-1">
-              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{t('incidents.modals.briefing')}</div>
-              <p className="text-slate-300 leading-relaxed font-bold text-sm bg-[#0f172a] p-6 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700">
+              <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest italic">{t('incidents.modals.briefing')}</div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-bold text-sm bg-slate-50 dark:bg-[#0f172a] p-6 rounded-3xl border border-dashed border-slate-200 dark:border-gray-700">
                 {incident.description || 'No detailed briefing provided for this incident record. Please coordinate with field officers for live updates.'}
               </p>
             </div>
           </div>
 
           {/* Activity / Uploads Side */}
-          <div className="relative bg-[#0f172a] border-l border-cyan-400/20 p-8 md:p-10 flex flex-col overflow-y-auto">
-            <button onClick={onClose} className="absolute top-8 right-8 p-3 bg-[#131f33] border border-cyan-400/20 border border-cyan-400/20 rounded-2xl shadow-sm hover:bg-[#0f172a] transition-all text-slate-400 hidden md:block z-10"><X className="w-5 h-5" /></button>
+          <div className="relative bg-slate-50 dark:bg-[#0f172a] border-l border-slate-200 dark:border-cyan-400/20 p-8 md:p-10 flex flex-col overflow-y-auto">
+            <button onClick={onClose} className="absolute top-8 right-8 p-3 bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 rounded-2xl shadow-sm hover:bg-slate-100 dark:hover:bg-[#0f172a] transition-all text-slate-500 dark:text-slate-400 hidden md:block z-10"><X className="w-5 h-5" /></button>
 
             {/* Timeline Audit Log */}
             <div className="mb-10">
@@ -748,12 +748,12 @@ function IncidentDetailsModal({ incident, onClose }: any) {
             {/* Field Photo Upload */}
             <div>
               <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2 mb-4"><Upload className="w-4 h-4 text-emerald-500" /> Field Evidence</h3>
-              <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl p-8 text-center hover:bg-[#131f33] border border-cyan-400/20 transition-colors cursor-pointer group">
-                <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <div className="border-2 border-dashed border-slate-200 dark:border-gray-700 rounded-3xl p-8 text-center hover:bg-slate-100 dark:hover:bg-[#131f33] transition-colors cursor-pointer group">
+                <div className="w-12 h-12 bg-slate-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <Upload className="w-5 h-5 text-slate-400" />
                 </div>
-                <div className="text-xs font-black text-slate-300 uppercase tracking-widest mb-1">Drag & Drop Photos</div>
-                <div className="text-[10px] font-bold text-slate-400">AI will auto-tag uploaded evidence</div>
+                <div className="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-1">Drag & Drop Photos</div>
+                <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400">AI will auto-tag uploaded evidence</div>
               </div>
 
               {/* Mock Uploaded Photos */}
@@ -788,29 +788,29 @@ function AnalyticsDrillDownModal({ category, onClose }: { category: string, onCl
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
-      <div className="relative w-full max-w-3xl bg-[#131f33] border border-cyan-400/20 rounded-[2.5rem] shadow-2xl p-8 border border-cyan-400/20">
+      <div className="relative w-full max-w-3xl bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 rounded-[2.5rem] shadow-2xl p-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-black text-slate-800 flex items-center gap-3">
+            <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-3">
               <Activity className="w-6 h-6 text-indigo-500" /> {category} Analytics
             </h2>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Historical Frequency & Resource Drill-Down</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-[#0f172a] rounded-xl transition-colors text-slate-400"><X className="w-6 h-6" /></button>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-[#0f172a] rounded-xl transition-colors text-slate-500 dark:text-slate-400"><X className="w-6 h-6" /></button>
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-[#0f172a] p-5 rounded-3xl border border-cyan-400/20">
-            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Avg Resolution Time</div>
-            <div className="text-2xl font-black text-slate-800">4.2 <span className="text-sm text-slate-400">hrs</span></div>
+          <div className="bg-slate-50 dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200 dark:border-cyan-400/20">
+            <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Avg Resolution Time</div>
+            <div className="text-2xl font-black text-slate-800 dark:text-slate-100">4.2 <span className="text-sm text-slate-400">hrs</span></div>
           </div>
-          <div className="bg-[#0f172a] p-5 rounded-3xl border border-cyan-400/20">
-            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Common Resource</div>
+          <div className="bg-slate-50 dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200 dark:border-cyan-400/20">
+            <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Common Resource</div>
             <div className="text-lg font-black text-indigo-600 mt-1">Rescue Boats</div>
           </div>
-          <div className="bg-[#0f172a] p-5 rounded-3xl border border-cyan-400/20">
-            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total This Month</div>
-            <div className="text-2xl font-black text-slate-800">142</div>
+          <div className="bg-slate-50 dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200 dark:border-cyan-400/20">
+            <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Total This Month</div>
+            <div className="text-2xl font-black text-slate-800 dark:text-slate-100">142</div>
           </div>
         </div>
 

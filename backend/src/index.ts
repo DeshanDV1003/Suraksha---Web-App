@@ -37,6 +37,8 @@ import rescueRoutes from './routes/rescueRoutes';
 import chatbotRoutes from './routes/chatbotRoutes';
 import supplyRequestRoutes from './routes/supplyRequestRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
+import { setupRainfallWeatherCron } from './services/rainfallWeatherCron';
+import weatherRoutes from './routes/weatherRoutes';
 import { setupBackupCron, runBackup } from './services/backupService';
 import { setIO } from './utils/socketInstance';
 
@@ -90,6 +92,7 @@ app.use('/api/safe-zones', safeZoneRoutes);
 app.use('/api/rescue', rescueRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/supply-requests', supplyRequestRoutes);
+app.use('/api/weather', weatherRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -133,6 +136,9 @@ waterNamespace.on('connection', (socket) => {
 
 // Start the water data fetch cron job
 setupWaterDataCron();
+
+// Start real rainfall weather cron (Open-Meteo, every 30 min, independent)
+setupRainfallWeatherCron();
 
 // Start daily DB backup cron (02:00 AM → D:\SurakshaBackups)
 setupBackupCron();

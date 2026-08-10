@@ -792,6 +792,13 @@ model RainfallReading {
   source            String
 }
 
+model RainfallAlertLog {
+  id          String   @id @default(uuid())
+  district    String   @unique
+  lastFiredAt DateTime
+  updatedAt   DateTime @updatedAt
+}
+
 model RiverWaterLevel {
   id                 String      @id @default(uuid())
   gaugeId            String

@@ -74,24 +74,24 @@ export default function PublicRequestPortal() {
     setError('')
   }
 
-  const inputClass = "w-full bg-[#0a1628] border border-white/10 text-white/90 placeholder-slate-600 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 outline-none transition-all"
+  const inputClass = "w-full bg-slate-50 dark:bg-[#0a1628] border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white/90 placeholder-slate-400 dark:placeholder-slate-600 p-4 rounded-xl font-medium focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 outline-none transition-all"
   const labelClass = "block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2"
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#0e1d36] flex items-center justify-center p-4">
-        <div className="bg-[#131f33] border border-white/10 p-10 rounded-[2rem] shadow-2xl max-w-md w-full text-center">
+      <div className="min-h-screen bg-slate-100 dark:bg-[#0e1d36] flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 p-10 rounded-[2rem] shadow-2xl max-w-md w-full text-center">
           <div className="w-20 h-20 bg-emerald-500/15 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-black text-white/90 mb-2">{t('public_request_portal.request_received')}</h2>
-          <p className="text-slate-400 mb-6 text-sm leading-relaxed">
+          <h2 className="text-2xl font-black text-slate-800 dark:text-white/90 mb-2">{t('public_request_portal.request_received')}</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-6 text-sm leading-relaxed">
             {t('public_request_portal.signal_routed')}
           </p>
           {submittedId && (
-            <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 mb-6">
+            <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-5 py-4 mb-6">
               <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{t('public_request_portal.reference_number')}</p>
-              <p className="font-mono font-black text-cyan-400 text-sm break-all">{submittedId}</p>
+              <p className="font-mono font-black text-cyan-500 dark:text-cyan-400 text-sm break-all">{submittedId}</p>
               <p className="text-[10px] text-slate-500 mt-1">{t('public_request_portal.keep_reference')}</p>
             </div>
           )}
@@ -114,8 +114,8 @@ export default function PublicRequestPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e1d36] flex items-center justify-center p-4 font-sans">
-      <div className="bg-[#131f33] border border-white/10 p-8 rounded-[2rem] shadow-2xl max-w-md w-full">
+    <div className="min-h-screen bg-slate-100 dark:bg-[#0e1d36] flex items-center justify-center p-4 font-sans">
+      <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 p-8 rounded-[2rem] shadow-2xl max-w-md w-full">
 
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
@@ -123,8 +123,8 @@ export default function PublicRequestPortal() {
             <AlertTriangle className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-black text-white/90">{t('public_request_portal.request_help')}</h1>
-            <p className="text-sm text-slate-400 font-medium">{t('public_request_portal.portal_subtitle')}</p>
+            <h1 className="text-2xl font-black text-slate-800 dark:text-white/90">{t('public_request_portal.request_help')}</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t('public_request_portal.portal_subtitle')}</p>
           </div>
         </div>
 
@@ -178,7 +178,7 @@ export default function PublicRequestPortal() {
                 onClick={handleGetLocation}
                 disabled={gettingLocation}
                 title="Use current GPS location"
-                className="bg-white/8 border border-white/10 text-slate-300 p-4 rounded-xl hover:bg-white/15 transition-colors flex items-center justify-center disabled:opacity-50 shrink-0"
+                className="bg-slate-100 dark:bg-white/8 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-300 p-4 rounded-xl hover:bg-slate-200 dark:hover:bg-white/15 transition-colors flex items-center justify-center disabled:opacity-50 shrink-0"
               >
                 {gettingLocation
                   ? <Loader2 className="w-5 h-5 animate-spin" />

@@ -220,6 +220,7 @@ export default function MapPage() {
   const [volunteers, setVolunteers] = useState<any[]>([]);
   const [evacRoutes, setEvacRoutes] = useState<any>(null);
   const [assignmentArrows, setAssignmentArrows] = useState<any[]>([]);
+  const [districtRainfall, setDistrictRainfall] = useState<any[]>([]);
   const [isExportingRoute, setIsExportingRoute] = useState(false);
 
   const handleExportRoute = async () => {
@@ -299,6 +300,19 @@ export default function MapPage() {
     };
     fetchSafeZones();
     const interval = setInterval(fetchSafeZones, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Rainfall weather — fetches every 30 min, independent of other data
+  useEffect(() => {
+    const fetchRainfall = async () => {
+      try {
+        const res = await axios.get('http://localhost:3001/api/weather/districts');
+        setDistrictRainfall(res.data || []);
+      } catch { /* non-critical — silently skip if backend not ready */ }
+    };
+    fetchRainfall();
+    const interval = setInterval(fetchRainfall, 30 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -671,14 +685,36 @@ export default function MapPage() {
                 }} />
               )}
 
-              {layers.weatherProjections && (
-                 <Polygon positions={MOCK_CYCLONE_CONE} pathOptions={{ color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.15, weight: 1, dashArray: '5, 10' }}>
-                   <Popup className="font-sans">
-                     <div className="font-bold text-red-600 text-sm">⚠️ {t('map_page.cyclone_path_projection', 'Cyclone Path Projection')}</div>
-                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('map_page.cone_of_uncertainty', 'DMC Cone of Uncertainty (Next 72h)')}</div>
-                   </Popup>
-                 </Polygon>
-              )}
+              {layers.weatherProjections && districtRainfall.map((d: any) => {
+                const mm = d.rainfallMmPerHour ?? 0;
+                const risk = d.riskLevel ?? 'NORMAL';
+                if (risk === 'NORMAL') return null;
+                const color = risk === 'DANGER' ? '#dc2626' : risk === 'WARNING' ? '#ea580c' : '#d97706';
+                const opacity = risk === 'DANGER' ? 0.35 : risk === 'WARNING' ? 0.25 : 0.15;
+                const radius = risk === 'DANGER' ? 28000 : risk === 'WARNING' ? 22000 : 16000;
+                return (
+                  <Circle
+                    key={d.id}
+                    center={[d.latitude, d.longitude]}
+                    radius={radius}
+                    pathOptions={{ color, fillColor: color, fillOpacity: opacity, weight: 1.5 }}
+                  >
+                    <Popup className="suraksha-popup">
+                      <div className="font-sans p-1">
+                        <div className="font-black text-sm mb-1">🌧️ {d.district} District</div>
+                        <div className={`text-xs font-bold mb-1 ${risk === 'DANGER' ? 'text-red-600' : risk === 'WARNING' ? 'text-orange-500' : 'text-yellow-500'}`}>
+                          {risk} RISK
+                        </div>
+                        <div className="text-xs text-gray-600">{mm.toFixed(1)} mm/hr</div>
+                        <div className="text-xs text-gray-400">{d.cumulativeRain24h?.toFixed(1)} mm today</div>
+                        <div className="text-[10px] text-gray-400 mt-1">
+                          Updated {new Date(d.recordedAt).toLocaleTimeString()}
+                        </div>
+                      </div>
+                    </Popup>
+                  </Circle>
+                );
+              })}
 
               {layers.evacuationRoutes && evacRoutes && (
                  <>

@@ -140,7 +140,7 @@ export default function VolunteerPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex overflow-x-auto gap-2 bg-[#131f33] p-2 rounded-2xl shadow-sm border border-cyan-400/10">
+        <div className="flex overflow-x-auto gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-cyan-400/10">
           {[
             { id: 'duty', label: t('volunteer_page.tabs.field_duty'), icon: Navigation },
             { id: 'profile', label: t('volunteer_page.tabs.skills_matching'), icon: BookOpen },
@@ -154,7 +154,7 @@ export default function VolunteerPage() {
                 "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
                 activeTab === tab.id
                   ? "bg-brand-500 text-white shadow-md shadow-cyan-500/20"
-                  : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -173,7 +173,7 @@ export default function VolunteerPage() {
                     <Navigation className="w-10 h-10 text-green-400" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white/90">{t('volunteer_page.on_duty')}</h3>
+                    <h3 className="text-2xl font-black text-slate-800 dark:text-white/90">{t('volunteer_page.on_duty')}</h3>
                     <p className="text-slate-400 mt-2 text-sm">{t('volunteer_page.checked_in_at')} {new Date(activeCheckIn.checkInTime).toLocaleTimeString()}</p>
                   </div>
                   <button
@@ -186,11 +186,11 @@ export default function VolunteerPage() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto">
+                  <div className="w-24 h-24 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto">
                     <MapPin className="w-10 h-10 text-slate-500" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white/90">{t('volunteer_page.off_duty')}</h3>
+                    <h3 className="text-2xl font-black text-slate-800 dark:text-white/90">{t('volunteer_page.off_duty')}</h3>
                     <p className="text-slate-400 mt-2 text-sm">{t('volunteer_page.duty_prompt')}</p>
                   </div>
                   <button
@@ -205,13 +205,13 @@ export default function VolunteerPage() {
             </div>
 
             <div className="suraksha-card p-8 rounded-[1.5rem]">
-              <h3 className="text-xl font-black text-white/90 mb-4">{t('volunteer_page.check_in_history')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-4">{t('volunteer_page.check_in_history')}</h3>
               <div className="space-y-3">
                 {profile.checkIns?.length === 0 && <p className="text-slate-400 text-sm">{t('volunteer_page.no_duty_history')}</p>}
                 {profile.checkIns?.map((ci: any) => (
-                  <div key={ci.id} className="p-4 border border-white/10 rounded-xl flex justify-between items-center bg-white/5">
+                  <div key={ci.id} className="p-4 border border-slate-200 dark:border-white/10 rounded-xl flex justify-between items-center bg-slate-50 dark:bg-white/5">
                     <div>
-                      <p className="font-bold text-sm text-white/80">{new Date(ci.checkInTime).toLocaleDateString()}</p>
+                      <p className="font-bold text-sm text-slate-700 dark:text-white/80">{new Date(ci.checkInTime).toLocaleDateString()}</p>
                       <p className="text-xs text-slate-400 mt-1">
                         {new Date(ci.checkInTime).toLocaleTimeString()} — {ci.checkOutTime ? new Date(ci.checkOutTime).toLocaleTimeString() : t('volunteer_page.active_now')}
                       </p>
@@ -230,11 +230,11 @@ export default function VolunteerPage() {
         {activeTab === 'profile' && (
           <div className="grid md:grid-cols-2 gap-8">
             <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
-              <h3 className="text-xl font-black text-white/90 mb-6">{t('volunteer_page.my_skills')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-6">{t('volunteer_page.my_skills')}</h3>
               <div className="flex flex-wrap gap-2 mb-6">
                 {profile.skills?.length === 0 && <span className="text-slate-500 text-sm">{t('volunteer_page.no_skills')}</span>}
                 {profile.skills?.map((s: any) => (
-                  <span key={s.id} className="bg-white/8 border border-white/10 text-slate-200 font-bold px-3 py-1.5 rounded-lg text-sm">
+                  <span key={s.id} className="bg-slate-100 dark:bg-white/8 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 font-bold px-3 py-1.5 rounded-lg text-sm">
                     {s.skillName}
                   </span>
                 ))}
@@ -252,18 +252,18 @@ export default function VolunteerPage() {
             </div>
 
             <div className="suraksha-card p-8 rounded-[1.5rem]">
-              <h3 className="text-xl font-black text-white/90 mb-2">{t('volunteer_page.recommended_incidents')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-2">{t('volunteer_page.recommended_incidents')}</h3>
               <p className="text-slate-400 text-sm mb-6">{t('volunteer_page.auto_matched')}</p>
               <div className="space-y-4">
                 {incidents.length === 0 && (
-                  <p className="text-slate-400 text-sm text-center py-4 bg-white/5 rounded-xl">
+                  <p className="text-slate-400 text-sm text-center py-4 bg-slate-50 dark:bg-white/5 rounded-xl">
                     {t('volunteer_page.no_matches')}
                   </p>
                 )}
                 {incidents.map((inc: any) => (
-                  <div key={inc.id} className="p-4 border border-white/10 rounded-xl hover:bg-white/5 transition-all">
+                  <div key={inc.id} className="p-4 border border-slate-200 dark:border-white/10 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
                     <div className="flex justify-between items-start">
-                      <h4 className="font-bold text-white/90">{inc.title}</h4>
+                      <h4 className="font-bold text-slate-800 dark:text-white/90">{inc.title}</h4>
                       <span className="bg-emerald-500/15 text-emerald-400 font-black text-xs px-2 py-1 rounded whitespace-nowrap ml-2">{t('volunteer_page.score')} {inc.matchScore}</span>
                     </div>
                     <p className="text-xs text-slate-400 mt-2 line-clamp-2">{inc.description}</p>
@@ -282,7 +282,7 @@ export default function VolunteerPage() {
         {activeTab === 'training' && (
           <div className="grid md:grid-cols-2 gap-8">
             <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
-              <h3 className="text-xl font-black text-white/90 mb-6">{t('volunteer_page.log_certification')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-6">{t('volunteer_page.log_certification')}</h3>
               <form onSubmit={handleAddTraining} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase mb-1">{t('volunteer_page.course_name')}</label>
@@ -305,13 +305,13 @@ export default function VolunteerPage() {
               </form>
             </div>
             <div className="suraksha-card p-8 rounded-[1.5rem]">
-              <h3 className="text-xl font-black text-white/90 mb-6">{t('volunteer_page.my_certifications')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-6">{t('volunteer_page.my_certifications')}</h3>
               <div className="space-y-3">
                 {profile.trainings?.length === 0 && <p className="text-slate-400 text-sm">{t('volunteer_page.no_trainings')}</p>}
                 {profile.trainings?.map((tr: any) => (
-                  <div key={tr.id} className="p-4 border border-white/10 rounded-xl bg-white/5 flex items-center justify-between">
+                  <div key={tr.id} className="p-4 border border-slate-200 dark:border-white/10 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-between">
                     <div>
-                      <h4 className="font-bold text-white/80">{tr.trainingName}</h4>
+                      <h4 className="font-bold text-slate-700 dark:text-white/80">{tr.trainingName}</h4>
                       <p className="text-xs text-slate-400 mt-1">{t('volunteer_page.completed')} {new Date(tr.completedAt).toLocaleDateString()}</p>
                     </div>
                     <Award className="w-6 h-6 text-yellow-400 shrink-0" />
@@ -328,12 +328,12 @@ export default function VolunteerPage() {
             <div className="suraksha-card p-8 rounded-[1.5rem] h-fit">
               <div className="flex items-center gap-3 mb-6">
                 <HeartPulse className="w-8 h-8 text-rose-400" />
-                <h3 className="text-xl font-black text-white/90">{t('volunteer_page.daily_wellbeing')}</h3>
+                <h3 className="text-xl font-black text-slate-800 dark:text-white/90">{t('volunteer_page.daily_wellbeing')}</h3>
               </div>
               <p className="text-sm text-slate-400 mb-6">{t('volunteer_page.wellbeing_prompt')}</p>
               <form onSubmit={handleWellbeingSubmit} className="space-y-6">
                 <div>
-                  <label className="block font-bold text-white/80 mb-2">{t('volunteer_page.physical_condition')}</label>
+                  <label className="block font-bold text-slate-700 dark:text-white/80 mb-2">{t('volunteer_page.physical_condition')}</label>
                   <input
                     type="range" min="1" max="5"
                     className="w-full accent-rose-500"
@@ -342,7 +342,7 @@ export default function VolunteerPage() {
                   <div className="text-center font-black text-rose-400 mt-1">{wellbeingData.physicalRating} / 5</div>
                 </div>
                 <div>
-                  <label className="block font-bold text-white/80 mb-2">{t('volunteer_page.mental_state')}</label>
+                  <label className="block font-bold text-slate-700 dark:text-white/80 mb-2">{t('volunteer_page.mental_state')}</label>
                   <input
                     type="range" min="1" max="5"
                     className="w-full accent-blue-500"
@@ -366,18 +366,18 @@ export default function VolunteerPage() {
             </div>
 
             <div className="suraksha-card p-8 rounded-[1.5rem]">
-              <h3 className="text-xl font-black text-white/90 mb-4">{t('volunteer_page.past_wellbeing_logs')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-4">{t('volunteer_page.past_wellbeing_logs')}</h3>
               <div className="space-y-3">
                 {(!profile.wellbeingLogs || profile.wellbeingLogs.length === 0) && (
                   <p className="text-slate-400 text-sm">{t('volunteer_page.no_wellbeing_logs')}</p>
                 )}
                 {profile.wellbeingLogs?.map((log: any) => (
-                  <div key={log.id} className="p-4 border border-white/10 rounded-xl bg-white/5 flex items-center justify-between">
+                  <div key={log.id} className="p-4 border border-slate-200 dark:border-white/10 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-between">
                     <div>
-                      <p className="font-bold text-sm text-white/80">{new Date(log.recordedAt).toLocaleDateString()}</p>
+                      <p className="font-bold text-sm text-slate-700 dark:text-white/80">{new Date(log.recordedAt).toLocaleDateString()}</p>
                       <div className="flex gap-3 mt-1">
-                        <span className="text-xs font-bold text-slate-400">{t('volunteer_page.physical')}: <span className="text-white/70">{log.physicalRating}/5</span></span>
-                        <span className="text-xs font-bold text-slate-400">{t('volunteer_page.mental')}: <span className="text-white/70">{log.mentalRating}/5</span></span>
+                        <span className="text-xs font-bold text-slate-400">{t('volunteer_page.physical')}: <span className="text-slate-600 dark:text-white/70">{log.physicalRating}/5</span></span>
+                        <span className="text-xs font-bold text-slate-400">{t('volunteer_page.mental')}: <span className="text-slate-600 dark:text-white/70">{log.mentalRating}/5</span></span>
                       </div>
                     </div>
                     {log.distressFlag && (
@@ -411,7 +411,7 @@ export default function VolunteerPage() {
             </div>
 
             <div className="suraksha-card p-8 rounded-[1.5rem]">
-              <h3 className="text-xl font-black text-white/90 mb-6">{t('volunteer_page.earned_badges')}</h3>
+              <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-6">{t('volunteer_page.earned_badges')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {profile.badges?.length === 0 && (
                   <p className="text-slate-400 text-sm col-span-full">{t('volunteer_page.no_badges')}</p>
@@ -432,8 +432,8 @@ export default function VolunteerPage() {
           <div className={cn(
             "fixed bottom-8 right-8 z-[999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
             toast.type === 'success'
-              ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30"
-              : "bg-[#131f33] text-red-400 border border-red-500/30"
+              ? "bg-white dark:bg-[#131f33] text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-lg"
+              : "bg-white dark:bg-[#131f33] text-red-600 dark:text-red-400 border border-red-500/30 shadow-lg"
           )}>
             {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
             <span className="font-bold text-sm tracking-wide">{toast.message}</span>

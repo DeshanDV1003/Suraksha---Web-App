@@ -138,14 +138,14 @@ export const FamilySafetyPage = () => {
               </div>
               <div>
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{card.label}</p>
-                <p className="text-2xl font-extrabold text-white/90 mt-0.5">{loading ? '—' : card.value}</p>
+                <p className="text-2xl font-extrabold text-slate-800 dark:text-white/90 mt-0.5">{loading ? '—' : card.value}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Filter tabs */}
-        <div className="flex flex-wrap gap-2 bg-[#131f33] p-2 rounded-2xl border border-cyan-400/10">
+        <div className="flex flex-wrap gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl border border-slate-200 dark:border-cyan-400/10">
           {FILTERS.map(f => (
             <button
               key={f.key}
@@ -154,7 +154,7 @@ export const FamilySafetyPage = () => {
                 'px-5 py-2.5 rounded-xl font-bold text-sm transition-all',
                 filter === f.key
                   ? 'bg-brand-500 text-white shadow-md shadow-cyan-500/20'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                  : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200'
               )}
             >
               {f.label}
@@ -165,8 +165,8 @@ export const FamilySafetyPage = () => {
         {/* Table */}
         <div className="suraksha-card rounded-2xl overflow-hidden w-full min-w-0">
             {/* Table header */}
-            <div className="px-8 py-5 border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#0e1d36]">
-              <h2 className="text-lg font-black text-white/90">{t('family_safety_page.table_title')}</h2>
+            <div className="px-8 py-5 border-b border-slate-200 dark:border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50 dark:bg-[#0e1d36]">
+              <h2 className="text-lg font-black text-slate-800 dark:text-white/90">{t('family_safety_page.table_title')}</h2>
               <div className="relative w-full sm:w-64">
                 <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
@@ -181,7 +181,7 @@ export const FamilySafetyPage = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-[#0e1d36] border-b border-white/10 text-slate-500 text-[10px] uppercase tracking-widest font-black">
+                <thead className="bg-slate-50 dark:bg-[#0e1d36] border-b border-slate-200 dark:border-white/10 text-slate-500 text-[10px] uppercase tracking-widest font-black">
                   <tr>
                     <th className="px-5 py-4">{t('family_safety_page.citizen')}</th>
                     <th className="px-5 py-4">{t('family_safety_page.contact')}</th>
@@ -191,7 +191,7 @@ export const FamilySafetyPage = () => {
                     <th className="px-3 py-4"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                   {loading ? (
                     <tr>
                       <td colSpan={6} className="px-5 py-16 text-center text-slate-500 font-bold">{t('family_safety_page.loading')}</td>
@@ -212,11 +212,11 @@ export const FamilySafetyPage = () => {
                         onClick={() => setSelectedUser(isSelected ? null : user)}
                         className={cn(
                           'cursor-pointer transition-colors',
-                          isSelected ? 'bg-white/8' : 'hover:bg-white/5'
+                          isSelected ? 'bg-slate-100 dark:bg-white/8' : 'hover:bg-slate-50 dark:hover:bg-white/5'
                         )}
                       >
                         <td className="px-5 py-4">
-                          <span className="text-sm font-bold text-white/90 whitespace-nowrap">{user.name}</span>
+                          <span className="text-sm font-bold text-slate-800 dark:text-white/90 whitespace-nowrap">{user.name}</span>
                         </td>
                         <td className="px-5 py-4">
                           <span className="text-sm text-slate-400">{user.phone || '—'}</span>
@@ -237,7 +237,7 @@ export const FamilySafetyPage = () => {
                               {user.familyMembers.slice(0, 2).map((m: any) => (
                                 <div key={m.id} className="flex items-center gap-2 text-sm">
                                   <span className={cn('w-2 h-2 rounded-full shrink-0', m.status === 'SAFE' ? 'bg-green-400' : 'bg-red-400')} />
-                                  <span className="text-slate-300 font-semibold truncate max-w-[120px]">{m.name}</span>
+                                  <span className="text-slate-600 dark:text-slate-300 font-semibold truncate max-w-[120px]">{m.name}</span>
                                 </div>
                               ))}
                               {user.familyMembers.length > 2 && (
@@ -269,14 +269,14 @@ export const FamilySafetyPage = () => {
             onClick={() => setSelectedUser(null)}
           >
             <div
-              className="bg-[#131f33] border border-white/10 w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+              className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
               onClick={e => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="px-8 py-5 bg-[#0e1d36] border-b border-white/10 flex items-center justify-between">
+              <div className="px-8 py-5 bg-slate-100 dark:bg-[#0e1d36] border-b-2 border-slate-200 dark:border-white/10 flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-black text-white/90">{selectedUser.name}</h3>
-                  {selectedUser.phone && <p className="text-xs text-slate-400 mt-0.5">{selectedUser.phone}</p>}
+                  <h3 className="text-lg font-black text-slate-800 dark:text-white/90">{selectedUser.name}</h3>
+                  {selectedUser.phone && <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{selectedUser.phone}</p>}
                 </div>
                 <button onClick={() => setSelectedUser(null)} className="w-9 h-9 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-colors">
                   <X className="w-4 h-4" />
@@ -288,7 +288,7 @@ export const FamilySafetyPage = () => {
                 <div>
                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">{t('family_safety_page.primary_status')}</p>
                   {selectedUser.latestCheckIn ? (
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3">
+                    <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-4 space-y-3">
                       <div className="flex items-center gap-2">
                         {getStatusIcon(selectedUser.latestCheckIn.status)}
                         <span className={cn('text-xs font-black px-2.5 py-1 rounded-full uppercase border', getStatusBadge(selectedUser.latestCheckIn.status))}>
@@ -296,7 +296,7 @@ export const FamilySafetyPage = () => {
                         </span>
                       </div>
                       {selectedUser.latestCheckIn.message && (
-                        <p className="text-sm text-slate-300 italic">"{selectedUser.latestCheckIn.message}"</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-300 italic">"{selectedUser.latestCheckIn.message}"</p>
                       )}
                       {selectedUser.latestCheckIn.latitude && (
                         <div className="flex items-center gap-2 text-xs text-slate-400">
@@ -309,8 +309,8 @@ export const FamilySafetyPage = () => {
                       </p>
                     </div>
                   ) : (
-                    <div className="bg-white/5 border border-dashed border-white/10 rounded-xl p-4 text-center">
-                      <HelpCircle className="w-6 h-6 text-slate-600 mx-auto mb-1" />
+                    <div className="bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 rounded-xl p-4 text-center">
+                      <HelpCircle className="w-6 h-6 text-slate-400 dark:text-slate-600 mx-auto mb-1" />
                       <p className="text-sm text-slate-500 font-bold">{t('family_safety_page.no_checkin')}</p>
                     </div>
                   )}
@@ -329,7 +329,7 @@ export const FamilySafetyPage = () => {
                         <div key={m.id} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 space-y-2">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm font-bold text-white/90">{m.name}</p>
+                              <p className="text-sm font-bold text-slate-800 dark:text-white/90">{m.name}</p>
                               <p className="text-xs text-slate-500">{m.relation}{m.age ? ` · ${m.age}y` : ''}{m.phone ? ` · ${m.phone}` : ''}</p>
                             </div>
                             <div className="flex items-center gap-2">
@@ -353,11 +353,11 @@ export const FamilySafetyPage = () => {
                             </div>
                           </div>
                           {overridingMember === m.id && (
-                            <div className="bg-[#0e1d36] border border-cyan-400/15 rounded-xl p-3 space-y-2 mt-1">
+                            <div className="bg-slate-100 dark:bg-[#0e1d36] border border-slate-200 dark:border-cyan-400/15 rounded-xl p-3 space-y-2 mt-1">
                               <select
                                 value={overrideStatus}
                                 onChange={e => setOverrideStatus(e.target.value)}
-                                className="w-full bg-[#131f33] border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-cyan-500/50"
+                                className="suraksha-input w-full text-sm"
                               >
                                 {MEMBER_STATUSES.map(s => (
                                   <option key={s} value={s}>{s.replace('_', ' ')}</option>
@@ -368,7 +368,7 @@ export const FamilySafetyPage = () => {
                                 value={overrideNotes}
                                 onChange={e => setOverrideNotes(e.target.value)}
                                 placeholder="Admin notes (optional)"
-                                className="w-full bg-[#131f33] border border-white/10 text-white text-sm rounded-lg px-3 py-2 placeholder-slate-600 focus:outline-none focus:border-cyan-500/50"
+                                className="suraksha-input w-full text-sm"
                               />
                               <div className="flex gap-2">
                                 <button
@@ -415,9 +415,9 @@ export const FamilySafetyPage = () => {
       {toast && (
         <div className={cn(
           "fixed bottom-8 right-8 z-[9999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
-          toast.type === 'success' ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30" :
-          toast.type === 'error' ? "bg-[#131f33] text-red-400 border border-red-500/30" :
-          "bg-[#131f33] text-amber-400 border border-amber-500/30"
+          toast.type === 'success' ? "bg-white dark:bg-[#131f33] text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-lg" :
+          toast.type === 'error' ? "bg-white dark:bg-[#131f33] text-red-600 dark:text-red-400 border border-red-500/30 shadow-lg" :
+          "bg-white dark:bg-[#131f33] text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-lg"
         )}>
           <CheckCircle2 className="w-5 h-5" />
           <span className="font-bold text-sm">{toast.message}</span>

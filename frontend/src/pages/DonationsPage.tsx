@@ -89,7 +89,7 @@ export const DonationsPage = () => {
               </div>
               <div>
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{card.label}</p>
-                <p className="text-2xl font-extrabold text-white/90 mt-0.5">{card.value}</p>
+                <p className="text-2xl font-extrabold text-slate-800 dark:text-white/90 mt-0.5">{card.value}</p>
               </div>
             </div>
           ))}
@@ -97,12 +97,12 @@ export const DonationsPage = () => {
 
         {/* Table */}
         <div className="suraksha-card rounded-2xl overflow-hidden">
-          <div className="px-6 py-5 border-b border-white/10">
-            <h2 className="text-lg font-bold text-white/90">{t('donations_page.recent_donations')}</h2>
+          <div className="px-6 py-5 border-b border-slate-200 dark:border-white/10">
+            <h2 className="text-lg font-bold text-slate-800 dark:text-white/90">{t('donations_page.recent_donations')}</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-[#0e1d36] border-b border-white/10 text-slate-400 text-xs uppercase tracking-wider">
+              <thead className="bg-slate-50 dark:bg-[#0e1d36] border-b border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
                 <tr>
                   <th className="px-6 py-4 font-semibold">{t('donations_page.donor')}</th>
                   <th className="px-6 py-4 font-semibold">{t('donations_page.type')}</th>
@@ -113,7 +113,7 @@ export const DonationsPage = () => {
                   <th className="px-6 py-4 font-semibold text-right">{t('donations_page.actions')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                 {loading ? (
                   <tr>
                     <td colSpan={7} className="px-6 py-10 text-center text-slate-400">{t('donations_page.loading')}</td>
@@ -124,8 +124,8 @@ export const DonationsPage = () => {
                   </tr>
                 ) : (
                   donations.map((d) => (
-                    <tr key={d.id} className="hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-white/90">{d.donorName || '—'}</td>
+                    <tr key={d.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-slate-800 dark:text-white/90">{d.donorName || '—'}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                           d.type === 'MONETARY'
@@ -135,7 +135,7 @@ export const DonationsPage = () => {
                           {d.type}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-slate-300">
+                      <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
                         {d.type === 'MONETARY' ? `LKR ${d.amount?.toLocaleString()}` : d.itemsDescription}
                       </td>
                       <td className="px-6 py-4 text-slate-500 text-xs">

@@ -287,13 +287,13 @@ export default function TaskManagementPage() {
         {showForm && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200" onClick={() => setShowForm(false)}>
             <div
-              className="bg-[#131f33] border border-cyan-400/20 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
+              className="bg-white dark:bg-[#131f33] border border-cyan-400/20 w-full max-w-xl rounded-[1.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
               onClick={e => e.stopPropagation()}
             >
               {/* Header — sticky */}
-              <div className="flex-shrink-0 px-8 py-6 border-b border-cyan-400/20 flex items-center justify-between bg-[#0f172a]">
+              <div className="flex-shrink-0 px-8 py-6 border-b border-slate-200 dark:border-cyan-400/20 flex items-center justify-between bg-slate-50 dark:bg-[#0f172a]">
                 <div>
-                  <h2 className="text-xl font-black text-white/90">Assign New Task</h2>
+                  <h2 className="text-xl font-black text-slate-800 dark:text-white/90">Assign New Task</h2>
                   <p className="text-sm text-slate-400 mt-0.5">Create and assign a task to a volunteer</p>
                 </div>
                 <button onClick={() => setShowForm(false)} className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
@@ -394,7 +394,7 @@ export default function TaskManagementPage() {
                   <button
                     type="button"
                     onClick={() => setShowForm(false)}
-                    className="flex-1 px-6 py-4 bg-[#0f172a] border border-cyan-400/20 text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-cyan-900/20 transition-all"
+                    className="flex-1 px-6 py-4 bg-slate-100 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 text-slate-600 dark:text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-cyan-900/20 transition-all"
                   >
                     Cancel
                   </button>

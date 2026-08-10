@@ -222,7 +222,7 @@ export default function DamageAssessmentPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 bg-[#131f33] p-2 rounded-2xl shadow-sm border border-cyan-400/10">
+        <div className="flex gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-cyan-400/10">
           {[
             { id: 'verification', label: isCitizen ? 'My Reports' : t('damage_assessment_page.tabs.verification'), icon: ShieldCheck },
             ...(!isCitizen ? [{ id: 'reports', label: t('damage_assessment_page.tabs.district_reports'), icon: Map }] : []),
@@ -234,7 +234,7 @@ export default function DamageAssessmentPage() {
                 "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all",
                 activeTab === tab.id
                   ? "bg-brand-500 text-white shadow-md shadow-cyan-500/20"
-                  : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -252,9 +252,9 @@ export default function DamageAssessmentPage() {
                   <Loader2 className="w-10 h-10 animate-spin text-cyan-400" />
                 </div>
               ) : displayedAssessments.length === 0 ? (
-                <div className="bg-white/5 border border-dashed border-white/15 rounded-[2.5rem] p-20 text-center space-y-4">
-                  <Home className="w-16 h-16 text-slate-600 mx-auto" />
-                  <h3 className="text-xl font-bold text-white/70">{isCitizen ? 'No reports submitted yet' : t('damage_assessment_page.no_assessments')}</h3>
+                <div className="bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/15 rounded-[2.5rem] p-20 text-center space-y-4">
+                  <Home className="w-16 h-16 text-slate-400 dark:text-slate-600 mx-auto" />
+                  <h3 className="text-xl font-bold text-slate-600 dark:text-white/70">{isCitizen ? 'No reports submitted yet' : t('damage_assessment_page.no_assessments')}</h3>
                   <p className="text-slate-500 max-w-xs mx-auto">{isCitizen ? 'Use the button above to submit your first damage report.' : t('damage_assessment_page.no_assessments_desc')}</p>
                 </div>
               ) : (
@@ -266,7 +266,7 @@ export default function DamageAssessmentPage() {
                         <div className="flex justify-between items-start">
                           <div>
                             <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em]">{item.category}</span>
-                            <h3 className="text-xl font-black text-white/90 mt-1 flex items-center gap-2">
+                            <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mt-1 flex items-center gap-2">
                               {item.location}
                               {item.aiEstimatedDamage && (
                                 <span title="AI Verified" className="bg-purple-500/15 text-purple-400 p-1 rounded-full">
@@ -284,7 +284,7 @@ export default function DamageAssessmentPage() {
                         </div>
 
                         {/* Stats grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/5 p-4 rounded-2xl">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 dark:bg-white/5 p-4 rounded-2xl">
                           <div className="space-y-1">
                             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.damage')}</div>
                             <div className={cn("text-[10px] font-black px-2 py-1 rounded-lg inline-block", getLevelBadge(item.structuralDamage))}>
@@ -293,16 +293,16 @@ export default function DamageAssessmentPage() {
                           </div>
                           <div className="space-y-1">
                             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.est_loss')}</div>
-                            <div className="text-sm font-black text-white/80">LKR {item.estimatedLoss?.toLocaleString() || '—'}</div>
+                            <div className="text-sm font-black text-slate-700 dark:text-white/80">LKR {item.estimatedLoss?.toLocaleString() || '—'}</div>
                           </div>
                           <div className="space-y-1">
                             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.affected')}</div>
-                            <div className="text-sm font-black text-white/80">{item.affectedPersons || 0} {t('damage_assessment_page.persons', 'persons')}</div>
+                            <div className="text-sm font-black text-slate-700 dark:text-white/80">{item.affectedPersons || 0} {t('damage_assessment_page.persons', 'persons')}</div>
                           </div>
                           <div className="space-y-1 text-right">
                             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.compensation')}</div>
                             <div className="text-sm font-black flex items-center justify-end gap-2">
-                              <span className="text-white/70">{item.compensationEligibilityScore || 0}/100</span>
+                              <span className="text-slate-700 dark:text-white/70">{item.compensationEligibilityScore || 0}/100</span>
                               {item.compensationEligible
                                 ? <span className="text-[10px] bg-green-500 text-white px-2 py-0.5 rounded font-bold">{t('damage_assessment_page.eligible')}</span>
                                 : <span className="text-[10px] bg-red-500/80 text-white px-2 py-0.5 rounded font-bold">{t('damage_assessment_page.ineligible')}</span>
@@ -312,12 +312,12 @@ export default function DamageAssessmentPage() {
                         </div>
 
                         {item.notes && (
-                          <p className="text-sm text-slate-400 italic border-l-2 border-white/10 pl-3">{item.notes}</p>
+                          <p className="text-sm text-slate-500 dark:text-slate-400 italic border-l-2 border-slate-200 dark:border-white/10 pl-3">{item.notes}</p>
                         )}
 
                         {/* Verification Actions — admin/staff only */}
                         {!isCitizen && item.status !== 'APPROVED' && item.status !== 'REJECTED' && (
-                          <div className="pt-4 border-t border-white/10 flex gap-2 flex-wrap">
+                          <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex gap-2 flex-wrap">
                             {item.status === 'PENDING_REVIEW' && (
                               <button
                                 onClick={() => updateWorkflow(item.id, 'SENIOR_REVIEW')}
@@ -352,49 +352,49 @@ export default function DamageAssessmentPage() {
             {/* Sidebar */}
             <div className="space-y-6">
               {isCitizen ? (
-                <div className="bg-[#0a1628] border border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
+                <div className="bg-slate-100 dark:bg-[#0a1628] border border-slate-200 dark:border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
                   <div className="w-12 h-12 bg-cyan-500/15 rounded-2xl flex items-center justify-center">
                     <Home className="w-6 h-6 text-cyan-400" />
                   </div>
-                  <h3 className="text-2xl font-black text-white/90">My Reports</h3>
+                  <h3 className="text-2xl font-black text-slate-800 dark:text-white/90">My Reports</h3>
                   <p className="text-sm text-slate-400">Use the button above to submit a new damage report. Our team will review your submission and contact you about compensation eligibility.</p>
                   <div className="space-y-4">
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Submitted</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Submitted</span>
                       <span className="text-xl font-black text-cyan-400">{displayedAssessments.length}</span>
                     </div>
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Under Review</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Under Review</span>
                       <span className="text-xl font-black text-orange-400">{displayedAssessments.filter(a => a.status === 'PENDING_REVIEW' || a.status === 'SENIOR_REVIEW').length}</span>
                     </div>
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Approved</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Approved</span>
                       <span className="text-xl font-black text-green-400">{displayedAssessments.filter(a => a.status === 'APPROVED').length}</span>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="bg-[#0a1628] border border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
+                <div className="bg-slate-100 dark:bg-[#0a1628] border border-slate-200 dark:border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl">
                   <div className="w-12 h-12 bg-cyan-500/15 rounded-2xl flex items-center justify-center">
                     <ShieldCheck className="w-6 h-6 text-cyan-400" />
                   </div>
-                  <h3 className="text-2xl font-black text-white/90">{t('damage_assessment_page.verification_queue')}</h3>
+                  <h3 className="text-2xl font-black text-slate-800 dark:text-white/90">{t('damage_assessment_page.verification_queue')}</h3>
                   <div className="space-y-4">
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.pending_review')}</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.pending_review')}</span>
                       <span className="text-xl font-black text-orange-400">{assessments.filter(a => a.status === 'PENDING_REVIEW').length}</span>
                     </div>
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.senior_review')}</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.senior_review')}</span>
                       <span className="text-xl font-black text-purple-400">{assessments.filter(a => a.status === 'SENIOR_REVIEW').length}</span>
                     </div>
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.approved')}</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.approved')}</span>
                       <span className="text-xl font-black text-green-400">{assessments.filter(a => a.status === 'APPROVED').length}</span>
                     </div>
-                    <div className="bg-white/5 rounded-2xl p-4 flex justify-between items-center">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.total')}</span>
-                      <span className="text-xl font-black text-white/90">{assessments.length}</span>
+                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.total')}</span>
+                      <span className="text-xl font-black text-slate-800 dark:text-white/90">{assessments.length}</span>
                     </div>
                   </div>
                 </div>
@@ -406,17 +406,17 @@ export default function DamageAssessmentPage() {
         {/* DISTRICT REPORTS */}
         {activeTab === 'reports' && (
           <div className="suraksha-card p-8 rounded-[2rem]">
-            <h2 className="text-2xl font-black text-white/90 mb-6">{t('damage_assessment_page.district_summary')}</h2>
+            <h2 className="text-2xl font-black text-slate-800 dark:text-white/90 mb-6">{t('damage_assessment_page.district_summary')}</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {reports.length === 0 && (
                 <p className="text-slate-400 font-medium col-span-full text-center py-10">{t('damage_assessment_page.no_active_reports', 'No active district reports found. Submit assessments with location data to generate reports.')}</p>
               )}
               {reports.map((report, i) => (
-                <div key={i} className="bg-white/5 p-6 rounded-3xl border border-white/10">
+                <div key={i} className="bg-slate-50 dark:bg-white/5 p-6 rounded-3xl border border-slate-200 dark:border-white/10">
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <h3 className="text-xl font-black text-white/90">{report.name}</h3>
-                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-0.5">{report.totalStructures} {t('damage_assessment_page.structures_assessed')}</p>
+                      <h3 className="text-xl font-black text-slate-800 dark:text-white/90">{report.name}</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-0.5">{report.totalStructures} {t('damage_assessment_page.structures_assessed')}</p>
                     </div>
                     {!isCitizen && (
                       <button
@@ -428,13 +428,13 @@ export default function DamageAssessmentPage() {
                     )}
                   </div>
                   <div className="space-y-3">
-                    <div className="flex justify-between bg-white/5 p-3 rounded-xl border border-white/10 text-sm font-bold">
-                      <span className="text-slate-400">{t('damage_assessment_page.estimated_total_loss')}</span>
+                    <div className="flex justify-between bg-white dark:bg-white/5 p-3 rounded-xl border border-slate-200 dark:border-white/10 text-sm font-bold">
+                      <span className="text-slate-500 dark:text-slate-400">{t('damage_assessment_page.estimated_total_loss')}</span>
                       <span className="text-red-400">LKR {report.totalEstimatedLoss.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between bg-white/5 p-3 rounded-xl border border-white/10 text-sm font-bold">
-                      <span className="text-slate-400">{t('damage_assessment_page.affected_persons')}</span>
-                      <span className="text-white/80">{report.affectedPersons}</span>
+                    <div className="flex justify-between bg-white dark:bg-white/5 p-3 rounded-xl border border-slate-200 dark:border-white/10 text-sm font-bold">
+                      <span className="text-slate-500 dark:text-slate-400">{t('damage_assessment_page.affected_persons')}</span>
+                      <span className="text-slate-700 dark:text-white/80">{report.affectedPersons}</span>
                     </div>
                     {report.categories && Object.entries(report.categories).map(([cat, count]: any) => (
                       <div key={cat} className="flex justify-between bg-white/5 p-3 rounded-xl border border-white/10 text-sm font-bold">
@@ -451,13 +451,13 @@ export default function DamageAssessmentPage() {
 
         {/* MODAL */}
         {showModal && (
-          <div className="fixed inset-0 z-[100] flex justify-center overflow-y-auto bg-slate-900/70 backdrop-blur-md p-4 py-8 sm:py-16 animate-in fade-in duration-300">
-            <div className="bg-[#131f33] border border-white/10 w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto flex flex-col md:flex-row">
+          <div className="fixed inset-0 z-[999999] flex justify-center overflow-y-auto bg-slate-900/70 backdrop-blur-md p-4 py-8 sm:py-16 animate-in fade-in duration-300">
+            <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 my-auto flex flex-col md:flex-row">
 
               {/* Left: AI Panel */}
-              <div className="w-full md:w-1/3 bg-[#0e1d36] border-b md:border-b-0 md:border-r border-white/10 p-10 flex flex-col items-center justify-center text-center">
+              <div className="w-full md:w-1/3 bg-slate-50 dark:bg-[#0e1d36] border-b md:border-b-0 md:border-r border-slate-200 dark:border-white/10 p-10 flex flex-col items-center justify-center text-center">
                 <Sparkles className="w-12 h-12 text-purple-400 mb-4" />
-                <h3 className="text-xl font-black text-white/90 mb-2">{t('damage_assessment_page.ai_assessor')}</h3>
+                <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-2">{t('damage_assessment_page.ai_assessor')}</h3>
                 <p className="text-xs text-slate-400 mb-8">{t('damage_assessment_page.ai_upload_prompt')}</p>
 
                 {!aiData && !aiLoading && (
@@ -488,11 +488,11 @@ export default function DamageAssessmentPage() {
                     )}
                     <div>
                       <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.detected_severity')}</div>
-                      <div className="text-lg font-black text-white/90">{aiData.severity}</div>
+                      <div className="text-lg font-black text-slate-800 dark:text-white/90">{aiData.severity}</div>
                     </div>
                     <div>
                       <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.est_replacement_cost')}</div>
-                      <div className="text-lg font-black text-white/90">LKR {aiData.estimatedCost?.toLocaleString()}</div>
+                      <div className="text-lg font-black text-slate-800 dark:text-white/90">LKR {aiData.estimatedCost?.toLocaleString()}</div>
                     </div>
                     <button type="button" onClick={() => { setAiData(null) }} className="text-xs text-slate-500 hover:text-slate-300 underline">
                       {t('damage_assessment_page.clear_reupload')}
@@ -503,8 +503,8 @@ export default function DamageAssessmentPage() {
 
               {/* Right: Form */}
               <div className="w-full md:w-2/3 flex flex-col">
-                <div className="px-10 py-7 border-b border-white/10 flex items-center justify-between">
-                  <h2 className="text-2xl font-black text-white/90">{t('damage_assessment_page.field_report_form')}</h2>
+                <div className="px-10 py-7 border-b-2 border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-100 dark:bg-[#0f172a]">
+                  <h2 className="text-2xl font-black text-slate-800 dark:text-white/90">{t('damage_assessment_page.field_report_form')}</h2>
                   <button
                     onClick={() => setShowModal(false)}
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-all"
@@ -513,7 +513,7 @@ export default function DamageAssessmentPage() {
                   </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-10 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 overflow-y-auto max-h-[65vh]">
+                <form onSubmit={handleSubmit} className="p-10 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 overflow-y-auto max-h-[65vh] bg-white dark:bg-transparent">
 
                   {/* Incident link (optional) */}
                   <div className="space-y-1.5 sm:col-span-2">
@@ -752,8 +752,8 @@ export default function DamageAssessmentPage() {
           <div className={cn(
             "fixed bottom-8 right-8 z-[999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
             toast.type === 'success'
-              ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30"
-              : "bg-[#131f33] text-red-400 border border-red-500/30"
+              ? "bg-white dark:bg-[#131f33] text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-lg"
+              : "bg-white dark:bg-[#131f33] text-red-600 dark:text-red-400 border border-red-500/30 shadow-lg"
           )}>
             {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
             <span className="font-bold text-sm tracking-wide">{toast.message}</span>

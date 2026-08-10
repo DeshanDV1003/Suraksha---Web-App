@@ -134,21 +134,21 @@ export default function ResourcesPage() {
         </div>
 
         {/* Resources Table */}
-        <div className="bg-[#131f33] border border-cyan-400/10 rounded-[1.5rem] overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/10 rounded-[1.5rem] overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-[#0e1d36] border-b border-white/10">
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.resource_type')}</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.owner')}</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.location')}</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.capacity')}</th>
-                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.status')}</th>
-                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.contact')}</th>
-                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 dark:text-gray-500">{t('resources_page.actions')}</th>
+                <tr className="bg-slate-50 dark:bg-[#0e1d36] border-b border-slate-200 dark:border-white/10">
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.resource_type')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.owner')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.location')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.capacity')}</th>
+                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.status')}</th>
+                  <th className="px-8 py-5 text-left text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.contact')}</th>
+                  <th className="px-8 py-5 text-center text-[11px] font-black uppercase tracking-[0.1em] text-slate-500 dark:text-gray-400">{t('resources_page.actions')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
                 {loading ? (
                   <tr>
                     <td colSpan={7} className="px-8 py-20 text-center">
@@ -176,18 +176,18 @@ export default function ResourcesPage() {
                       r.location.toLowerCase().includes(searchQuery.toLowerCase())
                     )
                     .map((resource) => (
-                    <tr key={resource.id} className="hover:bg-white/5 transition-colors group">
+                    <tr key={resource.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                       <td className="px-8 py-6">
                         <span className="text-sm font-bold text-gray-800 dark:text-white/90 group-hover:text-brand-500 transition-colors whitespace-nowrap">{resource.type}</span>
                       </td>
                       <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500">{resource.owner}</span>
+                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">{resource.owner}</span>
                       </td>
                       <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">{resource.location}</span>
+                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">{resource.location}</span>
                       </td>
                       <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">{resource.capacity}</span>
+                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">{resource.capacity}</span>
                       </td>
                       <td className="px-8 py-6 text-center">
                         <span className={cn(
@@ -198,7 +198,7 @@ export default function ResourcesPage() {
                         </span>
                       </td>
                       <td className="px-8 py-6">
-                        <span className="text-sm font-semibold text-gray-400 dark:text-gray-500 whitespace-nowrap">{resource.contact}</span>
+                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">{resource.contact}</span>
                       </td>
                       <td className="px-8 py-6">
                         <div className="flex items-center justify-center gap-5">
@@ -229,16 +229,16 @@ export default function ResourcesPage() {
         {/* Modal */}
         {showModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-[#131f33] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-              <div className="px-8 py-6 border-b border-white/10 flex items-center justify-between bg-[#0e1d36]">
-                <h2 className="text-xl font-black text-white/90">{t('resources_page.add_new_resource')}</h2>
-                <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white transition-colors">
+            <div className="bg-white dark:bg-[#131f33] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-8 py-6 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-50 dark:bg-[#0e1d36]">
+                <h2 className="text-xl font-black text-slate-800 dark:text-white/90">{t('resources_page.add_new_resource')}</h2>
+                <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
               <form onSubmit={handleAddResource} className="p-8 space-y-5">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.resource_type')}</label>
+                  <label className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest px-1">{t('resources_page.resource_type')}</label>
                   <input 
                     type="text" 
                     placeholder="e.g. Boat, Pickup Truck, Generator" 
@@ -250,7 +250,7 @@ export default function ResourcesPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.owner_name')}</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest px-1">{t('resources_page.owner_name')}</label>
                     <input 
                       type="text" 
                       placeholder="Enter full name" 
@@ -261,7 +261,7 @@ export default function ResourcesPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.location')}</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest px-1">{t('resources_page.location')}</label>
                     <input 
                       type="text" 
                       placeholder="e.g. Colombo 7" 
@@ -274,7 +274,7 @@ export default function ResourcesPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.capacity')}</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest px-1">{t('resources_page.capacity')}</label>
                     <input 
                       type="text" 
                       placeholder="e.g. 6 people, 5kW" 
@@ -285,7 +285,7 @@ export default function ResourcesPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-1">{t('resources_page.contact_number')}</label>
+                    <label className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest px-1">{t('resources_page.contact_number')}</label>
                     <input 
                       type="text" 
                       placeholder="e.g. +94 ..." 
@@ -300,7 +300,7 @@ export default function ResourcesPage() {
                   <button 
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="flex-1 px-6 py-4 bg-white/10 border border-white/10 text-slate-300 rounded-2xl text-sm font-bold hover:bg-white/15 transition-all"
+                    className="flex-1 px-6 py-4 bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 rounded-2xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-white/15 transition-all"
                   >
                     {t('resources_page.cancel')}
                   </button>
@@ -326,54 +326,46 @@ export default function ResourcesPage() {
 
         {selectedResource && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="bg-[#131f33] border border-cyan-400/20 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-              <div className="px-6 py-5 border-b border-cyan-400/10 flex items-center justify-between bg-[#131f33]">
+            <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-6 py-5 border-b border-slate-200 dark:border-cyan-400/10 flex items-center justify-between bg-slate-50 dark:bg-[#131f33]">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
                     <Package className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-black text-slate-100">{t('resources_page.resource_info')}</h2>
-                    <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
+                    <h2 className="text-lg font-black text-slate-800 dark:text-slate-100">{t('resources_page.resource_info')}</h2>
+                    <p className="text-[10px] font-black text-cyan-600 dark:text-cyan-400/70 uppercase tracking-widest mt-0.5">{selectedResource.status}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedResource(null)} className="text-slate-400 hover:text-slate-200 transition-colors">
+                <button onClick={() => setSelectedResource(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
               <div className="p-6 space-y-4">
-                <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.type')}</p>
-                  <p className="font-semibold text-slate-100">{selectedResource.type}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.owner')}</p>
-                  <p className="font-semibold text-slate-100">{selectedResource.owner}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.location')}</p>
-                  <p className="font-semibold text-slate-100">{selectedResource.location}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.capacity')}</p>
-                  <p className="font-semibold text-slate-100">{selectedResource.capacity}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-cyan-400/70 uppercase tracking-widest">{t('resources_page.contact')}</p>
-                  <p className="font-semibold text-slate-100">{selectedResource.contact}</p>
-                </div>
+                {[
+                  { label: t('resources_page.type'), value: selectedResource.type },
+                  { label: t('resources_page.owner'), value: selectedResource.owner },
+                  { label: t('resources_page.location'), value: selectedResource.location },
+                  { label: t('resources_page.capacity'), value: selectedResource.capacity },
+                  { label: t('resources_page.contact'), value: selectedResource.contact },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <p className="text-[10px] font-black text-slate-400 dark:text-cyan-400/70 uppercase tracking-widest">{item.label}</p>
+                    <p className="font-semibold text-slate-800 dark:text-slate-100">{item.value}</p>
+                  </div>
+                ))}
               </div>
               <div className="p-6 pt-0 flex gap-3">
-                <button 
+                <button
                   onClick={() => setContactModal(selectedResource.contact)}
                   className="flex-1 bg-[#00AEEF] hover:bg-[#009bd6] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/25"
                 >
                   <Phone className="w-4 h-4" />
                   {t('resources_page.contact_options')}
                 </button>
-                <button 
+                <button
                   onClick={() => setSelectedResource(null)}
-                  className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold transition-all"
+                  className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 py-3 rounded-xl font-bold transition-all"
                 >
                   {t('resources_page.close')}
                 </button>

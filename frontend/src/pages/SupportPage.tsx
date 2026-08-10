@@ -215,14 +215,14 @@ export default function SupportPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 bg-[#131f33] p-2 rounded-2xl border border-cyan-400/10">
+        <div className="flex flex-wrap gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl border border-slate-200 dark:border-cyan-400/10">
           {TABS.map(tab => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={cn(
                 'flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all',
-                activeTab === tab.key ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                activeTab === tab.key ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200'
               )}
             >
               <tab.icon className="w-4 h-4" /> {tab.label}
@@ -239,11 +239,11 @@ export default function SupportPage() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Queue */}
                 <div className="space-y-4">
-                  <h3 className="text-base font-black text-white/90 flex items-center gap-2">
+                  <h3 className="text-base font-black text-slate-800 dark:text-white/90 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-indigo-400" /> {t('support_page.waiting_queue')}
                   </h3>
                   {chatSessions.filter(s => s.status === 'WAITING').length === 0 ? (
-                    <div className="bg-white/5 border border-dashed border-white/10 rounded-2xl p-6 text-center text-slate-500 font-bold">
+                    <div className="bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 rounded-2xl p-6 text-center text-slate-500 font-bold">
                       {t('support_page.no_waiting')}
                     </div>
                   ) : (
@@ -281,7 +281,7 @@ export default function SupportPage() {
                 {/* Chat Window */}
                 <div className="lg:col-span-2">
                   {activeChat ? (
-                    <div className="bg-[#131f33] border border-white/10 rounded-3xl overflow-hidden flex flex-col h-[580px] shadow-2xl">
+                    <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 rounded-3xl overflow-hidden flex flex-col h-[580px] shadow-2xl">
                       <div className="px-5 py-4 bg-indigo-600 flex justify-between items-center shrink-0">
                         <div>
                           <h3 className="font-black text-white flex items-center gap-2">
@@ -296,12 +296,12 @@ export default function SupportPage() {
                           {t('support_page.end_session')}
                         </button>
                       </div>
-                      <div className="flex-1 p-5 overflow-y-auto bg-[#0a1628] flex flex-col gap-3">
-                        <div className="text-center text-[10px] font-black text-slate-600 uppercase tracking-widest bg-white/5 py-1.5 rounded-full w-max mx-auto px-5">{t('support_page.session_started')}</div>
+                      <div className="flex-1 p-5 overflow-y-auto bg-slate-100 dark:bg-[#0a1628] flex flex-col gap-3">
+                        <div className="text-center text-[10px] font-black text-slate-500 dark:text-slate-600 uppercase tracking-widest bg-white dark:bg-white/5 py-1.5 rounded-full w-max mx-auto px-5 border border-slate-200 dark:border-transparent">{t('support_page.session_started')}</div>
                         {(activeChat.messages || []).map((msg: any, i: number) => {
                           const isMe = msg.senderId === user?.userId
                           return (
-                            <div key={i} className={cn('max-w-[80%] rounded-2xl p-4', isMe ? 'bg-indigo-600 text-white self-end rounded-tr-sm' : 'bg-white/8 border border-white/10 text-slate-200 self-start rounded-tl-sm')}>
+                            <div key={i} className={cn('max-w-[80%] rounded-2xl p-4', isMe ? 'bg-indigo-600 text-white self-end rounded-tr-sm' : 'bg-white dark:bg-white/8 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 self-start rounded-tl-sm')}>
                               <p className="text-sm font-medium">{msg.content}</p>
                               <span className={cn('text-[10px] mt-1 block opacity-60', isMe ? 'text-right' : '')}>
                                 {new Date(msg.createdAt).toLocaleTimeString()}
@@ -311,7 +311,7 @@ export default function SupportPage() {
                         })}
                         <div ref={messagesEndRef} />
                       </div>
-                      <form onSubmit={handleSendMessage} className="p-4 bg-[#131f33] border-t border-white/10 flex gap-2 shrink-0">
+                      <form onSubmit={handleSendMessage} className="p-4 bg-slate-50 dark:bg-[#131f33] border-t border-slate-200 dark:border-white/10 flex gap-2 shrink-0">
                         <input
                           type="text"
                           placeholder={t('support_page.chat_placeholder')}
@@ -325,9 +325,9 @@ export default function SupportPage() {
                       </form>
                     </div>
                   ) : (
-                    <div className="bg-white/5 border border-dashed border-white/10 rounded-3xl h-[580px] flex flex-col items-center justify-center text-center p-10">
-                      <MessageSquare className="w-16 h-16 mb-4 text-slate-700" />
-                      <h3 className="text-lg font-black text-white/50 mb-2">{t('support_page.no_active_session')}</h3>
+                    <div className="bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 rounded-3xl h-[580px] flex flex-col items-center justify-center text-center p-10">
+                      <MessageSquare className="w-16 h-16 mb-4 text-slate-400 dark:text-slate-700" />
+                      <h3 className="text-lg font-black text-slate-500 dark:text-white/50 mb-2">{t('support_page.no_active_session')}</h3>
                       <p className="text-sm text-slate-500 font-medium max-w-xs">{t('support_page.accept_from_queue')}</p>
                     </div>
                   )}
@@ -339,22 +339,22 @@ export default function SupportPage() {
             {activeTab === 'groups' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {groupSessions.length === 0 ? (
-                  <div className="col-span-full py-20 text-center bg-white/5 border border-dashed border-white/10 rounded-3xl text-slate-500 font-bold">
+                  <div className="col-span-full py-20 text-center bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 rounded-3xl text-slate-500 font-bold">
                     {t('support_page.no_groups')}
                   </div>
                 ) : groupSessions.map(session => (
                   <div key={session.id} className="suraksha-card rounded-3xl p-6 hover:shadow-xl transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                      <h3 className="font-black text-white/90 text-lg leading-tight">{session.title}</h3>
+                      <h3 className="font-black text-slate-800 dark:text-white/90 text-lg leading-tight">{session.title}</h3>
                       <span className="px-2.5 py-1 bg-blue-500/15 text-blue-400 border border-blue-500/30 rounded-full text-[10px] font-black uppercase shrink-0 ml-2">{session.status}</span>
                     </div>
-                    <p className="text-sm text-slate-400 mb-5 line-clamp-3">{session.description}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 line-clamp-3">{session.description}</p>
                     <div className="space-y-2 mb-5">
-                      <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
                         <Clock className="w-4 h-4 text-indigo-400 shrink-0" />
                         {new Date(session.scheduledFor).toLocaleString()}
                       </div>
-                      <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
                         <Users className="w-4 h-4 text-indigo-400 shrink-0" />
                         {t('support_page.registered_count', { count: session.participants?.length || 0, max: session.maxParticipants })}
                       </div>
@@ -375,16 +375,16 @@ export default function SupportPage() {
             {activeTab === 'guides' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {guides.length === 0 ? (
-                  <div className="col-span-full py-20 text-center bg-white/5 border border-dashed border-white/10 rounded-3xl text-slate-500 font-bold">{t('support_page.no_guides')}</div>
+                  <div className="col-span-full py-20 text-center bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 rounded-3xl text-slate-500 font-bold">{t('support_page.no_guides')}</div>
                 ) : guides.map(guide => (
                   <div key={guide.id} className="suraksha-card rounded-3xl p-8">
                     <div className="flex gap-2 mb-4 flex-wrap">
                       {guide.tags.split(',').map((tag: string, i: number) => (
-                        <span key={i} className="px-2.5 py-1 bg-white/8 border border-white/10 text-slate-400 rounded-full text-[10px] font-black uppercase">{tag.trim()}</span>
+                        <span key={i} className="px-2.5 py-1 bg-slate-100 dark:bg-white/8 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 rounded-full text-[10px] font-black uppercase">{tag.trim()}</span>
                       ))}
                     </div>
-                    <h3 className="text-xl font-black text-white/90 mb-4">{guide.title}</h3>
-                    <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{guide.content}</div>
+                    <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-4">{guide.title}</h3>
+                    <div className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">{guide.content}</div>
                   </div>
                 ))}
               </div>
@@ -399,21 +399,21 @@ export default function SupportPage() {
                     <div className="w-16 h-16 bg-indigo-500/15 rounded-full flex items-center justify-center mb-4">
                       <Activity className="w-8 h-8 text-indigo-400" />
                     </div>
-                    <div className="text-4xl font-black text-white/90">{dashboardData.utilizationRate}%</div>
+                    <div className="text-4xl font-black text-slate-800 dark:text-white/90">{dashboardData.utilizationRate}%</div>
                     <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">{t('support_page.counselor_utilization')}</div>
                   </div>
 
                   {/* Top issues */}
                   <div className="md:col-span-2 suraksha-card p-6 rounded-3xl">
-                    <h3 className="font-black text-white/90 mb-5 uppercase text-xs tracking-widest">{t('support_page.top_issues')}</h3>
+                    <h3 className="font-black text-slate-800 dark:text-white/90 mb-5 uppercase text-xs tracking-widest">{t('support_page.top_issues')}</h3>
                     <div className="space-y-4">
                       {dashboardData.topIssues.map((issue: any, i: number) => (
                         <div key={i}>
-                          <div className="flex justify-between text-sm font-bold text-slate-300 mb-1.5">
+                          <div className="flex justify-between text-sm font-bold text-slate-600 dark:text-slate-300 mb-1.5">
                             <span>{issue.issue}</span>
                             <span className="text-slate-500">{issue.count} {t('support_page.cases')}</span>
                           </div>
-                          <div className="w-full bg-white/5 rounded-full h-2">
+                          <div className="w-full bg-slate-200 dark:bg-white/5 rounded-full h-2">
                             <div className="bg-indigo-500 h-2 rounded-full transition-all" style={{ width: `${(issue.count / Math.max(...dashboardData.topIssues.map((x: any) => x.count), 1)) * 100}%` }} />
                           </div>
                         </div>
@@ -424,7 +424,7 @@ export default function SupportPage() {
 
                 {/* Bar chart */}
                 <div className="suraksha-card p-6 rounded-3xl">
-                  <h3 className="font-black text-white/90 mb-6 uppercase text-xs tracking-widest">{t('support_page.weekly_requests')}</h3>
+                  <h3 className="font-black text-slate-800 dark:text-white/90 mb-6 uppercase text-xs tracking-widest">{t('support_page.weekly_requests')}</h3>
                   <div className="flex items-end gap-3 h-44">
                     {dashboardData.requestsByDay.map((day: any, i: number) => (
                       <div key={i} className="flex-1 flex flex-col items-center gap-2 h-full">
@@ -448,7 +448,7 @@ export default function SupportPage() {
               <div className="suraksha-card rounded-3xl overflow-hidden min-w-0">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
-                    <thead className="bg-[#0e1d36] border-b border-white/10 text-slate-500 text-[10px] font-black uppercase tracking-widest">
+                    <thead className="bg-slate-50 dark:bg-[#0e1d36] border-b border-slate-200 dark:border-white/10 text-slate-500 text-[10px] font-black uppercase tracking-widest">
                       <tr>
                         <th className="px-6 py-4">{t('support_page.survivor')}</th>
                         <th className="px-6 py-4">{t('support_page.type')}</th>
@@ -457,14 +457,14 @@ export default function SupportPage() {
                         <th className="px-6 py-4 text-right">{t('support_page.actions')}</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                       {checkIns.length === 0 ? (
                         <tr><td colSpan={5} className="px-6 py-16 text-center text-slate-500 font-bold">{t('support_page.no_checkins')}</td></tr>
                       ) : checkIns.map(ci => (
-                        <tr key={ci.id} className="hover:bg-white/5 transition-colors">
-                          <td className="px-6 py-4 font-bold text-white/90">{ci.user?.name || t('support_page.anonymous_user')}</td>
-                          <td className="px-6 py-4 text-sm text-slate-400">{ci.type}</td>
-                          <td className="px-6 py-4 text-sm font-bold text-slate-300">{new Date(ci.nextCheckInDate).toLocaleDateString()}</td>
+                        <tr key={ci.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                          <td className="px-6 py-4 font-bold text-slate-800 dark:text-white/90">{ci.user?.name || t('support_page.anonymous_user')}</td>
+                          <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">{ci.type}</td>
+                          <td className="px-6 py-4 text-sm font-bold text-slate-600 dark:text-slate-300">{new Date(ci.nextCheckInDate).toLocaleDateString()}</td>
                           <td className="px-6 py-4">
                             <span className={cn('px-2.5 py-1 rounded-full text-[10px] font-black uppercase border',
                               ci.checkInStatus === 'OVERDUE'
@@ -491,15 +491,15 @@ export default function SupportPage() {
         {/* End Session Modal */}
         {showEndModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md" onClick={() => setShowEndModal(false)}>
-            <div className="bg-[#131f33] border border-white/10 w-full max-w-md rounded-[2rem] shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()}>
-              <div className="px-8 py-6 bg-[#0e1d36] border-b border-white/10 flex justify-between items-center">
-                <h2 className="text-lg font-black text-white/90">{t('support_page.end_session_title')}</h2>
+            <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 w-full max-w-md rounded-[2rem] shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+              <div className="px-8 py-6 bg-slate-100 dark:bg-[#0e1d36] border-b-2 border-slate-200 dark:border-white/10 flex justify-between items-center">
+                <h2 className="text-lg font-black text-slate-800 dark:text-white/90">{t('support_page.end_session_title')}</h2>
                 <button onClick={() => setShowEndModal(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
               <div className="p-8 space-y-4">
-                <p className="text-sm text-slate-400">{t('support_page.end_session_desc')}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('support_page.end_session_desc')}</p>
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('support_page.mood_label')}</label>
                   <input
@@ -526,9 +526,9 @@ export default function SupportPage() {
         {/* Create Group Modal */}
         {showGroupModal && (
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md" onClick={() => setShowGroupModal(false)}>
-            <div className="bg-[#131f33] border border-white/10 w-full max-w-lg rounded-[2rem] shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()}>
-              <div className="px-8 py-6 bg-[#0e1d36] border-b border-white/10 flex justify-between items-center">
-                <h2 className="text-lg font-black text-white/90">{t('support_page.schedule_title')}</h2>
+            <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 w-full max-w-lg rounded-[2rem] shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()}>
+              <div className="px-8 py-6 bg-slate-100 dark:bg-[#0e1d36] border-b-2 border-slate-200 dark:border-white/10 flex justify-between items-center">
+                <h2 className="text-lg font-black text-slate-800 dark:text-white/90">{t('support_page.schedule_title')}</h2>
                 <button onClick={() => setShowGroupModal(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-colors">
                   <X className="w-4 h-4" />
                 </button>
@@ -562,9 +562,9 @@ export default function SupportPage() {
         {toast && (
           <div className={cn(
             'fixed bottom-8 right-8 z-[9999999] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300',
-            toast.type === 'success' ? 'bg-[#131f33] text-emerald-400 border border-emerald-500/30' :
-            toast.type === 'error' ? 'bg-[#131f33] text-red-400 border border-red-500/30' :
-            'bg-[#131f33] text-amber-400 border border-amber-500/30'
+            toast.type === 'success' ? 'bg-white dark:bg-[#131f33] text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-lg' :
+            toast.type === 'error' ? 'bg-white dark:bg-[#131f33] text-red-600 dark:text-red-400 border border-red-500/30 shadow-lg' :
+            'bg-white dark:bg-[#131f33] text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-lg'
           )}>
             {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <ShieldAlert className="w-5 h-5" />}
             <span className="font-bold text-sm">{toast.message}</span>

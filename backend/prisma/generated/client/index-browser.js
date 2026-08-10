@@ -802,6 +802,13 @@ exports.Prisma.RainfallReadingScalarFieldEnum = {
   source: 'source'
 };
 
+exports.Prisma.RainfallAlertLogScalarFieldEnum = {
+  id: 'id',
+  district: 'district',
+  lastFiredAt: 'lastFiredAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.RiverWaterLevelScalarFieldEnum = {
   id: 'id',
   gaugeId: 'gaugeId',
@@ -1182,6 +1189,7 @@ exports.Prisma.ModelName = {
   GroupTherapyParticipant: 'GroupTherapyParticipant',
   MentalHealthGuide: 'MentalHealthGuide',
   RainfallReading: 'RainfallReading',
+  RainfallAlertLog: 'RainfallAlertLog',
   RiverWaterLevel: 'RiverWaterLevel',
   DownstreamMapping: 'DownstreamMapping',
   IncidentDuplicateLink: 'IncidentDuplicateLink',

@@ -270,7 +270,7 @@ export default function AlertsPage() {
           </div>
         )}
 
-        <div className={cn("grid grid-cols-1 gap-10", canBroadcast ? "xl:grid-cols-12" : "")}>
+        {canBroadcast && <div className={cn("grid grid-cols-1 gap-10", "xl:grid-cols-12")}>
           {canBroadcast && (
             <div className="xl:col-span-7 suraksha-card p-10 bg-white dark:bg-gray-900">
               <div className="flex items-center gap-3 mb-10 text-gray-800 dark:text-white/90">
@@ -389,7 +389,7 @@ export default function AlertsPage() {
             </div>
           )}
 
-          {/* Live Preview Side */}
+          {/* Live Preview Side — only shown inside the canBroadcast grid */}
           {canBroadcast && (
             <div className="xl:col-span-5 flex flex-col gap-8">
                <div className="p-8 bg-slate-900 rounded-[3rem] shadow-2xl relative overflow-hidden flex-1 flex flex-col justify-center min-h-[500px]">
@@ -431,7 +431,7 @@ export default function AlertsPage() {
                </div>
             </div>
           )}
-        </div>
+        </div>}
 
         {/* List Area */}
         <div className="space-y-10 pt-10">
@@ -439,8 +439,8 @@ export default function AlertsPage() {
              <div>
                <h3 className="text-3xl font-black text-gray-800 dark:text-white/90">{t('alerts_page.transmission_logs')}</h3>
                <div className="flex gap-4 mt-4">
-                 <button onClick={() => setActiveTab('ACTIVE')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'ACTIVE' ? 'bg-blue-100 text-blue-700' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:bg-gray-800/50')}>{t('alerts_page.active_history')}</button>
-                 <button onClick={() => setActiveTab('SCHEDULED')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'SCHEDULED' ? 'bg-amber-100 text-amber-700' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:bg-gray-800/50')}>{t('alerts_page.scheduled_mock')}</button>
+                 <button onClick={() => setActiveTab('ACTIVE')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'ACTIVE' ? 'bg-blue-100 text-blue-700' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200')}>{t('alerts_page.active_history')}</button>
+                 <button onClick={() => setActiveTab('SCHEDULED')} className={cn("text-[11px] font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-colors", activeTab === 'SCHEDULED' ? 'bg-amber-100 text-amber-700' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200')}>{t('alerts_page.scheduled_mock')}</button>
                </div>
              </div>
              

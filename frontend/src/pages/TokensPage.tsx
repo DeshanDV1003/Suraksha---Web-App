@@ -183,7 +183,7 @@ export default function TokensPage() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex overflow-x-auto gap-2 bg-[#131f33] p-2 rounded-2xl shadow-sm border border-cyan-400/10">
+        <div className="flex overflow-x-auto gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-cyan-400/10">
           {[
             { id: 'directory', label: t('tokens_page.tabs.directory'), icon: List },
             { id: 'issue', label: t('tokens_page.tabs.issue'), icon: Plus },
@@ -198,7 +198,7 @@ export default function TokensPage() {
                 "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
                 activeTab === tab.id
                   ? "bg-brand-500 text-white shadow-md shadow-cyan-500/20"
-                  : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -220,10 +220,10 @@ export default function TokensPage() {
               {tokens.length === 0 ? (
                 <p className="text-center text-gray-500 dark:text-gray-400 py-10">{t('tokens_page.no_tokens')}</p>
               ) : tokens.map(token => (
-                <div key={token.id} className="p-6 border border-white/10 rounded-2xl hover:bg-white/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div key={token.id} className="p-6 border border-slate-200 dark:border-white/10 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="font-mono text-sm font-bold text-slate-400">{token.code}</span>
+                      <span className="font-mono text-sm font-bold text-slate-500 dark:text-slate-400">{token.code}</span>
                       <span className={cn(
                         "text-[10px] font-bold px-2 py-1 rounded-md tracking-wider uppercase",
                         token.status === 'ACTIVE' ? "bg-blue-500/15 text-blue-400" :
@@ -234,10 +234,10 @@ export default function TokensPage() {
                          <span className="bg-purple-500/15 text-purple-400 text-[10px] font-bold px-2 py-1 rounded-md uppercase">{t('tokens_page.household_bundle')}</span>
                       )}
                     </div>
-                    <h4 className="font-bold text-lg text-white/90">{token.user?.name || t('tokens_page.unknown_recipient')}</h4>
+                    <h4 className="font-bold text-lg text-slate-800 dark:text-white/90">{token.user?.name || t('tokens_page.unknown_recipient')}</h4>
                     <div className="flex gap-2 mt-2 flex-wrap">
                       {token.categories.map(c => (
-                        <span key={c} className="bg-white/8 border border-white/10 text-slate-300 text-[10px] font-bold px-2 py-1 rounded-full">{c}</span>
+                        <span key={c} className="bg-slate-100 dark:bg-white/8 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-[10px] font-bold px-2 py-1 rounded-full">{c}</span>
                       ))}
                     </div>
                   </div>
@@ -288,7 +288,7 @@ export default function TokensPage() {
                           "px-3 py-1.5 rounded-full text-xs font-bold transition-all border",
                           issueData.categories.includes(cat)
                             ? "bg-cyan-500/30 text-cyan-300 border-cyan-400/50 shadow-md"
-                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
+                            : "bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10"
                         )}
                       >
                         {cat}
@@ -356,7 +356,7 @@ export default function TokensPage() {
             </div>
 
             {/* QR Code Display Area */}
-            <div className="suraksha-card p-8 rounded-[1.5rem] flex flex-col items-center justify-center border-dashed border-2 border-white/10">
+            <div className="suraksha-card p-8 rounded-[1.5rem] flex flex-col items-center justify-center border-dashed border-2 border-slate-200 dark:border-white/10">
               {generatedToken ? (
                 <div className="text-center space-y-4 animate-in zoom-in">
                   <h4 className="font-black text-xl text-green-600">{t('tokens_page.token_generated')}</h4>
@@ -469,7 +469,7 @@ export default function TokensPage() {
                 <div key={token.id} className="suraksha-card p-6 border-l-4 border-l-red-500 flex flex-col md:flex-row justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <h4 className="font-black text-lg text-white/90">{token.code}</h4>
+                      <h4 className="font-black text-lg text-slate-800 dark:text-white/90">{token.code}</h4>
                       <span className="bg-red-500/15 text-red-400 text-xs font-bold px-2 py-1 rounded">{t('tokens_page.risk_score')} {(token.fraudRiskScore * 100).toFixed(0)}%</span>
                     </div>
                     <p className="text-sm font-bold text-slate-400 mt-1">{t('tokens_page.user_label')} {token.user?.name}</p>
@@ -526,7 +526,7 @@ export default function TokensPage() {
                           "px-2 py-1 rounded border text-[10px] font-bold transition-all",
                           donorData.targetCategories.includes(cat)
                             ? "bg-emerald-500/25 text-emerald-300 border-emerald-400/50"
-                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
+                            : "bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10"
                         )}
                       >
                         {cat}
@@ -534,7 +534,7 @@ export default function TokensPage() {
                     ))}
                   </div>
                 </div>
-                <button 
+                <button
                   type="submit" disabled={isSubmitting}
                   className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-emerald-700 transition-all disabled:opacity-50"
                 >
@@ -550,7 +550,7 @@ export default function TokensPage() {
                ) : donors.map((donor: any) => (
                  <div key={donor.id} className="suraksha-card p-6 rounded-[1.5rem] flex flex-col sm:flex-row justify-between gap-4">
                    <div>
-                     <h4 className="font-black text-xl text-white/90">{donor.donorName}</h4>
+                     <h4 className="font-black text-xl text-slate-800 dark:text-white/90">{donor.donorName}</h4>
                      <p className="text-emerald-400 font-bold mb-3">LKR {donor.contributionAmount.toLocaleString()}</p>
                      <div className="flex flex-wrap gap-2">
                        {donor.targetCategories.map((c: string) => <span key={c} className="bg-emerald-500/15 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">{c}</span>)}
@@ -560,7 +560,7 @@ export default function TokensPage() {
                      <div className="text-slate-400 text-sm font-bold">
                        {t('tokens_page.tokens_issued')} {donor.tokens?.length || 0}
                      </div>
-                     <div className="text-xs text-slate-500 mt-2 bg-white/5 px-3 py-2 rounded-lg inline-block">
+                     <div className="text-xs text-slate-500 mt-2 bg-slate-100 dark:bg-white/5 px-3 py-2 rounded-lg inline-block">
                        {t('tokens_page.impact')} {donor.tokens?.reduce((acc: number, t: any) => acc + (t.claims?.length || 0), 0) || 0} {t('tokens_page.successful_claims')}
                      </div>
                    </div>
@@ -573,9 +573,9 @@ export default function TokensPage() {
         {toast && (
           <div className={cn(
             "fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-8 duration-300 font-sans",
-            toast.type === 'success' ? "bg-[#131f33] text-emerald-400 border border-emerald-500/30" :
-            toast.type === 'error' ? "bg-[#131f33] text-red-400 border border-red-500/30" :
-            "bg-[#131f33] text-amber-400 border border-amber-500/30"
+            toast.type === 'success' ? "bg-white dark:bg-[#131f33] text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-lg" :
+            toast.type === 'error' ? "bg-white dark:bg-[#131f33] text-red-600 dark:text-red-400 border border-red-500/30 shadow-lg" :
+            "bg-white dark:bg-[#131f33] text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-lg"
           )}>
             {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
             <span className="font-bold text-sm tracking-wide">{toast.message}</span>

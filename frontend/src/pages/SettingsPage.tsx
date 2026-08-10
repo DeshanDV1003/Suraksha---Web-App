@@ -276,8 +276,49 @@ export default function SettingsPage() {
     } catch { showToast('Failed to revoke sessions', 'error') }
   }
 
-  // ── 2FA state from user record ───────────────────────────────────────────────
-  const [twoFAEnabled] = useState<boolean>((user as any)?.twoFactorEnabled ?? false)
+  // ── 2FA ──────────────────────────────────────────────────────────────────────
+  const [twoFAEnabled, setTwoFAEnabled] = useState<boolean>((user as any)?.twoFactorEnabled ?? false)
+  const [show2FAModal, setShow2FAModal] = useState(false)
+  const [twoFAStep, setTwoFAStep] = useState<'setup' | 'verify'>('setup')
+  const [twoFAQr, setTwoFAQr] = useState('')
+  const [twoFASecret, setTwoFASecret] = useState('')
+  const [twoFAToken, setTwoFAToken] = useState('')
+  const [twoFALoading, setTwoFALoading] = useState(false)
+
+  const open2FAModal = async () => {
+    setTwoFAToken('')
+    setTwoFAStep('setup')
+    setShow2FAModal(true)
+    setTwoFALoading(true)
+    try {
+      const res = await authService.setup2FA()
+      setTwoFAQr(res.data.qrCode)
+      setTwoFASecret(res.data.secret)
+      setTwoFAStep('verify')
+    } catch {
+      showToast('Failed to generate 2FA setup. Please try again.', 'error')
+      setShow2FAModal(false)
+    } finally {
+      setTwoFALoading(false)
+    }
+  }
+
+  const handle2FAVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (twoFAToken.length !== 6) { showToast('Enter the 6-digit code from your authenticator app', 'error'); return }
+    setTwoFALoading(true)
+    try {
+      await authService.verify2FA(twoFAToken)
+      setTwoFAEnabled(true)
+      updateUser({ ...(user as any), twoFactorEnabled: true })
+      setShow2FAModal(false)
+      showToast('Two-factor authentication enabled!')
+    } catch {
+      showToast('Invalid code. Please try again.', 'error')
+    } finally {
+      setTwoFALoading(false)
+    }
+  }
 
   const tabs = [
     { id: 'profile',       name: 'Profile Info',       icon: User   },
@@ -295,7 +336,7 @@ export default function SettingsPage() {
 
       {/* Change Password Modal */}
       {showPwModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="bg-white dark:bg-[#1c2128] border border-gray-200 dark:border-slate-800 rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">Change Password</h3>
@@ -316,6 +357,75 @@ export default function SettingsPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 2FA Setup Modal */}
+      {show2FAModal && (
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-[#1c2128] border border-gray-200 dark:border-slate-800 rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-500/15 rounded-2xl flex items-center justify-center">
+                  <Smartphone className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">Two-Factor Auth</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Authenticator app setup</p>
+                </div>
+              </div>
+              <button onClick={() => setShow2FAModal(false)} className="text-gray-400 hover:text-gray-700 dark:hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+
+            {twoFALoading && twoFAStep === 'setup' ? (
+              <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                <p className="text-sm font-medium">Generating secure QR code…</p>
+              </div>
+            ) : twoFAStep === 'verify' ? (
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="font-bold">Step 1.</span> Open your authenticator app (Google Authenticator, Authy, etc.) and scan this QR code.
+                  </p>
+                  {twoFAQr && (
+                    <div className="flex justify-center p-4 bg-white rounded-2xl border border-gray-200 dark:border-slate-700">
+                      <img src={twoFAQr} alt="2FA QR Code" className="w-48 h-48" />
+                    </div>
+                  )}
+                  <details className="text-xs text-gray-500 dark:text-gray-400">
+                    <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 font-medium">Can't scan? Enter the key manually</summary>
+                    <code className="block mt-2 p-3 bg-gray-50 dark:bg-slate-900 rounded-xl break-all font-mono text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-slate-700 select-all">
+                      {twoFASecret}
+                    </code>
+                  </details>
+                </div>
+
+                <form onSubmit={handle2FAVerify} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Step 2 — Enter the 6-digit code</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={twoFAToken}
+                      onChange={e => setTwoFAToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      placeholder="000000"
+                      className="w-full h-14 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-xl text-center text-2xl font-mono font-bold text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 tracking-[0.5em] transition-all"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <button type="button" onClick={() => setShow2FAModal(false)} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">Cancel</button>
+                    <button type="submit" disabled={twoFALoading || twoFAToken.length !== 6} className="flex-1 py-3 rounded-xl bg-blue-600 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-all">
+                      {twoFALoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                      Verify & Enable
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : null}
           </div>
         </div>
       )}
@@ -479,13 +589,20 @@ export default function SettingsPage() {
                       <div className="p-5 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl flex items-center justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Smartphone className="w-4 h-4 text-blue-400" /> Two-Factor Auth</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{twoFAEnabled ? 'Active — Google Authenticator' : 'Not configured'}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{twoFAEnabled ? 'Active — Authenticator app' : 'Not configured'}</div>
                         </div>
-                        <span className={cn("px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider border",
-                          twoFAEnabled ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/20" : "bg-amber-500/20 text-amber-400 border-amber-500/20"
-                        )}>
-                          {twoFAEnabled ? 'Enabled' : 'Disabled'}
-                        </span>
+                        {twoFAEnabled ? (
+                          <span className="px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider border bg-emerald-500/20 text-emerald-400 border-emerald-500/20">
+                            Enabled
+                          </span>
+                        ) : (
+                          <button
+                            onClick={open2FAModal}
+                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm shadow-blue-500/20"
+                          >
+                            Set up
+                          </button>
+                        )}
                       </div>
 
                       <div className="p-5 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl flex items-center justify-between">

@@ -299,6 +299,11 @@ export type MentalHealthGuide = $Result.DefaultSelection<Prisma.$MentalHealthGui
  */
 export type RainfallReading = $Result.DefaultSelection<Prisma.$RainfallReadingPayload>
 /**
+ * Model RainfallAlertLog
+ * 
+ */
+export type RainfallAlertLog = $Result.DefaultSelection<Prisma.$RainfallAlertLogPayload>
+/**
  * Model RiverWaterLevel
  * 
  */
@@ -1391,6 +1396,16 @@ export class PrismaClient<
   get rainfallReading(): Prisma.RainfallReadingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.rainfallAlertLog`: Exposes CRUD operations for the **RainfallAlertLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RainfallAlertLogs
+    * const rainfallAlertLogs = await prisma.rainfallAlertLog.findMany()
+    * ```
+    */
+  get rainfallAlertLog(): Prisma.RainfallAlertLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.riverWaterLevel`: Exposes CRUD operations for the **RiverWaterLevel** model.
     * Example usage:
     * ```ts
@@ -1966,6 +1981,7 @@ export namespace Prisma {
     GroupTherapyParticipant: 'GroupTherapyParticipant',
     MentalHealthGuide: 'MentalHealthGuide',
     RainfallReading: 'RainfallReading',
+    RainfallAlertLog: 'RainfallAlertLog',
     RiverWaterLevel: 'RiverWaterLevel',
     DownstreamMapping: 'DownstreamMapping',
     IncidentDuplicateLink: 'IncidentDuplicateLink',
@@ -1989,7 +2005,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "campSupplyRequest" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "campSupplyRequest" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "rainfallAlertLog" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6211,6 +6227,80 @@ export namespace Prisma {
           }
         }
       }
+      RainfallAlertLog: {
+        payload: Prisma.$RainfallAlertLogPayload<ExtArgs>
+        fields: Prisma.RainfallAlertLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RainfallAlertLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RainfallAlertLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>
+          }
+          findFirst: {
+            args: Prisma.RainfallAlertLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RainfallAlertLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>
+          }
+          findMany: {
+            args: Prisma.RainfallAlertLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>[]
+          }
+          create: {
+            args: Prisma.RainfallAlertLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>
+          }
+          createMany: {
+            args: Prisma.RainfallAlertLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RainfallAlertLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>[]
+          }
+          delete: {
+            args: Prisma.RainfallAlertLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>
+          }
+          update: {
+            args: Prisma.RainfallAlertLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.RainfallAlertLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RainfallAlertLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RainfallAlertLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.RainfallAlertLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RainfallAlertLogPayload>
+          }
+          aggregate: {
+            args: Prisma.RainfallAlertLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRainfallAlertLog>
+          }
+          groupBy: {
+            args: Prisma.RainfallAlertLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RainfallAlertLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RainfallAlertLogCountArgs<ExtArgs>
+            result: $Utils.Optional<RainfallAlertLogCountAggregateOutputType> | number
+          }
+        }
+      }
       RiverWaterLevel: {
         payload: Prisma.$RiverWaterLevelPayload<ExtArgs>
         fields: Prisma.RiverWaterLevelFieldRefs
@@ -6948,6 +7038,7 @@ export namespace Prisma {
     groupTherapyParticipant?: GroupTherapyParticipantOmit
     mentalHealthGuide?: MentalHealthGuideOmit
     rainfallReading?: RainfallReadingOmit
+    rainfallAlertLog?: RainfallAlertLogOmit
     riverWaterLevel?: RiverWaterLevelOmit
     downstreamMapping?: DownstreamMappingOmit
     incidentDuplicateLink?: IncidentDuplicateLinkOmit
@@ -73145,6 +73236,988 @@ export namespace Prisma {
 
 
   /**
+   * Model RainfallAlertLog
+   */
+
+  export type AggregateRainfallAlertLog = {
+    _count: RainfallAlertLogCountAggregateOutputType | null
+    _min: RainfallAlertLogMinAggregateOutputType | null
+    _max: RainfallAlertLogMaxAggregateOutputType | null
+  }
+
+  export type RainfallAlertLogMinAggregateOutputType = {
+    id: string | null
+    district: string | null
+    lastFiredAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RainfallAlertLogMaxAggregateOutputType = {
+    id: string | null
+    district: string | null
+    lastFiredAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RainfallAlertLogCountAggregateOutputType = {
+    id: number
+    district: number
+    lastFiredAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RainfallAlertLogMinAggregateInputType = {
+    id?: true
+    district?: true
+    lastFiredAt?: true
+    updatedAt?: true
+  }
+
+  export type RainfallAlertLogMaxAggregateInputType = {
+    id?: true
+    district?: true
+    lastFiredAt?: true
+    updatedAt?: true
+  }
+
+  export type RainfallAlertLogCountAggregateInputType = {
+    id?: true
+    district?: true
+    lastFiredAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RainfallAlertLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RainfallAlertLog to aggregate.
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RainfallAlertLogs to fetch.
+     */
+    orderBy?: RainfallAlertLogOrderByWithRelationInput | RainfallAlertLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RainfallAlertLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RainfallAlertLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RainfallAlertLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RainfallAlertLogs
+    **/
+    _count?: true | RainfallAlertLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RainfallAlertLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RainfallAlertLogMaxAggregateInputType
+  }
+
+  export type GetRainfallAlertLogAggregateType<T extends RainfallAlertLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateRainfallAlertLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRainfallAlertLog[P]>
+      : GetScalarType<T[P], AggregateRainfallAlertLog[P]>
+  }
+
+
+
+
+  export type RainfallAlertLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RainfallAlertLogWhereInput
+    orderBy?: RainfallAlertLogOrderByWithAggregationInput | RainfallAlertLogOrderByWithAggregationInput[]
+    by: RainfallAlertLogScalarFieldEnum[] | RainfallAlertLogScalarFieldEnum
+    having?: RainfallAlertLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RainfallAlertLogCountAggregateInputType | true
+    _min?: RainfallAlertLogMinAggregateInputType
+    _max?: RainfallAlertLogMaxAggregateInputType
+  }
+
+  export type RainfallAlertLogGroupByOutputType = {
+    id: string
+    district: string
+    lastFiredAt: Date
+    updatedAt: Date
+    _count: RainfallAlertLogCountAggregateOutputType | null
+    _min: RainfallAlertLogMinAggregateOutputType | null
+    _max: RainfallAlertLogMaxAggregateOutputType | null
+  }
+
+  type GetRainfallAlertLogGroupByPayload<T extends RainfallAlertLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RainfallAlertLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RainfallAlertLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RainfallAlertLogGroupByOutputType[P]>
+            : GetScalarType<T[P], RainfallAlertLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RainfallAlertLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    district?: boolean
+    lastFiredAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rainfallAlertLog"]>
+
+  export type RainfallAlertLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    district?: boolean
+    lastFiredAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rainfallAlertLog"]>
+
+  export type RainfallAlertLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    district?: boolean
+    lastFiredAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rainfallAlertLog"]>
+
+  export type RainfallAlertLogSelectScalar = {
+    id?: boolean
+    district?: boolean
+    lastFiredAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RainfallAlertLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "district" | "lastFiredAt" | "updatedAt", ExtArgs["result"]["rainfallAlertLog"]>
+
+  export type $RainfallAlertLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RainfallAlertLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      district: string
+      lastFiredAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["rainfallAlertLog"]>
+    composites: {}
+  }
+
+  type RainfallAlertLogGetPayload<S extends boolean | null | undefined | RainfallAlertLogDefaultArgs> = $Result.GetResult<Prisma.$RainfallAlertLogPayload, S>
+
+  type RainfallAlertLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RainfallAlertLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RainfallAlertLogCountAggregateInputType | true
+    }
+
+  export interface RainfallAlertLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RainfallAlertLog'], meta: { name: 'RainfallAlertLog' } }
+    /**
+     * Find zero or one RainfallAlertLog that matches the filter.
+     * @param {RainfallAlertLogFindUniqueArgs} args - Arguments to find a RainfallAlertLog
+     * @example
+     * // Get one RainfallAlertLog
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RainfallAlertLogFindUniqueArgs>(args: SelectSubset<T, RainfallAlertLogFindUniqueArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one RainfallAlertLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RainfallAlertLogFindUniqueOrThrowArgs} args - Arguments to find a RainfallAlertLog
+     * @example
+     * // Get one RainfallAlertLog
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RainfallAlertLogFindUniqueOrThrowArgs>(args: SelectSubset<T, RainfallAlertLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first RainfallAlertLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogFindFirstArgs} args - Arguments to find a RainfallAlertLog
+     * @example
+     * // Get one RainfallAlertLog
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RainfallAlertLogFindFirstArgs>(args?: SelectSubset<T, RainfallAlertLogFindFirstArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first RainfallAlertLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogFindFirstOrThrowArgs} args - Arguments to find a RainfallAlertLog
+     * @example
+     * // Get one RainfallAlertLog
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RainfallAlertLogFindFirstOrThrowArgs>(args?: SelectSubset<T, RainfallAlertLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more RainfallAlertLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RainfallAlertLogs
+     * const rainfallAlertLogs = await prisma.rainfallAlertLog.findMany()
+     * 
+     * // Get first 10 RainfallAlertLogs
+     * const rainfallAlertLogs = await prisma.rainfallAlertLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rainfallAlertLogWithIdOnly = await prisma.rainfallAlertLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RainfallAlertLogFindManyArgs>(args?: SelectSubset<T, RainfallAlertLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a RainfallAlertLog.
+     * @param {RainfallAlertLogCreateArgs} args - Arguments to create a RainfallAlertLog.
+     * @example
+     * // Create one RainfallAlertLog
+     * const RainfallAlertLog = await prisma.rainfallAlertLog.create({
+     *   data: {
+     *     // ... data to create a RainfallAlertLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends RainfallAlertLogCreateArgs>(args: SelectSubset<T, RainfallAlertLogCreateArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many RainfallAlertLogs.
+     * @param {RainfallAlertLogCreateManyArgs} args - Arguments to create many RainfallAlertLogs.
+     * @example
+     * // Create many RainfallAlertLogs
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RainfallAlertLogCreateManyArgs>(args?: SelectSubset<T, RainfallAlertLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RainfallAlertLogs and returns the data saved in the database.
+     * @param {RainfallAlertLogCreateManyAndReturnArgs} args - Arguments to create many RainfallAlertLogs.
+     * @example
+     * // Create many RainfallAlertLogs
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RainfallAlertLogs and only return the `id`
+     * const rainfallAlertLogWithIdOnly = await prisma.rainfallAlertLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RainfallAlertLogCreateManyAndReturnArgs>(args?: SelectSubset<T, RainfallAlertLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a RainfallAlertLog.
+     * @param {RainfallAlertLogDeleteArgs} args - Arguments to delete one RainfallAlertLog.
+     * @example
+     * // Delete one RainfallAlertLog
+     * const RainfallAlertLog = await prisma.rainfallAlertLog.delete({
+     *   where: {
+     *     // ... filter to delete one RainfallAlertLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RainfallAlertLogDeleteArgs>(args: SelectSubset<T, RainfallAlertLogDeleteArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one RainfallAlertLog.
+     * @param {RainfallAlertLogUpdateArgs} args - Arguments to update one RainfallAlertLog.
+     * @example
+     * // Update one RainfallAlertLog
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RainfallAlertLogUpdateArgs>(args: SelectSubset<T, RainfallAlertLogUpdateArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more RainfallAlertLogs.
+     * @param {RainfallAlertLogDeleteManyArgs} args - Arguments to filter RainfallAlertLogs to delete.
+     * @example
+     * // Delete a few RainfallAlertLogs
+     * const { count } = await prisma.rainfallAlertLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RainfallAlertLogDeleteManyArgs>(args?: SelectSubset<T, RainfallAlertLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RainfallAlertLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RainfallAlertLogs
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RainfallAlertLogUpdateManyArgs>(args: SelectSubset<T, RainfallAlertLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RainfallAlertLogs and returns the data updated in the database.
+     * @param {RainfallAlertLogUpdateManyAndReturnArgs} args - Arguments to update many RainfallAlertLogs.
+     * @example
+     * // Update many RainfallAlertLogs
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RainfallAlertLogs and only return the `id`
+     * const rainfallAlertLogWithIdOnly = await prisma.rainfallAlertLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RainfallAlertLogUpdateManyAndReturnArgs>(args: SelectSubset<T, RainfallAlertLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one RainfallAlertLog.
+     * @param {RainfallAlertLogUpsertArgs} args - Arguments to update or create a RainfallAlertLog.
+     * @example
+     * // Update or create a RainfallAlertLog
+     * const rainfallAlertLog = await prisma.rainfallAlertLog.upsert({
+     *   create: {
+     *     // ... data to create a RainfallAlertLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RainfallAlertLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RainfallAlertLogUpsertArgs>(args: SelectSubset<T, RainfallAlertLogUpsertArgs<ExtArgs>>): Prisma__RainfallAlertLogClient<$Result.GetResult<Prisma.$RainfallAlertLogPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of RainfallAlertLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogCountArgs} args - Arguments to filter RainfallAlertLogs to count.
+     * @example
+     * // Count the number of RainfallAlertLogs
+     * const count = await prisma.rainfallAlertLog.count({
+     *   where: {
+     *     // ... the filter for the RainfallAlertLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends RainfallAlertLogCountArgs>(
+      args?: Subset<T, RainfallAlertLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RainfallAlertLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RainfallAlertLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RainfallAlertLogAggregateArgs>(args: Subset<T, RainfallAlertLogAggregateArgs>): Prisma.PrismaPromise<GetRainfallAlertLogAggregateType<T>>
+
+    /**
+     * Group by RainfallAlertLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RainfallAlertLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RainfallAlertLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RainfallAlertLogGroupByArgs['orderBy'] }
+        : { orderBy?: RainfallAlertLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RainfallAlertLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRainfallAlertLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RainfallAlertLog model
+   */
+  readonly fields: RainfallAlertLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RainfallAlertLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RainfallAlertLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RainfallAlertLog model
+   */ 
+  interface RainfallAlertLogFieldRefs {
+    readonly id: FieldRef<"RainfallAlertLog", 'String'>
+    readonly district: FieldRef<"RainfallAlertLog", 'String'>
+    readonly lastFiredAt: FieldRef<"RainfallAlertLog", 'DateTime'>
+    readonly updatedAt: FieldRef<"RainfallAlertLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RainfallAlertLog findUnique
+   */
+  export type RainfallAlertLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RainfallAlertLog to fetch.
+     */
+    where: RainfallAlertLogWhereUniqueInput
+  }
+
+  /**
+   * RainfallAlertLog findUniqueOrThrow
+   */
+  export type RainfallAlertLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RainfallAlertLog to fetch.
+     */
+    where: RainfallAlertLogWhereUniqueInput
+  }
+
+  /**
+   * RainfallAlertLog findFirst
+   */
+  export type RainfallAlertLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RainfallAlertLog to fetch.
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RainfallAlertLogs to fetch.
+     */
+    orderBy?: RainfallAlertLogOrderByWithRelationInput | RainfallAlertLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RainfallAlertLogs.
+     */
+    cursor?: RainfallAlertLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RainfallAlertLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RainfallAlertLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RainfallAlertLogs.
+     */
+    distinct?: RainfallAlertLogScalarFieldEnum | RainfallAlertLogScalarFieldEnum[]
+  }
+
+  /**
+   * RainfallAlertLog findFirstOrThrow
+   */
+  export type RainfallAlertLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RainfallAlertLog to fetch.
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RainfallAlertLogs to fetch.
+     */
+    orderBy?: RainfallAlertLogOrderByWithRelationInput | RainfallAlertLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RainfallAlertLogs.
+     */
+    cursor?: RainfallAlertLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RainfallAlertLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RainfallAlertLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RainfallAlertLogs.
+     */
+    distinct?: RainfallAlertLogScalarFieldEnum | RainfallAlertLogScalarFieldEnum[]
+  }
+
+  /**
+   * RainfallAlertLog findMany
+   */
+  export type RainfallAlertLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RainfallAlertLogs to fetch.
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RainfallAlertLogs to fetch.
+     */
+    orderBy?: RainfallAlertLogOrderByWithRelationInput | RainfallAlertLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RainfallAlertLogs.
+     */
+    cursor?: RainfallAlertLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RainfallAlertLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RainfallAlertLogs.
+     */
+    skip?: number
+    distinct?: RainfallAlertLogScalarFieldEnum | RainfallAlertLogScalarFieldEnum[]
+  }
+
+  /**
+   * RainfallAlertLog create
+   */
+  export type RainfallAlertLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a RainfallAlertLog.
+     */
+    data: XOR<RainfallAlertLogCreateInput, RainfallAlertLogUncheckedCreateInput>
+  }
+
+  /**
+   * RainfallAlertLog createMany
+   */
+  export type RainfallAlertLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RainfallAlertLogs.
+     */
+    data: RainfallAlertLogCreateManyInput | RainfallAlertLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RainfallAlertLog createManyAndReturn
+   */
+  export type RainfallAlertLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many RainfallAlertLogs.
+     */
+    data: RainfallAlertLogCreateManyInput | RainfallAlertLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RainfallAlertLog update
+   */
+  export type RainfallAlertLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a RainfallAlertLog.
+     */
+    data: XOR<RainfallAlertLogUpdateInput, RainfallAlertLogUncheckedUpdateInput>
+    /**
+     * Choose, which RainfallAlertLog to update.
+     */
+    where: RainfallAlertLogWhereUniqueInput
+  }
+
+  /**
+   * RainfallAlertLog updateMany
+   */
+  export type RainfallAlertLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RainfallAlertLogs.
+     */
+    data: XOR<RainfallAlertLogUpdateManyMutationInput, RainfallAlertLogUncheckedUpdateManyInput>
+    /**
+     * Filter which RainfallAlertLogs to update
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * Limit how many RainfallAlertLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RainfallAlertLog updateManyAndReturn
+   */
+  export type RainfallAlertLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * The data used to update RainfallAlertLogs.
+     */
+    data: XOR<RainfallAlertLogUpdateManyMutationInput, RainfallAlertLogUncheckedUpdateManyInput>
+    /**
+     * Filter which RainfallAlertLogs to update
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * Limit how many RainfallAlertLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RainfallAlertLog upsert
+   */
+  export type RainfallAlertLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the RainfallAlertLog to update in case it exists.
+     */
+    where: RainfallAlertLogWhereUniqueInput
+    /**
+     * In case the RainfallAlertLog found by the `where` argument doesn't exist, create a new RainfallAlertLog with this data.
+     */
+    create: XOR<RainfallAlertLogCreateInput, RainfallAlertLogUncheckedCreateInput>
+    /**
+     * In case the RainfallAlertLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RainfallAlertLogUpdateInput, RainfallAlertLogUncheckedUpdateInput>
+  }
+
+  /**
+   * RainfallAlertLog delete
+   */
+  export type RainfallAlertLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+    /**
+     * Filter which RainfallAlertLog to delete.
+     */
+    where: RainfallAlertLogWhereUniqueInput
+  }
+
+  /**
+   * RainfallAlertLog deleteMany
+   */
+  export type RainfallAlertLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RainfallAlertLogs to delete
+     */
+    where?: RainfallAlertLogWhereInput
+    /**
+     * Limit how many RainfallAlertLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RainfallAlertLog without action
+   */
+  export type RainfallAlertLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RainfallAlertLog
+     */
+    select?: RainfallAlertLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RainfallAlertLog
+     */
+    omit?: RainfallAlertLogOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model RiverWaterLevel
    */
 
@@ -83119,6 +84192,16 @@ export namespace Prisma {
   export type RainfallReadingScalarFieldEnum = (typeof RainfallReadingScalarFieldEnum)[keyof typeof RainfallReadingScalarFieldEnum]
 
 
+  export const RainfallAlertLogScalarFieldEnum: {
+    id: 'id',
+    district: 'district',
+    lastFiredAt: 'lastFiredAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RainfallAlertLogScalarFieldEnum = (typeof RainfallAlertLogScalarFieldEnum)[keyof typeof RainfallAlertLogScalarFieldEnum]
+
+
   export const RiverWaterLevelScalarFieldEnum: {
     id: 'id',
     gaugeId: 'gaugeId',
@@ -88191,6 +89274,53 @@ export namespace Prisma {
     recordedAt?: DateTimeWithAggregatesFilter<"RainfallReading"> | Date | string
     fetchedAt?: DateTimeWithAggregatesFilter<"RainfallReading"> | Date | string
     source?: StringWithAggregatesFilter<"RainfallReading"> | string
+  }
+
+  export type RainfallAlertLogWhereInput = {
+    AND?: RainfallAlertLogWhereInput | RainfallAlertLogWhereInput[]
+    OR?: RainfallAlertLogWhereInput[]
+    NOT?: RainfallAlertLogWhereInput | RainfallAlertLogWhereInput[]
+    id?: StringFilter<"RainfallAlertLog"> | string
+    district?: StringFilter<"RainfallAlertLog"> | string
+    lastFiredAt?: DateTimeFilter<"RainfallAlertLog"> | Date | string
+    updatedAt?: DateTimeFilter<"RainfallAlertLog"> | Date | string
+  }
+
+  export type RainfallAlertLogOrderByWithRelationInput = {
+    id?: SortOrder
+    district?: SortOrder
+    lastFiredAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RainfallAlertLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    district?: string
+    AND?: RainfallAlertLogWhereInput | RainfallAlertLogWhereInput[]
+    OR?: RainfallAlertLogWhereInput[]
+    NOT?: RainfallAlertLogWhereInput | RainfallAlertLogWhereInput[]
+    lastFiredAt?: DateTimeFilter<"RainfallAlertLog"> | Date | string
+    updatedAt?: DateTimeFilter<"RainfallAlertLog"> | Date | string
+  }, "id" | "district">
+
+  export type RainfallAlertLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    district?: SortOrder
+    lastFiredAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RainfallAlertLogCountOrderByAggregateInput
+    _max?: RainfallAlertLogMaxOrderByAggregateInput
+    _min?: RainfallAlertLogMinOrderByAggregateInput
+  }
+
+  export type RainfallAlertLogScalarWhereWithAggregatesInput = {
+    AND?: RainfallAlertLogScalarWhereWithAggregatesInput | RainfallAlertLogScalarWhereWithAggregatesInput[]
+    OR?: RainfallAlertLogScalarWhereWithAggregatesInput[]
+    NOT?: RainfallAlertLogScalarWhereWithAggregatesInput | RainfallAlertLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RainfallAlertLog"> | string
+    district?: StringWithAggregatesFilter<"RainfallAlertLog"> | string
+    lastFiredAt?: DateTimeWithAggregatesFilter<"RainfallAlertLog"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RainfallAlertLog"> | Date | string
   }
 
   export type RiverWaterLevelWhereInput = {
@@ -93825,6 +94955,55 @@ export namespace Prisma {
     source?: StringFieldUpdateOperationsInput | string
   }
 
+  export type RainfallAlertLogCreateInput = {
+    id?: string
+    district: string
+    lastFiredAt: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RainfallAlertLogUncheckedCreateInput = {
+    id?: string
+    district: string
+    lastFiredAt: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RainfallAlertLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    lastFiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RainfallAlertLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    lastFiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RainfallAlertLogCreateManyInput = {
+    id?: string
+    district: string
+    lastFiredAt: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RainfallAlertLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    lastFiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RainfallAlertLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    lastFiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RiverWaterLevelCreateInput = {
     id?: string
     gaugeId: string
@@ -98112,6 +99291,27 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumWaterRiskLevelFilter<$PrismaModel>
     _max?: NestedEnumWaterRiskLevelFilter<$PrismaModel>
+  }
+
+  export type RainfallAlertLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    district?: SortOrder
+    lastFiredAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RainfallAlertLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    district?: SortOrder
+    lastFiredAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RainfallAlertLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    district?: SortOrder
+    lastFiredAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type EnumRiverStatusFilter<$PrismaModel = never> = {

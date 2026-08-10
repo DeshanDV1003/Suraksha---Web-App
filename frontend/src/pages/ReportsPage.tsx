@@ -214,20 +214,20 @@ export default function ReportsPage() {
         </div>
 
         {/* Crisis Fund */}
-        <div className="suraksha-card p-12 space-y-10 bg-gray-800 dark:bg-gray-900 text-white">
+        <div className="suraksha-card p-12 space-y-10 bg-slate-100 dark:bg-gray-800 text-slate-800 dark:text-white">
           <h3 className="text-xl font-black uppercase tracking-widest text-brand-500">{t('reports_page.crisis_fund_meter')}</h3>
           <div className="flex flex-col items-center justify-center py-6 text-center">
-            <div className="text-5xl font-black text-white tracking-tighter mb-4">{data.crisisFund.total}</div>
-            <div className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">{t('reports_page.citizen_donations')}</div>
+            <div className="text-5xl font-black text-slate-800 dark:text-white tracking-tighter mb-4">{data.crisisFund.total}</div>
+            <div className="text-[10px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-[0.3em] bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">{t('reports_page.citizen_donations')}</div>
           </div>
-          <div className="space-y-6 pt-10 border-t border-white/5">
+          <div className="space-y-6 pt-10 border-t border-slate-200 dark:border-white/5">
             {[
-              { label: t('reports_page.active_support_nodes'), value: data.crisisFund.activeNodes, color: 'text-white' },
-              { label: t('reports_page.unique_contribution_ids'), value: data.crisisFund.uniqueContributors, color: 'text-white' },
-              { label: t('reports_page.fulfillment_efficiency'), value: data.crisisFund.efficiency, color: 'text-green-400' },
+              { label: t('reports_page.active_support_nodes'), value: data.crisisFund.activeNodes, color: 'text-slate-700 dark:text-white' },
+              { label: t('reports_page.unique_contribution_ids'), value: data.crisisFund.uniqueContributors, color: 'text-slate-700 dark:text-white' },
+              { label: t('reports_page.fulfillment_efficiency'), value: data.crisisFund.efficiency, color: 'text-green-600 dark:text-green-400' },
             ].map((item, i) => (
               <div key={i} className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest leading-none">
-                <span className="text-white/40">{item.label}</span>
+                <span className="text-slate-500 dark:text-white/40">{item.label}</span>
                 <span className={cn("font-black", item.color)}>{item.value}</span>
               </div>
             ))}
