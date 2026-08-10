@@ -1,6 +1,5 @@
 import prisma from '../utils/prisma';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Expo } = require('expo-server-sdk') as { Expo: any };
+import { Expo } from 'expo-server-sdk';
 type ExpoPushMessage = { to: string; title: string; body: string; sound: string; priority: string; data: Record<string, any> };
 
 const expo = new Expo();
