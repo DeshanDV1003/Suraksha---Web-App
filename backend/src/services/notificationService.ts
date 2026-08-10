@@ -1,6 +1,5 @@
 import prisma from '../utils/prisma';
-import { Expo } from 'expo-server-sdk';
-type ExpoPushMessage = { to: string; title: string; body: string; sound: string; priority: string; data: Record<string, any> };
+import { Expo, ExpoPushMessage } from 'expo-server-sdk';
 
 const expo = new Expo();
 
