@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import PageBreadcrumb from '../components/common/PageBreadCrumb';
 import PageMeta from '../components/common/PageMeta';
+import { API_URL } from '../lib/env';
 
 interface DownstreamMapping {
   id?: string;
@@ -21,7 +22,7 @@ export default function RiverMappingsPage() {
 
   const fetchMappings = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/water/downstream-mapping');
+      const res = await fetch(`${API_URL}/water/downstream-mapping`);
       const data = await res.json();
       setMappings(data);
     } catch (err) {
@@ -41,7 +42,7 @@ export default function RiverMappingsPage() {
           : (editing.targetDistricts as unknown as string).split(',').map(s => s.trim())
       };
       
-      const res = await fetch('http://localhost:3001/api/water/downstream-mapping', {
+      const res = await fetch(`${API_URL}/water/downstream-mapping`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

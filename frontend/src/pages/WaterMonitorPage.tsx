@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import PageBreadcrumb from '../components/common/PageBreadCrumb';
 import PageMeta from '../components/common/PageMeta';
 import { io } from 'socket.io-client';
+import { BACKEND_URL, API_URL } from '../lib/env';
 
-const API = 'http://localhost:3001/api/water';
+const API = `${API_URL}/water`;
 
 interface RiverLevel {
   gaugeId: string; riverName: string; stationName: string; district: string;
@@ -118,7 +119,7 @@ export default function WaterMonitorPage() {
 
   useEffect(() => {
     fetchAll();
-    const socket = io('http://localhost:3001/water');
+    const socket = io(`${BACKEND_URL}/water`);
     socket.on('water_data_updated', fetchAll);
     return () => { socket.disconnect(); };
   }, [fetchAll]);

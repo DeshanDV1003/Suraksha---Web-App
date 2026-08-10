@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useDialog } from '@/components/ui/dialogs/DialogProvider';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, ZoomControl, useMap, Circle, Polygon, Polyline } from 'react-leaflet';
 import L from 'leaflet';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { API_URL } from '@/lib/env';
 import {
   Layers, Zap, Search, Shield, AlertTriangle, TrendingUp, Activity,
   Heart, Home, Play, Pause, Navigation, Clock, User, ShieldCheck,
@@ -124,7 +125,7 @@ function MapAddressSearch({ onLocationFound }: { onLocationFound: (loc: any) => 
     setLoading(true); setError(''); setSuggestions([]);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:3001/api/location/geocode', { address: query }, { headers: { Authorization: `Bearer ${token}` } });
+      const response = await axios.post(`${API_URL}/location/geocode`, { address: query }, { headers: { Authorization: `Bearer ${token}` } });
       if (response.data && response.data.latitude) {
         map.flyTo([response.data.latitude, response.data.longitude], 13, { duration: 1.6 });
         onLocationFound(response.data);
@@ -292,7 +293,7 @@ export default function MapPage() {
     const fetchSafeZones = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:3001/api/safe-zones/active', {
+        const res = await axios.get(`${API_URL}/safe-zones/active`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setActiveDangerZones(res.data?.data || []);
@@ -307,7 +308,7 @@ export default function MapPage() {
   useEffect(() => {
     const fetchRainfall = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/weather/districts');
+        const res = await axios.get(`${API_URL}/weather/districts`);
         setDistrictRainfall(res.data || []);
       } catch { /* non-critical — silently skip if backend not ready */ }
     };
@@ -321,8 +322,8 @@ export default function MapPage() {
       try {
         const token = localStorage.getItem('token');
         const [incRes, campRes] = await Promise.all([
-          axios.get('http://localhost:3001/api/incidents', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://localhost:3001/api/camps', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get(`${API_URL}/incidents`, { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get(`${API_URL}/camps`, { headers: { Authorization: `Bearer ${token}` } })
         ]);
         
         // Add fake created dates for historical replay if missing
@@ -338,7 +339,7 @@ export default function MapPage() {
 
         // Real volunteer positions — falls back to empty array silently
         try {
-          const volRes = await axios.get('http://localhost:3001/api/location/field-team', {
+          const volRes = await axios.get(`${API_URL}/location/field-team`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setVolunteers(volRes.data || []);

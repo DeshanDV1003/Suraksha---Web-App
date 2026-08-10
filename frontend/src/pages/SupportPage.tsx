@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HeartPulse, Plus, X, Users, Clock, Loader2, MessageSquare, BrainCircuit, Activity, BookOpen, UserCheck, Send, CheckCircle2, AlertTriangle, ShieldAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -6,6 +6,7 @@ import { psychSupportService } from '@/services/api'
 import { formatDistanceToNow } from 'date-fns'
 import { useAuth } from '@/hooks/useAuth'
 import { io, Socket } from 'socket.io-client'
+import { BACKEND_URL } from '@/lib/env'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb"
 import PageMeta from "@/components/common/PageMeta"
 
@@ -46,7 +47,7 @@ export default function SupportPage() {
 
   // Create socket ONCE
   useEffect(() => {
-    socketRef.current = io('http://localhost:3001')
+    socketRef.current = io(BACKEND_URL)
     socketRef.current.on('receive_message', (message) => {
       if (activeChatRef.current && message.sessionId === activeChatRef.current.id) {
         setActiveChat((prev: any) => ({

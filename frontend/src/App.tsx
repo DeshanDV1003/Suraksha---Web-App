@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { DialogProvider } from '@/components/ui/dialogs/DialogProvider'
+import { BACKEND_URL, API_URL } from '@/lib/env'
 
 // Template Layout and Pages
 import AppLayout from './layout/AppLayout'
@@ -72,7 +73,7 @@ function GlobalAlertListener() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    const socket = io('http://localhost:3001');
+    const socket = io(BACKEND_URL);
 
     socket.on('new-alert', (alert) => {
       // Don't interrupt the admin on the alert management page itself
@@ -145,7 +146,7 @@ function GlobalAlertListener() {
               if (activeAlert?.id) {
                 const token = localStorage.getItem('token')
                 if (token) {
-                  fetch(`http://localhost:3001/api/alerts/${activeAlert.id}/acknowledge`, {
+                  fetch(`${API_URL}/alerts/${activeAlert.id}/acknowledge`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` },
                   }).catch(() => {})

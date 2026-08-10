@@ -1,8 +1,9 @@
-import { Bell, Search, X, Check, Info, AlertTriangle, Zap, MessageSquare, User, Settings, LogOut, Shield, ChevronDown } from 'lucide-react'
+﻿import { Bell, Search, X, Check, Info, AlertTriangle, Zap, MessageSquare, User, Settings, LogOut, Shield, ChevronDown } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppStore } from '@/store/useAppStore'
 import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { API_URL } from '@/lib/env'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
@@ -27,7 +28,7 @@ export function Header() {
         const token = localStorage.getItem('token')
         if (!token) return
         
-        const res = await axios.get('http://localhost:3001/api/notifications/my', {
+        const res = await axios.get(`${API_URL}/notifications/my`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         

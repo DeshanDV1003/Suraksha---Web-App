@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import { API_URL } from '@/lib/env';
 
 // Resolve Leaflet icon issues
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -52,7 +53,7 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:3001/api/location/geocode',
+        `${API_URL}/location/geocode`,
         { address: text },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -93,7 +94,7 @@ export function IncidentLocationPicker({ value, onChange }: IncidentLocationPick
         try {
           const token = localStorage.getItem('token');
           const response = await axios.post(
-            'http://localhost:3001/api/location/reverse',
+            `${API_URL}/location/reverse`,
             { latitude: lat, longitude: lng },
             { headers: { Authorization: `Bearer ${token}` } }
           );

@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
+import { API_URL } from '@/lib/env'
 import {
   AlertTriangle, MapPin, HandHelping, UserSearch, ShieldCheck,
   Building2, Bell, Radio, ChevronRight, FileText, HeartPulse,
@@ -43,7 +44,7 @@ function QuickActionCard({ icon: Icon, label, description, onClick, color }: {
   )
 }
 
-const WATER_API = 'http://localhost:3001/api/water'
+const WATER_API = `${API_URL}/water`
 
 interface RiverLevel {
   gaugeId: string; riverName: string; stationName: string; district: string;
