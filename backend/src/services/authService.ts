@@ -65,7 +65,7 @@ export const loginUser = async (data: any) => {
 
   const token = jwt.sign(
     { userId: user.id, role: user.role },
-    process.env.JWT_SECRET || 'secret',
+    process.env.JWT_SECRET!,
     { expiresIn: '6h' }
   );
 
@@ -186,7 +186,7 @@ export const googleLoginUser = async (idToken: string, ipAddress?: string, devic
 
   const token = jwt.sign(
     { userId: user.id, role: user.role },
-    process.env.JWT_SECRET || 'secret',
+    process.env.JWT_SECRET!,
     { expiresIn: '6h' }
   );
 
