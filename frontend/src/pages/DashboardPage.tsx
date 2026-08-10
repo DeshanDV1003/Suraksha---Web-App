@@ -45,6 +45,7 @@ function HeatmapLayer({ points, isVisible }: { points: [number, number, number][
 }
 
 function AISituationSummaryWidget() {
+  const { t } = useTranslation()
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -62,13 +63,13 @@ function AISituationSummaryWidget() {
       <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
         <CloudLightning className="w-4 h-4 text-cyan-400 animate-pulse" />
       </div>
-      <p className="text-sm text-gray-500">Generating AI situation summary…</p>
+      <p className="text-sm text-gray-500">{t('dashboard.ai_summary_generating')}</p>
     </div>
   )
 
   if (failed) return (
     <div className="suraksha-card p-4 flex items-center gap-3 text-sm text-slate-400">
-      <span className="text-yellow-500">⚠</span> AI summary unavailable — ML service offline
+      <span className="text-yellow-500">⚠</span> {t('dashboard.ai_summary_unavailable')}
     </div>
   )
 
@@ -82,19 +83,19 @@ function AISituationSummaryWidget() {
             <CloudLightning className="w-4 h-4 text-cyan-400" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-gray-800 dark:text-white/90">AI Situation Summary (last 2h)</h3>
-            <p className="text-[10px] text-gray-400 dark:text-slate-500">F16 · Grounded template extraction · All statements cite source data</p>
+            <h3 className="text-sm font-bold text-gray-800 dark:text-white/90">{t('dashboard.ai_situation_summary')}</h3>
+            <p className="text-[10px] text-gray-400 dark:text-slate-500">{t('dashboard.ai_summary_subtitle')}</p>
           </div>
         </div>
         <div className="flex gap-2">
           {data.critical_count > 0 && (
             <span className="px-2.5 py-1 bg-red-500/10 border border-red-500/20 rounded-lg text-[11px] font-bold text-red-400">
-              {data.critical_count} Critical
+              {t('dashboard.critical_badge', { count: data.critical_count })}
             </span>
           )}
           {data.flood_warnings > 0 && (
             <span className="px-2.5 py-1 bg-blue-500/10 border border-blue-500/20 rounded-lg text-[11px] font-bold text-blue-400">
-              {data.flood_warnings} Flood Warn
+              {t('dashboard.flood_warn_badge', { count: data.flood_warnings })}
             </span>
           )}
         </div>
@@ -247,9 +248,9 @@ export default function DashboardPage() {
 
   const secondaryStats = [
     {
-      label: 'Family Safety Updates',
+      label: t('dashboard.family_safety_updates'),
       value: secondaryStatsData.familyUpdatesTotal.toString(),
-      subtext: `${secondaryStatsData.familyUpdatesSafe} marked safe in last 24h`,
+      subtext: t('dashboard.marked_safe_last_24h', { count: secondaryStatsData.familyUpdatesSafe }),
       icon: Heart,
       color: 'bg-pink-500',
       cardClass: 'bg-pink-500/10 border-pink-500/20',
@@ -258,16 +259,16 @@ export default function DashboardPage() {
     {
       label: t('nav.resources'),
       value: secondaryStatsData.resourcesTotal.toString(),
-      subtext: `${secondaryStatsData.resourcesBoats} boats, ${secondaryStatsData.resourcesVehicles} vehicles available`,
+      subtext: t('dashboard.resources_available', { boats: secondaryStatsData.resourcesBoats, vehicles: secondaryStatsData.resourcesVehicles }),
       icon: Package,
       color: 'bg-green-500',
       cardClass: 'bg-green-500/10 border-green-500/20',
       footerColor: 'text-green-400'
     },
     {
-      label: 'Token Distributions',
+      label: t('dashboard.token_distributions'),
       value: secondaryStatsData.tokenClaimsTotal.toString(),
-      subtext: '0 duplicates prevented', // Simplified mock text as logic is complex
+      subtext: t('dashboard.duplicates_prevented', { count: 0 }),
       icon: LayoutGrid,
       color: 'bg-blue-500',
       cardClass: 'bg-blue-500/10 border-blue-500/20',
@@ -365,8 +366,8 @@ export default function DashboardPage() {
                 <ShieldAlert className="w-6 h-6 text-blue-500 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Predictive Threat Forecast</h3>
-                <p className="text-slate-500 dark:text-gray-400 text-xs font-semibold">AI-powered 72h risk analysis based on meteorological & historical data</p>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white">{t('dashboard.predictive_threat_forecast')}</h3>
+                <p className="text-slate-500 dark:text-gray-400 text-xs font-semibold">{t('dashboard.threat_forecast_desc')}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -374,7 +375,7 @@ export default function DashboardPage() {
                 <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
               </span>
-              <span className="text-xs font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider">Live Model Active</span>
+              <span className="text-xs font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider">{t('dashboard.live_model_active')}</span>
             </div>
           </div>
 
@@ -395,7 +396,7 @@ export default function DashboardPage() {
                   {forecast.threatType}
                 </div>
                 <div className="flex items-center justify-between mt-4 text-xs font-semibold text-slate-500 dark:text-gray-400">
-                  <span>{Math.round(forecast.confidence * 100)}% Conf.</span>
+                  <span>{Math.round(forecast.confidence * 100)}% {t('dashboard.confidence_short')}</span>
                   <span>{formatDistanceToNow(new Date(forecast.forecastTime))}</span>
                 </div>
                 <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
@@ -411,7 +412,7 @@ export default function DashboardPage() {
             ))}
             {threatForecasts.length === 0 && (
               <div className="col-span-full py-8 text-center text-slate-400 dark:text-gray-500 text-sm font-semibold">
-                Loading forecast models...
+                {t('dashboard.loading_forecast')}
               </div>
             )}
           </div>
@@ -423,10 +424,10 @@ export default function DashboardPage() {
           {/* Response Time Trend Chart (MEDIUM) */}
           <div className="suraksha-card p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">7-Day SLA Trend</h3>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">{t('dashboard.sla_trend')}</h3>
               <div className="flex items-center gap-1.5 text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md">
                 <Activity className="w-4 h-4" />
-                SLA Breaches: 2
+                {t('dashboard.sla_breaches', { count: 2 })}
               </div>
             </div>
             <div className="h-[200px] w-full" style={{ minWidth: 0 }}>
@@ -455,7 +456,7 @@ export default function DashboardPage() {
           {/* Shift Handover Summary Panel (MEDIUM) */}
           <div className="suraksha-card p-6 bg-gray-50 dark:bg-gray-800/50/50">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">Latest Shift Summary</h3>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">{t('dashboard.shift_summary')}</h3>
               <button className="p-2 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-brand-500 hover:border-brand-500/30 transition-colors">
                 <Printer className="w-4 h-4" />
               </button>
@@ -463,36 +464,36 @@ export default function DashboardPage() {
             {latestShift ? (
               <div className="space-y-4">
                 <div className="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
-                  <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">Shift</span>
+                  <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">{t('dashboard.shift_label')}</span>
                   <span className="text-sm font-bold text-gray-800 dark:text-white/90">{format(new Date(latestShift.shiftTime), 'MMM d, h:mm a')}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                    <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">Incidents (Op/Cl)</div>
+                    <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">{t('dashboard.incidents_op_cl')}</div>
                     <div className="text-xl font-extrabold text-gray-800 dark:text-white/90">{latestShift.incidentsOpened} / {latestShift.incidentsClosed}</div>
                   </div>
                   <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                    <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">Res. Deployed</div>
+                    <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">{t('dashboard.res_deployed')}</div>
                     <div className="text-xl font-extrabold text-gray-800 dark:text-white/90">{latestShift.resourcesDeployed}</div>
                   </div>
                 </div>
                 <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl mt-4">
-                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-1">Critical Notes</div>
-                  <div className="text-sm font-medium text-amber-800">{latestShift.criticalItems || 'None'}</div>
+                  <div className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-1">{t('dashboard.critical_notes')}</div>
+                  <div className="text-sm font-medium text-amber-800">{latestShift.criticalItems || t('dashboard.none')}</div>
                 </div>
               </div>
             ) : (
-               <div className="text-center py-10 text-gray-400 dark:text-gray-500 font-semibold text-sm">No shift data available</div>
+               <div className="text-center py-10 text-gray-400 dark:text-gray-500 font-semibold text-sm">{t('dashboard.no_shift_data')}</div>
             )}
           </div>
 
           {/* Cross-District Resource Balance Indicator (LOW) */}
           <div className="suraksha-card p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">Resource Balance</h3>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">{t('dashboard.resource_balance')}</h3>
               <button className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-500 bg-blue-50 px-2 py-1.5 rounded-md hover:bg-blue-100 transition-colors">
                 <ArrowRightLeft className="w-3 h-3" />
-                Reallocate
+                {t('dashboard.reallocate')}
               </button>
             </div>
             <div className="h-[200px] w-full" style={{ minWidth: 0 }}>
@@ -580,7 +581,7 @@ export default function DashboardPage() {
                               "bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700"
                       )}>{item.status.replace('_', ' ')}</span>
                       <div className="text-xs font-bold text-gray-400 dark:text-gray-500">
-                        ML Score: <span className="text-brand-500 font-extrabold text-sm ml-1">0.92</span>
+                        {t('dashboard.ml_score')}: <span className="text-brand-500 font-extrabold text-sm ml-1">0.92</span>
                       </div>
                     </div>
                   </div>
@@ -663,18 +664,18 @@ export default function DashboardPage() {
 
             {/* Map Controls */}
             <div className="absolute bottom-10 left-10 p-6 bg-white dark:bg-gray-900/95 backdrop-blur-md rounded-3xl border border-white shadow-2xl space-y-4 z-[400]">
-              <h4 className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Layers</h4>
-              <LayerToggle 
-                label="Incidents" 
-                color="text-red-500" 
-                checked={showIncidents} 
-                onChange={() => setShowIncidents(!showIncidents)} 
+              <h4 className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">{t('dashboard.map_layers')}</h4>
+              <LayerToggle
+                label={t('dashboard.layer_incidents')}
+                color="text-red-500"
+                checked={showIncidents}
+                onChange={() => setShowIncidents(!showIncidents)}
               />
-              <LayerToggle 
-                label="Heatmap (Density)" 
-                color="text-orange-500" 
-                checked={showHeatmap} 
-                onChange={() => setShowHeatmap(!showHeatmap)} 
+              <LayerToggle
+                label={t('dashboard.layer_heatmap')}
+                color="text-orange-500"
+                checked={showHeatmap}
+                onChange={() => setShowHeatmap(!showHeatmap)}
               />
             </div>
           </div>
@@ -689,7 +690,7 @@ export default function DashboardPage() {
             />
             <div className="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl border border-white overflow-hidden">
               <div className="p-8 pb-0 flex items-center justify-between">
-                <h2 className="text-2xl font-extrabold text-gray-800 dark:text-white/90">New Alert Broadcast</h2>
+                <h2 className="text-2xl font-extrabold text-gray-800 dark:text-white/90">{t('dashboard.new_alert_broadcast')}</h2>
                 <button
                   onClick={() => setIsAlertModalOpen(false)}
                   className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-full transition-colors"
@@ -700,11 +701,11 @@ export default function DashboardPage() {
 
               <form onSubmit={handleCreateAlert} className="p-8 space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">Alert Title</label>
+                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.alert_title_label')}</label>
                   <input
                     required
                     type="text"
-                    placeholder="e.g. Flash Flood Warning"
+                    placeholder={t('dashboard.alert_title_placeholder')}
                     className="suraksha-input"
                     value={newAlert.title}
                     onChange={(e) => setNewAlert({ ...newAlert, title: e.target.value })}
@@ -713,18 +714,18 @@ export default function DashboardPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">Location</label>
+                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.location_label')}</label>
                     <input
                       required
                       type="text"
-                      placeholder="e.g. Colombo 07"
+                      placeholder={t('dashboard.location_placeholder')}
                       className="suraksha-input"
                       value={newAlert.location}
                       onChange={(e) => setNewAlert({ ...newAlert, location: e.target.value })}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">Severity Type</label>
+                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.severity_type_label')}</label>
                     <select
                       className="suraksha-input appearance-none"
                       value={newAlert.type}
@@ -738,11 +739,11 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">Broadcast Message</label>
+                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.broadcast_message_label')}</label>
                   <textarea
                     required
                     rows={4}
-                    placeholder="Describe the emergency details..."
+                    placeholder={t('dashboard.broadcast_message_placeholder')}
                     className="suraksha-input resize-none"
                     value={newAlert.message}
                     onChange={(e) => setNewAlert({ ...newAlert, message: e.target.value })}
@@ -758,7 +759,7 @@ export default function DashboardPage() {
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Send Broadcast Now
+                      {t('dashboard.send_broadcast_now')}
                     </>
                   )}
                 </button>

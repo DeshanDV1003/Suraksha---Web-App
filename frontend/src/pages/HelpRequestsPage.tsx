@@ -116,8 +116,7 @@ export default function HelpRequestsPage() {
         <div className="flex gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-cyan-400/10">
           {[
             { id: 'dispatch', label: t('help_requests_page.tabs.dispatch_queue'), icon: Navigation },
-            { id: 'map', label: t('help_requests_page.tabs.clustered_hotspots'), icon: MapPin },
-            { id: 'sms', label: t('help_requests_page.tabs.sms_intake'), icon: Smartphone }
+            { id: 'map', label: t('help_requests_page.tabs.clustered_hotspots'), icon: MapPin }
           ].map(tab => (
             <button
               key={tab.id} onClick={() => setActiveTab(tab.id)}

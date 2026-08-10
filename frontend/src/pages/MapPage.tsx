@@ -459,7 +459,7 @@ export default function MapPage() {
                 </div>
                 <div className="bg-violet-500 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
                   <span className="text-3xl font-black text-white">{activeIncidents.filter((i) => i.severity === 'CRITICAL').length}</span>
-                  <span className="text-[9px] font-black text-violet-100 uppercase tracking-widest mt-1">Critical Only</span>
+                  <span className="text-[9px] font-black text-violet-100 uppercase tracking-widest mt-1">{t('map_page.critical_only')}</span>
                 </div>
               </div>
 
@@ -933,7 +933,7 @@ export default function MapPage() {
               <div className="absolute bottom-24 left-6 z-[1000] w-48 bg-white dark:bg-[#1a2540] border border-gray-200 dark:border-slate-600/50 shadow-2xl rounded-2xl p-4 transition-all">
                 <h4 className="text-[9px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-3 pl-0.5 border-b border-gray-200 dark:border-slate-600/50 pb-2">{t('map_page.legend')}</h4>
                 <div className="space-y-2">
-                  {[{ label: t('map_page.critical_response'), color: '#ef4444' }, { label: t('map_page.high_alert'), color: '#f97316' }, { label: t('map_page.relief_hub'), color: '#10b981', isCamp: true }, { label: t('map_page.volunteer'), color: '#3b82f6', isVol: true }, { label: 'Safe Zone', color: '#16a34a' }, { label: 'Danger Zone', color: '#ef4444', isDanger: true }, ...(layers.safeRoutes && routeData ? [{ label: 'Primary Route', color: '#16a34a', isRoute: true }, { label: 'Alt Route', color: '#d97706', isRoute: true }] : [])].map((item: any, i) => (
+                  {[{ label: t('map_page.critical_response'), color: '#ef4444' }, { label: t('map_page.high_alert'), color: '#f97316' }, { label: t('map_page.relief_hub'), color: '#10b981', isCamp: true }, { label: t('map_page.volunteer'), color: '#3b82f6', isVol: true }, { label: t('map_page.safe_zone'), color: '#16a34a' }, { label: t('map_page.danger_zone'), color: '#ef4444', isDanger: true }, ...(layers.safeRoutes && routeData ? [{ label: t('map_page.primary_route'), color: '#16a34a', isRoute: true }, { label: t('map_page.alt_route'), color: '#d97706', isRoute: true }] : [])].map((item: any, i) => (
                     <div key={i} className="flex items-center gap-2.5">
                       <div className={cn("w-2.5 h-2.5 shadow-sm", item.isCamp ? "rounded-sm rotate-45" : item.isVol ? "rounded-full border border-white" : item.isDanger ? "rounded-full opacity-40 border-2 border-red-500" : item.isRoute ? "h-0.5 w-5 rounded" : "rounded-full")} style={{ backgroundColor: item.color }} />
                       <span className="text-[10px] font-bold text-gray-600 dark:text-slate-300">{item.label}</span>

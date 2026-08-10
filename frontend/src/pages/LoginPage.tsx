@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { GoogleLogin } from '@react-oauth/google'
+import { useTranslation } from 'react-i18next'
 import loginBg from '@/pictures/login_bg.png'
 import logo from '@/pictures/Full logo.png'
 
 export default function LoginPage() {
+  const { t } = useTranslation()
   const { login, googleLogin, user } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -55,7 +57,7 @@ export default function LoginPage() {
         localStorage.removeItem('rememberedPassword')
       }
     } catch (err: any) {
-      const message = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      const message = err.response?.data?.message || t('login.error_credentials');
       const details = err.response?.data?.details ? ` (${err.response.data.details})` : '';
       setError(message + details);
     } finally {
@@ -66,7 +68,7 @@ export default function LoginPage() {
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) {
-      setError('Please enter your email address.')
+      setError(t('login.enter_email_first'))
       return
     }
     setLoading(true)
@@ -76,7 +78,7 @@ export default function LoginPage() {
       await new Promise(resolve => setTimeout(resolve, 1000))
       setResetEmailSent(true)
     } catch (err) {
-      setError('Failed to send reset link. Please try again.')
+      setError(t('login.reset_link_failed'))
     } finally {
       setLoading(false)
     }
@@ -89,7 +91,7 @@ export default function LoginPage() {
     try {
       await googleLogin(credentialResponse.credential)
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Google Sign-In failed. Please try again.')
+      setError(err.response?.data?.message || t('login.google_failed'))
     } finally {
       setGoogleLoading(false)
     }
@@ -104,7 +106,7 @@ export default function LoginPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold leading-none tracking-tight text-white uppercase drop-shadow-md">SURAKSHA</h1>
-          <p className="text-[10px] text-white/90 font-bold uppercase tracking-wider mt-1.5 drop-shadow-sm">Command Center</p>
+          <p className="text-[10px] text-white/90 font-bold uppercase tracking-wider mt-1.5 drop-shadow-sm">{t('login.command_center')}</p>
         </div>
       </div>
 
@@ -154,7 +156,7 @@ export default function LoginPage() {
 
       <div className="max-w-[400px] w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 space-y-8 animate-in fade-in zoom-in duration-700 relative z-10 shadow-2xl">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2 uppercase">{isForgotPassword ? 'RECOVER PASSWORD' : 'LOGIN'}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2 uppercase">{isForgotPassword ? t('login.recover_password') : t('login.title')}</h1>
         </div>
 
         {error && (
@@ -167,14 +169,14 @@ export default function LoginPage() {
           resetEmailSent ? (
             <div className="space-y-6 text-center">
               <div className="p-4 bg-green-500/20 border border-green-500/50 text-white rounded">
-                Password reset link has been sent to your email.
+                {t('login.reset_link_sent')}
               </div>
               <button
                 type="button"
                 onClick={() => { setIsForgotPassword(false); setResetEmailSent(false); }}
                 className="w-full bg-white text-black font-semibold py-3 rounded hover:bg-white/90 transition-colors"
               >
-                Back to Login
+                {t('login.back_to_login')}
               </button>
             </div>
           ) : (
@@ -183,7 +185,7 @@ export default function LoginPage() {
                 <input
                   required
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t('login.email_placeholder')}
                   className="w-full bg-transparent border-0 border-b border-white/50 px-0 py-2 text-white placeholder:text-white/70 focus:ring-0 focus:border-white transition-colors"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -197,7 +199,7 @@ export default function LoginPage() {
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                 ) : (
-                  "Send Reset Link"
+                  t('login.send_reset_link')
                 )}
               </button>
               <button
@@ -205,7 +207,7 @@ export default function LoginPage() {
                 onClick={() => { setIsForgotPassword(false); setError(''); }}
                 className="w-full text-center text-sm text-white/70 hover:text-white mt-4"
               >
-                Back to Login
+                {t('login.back_to_login')}
               </button>
             </form>
           )
@@ -217,7 +219,7 @@ export default function LoginPage() {
                 <input
                   required
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t('login.email_placeholder')}
                   className="w-full bg-transparent border-0 border-b border-white/50 px-0 py-2 text-white placeholder:text-white/70 focus:ring-0 focus:border-white transition-colors"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -226,7 +228,7 @@ export default function LoginPage() {
                 <input
                   required
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder={t('login.password_placeholder')}
                   className="w-full bg-transparent border-0 border-b border-white/50 px-0 py-2 text-white placeholder:text-white/70 focus:ring-0 focus:border-white transition-colors mt-6"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -241,9 +243,9 @@ export default function LoginPage() {
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
                   />
-                  <span className="group-hover:text-white/90">Remember me</span>
+                  <span className="group-hover:text-white/90">{t('login.remember_me')}</span>
                 </label>
-                <a href="#" className="hover:underline hover:text-white/90" onClick={(e) => { e.preventDefault(); setIsForgotPassword(true); setError(''); }}>Forgot password?</a>
+                <a href="#" className="hover:underline hover:text-white/90" onClick={(e) => { e.preventDefault(); setIsForgotPassword(true); setError(''); }}>{t('login.forgot_password')}</a>
               </div>
             </>
           ) : (
@@ -257,7 +259,7 @@ export default function LoginPage() {
                 value={token2fa}
                 onChange={(e) => setToken2fa(e.target.value)}
               />
-              <p className="text-center text-sm text-white/80 pt-2">Enter your 2FA code</p>
+              <p className="text-center text-sm text-white/80 pt-2">{t('login.enter_2fa_code')}</p>
             </div>
           )}
 
@@ -269,9 +271,9 @@ export default function LoginPage() {
             {loading ? (
               <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
             ) : requires2FA ? (
-              "Verify Code"
+              t('login.verify_code')
             ) : (
-              "Log In"
+              t('login.log_in')
             )}
           </button>
 
@@ -281,7 +283,7 @@ export default function LoginPage() {
               onClick={() => { setRequires2FA(false); setToken2fa(''); }}
               className="w-full text-center text-sm text-white/70 hover:text-white mt-4"
             >
-              Cancel
+              {t('login.cancel')}
             </button>
           )}
         </form>
@@ -292,7 +294,7 @@ export default function LoginPage() {
           <>
             <div className="relative flex items-center py-1">
               <div className="flex-grow border-t border-white/25" />
-              <span className="px-3 text-xs text-white/50 font-medium tracking-wide uppercase">or continue with</span>
+              <span className="px-3 text-xs text-white/50 font-medium tracking-wide uppercase">{t('login.or_continue_with')}</span>
               <div className="flex-grow border-t border-white/25" />
             </div>
 
@@ -300,12 +302,12 @@ export default function LoginPage() {
               {googleLoading ? (
                 <div className="flex items-center gap-2 text-white/70 text-sm py-3">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Signing in with Google…
+                  {t('login.signing_in_google')}
                 </div>
               ) : (
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
-                  onError={() => setError('Google Sign-In was cancelled or failed.')}
+                  onError={() => setError(t('login.google_cancelled'))}
                   theme="filled_black"
                   shape="rectangular"
                   size="large"
@@ -314,7 +316,7 @@ export default function LoginPage() {
                 />
               )}
               <p className="text-[11px] text-white/40 text-center mt-1">
-                Google Sign-In is available for <span className="text-white/60">citizens</span> and <span className="text-white/60">volunteers</span> only
+                {t('login.google_citizens_only')}
               </p>
             </div>
           </>
@@ -322,8 +324,8 @@ export default function LoginPage() {
 
         <div className="text-center pt-2">
           <p className="text-sm text-white/90">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-white hover:underline">Register</Link>
+            {t('login.no_account')}{' '}
+            <Link to="/register" className="text-white hover:underline">{t('login.register')}</Link>
           </p>
         </div>
       </div>

@@ -183,7 +183,7 @@ export default function SettingsPage() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 5 * 1024 * 1024) { showToast('Image must be under 5 MB', 'error'); return }
+    if (file.size > 5 * 1024 * 1024) { showToast(t('settings_page.toast_img_size'), 'error'); return }
     const reader = new FileReader()
     reader.onloadend = () => {
       // Resize to max 256×256 so the base64 stays small enough for the DB
@@ -205,7 +205,7 @@ export default function SettingsPage() {
 
   const handleProfileSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!profileData.name.trim()) { showToast('Name cannot be empty', 'error'); return }
+    if (!profileData.name.trim()) { showToast(t('settings_page.toast_name_empty'), 'error'); return }
     setIsSubmitting(true)
     try {
       const res = await userService.updateProfile({
@@ -216,11 +216,11 @@ export default function SettingsPage() {
       const updated = res.data
       updateUser({ name: updated.name, phone: updated.phone, profilePicture: updated.profilePicture })
       setSavedProfile(profileData)
-      showToast('Profile saved successfully')
+      showToast(t('settings_page.toast_profile_saved'))
     } catch (err: any) {
       const msg = err?.response?.data?.message || err?.message || 'Unknown error'
       console.error('Profile save failed:', err?.response?.status, msg)
-      showToast(`Save failed: ${msg}`, 'error')
+      showToast(`${t('settings_page.toast_save_failed')} ${msg}`, 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -233,16 +233,16 @@ export default function SettingsPage() {
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (pwForm.next.length < 8) { showToast('New password must be at least 8 characters', 'error'); return }
-    if (pwForm.next !== pwForm.confirm) { showToast('Passwords do not match', 'error'); return }
+    if (pwForm.next.length < 8) { showToast(t('settings_page.toast_pw_min'), 'error'); return }
+    if (pwForm.next !== pwForm.confirm) { showToast(t('settings_page.toast_pw_mismatch'), 'error'); return }
     setPwSubmitting(true)
     try {
       await authService.changePassword({ currentPassword: pwForm.current, newPassword: pwForm.next })
-      showToast('Password changed successfully')
+      showToast(t('settings_page.toast_pw_changed'))
       setShowPwModal(false)
       setPwForm({ current: '', next: '', confirm: '' })
     } catch (err: any) {
-      showToast(err?.response?.data?.message || 'Failed to change password', 'error')
+      showToast(err?.response?.data?.message || t('settings_page.toast_pw_failed'), 'error')
     } finally {
       setPwSubmitting(false)
     }
@@ -262,18 +262,18 @@ export default function SettingsPage() {
     try {
       await userService.deleteSession(id)
       setSessions(prev => prev.filter(s => s.id !== id))
-      showToast('Session revoked')
-    } catch { showToast('Failed to revoke session', 'error') }
+      showToast(t('settings_page.toast_session_revoked'))
+    } catch { showToast(t('settings_page.toast_session_failed'), 'error') }
   }
 
   const handleRevokeAll = async () => {
-    if (!await confirm('Revoke all other sessions?', { variant: 'danger', title: 'Revoke sessions', confirmLabel: 'Revoke all' })) return
+    if (!await confirm(t('settings_page.revoke_confirm'), { variant: 'danger', title: t('settings_page.revoke_confirm'), confirmLabel: t('settings_page.revoke_confirm_btn') })) return
     try {
       const others = sessions.filter(s => !s.isCurrent)
       await Promise.all(others.map(s => userService.deleteSession(s.id)))
       setSessions(prev => prev.filter(s => s.isCurrent))
-      showToast('All other sessions revoked')
-    } catch { showToast('Failed to revoke sessions', 'error') }
+      showToast(t('settings_page.toast_all_revoked'))
+    } catch { showToast(t('settings_page.toast_revoke_all_failed'), 'error') }
   }
 
   // ── 2FA ──────────────────────────────────────────────────────────────────────
@@ -296,7 +296,7 @@ export default function SettingsPage() {
       setTwoFASecret(res.data.secret)
       setTwoFAStep('verify')
     } catch {
-      showToast('Failed to generate 2FA setup. Please try again.', 'error')
+      showToast(t('settings_page.toast_2fa_gen_failed'), 'error')
       setShow2FAModal(false)
     } finally {
       setTwoFALoading(false)
@@ -305,26 +305,26 @@ export default function SettingsPage() {
 
   const handle2FAVerify = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (twoFAToken.length !== 6) { showToast('Enter the 6-digit code from your authenticator app', 'error'); return }
+    if (twoFAToken.length !== 6) { showToast(t('settings_page.toast_2fa_code_hint'), 'error'); return }
     setTwoFALoading(true)
     try {
       await authService.verify2FA(twoFAToken)
       setTwoFAEnabled(true)
       updateUser({ ...(user as any), twoFactorEnabled: true })
       setShow2FAModal(false)
-      showToast('Two-factor authentication enabled!')
+      showToast(t('settings_page.toast_2fa_enabled'))
     } catch {
-      showToast('Invalid code. Please try again.', 'error')
+      showToast(t('settings_page.toast_2fa_invalid'), 'error')
     } finally {
       setTwoFALoading(false)
     }
   }
 
   const tabs = [
-    { id: 'profile',       name: 'Profile Info',       icon: User   },
-    { id: 'notifications', name: 'Notifications',      icon: Bell   },
-    { id: 'security',      name: 'Security & Privacy', icon: Shield },
-    { id: 'preferences',   name: 'App Preferences',    icon: Palette },
+    { id: 'profile',       name: t('settings_page.tab_profile'),       icon: User   },
+    { id: 'notifications', name: t('settings_page.tab_notifications'), icon: Bell   },
+    { id: 'security',      name: t('settings_page.tab_security'),      icon: Shield },
+    { id: 'preferences',   name: t('settings_page.tab_preferences'),   icon: Palette },
   ]
 
   return (
@@ -339,21 +339,21 @@ export default function SettingsPage() {
         <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="bg-white dark:bg-[#1c2128] border border-gray-200 dark:border-slate-800 rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Change Password</h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.change_pw_title')}</h3>
               <button onClick={() => setShowPwModal(false)} className="text-gray-400 hover:text-gray-700 dark:hover:text-white"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleChangePassword} className="space-y-4">
-              <DarkInput label="CURRENT PASSWORD" value={pwForm.current} type="password" icon={Lock} onChange={(v: string) => setPwForm(p => ({ ...p, current: v }))} />
-              <DarkInput label="NEW PASSWORD" value={pwForm.next} type="password" icon={Key} onChange={(v: string) => setPwForm(p => ({ ...p, next: v }))} placeholder="Minimum 8 characters" />
-              <DarkInput label="CONFIRM NEW PASSWORD" value={pwForm.confirm} type="password" icon={Key} onChange={(v: string) => setPwForm(p => ({ ...p, confirm: v }))} />
+              <DarkInput label={t('settings_page.current_password')} value={pwForm.current} type="password" icon={Lock} onChange={(v: string) => setPwForm(p => ({ ...p, current: v }))} />
+              <DarkInput label={t('settings_page.new_password')} value={pwForm.next} type="password" icon={Key} onChange={(v: string) => setPwForm(p => ({ ...p, next: v }))} placeholder={t('settings_page.min_8_chars')} />
+              <DarkInput label={t('settings_page.confirm_new_password')} value={pwForm.confirm} type="password" icon={Key} onChange={(v: string) => setPwForm(p => ({ ...p, confirm: v }))} />
               {pwForm.next && pwForm.confirm && pwForm.next !== pwForm.confirm && (
-                <p className="text-xs text-red-400 font-bold pl-1">Passwords do not match</p>
+                <p className="text-xs text-red-400 font-bold pl-1">{t('settings_page.pw_mismatch_inline')}</p>
               )}
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowPwModal(false)} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">Cancel</button>
+                <button type="button" onClick={() => setShowPwModal(false)} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">{t('settings_page.cancel_btn')}</button>
                 <button type="submit" disabled={pwSubmitting || !pwForm.current || !pwForm.next || !pwForm.confirm} className="flex-1 py-3 rounded-xl bg-blue-600 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2">
                   {pwSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                  Update Password
+                  {t('settings_page.update_password_btn')}
                 </button>
               </div>
             </form>
@@ -371,8 +371,8 @@ export default function SettingsPage() {
                   <Smartphone className="w-5 h-5 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">Two-Factor Auth</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Authenticator app setup</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.two_fa_modal_title')}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('settings_page.two_fa_modal_subtitle')}</p>
                 </div>
               </div>
               <button onClick={() => setShow2FAModal(false)} className="text-gray-400 hover:text-gray-700 dark:hover:text-white"><X className="w-5 h-5" /></button>
@@ -381,13 +381,13 @@ export default function SettingsPage() {
             {twoFALoading && twoFAStep === 'setup' ? (
               <div className="py-16 flex flex-col items-center gap-3 text-gray-400">
                 <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                <p className="text-sm font-medium">Generating secure QR code…</p>
+                <p className="text-sm font-medium">{t('settings_page.generating_qr')}</p>
               </div>
             ) : twoFAStep === 'verify' ? (
               <div className="space-y-6">
                 <div className="space-y-3">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    <span className="font-bold">Step 1.</span> Open your authenticator app (Google Authenticator, Authy, etc.) and scan this QR code.
+                    {t('settings_page.two_fa_step1')}
                   </p>
                   {twoFAQr && (
                     <div className="flex justify-center p-4 bg-white rounded-2xl border border-gray-200 dark:border-slate-700">
@@ -395,7 +395,7 @@ export default function SettingsPage() {
                     </div>
                   )}
                   <details className="text-xs text-gray-500 dark:text-gray-400">
-                    <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 font-medium">Can't scan? Enter the key manually</summary>
+                    <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 font-medium">{t('settings_page.two_fa_cant_scan')}</summary>
                     <code className="block mt-2 p-3 bg-gray-50 dark:bg-slate-900 rounded-xl break-all font-mono text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-slate-700 select-all">
                       {twoFASecret}
                     </code>
@@ -404,7 +404,7 @@ export default function SettingsPage() {
 
                 <form onSubmit={handle2FAVerify} className="space-y-4">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">Step 2 — Enter the 6-digit code</label>
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest pl-1">{t('settings_page.two_fa_step2_label')}</label>
                     <input
                       type="text"
                       inputMode="numeric"
@@ -417,10 +417,10 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="flex gap-3">
-                    <button type="button" onClick={() => setShow2FAModal(false)} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">Cancel</button>
+                    <button type="button" onClick={() => setShow2FAModal(false)} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">{t('settings_page.cancel_btn')}</button>
                     <button type="submit" disabled={twoFALoading || twoFAToken.length !== 6} className="flex-1 py-3 rounded-xl bg-blue-600 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-all">
                       {twoFALoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                      Verify & Enable
+                      {t('settings_page.verify_enable_btn')}
                     </button>
                   </div>
                 </form>
@@ -455,12 +455,12 @@ export default function SettingsPage() {
             {activeTab === 'profile' && (
               <div className="p-8 space-y-8 animate-in fade-in">
                 <div className="space-y-1 pb-6 border-b border-gray-200 dark:border-slate-800">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Profile information</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Update your personal details and contact information</p>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.profile_title')}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_page.profile_desc')}</p>
                 </div>
 
                 {profileLoading ? (
-                  <div className="flex items-center gap-3 text-gray-400"><Loader2 className="w-5 h-5 animate-spin" /> Loading profile…</div>
+                  <div className="flex items-center gap-3 text-gray-400"><Loader2 className="w-5 h-5 animate-spin" /> {t('settings_page.loading_profile')}</div>
                 ) : (
                   <>
                     <div className="flex gap-6 items-center">
@@ -490,21 +490,21 @@ export default function SettingsPage() {
 
                     <form onSubmit={handleProfileSave} className="space-y-6 pt-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <DarkInput label="FULL NAME" value={profileData.name} onChange={(v: string) => setProfileData({ ...profileData, name: v })} icon={User} />
-                        <DarkInput label="EMAIL ADDRESS" value={profileData.email} disabled icon={Mail} />
-                        <DarkInput label="PHONE NUMBER" value={profileData.phone} onChange={(v: string) => setProfileData({ ...profileData, phone: v })} icon={Phone} placeholder="+94 XX XXX XXXX" />
-                        <DarkInput label="DESIGNATION / ROLE" value={profileData.designation} disabled icon={Briefcase} />
+                        <DarkInput label={t('settings_page.full_name')} value={profileData.name} onChange={(v: string) => setProfileData({ ...profileData, name: v })} icon={User} />
+                        <DarkInput label={t('settings_page.email_address')} value={profileData.email} disabled icon={Mail} />
+                        <DarkInput label={t('settings_page.phone_number')} value={profileData.phone} onChange={(v: string) => setProfileData({ ...profileData, phone: v })} icon={Phone} placeholder="+94 XX XXX XXXX" />
+                        <DarkInput label={t('settings_page.designation_role')} value={profileData.designation} disabled icon={Briefcase} />
                       </div>
 
                       <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200 dark:border-slate-800">
                         <button type="button" onClick={() => setProfileData(savedProfile)}
                           className="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-700 transition-all">
-                          Discard changes
+                          {t('settings_page.discard_changes')}
                         </button>
                         <button type="submit" disabled={isSubmitting}
                           className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all disabled:opacity-50 shadow-lg shadow-blue-500/20">
                           {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                          Save changes
+                          {t('settings_page.save_changes')}
                         </button>
                       </div>
                     </form>
@@ -517,22 +517,22 @@ export default function SettingsPage() {
             {activeTab === 'notifications' && (
               <div className="p-8 space-y-8 animate-in fade-in">
                 <div className="space-y-1 pb-6 border-b border-gray-200 dark:border-slate-800">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Notification preferences</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Control how and when you receive alerts. Preferences are saved to this browser.</p>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.notif_title')}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_page.notif_desc')}</p>
                 </div>
 
                 <div className="space-y-8">
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Incident Alerts</h3>
-                    <DarkToggle title="Critical (Severity 5) Alerts" desc="Immediate push notifications bypassing silent mode" checked={getPref('notif_crit', true)} onChange={(v: boolean) => updatePref('notif_crit', v)} />
-                    <DarkToggle title="High / Medium (Severity 3–4) Alerts" desc="Standard push notifications during operational hours" checked={getPref('notif_high', true)} onChange={(v: boolean) => updatePref('notif_high', v)} />
-                    <DarkToggle title="Low (Severity 1–2) Alerts" desc="In-app notifications only" checked={getPref('notif_low', false)} onChange={(v: boolean) => updatePref('notif_low', v)} />
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.incident_alerts')}</h3>
+                    <DarkToggle title={t('settings_page.notif_crit_title')} desc={t('settings_page.notif_crit_desc')} checked={getPref('notif_crit', true)} onChange={(v: boolean) => updatePref('notif_crit', v)} />
+                    <DarkToggle title={t('settings_page.notif_high_title')} desc={t('settings_page.notif_high_desc')} checked={getPref('notif_high', true)} onChange={(v: boolean) => updatePref('notif_high', v)} />
+                    <DarkToggle title={t('settings_page.notif_low_title')} desc={t('settings_page.notif_low_desc')} checked={getPref('notif_low', false)} onChange={(v: boolean) => updatePref('notif_low', v)} />
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Minimum SMS Severity</h3>
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.min_sms_severity')}</h3>
                     <div className="p-5 bg-gray-50 dark:bg-slate-900/50 rounded-2xl border border-gray-200 dark:border-slate-800 space-y-4">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Select the minimum severity that triggers an SMS broadcast.</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_page.min_sms_desc')}</p>
                       <div className="flex gap-2">
                         {[1, 2, 3, 4, 5].map(level => (
                           <button key={level} onClick={() => setMinSeverityPush(level)}
@@ -547,16 +547,16 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Volunteer & Task Updates</h3>
-                    <DarkToggle title="Task Accept / Decline Events" desc="Notify when a volunteer responds to a dispatch" checked={getPref('notif_task_acc', true)} onChange={(v: boolean) => updatePref('notif_task_acc', v)} />
-                    <DarkToggle title="Task Completion Events" desc="Notify when a volunteer resolves a dispatch" checked={getPref('notif_task_comp', true)} onChange={(v: boolean) => updatePref('notif_task_comp', v)} />
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.volunteer_task_updates')}</h3>
+                    <DarkToggle title={t('settings_page.notif_task_acc_title')} desc={t('settings_page.notif_task_acc_desc')} checked={getPref('notif_task_acc', true)} onChange={(v: boolean) => updatePref('notif_task_acc', v)} />
+                    <DarkToggle title={t('settings_page.notif_task_comp_title')} desc={t('settings_page.notif_task_comp_desc')} checked={getPref('notif_task_comp', true)} onChange={(v: boolean) => updatePref('notif_task_comp', v)} />
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">System & Reports</h3>
-                    <DarkToggle title="Daily Digest Email" desc="Receive a daily summary of all command center activity" checked={getPref('notif_daily', false)} onChange={(v: boolean) => updatePref('notif_daily', v)} />
-                    <DarkToggle title="ML Retraining Alerts" desc="Notify when the predictive model is updated" checked={getPref('notif_ml', false)} onChange={(v: boolean) => updatePref('notif_ml', v)} />
-                    <DarkToggle title="New Volunteer Registrations" desc="Notify when new personnel join your sector" checked={getPref('notif_vol', true)} onChange={(v: boolean) => updatePref('notif_vol', v)} />
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.system_reports')}</h3>
+                    <DarkToggle title={t('settings_page.notif_daily_title')} desc={t('settings_page.notif_daily_desc')} checked={getPref('notif_daily', false)} onChange={(v: boolean) => updatePref('notif_daily', v)} />
+                    <DarkToggle title={t('settings_page.notif_ml_title')} desc={t('settings_page.notif_ml_desc')} checked={getPref('notif_ml', false)} onChange={(v: boolean) => updatePref('notif_ml', v)} />
+                    <DarkToggle title={t('settings_page.notif_vol_title')} desc={t('settings_page.notif_vol_desc')} checked={getPref('notif_vol', true)} onChange={(v: boolean) => updatePref('notif_vol', v)} />
                   </div>
                 </div>
               </div>
@@ -566,62 +566,62 @@ export default function SettingsPage() {
             {activeTab === 'security' && (
               <div className="p-8 space-y-8 animate-in fade-in">
                 <div className="space-y-1 pb-6 border-b border-gray-200 dark:border-slate-800">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Security & privacy</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Manage your account security, sessions, and privacy controls</p>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.security_title')}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_page.security_desc')}</p>
                 </div>
 
                 <div className="space-y-8">
                   {/* Security Status Cards */}
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Security Status</h3>
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.security_status')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="p-5 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl flex items-center justify-between">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Key className="w-4 h-4 text-emerald-400" /> Password</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Change your login password</div>
+                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Key className="w-4 h-4 text-emerald-400" /> {t('settings_page.password_label')}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{t('settings_page.password_desc')}</div>
                         </div>
                         <button onClick={() => setShowPwModal(true)}
                           className="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-800 dark:text-white text-xs font-bold rounded-lg border border-gray-200 dark:border-slate-700 transition-all">
-                          Change
+                          {t('settings_page.change_btn')}
                         </button>
                       </div>
 
                       <div className="p-5 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl flex items-center justify-between">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Smartphone className="w-4 h-4 text-blue-400" /> Two-Factor Auth</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{twoFAEnabled ? 'Active — Authenticator app' : 'Not configured'}</div>
+                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Smartphone className="w-4 h-4 text-blue-400" /> {t('settings_page.two_fa_label')}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{twoFAEnabled ? t('settings_page.two_fa_active') : t('settings_page.two_fa_not_configured')}</div>
                         </div>
                         {twoFAEnabled ? (
                           <span className="px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider border bg-emerald-500/20 text-emerald-400 border-emerald-500/20">
-                            Enabled
+                            {t('settings_page.enabled_badge')}
                           </span>
                         ) : (
                           <button
                             onClick={open2FAModal}
                             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm shadow-blue-500/20"
                           >
-                            Set up
+                            {t('settings_page.setup_btn')}
                           </button>
                         )}
                       </div>
 
                       <div className="p-5 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl flex items-center justify-between">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><HardDrive className="w-4 h-4 text-purple-400" /> Backup Codes</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">One-time recovery codes</div>
+                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><HardDrive className="w-4 h-4 text-purple-400" /> {t('settings_page.backup_codes_label')}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{t('settings_page.backup_codes_desc')}</div>
                         </div>
-                        <button onClick={() => showToast('Re-authenticate to view backup codes')}
-                          className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">View</button>
+                        <button onClick={() => showToast(t('settings_page.toast_backup_reauth'))}
+                          className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">{t('settings_page.view_btn')}</button>
                       </div>
 
                       <div className="p-5 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-2xl flex items-center justify-between">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Monitor className="w-4 h-4 text-amber-400" /> API Token</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Used by field app & integrations</div>
+                          <div className="flex items-center gap-2 text-gray-900 dark:text-white font-bold"><Monitor className="w-4 h-4 text-amber-400" /> {t('settings_page.api_token_label')}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{t('settings_page.api_token_desc')}</div>
                         </div>
-                        <button onClick={async () => { if (await confirm('Regenerate will invalidate existing tokens. Proceed?', { variant: 'warning', title: 'Regenerate token', confirmLabel: 'Regenerate' })) showToast('API token regenerated') }}
+                        <button onClick={async () => { if (await confirm(t('settings_page.regen_confirm'), { variant: 'warning', title: t('settings_page.regen_confirm_title'), confirmLabel: t('settings_page.regen_confirm_btn') })) showToast(t('settings_page.toast_api_regen')) }}
                           className="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-800 dark:text-white text-xs font-bold rounded-lg border border-gray-200 dark:border-slate-700 transition-all">
-                          Regenerate
+                          {t('settings_page.regenerate_btn')}
                         </button>
                       </div>
                     </div>
@@ -629,27 +629,27 @@ export default function SettingsPage() {
 
                   {/* Privacy Controls */}
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Privacy Controls</h3>
-                    <DarkToggle title="Location Visibility" desc="Allow other command centers to see your active location" checked={getPref('priv_loc', true)} onChange={(v: boolean) => updatePref('priv_loc', v)} />
-                    <DarkToggle title="Audit Log Sharing" desc="Share detailed action logs with the central analytics pool" checked={getPref('priv_audit', true)} onChange={(v: boolean) => updatePref('priv_audit', v)} />
-                    <DarkToggle title="Login Alerts" desc="Email alerts for logins from unknown devices or locations" checked={getPref('priv_alerts', true)} onChange={(v: boolean) => updatePref('priv_alerts', v)} />
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.privacy_controls')}</h3>
+                    <DarkToggle title={t('settings_page.priv_loc_title')} desc={t('settings_page.priv_loc_desc')} checked={getPref('priv_loc', true)} onChange={(v: boolean) => updatePref('priv_loc', v)} />
+                    <DarkToggle title={t('settings_page.priv_audit_title')} desc={t('settings_page.priv_audit_desc')} checked={getPref('priv_audit', true)} onChange={(v: boolean) => updatePref('priv_audit', v)} />
+                    <DarkToggle title={t('settings_page.priv_alerts_title')} desc={t('settings_page.priv_alerts_desc')} checked={getPref('priv_alerts', true)} onChange={(v: boolean) => updatePref('priv_alerts', v)} />
                   </div>
 
                   {/* Active Sessions */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Login History</h3>
+                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.login_history')}</h3>
                       {sessions.length > 1 && (
                         <button onClick={handleRevokeAll} className="text-xs font-bold text-red-400 hover:text-red-300 transition-colors">
-                          Revoke all other sessions
+                          {t('settings_page.revoke_all_sessions')}
                         </button>
                       )}
                     </div>
                     <div className="border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-gray-50 dark:bg-slate-900/30">
                       {sessionsLoading ? (
-                        <div className="p-6 flex items-center gap-3 text-gray-400"><Loader2 className="w-4 h-4 animate-spin" /> Loading sessions…</div>
+                        <div className="p-6 flex items-center gap-3 text-gray-400"><Loader2 className="w-4 h-4 animate-spin" /> {t('settings_page.loading_sessions')}</div>
                       ) : sessions.length === 0 ? (
-                        <div className="p-6 text-sm text-gray-500">No session history found.</div>
+                        <div className="p-6 text-sm text-gray-500">{t('settings_page.no_session_history')}</div>
                       ) : (
                         sessions.map((s, i) => (
                           <div key={s.id} className={cn("p-5 flex items-center justify-between", i !== 0 && "border-t border-gray-200 dark:border-slate-800")}>
@@ -672,7 +672,7 @@ export default function SettingsPage() {
                               </div>
                               <button onClick={() => handleRevokeSession(s.id)}
                                 className="text-xs font-bold text-gray-400 hover:text-red-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/20">
-                                Revoke
+                                {t('settings_page.revoke_btn')}
                               </button>
                             </div>
                           </div>
@@ -688,14 +688,14 @@ export default function SettingsPage() {
             {activeTab === 'preferences' && (
               <div className="p-8 space-y-8 animate-in fade-in">
                 <div className="space-y-1 pb-6 border-b border-gray-200 dark:border-slate-800">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">App Preferences</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Customize your workspace. Preferences are saved locally.</p>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.preferences_title')}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_page.preferences_desc')}</p>
                 </div>
 
                 <div className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Interface Theme</h3>
+                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.interface_theme_label')}</h3>
                       <div className="grid grid-cols-3 gap-3">
                         {(['dark', 'light', 'system'] as const).map(t_theme => (
                           <button key={t_theme} onClick={() => setTheme(t_theme)}
@@ -703,14 +703,14 @@ export default function SettingsPage() {
                               theme === t_theme ? "bg-blue-500/10 border-blue-500/50 text-blue-600 dark:text-blue-400" : "bg-gray-50 dark:bg-slate-900 border-gray-200 dark:border-slate-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800"
                             )}>
                             {t_theme === 'dark' ? <Moon className="w-5 h-5" /> : t_theme === 'light' ? <Sun className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
-                            <span className="text-xs font-bold capitalize">{t_theme}</span>
+                            <span className="text-xs font-bold capitalize">{t(`settings_page.theme_${t_theme}`)}</span>
                           </button>
                         ))}
                       </div>
                     </div>
 
                     <div className="space-y-4">
-                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Primary Language</h3>
+                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.primary_language')}</h3>
                       <DarkSelect
                         value={i18n.language}
                         onChange={(v: string) => i18n.changeLanguage(v)}
@@ -723,14 +723,14 @@ export default function SettingsPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Default Map View</h3>
+                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.default_map_label')}</h3>
                       <div className="space-y-2">
                         {['standard', 'satellite', 'hybrid'].map(v => (
                           <label key={v} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
                             <input type="radio" name="mapView" checked={mapView === v} onChange={() => setMapView(v)} className="w-4 h-4" />
                             <span className="text-sm font-bold text-gray-700 dark:text-slate-300 capitalize flex items-center gap-2">
                               {v === 'standard' ? <Map className="w-4 h-4" /> : v === 'satellite' ? <Globe className="w-4 h-4" /> : <List className="w-4 h-4" />}
-                              {v.charAt(0).toUpperCase() + v.slice(1)} View
+                              {t(`settings_page.${v}_label`)}
                             </span>
                           </label>
                         ))}
@@ -738,17 +738,17 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Default Incident Sort</h3>
+                      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.incident_sort_label')}</h3>
                       <div className="space-y-2">
                         {[
-                          { v: 'severity', label: 'By Severity', icon: AlertTriangle },
-                          { v: 'recent',   label: 'By Recent',   icon: Clock },
-                          { v: 'distance', label: 'By Distance', icon: Map },
-                        ].map(({ v, label, icon: Icon }) => (
+                          { v: 'severity', labelKey: 'by_severity', icon: AlertTriangle },
+                          { v: 'recent',   labelKey: 'by_recent',   icon: Clock },
+                          { v: 'distance', labelKey: 'by_distance', icon: Map },
+                        ].map(({ v, labelKey, icon: Icon }) => (
                           <label key={v} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
                             <input type="radio" name="sort" checked={incidentSort === v} onChange={() => setIncidentSort(v)} className="w-4 h-4" />
                             <span className="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center gap-2">
-                              <Icon className="w-4 h-4" />{label}
+                              <Icon className="w-4 h-4" />{t(`settings_page.${labelKey}`)}
                             </span>
                           </label>
                         ))}
@@ -757,26 +757,26 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Dashboard Behavior</h3>
-                    <DarkToggle title="Auto Refresh" desc="Poll server for new data every 30 seconds" checked={getPref('dash_refresh', true)} onChange={(v: boolean) => updatePref('dash_refresh', v)} />
-                    <DarkToggle title="Sound Alerts for Critical Incidents" desc="Play a siren when a severity-5 incident arrives" checked={getPref('dash_sound', true)} onChange={(v: boolean) => updatePref('dash_sound', v)} />
-                    <DarkToggle title="Show ML Confidence Scores" desc="Display predictive accuracy on incident rows" checked={getPref('dash_ml', true)} onChange={(v: boolean) => updatePref('dash_ml', v)} />
-                    <DarkToggle title="Compact Table Mode" desc="Reduce padding in tables to show more rows" checked={getPref('dash_compact', false)} onChange={(v: boolean) => updatePref('dash_compact', v)} />
-                    <DarkToggle title="Offline Sync Badge" desc="Show sync status indicator on the map" checked={getPref('dash_offline', true)} onChange={(v: boolean) => updatePref('dash_offline', v)} />
+                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">{t('settings_page.dash_behavior')}</h3>
+                    <DarkToggle title={t('settings_page.dash_refresh_title')} desc={t('settings_page.dash_refresh_desc')} checked={getPref('dash_refresh', true)} onChange={(v: boolean) => updatePref('dash_refresh', v)} />
+                    <DarkToggle title={t('settings_page.dash_sound_title')} desc={t('settings_page.dash_sound_desc')} checked={getPref('dash_sound', true)} onChange={(v: boolean) => updatePref('dash_sound', v)} />
+                    <DarkToggle title={t('settings_page.dash_ml_title')} desc={t('settings_page.dash_ml_desc')} checked={getPref('dash_ml', true)} onChange={(v: boolean) => updatePref('dash_ml', v)} />
+                    <DarkToggle title={t('settings_page.dash_compact_title')} desc={t('settings_page.dash_compact_desc')} checked={getPref('dash_compact', false)} onChange={(v: boolean) => updatePref('dash_compact', v)} />
+                    <DarkToggle title={t('settings_page.dash_offline_title')} desc={t('settings_page.dash_offline_desc')} checked={getPref('dash_offline', true)} onChange={(v: boolean) => updatePref('dash_offline', v)} />
                   </div>
 
                   <div className="pt-6 border-t border-red-500/20">
                     <h3 className="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                      <AlertTriangle className="w-4 h-4" /> Danger Zone
+                      <AlertTriangle className="w-4 h-4" /> {t('settings_page.danger_zone')}
                     </h3>
                     <div className="flex gap-4 flex-wrap">
-                      <button onClick={() => showToast('Data export started. You will receive an email when ready.')}
+                      <button onClick={() => showToast(t('settings_page.toast_export_started'))}
                         className="px-5 py-2.5 bg-gray-100 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-sm font-bold text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-800 transition-all flex items-center gap-2">
-                        <Download className="w-4 h-4" /> Export all data
+                        <Download className="w-4 h-4" /> {t('settings_page.export_all_data')}
                       </button>
-                      <button onClick={async () => { if (await confirm('Request account deactivation? This requires administrator approval.', { variant: 'danger', title: 'Deactivate account', confirmLabel: 'Request deactivation' })) showToast('Deactivation request submitted') }}
+                      <button onClick={async () => { if (await confirm(t('settings_page.deactivate_confirm'), { variant: 'danger', title: t('settings_page.deactivate_confirm_title'), confirmLabel: t('settings_page.deactivate_confirm_btn') })) showToast(t('settings_page.toast_deactivate_submitted')) }}
                         className="px-5 py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/20 transition-all flex items-center gap-2">
-                        <Trash2 className="w-4 h-4" /> Deactivate account
+                        <Trash2 className="w-4 h-4" /> {t('settings_page.deactivate_account')}
                       </button>
                     </div>
                   </div>

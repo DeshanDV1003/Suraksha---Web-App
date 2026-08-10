@@ -7,8 +7,10 @@ import { useAppStore } from '@/store/useAppStore'
 import Papa from 'papaparse'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
+import { useTranslation } from 'react-i18next';
 
 export default function UserManagementPage() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<'DIRECTORY' | 'RBAC' | 'AUDIT' | 'SECURITY'>('DIRECTORY')
   const user = useAppStore(state => state.user)
   const [localSearch, setLocalSearch] = useState('')
@@ -46,20 +48,20 @@ export default function UserManagementPage() {
     try {
       await userService.updateRole(id, role)
       fetchUsers()
-      showToast('Role updated successfully')
+      showToast(t('user_management_page.toast_role_updated'))
     } catch (err) {
-      showToast('Failed to update role', 'error')
+      showToast(t('user_management_page.toast_role_failed'), 'error')
     }
   }
 
   const handleDeleteUser = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this user? This action is irreversible.')) return
+    if (!confirm(t('user_management_page.confirm_delete'))) return
     try {
       await userService.deleteUser(id)
       fetchUsers()
-      showToast('User deleted successfully')
+      showToast(t('user_management_page.toast_deleted'))
     } catch (err) {
-      showToast('Failed to delete user', 'error')
+      showToast(t('user_management_page.toast_delete_failed'), 'error')
     }
   }
 
@@ -67,18 +69,18 @@ export default function UserManagementPage() {
     try {
       await userService.toggleFieldResponderApp(id, !currentStatus)
       fetchUsers()
-      showToast('App status updated successfully')
+      showToast(t('user_management_page.toast_app_updated'))
     } catch (err) {
-      showToast('Failed to update app status', 'error')
+      showToast(t('user_management_page.toast_app_failed'), 'error')
     }
   }
 
   const handleSendAppLink = async (id: string) => {
     try {
       await userService.sendAppLink(id)
-      showToast('App link sent via SMS successfully.')
+      showToast(t('user_management_page.toast_link_sent'))
     } catch (err) {
-      showToast('Failed to send app link. Ensure user has a valid phone number.', 'error')
+      showToast(t('user_management_page.toast_link_failed'), 'error')
     }
   }
 
@@ -93,10 +95,10 @@ export default function UserManagementPage() {
   })
 
   const stats = [
-    { label: 'Total Base', value: users.length.toString(), color: 'text-blue-600', icon: User },
-    { label: 'DMC Personnel', value: users.filter(u => u.role === 'DMC_OFFICER').length.toString(), color: 'text-indigo-600', icon: Shield },
-    { label: 'Field Responders', value: users.filter(u => u.role === 'FIELD_RESPONDER' || u.role === 'VOLUNTEER').length.toString(), color: 'text-teal-600', icon: UserCheck },
-    { label: 'Administrators', value: users.filter(u => u.role === 'ADMIN').length.toString(), color: 'text-rose-600', icon: ShieldAlert },
+    { label: t('user_management_page.total_base'), value: users.length.toString(), color: 'text-blue-600', icon: User },
+    { label: t('user_management_page.dmc_personnel'), value: users.filter(u => u.role === 'DMC_OFFICER').length.toString(), color: 'text-indigo-600', icon: Shield },
+    { label: t('user_management_page.field_responders'), value: users.filter(u => u.role === 'FIELD_RESPONDER' || u.role === 'VOLUNTEER').length.toString(), color: 'text-teal-600', icon: UserCheck },
+    { label: t('user_management_page.administrators'), value: users.filter(u => u.role === 'ADMIN').length.toString(), color: 'text-rose-600', icon: ShieldAlert },
   ]
 
   return (
@@ -116,14 +118,14 @@ export default function UserManagementPage() {
               className="suraksha-button flex items-center gap-3 px-6 h-14 bg-white/10 border border-white/20 text-white hover:bg-white/20"
             >
               <Upload className="w-5 h-5" />
-              <span className="uppercase tracking-widest text-[11px] font-black">Bulk Import (CSV)</span>
+              <span className="uppercase tracking-widest text-[11px] font-black">{t('user_management_page.bulk_import')}</span>
             </button>
             <button 
               onClick={() => setIsOnboardModalOpen(true)}
               className="suraksha-button flex items-center gap-3 px-8 h-14"
             >
               <UserPlus className="w-5 h-5" />
-              <span className="uppercase tracking-widest text-[11px] font-black">Onboard Specialist</span>
+              <span className="uppercase tracking-widest text-[11px] font-black">{t('user_management_page.onboard_specialist')}</span>
             </button>
           </div>
         </div>
@@ -146,10 +148,10 @@ export default function UserManagementPage() {
         {/* Tabs */}
         <div className="flex space-x-2 border-b border-gray-200 dark:border-gray-700">
           {[
-            { id: 'DIRECTORY', label: 'Directory', icon: User },
-            ...(user?.role === 'ADMIN' ? [{ id: 'RBAC', label: 'RBAC Matrix', icon: ShieldCheck }] : []),
-            { id: 'AUDIT', label: 'Audit Logs', icon: FileText },
-            { id: 'SECURITY', label: '2FA & Security', icon: ShieldAlert }
+            { id: 'DIRECTORY', label: t('user_management_page.tabs.directory'), icon: User },
+            ...(user?.role === 'ADMIN' ? [{ id: 'RBAC', label: t('user_management_page.tabs.rbac'), icon: ShieldCheck }] : []),
+            { id: 'AUDIT', label: t('user_management_page.tabs.audit'), icon: FileText },
+            { id: 'SECURITY', label: t('user_management_page.tabs.security'), icon: ShieldAlert }
           ].map(tab => (
             <button
               key={tab.id}
@@ -175,19 +177,19 @@ export default function UserManagementPage() {
               <div className="suraksha-card p-8 bg-white dark:bg-gray-900 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl shadow-blue-500/5">
                 <div className="flex flex-wrap items-center gap-6 w-full lg:w-auto">
                     <div className="relative w-full md:w-56 group text-center lg:text-left">
-                      <label className="text-[9px] font-black text-slate-300 uppercase tracking-widest block mb-2 pointer-events-none">Authority Level</label>
+                      <label className="text-[9px] font-black text-slate-300 uppercase tracking-widest block mb-2 pointer-events-none">{t('user_management_page.authority_level')}</label>
                       <div className="relative">
                         <select 
                           value={roleFilter}
                           onChange={(e) => setRoleFilter(e.target.value)}
                           className="appearance-none w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl px-6 py-4 text-[11px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all cursor-pointer"
                         >
-                            <option>All Roles</option>
-                            <option value="CITIZEN">Citizen</option>
-                            <option value="VOLUNTEER">Volunteer</option>
-                            <option value="FIELD_RESPONDER">Field Responder</option>
-                            <option value="DMC_OFFICER">DMC Officer</option>
-                            <option value="ADMIN">Admin</option>
+                            <option>{t('user_management_page.all_roles')}</option>
+                            <option value="CITIZEN">{t('user_management_page.citizen')}</option>
+                            <option value="VOLUNTEER">{t('user_management_page.volunteer')}</option>
+                            <option value="FIELD_RESPONDER">{t('user_management_page.field_responder')}</option>
+                            <option value="DMC_OFFICER">{t('user_management_page.dmc_officer')}</option>
+                            <option value="ADMIN">{t('user_management_page.admin')}</option>
                         </select>
                         <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 pointer-events-none group-focus-within:rotate-180 transition-transform" />
                       </div>
@@ -195,12 +197,12 @@ export default function UserManagementPage() {
                 </div>
 
                 <div className="relative w-full lg:w-[500px] group">
-                    <label className="text-[9px] font-black text-slate-300 uppercase tracking-widest block mb-2 pointer-events-none">Database Identity Search</label>
+                    <label className="text-[9px] font-black text-slate-300 uppercase tracking-widest block mb-2 pointer-events-none">{t('user_management_page.search_placeholder')}</label>
                     <div className="relative">
                       <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-brand-500 transition-colors" />
                       <input 
                         type="text" 
-                        placeholder="Search by identity name or secure email..." 
+                        placeholder={t('user_management_page.search_hint')} 
                         className="suraksha-input pl-16 h-16 bg-gray-50 dark:bg-gray-800/50 border-none font-bold placeholder:italic"
                         value={localSearch}
                         onChange={(e) => setLocalSearch(e.target.value)}
@@ -215,11 +217,11 @@ export default function UserManagementPage() {
                   <table className="w-full border-collapse">
                     <thead className="border-b border-slate-50/50">
                       <tr className="bg-gray-50 dark:bg-gray-800/50/30">
-                        <th className="px-6 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Identity</th>
-                        <th className="px-6 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Comms Node</th>
-                        <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Authority</th>
-                        <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Field App</th>
-                        <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Actions</th>
+                        <th className="px-6 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">{t('user_management_page.identity')}</th>
+                        <th className="px-6 py-6 text-left text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">{t('user_management_page.comms_node')}</th>
+                        <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">{t('user_management_page.authority')}</th>
+                        <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">{t('user_management_page.field_app')}</th>
+                        <th className="px-6 py-6 text-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">{t('user_management_page.actions')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50/50">
@@ -228,7 +230,7 @@ export default function UserManagementPage() {
                           <td colSpan={5} className="py-24">
                             <div className="flex flex-col items-center justify-center gap-4">
                                 <div className="w-10 h-10 border-4 border-blue-100 border-t-[#0061ff] rounded-full animate-spin" />
-                                <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">Decrypting Personnel Archives...</span>
+                                <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">{t('user_management_page.loading')}</span>
                             </div>
                           </td>
                         </tr>
@@ -237,7 +239,7 @@ export default function UserManagementPage() {
                           <td colSpan={5} className="text-center py-24">
                             <div className="flex flex-col items-center gap-4 opacity-30">
                                 <UserCog className="w-16 h-16 text-slate-300" />
-                                <span className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Zero Matching Profiles</span>
+                                <span className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">{t('user_management_page.no_profiles')}</span>
                             </div>
                           </td>
                         </tr>
@@ -249,7 +251,7 @@ export default function UserManagementPage() {
                           </td>
                           <td className="px-6 py-6">
                             <div className="text-[12px] font-bold text-gray-500 dark:text-gray-400 tracking-tight">{u.email}</div>
-                            <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1">{u.phone || 'NO PHONE'}</div>
+                            <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1">{u.phone || t('user_management_page.no_phone_abbrev')}</div>
                           </td>
                           <td className="px-6 py-6 text-center">
                             <div className="relative inline-block group/role">
@@ -264,11 +266,11 @@ export default function UserManagementPage() {
                                   "bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800"
                                 )}
                               >
-                                <option value="CITIZEN">Citizen</option>
-                                <option value="VOLUNTEER">Volunteer</option>
-                                <option value="FIELD_RESPONDER">Field Responder</option>
-                                <option value="DMC_OFFICER">DMC Officer</option>
-                                <option value="ADMIN">Admin</option>
+                                <option value="CITIZEN">{t('user_management_page.citizen')}</option>
+                                <option value="VOLUNTEER">{t('user_management_page.volunteer')}</option>
+                                <option value="FIELD_RESPONDER">{t('user_management_page.field_responder')}</option>
+                                <option value="DMC_OFFICER">{t('user_management_page.dmc_officer')}</option>
+                                <option value="ADMIN">{t('user_management_page.admin')}</option>
                               </select>
                               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-300 pointer-events-none" />
                             </div>
@@ -283,14 +285,14 @@ export default function UserManagementPage() {
                                 )}
                               >
                                 <Smartphone className="w-3 h-3" />
-                                {u.hasMobileApp ? 'Installed' : 'Missing'}
+                                {u.hasMobileApp ? t('user_management_page.installed') : t('user_management_page.missing_app')}
                               </button>
                               {!u.hasMobileApp && (
                                 <button 
                                   onClick={() => handleSendAppLink(u.id)}
                                   className="text-[9px] text-brand-500 font-bold underline"
                                 >
-                                  Send Link
+                                  {t('user_management_page.send_link')}
                                 </button>
                               )}
                             </div>
@@ -330,7 +332,7 @@ export default function UserManagementPage() {
         {isBulkImportOpen && (
           <BulkImportModal 
             onClose={() => setIsBulkImportOpen(false)}
-            onSuccess={() => { setIsBulkImportOpen(false); fetchUsers(); showToast('Users imported successfully'); }}
+            onSuccess={() => { setIsBulkImportOpen(false); fetchUsers(); showToast(t('user_management_page.toast_imported')); }}
             showToast={showToast}
           />
         )}
@@ -350,6 +352,7 @@ export default function UserManagementPage() {
 }
 
 function RBACMatrixTab({ showToast }: any) {
+  const { t } = useTranslation()
   const [matrix, setMatrix] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -391,10 +394,10 @@ function RBACMatrixTab({ showToast }: any) {
   const saveMatrix = async () => {
     try {
       await userService.updateRBACMatrix(matrix)
-      showToast('RBAC Matrix updated successfully')
+      showToast(t('user_management_page.rbac_updated'))
       fetchMatrix()
     } catch (err) {
-      showToast('Failed to save matrix', 'error')
+      showToast(t('user_management_page.rbac_failed'), 'error')
     }
   }
 
@@ -402,17 +405,17 @@ function RBACMatrixTab({ showToast }: any) {
     <div className="suraksha-card p-10 bg-white dark:bg-gray-900 space-y-8 animate-in fade-in duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-xl font-black text-gray-800 dark:text-white/90">Role-Based Access Control (RBAC)</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Define granular permissions across all operational modules.</p>
+          <h2 className="text-xl font-black text-gray-800 dark:text-white/90">{t('user_management_page.rbac_title')}</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{t('user_management_page.rbac_desc')}</p>
         </div>
-        <button onClick={saveMatrix} className="suraksha-button px-8">Save Policy Matrix</button>
+        <button onClick={saveMatrix} className="suraksha-button px-8">{t('user_management_page.save_policy')}</button>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-800/50">
-              <th className="px-6 py-4 text-left text-xs font-black uppercase text-gray-500 dark:text-gray-400">Role / Module</th>
+              <th className="px-6 py-4 text-left text-xs font-black uppercase text-gray-500 dark:text-gray-400">{t('user_management_page.role_module')}</th>
               {defaultModules.map(mod => (
                 <th key={mod} className="px-6 py-4 text-center text-xs font-black uppercase text-gray-500 dark:text-gray-400">{mod}</th>
               ))}
@@ -434,21 +437,21 @@ function RBACMatrixTab({ showToast }: any) {
                           <div className="w-5 h-5 rounded border border-slate-300 peer-checked:bg-blue-500 peer-checked:border-blue-500 flex items-center justify-center transition-colors">
                             {p.canView && <Check className="w-3 h-3 text-white" />}
                           </div>
-                          <span className="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase">View</span>
+                          <span className="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase">{t('user_management_page.view')}</span>
                         </label>
                         <label className="flex flex-col items-center gap-1 cursor-pointer group">
                           <input type="checkbox" className="peer sr-only" checked={p.canEdit} onChange={() => togglePerm(pIdx, 'canEdit')} />
                           <div className="w-5 h-5 rounded border border-slate-300 peer-checked:bg-orange-500 peer-checked:border-orange-500 flex items-center justify-center transition-colors">
                             {p.canEdit && <Check className="w-3 h-3 text-white" />}
                           </div>
-                          <span className="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase">Edit</span>
+                          <span className="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase">{t('user_management_page.edit')}</span>
                         </label>
                         <label className="flex flex-col items-center gap-1 cursor-pointer group">
                           <input type="checkbox" className="peer sr-only" checked={p.canDelete} onChange={() => togglePerm(pIdx, 'canDelete')} />
                           <div className="w-5 h-5 rounded border border-slate-300 peer-checked:bg-red-500 peer-checked:border-red-500 flex items-center justify-center transition-colors">
                             {p.canDelete && <Check className="w-3 h-3 text-white" />}
                           </div>
-                          <span className="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase">Del</span>
+                          <span className="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase">{t('user_management_page.del')}</span>
                         </label>
                       </div>
                     </td>
@@ -464,6 +467,7 @@ function RBACMatrixTab({ showToast }: any) {
 }
 
 function AuditLogsTab() {
+  const { t } = useTranslation()
   const [logs, setLogs] = useState<{sessions: any[], actions: any[]}>({ sessions: [], actions: [] })
   
   useEffect(() => {
@@ -475,7 +479,7 @@ function AuditLogsTab() {
       <div className="suraksha-card p-8 bg-white dark:bg-gray-900">
         <h3 className="text-lg font-black text-gray-800 dark:text-white/90 mb-6 flex items-center gap-2">
           <Activity className="w-5 h-5 text-blue-500" />
-          Recent Session Logins
+          {t('user_management_page.recent_logins')}
         </h3>
         <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
           {logs.sessions.map((s, i) => (
@@ -485,8 +489,8 @@ function AuditLogsTab() {
                 <span className="text-[10px] font-black text-gray-400 dark:text-gray-500">{format(new Date(s.loginTime), 'PP p')}</span>
               </div>
               <div className="flex gap-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                <span>IP: {s.ipAddress || 'UNKNOWN'}</span>
-                <span>Device: {s.device ? s.device.slice(0,20) + '...' : 'UNKNOWN'}</span>
+                <span>{t('user_management_page.ip')} {s.ipAddress || 'UNKNOWN'}</span>
+                <span>{t('user_management_page.device')} {s.device ? s.device.slice(0,20) + '...' : 'UNKNOWN'}</span>
               </div>
             </div>
           ))}
@@ -496,7 +500,7 @@ function AuditLogsTab() {
       <div className="suraksha-card p-8 bg-white dark:bg-gray-900">
         <h3 className="text-lg font-black text-gray-800 dark:text-white/90 mb-6 flex items-center gap-2">
           <FileText className="w-5 h-5 text-purple-500" />
-          System Activity Audit
+          {t('user_management_page.system_audit')}
         </h3>
         <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
           {logs.actions.map((a, i) => (
@@ -510,7 +514,7 @@ function AuditLogsTab() {
                 <span className="text-[10px] font-black text-gray-400 dark:text-gray-500">{format(new Date(a.createdAt), 'PP p')}</span>
               </div>
               <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                User <span className="font-bold text-slate-800">{a.userId}</span> performed action on <span className="font-bold text-slate-800">{a.entity} ({a.entityId})</span>.
+                {t('user_management_page.user_action_prefix')} <span className="font-bold text-slate-800">{a.userId}</span> {t('user_management_page.user_action_desc')} <span className="font-bold text-slate-800">{a.entity} ({a.entityId})</span>.
               </p>
             </div>
           ))}
@@ -521,6 +525,7 @@ function AuditLogsTab() {
 }
 
 function SecurityTab({ showToast }: any) {
+  const { t } = useTranslation()
   const [setupData, setSetupData] = useState<any>(null)
   const [token, setToken] = useState('')
   const [verifying, setVerifying] = useState(false)
@@ -530,7 +535,7 @@ function SecurityTab({ showToast }: any) {
       const res = await authService.setup2FA()
       setSetupData(res.data)
     } catch(e) {
-      showToast('Failed to initiate 2FA setup', 'error')
+      showToast(t('user_management_page.two_fa_init_failed'), 'error')
     }
   }
 
@@ -538,11 +543,10 @@ function SecurityTab({ showToast }: any) {
     setVerifying(true)
     try {
       await authService.verify2FA(token)
-      showToast('2FA Enabled Successfully')
+      showToast(t('user_management_page.two_fa_enabled'))
       setSetupData(null)
-      // refresh user state if needed
     } catch(e) {
-      showToast('Invalid Token', 'error')
+      showToast(t('user_management_page.invalid_token'), 'error')
     } finally {
       setVerifying(false)
     }
@@ -555,22 +559,22 @@ function SecurityTab({ showToast }: any) {
           <ShieldAlert className="w-8 h-8 text-emerald-600" />
         </div>
         <div>
-          <h2 className="text-2xl font-black text-gray-800 dark:text-white/90">2FA Security Enforcement</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Protect personnel accounts with mandatory Two-Factor Authentication.</p>
+          <h2 className="text-2xl font-black text-gray-800 dark:text-white/90">{t('user_management_page.two_fa_title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t('user_management_page.two_fa_desc')}</p>
         </div>
       </div>
 
       <div className="max-w-md">
-        <h3 className="font-bold mb-4">Setup Authenticator App</h3>
+        <h3 className="font-bold mb-4">{t('user_management_page.setup_authenticator')}</h3>
         {!setupData ? (
-          <button onClick={initiateSetup} className="suraksha-button">Enable 2FA (TOTP)</button>
+          <button onClick={initiateSetup} className="suraksha-button">{t('user_management_page.enable_2fa')}</button>
         ) : (
           <div className="space-y-6">
             <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl flex justify-center">
               <img src={setupData.qrCode} alt="QR Code" className="w-48 h-48 rounded-xl bg-white dark:bg-gray-900 p-2" />
             </div>
             <div className="space-y-2 text-center">
-              <p className="text-xs font-bold text-gray-500 dark:text-gray-400">Or enter secret manually:</p>
+              <p className="text-xs font-bold text-gray-500 dark:text-gray-400">{t('user_management_page.enter_secret')}</p>
               <code className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-slate-800 rounded font-mono text-sm tracking-widest block">{setupData.secret}</code>
             </div>
             <div className="flex gap-4">
@@ -583,7 +587,7 @@ function SecurityTab({ showToast }: any) {
                 onChange={e => setToken(e.target.value)}
               />
               <button onClick={verifySetup} disabled={verifying || token.length !== 6} className="suraksha-button whitespace-nowrap">
-                Verify
+                {t('user_management_page.verify')}
               </button>
             </div>
           </div>
@@ -594,6 +598,7 @@ function SecurityTab({ showToast }: any) {
 }
 
 function BulkImportModal({ onClose, onSuccess, showToast }: any) {
+  const { t } = useTranslation()
   const [csvData, setCsvData] = useState<any[]>([])
   const [uploading, setUploading] = useState(false)
 
@@ -623,7 +628,7 @@ function BulkImportModal({ onClose, onSuccess, showToast }: any) {
       await userService.bulkImport(payload)
       onSuccess()
     } catch(e) {
-      showToast('Failed to import', 'error')
+      showToast(t('user_management_page.toast_role_failed'), 'error')
     } finally {
       setUploading(false)
     }
@@ -634,8 +639,8 @@ function BulkImportModal({ onClose, onSuccess, showToast }: any) {
       <div className="suraksha-card w-full max-w-4xl bg-white dark:bg-gray-900 p-10 flex flex-col max-h-[90vh]">
         <div className="flex justify-between items-center mb-8 shrink-0">
           <div>
-            <h2 className="text-2xl font-black">Bulk Personnel Onboarding</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest mt-1">CSV Identity Matrix Import</p>
+            <h2 className="text-2xl font-black">{t('user_management_page.bulk_title')}</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest mt-1">{t('user_management_page.csv_import')}</p>
           </div>
           <button onClick={onClose}><X className="w-6 h-6 text-gray-400 dark:text-gray-500" /></button>
         </div>
@@ -643,7 +648,7 @@ function BulkImportModal({ onClose, onSuccess, showToast }: any) {
         {!csvData.length ? (
           <div className="flex-1 flex flex-col items-center justify-center p-20 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-3xl bg-gray-50 dark:bg-gray-800/50/50">
             <Upload className="w-12 h-12 text-slate-300 mb-4" />
-            <p className="font-bold text-gray-600 dark:text-gray-300 mb-6">Upload CSV file (Name, Email, NIC, Phone, Role)</p>
+            <p className="font-bold text-gray-600 dark:text-gray-300 mb-6">{t('user_management_page.upload_csv')}</p>
             <input type="file" accept=".csv" onChange={handleFileUpload} className="text-sm file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors" />
           </div>
         ) : (
@@ -673,9 +678,9 @@ function BulkImportModal({ onClose, onSuccess, showToast }: any) {
               </table>
             </div>
             <div className="flex justify-end gap-4 shrink-0">
-              <button onClick={() => setCsvData([])} className="px-6 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:bg-gray-800 rounded-xl">Discard</button>
+              <button onClick={() => setCsvData([])} className="px-6 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:bg-gray-800 rounded-xl">{t('user_management_page.discard')}</button>
               <button onClick={submitImport} disabled={uploading} className="suraksha-button px-8">
-                {uploading ? 'Processing...' : 'Commit Import'}
+                {uploading ? t('user_management_page.processing') : t('user_management_page.commit_import')}
               </button>
             </div>
           </div>
@@ -686,6 +691,7 @@ function BulkImportModal({ onClose, onSuccess, showToast }: any) {
 }
 
 function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -703,7 +709,7 @@ function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
       onSuccess()
     } catch (err: any) {
       const msg = err.response?.data?.message || 'Failure'
-      showToast(`Onboarding Interrupted: ${msg}`, 'error')
+      showToast(`${t('user_management_page.onboarding_failed')} ${msg}`, 'error')
     } finally {
       setLoading(false)
     }
@@ -718,8 +724,8 @@ function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
               <UserPlus className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-gray-800 dark:text-white/90">Credentials Enlistment</h2>
-              <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Register Specialist Node</p>
+              <h2 className="text-2xl font-black text-gray-800 dark:text-white/90">{t('user_management_page.credentials_enlistment')}</h2>
+              <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">{t('user_management_page.register_specialist')}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2.5 hover:bg-gray-50 dark:bg-gray-800/50 rounded-xl transition-colors">
@@ -730,34 +736,34 @@ function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
         <form onSubmit={handleSubmit} className="space-y-6">
            <div className="grid grid-cols-2 gap-6">
              <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Full Identity Name</label>
+                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('user_management_page.full_identity')}</label>
                 <input required className="suraksha-input" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
              </div>
              <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Email</label>
+                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('user_management_page.email')}</label>
                 <input required type="email" className="suraksha-input" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
              </div>
              <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Password</label>
+                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('user_management_page.password')}</label>
                 <input required type="password" className="suraksha-input" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} />
              </div>
              <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Role</label>
+                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('user_management_page.role')}</label>
                 <select className="suraksha-input" value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})}>
-                  <option value="VOLUNTEER">Field Volunteer</option>
-                  <option value="FIELD_RESPONDER">Field Responder</option>
-                  <option value="DMC_OFFICER">DMC Officer</option>
-                  <option value="ADMIN">System Admin</option>
-                  <option value="CITIZEN">Standard Citizen</option>
+                  <option value="VOLUNTEER">{t('user_management_page.field_volunteer')}</option>
+                  <option value="FIELD_RESPONDER">{t('user_management_page.field_responder')}</option>
+                  <option value="DMC_OFFICER">{t('user_management_page.dmc_officer')}</option>
+                  <option value="ADMIN">{t('user_management_page.system_admin')}</option>
+                  <option value="CITIZEN">{t('user_management_page.standard_citizen')}</option>
                 </select>
              </div>
              <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Phone</label>
+                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('user_management_page.phone')}</label>
                 <input required className="suraksha-input" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
              </div>
            </div>
            <button type="submit" disabled={loading} className="suraksha-button w-full h-14">
-             {loading ? 'Transmitting...' : 'Finalize Onboarding'}
+             {loading ? t('user_management_page.transmitting') : t('user_management_page.finalize_onboarding')}
            </button>
         </form>
       </div>
