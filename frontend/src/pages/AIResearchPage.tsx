@@ -605,7 +605,7 @@ export default function AIResearchPage() {
 
   return (
     <div>
-      <PageMeta title="AI Research Features — SURAKSHA" />
+      <PageMeta title="AI Research Features — SURAKSHA" description="AI Research Features" />
       <PageBreadcrumb pageTitle="AI Research Features" />
 
       {/* Header */}
