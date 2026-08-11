@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Loader2, Bot, User, AlertTriangle } from 'lucide-react'
 import axios from 'axios'
 
-const API = 'http://192.168.8.121:3001/api/chatbot/message'
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/chatbot/message`
 
 interface Message {
   role: 'user' | 'model'
