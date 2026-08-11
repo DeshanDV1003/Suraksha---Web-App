@@ -48,8 +48,11 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:19000", "http://localhost:8081"], // Web and Mobile dev ports
-    methods: ["GET", "POST", "PATCH", "DELETE"]
+    origin: process.env.CORS_ORIGIN
+      ? process.env.CORS_ORIGIN.split(',')
+      : ["http://localhost:5173", "http://localhost:19000", "http://localhost:8081", "https://suraksha-web-app-frontend-rgid-beige.vercel.app"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
   }
 });
 
