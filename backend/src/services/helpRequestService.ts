@@ -38,6 +38,14 @@ export const getHelpRequests = async () => {
   });
 };
 
+export const getMyHelpRequests = async (userId: string) => {
+  return prisma.helpRequest.findMany({
+    where: { userId },
+    include: { escalations: true },
+    orderBy: { createdAt: 'desc' }
+  });
+};
+
 // 2. WhatsApp & SMS Request Intake
 export const handleSMSWebhook = async (payload: { From: string, Body: string }) => {
   // Mock SMS parser: Expects format "HELP [Type] [Location] [People Count]"

@@ -9,6 +9,304 @@ import { io, Socket } from 'socket.io-client'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb"
 import PageMeta from "@/components/common/PageMeta"
 
+function CitizenSupportView() {
+  const [guides, setGuides] = useState<any[]>([])
+  const [groups, setGroups] = useState<any[]>([])
+  const [myChats, setMyChats] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+  const [moodSelected, setMoodSelected] = useState('')
+  const [moodSubmitted, setMoodSubmitted] = useState(false)
+  const [chatRequested, setChatRequested] = useState(false)
+  const [chatRequestLoading, setChatRequestLoading] = useState(false)
+  const [activeSection, setActiveSection] = useState<'chat' | 'groups' | 'mood' | 'guides'>('chat')
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true)
+      try {
+        const [guidesRes, groupsRes, chatsRes] = await Promise.all([
+          psychSupportService.getGuides(),
+          psychSupportService.getGroups(),
+          psychSupportService.getMyChats()
+        ])
+        setGuides(guidesRes.data)
+        setGroups(groupsRes.data)
+        setMyChats(chatsRes.data.filter((c: any) => c.status !== 'MOOD_LOG'))
+        if (chatsRes.data.some((c: any) => c.status === 'WAITING' || c.status === 'ACTIVE')) {
+          setChatRequested(true)
+        }
+      } catch { /* ignore */ }
+      finally { setLoading(false) }
+    }
+    load()
+  }, [])
+
+  const handleRequestChat = async () => {
+    setChatRequestLoading(true)
+    try {
+      await psychSupportService.createChatRequest({ moodBefore: moodSelected || undefined })
+      setChatRequested(true)
+      const res = await psychSupportService.getMyChats()
+      setMyChats(res.data.filter((c: any) => c.status !== 'MOOD_LOG'))
+      showToast('Support request sent! A counsellor will connect with you soon.')
+    } catch {
+      showToast('Failed to send support request.', 'error')
+    } finally {
+      setChatRequestLoading(false)
+    }
+  }
+
+  const handleJoinGroup = async (id: string) => {
+    try {
+      await psychSupportService.joinGroup(id)
+      showToast('Registered for session!')
+      const res = await psychSupportService.getGroups()
+      setGroups(res.data)
+    } catch {
+      showToast('Failed to register.', 'error')
+    }
+  }
+
+  const handleMoodSubmit = async () => {
+    if (!moodSelected) return
+    try {
+      await psychSupportService.submitMood(moodSelected)
+      setMoodSubmitted(true)
+      showToast('Mood check-in recorded. Thank you.')
+    } catch {
+      showToast('Failed to submit mood.', 'error')
+    }
+  }
+
+  const MOODS = [
+    { emoji: '😊', label: 'Good', value: 'GOOD' },
+    { emoji: '😐', label: 'Okay', value: 'OKAY' },
+    { emoji: '😟', label: 'Anxious', value: 'ANXIOUS' },
+    { emoji: '😢', label: 'Sad', value: 'SAD' },
+    { emoji: '😠', label: 'Frustrated', value: 'FRUSTRATED' },
+    { emoji: '😔', label: 'Hopeless', value: 'HOPELESS' },
+  ]
+
+  const STATUS_COLORS: Record<string, string> = {
+    WAITING: 'bg-yellow-100 text-yellow-700',
+    ACTIVE: 'bg-green-100 text-green-700',
+    COMPLETED: 'bg-slate-100 text-slate-500',
+  }
+
+  const SECTIONS = [
+    { key: 'chat', label: 'Request Support', icon: MessageSquare },
+    { key: 'groups', label: 'Group Sessions', icon: Users },
+    { key: 'mood', label: 'Mood Check-In', icon: HeartPulse },
+    { key: 'guides', label: 'Wellness Guides', icon: BookOpen },
+  ] as const
+
+  return (
+    <>
+      <PageMeta title="Support | Suraksha" description="Suraksha Support Page" />
+      <PageBreadcrumb pageTitle="Mental Health Support" />
+
+      {toast && (
+        <div className={cn('fixed top-5 right-5 z-50 px-5 py-3 rounded-xl text-white font-semibold shadow-xl text-sm', toast.type === 'error' ? 'bg-red-500' : 'bg-green-500')}>
+          {toast.message}
+        </div>
+      )}
+
+      <div className="space-y-6 animate-in fade-in duration-700 pb-10">
+
+        {/* Hero */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#4f46e5] to-[#7c3aed] rounded-[2.5rem] p-8 text-white shadow-2xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48" />
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest border border-white/20 mb-4">
+              <HeartPulse className="w-4 h-4 text-pink-300" /> Mental Health Support
+            </div>
+            <h1 className="text-2xl font-black tracking-tight">You are not alone.</h1>
+            <p className="text-indigo-100 text-sm mt-1 max-w-lg">Connect with a counsellor, join a group session, or explore wellness guides.</p>
+          </div>
+        </div>
+
+        {/* Nav */}
+        <div className="flex flex-wrap gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl border border-slate-200 dark:border-cyan-400/10">
+          {SECTIONS.map(s => (
+            <button key={s.key} onClick={() => setActiveSection(s.key)}
+              className={cn('flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all',
+                activeSection === s.key ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5')}>
+              <s.icon className="w-4 h-4" /> {s.label}
+            </button>
+          ))}
+        </div>
+
+        {loading ? (
+          <div className="py-20 flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-indigo-400" /></div>
+        ) : (
+          <>
+            {/* Request Support */}
+            {activeSection === 'chat' && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Request card */}
+                <div className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-6 space-y-5">
+                  <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                    <MessageSquare className="w-5 h-5 text-indigo-500" /> Talk to a Counsellor
+                  </h2>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">Request a one-on-one chat session with a trained mental health counsellor. Your conversation is private and confidential.</p>
+
+                  {chatRequested ? (
+                    <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-700">
+                      <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                      <div>
+                        <p className="font-bold text-green-700 dark:text-green-400 text-sm">Request Sent</p>
+                        <p className="text-xs text-green-600 dark:text-green-500">A counsellor will connect with you shortly.</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <button onClick={handleRequestChat} disabled={chatRequestLoading}
+                      className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-60">
+                      {chatRequestLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                      Request Support Chat
+                    </button>
+                  )}
+                </div>
+
+                {/* My sessions */}
+                <div className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-6 space-y-4">
+                  <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-indigo-500" /> My Sessions
+                  </h2>
+                  {myChats.length === 0 ? (
+                    <p className="text-slate-400 text-sm text-center py-8">No sessions yet.</p>
+                  ) : (
+                    <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                      {myChats.map((s: any) => (
+                        <div key={s.id} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                          <div>
+                            <p className="font-semibold text-sm text-slate-800 dark:text-white">Session {formatDistanceToNow(new Date(s.startedAt), { addSuffix: true })}</p>
+                            <p className="text-xs text-slate-400">{s.messages?.length || 0} messages</p>
+                          </div>
+                          <span className={cn('px-3 py-1 rounded-full text-xs font-bold', STATUS_COLORS[s.status] || 'bg-slate-100 text-slate-500')}>
+                            {s.status}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Group Sessions */}
+            {activeSection === 'groups' && (
+              <div className="space-y-4">
+                <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                  <Users className="w-5 h-5 text-indigo-500" /> Upcoming Group Sessions
+                </h2>
+                {groups.length === 0 ? (
+                  <div className="text-center py-12 text-slate-400">No group sessions scheduled.</div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {groups.map((g: any) => (
+                      <div key={g.id} className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-5 space-y-3">
+                        <div>
+                          <p className="font-black text-slate-800 dark:text-white">{g.title}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{g.description}</p>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-slate-500">
+                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(g.scheduledFor).toLocaleString()}</span>
+                          <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {g.participants?.length || 0}/{g.maxParticipants}</span>
+                        </div>
+                        <button onClick={() => handleJoinGroup(g.id)}
+                          className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
+                          <Plus className="w-4 h-4" /> Register
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Mood Check-In */}
+            {activeSection === 'mood' && (
+              <div className="max-w-lg mx-auto">
+                <div className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-8 space-y-6 text-center">
+                  <HeartPulse className="w-10 h-10 text-pink-500 mx-auto" />
+                  <div>
+                    <h2 className="font-black text-xl text-slate-800 dark:text-white">How are you feeling?</h2>
+                    <p className="text-slate-400 text-sm mt-1">Your mood check-ins help us provide better support.</p>
+                  </div>
+                  {moodSubmitted ? (
+                    <div className="py-6">
+                      <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
+                      <p className="font-bold text-green-600 dark:text-green-400">Thank you for checking in!</p>
+                      <button onClick={() => { setMoodSubmitted(false); setMoodSelected('') }}
+                        className="mt-4 text-indigo-500 text-sm underline">Check in again</button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-3 gap-3">
+                        {MOODS.map(m => (
+                          <button key={m.value} onClick={() => setMoodSelected(m.value)}
+                            className={cn('p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all font-bold text-sm',
+                              moodSelected === m.value
+                                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 scale-105'
+                                : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300')}>
+                            <span className="text-3xl">{m.emoji}</span>
+                            {m.label}
+                          </button>
+                        ))}
+                      </div>
+                      <button onClick={handleMoodSubmit} disabled={!moodSelected}
+                        className="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-40 transition-colors">
+                        <Send className="w-4 h-4" /> Submit Check-In
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Guides */}
+            {activeSection === 'guides' && (
+              <div className="space-y-4">
+                <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-indigo-500" /> Wellness Guides
+                </h2>
+                {guides.length === 0 ? (
+                  <div className="text-center py-12 text-slate-400">No guides available.</div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {guides.map((g: any) => (
+                      <div key={g.id} className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-5 space-y-3 hover:shadow-lg transition-shadow">
+                        <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
+                          <BookOpen className="w-5 h-5 text-indigo-600" />
+                        </div>
+                        <div>
+                          <p className="font-black text-slate-800 dark:text-white text-sm">{g.title}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-3">{g.content}</p>
+                        </div>
+                        {g.category && (
+                          <span className="inline-block px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">
+                            {g.category}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
+  )
+}
+
 export default function SupportPage() {
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -186,6 +484,10 @@ export default function SupportPage() {
     { key: 'dashboard', label: t('support_page.tabs.dashboard'), icon: Activity },
     { key: 'checkins', label: t('support_page.tabs.checkins'), icon: UserCheck },
   ]
+
+  if (user?.role === 'CITIZEN' || user?.role === 'VOLUNTEER') {
+    return <CitizenSupportView />
+  }
 
   return (
     <>

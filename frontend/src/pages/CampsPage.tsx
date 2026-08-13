@@ -209,7 +209,7 @@ function RescueDetailModal({
                 zoomControl={true}
               >
                 <TileLayer
-                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                  url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                   attribution='&copy; OpenStreetMap contributors &copy; CARTO'
                 />
                 {/* User location marker */}
@@ -435,7 +435,7 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
                 zoom={10}
                 style={{ height: '100%', width: '100%' }}
               >
-                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
+                <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
                 <Marker position={[userLocation.lat, userLocation.lng]} icon={L.divIcon({
                   className: '',
                   html: `<div style="width:16px;height:16px;background:#06b6d4;border:3px solid white;border-radius:50%;box-shadow:0 0 0 5px rgba(6,182,212,0.3)"></div>`,
@@ -1266,7 +1266,7 @@ export default function CampsPage() {
                           {showVehicleMapPicker && (
                             <div className="rounded-2xl overflow-hidden border border-white/10" style={{ height: 220 }}>
                               <MapContainer center={[7.8731, 80.7718]} zoom={8} style={{ height: '100%', width: '100%' }}>
-                                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
+                                <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
                                 <LocationPicker onPick={(lat, lng) => {
                                   setVehicleForm(p => ({ ...p, latitude: String(lat), longitude: String(lng) }))
                                   setShowVehicleMapPicker(false)

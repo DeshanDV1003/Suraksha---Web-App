@@ -38,6 +38,16 @@ export const getHelpRequests = async (req: Request, res: Response) => {
   }
 };
 
+export const getMyHelpRequests = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const requests = await helpRequestService.getMyHelpRequests(userId);
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 export const handleSMSWebhook = async (req: Request, res: Response) => {
   try {
     const responseMessage = await helpRequestService.handleSMSWebhook(req.body);

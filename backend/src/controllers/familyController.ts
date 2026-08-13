@@ -75,6 +75,17 @@ export const getMyFamilyStatus = async (req: any, res: Response): Promise<any> =
   }
 };
 
+export const deleteFamilyMember = async (req: any, res: Response): Promise<any> => {
+  try {
+    const userId = req.user.userId;
+    const { id } = req.params;
+    await prisma.familyMember.deleteMany({ where: { id, primaryUserId: userId } });
+    return res.json({ message: 'Family member removed' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error deleting family member', error });
+  }
+};
+
 export const adminOverrideFamilyMember = async (req: any, res: Response): Promise<any> => {
   try {
     const { id } = req.params;

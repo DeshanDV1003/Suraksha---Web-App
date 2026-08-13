@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { 
-  createHelpRequest, 
-  getHelpRequests, 
-  registerAsVerifier, 
+import {
+  createHelpRequest,
+  getHelpRequests,
+  getMyHelpRequests,
+  registerAsVerifier,
   verifyAction,
   submitPublicRequest,
   handleSMSWebhook,
@@ -21,6 +22,7 @@ router.post('/webhook/sms', handleSMSWebhook);
 
 // Auth required routes
 router.post('/', authMiddleware, createHelpRequest);
+router.get('/my', authMiddleware, getMyHelpRequests);
 router.get('/', authMiddleware, getHelpRequests);
 
 // Advanced Dispatch/Officer routes

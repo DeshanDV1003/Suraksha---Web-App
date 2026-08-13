@@ -110,3 +110,35 @@ export const sendChatMessage = async (req: any, res: Response) => {
     res.status(500).json({ error: 'Failed to save chat message' });
   }
 };
+
+export const createChatRequest = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { moodBefore } = req.body;
+    const session = await supportService.createChatSession(userId, moodBefore);
+    res.status(201).json(session);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create chat request' });
+  }
+};
+
+export const getMyChatSessions = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const sessions = await supportService.getMyChatSessions(userId);
+    res.json(sessions);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get my chat sessions' });
+  }
+};
+
+export const submitMoodLog = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { mood } = req.body;
+    const log = await supportService.submitMoodLog(userId, mood);
+    res.status(201).json(log);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to submit mood' });
+  }
+};

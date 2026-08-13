@@ -127,3 +127,33 @@ export const saveChatMessage = async (sessionId: string, senderId: string, conte
     }
   });
 };
+
+export const createChatSession = async (userId: string, moodBefore?: string) => {
+  return prisma.chatSession.create({
+    data: {
+      requestId: userId + '-' + Date.now(),
+      userId,
+      status: 'WAITING',
+      moodAfter: moodBefore || null
+    }
+  });
+};
+
+export const getMyChatSessions = async (userId: string) => {
+  return prisma.chatSession.findMany({
+    where: { userId },
+    include: { messages: { orderBy: { createdAt: 'asc' } } },
+    orderBy: { startedAt: 'desc' }
+  });
+};
+
+export const submitMoodLog = async (userId: string, mood: string) => {
+  return prisma.chatSession.create({
+    data: {
+      requestId: 'mood-' + userId + '-' + Date.now(),
+      userId,
+      status: 'MOOD_LOG',
+      moodAfter: mood
+    }
+  });
+};

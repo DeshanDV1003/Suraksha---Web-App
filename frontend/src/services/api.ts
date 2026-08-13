@@ -138,6 +138,7 @@ export const helpRequestService = {
   createPublicRequest: (data: any) => api.post('/help-requests/public', data),
   mockSmsWebhook: (data: any) => api.post('/help-requests/webhook/sms', data),
   createRequest: (data: any) => api.post('/help-requests', data),
+  getMyRequests: () => api.get('/help-requests/my'),
   getRequests: () => api.get('/help-requests'),
   assignResponder: (id: string, volunteerId: string) => api.patch(`/help-requests/${id}/assign`, { volunteerId }),
   updateStatus: (id: string, status: string) => api.patch(`/help-requests/${id}/status`, { status }),
@@ -194,9 +195,12 @@ export const psychSupportService = {
   createGroup: (data: any) => api.post('/psych-support/groups', data),
   joinGroup: (id: string) => api.post(`/psych-support/groups/${id}/join`),
   getChats: () => api.get('/psych-support/chat'),
+  getMyChats: () => api.get('/psych-support/chat/my'),
+  createChatRequest: (data: any) => api.post('/psych-support/chat', data),
   acceptChat: (id: string) => api.patch(`/psych-support/chat/${id}/accept`),
   endChat: (id: string, moodAfter: string) => api.patch(`/psych-support/chat/${id}/end`, { moodAfter }),
-  sendMessage: (id: string, content: string) => api.post(`/psych-support/chat/${id}/message`, { content })
+  sendMessage: (id: string, content: string) => api.post(`/psych-support/chat/${id}/message`, { content }),
+  submitMood: (mood: string) => api.post('/psych-support/mood', { mood }),
 };
 
 export const dashboardService = {
