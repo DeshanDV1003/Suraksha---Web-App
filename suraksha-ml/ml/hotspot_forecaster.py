@@ -73,8 +73,13 @@ def _severity_weight(severity: str) -> float:
     return {"CRITICAL": 4.0, "HIGH": 2.5, "MEDIUM": 1.0, "LOW": 0.4}.get(severity, 1.0)
 
 
-def _temporal_decay(created_at_iso: str, now: datetime, decay_hours: float = 24.0) -> float:
-    """Exponential decay: incident weight halves every `decay_hours`."""
+# Severity-based decay half-lives — CRITICAL incidents stay relevant longer
+_DECAY_HALF_LIFE = {"CRITICAL": 48.0, "HIGH": 36.0, "MEDIUM": 24.0, "LOW": 6.0}
+
+
+def _temporal_decay(created_at_iso: str, now: datetime, severity: str = "MEDIUM") -> float:
+    """Exponential decay with severity-specific half-life."""
+    decay_hours = _DECAY_HALF_LIFE.get(severity, 24.0)
     try:
         dt = datetime.fromisoformat(created_at_iso.replace("Z", "+00:00"))
         age_hours = max((now - dt).total_seconds() / 3600.0, 0)
@@ -83,14 +88,40 @@ def _temporal_decay(created_at_iso: str, now: datetime, decay_hours: float = 24.
         return 0.5
 
 
+def _nighttime_multiplier(created_at_iso: str) -> float:
+    """Night reports (10pm–6am) are under-reported, so real situation is worse — boost by 1.5×."""
+    try:
+        dt = datetime.fromisoformat(created_at_iso.replace("Z", "+00:00"))
+        hour = dt.hour
+        return 1.5 if (hour >= 22 or hour < 6) else 1.0
+    except Exception:
+        return 1.0
+
+
+def _detect_velocity_burst(district_incidents: list, now: datetime, window_hours: float = 2.0) -> float:
+    """If 3+ incidents arrive in a 2-hour window → cluster burst, boost score by 2×."""
+    cutoff = now.timestamp() - window_hours * 3600
+    recent_count = 0
+    for ts_iso in district_incidents:
+        try:
+            ts = datetime.fromisoformat(ts_iso.replace("Z", "+00:00")).timestamp()
+            if ts >= cutoff:
+                recent_count += 1
+        except Exception:
+            pass
+    return 2.0 if recent_count >= 3 else 1.0
+
+
 def forecast_hotspots(incidents: List[dict], water_levels: Optional[List[dict]] = None) -> List[dict]:
     """
     Compute risk score per district from recent incidents.
+    Improvements: severity-based decay, night-time multiplier, velocity burst detection.
     Returns list of {district, lat, lng, raw_density, bias_factor,
                      adjusted_severity, risk_level, incident_count, top_category}.
     """
     now = datetime.now(timezone.utc)
     district_scores: dict = {}
+    district_timestamps: dict = {}  # for velocity burst detection
 
     for inc in incidents:
         lat = inc.get("latitude")
@@ -110,18 +141,22 @@ def forecast_hotspots(incidents: List[dict], water_levels: Optional[List[dict]] 
         if nearest_dist is None or nearest_km > 100:
             continue
 
-        weight = _severity_weight(inc.get("severity", "MEDIUM")) * _temporal_decay(
-            inc.get("createdAt", now.isoformat()), now
+        severity = inc.get("severity", "MEDIUM")
+        created_at = inc.get("createdAt", now.isoformat())
+
+        weight = (
+            _severity_weight(severity)
+            * _temporal_decay(created_at, now, severity)
+            * _nighttime_multiplier(created_at)
         )
 
         if nearest_dist not in district_scores:
-            district_scores[nearest_dist] = {
-                "raw_score": 0.0,
-                "count": 0,
-                "categories": {},
-            }
+            district_scores[nearest_dist] = {"raw_score": 0.0, "count": 0, "categories": {}}
+            district_timestamps[nearest_dist] = []
+
         district_scores[nearest_dist]["raw_score"] += weight
         district_scores[nearest_dist]["count"] += 1
+        district_timestamps[nearest_dist].append(created_at)
         cat = inc.get("category", "UNKNOWN")
         district_scores[nearest_dist]["categories"][cat] = (
             district_scores[nearest_dist]["categories"].get(cat, 0) + 1
@@ -145,8 +180,12 @@ def forecast_hotspots(incidents: List[dict], water_levels: Optional[List[dict]] 
         bias = URBAN_BIAS.get(district, DEFAULT_BIAS)
         historical = HISTORICAL_BASE_RISK.get(district, 0.25)
 
-        # Bias-adjusted score: divide by bias factor to correct for over-reporting
-        adjusted_score = (raw_score / bias) + historical
+        # Velocity burst multiplier — cluster of 3+ incidents in 2h signals rapid escalation
+        timestamps = district_timestamps.get(district, [])
+        burst_mult = _detect_velocity_burst(timestamps, now)
+
+        # Bias-adjusted score with burst multiplier
+        adjusted_score = (raw_score * burst_mult / bias) + historical
 
         # Normalise to 0–1 (cap at 10 weighted incidents = full risk)
         normalised = min(adjusted_score / 10.0, 1.0)

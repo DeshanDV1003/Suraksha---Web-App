@@ -454,7 +454,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Shift Handover Summary Panel (MEDIUM) */}
-          <div className="suraksha-card p-6 bg-gray-50 dark:bg-gray-800/50/50">
+          <div className="suraksha-card p-6 bg-gray-50 dark:bg-gray-800/50">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">{t('dashboard.shift_summary')}</h3>
               <button className="p-2 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-brand-500 hover:border-brand-500/30 transition-colors">

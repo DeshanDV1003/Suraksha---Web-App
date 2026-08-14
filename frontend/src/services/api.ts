@@ -171,7 +171,7 @@ export const missingPersonService = {
   getMissing: () => api.get('/missing-persons'),
   updateStatus: (id: string, status: string) => api.patch(`/missing-persons/${id}/status`, { status }),
   delete: (id: string) => api.delete(`/missing-persons/${id}`),
-  searchFace: (imageUrl: string) => api.post('/missing-persons/search-face', { imageUrl }),
+  searchFace: (queryImage: string) => api.post('/missing-persons/search-face', { imageUrl: queryImage }),
   triggerReunification: (id: string, status: string, notes: string) => api.patch(`/missing-persons/${id}/reunify`, { status, notes }),
   runCrossReference: () => api.get('/missing-persons/cross-reference'),
   

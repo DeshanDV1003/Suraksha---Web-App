@@ -26,21 +26,42 @@ export const deleteMissingPerson = async (id: string) => {
   return prisma.missingPerson.delete({ where: { id } });
 };
 
-// 1. AI Face Recognition Mock
-export const searchFace = async (imageUrl: string) => {
-  // Simulate 3 seconds ML latency
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  
-  // Fetch some random missing persons to mock as matches
+// 1. AI Face Recognition — DeepFace via ML service
+export const searchFace = async (queryImageBase64: string) => {
+  // Fetch all MISSING persons that have a photo stored
   const missing = await prisma.missingPerson.findMany({
-    where: { status: 'MISSING' },
-    take: 5
+    where: { status: 'MISSING', photo: { not: null } },
   });
 
-  return missing.map((person, index) => ({
-    person,
-    confidence: Math.max(0.4, 0.95 - (index * 0.12)) // Descending fake confidence
-  }));
+  if (missing.length === 0) return [];
+
+  const candidates = missing
+    .filter((p: any) => p.photo)
+    .map((p: any) => ({ person_id: p.id, photo: p.photo as string }));
+
+  let mlMatches: { person_id: string; confidence: number; verified: boolean }[] = [];
+
+  try {
+    const mlRes = await fetch('http://localhost:8000/match-face', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query_image: queryImageBase64, candidates }),
+    });
+
+    if (!mlRes.ok) throw new Error(`ML service responded ${mlRes.status}`);
+    const mlData: any = await mlRes.json();
+    mlMatches = mlData.matches ?? [];
+  } catch (err) {
+    console.error('[Face Match] ML service call failed:', err);
+    // Fall back to empty — do not crash the request
+    return [];
+  }
+
+  // Join ML results with full person records
+  const personMap = new Map(missing.map((p: any) => [p.id, p]));
+  return mlMatches
+    .map((m) => ({ person: personMap.get(m.person_id), confidence: m.confidence, verified: m.verified }))
+    .filter((r) => r.person != null);
 };
 
 // 2. Family Reunification Workflow

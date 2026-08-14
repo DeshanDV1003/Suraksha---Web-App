@@ -103,7 +103,7 @@ export default function MissingPersonsPage() {
     setAiLoading(true)
     setAiMatches([])
     try {
-      const res = await missingPersonService.searchFace('mock_url')
+      const res = await missingPersonService.searchFace(selectedImage)
       setAiMatches(res.data)
       if (res.data.length === 0) showToast('No matches found in database', 'warning')
     } catch (e) {

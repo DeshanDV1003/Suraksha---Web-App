@@ -377,3 +377,32 @@ async def detect_drift_endpoint(data: DriftInput):
         recent_incidents=data.recent_incidents,
         window_hours=data.window_hours,
     )
+
+
+# ── Face Matching ──────────────────────────────────────────────────────────────
+
+class FaceCandidate(BaseModel):
+    person_id: str
+    photo: str  # base64 encoded image
+
+class FaceMatchInput(BaseModel):
+    query_image: str          # base64 encoded query photo
+    candidates: List[FaceCandidate]
+
+@app.post("/match-face")
+async def match_face_endpoint(data: FaceMatchInput):
+    """
+    AI face matching — compare query photo against candidate missing-person photos.
+    Returns list of {person_id, confidence, verified} sorted by confidence descending.
+    """
+    try:
+        from ml.face_matcher import match_faces
+        results = match_faces(
+            query_b64=data.query_image,
+            candidates=[c.dict() for c in data.candidates],
+        )
+        return {"matches": results, "total_candidates": len(data.candidates)}
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Face matching failed: {str(e)}")

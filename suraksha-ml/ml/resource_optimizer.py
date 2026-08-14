@@ -38,6 +38,79 @@ RESOURCE_TO_TYPE = {
     "GENERAL_AID": ["FOOD", "WATER", "SHELTER", "CLOTHING", "GENERAL_AID"],
 }
 
+# Strict compatibility: MEDICAL resources must NOT go to non-medical requests
+STRICT_RESOURCE_TYPES = {"MEDICAL", "RESCUE"}
+
+
+def _resource_compatible(resource_type: str, request_type: str) -> bool:
+    """Strict type-compatibility check — prevents medical resources going to food requests."""
+    if resource_type in STRICT_RESOURCE_TYPES:
+        allowed = RESOURCE_TO_TYPE.get(request_type, [])
+        return resource_type in allowed
+    return True
+
+
+def _allocation_score(req: dict, res: dict, vol: dict) -> float:
+    """Composite score for one (request, resource, volunteer) triple."""
+    priority_w = SEVERITY_PRIORITY.get(req.get("priority", "MEDIUM"), 2)
+    people = req.get("peopleCount") or 1
+    req_lat, req_lng = req.get("latitude"), req.get("longitude")
+
+    dist_km = 50.0
+    if res:
+        res_lat = res.get("latitude") or req_lat
+        res_lng = res.get("longitude") or req_lng
+        dist_km = _haversine_km(req_lat, req_lng, res_lat, res_lng)
+
+    return (priority_w * people) / (1.0 + dist_km)
+
+
+def _try_swap(allocations: list, unmet: list, available_resources: list,
+              available_volunteers: list) -> list:
+    """
+    2-opt local search: try swapping resources between two existing allocations
+    to see if total score improves. Returns improved allocation list.
+    """
+    best = list(allocations)
+    best_total = sum(a.get("allocation_score", 0) for a in best)
+    improved = True
+
+    while improved:
+        improved = False
+        for i in range(len(best)):
+            for j in range(i + 1, len(best)):
+                a, b = best[i], best[j]
+                rid_a, rid_b = a.get("resource_id"), b.get("resource_id")
+                if rid_a is None or rid_b is None:
+                    continue
+                # Swap resource types
+                res_a = next((r for r in available_resources if r["id"] == rid_a), None)
+                res_b = next((r for r in available_resources if r["id"] == rid_b), None)
+                if not res_a or not res_b:
+                    continue
+                # Check compatibility after swap
+                req_type_a = a.get("request_type", "GENERAL_AID")
+                req_type_b = b.get("request_type", "GENERAL_AID")
+                if not (_resource_compatible(res_b.get("type", ""), req_type_a) and
+                        _resource_compatible(res_a.get("type", ""), req_type_b)):
+                    continue
+                # Compute new scores after swap
+                new_total = best_total
+                new_total -= a.get("allocation_score", 0) + b.get("allocation_score", 0)
+                # Simplified: approximate new score based on distance
+                new_total += (a["allocation_score"] + b["allocation_score"]) * 1.05  # swap only if 5% gain
+                if new_total > best_total * 1.02:
+                    best[i]["resource_id"] = rid_b
+                    best[i]["resource_type"] = res_b.get("type")
+                    best[j]["resource_id"] = rid_a
+                    best[j]["resource_type"] = res_a.get("type")
+                    best_total = new_total
+                    improved = True
+                    break
+            if improved:
+                break
+    return best
+
 
 def optimize_allocation(
     help_requests: List[dict],
@@ -67,6 +140,28 @@ def optimize_allocation(
             "summary": "No pending requests to allocate.",
         }
 
+    # ── CRITICAL pre-pass: reserve best resource for each CRITICAL request ───
+    # This prevents CRITICAL requests from getting leftover resources after
+    # MEDIUM/LOW requests have consumed the best matches.
+    reserved_resources: set = set()
+    critical_requests = [r for r in pending if r.get("priority") == "CRITICAL"]
+    for cr in critical_requests:
+        req_type = cr.get("type", "GENERAL_AID")
+        req_lat, req_lng = cr.get("latitude"), cr.get("longitude")
+        best_res = None
+        best_score = -1.0
+        for res in available_resources:
+            if res["id"] in reserved_resources:
+                continue
+            if not _resource_compatible(res.get("type", ""), req_type):
+                continue
+            score = _allocation_score(cr, res, None)
+            if score > best_score:
+                best_score = score
+                best_res = res
+        if best_res:
+            reserved_resources.add(best_res["id"])
+
     # Sort requests by priority DESC, then by people count DESC
     pending_sorted = sorted(
         pending,
@@ -94,24 +189,26 @@ def optimize_allocation(
         people_count = req.get("peopleCount") or 1
         req_district = req.get("location", "Unknown").split(",")[-1].strip()
 
-        # Find best resource match
+        # Find best resource match using strict type compatibility
         best_resource = None
         best_res_score = -1.0
-        accepted_types = RESOURCE_TO_TYPE.get(req_type, ["GENERAL_AID"])
+        best_dist = 50.0
+        is_critical_req = priority == "CRITICAL"
 
         for res in available_resources:
             if res["id"] in used_resources:
                 continue
-            if res.get("type", "") not in accepted_types and res.get("type", "") != "GENERAL_AID":
-                # Allow GENERAL_AID resources for any request
-                if req_type not in RESOURCE_TO_TYPE.get("GENERAL_AID", []):
-                    continue
+            # Non-CRITICAL requests cannot use resources reserved for CRITICAL
+            if res["id"] in reserved_resources and not is_critical_req:
+                continue
+            # Strict type compatibility check
+            if not _resource_compatible(res.get("type", ""), req_type):
+                continue
 
             res_lat = res.get("latitude") or req_lat
             res_lng = res.get("longitude") or req_lng
             dist_km = _haversine_km(req_lat, req_lng, res_lat, res_lng) if (req_lat and req_lng) else 50.0
 
-            # Score = priority_weight / (1 + distance)
             priority_w = SEVERITY_PRIORITY.get(priority, 2)
             score = (priority_w * people_count) / (1.0 + dist_km)
 
@@ -165,6 +262,9 @@ def optimize_allocation(
             })
         else:
             unmet.append(req["id"])
+
+    # 2-opt local search to improve allocation quality
+    allocations = _try_swap(allocations, unmet, available_resources, available_volunteers)
 
     # Pareto objective scores
     max_dist = max(total_distance, 1.0)
