@@ -593,6 +593,356 @@ function ClarificationPanel() {
   )
 }
 
+// ── R3 — Evidence Graph Verification ─────────────────────────────────────────
+function EvidenceGraphPanel() {
+  const [reportId, setReportId] = useState('')
+  const [result, setResult] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const verify = async () => {
+    if (!reportId.trim()) return
+    setLoading(true); setError(null); setResult(null)
+    try {
+      const res = await aiService.verifyIncident(reportId.trim())
+      setResult(res.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Verification failed')
+    } finally { setLoading(false) }
+  }
+
+  const CRED_COLOR: Record<string, string> = {
+    HIGH: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+    MEDIUM: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+    LOW: 'text-red-400 bg-red-500/10 border-red-500/30',
+  }
+
+  return (
+    <SectionCard title="R3 — Evidence Graph Verification (GAT)" icon={Shield} loading={loading} error={error}>
+      <div className="space-y-3">
+        <p className="text-xs text-slate-500">Enter a report ID to verify its credibility using a Graph Attention Network built from multi-source evidence.</p>
+        <div className="flex gap-2">
+          <input
+            className="flex-1 bg-[#0a1628] border border-white/10 text-white/90 placeholder-slate-600 px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-cyan-500/40"
+            placeholder="Report ID (e.g. cm4x...)"
+            value={reportId}
+            onChange={e => setReportId(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && verify()}
+          />
+          <button onClick={verify} disabled={loading || !reportId.trim()}
+            className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-4 py-2.5 rounded-xl transition-all disabled:opacity-50 flex items-center gap-2">
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+            Verify
+          </button>
+        </div>
+      </div>
+
+      {result && (
+        <div className="mt-5 space-y-4 border-t border-white/5 pt-5">
+          {/* Credibility badge */}
+          <div className={cn('p-3 rounded-xl border flex items-center gap-3', CRED_COLOR[result.credibility_label] || CRED_COLOR.LOW)}>
+            <Shield className="w-4 h-4 shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-black">{result.credibility_label} CREDIBILITY — {(result.credibility_score * 100).toFixed(0)}%</p>
+              <p className="text-[11px] opacity-75 mt-0.5">{result.narrative}</p>
+            </div>
+          </div>
+
+          {/* Graph stats */}
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { label: 'Graph Nodes', value: result.graph?.node_count ?? '—' },
+              { label: 'Graph Edges', value: result.graph?.edge_count ?? '—' },
+              { label: 'Evidence Links', value: result.supporting_evidence?.length ?? 0 },
+            ].map(m => (
+              <div key={m.label} className="bg-white/5 rounded-xl p-3 text-center">
+                <p className="text-xl font-black text-white/80">{m.value}</p>
+                <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">{m.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Baseline comparison */}
+          {result.baseline_comparison && (
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Baseline Comparison</p>
+              {Object.entries(result.baseline_comparison).map(([k, v]: any) => (
+                <div key={k} className="flex items-center justify-between py-1.5">
+                  <span className="text-xs text-slate-400">{k.replace(/_/g, ' ')}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 bg-white/5 rounded-full h-1.5">
+                      <div className="h-1.5 rounded-full bg-cyan-500" style={{ width: `${v * 100}%` }} />
+                    </div>
+                    <span className="text-xs font-bold text-white/70 w-10 text-right">{(v * 100).toFixed(0)}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Top attention weights */}
+          {result.gat_details?.top_attention_weights?.length > 0 && (
+            <div>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Top GAT Attention Weights</p>
+              <div className="space-y-1">
+                {result.gat_details.top_attention_weights.slice(0, 4).map((a: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between text-xs py-1 border-b border-white/5 last:border-0">
+                    <span className="text-slate-400 font-mono">{a.edge_type}</span>
+                    <span className={cn('font-bold', a.contribution >= 0 ? 'text-emerald-400' : 'text-red-400')}>
+                      {a.contribution >= 0 ? '+' : ''}{a.contribution.toFixed(4)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </SectionCard>
+  )
+}
+
+// ── R4 — Active Learning Annotation Queue ────────────────────────────────────
+function AnnotationQueuePanel() {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const load = useCallback(async () => {
+    setLoading(true); setError(null)
+    try {
+      const res = await aiService.getAnnotationQueue()
+      setData(res.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to load queue')
+    } finally { setLoading(false) }
+  }, [])
+
+  useEffect(() => { load() }, [load])
+
+  const PRIORITY_COLOR: Record<string, string> = {
+    URGENT: 'text-red-400 bg-red-500/10 border-red-500/30',
+    HIGH:   'text-orange-400 bg-orange-500/10 border-orange-500/30',
+    MEDIUM: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+    LOW:    'text-slate-400 bg-slate-500/10 border-slate-500/30',
+  }
+
+  const candidates = data?.ranked_candidates ?? []
+
+  return (
+    <SectionCard title="R4 — Active Learning Annotation Queue" icon={Target} loading={loading} error={error} onRefresh={load}>
+      {candidates.length === 0 ? (
+        <p className="text-slate-500 text-sm text-center py-4">No low-confidence reports found — all reports are well-classified.</p>
+      ) : (
+        <>
+          <div className="flex gap-4 mb-4 pb-4 border-b border-white/5">
+            <div><p className="text-2xl font-black text-white/80">{data?.total_candidates ?? 0}</p><p className="text-[10px] text-slate-500 uppercase tracking-widest">Reports Queued</p></div>
+            <div><p className="text-2xl font-black text-red-400">{candidates.filter((c: any) => c.annotation_priority === 'URGENT').length}</p><p className="text-[10px] text-slate-500 uppercase tracking-widest">Urgent to Label</p></div>
+            <div><p className="text-2xl font-black text-amber-400">{data?.selection_language_distribution?.si ?? 0}</p><p className="text-[10px] text-slate-500 uppercase tracking-widest">Sinhala Reports</p></div>
+          </div>
+          <div className="space-y-3">
+            {candidates.slice(0, 6).map((c: any, i: number) => (
+              <div key={i} className="flex items-start gap-3 p-3 bg-white/5 rounded-xl">
+                <span className="text-[10px] font-black text-slate-600 w-4 pt-0.5">{i + 1}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className={cn('px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border', PRIORITY_COLOR[c.annotation_priority] || PRIORITY_COLOR.LOW)}>
+                      {c.annotation_priority}
+                    </span>
+                    <span className="text-[10px] text-slate-500 font-mono">{c.language?.toUpperCase()}</span>
+                    <span className="text-[10px] text-cyan-400 font-bold ml-auto">score {c.acquisition_score?.toFixed(3)}</span>
+                  </div>
+                  <p className="text-xs text-slate-300 truncate">{c.text_preview}</p>
+                  {c.annotation_drivers?.[0] && (
+                    <p className="text-[10px] text-slate-600 mt-1">{c.annotation_drivers[0]}</p>
+                  )}
+                  <div className="flex gap-2 mt-1.5 text-[10px] text-slate-600">
+                    <span>U={c.components?.U_uncertainty?.toFixed(2)}</span>
+                    <span>L={c.components?.L_language_rarity?.toFixed(2)}</span>
+                    <span>R={c.components?.R_criticality?.toFixed(2)}</span>
+                    <span>E={c.components?.E_explanation_inconsistency?.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-[10px] text-slate-600 border-t border-white/5 pt-3">
+            Score = 0.30·Uncertainty + 0.20·Diversity + 0.25·Criticality + 0.15·LanguageRarity + 0.10·ExplainInconsistency
+          </p>
+        </>
+      )}
+    </SectionCard>
+  )
+}
+
+// ── R5 — Bias-Aware Spatiotemporal Risk Forecast ─────────────────────────────
+function BiasRiskForecastPanel() {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const load = useCallback(async () => {
+    setLoading(true); setError(null)
+    try {
+      const res = await aiService.getBiasRiskForecast()
+      setData(res.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to load forecast')
+    } finally { setLoading(false) }
+  }, [])
+
+  useEffect(() => { load() }, [load])
+
+  const forecasts: any[] = data?.forecasts ?? []
+
+  return (
+    <SectionCard title="R5 — Bias-Aware Spatiotemporal Risk Forecast" icon={Map} loading={loading} error={error} onRefresh={load}>
+      {forecasts.length === 0 ? (
+        <p className="text-slate-500 text-sm text-center py-4">No recent incidents to forecast — submit incident reports first.</p>
+      ) : (
+        <>
+          {data?.summary?.bias_warning && (
+            <div className="flex items-start gap-2 p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl mb-4">
+              <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-amber-300/80">{data.summary.bias_warning}</p>
+            </div>
+          )}
+          <div className="space-y-2">
+            {forecasts.slice(0, 8).map((f: any, i: number) => {
+              const bi = f.bias_info
+              return (
+                <div key={i} className="flex items-center gap-3 py-2">
+                  <div className="w-20 shrink-0"><StatusBadge level={f.risk_level} /></div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-center mb-0.5">
+                      <span className="text-sm font-semibold text-white/80 truncate">{f.district}</span>
+                      <span className="text-[10px] text-slate-500 ml-2 shrink-0">{(f.risk_score * 100).toFixed(0)}%</span>
+                    </div>
+                    <MetricBar value={f.risk_score} color={f.risk_level === 'CRITICAL' ? 'bg-red-500' : f.risk_level === 'HIGH' ? 'bg-orange-500' : 'bg-amber-400'} />
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className={cn('text-[10px] font-bold', bi?.is_high_bias ? 'text-amber-400' : 'text-slate-600')}>
+                      {bi?.is_high_bias ? '⚠ HIGH BIAS' : `bias ${bi?.bias_factor}`}
+                    </p>
+                    <p className="text-[10px] text-slate-600">{bi?.bias_level}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <p className="mt-4 text-[10px] text-slate-600 border-t border-white/5 pt-3">
+            True rate λ̂ = (count + α) ÷ (bias_factor × exposure). CI widens for remote districts. 2-pass spatial GNN propagation applied.
+          </p>
+        </>
+      )}
+    </SectionCard>
+  )
+}
+
+// ── R6 — NSGA-II Relief Coordination ─────────────────────────────────────────
+function ReliefCoordinationPanel() {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const load = useCallback(async () => {
+    setLoading(true); setError(null)
+    try {
+      const res = await aiService.getReliefCoordination()
+      setData(res.data)
+    } catch (e: any) {
+      setError(e?.response?.data?.message || e?.message || 'Failed to run coordination')
+    } finally { setLoading(false) }
+  }, [])
+
+  useEffect(() => { load() }, [load])
+
+  const rec = data?.recommended_plan
+  const bc = data?.baseline_comparison
+  const meta = data?.nsga2_metadata
+  const pareto = data?.pareto_front ?? []
+
+  return (
+    <SectionCard title="R6 — NSGA-II Multi-Objective Relief Coordination" icon={Users} loading={loading} error={error} onRefresh={load}>
+      {!rec ? (
+        <p className="text-slate-500 text-sm text-center py-4">No active help requests — relief coordination requires pending requests.</p>
+      ) : (
+        <>
+          {/* NSGA-II metadata */}
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            {[
+              { label: 'Pareto Solutions', value: meta?.n_pareto_solutions ?? '—' },
+              { label: 'Generations', value: meta?.generations ?? '—' },
+              { label: 'Sites Covered', value: rec.site_allocations?.length ?? '—' },
+            ].map(m => (
+              <div key={m.label} className="bg-white/5 rounded-xl p-3 text-center">
+                <p className="text-xl font-black text-white/80">{m.value}</p>
+                <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">{m.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Objective scores */}
+          <div className="space-y-2 mb-4 pb-4 border-b border-white/5">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Recommended Plan Objectives</p>
+            {[
+              { label: 'f1 Avg Response Time', value: `${rec.f1_avg_response_time_min?.toFixed(1)} min`, raw: Math.min(rec.f1_avg_response_time_min / 120, 1), color: 'bg-blue-400', invert: true },
+              { label: 'f2 Unmet Demand', value: `${(rec.f2_unmet_demand_fraction * 100).toFixed(0)}%`, raw: rec.f2_unmet_demand_fraction, color: 'bg-red-400', invert: true },
+              { label: 'f3 Resource Use', value: `${(rec.f3_resource_utilisation * 100).toFixed(0)}%`, raw: rec.f3_resource_utilisation, color: 'bg-emerald-400', invert: false },
+            ].map(obj => (
+              <div key={obj.label}>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="text-slate-400">{obj.label}</span>
+                  <span className="text-white/70 font-bold">{obj.value}</span>
+                </div>
+                <MetricBar value={obj.raw} color={obj.color} />
+              </div>
+            ))}
+          </div>
+
+          {/* Baseline comparison */}
+          {bc && (
+            <div className="space-y-2 mb-4">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">vs Baselines (Response Time)</p>
+              {[
+                { label: 'B1 Greedy', val: bc.B1_greedy?.f1_avg_response_time_min },
+                { label: 'B2 Proportional', val: bc.B2_proportional?.f1_avg_response_time_min },
+                { label: 'Proposed NSGA-II', val: rec.f1_avg_response_time_min, highlight: true },
+              ].map(b => (
+                <div key={b.label} className="flex items-center gap-3">
+                  <span className={cn('text-xs w-28 shrink-0', b.highlight ? 'text-cyan-400 font-bold' : 'text-slate-400')}>{b.label}</span>
+                  <div className="flex-1 bg-white/5 rounded-full h-1.5">
+                    <div className={cn('h-1.5 rounded-full', b.highlight ? 'bg-cyan-400' : 'bg-slate-600')} style={{ width: `${Math.min((b.val ?? 0) / 120 * 100, 100)}%` }} />
+                  </div>
+                  <span className={cn('text-xs font-bold w-16 text-right', b.highlight ? 'text-cyan-400' : 'text-slate-500')}>{b.val?.toFixed(1)} min</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Site allocations */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Site Allocations</p>
+            <div className="space-y-1">
+              {rec.site_allocations?.map((a: any, i: number) => (
+                <div key={i} className="flex items-center gap-3 py-1.5 border-b border-white/5 last:border-0">
+                  <StatusBadge level={a.severity} />
+                  <span className="text-xs text-slate-300 flex-1 truncate">{a.site_id}</span>
+                  <span className="text-xs text-cyan-400 font-bold shrink-0">{a.volunteer_teams} team{a.volunteer_teams !== 1 ? 's' : ''}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {data?.narrative && (
+            <p className="mt-4 text-[10px] text-slate-600 border-t border-white/5 pt-3">{data.narrative}</p>
+          )}
+        </>
+      )}
+    </SectionCard>
+  )
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AIResearchPage() {
   const [mlOnline, setMlOnline] = useState<boolean | null>(null)
@@ -617,7 +967,7 @@ export default function AIResearchPage() {
             </div>
             <div>
               <h1 className="text-xl font-black text-gray-900 dark:text-white/90">AI Research Features</h1>
-              <p className="text-sm text-gray-500 dark:text-slate-400">9 advanced AI/ML capabilities integrated into SURAKSHA</p>
+              <p className="text-sm text-gray-500 dark:text-slate-400">13 advanced AI/ML capabilities integrated into SURAKSHA</p>
             </div>
           </div>
 
@@ -664,6 +1014,10 @@ export default function AIResearchPage() {
             { label: 'F12 Team Composer', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
             { label: 'F15 Drift Detection', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
             { label: 'F16 Situation Summary', color: 'bg-violet-500/10 text-violet-400 border-violet-500/20' },
+            { label: 'R3 Evidence Graph', color: 'bg-teal-500/10 text-teal-400 border-teal-500/20' },
+            { label: 'R4 Active Learning', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20' },
+            { label: 'R5 Bias Risk Forecast', color: 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20' },
+            { label: 'R6 NSGA-II Coordination', color: 'bg-lime-500/10 text-lime-400 border-lime-500/20' },
           ].map(f => (
             <span key={f.label} className={cn('px-2.5 py-1 rounded-lg text-[11px] font-bold border', f.color)}>{f.label}</span>
           ))}
@@ -678,6 +1032,8 @@ export default function AIResearchPage() {
           <ClarificationPanel />
           <TeamComposerPanel />
           <DriftPanel />
+          <EvidenceGraphPanel />
+          <BiasRiskForecastPanel />
         </div>
 
         {/* Right column */}
@@ -685,6 +1041,8 @@ export default function AIResearchPage() {
           <SituationSummaryPanel />
           <OptimizationPanel />
           <HotspotPanel />
+          <AnnotationQueuePanel />
+          <ReliefCoordinationPanel />
         </div>
       </div>
     </div>

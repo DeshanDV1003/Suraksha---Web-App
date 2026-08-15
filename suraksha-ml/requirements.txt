@@ -16,3 +16,4 @@ tensorflow==2.16.1
 keras==3.3.3
 deepface==0.0.93
 opencv-python-headless==4.9.0.80
+Pillow>=10.0.0

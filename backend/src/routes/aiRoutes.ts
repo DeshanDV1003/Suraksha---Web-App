@@ -8,6 +8,10 @@ import {
   composeTeam,
   getSituationSummary,
   detectDrift,
+  verifyIncidentCredibility,
+  getActiveLearningQueue,
+  getBiasAwareRiskForecast,
+  coordinateRelief,
 } from '../services/aiService';
 
 const router = Router();
@@ -108,6 +112,51 @@ router.get('/drift-status', authenticateToken, async (req: Request, res: Respons
     res.json(result);
   } catch (err: any) {
     res.status(500).json({ message: 'Drift detection failed', error: err.message });
+  }
+});
+
+// ── R3 — Evidence graph verification ─────────────────────────────────────────
+router.get('/verify-incident/:reportId', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const reportId = Array.isArray(req.params.reportId) ? req.params.reportId[0] : req.params.reportId;
+    const result = await verifyIncidentCredibility(reportId);
+    if (!result) return res.status(503).json({ message: 'ML service unavailable' });
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ message: 'Verification failed', error: err.message });
+  }
+});
+
+// ── R4 — Active learning annotation queue ────────────────────────────────────
+router.get('/annotation-queue', authenticateToken, async (_req: Request, res: Response) => {
+  try {
+    const result = await getActiveLearningQueue();
+    if (!result) return res.status(503).json({ message: 'ML service unavailable' });
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ message: 'Active learning query failed', error: err.message });
+  }
+});
+
+// ── R5 — Bias-aware spatiotemporal risk forecast ──────────────────────────────
+router.get('/bias-risk-forecast', authenticateToken, async (_req: Request, res: Response) => {
+  try {
+    const result = await getBiasAwareRiskForecast();
+    if (!result) return res.status(503).json({ message: 'ML service unavailable' });
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ message: 'Bias forecast failed', error: err.message });
+  }
+});
+
+// ── R6 — NSGA-II relief coordination ─────────────────────────────────────────
+router.get('/relief-coordination', authenticateToken, async (_req: Request, res: Response) => {
+  try {
+    const result = await coordinateRelief();
+    if (!result) return res.status(503).json({ message: 'ML service unavailable' });
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ message: 'Relief coordination failed', error: err.message });
   }
 });
 

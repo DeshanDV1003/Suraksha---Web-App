@@ -278,6 +278,18 @@ export const aiService = {
 
   // F15: Drift detection
   getDriftStatus: (hours?: number) => api.get(`/ai/drift-status${hours ? `?hours=${hours}` : ''}`),
+
+  // R3: Evidence graph verification for a specific report
+  verifyIncident: (reportId: string) => api.get(`/ai/verify-incident/${reportId}`),
+
+  // R4: Active learning annotation queue (low-confidence Sinhala/Tamil reports)
+  getAnnotationQueue: () => api.get('/ai/annotation-queue'),
+
+  // R5: Bias-aware spatiotemporal district risk forecast
+  getBiasRiskForecast: () => api.get('/ai/bias-risk-forecast'),
+
+  // R6: NSGA-II multi-objective relief coordination
+  getReliefCoordination: () => api.get('/ai/relief-coordination'),
 };
 
 export const rescueService = {

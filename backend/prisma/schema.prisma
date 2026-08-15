@@ -47,42 +47,42 @@ model User {
   currentSector            Sector?                       @relation(fields: [currentSectorId], references: [id])
   sessionLogs              UserSessionLog[]
   volunteerProfile         VolunteerProfile?
-  assignedRescues          RescueMission[]   @relation("AssignedRescues")
-  safeZoneCheckIns         SafeZoneCheckIn[] @relation("SafeZoneCheckIns")
-  supplyRequests           CampSupplyRequest[] @relation("SupplyRequesters")
+  assignedRescues          RescueMission[]               @relation("AssignedRescues")
+  safeZoneCheckIns         SafeZoneCheckIn[]             @relation("SafeZoneCheckIns")
+  supplyRequests           CampSupplyRequest[]           @relation("SupplyRequesters")
 }
 
 model IncidentReport {
-  id                String               @id @default(uuid())
-  title             String
-  description       String
-  location          String
-  latitude          Float?
-  longitude         Float?
-  status            Status               @default(PENDING)
-  severity          Severity             @default(MEDIUM)
-  category          String
-  images            String[]
-  reporterId        String
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @updatedAt
-  province          String?
-  zoneId            String?
-  zoneName          String?
-  mlConfidence      Float?
-  detectedLanguage  String?
+  id                 String                  @id @default(uuid())
+  title              String
+  description        String
+  location           String
+  latitude           Float?
+  longitude          Float?
+  status             Status                  @default(PENDING)
+  severity           Severity                @default(MEDIUM)
+  category           String
+  images             String[]
+  reporterId         String
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+  province           String?
+  zoneId             String?
+  zoneName           String?
+  mlConfidence       Float?
+  detectedLanguage   String?
   languageConfidence Float?
-  translatedText    String?
-  nlpEntities       Json?
-  aar               AfterActionReport?
-  damageAssessments DamageAssessment[]
-  history           IncidentHistory[]
-  reporter          User                 @relation(fields: [reporterId], references: [id])
-  verifications     ReportVerification[]
-  tasks             Task[]
-  verifierActions   VerifierAction[]
-  duplicateLinks    IncidentDuplicateLink[] @relation("DuplicateOf")
-  canonicalLinks    IncidentDuplicateLink[] @relation("CanonicalFor")
+  translatedText     String?
+  nlpEntities        Json?
+  aar                AfterActionReport?
+  damageAssessments  DamageAssessment[]
+  history            IncidentHistory[]
+  reporter           User                    @relation(fields: [reporterId], references: [id])
+  verifications      ReportVerification[]
+  tasks              Task[]
+  verifierActions    VerifierAction[]
+  duplicateLinks     IncidentDuplicateLink[] @relation("DuplicateOf")
+  canonicalLinks     IncidentDuplicateLink[] @relation("CanonicalFor")
 }
 
 model Alert {
@@ -793,10 +793,10 @@ model RainfallReading {
 }
 
 model RainfallAlertLog {
-  id         String   @id @default(uuid())
-  district   String   @unique
+  id          String   @id @default(uuid())
+  district    String   @unique
   lastFiredAt DateTime
-  updatedAt  DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
 }
 
 model RiverWaterLevel {
@@ -1006,8 +1006,8 @@ model IncidentDuplicateLink {
   status      String         @default("PENDING")
   reasons     String[]
   createdAt   DateTime       @default(now())
-  report      IncidentReport @relation("DuplicateOf",   fields: [reportId],    references: [id], onDelete: Cascade)
-  canonical   IncidentReport @relation("CanonicalFor",  fields: [canonicalId], references: [id], onDelete: Cascade)
+  report      IncidentReport @relation("DuplicateOf", fields: [reportId], references: [id], onDelete: Cascade)
+  canonical   IncidentReport @relation("CanonicalFor", fields: [canonicalId], references: [id], onDelete: Cascade)
 }
 
 model PublicSafePlace {
@@ -1027,15 +1027,15 @@ model PublicSafePlace {
 }
 
 model AuthorityContact {
-  id       String   @id @default(uuid())
-  district String
-  role     String
-  name     String
-  phone    String
-  phone2   String?
-  email    String?
-  sector   String?
-  isActive Boolean  @default(true)
+  id        String   @id @default(uuid())
+  district  String
+  role      String
+  name      String
+  phone     String
+  phone2    String?
+  email     String?
+  sector    String?
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 }
 
@@ -1056,46 +1056,46 @@ enum MissionStatus {
 }
 
 model RescueVehicle {
-  id           String         @id @default(uuid())
+  id           String          @id @default(uuid())
   type         VehicleType
   name         String
   capacity     Int
   area         String
   latitude     Float?
   longitude    Float?
-  status       String         @default("AVAILABLE")
+  status       String          @default("AVAILABLE")
   contactPhone String?
   operatorName String?
   assignedById String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
   missions     RescueMission[]
 }
 
 model RescueMission {
-  id                String        @id @default(uuid())
+  id                String            @id @default(uuid())
   vehicleId         String
   area              String
   destinationCampId String?
-  status            MissionStatus @default(PENDING)
-  evacuatedCount    Int           @default(0)
+  status            MissionStatus     @default(PENDING)
+  evacuatedCount    Int               @default(0)
   assignedById      String
   notes             String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
   completedAt       DateTime?
-  vehicle           RescueVehicle @relation(fields: [vehicleId], references: [id])
-  assignedBy        User          @relation("AssignedRescues", fields: [assignedById], references: [id])
+  vehicle           RescueVehicle     @relation(fields: [vehicleId], references: [id])
+  assignedBy        User              @relation("AssignedRescues", fields: [assignedById], references: [id])
   safeZoneCheckIns  SafeZoneCheckIn[]
 }
 
 model SafeZoneCheckIn {
-  id        String        @id @default(uuid())
+  id        String         @id @default(uuid())
   userId    String
   missionId String?
   campId    String?
   notes     String?
-  createdAt DateTime      @default(now())
-  user      User          @relation("SafeZoneCheckIns", fields: [userId], references: [id])
+  createdAt DateTime       @default(now())
+  user      User           @relation("SafeZoneCheckIns", fields: [userId], references: [id])
   mission   RescueMission? @relation(fields: [missionId], references: [id])
 }
