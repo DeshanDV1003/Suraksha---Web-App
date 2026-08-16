@@ -10,6 +10,7 @@ import {
   getDuplicatesForIncident,
   resolveDuplicateLink,
   triggerSOS,
+  addImages,
 } from '../controllers/incidentController';
 import { authMiddleware, adminMiddleware } from '../middleware/auth';
 
@@ -25,6 +26,7 @@ router.get('/:id/duplicates', authMiddleware, getDuplicatesForIncident);
 router.patch('/duplicates/:linkId', authMiddleware, adminMiddleware, resolveDuplicateLink);
 router.get('/:id', authMiddleware, getIncidentById);
 router.patch('/:id/status', authMiddleware, updateIncidentStatus);
+router.patch('/:id/images', authMiddleware, addImages);
 router.delete('/:id', authMiddleware, adminMiddleware, deleteIncident);
 
 export default router;

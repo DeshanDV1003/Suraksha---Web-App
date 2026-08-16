@@ -396,6 +396,25 @@ export const resolveDuplicateLink = async (req: Request, res: Response) => {
   }
 };
 
+export const addImages = async (req: any, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { images } = req.body; // string[] of base64 data URIs
+    if (!Array.isArray(images) || images.length === 0) {
+      return res.status(400).json({ message: 'images array is required' });
+    }
+    const existing = await prisma.incidentReport.findUnique({ where: { id }, select: { images: true } });
+    if (!existing) return res.status(404).json({ message: 'Incident not found' });
+    const updated = await prisma.incidentReport.update({
+      where: { id },
+      data: { images: [...existing.images, ...images] },
+    });
+    res.json({ images: updated.images });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error });
+  }
+};
+
 export const triggerSOS = async (req: any, res: Response) => {
   try {
     const userId = req.user.userId;

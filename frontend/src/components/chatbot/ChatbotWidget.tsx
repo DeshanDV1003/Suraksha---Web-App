@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Loader2, Bot, User, AlertTriangle } from 'lucide-react'
 import axios from 'axios'
+import api from '../../services/api'
 
-const API = 'http://192.168.8.121:3001/api/chatbot/message'
+const API = '/chatbot/message'
 
 interface Message {
   role: 'user' | 'model'
@@ -68,7 +69,7 @@ export default function ChatbotWidget() {
     setLoading(true)
 
     try {
-      const { data } = await axios.post(API, {
+      const { data } = await api.post(API, {
         message: text,
         history: buildHistory(messages),
         lat: userCoords?.lat,

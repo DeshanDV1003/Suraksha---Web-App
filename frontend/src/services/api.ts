@@ -45,6 +45,7 @@ export const incidentService = {
   createIncident: (data: any) => api.post('/incidents', data),
   updateStatus: (id: string, status: string) => api.patch(`/incidents/${id}/status`, { status }),
   deleteIncident: (id: string) => api.delete(`/incidents/${id}`),
+  addImages: (id: string, images: string[]) => api.patch(`/incidents/${id}/images`, { images }),
   // Duplicate detection
   getPendingDuplicates: () => api.get('/incidents/duplicates/pending'),
   getDuplicatesForIncident: (id: string) => api.get(`/incidents/${id}/duplicates`),

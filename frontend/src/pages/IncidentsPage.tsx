@@ -9,7 +9,7 @@ import { formatDistanceToNow, differenceInMinutes, format } from 'date-fns'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
-import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts'
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
 
@@ -278,9 +278,9 @@ export default function IncidentsPage() {
                         <td className="px-4 py-6 text-center text-sm font-bold text-slate-400">
                           <span className={cn(
                             "inline-flex items-center px-3 py-1.5 rounded-xl text-[9px] font-black tracking-[0.1em] uppercase border shadow-sm",
-                            incident.severity === 'CRITICAL' ? 'bg-red-50 text-red-600 border-red-100 shadow-red-500/5' :
-                              incident.severity === 'HIGH' ? 'bg-orange-50 text-orange-600 border-orange-100' :
-                                'bg-yellow-50 text-yellow-600 border-yellow-100 font-bold'
+                            incident.severity === 'CRITICAL' ? 'bg-red-50 dark:bg-red-500/15 text-red-600 dark:text-red-400 border-red-100 dark:border-red-500/20' :
+                              incident.severity === 'HIGH' ? 'bg-orange-50 dark:bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-100 dark:border-orange-500/20' :
+                                'bg-yellow-50 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-100 dark:border-yellow-500/20'
                           )}>
                             {incident.severity}
                           </span>
@@ -292,10 +292,10 @@ export default function IncidentsPage() {
                               onChange={(e) => handleUpdateStatus(incident.id, e.target.value)}
                               className={cn(
                                 "px-4 py-2 rounded-xl text-[9px] font-black tracking-[0.1em] uppercase border cursor-pointer outline-none transition-all shadow-sm",
-                                incident.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                                  incident.status === 'IN_PROGRESS' ? 'bg-cyan-400/10 text-cyan-400 border-cyan-400/20 border-blue-100' :
-                                    incident.status === 'ASSIGNED' ? 'bg-teal-50 text-teal-700 border-teal-100' :
-                                      'bg-green-50 text-green-700 border-green-100'
+                                incident.status === 'PENDING' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' :
+                                  incident.status === 'IN_PROGRESS' ? 'bg-cyan-400/10 text-cyan-600 dark:text-cyan-400 border-cyan-400/20' :
+                                    incident.status === 'ASSIGNED' ? 'bg-teal-50 dark:bg-teal-500/10 text-teal-700 dark:text-teal-400 border-teal-100 dark:border-teal-500/20' :
+                                      'bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-100 dark:border-green-500/20'
                               )}
                             >
                               {statuses.filter(s => s !== t('incidents.all_status')).map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
@@ -303,10 +303,10 @@ export default function IncidentsPage() {
                           ) : (
                             <span className={cn(
                               "px-4 py-2 rounded-xl text-[9px] font-black tracking-[0.1em] uppercase border shadow-sm",
-                              incident.status === 'PENDING' ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                                incident.status === 'IN_PROGRESS' ? 'bg-cyan-400/10 text-cyan-400 border-cyan-400/20 border-blue-100' :
-                                  incident.status === 'ASSIGNED' ? 'bg-teal-50 text-teal-700 border-teal-100' :
-                                    'bg-green-50 text-green-700 border-green-100'
+                              incident.status === 'PENDING' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' :
+                                incident.status === 'IN_PROGRESS' ? 'bg-cyan-400/10 text-cyan-600 dark:text-cyan-400 border-cyan-400/20' :
+                                  incident.status === 'ASSIGNED' ? 'bg-teal-50 dark:bg-teal-500/10 text-teal-700 dark:text-teal-400 border-teal-100 dark:border-teal-500/20' :
+                                    'bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-100 dark:border-green-500/20'
                             )}>
                               {incident.status}
                             </span>
@@ -397,7 +397,7 @@ export default function IncidentsPage() {
 
         {/* Analytics Drill Down Modal */}
         {analyticsCategory && (
-          <AnalyticsDrillDownModal category={analyticsCategory} onClose={() => setAnalyticsCategory(null)} />
+          <AnalyticsDrillDownModal category={analyticsCategory} incidents={incidents} onClose={() => setAnalyticsCategory(null)} />
         )}
 
         {/* Merge Confirmation Modal */}
@@ -460,7 +460,7 @@ export default function IncidentsPage() {
           <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setIncidentToDelete(null)} />
             <div className="relative w-full max-w-sm bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 rounded-[2.5rem] shadow-2xl overflow-hidden p-8 text-center">
-              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-red-50 dark:bg-red-500/15 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Trash2 className="w-8 h-8 text-red-500" />
               </div>
               <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100 mb-2">Delete Report?</h3>
@@ -653,6 +653,98 @@ function IncidentAIPanel({ incident }: { incident: any }) {
   )
 }
 
+function FieldEvidencePanel({ incident }: { incident: any }) {
+  const [images, setImages] = useState<string[]>(incident.images || [])
+  const [uploading, setUploading] = useState(false)
+  const [dragOver, setDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const processFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0) return
+    const allowed = Array.from(files).filter(f => f.type.startsWith('image/'))
+    if (allowed.length === 0) return
+    setUploading(true)
+    try {
+      const base64s = await Promise.all(allowed.map(f => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result as string)
+        reader.onerror = reject
+        reader.readAsDataURL(f)
+      })))
+      const res = await incidentService.addImages(incident.id, base64s)
+      setImages(res.data.images)
+    } catch {
+      /* silent — user sees no change */
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div>
+      <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest flex items-center gap-2 mb-4">
+        <Upload className="w-4 h-4 text-emerald-500" /> Field Evidence
+        {images.length > 0 && <span className="text-[10px] font-bold text-slate-400 normal-case tracking-normal">({images.length} photo{images.length !== 1 ? 's' : ''})</span>}
+      </h3>
+
+      {/* Drop zone */}
+      <div
+        onClick={() => fileInputRef.current?.click()}
+        onDragOver={e => { e.preventDefault(); setDragOver(true) }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={e => { e.preventDefault(); setDragOver(false); processFiles(e.dataTransfer.files) }}
+        className={cn(
+          'border-2 border-dashed rounded-3xl p-6 text-center cursor-pointer transition-all',
+          dragOver
+            ? 'border-emerald-400 bg-emerald-500/10'
+            : 'border-slate-200 dark:border-slate-600 hover:border-emerald-400/60 hover:bg-emerald-500/5'
+        )}
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={e => processFiles(e.target.files)}
+        />
+        {uploading ? (
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
+            <span className="text-xs font-bold text-slate-400">Uploading…</span>
+          </div>
+        ) : (
+          <>
+            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Upload className="w-5 h-5 text-slate-400 dark:text-slate-300" />
+            </div>
+            <div className="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-1">
+              {dragOver ? 'Drop to upload' : 'Click or drag & drop photos'}
+            </div>
+            <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500">JPG, PNG, WEBP — AI will auto-tag evidence</div>
+          </>
+        )}
+      </div>
+
+      {/* Uploaded photos grid */}
+      {images.length > 0 && (
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {images.map((src, i) => (
+            <div key={i} className="relative group rounded-2xl overflow-hidden shadow-sm aspect-video bg-slate-100 dark:bg-slate-800">
+              <img src={src} className="w-full h-full object-cover" alt={`Evidence ${i + 1}`} />
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-2 pt-6">
+                <div className="flex gap-1 flex-wrap">
+                  <span className="bg-blue-500/80 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded backdrop-blur-sm">Photo {i + 1}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function IncidentDetailsModal({ incident, onClose }: any) {
   const { t } = useTranslation()
 
@@ -675,8 +767,8 @@ function IncidentDetailsModal({ incident, onClose }: any) {
           {/* Info Side */}
           <div className="p-8 md:p-10 space-y-8 flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest">Incident Profile #{incident.id.slice(0, 8)}</span>
-              <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-[#0f172a] rounded-xl md:hidden"><X className="w-6 h-6" /></button>
+              <span className="text-[10px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/20 px-3 py-1.5 rounded-full uppercase tracking-widest">Incident Profile #{incident.id.slice(0, 8)}</span>
+              <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-[#0f172a] rounded-xl md:hidden text-slate-500 dark:text-slate-400"><X className="w-6 h-6" /></button>
             </div>
 
             <div className="space-y-4">
@@ -700,15 +792,15 @@ function IncidentDetailsModal({ incident, onClose }: any) {
 
             {/* AI Recommendation Engine */}
             {incident.status === 'PENDING' && (
-              <div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-6">
+              <div className="bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-3xl p-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <Cpu className="w-5 h-5 text-indigo-600" />
-                  <h4 className="text-xs font-black text-indigo-900 uppercase tracking-widest">AI Dispatch Recommendation</h4>
+                  <Cpu className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  <h4 className="text-xs font-black text-indigo-900 dark:text-indigo-300 uppercase tracking-widest">AI Dispatch Recommendation</h4>
                 </div>
-                <p className="text-sm font-bold text-indigo-700 mb-4">{aiRecommendation}</p>
+                <p className="text-sm font-bold text-indigo-700 dark:text-indigo-300 mb-4">{aiRecommendation}</p>
                 <div className="flex gap-2">
                   <button className="flex-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-indigo-700 transition-colors">One-Click Dispatch</button>
-                  <button className="px-4 bg-slate-100 dark:bg-[#131f33] border border-indigo-200 dark:border-cyan-400/20 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-50 transition-colors">Modify</button>
+                  <button className="px-4 bg-slate-100 dark:bg-[#131f33] border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/20 transition-colors">Modify</button>
                 </div>
               </div>
             )}
@@ -727,16 +819,16 @@ function IncidentDetailsModal({ incident, onClose }: any) {
 
             {/* Timeline Audit Log */}
             <div className="mb-10">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2"><History className="w-4 h-4 text-blue-500" /> Audit Log</h3>
-                <button className="text-[9px] font-black text-blue-600 uppercase tracking-widest hover:underline flex items-center gap-1"><FileText className="w-3 h-3" /> Export PDF</button>
+              <div className="flex items-center justify-between mb-6 pr-12">
+                <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest flex items-center gap-2"><History className="w-4 h-4 text-blue-500" /> Audit Log</h3>
+                <button className="text-[9px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest hover:underline flex items-center gap-1"><FileText className="w-3 h-3" /> Export PDF</button>
               </div>
-              <div className="relative pl-6 space-y-6 before:absolute before:inset-y-0 before:left-[11px] before:w-0.5 before:bg-gray-200 dark:bg-gray-700">
+              <div className="relative pl-6 space-y-6 before:absolute before:inset-y-0 before:left-[11px] before:w-0.5 before:bg-gray-200 before:dark:bg-gray-700">
                 {history.map((item, i) => (
                   <div key={i} className="relative">
-                    <div className="absolute -left-[30px] w-4 h-4 rounded-full border-4 border-white bg-blue-500 shadow-sm" />
-                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{format(item.time, 'MMM d, HH:mm')} - {item.user}</div>
-                    <div className="text-sm font-bold text-slate-700 mt-1">{item.action}</div>
+                    <div className="absolute -left-[30px] w-4 h-4 rounded-full border-4 border-white dark:border-[#0f172a] bg-blue-500 shadow-sm" />
+                    <div className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{format(item.time, 'MMM d, HH:mm')} - {item.user}</div>
+                    <div className="text-sm font-bold text-slate-700 dark:text-slate-200 mt-1">{item.action}</div>
                   </div>
                 ))}
               </div>
@@ -746,31 +838,7 @@ function IncidentDetailsModal({ incident, onClose }: any) {
             <IncidentAIPanel incident={incident} />
 
             {/* Field Photo Upload */}
-            <div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2 mb-4"><Upload className="w-4 h-4 text-emerald-500" /> Field Evidence</h3>
-              <div className="border-2 border-dashed border-slate-200 dark:border-gray-700 rounded-3xl p-8 text-center hover:bg-slate-100 dark:hover:bg-[#131f33] transition-colors cursor-pointer group">
-                <div className="w-12 h-12 bg-slate-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Upload className="w-5 h-5 text-slate-400" />
-                </div>
-                <div className="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-1">Drag & Drop Photos</div>
-                <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400">AI will auto-tag uploaded evidence</div>
-              </div>
-
-              {/* Mock Uploaded Photos */}
-              {incident.images && incident.images.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div className="relative group rounded-2xl overflow-hidden shadow-sm">
-                    <img src={incident.images[0]} className="w-full h-32 object-cover" alt="Evidence" />
-                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
-                      <div className="flex gap-1">
-                        <span className="bg-blue-500/80 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded backdrop-blur-sm">Flood Damage</span>
-                        <span className="bg-red-500/80 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded backdrop-blur-sm">Structural</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <FieldEvidencePanel incident={incident} />
           </div>
         </div>
       </div>
@@ -778,12 +846,65 @@ function IncidentDetailsModal({ incident, onClose }: any) {
   )
 }
 
-function AnalyticsDrillDownModal({ category, onClose }: { category: string, onClose: () => void }) {
-  // Mock Data for Analytics
-  const mockTrendData = [
-    { name: 'Mon', freq: 4 }, { name: 'Tue', freq: 7 }, { name: 'Wed', freq: 3 },
-    { name: 'Thu', freq: 12 }, { name: 'Fri', freq: 8 }, { name: 'Sat', freq: 5 }, { name: 'Sun', freq: 9 }
-  ];
+const CATEGORY_RESOURCE_DEFAULTS: Record<string, string> = {
+  FLOOD: 'Rescue Boats', FIRE: 'Fire Engines', MEDICAL: 'Ambulances',
+  LANDSLIDE: 'Excavators', STORM: 'Emergency Shelters', MEDICAL_EMERGENCY: 'Ambulances',
+}
+
+function AnalyticsDrillDownModal({ category, incidents, onClose }: {
+  category: string
+  incidents: any[]
+  onClose: () => void
+}) {
+  const now = new Date()
+  const catIncidents = incidents.filter(i => i.category === category)
+
+  // Total this month
+  const totalThisMonth = catIncidents.filter(i => {
+    const d = new Date(i.createdAt)
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
+  }).length
+
+  // Avg resolution time (hours) for RESOLVED incidents that have updatedAt
+  const resolved = catIncidents.filter(i => i.status === 'RESOLVED' && i.updatedAt)
+  const avgResolutionHrs = resolved.length > 0
+    ? resolved.reduce((sum, i) => {
+        const ms = new Date(i.updatedAt).getTime() - new Date(i.createdAt).getTime()
+        return sum + ms / 3_600_000
+      }, 0) / resolved.length
+    : null
+
+  // Most common needed resource — prefer ML field, fall back to category default
+  const resourceCounts: Record<string, number> = {}
+  catIncidents.forEach(i => {
+    const r = i.requiredResource || i.required_resource || i.resourceNeeds
+    if (r) resourceCounts[r] = (resourceCounts[r] || 0) + 1
+  })
+  const commonResource = Object.keys(resourceCounts).length > 0
+    ? Object.entries(resourceCounts).sort((a, b) => b[1] - a[1])[0][0]
+    : CATEGORY_RESOURCE_DEFAULTS[category] || 'Emergency Units'
+
+  // 7-day trend — last 7 actual calendar days
+  const trendData = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(now)
+    d.setDate(d.getDate() - (6 - i))
+    const label = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()]
+    const freq = catIncidents.filter(inc => {
+      const incDate = new Date(inc.createdAt)
+      return incDate.toDateString() === d.toDateString()
+    }).length
+    return { name: label, freq }
+  })
+
+  // Severity breakdown for this category
+  const severityBreakdown = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(sev => ({
+    name: sev,
+    count: catIncidents.filter(i => i.severity === sev).length,
+  })).filter(s => s.count > 0)
+
+  const severityColor: Record<string, string> = {
+    CRITICAL: '#ef4444', HIGH: '#f97316', MEDIUM: '#eab308', LOW: '#22c55e',
+  }
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-200">
@@ -802,33 +923,67 @@ function AnalyticsDrillDownModal({ category, onClose }: { category: string, onCl
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-slate-50 dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200 dark:border-cyan-400/20">
             <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Avg Resolution Time</div>
-            <div className="text-2xl font-black text-slate-800 dark:text-slate-100">4.2 <span className="text-sm text-slate-400">hrs</span></div>
+            {avgResolutionHrs !== null
+              ? <div className="text-2xl font-black text-slate-800 dark:text-slate-100">{avgResolutionHrs.toFixed(1)} <span className="text-sm text-slate-400">hrs</span></div>
+              : <div className="text-sm font-bold text-slate-400 mt-1">No resolved yet</div>
+            }
           </div>
           <div className="bg-slate-50 dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200 dark:border-cyan-400/20">
             <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Common Resource</div>
-            <div className="text-lg font-black text-indigo-600 mt-1">Rescue Boats</div>
+            <div className="text-lg font-black text-indigo-500 dark:text-indigo-400 mt-1 leading-tight">{commonResource}</div>
           </div>
           <div className="bg-slate-50 dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200 dark:border-cyan-400/20">
             <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Total This Month</div>
-            <div className="text-2xl font-black text-slate-800 dark:text-slate-100">142</div>
+            <div className="text-2xl font-black text-slate-800 dark:text-slate-100">{totalThisMonth}</div>
+            {catIncidents.length !== totalThisMonth && (
+              <div className="text-[10px] text-slate-400 mt-1">{catIncidents.length} all-time</div>
+            )}
           </div>
         </div>
 
-        <div>
-          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">7-Day Incident Frequency</h3>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={mockTrendData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} dx={-10} />
-                <RechartsTooltip
-                  cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
-                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                />
-                <Line type="monotone" dataKey="freq" stroke="#4f46e5" strokeWidth={4} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6, stroke: '#4f46e5', strokeWidth: 2, fill: '#fff' }} />
-              </LineChart>
-            </ResponsiveContainer>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-2">
+            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">7-Day Incident Frequency</h3>
+            <div className="h-56 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={trendData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148,163,184,0.15)" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} dx={-10} allowDecimals={false} />
+                  <RechartsTooltip
+                    cursor={{ stroke: 'rgba(148,163,184,0.3)', strokeWidth: 2 }}
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontSize: 12, fontWeight: 'bold' }}
+                    formatter={(v: any) => [v, 'Incidents']}
+                  />
+                  <Line type="monotone" dataKey="freq" stroke="#4f46e5" strokeWidth={4} dot={{ r: 4, strokeWidth: 2, fill: '#4f46e5' }} activeDot={{ r: 6, stroke: '#4f46e5', strokeWidth: 2, fill: '#fff' }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Severity Mix</h3>
+            {severityBreakdown.length > 0 ? (
+              <div className="h-56">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={severityBreakdown} layout="vertical" barSize={14}>
+                    <XAxis type="number" hide allowDecimals={false} />
+                    <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: '#94a3b8', fontWeight: 'bold' }} width={56} />
+                    <RechartsTooltip
+                      contentStyle={{ borderRadius: '12px', border: 'none', fontSize: 11, fontWeight: 'bold' }}
+                      formatter={(v: any) => [v, 'incidents']}
+                    />
+                    <Bar dataKey="count" radius={[0, 6, 6, 0]}>
+                      {severityBreakdown.map(entry => (
+                        <Cell key={entry.name} fill={severityColor[entry.name] || '#6366f1'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-56 flex items-center justify-center text-[11px] text-slate-400 font-bold">No data</div>
+            )}
           </div>
         </div>
       </div>
