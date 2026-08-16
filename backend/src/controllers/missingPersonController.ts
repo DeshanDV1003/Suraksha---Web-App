@@ -48,10 +48,14 @@ export const deleteMissingPerson = async (req: any, res: Response) => {
 export const searchFace = async (req: Request, res: Response) => {
   try {
     const { imageUrl } = req.body;
+    if (!imageUrl) return res.status(400).json({ message: 'imageUrl is required' });
     const matches = await missingPersonService.searchFace(imageUrl);
     res.json(matches);
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+  } catch (error: any) {
+    if (error.message === 'ML_OFFLINE') {
+      return res.status(503).json({ message: 'AI service is offline. Please run START-ML.bat and try again.' });
+    }
+    res.status(500).json({ message: error.message || 'Face scan failed' });
   }
 };
 

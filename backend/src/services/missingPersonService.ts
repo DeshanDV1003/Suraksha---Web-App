@@ -51,10 +51,12 @@ export const searchFace = async (queryImageBase64: string) => {
     if (!mlRes.ok) throw new Error(`ML service responded ${mlRes.status}`);
     const mlData: any = await mlRes.json();
     mlMatches = mlData.matches ?? [];
-  } catch (err) {
+  } catch (err: any) {
     console.error('[Face Match] ML service call failed:', err);
-    // Fall back to empty — do not crash the request
-    return [];
+    const isOffline = err.code === 'ECONNREFUSED' || err.cause?.code === 'ECONNREFUSED' || err.message?.includes('fetch failed');
+    throw new Error(isOffline
+      ? 'ML_OFFLINE'
+      : `ML service error: ${err.message}`);
   }
 
   // Join ML results with full person records

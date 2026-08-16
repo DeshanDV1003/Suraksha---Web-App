@@ -106,8 +106,9 @@ export default function MissingPersonsPage() {
       const res = await missingPersonService.searchFace(selectedImage)
       setAiMatches(res.data)
       if (res.data.length === 0) showToast('No matches found in database', 'warning')
-    } catch (e) {
-      showToast('AI scan failed', 'error')
+    } catch (e: any) {
+      const msg = e?.response?.data?.message || 'AI scan failed'
+      showToast(msg, 'error')
     } finally {
       setAiLoading(false)
     }
