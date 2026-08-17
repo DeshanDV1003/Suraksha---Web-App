@@ -781,7 +781,7 @@ export default function CampsPage() {
   return (
         <>
           <PageMeta title="Camps | Suraksha" description="Suraksha Camps Page" />
-          <PageBreadcrumb pageTitle="Camps" />
+          <PageBreadcrumb pageTitle={t('page_titles.camps')} />
           <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
         {!isCitizen && (
           <div className="flex items-center justify-between">
@@ -800,12 +800,12 @@ export default function CampsPage() {
             <div className="flex items-center justify-between flex-wrap gap-2">
               <h3 className="font-black text-slate-800 dark:text-white/90 flex items-center gap-2 text-base">
                 <Navigation className="w-5 h-5 text-cyan-400" />
-                Nearest Relief Camps
+                {t('camps_page.nearest_camps')}
               </h3>
               <div className="flex items-center gap-2">
                 {locationStatus === 'loading' && !userLocation && (
                   <span className="text-[10px] text-yellow-400 font-black bg-yellow-500/10 border border-yellow-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                    <Loader2 className="w-3 h-3 animate-spin" /> Detecting GPS…
+                    <Loader2 className="w-3 h-3 animate-spin" /> {t('camps_page.detecting_gps')}
                   </span>
                 )}
                 {userLocation && (
@@ -823,7 +823,7 @@ export default function CampsPage() {
                       }}
                       className="text-[10px] text-cyan-400 font-black hover:text-cyan-300 transition-colors underline"
                     >
-                      Change
+                      {t('camps_page.change')}
                     </button>
                   </>
                 )}
@@ -835,7 +835,7 @@ export default function CampsPage() {
               <div className="space-y-2">
                 <p className="text-sm font-bold text-cyan-300 flex items-center gap-2">
                   <MapPin className="w-4 h-4 flex-shrink-0" />
-                  Tap your current location on the map to find nearest camps
+                  {t('camps_page.tap_location')}
                 </p>
                 <div className="rounded-2xl overflow-hidden border border-cyan-400/30" style={{ height: 300 }}>
                   <MapContainer
@@ -872,7 +872,7 @@ export default function CampsPage() {
                   const isFull = available <= 0
                   return (
                     <div key={camp.id} className={`p-4 rounded-2xl border ${i === 0 ? 'border-cyan-400/40 bg-cyan-400/5' : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0f172a]'}`}>
-                      {i === 0 && <span className="text-[9px] text-cyan-400 font-black uppercase tracking-widest">Closest</span>}
+                      {i === 0 && <span className="text-[9px] text-cyan-400 font-black uppercase tracking-widest">{t('camps_page.closest')}</span>}
                       <h4 className="font-black text-slate-800 dark:text-white/90 text-sm mt-1">{camp.name}</h4>
                       <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
                         <MapPin className="w-3 h-3 flex-shrink-0" /> {camp.location}
@@ -880,7 +880,7 @@ export default function CampsPage() {
                       <div className="flex items-center justify-between mt-3">
                         <span className="text-lg font-black text-cyan-400">{camp.distanceKm.toFixed(1)} km</span>
                         <span className={`text-[9px] font-black px-2 py-1 rounded-full ${isFull ? 'bg-red-500/15 text-red-400' : 'bg-green-500/15 text-green-400'}`}>
-                          {isFull ? 'FULL' : `${available} spots`}
+                          {isFull ? t('camps_page.full') : `${available} ${t('camps_page.spots')}`}
                         </span>
                       </div>
                       <button
@@ -888,7 +888,7 @@ export default function CampsPage() {
                         className="mt-3 flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                       >
                         <Navigation className="w-3.5 h-3.5" />
-                        View Route
+                        {t('camps_page.view_route')}
                       </button>
                     </div>
                   )
@@ -896,7 +896,7 @@ export default function CampsPage() {
               </div>
             )}
             {locationStatus === 'granted' && !showLocationPicker && nearestCamps.length === 0 && (
-              <p className="text-sm text-gray-400 font-bold">No camps found near your location.</p>
+              <p className="text-sm text-gray-400 font-bold">{t('camps_page.no_camps_nearby')}</p>
             )}
           </div>
         )}
@@ -926,18 +926,18 @@ export default function CampsPage() {
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <h3 className="font-black text-slate-800 dark:text-white/90 flex items-center gap-2 text-base">
                   <Waves className="w-5 h-5 text-blue-400" />
-                  Available Rescue Transport
+                  {t('camps_page.available_rescue')}
                 </h3>
                 {myCheckIn && (
                   <span className="flex items-center gap-1.5 text-xs font-black text-green-400 bg-green-500/10 border border-green-500/30 px-3 py-1.5 rounded-full">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    You're marked SAFE
+                    {t('camps_page.youre_marked_safe')}
                   </span>
                 )}
               </div>
 
               {activeMissions.length === 0 ? (
-                <p className="text-sm text-gray-400 font-bold py-2">No active rescue missions right now. Check back shortly.</p>
+                <p className="text-sm text-gray-400 font-bold py-2">{t('camps_page.no_active_missions')}</p>
               ) : (
                 <div className="space-y-3">
                   {activeMissions.map((mission: any, idx: number) => {
@@ -960,7 +960,7 @@ export default function CampsPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             {idx === 0 && !mission._isFull && (
-                              <span className="text-[9px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">Nearest</span>
+                              <span className="text-[9px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">{t('camps_page.nearest_badge')}</span>
                             )}
                             <span className="font-black text-white/90 text-sm">{mission.vehicle?.name}</span>
                             <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-full border uppercase', MISSION_STATUS_COLOR[mission.status])}>
@@ -975,7 +975,7 @@ export default function CampsPage() {
                               <span className="text-xs font-black text-cyan-400">{mission._dist.toFixed(1)} km away</span>
                             )}
                             <span className={cn('text-xs font-black', mission._isFull ? 'text-red-400' : 'text-green-400')}>
-                              {mission._isFull ? '⚠ FULL' : `${spotsLeft} spots available`}
+                              {mission._isFull ? `⚠ ${t('camps_page.full')}` : `${spotsLeft} ${t('camps_page.spots_available')}`}
                             </span>
                             {mission.vehicle?.contactPhone && (
                               <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -987,7 +987,7 @@ export default function CampsPage() {
                         </div>
                         <div className="flex flex-col items-end gap-1 flex-shrink-0">
                           <span className="text-[10px] font-bold text-gray-500 uppercase">{mission.vehicle?.type}</span>
-                          <span className="text-[10px] text-blue-400 font-bold">Tap for route →</span>
+                          <span className="text-[10px] text-blue-400 font-bold">{t('camps_page.tap_for_route')}</span>
                         </div>
                       </button>
                     )
@@ -998,7 +998,7 @@ export default function CampsPage() {
               {/* Mark yourself safe */}
               {!myCheckIn ? (
                 <div className="pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400 font-bold mb-3">Have you reached a safe location? Let authorities know.</p>
+                  <p className="text-xs text-gray-400 font-bold mb-3">{t('camps_page.reached_safe')}</p>
                   <button
                     onClick={async () => {
                       setMarkingSafe(true)
@@ -1013,15 +1013,15 @@ export default function CampsPage() {
                     className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-500/15 border border-green-500/30 text-green-400 text-sm font-black hover:bg-green-500/25 transition-all"
                   >
                     {markingSafe ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
-                    I'm Now in a Safe Zone
+                    {t('camps_page.safe_zone_btn')}
                   </button>
                 </div>
               ) : (
                 <div className="pt-3 border-t border-white/10 flex items-center gap-3 text-green-400">
                   <CheckCircle2 className="w-5 h-5" />
                   <div>
-                    <p className="text-sm font-black">You have been marked as safe</p>
-                    <p className="text-xs text-green-400/70">Authorities have been notified of your safety.</p>
+                    <p className="text-sm font-black">{t('camps_page.marked_safe_msg')}</p>
+                    <p className="text-xs text-green-400/70">{t('camps_page.safe_notified')}</p>
                   </div>
                 </div>
               )}

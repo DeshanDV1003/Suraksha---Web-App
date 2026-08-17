@@ -10,6 +10,7 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb"
 import PageMeta from "@/components/common/PageMeta"
 
 function CitizenSupportView() {
+  const { t } = useTranslation()
   const [guides, setGuides] = useState<any[]>([])
   const [groups, setGroups] = useState<any[]>([])
   const [myChats, setMyChats] = useState<any[]>([])
@@ -54,9 +55,9 @@ function CitizenSupportView() {
       setChatRequested(true)
       const res = await psychSupportService.getMyChats()
       setMyChats(res.data.filter((c: any) => c.status !== 'MOOD_LOG'))
-      showToast('Support request sent! A counsellor will connect with you soon.')
+      showToast(t('support_citizen.toast_chat_sent'))
     } catch {
-      showToast('Failed to send support request.', 'error')
+      showToast(t('support_citizen.toast_chat_failed'), 'error')
     } finally {
       setChatRequestLoading(false)
     }
@@ -65,11 +66,11 @@ function CitizenSupportView() {
   const handleJoinGroup = async (id: string) => {
     try {
       await psychSupportService.joinGroup(id)
-      showToast('Registered for session!')
+      showToast(t('support_citizen.toast_registered'))
       const res = await psychSupportService.getGroups()
       setGroups(res.data)
     } catch {
-      showToast('Failed to register.', 'error')
+      showToast(t('support_citizen.toast_register_failed'), 'error')
     }
   }
 
@@ -78,19 +79,19 @@ function CitizenSupportView() {
     try {
       await psychSupportService.submitMood(moodSelected)
       setMoodSubmitted(true)
-      showToast('Mood check-in recorded. Thank you.')
+      showToast(t('support_citizen.toast_mood_recorded'))
     } catch {
-      showToast('Failed to submit mood.', 'error')
+      showToast(t('support_citizen.toast_mood_failed'), 'error')
     }
   }
 
   const MOODS = [
-    { emoji: '😊', label: 'Good', value: 'GOOD' },
-    { emoji: '😐', label: 'Okay', value: 'OKAY' },
-    { emoji: '😟', label: 'Anxious', value: 'ANXIOUS' },
-    { emoji: '😢', label: 'Sad', value: 'SAD' },
-    { emoji: '😠', label: 'Frustrated', value: 'FRUSTRATED' },
-    { emoji: '😔', label: 'Hopeless', value: 'HOPELESS' },
+    { emoji: '😊', label: t('support_citizen.mood_good'), value: 'GOOD' },
+    { emoji: '😐', label: t('support_citizen.mood_okay'), value: 'OKAY' },
+    { emoji: '😟', label: t('support_citizen.mood_anxious'), value: 'ANXIOUS' },
+    { emoji: '😢', label: t('support_citizen.mood_sad'), value: 'SAD' },
+    { emoji: '😠', label: t('support_citizen.mood_frustrated'), value: 'FRUSTRATED' },
+    { emoji: '😔', label: t('support_citizen.mood_hopeless'), value: 'HOPELESS' },
   ]
 
   const STATUS_COLORS: Record<string, string> = {
@@ -99,17 +100,17 @@ function CitizenSupportView() {
     COMPLETED: 'bg-slate-100 text-slate-500',
   }
 
-  const SECTIONS = [
-    { key: 'chat', label: 'Request Support', icon: MessageSquare },
-    { key: 'groups', label: 'Group Sessions', icon: Users },
-    { key: 'mood', label: 'Mood Check-In', icon: HeartPulse },
-    { key: 'guides', label: 'Wellness Guides', icon: BookOpen },
-  ] as const
+  const SECTIONS: { key: 'chat' | 'groups' | 'mood' | 'guides'; label: string; icon: any }[] = [
+    { key: 'chat', label: t('support_citizen.section_chat'), icon: MessageSquare },
+    { key: 'groups', label: t('support_citizen.section_groups'), icon: Users },
+    { key: 'mood', label: t('support_citizen.section_mood'), icon: HeartPulse },
+    { key: 'guides', label: t('support_citizen.section_guides'), icon: BookOpen },
+  ]
 
   return (
     <>
       <PageMeta title="Support | Suraksha" description="Suraksha Support Page" />
-      <PageBreadcrumb pageTitle="Mental Health Support" />
+      <PageBreadcrumb pageTitle={t('support_citizen.breadcrumb')} />
 
       {toast && (
         <div className={cn('fixed top-5 right-5 z-50 px-5 py-3 rounded-xl text-white font-semibold shadow-xl text-sm', toast.type === 'error' ? 'bg-red-500' : 'bg-green-500')}>
@@ -124,10 +125,10 @@ function CitizenSupportView() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-48 -mt-48" />
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest border border-white/20 mb-4">
-              <HeartPulse className="w-4 h-4 text-pink-300" /> Mental Health Support
+              <HeartPulse className="w-4 h-4 text-pink-300" /> {t('support_citizen.hero_badge')}
             </div>
-            <h1 className="text-2xl font-black tracking-tight">You are not alone.</h1>
-            <p className="text-indigo-100 text-sm mt-1 max-w-lg">Connect with a counsellor, join a group session, or explore wellness guides.</p>
+            <h1 className="text-2xl font-black tracking-tight">{t('support_citizen.hero_title')}</h1>
+            <p className="text-indigo-100 text-sm mt-1 max-w-lg">{t('support_citizen.hero_sub')}</p>
           </div>
         </div>
 
@@ -152,23 +153,23 @@ function CitizenSupportView() {
                 {/* Request card */}
                 <div className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-6 space-y-5">
                   <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5 text-indigo-500" /> Talk to a Counsellor
+                    <MessageSquare className="w-5 h-5 text-indigo-500" /> {t('support_citizen.talk_title')}
                   </h2>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm">Request a one-on-one chat session with a trained mental health counsellor. Your conversation is private and confidential.</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">{t('support_citizen.talk_desc')}</p>
 
                   {chatRequested ? (
                     <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-700">
                       <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
                       <div>
-                        <p className="font-bold text-green-700 dark:text-green-400 text-sm">Request Sent</p>
-                        <p className="text-xs text-green-600 dark:text-green-500">A counsellor will connect with you shortly.</p>
+                        <p className="font-bold text-green-700 dark:text-green-400 text-sm">{t('support_citizen.request_sent_title')}</p>
+                        <p className="text-xs text-green-600 dark:text-green-500">{t('support_citizen.request_sent_desc')}</p>
                       </div>
                     </div>
                   ) : (
                     <button onClick={handleRequestChat} disabled={chatRequestLoading}
                       className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-60">
                       {chatRequestLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-                      Request Support Chat
+                      {t('support_citizen.request_btn')}
                     </button>
                   )}
                 </div>
@@ -176,17 +177,17 @@ function CitizenSupportView() {
                 {/* My sessions */}
                 <div className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-6 space-y-4">
                   <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-indigo-500" /> My Sessions
+                    <Clock className="w-5 h-5 text-indigo-500" /> {t('support_citizen.my_sessions')}
                   </h2>
                   {myChats.length === 0 ? (
-                    <p className="text-slate-400 text-sm text-center py-8">No sessions yet.</p>
+                    <p className="text-slate-400 text-sm text-center py-8">{t('support_citizen.no_sessions')}</p>
                   ) : (
                     <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
                       {myChats.map((s: any) => (
                         <div key={s.id} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
                           <div>
-                            <p className="font-semibold text-sm text-slate-800 dark:text-white">Session {formatDistanceToNow(new Date(s.startedAt), { addSuffix: true })}</p>
-                            <p className="text-xs text-slate-400">{s.messages?.length || 0} messages</p>
+                            <p className="font-semibold text-sm text-slate-800 dark:text-white">{t('support_citizen.session_label')} {formatDistanceToNow(new Date(s.startedAt), { addSuffix: true })}</p>
+                            <p className="text-xs text-slate-400">{s.messages?.length || 0} {t('support_citizen.messages')}</p>
                           </div>
                           <span className={cn('px-3 py-1 rounded-full text-xs font-bold', STATUS_COLORS[s.status] || 'bg-slate-100 text-slate-500')}>
                             {s.status}
@@ -203,10 +204,10 @@ function CitizenSupportView() {
             {activeSection === 'groups' && (
               <div className="space-y-4">
                 <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
-                  <Users className="w-5 h-5 text-indigo-500" /> Upcoming Group Sessions
+                  <Users className="w-5 h-5 text-indigo-500" /> {t('support_citizen.groups_title')}
                 </h2>
                 {groups.length === 0 ? (
-                  <div className="text-center py-12 text-slate-400">No group sessions scheduled.</div>
+                  <div className="text-center py-12 text-slate-400">{t('support_citizen.no_groups')}</div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {groups.map((g: any) => (
@@ -221,7 +222,7 @@ function CitizenSupportView() {
                         </div>
                         <button onClick={() => handleJoinGroup(g.id)}
                           className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
-                          <Plus className="w-4 h-4" /> Register
+                          <Plus className="w-4 h-4" /> {t('support_citizen.register')}
                         </button>
                       </div>
                     ))}
@@ -236,15 +237,15 @@ function CitizenSupportView() {
                 <div className="bg-white dark:bg-[#131f33] rounded-2xl border border-slate-200 dark:border-cyan-400/10 p-8 space-y-6 text-center">
                   <HeartPulse className="w-10 h-10 text-pink-500 mx-auto" />
                   <div>
-                    <h2 className="font-black text-xl text-slate-800 dark:text-white">How are you feeling?</h2>
-                    <p className="text-slate-400 text-sm mt-1">Your mood check-ins help us provide better support.</p>
+                    <h2 className="font-black text-xl text-slate-800 dark:text-white">{t('support_citizen.mood_title')}</h2>
+                    <p className="text-slate-400 text-sm mt-1">{t('support_citizen.mood_sub')}</p>
                   </div>
                   {moodSubmitted ? (
                     <div className="py-6">
                       <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                      <p className="font-bold text-green-600 dark:text-green-400">Thank you for checking in!</p>
+                      <p className="font-bold text-green-600 dark:text-green-400">{t('support_citizen.mood_thanks')}</p>
                       <button onClick={() => { setMoodSubmitted(false); setMoodSelected('') }}
-                        className="mt-4 text-indigo-500 text-sm underline">Check in again</button>
+                        className="mt-4 text-indigo-500 text-sm underline">{t('support_citizen.mood_again')}</button>
                     </div>
                   ) : (
                     <>
@@ -262,7 +263,7 @@ function CitizenSupportView() {
                       </div>
                       <button onClick={handleMoodSubmit} disabled={!moodSelected}
                         className="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-40 transition-colors">
-                        <Send className="w-4 h-4" /> Submit Check-In
+                        <Send className="w-4 h-4" /> {t('support_citizen.mood_submit')}
                       </button>
                     </>
                   )}
@@ -274,10 +275,10 @@ function CitizenSupportView() {
             {activeSection === 'guides' && (
               <div className="space-y-4">
                 <h2 className="font-black text-lg text-slate-800 dark:text-white flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-indigo-500" /> Wellness Guides
+                  <BookOpen className="w-5 h-5 text-indigo-500" /> {t('support_citizen.guides_title')}
                 </h2>
                 {guides.length === 0 ? (
-                  <div className="text-center py-12 text-slate-400">No guides available.</div>
+                  <div className="text-center py-12 text-slate-400">{t('support_citizen.no_guides')}</div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {guides.map((g: any) => (

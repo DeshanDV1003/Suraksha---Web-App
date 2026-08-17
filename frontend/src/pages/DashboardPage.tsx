@@ -292,7 +292,7 @@ export default function DashboardPage() {
   return (
         <>
           <PageMeta title="Dashboard | Suraksha" description="Suraksha Dashboard Page" />
-          <PageBreadcrumb pageTitle="Dashboard" />
+          <PageBreadcrumb pageTitle={t('page_titles.dashboard')} />
           <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
         {/* Header */}
         <div className="flex items-center justify-between">

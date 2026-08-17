@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Brain, Zap, AlertTriangle, Map, Users, FileText, Activity,
   RefreshCw, ChevronDown, CheckCircle2, XCircle, Loader2,
@@ -945,6 +946,7 @@ function ReliefCoordinationPanel() {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AIResearchPage() {
+  const { t } = useTranslation()
   const [mlOnline, setMlOnline] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -956,7 +958,7 @@ export default function AIResearchPage() {
   return (
     <div>
       <PageMeta title="AI Research Features — SURAKSHA" />
-      <PageBreadcrumb pageTitle="AI Research Features" />
+      <PageBreadcrumb pageTitle={t('page_titles.ai_research')} />
 
       {/* Header */}
       <div className="mb-6">

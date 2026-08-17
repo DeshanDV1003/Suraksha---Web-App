@@ -230,7 +230,7 @@ const ProtectedRoutes = () => {
         <Route path="/incidents"        element={<IncidentsPage />} />
         <Route path="/suraksha-alerts"  element={<AlertsPage />} />
         <Route path="/camps"            element={<CampsPage />} />
-        <Route path="/tokens"           element={<NonCitizenOnly><TokensPage /></NonCitizenOnly>} />
+        <Route path="/tokens"           element={<TokensPage />} />
         <Route path="/volunteers"       element={<VolunteerPage />} />
         <Route path="/tasks"            element={<StaffOnly><TaskManagementPage /></StaffOnly>} />
         <Route path="/help-requests"    element={<HelpRequestsPage />} />

@@ -128,7 +128,7 @@ export default function ReportsPage() {
     return (
       <>
         <PageMeta title="Reports | Suraksha" description="Suraksha Reports Page" />
-        <PageBreadcrumb pageTitle="Reports" />
+        <PageBreadcrumb pageTitle={t('page_titles.reports')} />
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
           <div className="w-12 h-12 border-4 border-blue-100 border-t-[#0061ff] rounded-full animate-spin" />
           <p className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em]">{t('reports_page.loading')}</p>
@@ -156,7 +156,7 @@ export default function ReportsPage() {
   return (
     <>
       <PageMeta title="Reports | Suraksha" description="Suraksha Reports Page" />
-      <PageBreadcrumb pageTitle="Reports" />
+      <PageBreadcrumb pageTitle={t('page_titles.reports')} />
       <div className="space-y-10 animate-in fade-in duration-700 font-sans pb-20 w-full min-w-0">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-end gap-6 mb-2">

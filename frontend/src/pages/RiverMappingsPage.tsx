@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import PageBreadcrumb from '../components/common/PageBreadCrumb';
 import PageMeta from '../components/common/PageMeta';
 
@@ -11,6 +12,7 @@ interface DownstreamMapping {
 }
 
 export default function RiverMappingsPage() {
+  const { t } = useTranslation()
   const [mappings, setMappings] = useState<DownstreamMapping[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<DownstreamMapping> | null>(null);
@@ -58,7 +60,7 @@ export default function RiverMappingsPage() {
   return (
     <div>
       <PageMeta title="River Mappings | Suraksha" description="Manage downstream district mappings for river gauges" />
-      <PageBreadcrumb pageTitle="River Mappings" />
+      <PageBreadcrumb pageTitle={t('page_titles.river_mappings')} />
       
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
         <div className="flex justify-between items-center mb-6">

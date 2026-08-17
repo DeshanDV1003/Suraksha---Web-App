@@ -148,7 +148,7 @@ export default function IncidentsPage() {
   return (
     <>
       <PageMeta title="Incidents | Suraksha" description="Suraksha Incidents Page" />
-      <PageBreadcrumb pageTitle="Incidents" />
+      <PageBreadcrumb pageTitle={t('page_titles.incidents')} />
       <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-20 w-full min-w-0">
         <div className="flex items-center justify-between">
           <button

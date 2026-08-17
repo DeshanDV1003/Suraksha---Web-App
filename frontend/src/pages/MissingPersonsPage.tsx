@@ -186,7 +186,7 @@ export default function MissingPersonsPage() {
   return (
     <>
       <PageMeta title="Missing Persons | Suraksha" description="Suraksha Missing Persons Page" />
-      <PageBreadcrumb pageTitle="Missing Persons" />
+      <PageBreadcrumb pageTitle={t('page_titles.missing_persons')} />
       <div className="space-y-8 animate-in fade-in duration-700 pb-10 w-full min-w-0">
 
         <div className="flex justify-end mb-2">

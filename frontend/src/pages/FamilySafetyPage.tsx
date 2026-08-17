@@ -10,11 +10,11 @@ import { useAuth } from '@/hooks/useAuth';
 
 // ── Citizen Family Safety View ───────────────────────────────────────────────
 const MY_STATUSES = [
-  { value: 'SAFE',       label: '✅ Safe',            color: 'border-emerald-500/50 bg-emerald-500/15 text-emerald-400' },
-  { value: 'EVACUATED',  label: '🏃 Evacuated',       color: 'border-blue-500/50 bg-blue-500/15 text-blue-400' },
-  { value: 'NEEDS_HELP', label: '🆘 Needs Help',      color: 'border-orange-500/50 bg-orange-500/15 text-orange-400' },
-  { value: 'INJURED',    label: '🩹 Injured',         color: 'border-red-500/50 bg-red-500/15 text-red-400' },
-  { value: 'TRAPPED',    label: '⚠️ Trapped',         color: 'border-red-700/50 bg-red-700/15 text-red-300' },
+  { value: 'SAFE',       emoji: '✅', labelKey: 'family_safety.status_safe',       color: 'border-emerald-500/50 bg-emerald-500/15 text-emerald-400' },
+  { value: 'EVACUATED',  emoji: '🏃', labelKey: 'family_safety.status_evacuated',  color: 'border-blue-500/50 bg-blue-500/15 text-blue-400' },
+  { value: 'NEEDS_HELP', emoji: '🆘', labelKey: 'family_safety.status_needs_help', color: 'border-orange-500/50 bg-orange-500/15 text-orange-400' },
+  { value: 'INJURED',    emoji: '🩹', labelKey: 'family_safety.status_injured',    color: 'border-red-500/50 bg-red-500/15 text-red-400' },
+  { value: 'TRAPPED',    emoji: '⚠️', labelKey: 'family_safety.status_trapped',    color: 'border-red-700/50 bg-red-700/15 text-red-300' },
 ]
 
 const MEMBER_STATUS_OPTS = ['SAFE', 'EVACUATED', 'NEEDS_HELP', 'INJURED', 'TRAPPED', 'MISSING', 'UNKNOWN']
@@ -30,6 +30,7 @@ const statusBadge: Record<string, string> = {
 }
 
 function CitizenFamilySafety() {
+  const { t } = useTranslation()
   const [myStatus, setMyStatus] = useState<any>(null)
   const [familyMembers, setFamilyMembers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -61,7 +62,7 @@ function CitizenFamilySafety() {
       setMyStatus(res.data.myStatus)
       setFamilyMembers(res.data.familyMembers)
     } catch {
-      showToast('Failed to load family data', 'error')
+      showToast(t('family_safety.toast_failed_load'), 'error')
     } finally {
       setLoading(false)
     }
@@ -73,7 +74,7 @@ function CitizenFamilySafety() {
     setLocating(true)
     navigator.geolocation?.getCurrentPosition(
       p => { setCoords({ lat: p.coords.latitude, lng: p.coords.longitude }); setLocating(false) },
-      () => { showToast('Could not get location', 'error'); setLocating(false) },
+      () => { showToast(t('family_safety.toast_location_error'), 'error'); setLocating(false) },
       { enableHighAccuracy: true, timeout: 10000 }
     )
   }
@@ -87,13 +88,13 @@ function CitizenFamilySafety() {
         latitude: coords?.lat,
         longitude: coords?.lng,
       })
-      showToast('Safety status updated!')
+      showToast(t('family_safety.toast_status_updated'))
       setCheckingIn(false)
       setMessage('')
       setCoords(null)
       fetchData()
     } catch {
-      showToast('Failed to update status', 'error')
+      showToast(t('family_safety.toast_status_failed'), 'error')
     } finally {
       setSubmittingCheckIn(false)
     }
@@ -112,20 +113,20 @@ function CitizenFamilySafety() {
   }
 
   const saveMember = async () => {
-    if (!memberForm.name.trim()) return showToast('Name is required', 'error')
+    if (!memberForm.name.trim()) return showToast(t('family_safety.toast_name_required'), 'error')
     setSavingMember(true)
     try {
       if (editingMember) {
         await api.patch(`/family/members/${editingMember.id}`, memberForm)
-        showToast('Family member updated!')
+        showToast(t('family_safety.toast_member_updated'))
       } else {
         await api.post('/family/members', memberForm)
-        showToast('Family member added!')
+        showToast(t('family_safety.toast_member_added'))
       }
       setShowMemberForm(false)
       fetchData()
     } catch {
-      showToast('Failed to save family member', 'error')
+      showToast(t('family_safety.toast_member_save_failed'), 'error')
     } finally {
       setSavingMember(false)
     }
@@ -135,10 +136,10 @@ function CitizenFamilySafety() {
     setDeletingId(id)
     try {
       await api.delete(`/family/members/${id}`)
-      showToast('Family member removed')
+      showToast(t('family_safety.toast_member_removed'))
       fetchData()
     } catch {
-      showToast('Failed to remove member', 'error')
+      showToast(t('family_safety.toast_member_remove_failed'), 'error')
     } finally {
       setDeletingId(null)
     }
@@ -159,8 +160,8 @@ function CitizenFamilySafety() {
               <UserCircle2 className="w-6 h-6 text-cyan-400" />
             </div>
             <div>
-              <h2 className="text-base font-black text-slate-800 dark:text-white/90">My Safety Status</h2>
-              <p className="text-xs text-slate-400 font-medium">Let the command centre know you are safe</p>
+              <h2 className="text-base font-black text-slate-800 dark:text-white/90">{t('family_safety.my_safety_status_title')}</h2>
+              <p className="text-xs text-slate-400 font-medium">{t('family_safety.my_safety_status_sub')}</p>
             </div>
           </div>
           {!checkingIn && (
@@ -169,7 +170,7 @@ function CitizenFamilySafety() {
               className="flex items-center gap-2 px-4 py-2 bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 rounded-xl text-sm font-bold hover:bg-cyan-500/25 transition-all"
             >
               <Pencil className="w-3.5 h-3.5" />
-              {myStatus ? 'Update Status' : 'Check In'}
+              {myStatus ? t('family_safety.update_status') : t('family_safety.check_in')}
             </button>
           )}
         </div>
@@ -177,11 +178,11 @@ function CitizenFamilySafety() {
         {/* Current status display */}
         {myStatus && !checkingIn && (
           <div className={cn('flex items-center gap-3 p-4 rounded-xl border', currentStatusCfg?.color || 'border-white/10 bg-white/5')}>
-            <div className="text-2xl">{currentStatusCfg?.label.split(' ')[0]}</div>
+            <div className="text-2xl">{currentStatusCfg?.emoji}</div>
             <div>
-              <p className="font-black text-sm">{currentStatusCfg?.label.split(' ').slice(1).join(' ') || myStatus.status.replace(/_/g, ' ')}</p>
+              <p className="font-black text-sm">{currentStatusCfg ? t(currentStatusCfg.labelKey) : myStatus.status.replace(/_/g, ' ')}</p>
               {myStatus.message && <p className="text-xs opacity-80 mt-0.5">"{myStatus.message}"</p>}
-              <p className="text-xs opacity-60 mt-1">Last updated {format(new Date(myStatus.createdAt), 'MMM d, h:mm a')}</p>
+              <p className="text-xs opacity-60 mt-1">{t('family_safety.last_updated')} {format(new Date(myStatus.createdAt), 'MMM d, h:mm a')}</p>
             </div>
             {myStatus.latitude && (
               <div className="ml-auto flex items-center gap-1 text-xs opacity-60">
@@ -194,7 +195,7 @@ function CitizenFamilySafety() {
 
         {!myStatus && !checkingIn && (
           <div className="text-center py-6 border border-dashed border-slate-200 dark:border-white/10 rounded-xl text-slate-400 text-sm font-medium">
-            You haven't checked in yet. Let your family and responders know you're safe.
+            {t('family_safety.not_checked_in')}
           </div>
         )}
 
@@ -202,22 +203,22 @@ function CitizenFamilySafety() {
         {checkingIn && (
           <div className="space-y-4 pt-2">
             <div>
-              <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Your Status</label>
+              <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">{t('family_safety.your_status')}</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {MY_STATUSES.map(s => (
                   <button key={s.value} type="button"
                     onClick={() => setSelectedStatus(s.value)}
                     className={cn('p-3 rounded-xl text-sm font-bold text-left border transition-all', selectedStatus === s.value ? s.color : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-500 hover:border-cyan-400/40')}>
-                    {s.label}
+                    {s.emoji} {t(s.labelKey)}
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Message (optional)</label>
+              <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">{t('family_safety.message_optional')}</label>
               <input value={message} onChange={e => setMessage(e.target.value)}
-                placeholder="e.g. At neighbour's house, all OK"
+                placeholder={t('family_safety.message_placeholder')}
                 className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
             </div>
 
@@ -225,20 +226,20 @@ function CitizenFamilySafety() {
               <button type="button" onClick={getGPS} disabled={locating}
                 className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 rounded-xl text-sm font-bold hover:border-cyan-400/40 transition-all disabled:opacity-50">
                 {locating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5 text-cyan-400" />}
-                {coords ? `📍 ${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}` : 'Attach GPS Location'}
+                {coords ? `📍 ${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}` : t('family_safety.attach_gps')}
               </button>
-              {coords && <button onClick={() => setCoords(null)} className="text-xs text-slate-400 hover:text-red-400 transition-colors">Remove</button>}
+              {coords && <button onClick={() => setCoords(null)} className="text-xs text-slate-400 hover:text-red-400 transition-colors">{t('family_safety.remove')}</button>}
             </div>
 
             <div className="flex gap-3">
               <button onClick={submitCheckIn} disabled={submittingCheckIn}
                 className="flex-1 py-3 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white font-black text-sm rounded-xl transition-all flex items-center justify-center gap-2">
                 {submittingCheckIn ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-                {submittingCheckIn ? 'Submitting…' : 'Submit Check-In'}
+                {submittingCheckIn ? t('family_safety.submitting') : t('family_safety.submit_check_in')}
               </button>
               <button onClick={() => setCheckingIn(false)}
                 className="px-5 py-3 border border-slate-200 dark:border-white/10 text-slate-500 rounded-xl text-sm font-bold hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
-                Cancel
+                {t('family_safety.cancel')}
               </button>
             </div>
           </div>
@@ -253,19 +254,19 @@ function CitizenFamilySafety() {
               <Users className="w-6 h-6 text-purple-400" />
             </div>
             <div>
-              <h2 className="text-base font-black text-slate-800 dark:text-white/90">My Family Members</h2>
-              <p className="text-xs text-slate-400 font-medium">Track the safety of your family</p>
+              <h2 className="text-base font-black text-slate-800 dark:text-white/90">{t('family_safety.family_members_title')}</h2>
+              <p className="text-xs text-slate-400 font-medium">{t('family_safety.family_members_sub')}</p>
             </div>
           </div>
           <button onClick={openAddMember}
             className="flex items-center gap-2 px-4 py-2 bg-purple-500/15 border border-purple-500/30 text-purple-400 rounded-xl text-sm font-bold hover:bg-purple-500/25 transition-all">
-            <Plus className="w-3.5 h-3.5" /> Add Member
+            <Plus className="w-3.5 h-3.5" /> {t('family_safety.add_member')}
           </button>
         </div>
 
         {familyMembers.length === 0 && (
           <div className="text-center py-8 border border-dashed border-slate-200 dark:border-white/10 rounded-xl text-slate-400 text-sm font-medium">
-            No family members added yet. Add them to track their safety status.
+            {t('family_safety.no_family_members')}
           </div>
         )}
 
@@ -304,19 +305,19 @@ function CitizenFamilySafety() {
         <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md" onClick={() => setShowMemberForm(false)}>
           <div className="bg-white dark:bg-[#131f33] border border-slate-200 dark:border-white/10 w-full max-w-md rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
             <div className="px-6 py-4 bg-slate-100 dark:bg-[#0e1d36] border-b border-slate-200 dark:border-white/10 flex items-center justify-between">
-              <h3 className="font-black text-slate-800 dark:text-white/90">{editingMember ? 'Edit Family Member' : 'Add Family Member'}</h3>
+              <h3 className="font-black text-slate-800 dark:text-white/90">{editingMember ? t('family_safety.edit_member') : t('family_safety.add_member_modal')}</h3>
               <button onClick={() => setShowMemberForm(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/8 text-slate-400 hover:bg-white/15 transition-colors"><X className="w-4 h-4" /></button>
             </div>
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">Full Name *</label>
+                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">{t('family_safety.field_full_name')} *</label>
                   <input value={memberForm.name} onChange={e => setMemberForm(f => ({ ...f, name: e.target.value }))}
                     placeholder="e.g. Amara Perera"
                     className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400" />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">Relation</label>
+                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">{t('family_safety.field_relation')}</label>
                   <input value={memberForm.relation} onChange={e => setMemberForm(f => ({ ...f, relation: e.target.value }))}
                     placeholder="e.g. Mother, Son"
                     className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400" />
@@ -324,20 +325,20 @@ function CitizenFamilySafety() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">Age</label>
+                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">{t('family_safety.field_age')}</label>
                   <input type="number" value={memberForm.age} onChange={e => setMemberForm(f => ({ ...f, age: e.target.value }))}
                     placeholder="e.g. 65"
                     className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400" />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">Phone</label>
+                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">{t('family_safety.field_phone')}</label>
                   <input value={memberForm.phone} onChange={e => setMemberForm(f => ({ ...f, phone: e.target.value }))}
                     placeholder="e.g. 0771234567"
                     className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">Current Status</label>
+                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">{t('family_safety.field_status')}</label>
                 <div className="grid grid-cols-3 gap-2">
                   {MEMBER_STATUS_OPTS.map(s => (
                     <button key={s} type="button" onClick={() => setMemberForm(f => ({ ...f, status: s }))}
@@ -348,7 +349,7 @@ function CitizenFamilySafety() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">Notes (optional)</label>
+                <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5">{t('family_safety.field_notes')}</label>
                 <input value={memberForm.notes} onChange={e => setMemberForm(f => ({ ...f, notes: e.target.value }))}
                   placeholder="e.g. At Colombo hospital, ward 3"
                   className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400" />
@@ -356,7 +357,7 @@ function CitizenFamilySafety() {
               <button onClick={saveMember} disabled={savingMember}
                 className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white font-black text-sm rounded-xl transition-all flex items-center justify-center gap-2">
                 {savingMember ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-                {savingMember ? 'Saving…' : editingMember ? 'Save Changes' : 'Add Member'}
+                {savingMember ? t('family_safety.saving') : editingMember ? t('family_safety.save_changes') : t('family_safety.add_member')}
               </button>
             </div>
           </div>
@@ -498,7 +499,7 @@ export const FamilySafetyPage = () => {
     return (
       <>
         <PageMeta title="Family Safety | Suraksha" description="Suraksha Family Safety Page" />
-        <PageBreadcrumb pageTitle="Family Safety" />
+        <PageBreadcrumb pageTitle={t('page_titles.family_safety')} />
         <CitizenFamilySafety />
       </>
     )

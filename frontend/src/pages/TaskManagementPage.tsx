@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ClipboardList, Plus, X, Loader2, CheckCircle2, Clock,
   AlertTriangle, User, MapPin, Calendar, ChevronDown, RefreshCw,
@@ -39,46 +40,49 @@ interface Incident {
   status: string
 }
 
-const STATUS_CONFIG: Record<TaskStatus, { label: string; color: string; bg: string; icon: any }> = {
-  PENDING:     { label: 'Pending',     color: '#D97706', bg: '#FEF3C7', icon: Clock },
-  ASSIGNED:    { label: 'Assigned',    color: '#7C3AED', bg: '#EDE9FE', icon: User },
-  IN_PROGRESS: { label: 'In Progress', color: '#2563EB', bg: '#DBEAFE', icon: Play },
-  EN_ROUTE:    { label: 'En Route',    color: '#0891B2', bg: '#CFFAFE', icon: MapPin },
-  ON_SITE:     { label: 'On Site',     color: '#0F766E', bg: '#CCFBF1', icon: MapPin },
-  RESOLVED:    { label: 'Resolved',    color: '#059669', bg: '#D1FAE5', icon: CheckCircle2 },
+const STATUS_CONFIG: Record<TaskStatus, { labelKey: string; color: string; bg: string; icon: any }> = {
+  PENDING:     { labelKey: 'task_management.status_pending',     color: '#D97706', bg: '#FEF3C7', icon: Clock },
+  ASSIGNED:    { labelKey: 'task_management.status_assigned',    color: '#7C3AED', bg: '#EDE9FE', icon: User },
+  IN_PROGRESS: { labelKey: 'task_management.status_in_progress', color: '#2563EB', bg: '#DBEAFE', icon: Play },
+  EN_ROUTE:    { labelKey: 'task_management.status_en_route',    color: '#0891B2', bg: '#CFFAFE', icon: MapPin },
+  ON_SITE:     { labelKey: 'task_management.status_on_site',     color: '#0F766E', bg: '#CCFBF1', icon: MapPin },
+  RESOLVED:    { labelKey: 'task_management.status_resolved',    color: '#059669', bg: '#D1FAE5', icon: CheckCircle2 },
 }
 
-const PRIORITY_CONFIG: Record<Priority, { label: string; color: string; bg: string }> = {
-  LOW:      { label: 'Low',      color: '#64748B', bg: '#F1F5F9' },
-  MEDIUM:   { label: 'Medium',   color: '#D97706', bg: '#FEF3C7' },
-  HIGH:     { label: 'High',     color: '#EA580C', bg: '#FFEDD5' },
-  CRITICAL: { label: 'Critical', color: '#DC2626', bg: '#FEE2E2' },
+const PRIORITY_CONFIG: Record<Priority, { labelKey: string; color: string; bg: string }> = {
+  LOW:      { labelKey: 'task_management.priority_low',      color: '#64748B', bg: '#F1F5F9' },
+  MEDIUM:   { labelKey: 'task_management.priority_medium',   color: '#D97706', bg: '#FEF3C7' },
+  HIGH:     { labelKey: 'task_management.priority_high',     color: '#EA580C', bg: '#FFEDD5' },
+  CRITICAL: { labelKey: 'task_management.priority_critical', color: '#DC2626', bg: '#FEE2E2' },
 }
 
 function StatusBadge({ status }: { status: TaskStatus }) {
+  const { t } = useTranslation()
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.PENDING
   const Icon = cfg.icon
   return (
     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-700"
       style={{ color: cfg.color, backgroundColor: cfg.bg }}>
       <Icon className="w-3 h-3" />
-      {cfg.label}
+      {t(cfg.labelKey)}
     </span>
   )
 }
 
 function PriorityBadge({ priority }: { priority: Priority }) {
+  const { t } = useTranslation()
   const cfg = PRIORITY_CONFIG[priority] || PRIORITY_CONFIG.MEDIUM
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold"
       style={{ color: cfg.color, backgroundColor: cfg.bg }}>
       <Flag className="w-3 h-3" />
-      {cfg.label}
+      {t(cfg.labelKey)}
     </span>
   )
 }
 
 export default function TaskManagementPage() {
+  const { t } = useTranslation()
   const [tasks, setTasks] = useState<Task[]>([])
   const [volunteers, setVolunteers] = useState<Volunteer[]>([])
   const [incidents, setIncidents] = useState<Incident[]>([])
@@ -124,7 +128,7 @@ export default function TaskManagementPage() {
       setVolunteers(assignable)
     } catch (e: any) {
       console.error('[Tasks] getUsers error:', e?.response?.status, e?.response?.data || e?.message)
-      showToast('Could not load volunteers: ' + (e?.response?.data?.message || e?.message), 'error')
+      showToast(t('task_management.toast_status_failed') + ': ' + (e?.response?.data?.message || e?.message), 'error')
     }
 
     // Fetch incidents
@@ -142,9 +146,9 @@ export default function TaskManagementPage() {
 
   const validateForm = () => {
     const e: Record<string, string> = {}
-    if (!form.title.trim()) e.title = 'Task title is required'
-    if (!form.description.trim()) e.description = 'Description is required'
-    if (!form.assignedToId) e.assignedToId = 'Please assign to a volunteer'
+    if (!form.title.trim()) e.title = t('task_management.err_title')
+    if (!form.description.trim()) e.description = t('task_management.err_desc')
+    if (!form.assignedToId) e.assignedToId = t('task_management.err_assign')
     setFormErrors(e)
     return Object.keys(e).length === 0
   }
@@ -165,7 +169,7 @@ export default function TaskManagementPage() {
 
       const res = await volunteerService.createTask(payload)
       console.log('[Tasks] created:', res.data)
-      showToast('Task created and assigned successfully')
+      showToast(t('task_management.toast_created'))
       setForm({ title: '', description: '', priority: 'MEDIUM', assignedToId: '', incidentId: '', dueDate: '' })
       setShowForm(false)
       fetchAll()
@@ -183,9 +187,9 @@ export default function TaskManagementPage() {
     try {
       await volunteerService.updateTaskStatus(taskId, status)
       setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status } : t))
-      showToast('Status updated')
+      showToast(t('task_management.toast_status_updated'))
     } catch {
-      showToast('Failed to update status', 'error')
+      showToast(t('task_management.toast_status_failed'), 'error')
     } finally {
       setUpdatingId(null)
     }
@@ -207,7 +211,7 @@ export default function TaskManagementPage() {
   return (
     <>
       <PageMeta title="Task Management | Suraksha" description="Assign and manage volunteer tasks" />
-      <PageBreadcrumb pageTitle="Task Management" />
+      <PageBreadcrumb pageTitle={t('page_titles.task_management')} />
 
       {/* Toast */}
       {toast && (
@@ -225,10 +229,10 @@ export default function TaskManagementPage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
-            { label: 'Total Tasks',  value: counts.total,    icon: ClipboardList, color: '#2563EB', bg: '#EFF6FF' },
-            { label: 'Pending',      value: counts.pending,  icon: Clock,         color: '#D97706', bg: '#FFFBEB' },
-            { label: 'Active',       value: counts.active,   icon: Play,          color: '#7C3AED', bg: '#F5F3FF' },
-            { label: 'Resolved',     value: counts.resolved, icon: CheckCircle2,  color: '#059669', bg: '#ECFDF5' },
+            { label: t('task_management.stat_total'),    value: counts.total,    icon: ClipboardList, color: '#2563EB', bg: '#EFF6FF' },
+            { label: t('task_management.stat_pending'),  value: counts.pending,  icon: Clock,         color: '#D97706', bg: '#FFFBEB' },
+            { label: t('task_management.stat_active'),   value: counts.active,   icon: Play,          color: '#7C3AED', bg: '#F5F3FF' },
+            { label: t('task_management.stat_resolved'), value: counts.resolved, icon: CheckCircle2,  color: '#059669', bg: '#ECFDF5' },
           ].map(({ label, value, icon: Icon, color, bg }) => (
             <div key={label} className="rounded-2xl border border-gray-100 bg-white p-5 dark:border-gray-700 dark:bg-gray-800 shadow-sm">
               <div className="flex items-center justify-between mb-3">
@@ -251,9 +255,9 @@ export default function TaskManagementPage() {
               onChange={e => setFilterStatus(e.target.value as any)}
               className="text-sm border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium"
             >
-              <option value="ALL">All Statuses</option>
+              <option value="ALL">{t('task_management.all_statuses')}</option>
               {Object.entries(STATUS_CONFIG).map(([k, v]) => (
-                <option key={k} value={k}>{v.label}</option>
+                <option key={k} value={k}>{t(v.labelKey)}</option>
               ))}
             </select>
             {/* Priority filter */}
@@ -262,16 +266,16 @@ export default function TaskManagementPage() {
               onChange={e => setFilterPriority(e.target.value as any)}
               className="text-sm border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium"
             >
-              <option value="ALL">All Priorities</option>
+              <option value="ALL">{t('task_management.all_priorities')}</option>
               {Object.entries(PRIORITY_CONFIG).map(([k, v]) => (
-                <option key={k} value={k}>{v.label}</option>
+                <option key={k} value={k}>{t(v.labelKey)}</option>
               ))}
             </select>
             <button
               onClick={fetchAll}
               className="flex items-center gap-1.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium"
             >
-              <RefreshCw className="w-4 h-4" /> Refresh
+              <RefreshCw className="w-4 h-4" /> {t('task_management.refresh')}
             </button>
           </div>
 
@@ -279,7 +283,7 @@ export default function TaskManagementPage() {
             onClick={() => setShowForm(true)}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-md transition-colors"
           >
-            <Plus className="w-4 h-4" /> Assign New Task
+            <Plus className="w-4 h-4" /> {t('task_management.assign_new')}
           </button>
         </div>
 
@@ -293,8 +297,8 @@ export default function TaskManagementPage() {
               {/* Header — sticky */}
               <div className="flex-shrink-0 px-8 py-6 border-b border-slate-200 dark:border-cyan-400/20 flex items-center justify-between bg-slate-50 dark:bg-[#0f172a]">
                 <div>
-                  <h2 className="text-xl font-black text-slate-800 dark:text-white/90">Assign New Task</h2>
-                  <p className="text-sm text-slate-400 mt-0.5">Create and assign a task to a volunteer</p>
+                  <h2 className="text-xl font-black text-slate-800 dark:text-white/90">{t('task_management.modal_title')}</h2>
+                  <p className="text-sm text-slate-400 mt-0.5">{t('task_management.modal_sub')}</p>
                 </div>
                 <button onClick={() => setShowForm(false)} className="text-cyan-400/70 hover:text-cyan-400 transition-colors">
                   <X className="w-6 h-6" />
@@ -305,10 +309,10 @@ export default function TaskManagementPage() {
 
                 {/* Title */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Task Title *</label>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">{t('task_management.label_title')} *</label>
                   <input
                     type="text"
-                    placeholder="e.g. Distribute relief packs at Galle camp"
+                    placeholder={t('task_management.placeholder_title')}
                     value={form.title}
                     onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                     className={cn('suraksha-input', formErrors.title && 'border-red-500/60 focus:border-red-500/60')}
@@ -318,10 +322,10 @@ export default function TaskManagementPage() {
 
                 {/* Description */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Description *</label>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">{t('task_management.label_desc')} *</label>
                   <textarea
                     rows={3}
-                    placeholder="Describe what the volunteer needs to do..."
+                    placeholder={t('task_management.placeholder_desc')}
                     value={form.description}
                     onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                     className={cn('suraksha-input h-auto py-3 resize-none', formErrors.description && 'border-red-500/60')}
@@ -332,20 +336,20 @@ export default function TaskManagementPage() {
                 {/* Priority + Due Date */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Priority</label>
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">{t('task_management.label_priority')}</label>
                     <select
                       value={form.priority}
                       onChange={e => setForm(f => ({ ...f, priority: e.target.value as Priority }))}
                       className="suraksha-input"
                     >
-                      <option value="LOW">Low</option>
-                      <option value="MEDIUM">Medium</option>
-                      <option value="HIGH">High</option>
-                      <option value="CRITICAL">Critical</option>
+                      <option value="LOW">{t('task_management.priority_low')}</option>
+                      <option value="MEDIUM">{t('task_management.priority_medium')}</option>
+                      <option value="HIGH">{t('task_management.priority_high')}</option>
+                      <option value="CRITICAL">{t('task_management.priority_critical')}</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Due Date</label>
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">{t('task_management.label_due_date')}</label>
                     <input
                       type="date"
                       value={form.dueDate}
@@ -358,13 +362,13 @@ export default function TaskManagementPage() {
 
                 {/* Assign to volunteer */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Assign To *</label>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">{t('task_management.label_assign_to')} *</label>
                   <select
                     value={form.assignedToId}
                     onChange={e => setForm(f => ({ ...f, assignedToId: e.target.value }))}
                     className={cn('suraksha-input', formErrors.assignedToId && 'border-red-500/60')}
                   >
-                    <option value="">Select volunteer...</option>
+                    <option value="">{t('task_management.placeholder_volunteer')}</option>
                     {volunteers.map(v => (
                       <option key={v.id} value={v.id}>{v.name} ({v.role})</option>
                     ))}
@@ -375,14 +379,14 @@ export default function TaskManagementPage() {
                 {/* Link to incident */}
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">
-                    Link to Incident <span className="text-slate-500 normal-case font-normal">(optional)</span>
+                    {t('task_management.label_incident')} <span className="text-slate-500 normal-case font-normal">{t('task_management.label_incident_optional')}</span>
                   </label>
                   <select
                     value={form.incidentId}
                     onChange={e => setForm(f => ({ ...f, incidentId: e.target.value }))}
                     className="suraksha-input"
                   >
-                    <option value="">No incident linked</option>
+                    <option value="">{t('task_management.placeholder_no_incident')}</option>
                     {incidents.filter(i => i.status !== 'RESOLVED').map(i => (
                       <option key={i.id} value={i.id}>{i.category} — {i.location}</option>
                     ))}
@@ -396,7 +400,7 @@ export default function TaskManagementPage() {
                     onClick={() => setShowForm(false)}
                     className="flex-1 px-6 py-4 bg-slate-100 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 text-slate-600 dark:text-cyan-400/70 rounded-2xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-cyan-900/20 transition-all"
                   >
-                    Cancel
+                    {t('task_management.cancel')}
                   </button>
                   <button
                     type="submit"
@@ -404,7 +408,7 @@ export default function TaskManagementPage() {
                     className="flex-1 px-6 py-4 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all"
                   >
                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                    {submitting ? 'Creating…' : 'Create Task'}
+                    {submitting ? t('task_management.creating') : t('task_management.create_task')}
                   </button>
                 </div>
               </form>
@@ -416,7 +420,7 @@ export default function TaskManagementPage() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
             <h3 className="font-black text-gray-900 dark:text-white">
-              {filtered.length} {filterStatus === 'ALL' ? 'Total' : STATUS_CONFIG[filterStatus as TaskStatus]?.label} Task{filtered.length !== 1 ? 's' : ''}
+              {filtered.length} {filterStatus === 'ALL' ? t('task_management.tasks_total') : t(STATUS_CONFIG[filterStatus as TaskStatus]?.labelKey)} {filtered.length !== 1 ? t('task_management.tasks_suffix_other') : t('task_management.tasks_suffix_one')}
             </h3>
           </div>
 
@@ -427,8 +431,8 @@ export default function TaskManagementPage() {
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400">
               <ClipboardList className="w-12 h-12 mb-3 opacity-30" />
-              <p className="font-semibold">No tasks found</p>
-              <p className="text-sm mt-1">Create a task using the button above</p>
+              <p className="font-semibold">{t('task_management.no_tasks')}</p>
+              <p className="text-sm mt-1">{t('task_management.no_tasks_sub')}</p>
             </div>
           ) : (
             <div className="divide-y divide-gray-50 dark:divide-gray-700">
@@ -461,7 +465,7 @@ export default function TaskManagementPage() {
                         {task.dueDate && (
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3.5 h-3.5" />
-                            Due {new Date(task.dueDate).toLocaleDateString()}
+                            {t('task_management.due')} {new Date(task.dueDate).toLocaleDateString()}
                           </span>
                         )}
                         <span className="flex items-center gap-1">
@@ -484,7 +488,7 @@ export default function TaskManagementPage() {
                           )}
                         >
                           {Object.entries(STATUS_CONFIG).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label}</option>
+                            <option key={k} value={k}>{t(v.labelKey)}</option>
                           ))}
                         </select>
                         <ChevronDown className="w-3.5 h-3.5 text-gray-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />

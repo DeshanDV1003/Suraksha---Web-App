@@ -4,6 +4,7 @@ import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2, Bar
 import { cn } from '@/lib/utils'
 import { reliefTokenService, userService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
+import { useAuth } from '@/hooks/useAuth'
 import { formatDistanceToNow } from 'date-fns'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
@@ -28,13 +29,15 @@ interface Token {
 
 export default function TokensPage() {
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const isCitizen = (user as any)?.role === 'CITIZEN'
   const [tokens, setTokens] = useState<Token[]>([])
   const [users, setUsers] = useState<any[]>([])
   const [donors, setDonors] = useState<any[]>([])
   const [fraudAnalytics, setFraudAnalytics] = useState<any[]>([])
   
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('directory') // directory, issue, scanner, analytics, donors
+  const [activeTab, setActiveTab] = useState(isCitizen ? 'scanner' : 'directory') // directory, issue, scanner, analytics, donors
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error' | 'warning'} | null>(null)
   
@@ -77,14 +80,16 @@ export default function TokensPage() {
       const tokensRes = await reliefTokenService.getTokens()
       setTokens(tokensRes.data)
 
-      const usersRes = await userService.getUsers()
-      setUsers(usersRes.data)
+      if (!isCitizen) {
+        const usersRes = await userService.getUsers()
+        setUsers(usersRes.data)
+
+        const fraudRes = await reliefTokenService.getFraudAnalytics()
+        setFraudAnalytics(fraudRes.data)
+      }
 
       const donorsRes = await reliefTokenService.getDonorCampaigns()
       setDonors(donorsRes.data)
-
-      const fraudRes = await reliefTokenService.getFraudAnalytics()
-      setFraudAnalytics(fraudRes.data)
     } catch (error) {
       console.error('Failed to fetch data:', error)
       showToast('Failed to load token information', 'error')
@@ -172,7 +177,7 @@ export default function TokensPage() {
   return (
         <>
           <PageMeta title="Tokens | Suraksha" description="Suraksha Tokens Page" />
-          <PageBreadcrumb pageTitle="Tokens" />
+          <PageBreadcrumb pageTitle={t('page_titles.tokens')} />
           <div className="space-y-8 animate-in fade-in duration-500 font-sans pb-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -186,9 +191,9 @@ export default function TokensPage() {
         <div className="flex overflow-x-auto gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-cyan-400/10">
           {[
             { id: 'directory', label: t('tokens_page.tabs.directory'), icon: List },
-            { id: 'issue', label: t('tokens_page.tabs.issue'), icon: Plus },
+            ...(!isCitizen ? [{ id: 'issue', label: t('tokens_page.tabs.issue'), icon: Plus }] : []),
             { id: 'scanner', label: t('tokens_page.tabs.scanner'), icon: QrCode },
-            { id: 'analytics', label: t('tokens_page.tabs.analytics'), icon: ShieldAlert },
+            ...(!isCitizen ? [{ id: 'analytics', label: t('tokens_page.tabs.analytics'), icon: ShieldAlert }] : []),
             { id: 'donors', label: t('tokens_page.tabs.campaigns'), icon: HeartHandshake },
           ].map(tab => (
             <button

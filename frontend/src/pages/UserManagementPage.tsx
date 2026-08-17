@@ -104,7 +104,7 @@ export default function UserManagementPage() {
   return (
         <>
           <PageMeta title="User Management | Suraksha" description="Suraksha User Management Page" />
-          <PageBreadcrumb pageTitle="User Management" />
+          <PageBreadcrumb pageTitle={t('page_titles.user_management')} />
           <div className="space-y-10 animate-in fade-in duration-700 font-sans pb-20">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

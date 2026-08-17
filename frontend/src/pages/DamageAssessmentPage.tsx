@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDialog } from '@/components/ui/dialogs/DialogProvider'
-import { Home, Plus, X, CheckCircle2, Loader2, Camera, TrendingUp, ChevronDown, Sparkles, MapPin, ShieldCheck, Map, AlertCircle } from 'lucide-react'
+import { Home, Plus, X, CheckCircle2, Loader2, Camera, TrendingUp, ChevronDown, Sparkles, MapPin, ShieldCheck, Map, AlertCircle, Eye, FileCheck, XCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { damageAssessmentService, incidentService } from '@/services/api'
 import { useAuth } from '@/hooks/useAuth'
@@ -37,6 +37,8 @@ export default function DamageAssessmentPage() {
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null)
 
   const [activeTab, setActiveTab] = useState('verification')
+  const [reviewNotes, setReviewNotes] = useState<Record<string, string>>({})
+  const [seniorReviewItem, setSeniorReviewItem] = useState<any>(null)
   const [showMapPicker, setShowMapPicker] = useState(false)
   const [pickedLatLng, setPickedLatLng] = useState<{ lat: number; lng: number } | null>(null)
   const [geocoding, setGeocoding] = useState(false)
@@ -44,6 +46,8 @@ export default function DamageAssessmentPage() {
   // AI state
   const [aiLoading, setAiLoading] = useState(false)
   const [aiData, setAiData] = useState<any>(null)
+  const [uploadedImages, setUploadedImages] = useState<string[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Controlled form state for fields that need AI override
   const [formState, setFormState] = useState({
@@ -87,12 +91,25 @@ export default function DamageAssessmentPage() {
 
   useEffect(() => { fetchData() }, [])
 
-  const simulateAiUpload = async () => {
+  const handleImageFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0) return
+    const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'))
+    if (imageFiles.length === 0) return
+
+    // Read all as base64
+    const base64s = await Promise.all(imageFiles.map(f => new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(f)
+    })))
+    setUploadedImages(prev => [...prev, ...base64s])
+
+    // Run AI classification on the first new image
     setAiLoading(true)
     try {
-      const res = await damageAssessmentService.aiClassifyImage('mock_image_url')
+      const res = await damageAssessmentService.aiClassifyImage(base64s[0])
       setAiData(res.data)
-      // Override form fields with AI result
       setFormState(prev => ({
         ...prev,
         structuralDamage: res.data.severity || prev.structuralDamage,
@@ -114,6 +131,7 @@ export default function DamageAssessmentPage() {
       familyVulnerabilityScore: 5, incomeBracket: '< 50,000 LKR', notes: '',
     })
     setAiData(null)
+    setUploadedImages([])
     setPickedLatLng(null)
     setShowMapPicker(false)
     setShowModal(true)
@@ -149,7 +167,7 @@ export default function DamageAssessmentPage() {
       incidentId: formState.incidentId || undefined,
       aiEstimatedDamage: aiData?.severity,
       aiEstimatedCost: aiData?.estimatedCost,
-      mediaUrls: ['mock_uploaded_photo'],
+      mediaUrls: uploadedImages,
     }
 
     try {
@@ -166,10 +184,11 @@ export default function DamageAssessmentPage() {
     }
   }
 
-  const updateWorkflow = async (id: string, status: string) => {
+  const updateWorkflow = async (id: string, status: string, notes?: string) => {
     try {
-      await damageAssessmentService.updateWorkflowStatus(id, status)
+      await damageAssessmentService.updateWorkflowStatus(id, status, notes)
       showToast(status === 'APPROVED' ? t('damage_assessment_page.assessment_approved', 'Assessment approved') : status === 'REJECTED' ? t('damage_assessment_page.assessment_rejected', 'Assessment rejected') : t('damage_assessment_page.escalated_to_senior_review', 'Escalated to senior review'))
+      setReviewNotes(prev => { const next = { ...prev }; delete next[id]; return next })
       fetchData()
     } catch {
       showToast(t('damage_assessment_page.failed_to_update_status', 'Failed to update status'), 'error')
@@ -224,7 +243,7 @@ export default function DamageAssessmentPage() {
         {/* Tabs */}
         <div className="flex gap-2 bg-slate-100 dark:bg-[#131f33] p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-cyan-400/10">
           {[
-            { id: 'verification', label: isCitizen ? 'My Reports' : t('damage_assessment_page.tabs.verification'), icon: ShieldCheck },
+            { id: 'verification', label: isCitizen ? t('damage_assessment_page.my_reports_tab') : t('damage_assessment_page.tabs.verification'), icon: ShieldCheck },
             ...(!isCitizen ? [{ id: 'reports', label: t('damage_assessment_page.tabs.district_reports'), icon: Map }] : []),
           ].map(tab => (
             <button
@@ -254,8 +273,8 @@ export default function DamageAssessmentPage() {
               ) : displayedAssessments.length === 0 ? (
                 <div className="bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/15 rounded-[2.5rem] p-20 text-center space-y-4">
                   <Home className="w-16 h-16 text-slate-400 dark:text-slate-600 mx-auto" />
-                  <h3 className="text-xl font-bold text-slate-600 dark:text-white/70">{isCitizen ? 'No reports submitted yet' : t('damage_assessment_page.no_assessments')}</h3>
-                  <p className="text-slate-500 max-w-xs mx-auto">{isCitizen ? 'Use the button above to submit your first damage report.' : t('damage_assessment_page.no_assessments_desc')}</p>
+                  <h3 className="text-xl font-bold text-slate-600 dark:text-white/70">{isCitizen ? t('damage_assessment_page.no_reports_yet') : t('damage_assessment_page.no_assessments')}</h3>
+                  <p className="text-slate-500 max-w-xs mx-auto">{isCitizen ? t('damage_assessment_page.no_reports_desc') : t('damage_assessment_page.no_assessments_desc')}</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-6">
@@ -311,8 +330,32 @@ export default function DamageAssessmentPage() {
                           </div>
                         </div>
 
+                        {/* Field evidence photos */}
+                        {item.mediaUrls && item.mediaUrls.length > 0 && (
+                          <div className="space-y-2">
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.field_evidence')} ({item.mediaUrls.length})</p>
+                            <div className="flex flex-wrap gap-2">
+                              {item.mediaUrls.map((url: string, i: number) => (
+                                <a key={i} href={url} target="_blank" rel="noreferrer" className="block">
+                                  <img
+                                    src={url}
+                                    alt={`Evidence ${i + 1}`}
+                                    className="w-20 h-20 rounded-xl object-cover border border-slate-200 dark:border-white/10 hover:scale-105 transition-transform cursor-pointer"
+                                  />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
                         {item.notes && (
                           <p className="text-sm text-slate-500 dark:text-slate-400 italic border-l-2 border-slate-200 dark:border-white/10 pl-3">{item.notes}</p>
+                        )}
+                        {item.reviewerNotes && (
+                          <div className="flex items-start gap-2 bg-purple-500/10 border border-purple-500/20 rounded-xl px-4 py-3">
+                            <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest shrink-0 mt-0.5">{t('damage_assessment_page.reviewer')}</span>
+                            <p className="text-sm text-purple-300 italic">{item.reviewerNotes}</p>
+                          </div>
                         )}
 
                         {/* Verification Actions — admin/staff only */}
@@ -320,18 +363,28 @@ export default function DamageAssessmentPage() {
                           <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex gap-2 flex-wrap">
                             {item.status === 'PENDING_REVIEW' && (
                               <button
-                                onClick={() => updateWorkflow(item.id, 'SENIOR_REVIEW')}
-                                className="flex-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 text-xs font-bold py-3 rounded-xl transition-colors"
+                                onClick={() => setSeniorReviewItem({ ...item, _action: 'escalate' })}
+                                className="flex-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 text-xs font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-1.5"
                               >
-                                {t('damage_assessment_page.escalate')}
+                                <Eye className="w-3.5 h-3.5" />
+                                {t('damage_assessment_page.escalate', 'Escalate to Senior Review')}
                               </button>
                             )}
-                            {item.status === 'SENIOR_REVIEW' && (
+                            {item.status === 'PENDING_REVIEW' && (
                               <button
                                 onClick={() => updateWorkflow(item.id, 'APPROVED')}
                                 className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30 text-xs font-bold py-3 rounded-xl transition-colors"
                               >
                                 {t('damage_assessment_page.approve')}
+                              </button>
+                            )}
+                            {item.status === 'SENIOR_REVIEW' && (
+                              <button
+                                onClick={() => setSeniorReviewItem({ ...item, _action: 'review' })}
+                                className="flex-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 text-xs font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                              >
+                                <ShieldCheck className="w-3.5 h-3.5" />
+                                {t('damage_assessment_page.open_senior_review')}
                               </button>
                             )}
                             <button
@@ -356,19 +409,19 @@ export default function DamageAssessmentPage() {
                   <div className="w-12 h-12 bg-cyan-500/15 rounded-2xl flex items-center justify-center">
                     <Home className="w-6 h-6 text-cyan-400" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-800 dark:text-white/90">My Reports</h3>
-                  <p className="text-sm text-slate-400">Use the button above to submit a new damage report. Our team will review your submission and contact you about compensation eligibility.</p>
+                  <h3 className="text-2xl font-black text-slate-800 dark:text-white/90">{t('damage_assessment_page.my_reports_title')}</h3>
+                  <p className="text-sm text-slate-400">{t('damage_assessment_page.my_reports_desc')}</p>
                   <div className="space-y-4">
                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
-                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Submitted</span>
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.submitted')}</span>
                       <span className="text-xl font-black text-cyan-400">{displayedAssessments.length}</span>
                     </div>
                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
-                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Under Review</span>
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.under_review')}</span>
                       <span className="text-xl font-black text-orange-400">{displayedAssessments.filter(a => a.status === 'PENDING_REVIEW' || a.status === 'SENIOR_REVIEW').length}</span>
                     </div>
                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-slate-200 dark:border-transparent">
-                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Approved</span>
+                      <span className="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">{t('damage_assessment_page.approved_stat')}</span>
                       <span className="text-xl font-black text-green-400">{displayedAssessments.filter(a => a.status === 'APPROVED').length}</span>
                     </div>
                   </div>
@@ -460,15 +513,56 @@ export default function DamageAssessmentPage() {
                 <h3 className="text-xl font-black text-slate-800 dark:text-white/90 mb-2">{t('damage_assessment_page.ai_assessor')}</h3>
                 <p className="text-xs text-slate-400 mb-8">{t('damage_assessment_page.ai_upload_prompt')}</p>
 
-                {!aiData && !aiLoading && (
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={e => handleImageFiles(e.target.files)}
+                />
+
+                {!aiLoading && (
                   <button
                     type="button"
-                    onClick={simulateAiUpload}
-                    className="w-full bg-white/5 border-2 border-dashed border-purple-500/30 text-purple-400 font-bold py-10 rounded-3xl hover:bg-purple-500/10 transition-colors flex flex-col items-center gap-2"
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => { e.preventDefault(); handleImageFiles(e.dataTransfer.files) }}
+                    className="w-full bg-white/5 border-2 border-dashed border-purple-500/30 text-purple-400 font-bold py-8 rounded-3xl hover:bg-purple-500/10 transition-colors flex flex-col items-center gap-2"
                   >
                     <Camera className="w-8 h-8" />
-                    {t('damage_assessment_page.upload_field_photo')}
+                    <span className="text-sm">{t('damage_assessment_page.upload_field_photo')}</span>
+                    <span className="text-[10px] text-slate-500 font-normal">{t('damage_assessment_page.click_or_drag')}</span>
                   </button>
+                )}
+
+                {/* Thumbnail strip */}
+                {uploadedImages.length > 0 && (
+                  <div className="w-full mt-3 space-y-2">
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      {uploadedImages.length > 1 ? t('damage_assessment_page.photos_uploaded_plural', { count: uploadedImages.length }) : t('damage_assessment_page.photos_uploaded', { count: uploadedImages.length })}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {uploadedImages.map((src, i) => (
+                        <div key={i} className="relative group">
+                          <img src={src} alt="" className="w-16 h-16 rounded-xl object-cover border border-purple-500/30" />
+                          <button
+                            type="button"
+                            onClick={() => setUploadedImages(prev => prev.filter((_, idx) => idx !== i))}
+                            className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          >×</button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-16 h-16 rounded-xl border-2 border-dashed border-purple-500/30 flex items-center justify-center text-purple-400 hover:bg-purple-500/10 transition-colors"
+                      >
+                        <Camera className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
                 )}
 
                 {aiLoading && (
@@ -494,7 +588,7 @@ export default function DamageAssessmentPage() {
                       <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.est_replacement_cost')}</div>
                       <div className="text-lg font-black text-slate-800 dark:text-white/90">LKR {aiData.estimatedCost?.toLocaleString()}</div>
                     </div>
-                    <button type="button" onClick={() => { setAiData(null) }} className="text-xs text-slate-500 hover:text-slate-300 underline">
+                    <button type="button" onClick={() => { setAiData(null); setUploadedImages([]) }} className="text-xs text-slate-500 hover:text-slate-300 underline">
                       {t('damage_assessment_page.clear_reupload')}
                     </button>
                   </div>
@@ -742,6 +836,203 @@ export default function DamageAssessmentPage() {
                     <p className="text-center text-[10px] text-slate-500 mt-2 font-medium">{t('damage_assessment_page.submit_note')}</p>
                   </div>
                 </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Senior Review Modal ─────────────────────────────────────── */}
+        {seniorReviewItem && (
+          <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
+            <div className="bg-white dark:bg-[#0e1d36] border border-slate-200 dark:border-purple-500/30 w-full max-w-3xl rounded-[2.5rem] shadow-2xl shadow-purple-500/10 overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+
+              {/* Header */}
+              <div className="flex items-center justify-between px-8 py-6 border-b border-slate-200 dark:border-white/10 bg-purple-500/10 shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-purple-500/20 rounded-2xl flex items-center justify-center">
+                    <ShieldCheck className="w-5 h-5 text-purple-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-black text-slate-800 dark:text-white/90">
+                      {seniorReviewItem._action === 'escalate' ? t('damage_assessment_page.sr_title_escalate') : t('damage_assessment_page.sr_title_panel')}
+                    </h2>
+                    <p className="text-xs text-purple-400 font-bold mt-0.5">
+                      {seniorReviewItem._action === 'escalate'
+                        ? t('damage_assessment_page.sr_sub_escalate')
+                        : t('damage_assessment_page.sr_sub_panel')}
+                    </p>
+                  </div>
+                </div>
+                <button onClick={() => setSeniorReviewItem(null)} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Scrollable body */}
+              <div className="overflow-y-auto p-8 space-y-6">
+
+                {/* Status + category row */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em]">{seniorReviewItem.category}</span>
+                    <h3 className="text-2xl font-black text-slate-800 dark:text-white/90 mt-0.5 flex items-center gap-2">
+                      {seniorReviewItem.location}
+                      {seniorReviewItem.aiEstimatedDamage && <span className="bg-purple-500/15 text-purple-400 p-1 rounded-full" title="AI Verified"><Sparkles className="w-3.5 h-3.5" /></span>}
+                    </h3>
+                    {seniorReviewItem.incident && <p className="text-xs text-slate-500 mt-0.5">{t('damage_assessment_page.linked')} {seniorReviewItem.incident.title}</p>}
+                    <p className="text-xs text-slate-500 mt-1">{t('damage_assessment_page.submitted_by')} <span className="font-bold text-slate-400">{seniorReviewItem.reportedBy?.name || t('damage_assessment_page.unknown')}</span></p>
+                  </div>
+                  <span className={cn("px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest", seniorReviewItem.status === 'SENIOR_REVIEW' ? 'bg-purple-500/15 text-purple-400' : 'bg-orange-500/15 text-orange-400')}>
+                    {seniorReviewItem.status.replace('_', ' ')}
+                  </span>
+                </div>
+
+                {/* Stats grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 dark:bg-white/5 p-5 rounded-2xl border border-slate-200 dark:border-white/10">
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_structural')}</div>
+                    <div className={cn("text-[10px] font-black px-2 py-1 rounded-lg inline-block", getLevelBadge(seniorReviewItem.structuralDamage))}>
+                      {seniorReviewItem.structuralDamage?.replace('_', ' ')}
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_crop_damage')}</div>
+                    <div className={cn("text-[10px] font-black px-2 py-1 rounded-lg inline-block", getLevelBadge(seniorReviewItem.cropDamage || 'NONE'))}>
+                      {seniorReviewItem.cropDamage?.replace('_', ' ') || 'NONE'}
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_est_loss')}</div>
+                    <div className="text-sm font-black text-slate-700 dark:text-white/80">LKR {seniorReviewItem.estimatedLoss?.toLocaleString() || '—'}</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_affected')}</div>
+                    <div className="text-sm font-black text-slate-700 dark:text-white/80">{seniorReviewItem.affectedPersons || 0} {t('damage_assessment_page.persons')}</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_ownership')}</div>
+                    <div className="text-sm font-bold text-slate-600 dark:text-white/70">{seniorReviewItem.propertyOwnershipStatus || '—'}</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_income')}</div>
+                    <div className="text-sm font-bold text-slate-600 dark:text-white/70">{seniorReviewItem.incomeBracket || '—'}</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_vulnerability')}</div>
+                    <div className="text-sm font-black text-slate-700 dark:text-white/80">{seniorReviewItem.familyVulnerabilityScore || 0}/10</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.stat_compensation')}</div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm font-black text-slate-700 dark:text-white/70">{seniorReviewItem.compensationEligibilityScore || 0}/100</span>
+                      <span className={cn("text-[9px] px-1.5 py-0.5 rounded font-black", seniorReviewItem.compensationEligible ? 'bg-green-500 text-white' : 'bg-red-500/80 text-white')}>
+                        {seniorReviewItem.compensationEligible ? 'ELIGIBLE' : 'INELIGIBLE'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI analysis */}
+                {(seniorReviewItem.aiEstimatedDamage || seniorReviewItem.aiEstimatedCost) && (
+                  <div className="bg-purple-500/10 border border-purple-500/20 rounded-2xl p-5 space-y-3">
+                    <div className="flex items-center gap-2 text-purple-300 font-black text-xs uppercase tracking-widest">
+                      <Sparkles className="w-4 h-4" /> {t('damage_assessment_page.ai_analysis')}
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.ai_detected_severity')}</div>
+                        <div className="text-lg font-black text-slate-800 dark:text-white/90">{seniorReviewItem.aiEstimatedDamage || '—'}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.ai_cost_estimate')}</div>
+                        <div className="text-lg font-black text-slate-800 dark:text-white/90">LKR {seniorReviewItem.aiEstimatedCost?.toLocaleString() || '—'}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Field notes */}
+                {seniorReviewItem.notes && (
+                  <div className="border-l-2 border-slate-300 dark:border-white/15 pl-4">
+                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{t('damage_assessment_page.field_notes')}</div>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 italic">{seniorReviewItem.notes}</p>
+                  </div>
+                )}
+
+                {/* Evidence photos */}
+                {seniorReviewItem.mediaUrls && seniorReviewItem.mediaUrls.length > 0 && (
+                  <div className="space-y-3">
+                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('damage_assessment_page.field_evidence')} ({seniorReviewItem.mediaUrls.length} photos)</div>
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                      {seniorReviewItem.mediaUrls.map((url: string, i: number) => (
+                        <a key={i} href={url} target="_blank" rel="noreferrer">
+                          <img src={url} alt={`Evidence ${i + 1}`} className="w-full aspect-square object-cover rounded-2xl border border-slate-200 dark:border-white/10 hover:scale-105 transition-transform cursor-pointer" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Senior reviewer notes */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-purple-400 uppercase tracking-widest">
+                    {seniorReviewItem._action === 'escalate' ? t('damage_assessment_page.escalation_notes_label') : t('damage_assessment_page.decision_notes_label')}
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder={seniorReviewItem._action === 'escalate' ? t('damage_assessment_page.placeholder_escalation') : t('damage_assessment_page.placeholder_decision')}
+                    className="suraksha-input w-full resize-none"
+                    value={reviewNotes[seniorReviewItem.id] || ''}
+                    onChange={e => setReviewNotes(prev => ({ ...prev, [seniorReviewItem.id]: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              {/* Footer actions */}
+              <div className="px-8 py-5 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#0a1628] flex gap-3 flex-wrap shrink-0">
+                {seniorReviewItem._action === 'escalate' ? (
+                  <>
+                    <button
+                      onClick={async () => {
+                        await updateWorkflow(seniorReviewItem.id, 'SENIOR_REVIEW', reviewNotes[seniorReviewItem.id])
+                        setSeniorReviewItem(null)
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 font-bold py-3.5 rounded-xl transition-colors"
+                    >
+                      <ShieldCheck className="w-4 h-4" />
+                      {t('damage_assessment_page.confirm_escalation')}
+                    </button>
+                    <button onClick={() => setSeniorReviewItem(null)} className="px-6 bg-white/5 hover:bg-white/10 text-slate-400 font-bold py-3.5 rounded-xl transition-colors border border-white/10">
+                      {t('damage_assessment_page.cancel')}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={async () => {
+                        await updateWorkflow(seniorReviewItem.id, 'APPROVED', reviewNotes[seniorReviewItem.id])
+                        setSeniorReviewItem(null)
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30 font-bold py-3.5 rounded-xl transition-colors"
+                    >
+                      <FileCheck className="w-4 h-4" />
+                      {t('damage_assessment_page.approve_assessment')}
+                    </button>
+                    <button
+                      onClick={async () => {
+                        await updateWorkflow(seniorReviewItem.id, 'REJECTED', reviewNotes[seniorReviewItem.id])
+                        setSeniorReviewItem(null)
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-bold py-3.5 rounded-xl transition-colors"
+                    >
+                      <XCircle className="w-4 h-4" />
+                      {t('damage_assessment_page.reject_assessment')}
+                    </button>
+                    <button onClick={() => setSeniorReviewItem(null)} className="px-6 bg-white/5 hover:bg-white/10 text-slate-400 font-bold py-3.5 rounded-xl transition-colors border border-white/10">
+                      {t('damage_assessment_page.close')}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

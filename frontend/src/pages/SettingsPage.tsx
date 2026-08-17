@@ -330,7 +330,7 @@ export default function SettingsPage() {
   return (
     <>
       <PageMeta title="Settings | Suraksha" description="Suraksha Settings Page" />
-      <PageBreadcrumb pageTitle="Settings" />
+      <PageBreadcrumb pageTitle={t('page_titles.settings')} />
 
       {toast && <Toast message={toast.msg} type={toast.type} />}
 

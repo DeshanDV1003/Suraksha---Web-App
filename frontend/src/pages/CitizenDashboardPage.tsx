@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 import {
   AlertTriangle, MapPin, HandHelping, UserSearch, ShieldCheck,
   Building2, Bell, Radio, ChevronRight, FileText, HeartPulse,
@@ -51,21 +52,20 @@ interface RiverLevel {
   majorFloodLevel: number; status: string; trend: string;
 }
 
-const RISK_CONFIG: Record<string, { label: string; bar: string; bg: string; border: string; text: string }> = {
-  MAJOR_FLOOD: { label: 'Major Flood',  bar: 'bg-red-500',    bg: 'bg-red-50 dark:bg-red-900/20',    border: 'border-red-300 dark:border-red-800',    text: 'text-red-600 dark:text-red-400' },
-  MINOR_FLOOD: { label: 'Minor Flood',  bar: 'bg-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-300 dark:border-orange-800', text: 'text-orange-600 dark:text-orange-400' },
-  ALERT:       { label: 'Alert',        bar: 'bg-yellow-400', bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-300 dark:border-yellow-800', text: 'text-yellow-600 dark:text-yellow-400' },
-  NORMAL:      { label: 'Normal',       bar: 'bg-cyan-400',   bg: 'bg-muted/30',                         border: 'border-border',                           text: 'text-cyan-600 dark:text-cyan-400' },
+const RISK_CONFIG: Record<string, { bar: string; bg: string; border: string; text: string; labelKey: string }> = {
+  MAJOR_FLOOD: { labelKey: 'citizen_home.water_major_flood', bar: 'bg-red-500',    bg: 'bg-red-50 dark:bg-red-900/20',    border: 'border-red-300 dark:border-red-800',    text: 'text-red-600 dark:text-red-400' },
+  MINOR_FLOOD: { labelKey: 'citizen_home.water_minor_flood', bar: 'bg-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-300 dark:border-orange-800', text: 'text-orange-600 dark:text-orange-400' },
+  ALERT:       { labelKey: 'citizen_home.water_alert',       bar: 'bg-yellow-400', bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-300 dark:border-yellow-800', text: 'text-yellow-600 dark:text-yellow-400' },
+  NORMAL:      { labelKey: 'citizen_home.water_normal',      bar: 'bg-cyan-400',   bg: 'bg-muted/30',                         border: 'border-border',                           text: 'text-cyan-600 dark:text-cyan-400' },
 }
 const riskConfig = (status: string) => RISK_CONFIG[status] || RISK_CONFIG.NORMAL
 
-const trendLabel = (trend: string) =>
-  trend === 'RISING' ? '↑ Rising' : trend === 'FALLING' ? '↓ Falling' : '→ Stable'
 const trendColor = (trend: string) =>
   trend === 'RISING' ? 'text-red-500' : trend === 'FALLING' ? 'text-green-500' : 'text-muted-foreground'
 
 function WaterLevelWidget() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [rivers, setRivers] = useState<RiverLevel[]>([])
   const [wLoading, setWLoading] = useState(true)
 
@@ -101,13 +101,17 @@ function WaterLevelWidget() {
             <Waves className={cn('w-4 h-4', hasDanger ? 'text-orange-600 dark:text-orange-400' : 'text-blue-600 dark:text-blue-400')} />
           </div>
           <div>
-            <p className="text-sm font-black text-foreground">River Water Levels</p>
+            <p className="text-sm font-black text-foreground">{t('citizen_home.water_title')}</p>
             <p className="text-xs text-muted-foreground">
-              {wLoading ? 'Loading…' : atRisk > 0 ? `${atRisk} river${atRisk > 1 ? 's' : ''} above safe level` : 'All rivers within safe levels'}
+              {wLoading
+                ? t('citizen_home.water_loading')
+                : atRisk > 0
+                  ? t('citizen_home.water_at_risk', { count: atRisk })
+                  : t('citizen_home.water_safe')}
             </p>
           </div>
         </div>
-        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Live</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('citizen_home.water_live')}</span>
       </div>
 
       {/* River cards */}
@@ -116,7 +120,7 @@ function WaterLevelWidget() {
           {[1,2,3,4,5,6].map(i => <div key={i} className="h-20 rounded-xl bg-muted animate-pulse" />)}
         </div>
       ) : rivers.length === 0 ? (
-        <p className="text-sm text-muted-foreground text-center py-6">No river data available</p>
+        <p className="text-sm text-muted-foreground text-center py-6">{t('citizen_home.water_no_data')}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {rivers.map(r => {
@@ -131,7 +135,7 @@ function WaterLevelWidget() {
                     <p className="text-xs text-muted-foreground truncate">{r.stationName}, {r.district}</p>
                   </div>
                   <span className={cn('text-[10px] font-black uppercase tracking-wider shrink-0 px-2 py-0.5 rounded-full border', cfg.text, cfg.border, cfg.bg)}>
-                    {cfg.label}
+                    {t(cfg.labelKey)}
                   </span>
                 </div>
 
@@ -139,13 +143,15 @@ function WaterLevelWidget() {
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-semibold text-foreground">{r.waterLevelMetres.toFixed(2)} m</span>
-                    <span className={cn('font-bold', trendColor(r.trend))}>{trendLabel(r.trend)}</span>
+                    <span className={cn('font-bold', trendColor(r.trend))}>
+                      {r.trend === 'RISING' ? t('citizen_home.water_rising') : r.trend === 'FALLING' ? t('citizen_home.water_falling') : t('citizen_home.water_stable')}
+                    </span>
                   </div>
                   <div className="h-2 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
                     <div className={cn('h-full rounded-full transition-all duration-500', cfg.bar)} style={{ width: `${pct}%` }} />
                   </div>
                   <p className="text-[10px] text-muted-foreground">
-                    Safe limit: {r.minorFloodLevel.toFixed(1)} m · Flood: {r.majorFloodLevel.toFixed(1)} m
+                    {t('citizen_home.water_safe_limit')} {r.minorFloodLevel.toFixed(1)} m · {t('citizen_home.water_flood')} {r.majorFloodLevel.toFixed(1)} m
                   </p>
                 </div>
               </div>
@@ -160,6 +166,7 @@ function WaterLevelWidget() {
 export default function CitizenDashboardPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [alerts, setAlerts]       = useState<any[]>([])
   const [camps, setCamps]         = useState<any[]>([])
@@ -184,20 +191,20 @@ export default function CitizenDashboardPage() {
   const isVolunteer = user?.role === 'VOLUNTEER'
 
   const quickActions = [
-    { icon: AlertTriangle, label: 'Report Incident', description: 'Submit a disaster or emergency report', onClick: () => navigate('/incidents'), color: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' },
-    { icon: HandHelping,   label: 'Request Help',    description: 'Ask for emergency assistance',          onClick: () => navigate('/help-requests'), color: 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' },
-    { icon: Building2,     label: 'Find Relief Camp', description: 'Locate nearest operational camp',      onClick: () => navigate('/camps'), color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' },
-    { icon: ShieldCheck,   label: 'Family Safety',   description: 'Check on your family members',         onClick: () => navigate('/family-safety'), color: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' },
-    { icon: UserSearch,    label: 'Missing Persons', description: 'Report or search for missing people',   onClick: () => navigate('/missing-persons'), color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' },
-    { icon: QrCode,        label: 'Relief Token',    description: 'Access or claim your relief token',    onClick: () => navigate('/tokens'), color: 'bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400' },
-    { icon: FileText,      label: 'Damage Report',  description: 'Report property or infrastructure damage', onClick: () => navigate('/damage-assessment'), color: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400' },
-    { icon: HeartPulse,    label: 'Psych Support',   description: 'Access mental health resources',        onClick: () => navigate('/support'), color: 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400' },
-    ...(isVolunteer ? [{ icon: Shield, label: 'Volunteer Hub', description: 'View tasks and check-in status', onClick: () => navigate('/volunteers'), color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' }] : []),
+    { icon: AlertTriangle, label: t('citizen_home.action_report_incident'), description: t('citizen_home.action_report_incident_desc'), onClick: () => navigate('/incidents'), color: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' },
+    { icon: HandHelping,   label: t('citizen_home.action_request_help'),    description: t('citizen_home.action_request_help_desc'),    onClick: () => navigate('/help-requests'), color: 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' },
+    { icon: Building2,     label: t('citizen_home.action_find_camp'),       description: t('citizen_home.action_find_camp_desc'),       onClick: () => navigate('/camps'), color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' },
+    { icon: ShieldCheck,   label: t('citizen_home.action_family_safety'),   description: t('citizen_home.action_family_safety_desc'),   onClick: () => navigate('/family-safety'), color: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' },
+    { icon: UserSearch,    label: t('citizen_home.action_missing'),         description: t('citizen_home.action_missing_desc'),         onClick: () => navigate('/missing-persons'), color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' },
+    { icon: QrCode,        label: t('citizen_home.action_token'),           description: t('citizen_home.action_token_desc'),           onClick: () => navigate('/tokens'), color: 'bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400' },
+    { icon: FileText,      label: t('citizen_home.action_damage'),          description: t('citizen_home.action_damage_desc'),          onClick: () => navigate('/damage-assessment'), color: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400' },
+    { icon: HeartPulse,    label: t('citizen_home.action_psych'),           description: t('citizen_home.action_psych_desc'),           onClick: () => navigate('/support'), color: 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400' },
+    ...(isVolunteer ? [{ icon: Shield, label: t('citizen_home.action_volunteer'), description: t('citizen_home.action_volunteer_desc'), onClick: () => navigate('/volunteers'), color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' }] : []),
   ]
 
   const emergencyAlerts = alerts.filter(a => a.type === 'EMERGENCY' && a.active)
   const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const greeting = hour < 12 ? t('citizen_home.greeting_morning') : hour < 17 ? t('citizen_home.greeting_afternoon') : t('citizen_home.greeting_evening')
 
   return (
     <div className="space-y-8 pb-10">
@@ -225,14 +232,14 @@ export default function CitizenDashboardPage() {
             className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-card hover:bg-muted transition-colors text-sm font-semibold text-foreground"
           >
             <Bell className="w-4 h-4" />
-            View All Alerts
+            {t('citizen_home.view_all_alerts')}
           </button>
           <button
             onClick={() => navigate('/map')}
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
           >
             <MapPin className="w-4 h-4" />
-            Live Map
+            {t('citizen_home.live_map')}
           </button>
         </div>
       </div>
@@ -245,7 +252,7 @@ export default function CitizenDashboardPage() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-black uppercase tracking-widest text-red-600 dark:text-red-400 mb-1">
-              {emergencyAlerts.length} Active Emergency Alert{emergencyAlerts.length > 1 ? 's' : ''}
+              {t('citizen_home.active_emergency_alerts', { count: emergencyAlerts.length })}
             </p>
             {emergencyAlerts.slice(0, 2).map(a => (
               <p key={a.id} className="text-sm font-semibold text-red-800 dark:text-red-300 truncate">
@@ -254,7 +261,7 @@ export default function CitizenDashboardPage() {
             ))}
           </div>
           <button onClick={() => navigate('/suraksha-alerts')} className="text-xs font-bold text-red-600 dark:text-red-400 hover:underline shrink-0">
-            View →
+            {t('citizen_home.view')}
           </button>
         </div>
       )}
@@ -262,10 +269,10 @@ export default function CitizenDashboardPage() {
       {/* ── Stat row ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Active Alerts', value: alerts.filter(a => a.active).length, icon: Radio, color: 'text-red-500' },
-          { label: 'Relief Camps', value: camps.length, icon: Building2, color: 'text-blue-500' },
-          { label: 'Missing Reports', value: missing.length, icon: UserSearch, color: 'text-purple-500' },
-          { label: 'Help Requests', value: helpReqs.length, icon: HandHelping, color: 'text-orange-500' },
+          { label: t('citizen_home.stat_active_alerts'), value: alerts.filter(a => a.active).length, icon: Radio, color: 'text-red-500' },
+          { label: t('citizen_home.stat_relief_camps'), value: camps.length, icon: Building2, color: 'text-blue-500' },
+          { label: t('citizen_home.stat_missing_reports'), value: missing.length, icon: UserSearch, color: 'text-purple-500' },
+          { label: t('citizen_home.stat_help_requests'), value: helpReqs.length, icon: HandHelping, color: 'text-orange-500' },
         ].map(stat => (
           <div key={stat.label} className="bg-card border border-border rounded-2xl p-4 flex flex-col gap-2">
             <stat.icon className={cn('w-5 h-5', stat.color)} />
@@ -279,7 +286,7 @@ export default function CitizenDashboardPage() {
 
       {/* ── Quick Actions ── */}
       <div>
-        <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">Quick Actions</h2>
+        <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">{t('citizen_home.quick_actions')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {quickActions.map(a => (
             <QuickActionCard key={a.label} {...a} />
@@ -293,15 +300,15 @@ export default function CitizenDashboardPage() {
         {/* Recent Alerts */}
         <div className="bg-card border border-border rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Recent Alerts</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">{t('citizen_home.recent_alerts')}</h2>
             <button onClick={() => navigate('/suraksha-alerts')} className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-              View all →
+              {t('citizen_home.view_all')}
             </button>
           </div>
           {loading ? (
             <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-14 rounded-xl bg-muted animate-pulse" />)}</div>
           ) : alerts.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground text-sm">No active alerts</div>
+            <div className="text-center py-8 text-muted-foreground text-sm">{t('citizen_home.no_alerts')}</div>
           ) : (
             <div className="space-y-2">
               {alerts.map(alert => (
@@ -321,15 +328,15 @@ export default function CitizenDashboardPage() {
         {/* Nearby Camps */}
         <div className="bg-card border border-border rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Active Relief Camps</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">{t('citizen_home.active_camps')}</h2>
             <button onClick={() => navigate('/camps')} className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-              View all →
+              {t('citizen_home.view_all')}
             </button>
           </div>
           {loading ? (
             <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-14 rounded-xl bg-muted animate-pulse" />)}</div>
           ) : camps.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground text-sm">No active camps</div>
+            <div className="text-center py-8 text-muted-foreground text-sm">{t('citizen_home.no_camps')}</div>
           ) : (
             <div className="space-y-2">
               {camps.map(camp => {
@@ -341,7 +348,7 @@ export default function CitizenDashboardPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-foreground truncate">{camp.name}</p>
-                      <p className="text-xs text-muted-foreground">{camp.district} · {camp.currentOccupancy}/{camp.totalCapacity} capacity</p>
+                      <p className="text-xs text-muted-foreground">{camp.district} · {camp.currentOccupancy}/{camp.totalCapacity} {t('citizen_home.capacity')}</p>
                       <div className="mt-1 h-1.5 rounded-full bg-muted overflow-hidden">
                         <div className={cn('h-full rounded-full transition-all', pct > 85 ? 'bg-red-500' : pct > 60 ? 'bg-yellow-500' : 'bg-green-500')} style={{ width: `${pct}%` }} />
                       </div>
@@ -361,8 +368,8 @@ export default function CitizenDashboardPage() {
       {missing.length > 0 && (
         <div className="bg-card border border-border rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Recent Missing Persons</h2>
-            <button onClick={() => navigate('/missing-persons')} className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">View all →</button>
+            <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">{t('citizen_home.recent_missing')}</h2>
+            <button onClick={() => navigate('/missing-persons')} className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">{t('citizen_home.view_all')}</button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {missing.map(p => (
@@ -372,7 +379,7 @@ export default function CitizenDashboardPage() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-foreground truncate">{p.name}</p>
-                  <p className="text-xs text-muted-foreground">{p.age ? `Age ${p.age}` : ''} · {p.district || 'Unknown'}</p>
+                  <p className="text-xs text-muted-foreground">{p.age ? `${t('citizen_home.age')} ${p.age}` : ''} · {p.district || 'Unknown'}</p>
                 </div>
               </div>
             ))}

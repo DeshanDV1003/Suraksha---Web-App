@@ -420,7 +420,7 @@ export default function MapPage() {
   return (
         <>
           <PageMeta title="Live Map | Suraksha" description="Suraksha Live Map Page" />
-          <PageBreadcrumb pageTitle="Live Map" />
+          <PageBreadcrumb pageTitle={t('page_titles.live_map')} />
           <div className="flex flex-col gap-6 animate-in fade-in duration-500 font-sans h-full pb-16">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>

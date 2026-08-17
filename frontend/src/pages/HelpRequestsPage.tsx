@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AlertTriangle, Clock, MapPin, Users, Loader2, Navigation, MessageSquare, CheckCircle2, AlertCircle, Smartphone, Phone, Send, ShieldAlert } from 'lucide-react'
 import { helpRequestService, volunteerService } from '@/services/api'
@@ -8,15 +8,19 @@ import PageMeta from "@/components/common/PageMeta";
 import { useAuth } from '@/hooks/useAuth'
 
 // ── Status config ────────────────────────────────────────────────────────────
-const STATUS_STEPS = [
-  { key: 'PENDING',   label: 'Received',   desc: 'Your request has been received by the command centre.' },
-  { key: 'ASSIGNED',  label: 'Assigned',   desc: 'A responder has been assigned to your request.' },
-  { key: 'EN_ROUTE',  label: 'On the Way', desc: 'Your responder is on their way to you.' },
-  { key: 'ON_SITE',   label: 'On Site',    desc: 'Responder has arrived at your location.' },
-  { key: 'RESOLVED',  label: 'Resolved',   desc: 'Your request has been resolved.' },
-]
+function useStatusSteps() {
+  const { t } = useTranslation()
+  return useMemo(() => [
+    { key: 'PENDING',   label: t('help_form.status_received'),   desc: t('help_form.desc_received') },
+    { key: 'ASSIGNED',  label: t('help_form.status_assigned'),   desc: t('help_form.desc_assigned') },
+    { key: 'EN_ROUTE',  label: t('help_form.status_on_the_way'), desc: t('help_form.desc_en_route') },
+    { key: 'ON_SITE',   label: t('help_form.status_on_site'),    desc: t('help_form.desc_on_site') },
+    { key: 'RESOLVED',  label: t('help_form.status_resolved'),   desc: t('help_form.desc_resolved') },
+  ], [t])
+}
 
 function StatusTracker({ status }: { status: string }) {
+  const STATUS_STEPS = useStatusSteps()
   const currentIdx = STATUS_STEPS.findIndex(s => s.key === status)
   return (
     <div className="mt-4">
@@ -58,6 +62,7 @@ function StatusTracker({ status }: { status: string }) {
 
 // ── Citizen SOS Form + My Requests ───────────────────────────────────────────
 function CitizenHelpForm() {
+  const { t } = useTranslation()
   const [form, setForm] = useState({
     type: 'FLOOD_RESCUE',
     description: '',
@@ -73,13 +78,13 @@ function CitizenHelpForm() {
   const [loadingRequests, setLoadingRequests] = useState(true)
 
   const requestTypes = [
-    { value: 'FLOOD_RESCUE', label: '🌊 Flood Rescue' },
-    { value: 'MEDICAL',      label: '🏥 Medical Emergency' },
-    { value: 'TRAPPED',      label: '⚠️ Trapped / Stranded' },
-    { value: 'FOOD_WATER',   label: '🥤 Food & Water Needed' },
-    { value: 'EVACUATION',   label: '🚨 Evacuation Needed' },
-    { value: 'STRUCTURAL',   label: '🏚️ Structural Damage' },
-    { value: 'OTHER',        label: '📋 Other Emergency' },
+    { value: 'FLOOD_RESCUE', label: t('help_form.type_flood') },
+    { value: 'MEDICAL',      label: t('help_form.type_medical') },
+    { value: 'TRAPPED',      label: t('help_form.type_trapped') },
+    { value: 'FOOD_WATER',   label: t('help_form.type_food') },
+    { value: 'EVACUATION',   label: t('help_form.type_evacuation') },
+    { value: 'STRUCTURAL',   label: t('help_form.type_structural') },
+    { value: 'OTHER',        label: t('help_form.type_other') },
   ]
 
   const fetchMyRequests = async () => {
@@ -113,15 +118,15 @@ function CitizenHelpForm() {
         }
         setLocating(false)
       },
-      () => { setLocating(false); setError('Could not get your location. Please type it manually.') },
+      () => { setLocating(false); setError(t('help_form.err_location_denied')) },
       { enableHighAccuracy: true, timeout: 10000 }
     )
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.description.trim()) return setError('Please describe your emergency.')
-    if (!form.location.trim()) return setError('Please provide your location.')
+    if (!form.description.trim()) return setError(t('help_form.err_describe'))
+    if (!form.location.trim()) return setError(t('help_form.err_location'))
     setError('')
     setSubmitting(true)
     try {
@@ -130,7 +135,7 @@ function CitizenHelpForm() {
       setForm({ type: 'FLOOD_RESCUE', description: '', location: '', peopleCount: 1, priority: 'HIGH' })
       fetchMyRequests()
     } catch {
-      setError('Failed to send request. Please try again or call 1990.')
+      setError(t('help_form.err_failed'))
     } finally {
       setSubmitting(false)
     }
@@ -150,7 +155,7 @@ function CitizenHelpForm() {
       <div className="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl">
         <Phone className="w-5 h-5 text-red-400 shrink-0" />
         <p className="text-sm font-bold text-red-400">
-          Life-threatening emergency? Call <span className="text-red-300 text-base">1990</span> immediately — don't wait for this form.
+          {t('help_form.emergency_call')} <span className="text-red-300 text-base">1990</span> {t('help_form.emergency_suffix')}
         </p>
       </div>
 
@@ -158,8 +163,8 @@ function CitizenHelpForm() {
         <div className="flex items-center gap-4 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
           <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
           <div>
-            <p className="text-sm font-black text-emerald-400">Help request sent! Track its progress on the right.</p>
-            <p className="text-xs text-emerald-400/70 font-medium">A responder will be dispatched to you shortly.</p>
+            <p className="text-sm font-black text-emerald-400">{t('help_form.sent_title')}</p>
+            <p className="text-xs text-emerald-400/70 font-medium">{t('help_form.sent_sub')}</p>
           </div>
         </div>
       )}
@@ -174,14 +179,14 @@ function CitizenHelpForm() {
               <ShieldAlert className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <h2 className="text-base font-black text-slate-800 dark:text-white/90">Request Emergency Help</h2>
-              <p className="text-slate-400 text-xs font-medium">A responder will be dispatched to your location.</p>
+              <h2 className="text-base font-black text-slate-800 dark:text-white/90">{t('help_form.form_title')}</h2>
+              <p className="text-slate-400 text-xs font-medium">{t('help_form.form_sub')}</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Type of Emergency</label>
+              <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">{t('help_form.type_label')}</label>
               <div className="grid grid-cols-2 gap-2">
                 {requestTypes.map(rt => (
                   <button key={rt.value} type="button"
@@ -199,41 +204,41 @@ function CitizenHelpForm() {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Describe Your Situation</label>
+              <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">{t('help_form.situation_label')}</label>
               <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3}
-                placeholder="e.g. Water is rising, 4 people trapped on second floor..."
+                placeholder={t('help_form.situation_placeholder')}
                 className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-400 resize-none" />
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Your Location</label>
+              <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">{t('help_form.location_label')}</label>
               <div className="flex gap-2">
                 <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
-                  placeholder="Street, area, or landmark..."
+                  placeholder={t('help_form.location_placeholder')}
                   className="flex-1 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-400" />
                 <button type="button" onClick={getLocation} disabled={locating}
                   className="flex items-center gap-1.5 px-3 py-2.5 bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 rounded-xl text-xs font-bold hover:bg-cyan-500/25 transition-all disabled:opacity-50 shrink-0">
                   {locating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5" />}
-                  {locating ? 'Locating…' : 'GPS'}
+                  {locating ? t('help_form.locating') : t('help_form.gps')}
                 </button>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">People Affected</label>
+                <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">{t('help_form.people_label')}</label>
                 <input type="number" min={1} max={500} value={form.peopleCount}
                   onChange={e => setForm(f => ({ ...f, peopleCount: parseInt(e.target.value) || 1 }))}
                   className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400" />
               </div>
               <div>
-                <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Priority</label>
+                <label className="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">{t('help_form.priority_label')}</label>
                 <select value={form.priority} onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}
                   className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-cyan-400">
-                  <option value="LOW">Low</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="HIGH">High — Urgent</option>
-                  <option value="CRITICAL">Critical — Life at risk</option>
+                  <option value="LOW">{t('help_form.priority_low')}</option>
+                  <option value="MEDIUM">{t('help_form.priority_medium')}</option>
+                  <option value="HIGH">{t('help_form.priority_high')}</option>
+                  <option value="CRITICAL">{t('help_form.priority_critical')}</option>
                 </select>
               </div>
             </div>
@@ -247,7 +252,7 @@ function CitizenHelpForm() {
             <button type="submit" disabled={submitting}
               className="w-full py-3.5 bg-red-500 hover:bg-red-400 disabled:opacity-50 text-white font-black text-sm rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20">
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              {submitting ? 'Sending SOS…' : 'Send SOS Request'}
+              {submitting ? t('help_form.sending_btn') : t('help_form.send_btn')}
             </button>
           </form>
         </div>
@@ -255,8 +260,8 @@ function CitizenHelpForm() {
         {/* RIGHT — My Requests */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-black text-slate-800 dark:text-white/90">My Help Requests</h2>
-            <button onClick={fetchMyRequests} className="text-xs text-cyan-400 font-bold hover:text-cyan-300 transition-colors">Refresh</button>
+            <h2 className="text-base font-black text-slate-800 dark:text-white/90">{t('help_form.my_requests')}</h2>
+            <button onClick={fetchMyRequests} className="text-xs text-cyan-400 font-bold hover:text-cyan-300 transition-colors">{t('help_form.refresh')}</button>
           </div>
 
           {loadingRequests && (
@@ -265,7 +270,7 @@ function CitizenHelpForm() {
 
           {!loadingRequests && myRequests.length === 0 && (
             <div className="text-center py-12 text-slate-400 font-medium bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 text-sm">
-              No help requests yet. Submit one on the left if you need assistance.
+              {t('help_form.no_requests')}
             </div>
           )}
 
@@ -283,7 +288,7 @@ function CitizenHelpForm() {
                         {req.priority}
                       </span>
                       {req.status === 'RESOLVED' && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">Resolved</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">{t('help_form.resolved_badge')}</span>
                       )}
                     </div>
                     <p className="text-xs text-slate-400 font-medium mt-1 truncate">{req.description}</p>
@@ -412,8 +417,8 @@ export default function HelpRequestsPage() {
   if (isCitizen) {
     return (
       <>
-        <PageMeta title="Request Help | Suraksha" description="Submit an emergency help request" />
-        <PageBreadcrumb pageTitle="Request Help" />
+        <PageMeta title={`${t('help_form.page_title')} | Suraksha`} description="Submit an emergency help request" />
+        <PageBreadcrumb pageTitle={t('help_form.page_title')} />
         <div className="animate-in fade-in duration-500 pb-10 w-full min-w-0">
           <CitizenHelpForm />
         </div>
