@@ -137,7 +137,8 @@ exports.Prisma.UserScalarFieldEnum = {
   twoFactorGracePeriodEnds: 'twoFactorGracePeriodEnds',
   twoFactorSecret: 'twoFactorSecret',
   profilePicture: 'profilePicture',
-  currentSectorId: 'currentSectorId'
+  currentSectorId: 'currentSectorId',
+  hospitalId: 'hospitalId'
 };
 
 exports.Prisma.IncidentReportScalarFieldEnum = {
@@ -626,16 +627,48 @@ exports.Prisma.CampScheduleScalarFieldEnum = {
   type: 'type'
 };
 
+exports.Prisma.HospitalScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  location: 'location',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  phone: 'phone',
+  email: 'email',
+  specialties: 'specialties',
+  totalBeds: 'totalBeds',
+  availableBeds: 'availableBeds',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.HospitalWardScalarFieldEnum = {
+  id: 'id',
+  hospitalId: 'hospitalId',
+  name: 'name',
+  totalBeds: 'totalBeds',
+  availableBeds: 'availableBeds',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.HospitalReferralScalarFieldEnum = {
   id: 'id',
   campId: 'campId',
+  hospitalId: 'hospitalId',
+  hospitalName: 'hospitalName',
   patientName: 'patientName',
+  patientAge: 'patientAge',
   conditionSeverity: 'conditionSeverity',
-  hospitalAssigned: 'hospitalAssigned',
+  conditionNotes: 'conditionNotes',
   transportMethod: 'transportMethod',
   outcome: 'outcome',
+  hospitalNotes: 'hospitalNotes',
   status: 'status',
-  createdAt: 'createdAt'
+  admittedAt: 'admittedAt',
+  dischargedAt: 'dischargedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.CampTransferRequestScalarFieldEnum = {
@@ -953,7 +986,8 @@ exports.Role = exports.$Enums.Role = {
   VOLUNTEER: 'VOLUNTEER',
   ADMIN: 'ADMIN',
   DMC_OFFICER: 'DMC_OFFICER',
-  FIELD_RESPONDER: 'FIELD_RESPONDER'
+  FIELD_RESPONDER: 'FIELD_RESPONDER',
+  HOSPITAL_STAFF: 'HOSPITAL_STAFF'
 };
 
 exports.Status = exports.$Enums.Status = {
@@ -1070,7 +1104,9 @@ exports.ReferralStatus = exports.$Enums.ReferralStatus = {
   PENDING: 'PENDING',
   IN_TRANSIT: 'IN_TRANSIT',
   ADMITTED: 'ADMITTED',
-  DISCHARGED: 'DISCHARGED'
+  DISCHARGED: 'DISCHARGED',
+  TRANSFERRED: 'TRANSFERRED',
+  DECEASED: 'DECEASED'
 };
 
 exports.DonationType = exports.$Enums.DonationType = {
@@ -1172,6 +1208,8 @@ exports.Prisma.ModelName = {
   CampResident: 'CampResident',
   CampInventory: 'CampInventory',
   CampSchedule: 'CampSchedule',
+  Hospital: 'Hospital',
+  HospitalWard: 'HospitalWard',
   HospitalReferral: 'HospitalReferral',
   CampTransferRequest: 'CampTransferRequest',
   DonorCampaign: 'DonorCampaign',

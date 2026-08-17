@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as campService from '../services/campService';
 import { InventoryItemType, ReferralStatus } from '../../prisma/generated/client';
+import { getIO } from '../utils/socketInstance';
 
 export const createCamp = async (req: Request, res: Response) => {
   try {
@@ -111,6 +112,12 @@ export const deleteSchedule = async (req: Request, res: Response) => {
 export const addReferral = async (req: Request, res: Response) => {
   try {
     const referral = await campService.createHospitalReferral(req.params.id as string, req.body);
+    // Notify hospital staff in real-time if referral was assigned to a specific hospital
+    if (referral.hospitalId) {
+      try {
+        getIO().to(`hospital:${referral.hospitalId}`).emit('new-referral', referral);
+      } catch (_) {}
+    }
     res.status(201).json(referral);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

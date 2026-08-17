@@ -3,7 +3,8 @@ import { create } from 'zustand'
 interface User {
   id: string
   name: string
-  role: 'CITIZEN' | 'VOLUNTEER' | 'ADMIN' | 'DMC_OFFICER'
+  role: 'CITIZEN' | 'VOLUNTEER' | 'ADMIN' | 'DMC_OFFICER' | 'FIELD_RESPONDER' | 'HOSPITAL_STAFF'
+  hospitalId?: string | null
 }
 
 interface AppState {

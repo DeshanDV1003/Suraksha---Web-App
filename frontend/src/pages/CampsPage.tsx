@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { campService, rescueService, supplyRequestService } from '../services/api'
+import { hospitalApi } from '@/services/hospitalApi'
 import { useAppStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
@@ -2049,12 +2050,23 @@ function ScheduleTab({ campId, schedules, refresh }: any) {
 
 function ReferralsTab({ campId, referrals, refresh }: any) {
   const { t } = useTranslation()
-  const [form, setForm] = useState({ patientName: '', hospitalAssigned: '', conditionSeverity: 'MEDIUM' })
-  
+  const [form, setForm] = useState({ patientName: '', hospitalId: '', hospitalAssigned: '', conditionSeverity: 'MEDIUM' })
+  const [hospitals, setHospitals] = useState<{ id: string; name: string; availableBeds: number }[]>([])
+
+  useEffect(() => {
+    hospitalApi.listHospitals().then(setHospitals).catch(() => {})
+  }, [])
+
   const handleAdd = async (e: any) => {
     e.preventDefault()
-    await campService.addReferral(campId, form)
-    setForm({ patientName: '', hospitalAssigned: '', conditionSeverity: 'MEDIUM' })
+    const selected = hospitals.find(h => h.id === form.hospitalId)
+    await campService.addReferral(campId, {
+      patientName: form.patientName,
+      conditionSeverity: form.conditionSeverity,
+      hospitalId: form.hospitalId || undefined,
+      hospitalName: selected?.name ?? form.hospitalAssigned,
+    })
+    setForm({ patientName: '', hospitalId: '', hospitalAssigned: '', conditionSeverity: 'MEDIUM' })
     refresh()
   }
 
@@ -2072,7 +2084,16 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
          </div>
          <div className="flex-1 w-full space-y-1">
            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.referrals.hospital')}</label>
-           <input required className="suraksha-input" value={form.hospitalAssigned} onChange={e=>setForm({...form, hospitalAssigned: e.target.value})} placeholder="e.g. General Hospital" />
+           {hospitals.length > 0 ? (
+             <select required className="suraksha-input" value={form.hospitalId} onChange={e => setForm({ ...form, hospitalId: e.target.value })}>
+               <option value="">Select hospital…</option>
+               {hospitals.map(h => (
+                 <option key={h.id} value={h.id}>{h.name} ({h.availableBeds} beds avail.)</option>
+               ))}
+             </select>
+           ) : (
+             <input required className="suraksha-input" value={form.hospitalAssigned} onChange={e=>setForm({...form, hospitalAssigned: e.target.value})} placeholder="e.g. General Hospital" />
+           )}
          </div>
          <div className="flex-1 w-full space-y-1">
            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('camps_page.referrals.severity')}</label>
@@ -2100,7 +2121,7 @@ function ReferralsTab({ campId, referrals, refresh }: any) {
             {referrals.map((r: any) => (
               <tr key={r.id}>
                 <td className="p-4 font-bold">{r.patientName}</td>
-                <td className="p-4 text-gray-500 dark:text-gray-400">{r.hospitalAssigned}</td>
+                <td className="p-4 text-gray-500 dark:text-gray-400">{r.hospitalName || r.hospitalAssigned || '—'}</td>
                 <td className="p-4">
                   <span className={cn("text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest", r.conditionSeverity === 'CRITICAL' ? 'bg-red-500/15 text-red-400' : r.conditionSeverity === 'HIGH' ? 'bg-orange-500/15 text-orange-400' : 'bg-white/10 text-slate-300')}>{r.conditionSeverity}</span>
                 </td>

@@ -63,8 +63,13 @@ export const loginUser = async (data: any) => {
     }
   });
 
+  const jwtPayload: Record<string, any> = { userId: user.id, role: user.role };
+  if (user.role === 'HOSPITAL_STAFF' && user.hospitalId) {
+    jwtPayload.hospitalId = user.hospitalId;
+  }
+
   const token = jwt.sign(
-    { userId: user.id, role: user.role },
+    jwtPayload,
     process.env.JWT_SECRET || 'secret',
     { expiresIn: '6h' }
   );
@@ -79,7 +84,8 @@ export const loginUser = async (data: any) => {
       region: user.region,
       phone: user.phone,
       profilePicture: user.profilePicture,
-      twoFactorEnabled: user.twoFactorEnabled
+      twoFactorEnabled: user.twoFactorEnabled,
+      hospitalId: user.hospitalId ?? null,
     },
   };
 };
@@ -184,8 +190,13 @@ export const googleLoginUser = async (idToken: string, ipAddress?: string, devic
     data: { userId: user.id, ipAddress, device, location: 'Google OAuth' },
   });
 
+  const googleJwtPayload: Record<string, any> = { userId: user.id, role: user.role };
+  if (user.role === 'HOSPITAL_STAFF' && user.hospitalId) {
+    googleJwtPayload.hospitalId = user.hospitalId;
+  }
+
   const token = jwt.sign(
-    { userId: user.id, role: user.role },
+    googleJwtPayload,
     process.env.JWT_SECRET || 'secret',
     { expiresIn: '6h' }
   );
@@ -196,6 +207,7 @@ export const googleLoginUser = async (idToken: string, ipAddress?: string, devic
       id: user.id, email: user.email, name: user.name, role: user.role,
       region: user.region, phone: user.phone, profilePicture: user.profilePicture,
       twoFactorEnabled: user.twoFactorEnabled,
+      hospitalId: user.hospitalId ?? null,
     },
   };
 };

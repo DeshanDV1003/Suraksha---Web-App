@@ -39,6 +39,9 @@ import supplyRequestRoutes from './routes/supplyRequestRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
 import { setupRainfallWeatherCron } from './services/rainfallWeatherCron';
 import weatherRoutes from './routes/weatherRoutes';
+import hospitalRoutes from './routes/hospitalRoutes';
+import { getHospitals, createHospital, getHospitalStaff, createHospitalStaff, deleteHospitalStaff } from './controllers/hospitalController';
+import { authMiddleware, adminMiddleware } from './middleware/auth';
 import { setupBackupCron, runBackup } from './services/backupService';
 import { setIO } from './utils/socketInstance';
 
@@ -93,6 +96,12 @@ app.use('/api/rescue', rescueRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/supply-requests', supplyRequestRoutes);
 app.use('/api/weather', weatherRoutes);
+app.use('/api/hospital', hospitalRoutes);
+app.get('/api/hospitals', authMiddleware, getHospitals);
+app.post('/api/hospitals', authMiddleware, adminMiddleware, createHospital);
+app.get('/api/hospitals/:id/staff', authMiddleware, adminMiddleware, getHospitalStaff);
+app.post('/api/hospitals/:id/staff', authMiddleware, adminMiddleware, createHospitalStaff);
+app.delete('/api/hospitals/:hospitalId/staff/:userId', authMiddleware, adminMiddleware, deleteHospitalStaff);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
@@ -115,6 +124,12 @@ io.on('connection', (socket) => {
   socket.on('join_sector', (sectorId) => {
     socket.join(`sector_${sectorId}`);
     console.log(`Socket ${socket.id} subscribed to alerts for sector ${sectorId}`);
+  });
+
+  // Hospital staff real-time room
+  socket.on('join_hospital', (hospitalId: string) => {
+    socket.join(`hospital:${hospitalId}`);
+    console.log(`Socket ${socket.id} joined hospital room hospital:${hospitalId}`);
   });
 
   socket.on('send_message', async (data) => {

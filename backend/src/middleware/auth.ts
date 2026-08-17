@@ -37,3 +37,11 @@ export const officerMiddleware = (req: any, res: Response, next: NextFunction) =
     res.status(403).json({ message: 'Access denied: Requires admin or DMC officer role' });
   }
 };
+
+export const hospitalMiddleware = (req: any, res: Response, next: NextFunction) => {
+  if (req.user && req.user.role === 'HOSPITAL_STAFF') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Access denied: Hospital staff only' });
+  }
+};

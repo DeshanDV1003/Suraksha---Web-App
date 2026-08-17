@@ -50,6 +50,8 @@ model User {
   assignedRescues          RescueMission[]               @relation("AssignedRescues")
   safeZoneCheckIns         SafeZoneCheckIn[]             @relation("SafeZoneCheckIns")
   supplyRequests           CampSupplyRequest[]           @relation("SupplyRequesters")
+  hospitalId               String?
+  hospital                 Hospital?                     @relation(fields: [hospitalId], references: [id])
 }
 
 model IncidentReport {
@@ -599,17 +601,54 @@ model CampSchedule {
   camp         ReliefCamp @relation(fields: [campId], references: [id])
 }
 
+model Hospital {
+  id            String             @id @default(uuid())
+  name          String
+  location      String
+  latitude      Float?
+  longitude     Float?
+  phone         String?
+  email         String?            @unique
+  specialties   String[]
+  totalBeds     Int                @default(0)
+  availableBeds Int                @default(0)
+  isActive      Boolean            @default(true)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  staff         User[]
+  wards         HospitalWard[]
+  referrals     HospitalReferral[]
+}
+
+model HospitalWard {
+  id            String   @id @default(uuid())
+  hospitalId    String
+  name          String
+  totalBeds     Int      @default(0)
+  availableBeds Int      @default(0)
+  updatedAt     DateTime @updatedAt
+  hospital      Hospital @relation(fields: [hospitalId], references: [id])
+}
+
 model HospitalReferral {
   id                String         @id @default(uuid())
   campId            String
+  hospitalId        String?
+  hospitalName      String         @default("")
   patientName       String
+  patientAge        Int?
   conditionSeverity Severity       @default(MEDIUM)
-  hospitalAssigned  String
+  conditionNotes    String?
   transportMethod   String?
   outcome           String?
+  hospitalNotes     String?
   status            ReferralStatus @default(PENDING)
+  admittedAt        DateTime?
+  dischargedAt      DateTime?
   createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @default(now()) @updatedAt
   camp              ReliefCamp     @relation(fields: [campId], references: [id])
+  hospital          Hospital?      @relation(fields: [hospitalId], references: [id])
 }
 
 model CampTransferRequest {
@@ -836,6 +875,7 @@ enum Role {
   ADMIN
   DMC_OFFICER
   FIELD_RESPONDER
+  HOSPITAL_STAFF
 }
 
 enum Status {
@@ -943,6 +983,8 @@ enum ReferralStatus {
   IN_TRANSIT
   ADMITTED
   DISCHARGED
+  TRANSFERRED
+  DECEASED
 }
 
 enum TokenCategory {

@@ -34,7 +34,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      navigate('/')
+      if (user.role === 'HOSPITAL_STAFF') {
+        navigate('/hospital')
+      } else {
+        navigate('/')
+      }
     }
   }, [user, navigate])
 

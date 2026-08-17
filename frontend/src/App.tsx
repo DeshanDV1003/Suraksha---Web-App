@@ -47,6 +47,9 @@ import RiverMappingsPage from '@/pages/RiverMappingsPage'
 import AIResearchPage from '@/pages/AIResearchPage'
 import WaterMonitorPage from '@/pages/WaterMonitorPage'
 import CitizenDashboardPage from '@/pages/CitizenDashboardPage'
+import HospitalDashboardPage from '@/pages/Hospital/HospitalDashboardPage'
+import HospitalReferralsPage from '@/pages/Hospital/HospitalReferralsPage'
+import HospitalCapacityPage from '@/pages/Hospital/HospitalCapacityPage'
 
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
@@ -171,6 +174,15 @@ function StaffOnly({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
   if (!user) return <Navigate to="/login" />
   if (CITIZEN_ROLES.includes(user.role)) return <Navigate to="/citizen-home" replace />
+  if (user.role === 'HOSPITAL_STAFF') return <Navigate to="/hospital" replace />
+  return <>{children}</>
+}
+
+// Guard: hospital staff only
+function HospitalOnly({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/login" />
+  if (user.role !== 'HOSPITAL_STAFF') return <Navigate to="/" replace />
   return <>{children}</>
 }
 
@@ -189,6 +201,8 @@ const ProtectedRoutes = () => {
   // Redirect root based on role
   const homeRoute = CITIZEN_ROLES.includes(user.role)
     ? <Navigate to="/citizen-home" replace />
+    : user.role === 'HOSPITAL_STAFF'
+    ? <Navigate to="/hospital" replace />
     : <DashboardPage />
 
   return (
@@ -239,6 +253,11 @@ const ProtectedRoutes = () => {
         <Route path="/support"          element={<SupportPage />} />
         <Route path="/family-safety"    element={<FamilySafetyPage />} />
         <Route path="/settings"         element={<SettingsPage />} />
+
+        {/* ── Hospital staff routes ── */}
+        <Route path="/hospital"           element={<HospitalOnly><HospitalDashboardPage /></HospitalOnly>} />
+        <Route path="/hospital/referrals" element={<HospitalOnly><HospitalReferralsPage /></HospitalOnly>} />
+        <Route path="/hospital/capacity"  element={<HospitalOnly><HospitalCapacityPage /></HospitalOnly>} />
       </Route>
     </Routes>
   )

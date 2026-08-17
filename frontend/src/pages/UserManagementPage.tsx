@@ -1,4 +1,5 @@
 import { Search, UserPlus, Eye, Trash2, ChevronDown, UserCheck, X, Shield, ShieldAlert, User, UserCog, Upload, AlertCircle, Phone, Smartphone, Check, ShieldCheck, FileText, Activity, CheckCircle2 } from 'lucide-react'
+import { hospitalApi } from '@/services/hospitalApi'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { userService, authService } from '../services/api'
@@ -11,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function UserManagementPage() {
   const { t } = useTranslation()
-  const [activeTab, setActiveTab] = useState<'DIRECTORY' | 'RBAC' | 'AUDIT' | 'SECURITY'>('DIRECTORY')
+  const [activeTab, setActiveTab] = useState<'DIRECTORY' | 'RBAC' | 'AUDIT' | 'SECURITY' | 'HOSPITALS'>('DIRECTORY')
   const user = useAppStore(state => state.user)
   const [localSearch, setLocalSearch] = useState('')
   const [users, setUsers] = useState<any[]>([])
@@ -151,7 +152,8 @@ export default function UserManagementPage() {
             { id: 'DIRECTORY', label: t('user_management_page.tabs.directory'), icon: User },
             ...(user?.role === 'ADMIN' ? [{ id: 'RBAC', label: t('user_management_page.tabs.rbac'), icon: ShieldCheck }] : []),
             { id: 'AUDIT', label: t('user_management_page.tabs.audit'), icon: FileText },
-            { id: 'SECURITY', label: t('user_management_page.tabs.security'), icon: ShieldAlert }
+            { id: 'SECURITY', label: t('user_management_page.tabs.security'), icon: ShieldAlert },
+            ...(user?.role === 'ADMIN' ? [{ id: 'HOSPITALS', label: 'Hospitals', icon: ShieldAlert }] : [])
           ].map(tab => (
             <button
               key={tab.id}
@@ -319,6 +321,7 @@ export default function UserManagementPage() {
           {activeTab === 'RBAC' && <RBACMatrixTab showToast={showToast} />}
           {activeTab === 'AUDIT' && <AuditLogsTab />}
           {activeTab === 'SECURITY' && <SecurityTab showToast={showToast} />}
+          {activeTab === 'HOSPITALS' && <HospitalsTab showToast={showToast} />}
         </div>
 
         {isOnboardModalOpen && (
@@ -765,6 +768,273 @@ function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
            <button type="submit" disabled={loading} className="suraksha-button w-full h-14">
              {loading ? t('user_management_page.transmitting') : t('user_management_page.finalize_onboarding')}
            </button>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+function HospitalsTab({ showToast }: any) {
+  const [hospitals, setHospitals] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [hospitalForm, setHospitalForm] = useState({ name: '', location: '', phone: '', totalBeds: 0, specialties: '' })
+  const [savingHospital, setSavingHospital] = useState(false)
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [staffMap, setStaffMap] = useState<Record<string, any[]>>({})
+  const [staffLoading, setStaffLoading] = useState<string | null>(null)
+  const [addStaffFor, setAddStaffFor] = useState<string | null>(null)
+
+  const load = () => {
+    setLoading(true)
+    hospitalApi.listHospitals().then(setHospitals).finally(() => setLoading(false))
+  }
+  useEffect(() => { load() }, [])
+
+  const handleCreateHospital = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSavingHospital(true)
+    try {
+      await hospitalApi.createHospital({
+        ...hospitalForm,
+        totalBeds: Number(hospitalForm.totalBeds),
+        specialties: hospitalForm.specialties.split(',').map(s => s.trim()).filter(Boolean),
+      })
+      setHospitalForm({ name: '', location: '', phone: '', totalBeds: 0, specialties: '' })
+      showToast?.('Hospital created')
+      load()
+    } catch {
+      showToast?.('Failed to create hospital', 'error')
+    } finally {
+      setSavingHospital(false)
+    }
+  }
+
+  const toggleExpand = async (id: string) => {
+    if (expandedId === id) { setExpandedId(null); return }
+    setExpandedId(id)
+    if (!staffMap[id]) {
+      setStaffLoading(id)
+      const staff = await hospitalApi.getStaff(id).catch(() => [])
+      setStaffMap(m => ({ ...m, [id]: staff }))
+      setStaffLoading(null)
+    }
+  }
+
+  const refreshStaff = async (id: string) => {
+    const staff = await hospitalApi.getStaff(id).catch(() => [])
+    setStaffMap(m => ({ ...m, [id]: staff }))
+  }
+
+  const handleDeleteStaff = async (hospitalId: string, userId: string) => {
+    await hospitalApi.deleteStaff(hospitalId, userId)
+    showToast?.('Staff account removed')
+    refreshStaff(hospitalId)
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Create hospital form */}
+      <form onSubmit={handleCreateHospital} className="suraksha-card p-6 bg-white dark:bg-gray-900 space-y-4">
+        <h3 className="font-bold text-gray-800 dark:text-white text-lg">Register New Hospital</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Hospital Name *</label>
+            <input required className="suraksha-input mt-1" placeholder="e.g. Colombo National Hospital"
+              value={hospitalForm.name} onChange={e => setHospitalForm(f => ({ ...f, name: e.target.value }))} />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Location *</label>
+            <input required className="suraksha-input mt-1" placeholder="e.g. Colombo 10"
+              value={hospitalForm.location} onChange={e => setHospitalForm(f => ({ ...f, location: e.target.value }))} />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Phone</label>
+            <input className="suraksha-input mt-1" placeholder="+94 11 269 1111"
+              value={hospitalForm.phone} onChange={e => setHospitalForm(f => ({ ...f, phone: e.target.value }))} />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Total Beds</label>
+            <input type="number" min={0} className="suraksha-input mt-1"
+              value={hospitalForm.totalBeds} onChange={e => setHospitalForm(f => ({ ...f, totalBeds: +e.target.value }))} />
+          </div>
+          <div className="md:col-span-2">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Specialties (comma-separated)</label>
+            <input className="suraksha-input mt-1" placeholder="e.g. Trauma, Pediatrics, Cardiology"
+              value={hospitalForm.specialties} onChange={e => setHospitalForm(f => ({ ...f, specialties: e.target.value }))} />
+          </div>
+        </div>
+        <button type="submit" disabled={savingHospital} className="suraksha-button px-8 py-2">
+          {savingHospital ? 'Creating…' : 'Create Hospital'}
+        </button>
+      </form>
+
+      {/* Hospital list */}
+      <div className="space-y-3">
+        {loading ? (
+          <div className="py-16 text-center text-gray-400">Loading…</div>
+        ) : hospitals.length === 0 ? (
+          <div className="py-16 text-center text-gray-400">No hospitals registered yet. Create one above.</div>
+        ) : hospitals.map((h) => (
+          <div key={h.id} className="suraksha-card bg-white dark:bg-gray-900 overflow-hidden">
+            {/* Hospital row */}
+            <div className="flex items-center gap-4 p-5">
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-gray-900 dark:text-white">{h.name}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{h.location}</div>
+                {h.specialties?.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {h.specialties.map((s: string) => (
+                      <span key={s} className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full font-medium">{s}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="text-right shrink-0 space-y-1">
+                <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">{h.availableBeds} <span className="text-gray-400 font-normal">/ {h.totalBeds} beds</span></div>
+              </div>
+              <button
+                onClick={() => toggleExpand(h.id)}
+                className="ml-2 px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:border-brand-400 hover:text-brand-600 transition-all shrink-0"
+              >
+                {expandedId === h.id ? 'Hide Staff' : 'Manage Staff'}
+              </button>
+            </div>
+
+            {/* Staff panel */}
+            {expandedId === h.id && (
+              <div className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black uppercase tracking-widest text-gray-500">Staff Login Accounts</span>
+                  <button
+                    onClick={() => setAddStaffFor(h.id)}
+                    className="text-xs px-3 py-1.5 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-colors"
+                  >
+                    + Add Staff Account
+                  </button>
+                </div>
+
+                {staffLoading === h.id ? (
+                  <div className="text-sm text-gray-400 py-4 text-center">Loading staff…</div>
+                ) : (staffMap[h.id] ?? []).length === 0 ? (
+                  <div className="text-sm text-gray-400 py-4 text-center">No staff accounts yet. Add one to allow hospital staff to log in.</div>
+                ) : (
+                  <div className="space-y-2">
+                    {(staffMap[h.id] ?? []).map((s: any) => (
+                      <div key={s.id} className="flex items-center gap-3 bg-white dark:bg-gray-900 rounded-xl px-4 py-3">
+                        <div className="w-8 h-8 rounded-full bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center text-brand-700 dark:text-brand-300 font-bold text-sm shrink-0">
+                          {s.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm text-gray-800 dark:text-white truncate">{s.name}</div>
+                          <div className="text-xs text-gray-500 truncate">{s.email}</div>
+                        </div>
+                        {s.phone && <div className="text-xs text-gray-400 shrink-0">{s.phone}</div>}
+                        <button
+                          onClick={() => handleDeleteStaff(h.id, s.id)}
+                          className="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors shrink-0"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Add staff modal */}
+      {addStaffFor && (
+        <AddStaffModal
+          hospital={hospitals.find(h => h.id === addStaffFor)!}
+          onClose={() => setAddStaffFor(null)}
+          onSuccess={() => { setAddStaffFor(null); refreshStaff(addStaffFor) }}
+          showToast={showToast}
+        />
+      )}
+    </div>
+  )
+}
+
+function AddStaffModal({ hospital, onClose, onSuccess, showToast }: any) {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' })
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (form.password !== form.confirmPassword) { showToast?.('Passwords do not match', 'error'); return }
+    if (form.password.length < 8) { showToast?.('Password must be at least 8 characters', 'error'); return }
+    setLoading(true)
+    try {
+      await hospitalApi.createStaff(hospital.id, {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        phone: form.phone || undefined,
+      })
+      showToast?.(`Staff account created for ${form.name}`)
+      onSuccess()
+    } catch (err: any) {
+      showToast?.(err?.response?.data?.message || 'Failed to create staff account', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+      <div className="suraksha-card w-full max-w-xl bg-white dark:bg-gray-900 p-10 space-y-8 shadow-2xl">
+
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-slate-50 dark:border-gray-800 pb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-brand-500">
+              <UserPlus className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-gray-800 dark:text-white/90">Hospital Staff Account</h2>
+              <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">{hospital.name}</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="p-2.5 hover:bg-gray-50 dark:bg-gray-800/50 rounded-xl transition-colors">
+            <X className="w-6 h-6 text-gray-400" />
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="col-span-2 space-y-2">
+              <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Full Name</label>
+              <input required className="suraksha-input" placeholder="Dr. Nimal Perera"
+                value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Email</label>
+              <input required type="email" className="suraksha-input" placeholder="nimal@hospital.lk"
+                value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Phone</label>
+              <input className="suraksha-input" placeholder="+94 77 123 4567"
+                value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Password</label>
+              <input required type="password" className="suraksha-input" placeholder="Min. 8 characters"
+                value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Confirm Password</label>
+              <input required type="password" className="suraksha-input" placeholder="Re-enter password"
+                value={form.confirmPassword} onChange={e => setForm(f => ({ ...f, confirmPassword: e.target.value }))} />
+            </div>
+          </div>
+          <button type="submit" disabled={loading} className="suraksha-button w-full h-14">
+            {loading ? 'Creating Account…' : 'Create Staff Account'}
+          </button>
         </form>
       </div>
     </div>
