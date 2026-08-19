@@ -85,7 +85,7 @@ async function fetchOpenMeteo(lat: number, lng: number): Promise<{ mmPerHour: nu
 
   // Current hour index (Colombo is UTC+5:30)
   const now = new Date();
-  const colomboHour = (now.getUTCHours() + 5) % 24 + (now.getUTCMinutes() >= 30 ? 1 : 0);
+  const colomboHour = Math.floor((now.getUTCHours() * 60 + now.getUTCMinutes() + 330) / 60) % 24;
   const idx = Math.min(colomboHour, data.hourly.precipitation.length - 1);
 
   const mmPerHour = data.hourly.precipitation[idx] ?? 0;

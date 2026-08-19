@@ -51,8 +51,33 @@ import HospitalDashboardPage from '@/pages/Hospital/HospitalDashboardPage'
 import HospitalReferralsPage from '@/pages/Hospital/HospitalReferralsPage'
 import HospitalCapacityPage from '@/pages/Hospital/HospitalCapacityPage'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Component, ErrorInfo, ReactNode } from 'react'
 import { io } from 'socket.io-client'
+
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  constructor(props: { children: ReactNode }) {
+    super(props)
+    this.state = { error: null }
+  }
+  static getDerivedStateFromError(error: Error) { return { error } }
+  componentDidCatch(error: Error, info: ErrorInfo) { console.error('[ErrorBoundary]', error, info) }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-8">
+          <div className="max-w-lg w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 space-y-4">
+            <h1 className="text-xl font-bold text-red-600">Page crashed</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-mono break-all">{this.state.error.message}</p>
+            <button onClick={() => this.setState({ error: null })} className="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-semibold">
+              Go back
+            </button>
+          </div>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 const queryClient = new QueryClient()
 
@@ -75,7 +100,12 @@ function GlobalAlertListener() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    const socket = io('http://localhost:3001');
+    const socket = io('http://localhost:3001', {
+      reconnectionAttempts: 3,
+      timeout: 5000,
+    });
+
+    socket.on('connect_error', () => { /* backend offline – silent */ });
 
     socket.on('new-alert', (alert) => {
       // Don't interrupt the admin on the alert management page itself
@@ -236,7 +266,7 @@ const ProtectedRoutes = () => {
         <Route path="/resources"      element={<StaffOnly><ResourcesPage /></StaffOnly>} />
         <Route path="/donations"      element={<StaffOnly><DonationsPage /></StaffOnly>} />
         <Route path="/river-mappings" element={<StaffOnly><RiverMappingsPage /></StaffOnly>} />
-        <Route path="/ai-research"    element={<StaffOnly><AIResearchPage /></StaffOnly>} />
+        <Route path="/ai-research"    element={<StaffOnly><ErrorBoundary><AIResearchPage /></ErrorBoundary></StaffOnly>} />
         <Route path="/water-monitor"  element={<StaffOnly><WaterMonitorPage /></StaffOnly>} />
 
         {/* ── Shared routes (all authenticated roles) ── */}

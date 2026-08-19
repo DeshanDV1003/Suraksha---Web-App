@@ -16,6 +16,7 @@ export default function RiverMappingsPage() {
   const [mappings, setMappings] = useState<DownstreamMapping[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<DownstreamMapping> | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMappings();
@@ -49,11 +50,15 @@ export default function RiverMappingsPage() {
         body: JSON.stringify(payload)
       });
       if (res.ok) {
+        setSaveError(null);
         setEditing(null);
         fetchMappings();
+      } else {
+        setSaveError('Failed to save mapping. Please try again.');
       }
     } catch (err) {
       console.error('Failed to save mapping', err);
+      setSaveError('Network error — could not save mapping.');
     }
   };
 
@@ -177,14 +182,17 @@ export default function RiverMappingsPage() {
               </div>
             </div>
 
+            {saveError && (
+              <p className="text-sm text-red-600 dark:text-red-400 mt-4">{saveError}</p>
+            )}
             <div className="flex justify-end gap-3 mt-8">
-              <button 
-                onClick={() => setEditing(null)}
+              <button
+                onClick={() => { setEditing(null); setSaveError(null); }}
                 className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 font-medium transition-colors"
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={handleSave}
                 className="px-5 py-2.5 rounded-xl bg-brand-500 text-white hover:bg-brand-600 font-medium transition-colors"
               >

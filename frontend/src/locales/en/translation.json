@@ -68,7 +68,10 @@
     "donations": "Donations",
     "family_safety": "Safety Roster",
     "river_mappings": "River Mappings",
-    "ai_research": "AI Research"
+    "ai_research": "AI Research",
+    "hospital_dashboard": "Hospital Dashboard",
+    "hospital_referrals": "Patient Referrals",
+    "hospital_capacity": "Ward Capacity"
   },
   "dashboard": {
     "title": "Dashboard",

@@ -945,7 +945,7 @@ function AnalyticsDrillDownModal({ category, incidents, onClose }: {
           <div className="col-span-2">
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">7-Day Incident Frequency</h3>
             <div className="h-56 w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                 <LineChart data={trendData}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148,163,184,0.15)" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 'bold' }} dy={10} />
@@ -965,7 +965,7 @@ function AnalyticsDrillDownModal({ category, incidents, onClose }: {
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Severity Mix</h3>
             {severityBreakdown.length > 0 ? (
               <div className="h-56">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                   <BarChart data={severityBreakdown} layout="vertical" barSize={14}>
                     <XAxis type="number" hide allowDecimals={false} />
                     <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: '#94a3b8', fontWeight: 'bold' }} width={56} />

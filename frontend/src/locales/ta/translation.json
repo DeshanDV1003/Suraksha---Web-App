@@ -68,6 +68,9 @@
     "family_safety": "பாதுகாப்பு பட்டியல்",
     "river_mappings": "ஆறு வரைபடங்கள்",
     "ai_research": "AI ஆராய்ச்சி",
+    "hospital_dashboard": "மருத்துவமனை டாஷ்போர்டு",
+    "hospital_referrals": "நோயாளி பரிந்துரைகள்",
+    "hospital_capacity": "வார்டு திறன்",
     "tasks": "பணி மேலாண்மை"
   },
   "dashboard": {

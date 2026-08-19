@@ -4,7 +4,8 @@ import PageBreadcrumb from '../components/common/PageBreadCrumb';
 import PageMeta from '../components/common/PageMeta';
 import { io } from 'socket.io-client';
 
-const API = 'http://localhost:3001/api/water';
+const BACKEND_URL = 'http://localhost:3001';
+const API = `${BACKEND_URL}/api/water`;
 
 interface RiverLevel {
   gaugeId: string; riverName: string; stationName: string; district: string;
@@ -19,7 +20,7 @@ interface RainfallReading {
 interface Prediction {
   gaugeId: string; riverName: string; stationName: string; district: string;
   currentLevelM: number; trend: string; changeFromLast: number; alertLevel: string;
-  watchThreshold: number;
+  watchThreshold: number; minorFloodLevel: number; majorFloodLevel: number;
   prediction: {
     predictedT1M: number; predictedT2M: number; confidence: number;
     alertLevel: string; modelUsed: string; reason: string; predictedAt: string;
@@ -97,6 +98,8 @@ export default function WaterMonitorPage() {
   const [lastUpdated, setLastUpdated]   = useState(new Date());
   const [loading, setLoading]           = useState(true);
   const [triggerLoading, setTriggerLoading] = useState(false);
+  const [demoLoading, setDemoLoading]   = useState(false);
+  const [demoResult, setDemoResult]     = useState<string | null>(null);
   const [activeTab, setActiveTab]       = useState<'ai' | 'river' | 'rainfall'>('ai');
 
   const fetchAll = useCallback(async () => {
@@ -118,7 +121,7 @@ export default function WaterMonitorPage() {
 
   useEffect(() => {
     fetchAll();
-    const socket = io('http://localhost:3001/water');
+    const socket = io(`${BACKEND_URL}/water`);
     socket.on('water_data_updated', fetchAll);
     return () => { socket.disconnect(); };
   }, [fetchAll]);
@@ -129,6 +132,26 @@ export default function WaterMonitorPage() {
       await fetch(`${API}/trigger-prediction`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
       await fetchAll();
     } finally { setTriggerLoading(false); }
+  };
+
+  const fireDemoAlert = async () => {
+    setDemoLoading(true);
+    setDemoResult(null);
+    try {
+      const res  = await fetch(`${API}/demo-alert`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+      const data = await res.json();
+      if (data.success) {
+        setDemoResult(`✓ Alert fired for ${data.gauge} (${data.district}) — level raised to ${data.demoLevel} m`);
+        await fetchAll();
+      } else {
+        setDemoResult(`✗ ${data.error}`);
+      }
+    } catch {
+      setDemoResult('✗ Request failed — is the backend running?');
+    } finally {
+      setDemoLoading(false);
+      setTimeout(() => setDemoResult(null), 8000);
+    }
   };
 
   /* ── derived stats ── */
@@ -162,16 +185,27 @@ export default function WaterMonitorPage() {
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('water_monitor_page.last_updated')} <span className="text-slate-700 dark:text-slate-200 font-medium">{lastUpdated.toLocaleTimeString()}</span></p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button onClick={fetchAll} className="px-4 py-2 text-xs font-semibold text-cyan-600 dark:text-cyan-400 border border-cyan-400/30 dark:border-cyan-400/20 rounded-xl hover:bg-cyan-50 dark:hover:bg-cyan-400/10 transition-all">
             ↻ {t('water_monitor_page.refresh')}
           </button>
           <button onClick={triggerPrediction} disabled={triggerLoading}
             className="px-4 py-2 text-xs font-bold bg-cyan-500 text-white rounded-xl hover:bg-cyan-400 disabled:opacity-50 transition-all flex items-center gap-2">
-            {triggerLoading ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('water_monitor_page.running')}</> : `🤖 ${t('water_monitor_page.run_ai')}`}
+            {triggerLoading ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />Running…</> : '🤖 Run AI'}
+          </button>
+          <button onClick={fireDemoAlert} disabled={demoLoading}
+            className="px-4 py-2 text-xs font-bold bg-red-500 text-white rounded-xl hover:bg-red-400 disabled:opacity-50 transition-all flex items-center gap-2">
+            {demoLoading ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />Firing…</> : '🚨 Demo Alert'}
           </button>
         </div>
       </div>
+
+      {/* ── Demo result banner ── */}
+      {demoResult && (
+        <div className={`px-5 py-3 rounded-xl text-sm font-medium border ${demoResult.startsWith('✓') ? 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-300 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300' : 'bg-red-50 dark:bg-red-500/10 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'}`}>
+          {demoResult}
+        </div>
+      )}
 
       {/* ── Stats row ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -265,8 +299,8 @@ export default function WaterMonitorPage() {
                     <LevelBar
                       current={p.currentLevelM}
                       watch={p.watchThreshold}
-                      minor={predictions.find(x => x.gaugeId === p.gaugeId) ? (p.watchThreshold * 1.3) : p.watchThreshold}
-                      major={p.watchThreshold * 1.8}
+                      minor={p.minorFloodLevel ?? p.watchThreshold * 1.3}
+                      major={p.majorFloodLevel ?? p.watchThreshold * 1.8}
                       predicted={pred?.predictedT1M}
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500 mt-1 mb-3">

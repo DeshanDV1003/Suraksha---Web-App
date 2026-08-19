@@ -68,6 +68,9 @@
     "family_safety": "ආරක්ෂා ලැයිස්තුව",
     "river_mappings": "ගංගා සිතියම",
     "ai_research": "AI පර්යේෂණ",
+    "hospital_dashboard": "රෝහල් උපකරණ පුවරුව",
+    "hospital_referrals": "රෝගී රෙෆරල්",
+    "hospital_capacity": "වාට් ධාරිතාව",
     "tasks": "කාර්ය කළමනාකරණය"
   },
   "dashboard": {

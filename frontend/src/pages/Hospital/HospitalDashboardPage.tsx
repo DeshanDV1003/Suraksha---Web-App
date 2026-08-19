@@ -56,9 +56,9 @@ export default function HospitalDashboardPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{hospital.name}</h1>
           <p className="text-sm text-gray-500 mt-1">{hospital.location}</p>
-          {hospital.specialties.length > 0 && (
+          {(hospital.specialties ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">
-              {hospital.specialties.map((s) => (
+              {(hospital.specialties ?? []).map((s) => (
                 <span key={s} className="text-xs bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300 px-2 py-0.5 rounded-full font-medium">{s}</span>
               ))}
             </div>

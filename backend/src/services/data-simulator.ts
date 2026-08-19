@@ -4,7 +4,7 @@ import { WaterRiskLevel, RiverStatus, WaterTrend } from '../../prisma/generated/
 import prisma from '../utils/prisma';
 
 const CSV_PATH = process.env.WEATHER_CSV_PATH ||
-  path.join(__dirname, '../../../../suraksha-ml/synthetic_flood_dataset_real_stations.csv');
+  path.join(__dirname, '../../../suraksha-ml/synthetic_flood_dataset_real_stations.csv');
 
 // ── CSV parsing ───────────────────────────────────────────────────────────────
 interface CsvRow {

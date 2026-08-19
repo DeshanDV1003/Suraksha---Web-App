@@ -90,9 +90,11 @@ export default function TokensPage() {
 
       const donorsRes = await reliefTokenService.getDonorCampaigns()
       setDonors(donorsRes.data)
-    } catch (error) {
-      console.error('Failed to fetch data:', error)
-      showToast('Failed to load token information', 'error')
+    } catch (error: any) {
+      if (error?.response?.status !== 403) {
+        console.error('Failed to fetch data:', error)
+        showToast('Failed to load token information', 'error')
+      }
     } finally {
       setLoading(false)
     }

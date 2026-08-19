@@ -51,7 +51,8 @@ export default function HospitalReferralsPage() {
   const load = () => {
     setLoading(true)
     hospitalApi.getReferrals({ status: statusFilter || undefined, page, limit: 15 })
-      .then((d) => { setReferrals(d.referrals); setTotal(d.total) })
+      .then((d) => { setReferrals(d.referrals ?? []); setTotal(d.total ?? 0) })
+      .catch(() => { setReferrals([]); setTotal(0) })
       .finally(() => setLoading(false))
   }
 
@@ -60,7 +61,11 @@ export default function HospitalReferralsPage() {
   // Join hospital socket room for real-time referral notifications
   useEffect(() => {
     if (!user?.hospitalId) return
-    const socket = io('http://localhost:3001')
+    const socket = io('http://localhost:3001', {
+      reconnectionAttempts: 3,
+      timeout: 5000,
+    })
+    socket.on('connect_error', () => { /* backend offline – silent */ })
     socket.emit('join_hospital', user.hospitalId)
     socket.on('new-referral', () => {
       setNewAlert(true)
@@ -77,10 +82,12 @@ export default function HospitalReferralsPage() {
   const saveUpdate = async () => {
     if (!selected) return
     setSaving(true)
-    await hospitalApi.updateReferral(selected.id, updateForm)
-    setSaving(false)
-    setSelected(null)
-    load()
+    try {
+      await hospitalApi.updateReferral(selected.id, updateForm)
+      setSelected(null)
+      load()
+    } catch { /* silent — referral stays selected */ }
+    finally { setSaving(false) }
   }
 
   const pages = Math.ceil(total / 15)

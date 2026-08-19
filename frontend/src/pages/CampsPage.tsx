@@ -769,7 +769,7 @@ export default function CampsPage() {
 
   const totalPeople = camps.reduce((acc, c) => acc + (c.currentOccupancy || 0), 0)
   const avgOccupancy = camps.length > 0 
-    ? Math.round(camps.reduce((acc, c) => acc + ((c.currentOccupancy / c.totalCapacity) * 100), 0) / camps.length) 
+    ? Math.round(camps.reduce((acc, c) => acc + (c.totalCapacity > 0 ? (c.currentOccupancy / c.totalCapacity) * 100 : 0), 0) / camps.length)
     : 0
 
   const stats = [

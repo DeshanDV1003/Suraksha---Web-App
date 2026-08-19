@@ -27,6 +27,8 @@ import {
   Waves,
   Brain,
   ClipboardList,
+  Hospital,
+  BedDouble,
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,6 +43,12 @@ type NavItem = {
 
 const ALL_STAFF = ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER'];
 const ALL_ROLES = ['ADMIN', 'DMC_OFFICER', 'FIELD_RESPONDER', 'VOLUNTEER', 'CITIZEN'];
+
+const hospitalItems: NavItem[] = [
+  { icon: <Hospital className="w-5 h-5" />, nameKey: "nav.hospital_dashboard", path: "/hospital", roles: ['HOSPITAL_STAFF'] },
+  { icon: <BedDouble className="w-5 h-5" />, nameKey: "nav.hospital_referrals", path: "/hospital/referrals", roles: ['HOSPITAL_STAFF'] },
+  { icon: <Package className="w-5 h-5" />, nameKey: "nav.hospital_capacity", path: "/hospital/capacity", roles: ['HOSPITAL_STAFF'] },
+];
 
 const mainItems: NavItem[] = [
   { icon: <LayoutDashboard className="w-5 h-5" />, nameKey: "nav.dashboard", path: "/", roles: ALL_STAFF },
@@ -92,6 +100,7 @@ const AppSidebar: React.FC = () => {
   const filteredResource = filterByRole(resourceItems);
   const filteredSafety   = filterByRole(safetyItems);
   const filteredSystem   = filterByRole(systemItems);
+  const filteredHospital = filterByRole(hospitalItems);
 
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: string;
@@ -329,6 +338,19 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? t('nav.safety_support') : <MoreHorizontal className="w-5 h-5" />}
               </h2>
               {renderMenuItems(filteredSafety, "safety")}
+            </div>
+            )}
+
+            {filteredHospital.length > 0 && (
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 dark:text-cyan-400/50 font-semibold tracking-widest ${
+                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? 'Hospital' : <MoreHorizontal className="w-5 h-5" />}
+              </h2>
+              {renderMenuItems(filteredHospital, "hospital")}
             </div>
             )}
 

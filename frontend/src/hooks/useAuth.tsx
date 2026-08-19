@@ -95,6 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const { token, user: userData } = res.data
+    if (!token || !userData) throw new Error('Invalid login response from server')
     localStorage.setItem('token', token)
     localStorage.setItem('user', JSON.stringify(userData))
     setUser(userData)

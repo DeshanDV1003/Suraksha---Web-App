@@ -200,7 +200,7 @@ export default function ReportsPage() {
             <h3 className="text-xl font-black text-gray-800 dark:text-white/90">{t('reports_page.resource_utilization')}</h3>
           </div>
           <div className="h-[300px]" style={{ minWidth: 0 }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <BarChart data={data.resourceUtilization || []} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9"/>
                 <XAxis type="number" hide />
@@ -245,7 +245,7 @@ export default function ReportsPage() {
           </div>
           {data.incidents.total > 0 ? (
             <div className="h-[180px]" style={{ minWidth: 0 }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                 <PieChart>
                   <Pie data={dynamicPriorityData} cx="50%" cy="50%" innerRadius={45} outerRadius={72} paddingAngle={3} dataKey="value">
                     {dynamicPriorityData.map((entry: any, index: number) => (
@@ -279,7 +279,7 @@ export default function ReportsPage() {
             <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('reports_page.seven_day')}</span>
           </div>
           <div className="h-[260px] w-full" style={{ minWidth: 0 }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <AreaChart data={data.volunteerHours || []}>
                 <defs>
                   <linearGradient id="colorHours2" x1="0" y1="0" x2="0" y2="1">
@@ -304,7 +304,7 @@ export default function ReportsPage() {
             <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('reports_page.seven_day')}</span>
           </div>
           <div className="h-[260px] w-full" style={{ minWidth: 0 }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <BarChart data={data.weeklyTrends}>
                 <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="#f8fafc" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} dy={10} />

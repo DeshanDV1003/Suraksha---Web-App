@@ -185,9 +185,9 @@ function SituationSummaryPanel() {
             ))}
           </div>
           <div className="space-y-3">
-            {data.sentences.map((s, i) => (
+            {(data.sentences ?? []).map((s, i) => (
               <div key={i} className={cn('text-sm leading-relaxed p-3 rounded-xl',
-                i === data.sentences.length - 1
+                i === (data.sentences?.length ?? 0) - 1
                   ? 'bg-amber-500/5 border border-amber-500/15 text-amber-300/70 text-xs'
                   : 'text-slate-300 bg-white/3')}>
                 {s}
@@ -255,10 +255,10 @@ function DriftPanel() {
             </div>
             <MetricBar value={data.avg_model_confidence} color="bg-cyan-500" />
           </div>
-          {data.anomalies.length > 0 && (
+          {(data.anomalies?.length ?? 0) > 0 && (
             <div className="space-y-2 mb-4">
               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Anomalies</p>
-              {data.anomalies.map((a, i) => (
+              {(data.anomalies ?? []).map((a, i) => (
                 <div key={i} className="flex gap-2 p-2.5 bg-amber-500/5 border border-amber-500/15 rounded-lg">
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
                   <span className="text-xs text-amber-300/80">{a}</span>
@@ -313,11 +313,11 @@ function OptimizationPanel() {
               </div>
             ))}
           </div>
-          {data.allocations.length > 0 && (
+          {(data.allocations?.length ?? 0) > 0 && (
             <div>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Allocations ({data.allocations.length})</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Allocations ({data.allocations?.length})</p>
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {data.allocations.slice(0, 10).map((a: any, i: number) => (
+                {(data.allocations ?? []).slice(0, 10).map((a: any, i: number) => (
                   <div key={i} className="flex items-start gap-2 p-2.5 bg-white/5 rounded-lg">
                     <StatusBadge level={a.priority} />
                     <div className="flex-1 min-w-0">
@@ -329,9 +329,9 @@ function OptimizationPanel() {
               </div>
             </div>
           )}
-          {data.unmet_requests.length > 0 && (
+          {(data.unmet_requests?.length ?? 0) > 0 && (
             <div className="mt-3 p-3 bg-red-500/5 border border-red-500/20 rounded-xl">
-              <p className="text-xs text-red-400 font-bold">{data.unmet_requests.length} requests unmet — no available resource or volunteer matched.</p>
+              <p className="text-xs text-red-400 font-bold">{data.unmet_requests?.length} requests unmet — no available resource or volunteer matched.</p>
             </div>
           )}
         </>
@@ -403,10 +403,10 @@ function TeamComposerPanel() {
               </div>
             ))}
           </div>
-          {data.skills_uncovered.length > 0 && (
+          {(data.skills_uncovered?.length ?? 0) > 0 && (
             <div className="p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl">
               <p className="text-xs text-amber-400">
-                Missing skills: {data.skills_uncovered.join(', ')}
+                Missing skills: {(data.skills_uncovered ?? []).join(', ')}
               </p>
             </div>
           )}

@@ -44,11 +44,11 @@ export async function getPrediction(
 ): Promise<WaterPrediction | null> {
   try {
     // Fetch last 12 readings from DB (newest last)
-    const readings = await prisma.riverWaterLevel.findMany({
+    const readings = (await prisma.riverWaterLevel.findMany({
       where:   { gaugeId },
-      orderBy: { recordedAt: 'asc' },
+      orderBy: { recordedAt: 'desc' },
       take:    12,
-    });
+    })).reverse(); // newest-last so the LSTM sees chronological order
 
     if (readings.length < 3) {
       console.warn(`[WaterPredictor] Gauge ${gaugeId}: only ${readings.length} readings, need ≥3`);

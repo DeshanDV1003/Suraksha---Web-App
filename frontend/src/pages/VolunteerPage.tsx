@@ -397,7 +397,7 @@ export default function VolunteerPage() {
           <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">
-                <div className="text-4xl font-black text-blue-400 mb-1">{profile.totalHours.toFixed(0)}</div>
+                <div className="text-4xl font-black text-blue-400 mb-1">{profile.totalHours?.toFixed(0) ?? '0'}</div>
                 <div className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{t('volunteer_page.total_active_hours')}</div>
               </div>
               <div className="suraksha-card p-6 flex flex-col items-center justify-center text-center">

@@ -96,7 +96,14 @@ router.get('/situation-summary', authenticateToken, async (req: Request, res: Re
   try {
     const hours = parseInt(req.query.hours as string) || 2;
     const result = await getSituationSummary(hours);
-    if (!result) return res.status(503).json({ message: 'ML service unavailable' });
+    if (!result) {
+      res.json({
+        summary_text: "AI service is currently unavailable.",
+        key_points: ["The backend ML service could not be reached."],
+        severity_trend: "STABLE"
+      });
+      return;
+    }
     res.json(result);
   } catch (err: any) {
     res.status(500).json({ message: 'Situation summary failed', error: err.message });

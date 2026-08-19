@@ -345,7 +345,11 @@ export default function SupportPage() {
 
   // Create socket ONCE
   useEffect(() => {
-    socketRef.current = io('http://localhost:3001')
+    socketRef.current = io('http://localhost:3001', {
+      reconnectionAttempts: 3,
+      timeout: 5000,
+    })
+    socketRef.current.on('connect_error', () => { /* backend offline – silent */ })
     socketRef.current.on('receive_message', (message) => {
       if (activeChatRef.current && message.sessionId === activeChatRef.current.id) {
         setActiveChat((prev: any) => ({

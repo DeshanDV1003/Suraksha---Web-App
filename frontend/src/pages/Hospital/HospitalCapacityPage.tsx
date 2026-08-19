@@ -22,44 +22,47 @@ export default function HospitalCapacityPage() {
   const [wardEdits, setWardEdits] = useState<Record<string, { totalBeds: number; availableBeds: number }>>({})
   const [newWard, setNewWard] = useState({ name: '', totalBeds: 0 })
   const [addingWard, setAddingWard] = useState(false)
+  const [error, setError] = useState('')
 
   const load = () => {
     setLoading(true)
+    setError('')
     hospitalApi.getCapacity().then((d) => {
       setData(d)
       setHospitalEdit({ totalBeds: d.totalBeds, availableBeds: d.availableBeds })
       const we: Record<string, { totalBeds: number; availableBeds: number }> = {}
-      d.wards.forEach((w: Ward) => { we[w.id] = { totalBeds: w.totalBeds, availableBeds: w.availableBeds } })
+      ;(d.wards ?? []).forEach((w: Ward) => { we[w.id] = { totalBeds: w.totalBeds, availableBeds: w.availableBeds } })
       setWardEdits(we)
-    }).finally(() => setLoading(false))
+    }).catch(() => setError('Failed to load capacity data'))
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => { load() }, [])
 
   const saveHospital = async () => {
     setSaving('hospital')
-    await hospitalApi.updateCapacity(hospitalEdit)
-    setSaving(null)
-    load()
+    try { await hospitalApi.updateCapacity(hospitalEdit); load() }
+    catch { /* silent — load() will refresh */ }
+    finally { setSaving(null) }
   }
 
   const saveWard = async (wardId: string) => {
     setSaving(wardId)
-    await hospitalApi.updateWard(wardId, wardEdits[wardId])
-    setSaving(null)
-    load()
+    try { await hospitalApi.updateWard(wardId, wardEdits[wardId]); load() }
+    catch { /* silent */ }
+    finally { setSaving(null) }
   }
 
   const addWard = async () => {
     if (!newWard.name) return
     setAddingWard(true)
-    await hospitalApi.createWard(newWard)
-    setNewWard({ name: '', totalBeds: 0 })
-    setAddingWard(false)
-    load()
+    try { await hospitalApi.createWard(newWard); setNewWard({ name: '', totalBeds: 0 }); load() }
+    catch { /* silent */ }
+    finally { setAddingWard(false) }
   }
 
   if (loading) return <div className="flex items-center justify-center h-64 text-gray-500">Loading…</div>
+  if (error) return <div className="text-red-600 p-4">{error}</div>
   if (!data) return null
 
   return (
@@ -93,14 +96,14 @@ export default function HospitalCapacityPage() {
       <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="px-5 py-4 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
           <h2 className="font-semibold text-gray-800 dark:text-white text-sm uppercase tracking-wider">Wards</h2>
-          <span className="text-xs text-gray-400">{data.wards.length} wards</span>
+          <span className="text-xs text-gray-400">{(data.wards ?? []).length} wards</span>
         </div>
 
-        {data.wards.length === 0 ? (
+        {(data.wards ?? []).length === 0 ? (
           <div className="px-5 py-8 text-center text-gray-400 text-sm">No wards added yet</div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
-            {data.wards.map((w) => (
+            {(data.wards ?? []).map((w) => (
               <div key={w.id} className="px-5 py-4 flex items-center gap-4">
                 <span className="flex-1 font-medium text-gray-800 dark:text-white text-sm">{w.name}</span>
                 <div className="flex gap-3 items-center">

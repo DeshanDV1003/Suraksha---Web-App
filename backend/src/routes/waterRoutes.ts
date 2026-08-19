@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import prisma from '../utils/prisma';
 import { getPrediction, checkMLServiceOnline } from '../services/water-predictor';
+import { createAndEmitAlert } from '../services/alert-generator';
+import { getIO } from '../utils/socketInstance';
 import { sendTelegramTestMessage } from '../services/telegram-alert';
 
 const router = Router();
@@ -50,16 +52,18 @@ router.get('/predictions', async (_req, res) => {
         };
         const pred = await getPrediction(g.gaugeId, thresholds);
         return {
-          gaugeId:        g.gaugeId,
-          riverName:      g.riverName,
-          stationName:    g.stationName,
-          district:       g.district,
-          currentLevelM:  g.waterLevelMetres,
-          trend:          g.trend,
-          changeFromLast: g.changeFromLastHour,
-          alertLevel:     g.status,
-          watchThreshold: g.alertLevel,
-          prediction:     pred,
+          gaugeId:          g.gaugeId,
+          riverName:        g.riverName,
+          stationName:      g.stationName,
+          district:         g.district,
+          currentLevelM:    g.waterLevelMetres,
+          trend:            g.trend,
+          changeFromLast:   g.changeFromLastHour,
+          alertLevel:       g.status,
+          watchThreshold:   g.alertLevel,
+          minorFloodLevel:  g.minorFloodLevel,
+          majorFloodLevel:  g.majorFloodLevel,
+          prediction:       pred,
         };
       })
     );
@@ -149,6 +153,76 @@ router.get('/ml-status', async (_req, res) => {
 router.post('/telegram-test', async (_req, res) => {
   const ok = await sendTelegramTestMessage();
   res.json({ success: ok, message: ok ? 'Test message sent to Telegram' : 'Failed — check TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in .env' });
+});
+
+// ─── DEMO ALERT (presentation use only) ──────────────────────────
+// Picks a real gauge from the DB, injects a flood-level reading,
+// fires the full alert pipeline (DB → notifications → socket → push),
+// then emits water_data_updated so the dashboard refreshes live.
+router.post('/demo-alert', async (req, res) => {
+  try {
+    const { gaugeId } = req.body as { gaugeId?: string };
+
+    // 1. Find the target gauge (use provided gaugeId or pick the first available)
+    const gauge = await prisma.riverWaterLevel.findFirst({
+      where: gaugeId ? { gaugeId } : undefined,
+      orderBy: { recordedAt: 'desc' },
+    });
+    if (!gauge) return res.status(404).json({ error: 'No gauges found in database. Run the simulator first.' });
+
+    // 2. Set demo level = minorFloodLevel + 0.5 m (clearly above every threshold)
+    const demoLevel = parseFloat((gauge.minorFloodLevel + 0.5).toFixed(2));
+    const prevLevel = gauge.waterLevelMetres;
+    const rise      = parseFloat((demoLevel - prevLevel).toFixed(2));
+
+    // 3. Insert a new high-level reading for this gauge (keeps full audit trail)
+    await prisma.riverWaterLevel.create({
+      data: {
+        gaugeId:           gauge.gaugeId,
+        riverName:         gauge.riverName,
+        stationName:       gauge.stationName,
+        district:          gauge.district,
+        latitude:          gauge.latitude,
+        longitude:         gauge.longitude,
+        waterLevelMetres:  demoLevel,
+        flowRateCumecs:    gauge.flowRateCumecs * 1.8,
+        alertLevel:        gauge.alertLevel,
+        minorFloodLevel:   gauge.minorFloodLevel,
+        majorFloodLevel:   gauge.majorFloodLevel,
+        status:            'MINOR_FLOOD',
+        changeFromLastHour: rise,
+        trend:             'RISING',
+        recordedAt:        new Date(),
+        fetchedAt:         new Date(),
+        source:            'DEMO',
+      },
+    });
+
+    // 4. Fire the full alert pipeline — same function the ML predictor uses
+    const title   = `🚨 Flood Alert — ${gauge.riverName} @ ${gauge.stationName}`;
+    const message = `Water level has risen to ${demoLevel} m (Minor Flood threshold: ${gauge.minorFloodLevel} m). ` +
+                    `Rise of ${rise > 0 ? '+' : ''}${rise} m in the last hour. Residents in ${gauge.district} district should move to higher ground.`;
+
+    const alert = await createAndEmitAlert(title, message, 'EMERGENCY', [gauge.district], 'ml-water-predictor');
+
+    // 5. Tell all dashboards to refresh their water level data
+    const io = getIO();
+    io.of('/water').emit('water_data_updated', { timestamp: new Date().toISOString() });
+    io.emit('water_data_updated', { timestamp: new Date().toISOString() });
+
+    res.json({
+      success:    true,
+      gauge:      `${gauge.riverName} @ ${gauge.stationName}`,
+      district:   gauge.district,
+      prevLevel,
+      demoLevel,
+      alertId:    alert?.id,
+      message:    `Demo alert fired. Dashboard and mobile apps will refresh automatically.`,
+    });
+  } catch (err) {
+    console.error('[Demo] Alert failed:', err);
+    res.status(500).json({ error: 'Demo alert failed', detail: String(err) });
+  }
 });
 
 // Get mappings
