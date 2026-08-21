@@ -11,10 +11,11 @@ const calculatePriority = (text: string) => {
 // 1. Citizen Self-Service Request Portal
 export const submitPublicRequest = async (data: any) => {
   const priority = calculatePriority(`${data.type} ${data.description}`);
-  
+  const { name, phone, ...helpData } = data;
+
   return prisma.helpRequest.create({
     data: {
-      ...data,
+      ...helpData,
       priority,
       status: 'PENDING'
     }
