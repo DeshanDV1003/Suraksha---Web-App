@@ -50,6 +50,7 @@ import CitizenDashboardPage from '@/pages/CitizenDashboardPage'
 import HospitalDashboardPage from '@/pages/Hospital/HospitalDashboardPage'
 import HospitalReferralsPage from '@/pages/Hospital/HospitalReferralsPage'
 import HospitalCapacityPage from '@/pages/Hospital/HospitalCapacityPage'
+import NotificationsPage from '@/pages/NotificationsPage'
 
 import { useEffect, useState, Component, ErrorInfo, ReactNode } from 'react'
 import { io } from 'socket.io-client'
@@ -283,6 +284,7 @@ const ProtectedRoutes = () => {
         <Route path="/support"          element={<SupportPage />} />
         <Route path="/family-safety"    element={<FamilySafetyPage />} />
         <Route path="/settings"         element={<SettingsPage />} />
+        <Route path="/notifications"    element={<NotificationsPage />} />
 
         {/* ── Hospital staff routes ── */}
         <Route path="/hospital"           element={<HospitalOnly><HospitalDashboardPage /></HospitalOnly>} />

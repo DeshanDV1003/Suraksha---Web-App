@@ -113,7 +113,7 @@ export async function chat(
   messages.push({ role: 'user', content: message });
 
   const completion = await groq.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: 'openai/gpt-oss-20b',
     messages: [
       { role: 'system', content: systemWithContext },
       ...messages,
@@ -122,5 +122,8 @@ export async function chat(
     temperature: 0.7,
   });
 
-  return completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+  const raw = completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+  // Strip any residual <think>...</think> blocks as a safety net
+  const clean = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+  return clean || 'Sorry, I could not generate a response.';
 }
