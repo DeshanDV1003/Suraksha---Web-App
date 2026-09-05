@@ -1,31 +1,76 @@
 {
-  "version": "v2.0_real_dmc",
-  "trained_at": "2026-09-05T18:47:44.113030",
-  "data_source": "REAL_DMC_105744_RECORDS",
-  "total_records": 146544,
-  "valid_records": 143613,
-  "district_month_cells": 295,
-  "districts": 27,
+  "version": "v3.0_real_dmc_one_month_ahead",
+  "trained_at": "2026-09-05T22:32:28.484772",
+  "data_source": "REAL_DMC_DI_report105745 (events 1990-2026)",
+  "task": "Predict a district's composite disaster-risk score for month t using only information available through month t-1.",
+  "usable_event_rows": 112040,
+  "cells_total": 11100,
+  "cells_non_empty": 7556,
+  "training_samples": 8100,
+  "test_samples": 2700,
+  "split": "chronological: train year < 2018, test year >= 2018",
   "model_type": "GradientBoostingRegressor",
-  "n_estimators": 200,
-  "test_mae": 0.018182,
-  "test_r2": 0.7527,
-  "cv_r2_mean": 0.0534,
-  "cv_r2_std": 0.1729,
-  "risk_tier_classification_accuracy": 1.0,
-  "caveat": "Only 295 district-month cells with real incident data (27 districts x 12 months), so the 20% test split is a small sample and R2/accuracy can vary noticeably by random_state. district_code is a plain categorical feature, so the model can largely learn per-district historical baselines rather than deeper spatiotemporal dynamics -- this is expected given the data volume, not a training bug.",
+  "n_estimators": 400,
+  "test_mae": 0.075803,
+  "test_r2": 0.2313,
+  "persistence_baseline_r2": -0.014,
+  "cv_r2_mean": 0.5283,
+  "cv_r2_std": 0.091,
+  "risk_tier_accuracy_4tier": 0.9459,
+  "risk_tier_accuracy_3bucket": 0.9459,
   "features": [
     "district_code",
     "month",
+    "month_sin",
+    "month_cos",
+    "year_norm",
     "coastal",
     "mountain",
     "rainfall_proxy",
-    "flood_ratio",
-    "landslide_ratio",
-    "fire_ratio",
-    "wind_ratio",
-    "drought_ratio",
-    "other_ratio"
+    "lag1_risk",
+    "lag1_incidents",
+    "lag1_deaths",
+    "lag2_risk",
+    "lag12_risk",
+    "roll3_risk_mean",
+    "roll3_incidents_sum",
+    "trail_flood_ratio",
+    "trail_landslide_ratio",
+    "trail_wind_ratio"
+  ],
+  "top_features": [
+    {
+      "name": "roll3_incidents_sum",
+      "importance": 0.4816
+    },
+    {
+      "name": "lag1_incidents",
+      "importance": 0.2069
+    },
+    {
+      "name": "lag12_risk",
+      "importance": 0.0621
+    },
+    {
+      "name": "year_norm",
+      "importance": 0.0578
+    },
+    {
+      "name": "roll3_risk_mean",
+      "importance": 0.0409
+    },
+    {
+      "name": "lag1_risk",
+      "importance": 0.0366
+    },
+    {
+      "name": "lag2_risk",
+      "importance": 0.0213
+    },
+    {
+      "name": "trail_flood_ratio",
+      "importance": 0.0206
+    }
   ],
   "risk_weights": {
     "death_score": 0.3,
@@ -33,5 +78,6 @@
     "people_score": 0.2,
     "loss_score": 0.15,
     "house_score": 0.1
-  }
+  },
+  "notes": "v3.0 removes the two v2.0 problems: (1) no current-month outcome is a feature, so the target is not leaked; (2) ~thousands of (district,year,month) cells instead of 295 collapsed cells, with a chronological hold-out. R2 is now a real forecast skill number and is compared against a persistence baseline. risk_score_matrix.json is unchanged in shape (district -> month -> score) and now holds the multi-year climatology consumed by ml/spatiotemporal_forecaster.py."
 }

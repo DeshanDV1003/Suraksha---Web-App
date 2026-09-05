@@ -1,71 +1,26 @@
 {
-  "version": "v2.1_real_dmc_pdf_split",
-  "trained_at": "2026-09-05T19:22:26.955835",
-  "data_source": "REAL_DMC_SITUATION_REPORTS_300_PDFs + Curated Seeds",
-  "evaluation_methodology": "Silver-standard: both train and test labels come from the same gazetteer/regex auto-annotation, not independent human annotation. Scores here measure whether the neural model learned to reproduce the rule-based labeller on unseen PDFs, not ground-truth extraction quality. The train/test split is done at the PDF level (not sentence level) so no boilerplate or curated-seed sentence is shared between splits \u2014 this removes the exact-duplicate leakage the previous version had, but does not remove the silver-label circularity. COUNT/DATE/DAMAGE are purely regex-defined, so high scores there mainly show the model imitates the regex; LOC/INCIDENT scores are more informative since they depend on context, not just pattern match.",
-  "total_examples": 1509,
-  "train_examples": 1272,
-  "test_examples": 237,
-  "entity_labels": [
-    "LOC",
-    "INCIDENT",
-    "COUNT",
-    "DATE",
-    "DAMAGE"
-  ],
-  "entity_coverage": {
-    "LOC": 997,
-    "INCIDENT": 502,
-    "COUNT": 86,
-    "DATE": 131,
-    "DAMAGE": 15
-  },
-  "iterations_run": 6,
-  "best_loss": 31.4336,
-  "macro_f1": 0.7093,
-  "micro_f1": 0.9412,
-  "macro_precision": 0.7818,
-  "macro_recall": 0.6709,
+  "version": "v2.2_real_dmc_pdf_split_broader_damage_count",
+  "trained_at": "2026-09-05T21:55:00",
+  "data_source": "REAL_DMC_SITUATION_REPORTS_600_PDFs + Curated Seeds",
+  "evaluation_methodology": "Silver-standard: both train and test labels come from the same gazetteer/regex auto-annotation, not independent human annotation. Scores measure whether the neural model reproduces the rule-based labeller on unseen PDFs (PDF-level 80/20 split, curated seeds train-only), not ground-truth extraction quality. v2.2 activates the previously-unused DAMAGE keyword list (descriptive damage phrases, not just LKR money regex), expands COUNT unit nouns from ~8 to ~30, and raises the PDF sample from 90 to 600 so DAMAGE/COUNT instances survive into the held-out test split.",
+  "entity_labels": ["LOC", "INCIDENT", "COUNT", "DATE", "DAMAGE"],
+  "iterations_run": 18,
+  "best_loss": 76.1903,
+  "macro_f1": 0.9621,
+  "micro_f1": 0.9635,
+  "macro_precision": 0.9902,
+  "macro_recall": 0.9385,
   "per_class_metrics": {
-    "LOC": {
-      "precision": 0.9091,
-      "recall": 0.9524,
-      "f1": 0.9302,
-      "tp": 80,
-      "fp": 8,
-      "fn": 4
-    },
-    "INCIDENT": {
-      "precision": 1.0,
-      "recall": 0.9545,
-      "f1": 0.9767,
-      "tp": 21,
-      "fp": 0,
-      "fn": 1
-    },
-    "COUNT": {
-      "precision": 1.0,
-      "recall": 0.5,
-      "f1": 0.6667,
-      "tp": 1,
-      "fp": 0,
-      "fn": 1
-    },
-    "DATE": {
-      "precision": 1.0,
-      "recall": 0.9474,
-      "f1": 0.973,
-      "tp": 18,
-      "fp": 0,
-      "fn": 1
-    },
-    "DAMAGE": {
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "tp": 0,
-      "fp": 0,
-      "fn": 0
-    }
+    "LOC": {"precision": 0.991, "recall": 0.9421, "f1": 0.9659, "tp": 878, "fp": 8, "fn": 54},
+    "INCIDENT": {"precision": 0.9938, "recall": 0.9489, "f1": 0.9709, "tp": 483, "fp": 3, "fn": 26},
+    "COUNT": {"precision": 0.975, "recall": 1.0, "f1": 0.9873, "tp": 39, "fp": 1, "fn": 0},
+    "DATE": {"precision": 0.9912, "recall": 0.8014, "f1": 0.8863, "tp": 113, "fp": 1, "fn": 28},
+    "DAMAGE": {"precision": 1.0, "recall": 1.0, "f1": 1.0, "tp": 82, "fp": 0, "fn": 0}
+  },
+  "previous_version": {
+    "version": "v2.1_real_dmc_pdf_split",
+    "macro_f1": 0.7093,
+    "micro_f1": 0.9412,
+    "note": "DAMAGE F1 was 0.0 (keyword list defined but never used in annotation); COUNT had only 2 test instances."
   }
 }

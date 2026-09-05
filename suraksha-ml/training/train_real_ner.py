@@ -523,7 +523,7 @@ model_info = {
 }
 info_path = os.path.join(MODELS_DIR, "ner_model_info.json")
 with open(info_path, "w") as f:
-    json.dump(model_info, f, indent=2)
+    json.dump(model_info, f, indent=2, default=float)
 print(f"  OK ner_model_info.json saved")
 
 print("\n" + "=" * 65)
