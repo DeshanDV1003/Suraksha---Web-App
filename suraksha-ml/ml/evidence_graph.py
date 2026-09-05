@@ -37,6 +37,7 @@ Output per report:
   research_metrics      — precision/recall proxies for evaluation
 """
 import math
+import os
 import re
 import logging
 from typing import List, Optional
@@ -44,6 +45,37 @@ from typing import List, Optional
 import numpy as np
 
 logger = logging.getLogger(__name__)
+
+# ── Trained Model 5 artifact: credibility tier/score model, trained on
+#    labelled synthetic crowdsourced scenarios (see
+#    training/train_real_credibility.py -- the real DMC export contains only
+#    official government-sourced records, so it has no genuine low-credibility
+#    examples to learn from). Used as an additional ML-based signal (B3)
+#    alongside the existing GAT heuristic and B1/B2 baselines below. ──────────
+_MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "models")
+_credibility_clf = None
+_credibility_reg = None
+_credibility_le = None
+try:
+    import joblib
+    _clf_path = os.path.join(_MODELS_DIR, "credibility_model.pkl")
+    _reg_path = os.path.join(_MODELS_DIR, "credibility_regressor.pkl")
+    _le_path  = os.path.join(_MODELS_DIR, "credibility_label_encoder.pkl")
+    if os.path.exists(_clf_path) and os.path.exists(_reg_path) and os.path.exists(_le_path):
+        _credibility_clf = joblib.load(_clf_path)
+        _credibility_reg = joblib.load(_reg_path)
+        _credibility_le  = joblib.load(_le_path)
+        logger.info("[R3] Loaded trained credibility model (Model 5).")
+except Exception as e:
+    logger.warning(f"[R3] Could not load trained credibility model, B3 disabled: {e}")
+
+# Feature order MUST match training/train_real_credibility.py::FEATURE_COLS
+_CREDIBILITY_FEATURE_COLS = [
+    "n_corroborating_reports", "has_gps", "gps_validity", "has_image",
+    "time_to_first_response_min", "n_prior_reports_from_source",
+    "report_text_length", "officer_confirmed", "contradicted_by_other_report",
+    "hour_of_day", "district_random_id",
+]
 
 # ── Edge type weights ──────────────────────────────────────────────────────────
 # Positive edges increase credibility; negative decrease it.
@@ -549,6 +581,50 @@ def baseline_xgboost(
     }
 
 
+def baseline_ml_credibility(
+    target_report: dict,
+    related_reports: List[dict],
+    verifications: Optional[List[dict]] = None,
+) -> Optional[dict]:
+    """
+    B3 — Trained ML credibility model (Model 5), scoring the same
+    behavioural signals its training data was built from: corroboration
+    count, GPS/image presence, response latency, source report history,
+    text length, and officer confirmation/contradiction. Returns None if
+    the trained model artifacts aren't available.
+    """
+    if _credibility_clf is None or _credibility_reg is None:
+        return None
+
+    n_related = len(related_reports or [])
+    n_verified = sum(1 for v in (verifications or []) if v.get("confirmed"))
+    n_contradicted = sum(1 for v in (verifications or []) if not v.get("confirmed"))
+    hour = target_report.get("timestamp_hour", 12)
+
+    features = np.array([[
+        min(n_related, 20),
+        1.0 if target_report.get("latitude") else 0.0,
+        1.0 if target_report.get("latitude") else 0.5,
+        1.0 if target_report.get("image_hash") else 0.0,
+        60.0,  # time_to_first_response_min -- not tracked on the report dict yet, neutral default
+        min(target_report.get("reports_submitted", 0), 60),
+        len(target_report.get("text", "")),
+        1.0 if n_verified > 0 else 0.0,
+        1.0 if n_contradicted > 0 else 0.0,
+        hour,
+        0,  # district_random_id -- distractor feature at train time, irrelevant here
+    ]], dtype=np.float32)
+
+    tier_pred = _credibility_le.inverse_transform(_credibility_clf.predict(features))[0]
+    score_pred = float(np.clip(_credibility_reg.predict(features)[0], 0.0, 1.0))
+
+    return {
+        "credibility_score": round(score_pred, 4),
+        "credibility_tier": str(tier_pred),
+        "method": "trained_ml_B3",
+    }
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Explainability: evidence narrative
 # ─────────────────────────────────────────────────────────────────────────────
@@ -560,6 +636,7 @@ def generate_evidence_narrative(
     target_report: dict,
     b1: dict,
     b2: dict,
+    b3: Optional[dict] = None,
 ) -> dict:
     """
     Generate a human-readable evidence narrative for the admin dashboard.
@@ -627,6 +704,7 @@ def generate_evidence_narrative(
         "baseline_comparison": {
             "B1_rule_based": b1["credibility_score"],
             "B2_xgboost": b2["credibility_score"],
+            **({"B3_trained_ml": b3["credibility_score"]} if b3 else {}),
             "proposed_GAT": score,
         },
     }
@@ -665,6 +743,7 @@ def verify_incident(
     # ── Step 3 & 4: Baselines ─────────────────────────────────────────────────
     b1 = baseline_rule_based(target_report, related, verifications)
     b2 = baseline_xgboost(target_report, related, verifications, weather_obs)
+    b3 = baseline_ml_credibility(target_report, related, verifications)
 
     # ── Step 5: XAI narrative ─────────────────────────────────────────────────
     narrative = generate_evidence_narrative(
@@ -674,6 +753,7 @@ def verify_incident(
         target_report=target_report,
         b1=b1,
         b2=b2,
+        b3=b3,
     )
 
     return {

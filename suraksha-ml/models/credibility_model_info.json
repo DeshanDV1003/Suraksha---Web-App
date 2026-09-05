@@ -1,0 +1,58 @@
+{
+  "version": "v3.0_synthetic_crowdsourced",
+  "trained_at": "2026-09-05T18:46:05.390191",
+  "data_source": "SYNTHETIC_CROWDSOURCED_SCENARIOS (NOT the real DMC official-records export)",
+  "why_not_real_dmc_data": "DI_report105745.xls contains only official government-sourced records (EOC/DDMCU/Police/District offices) with no citizen/anonymous/app-sourced reports, so it has no real examples of the low-credibility class this model needs to recognise. Training on it directly forced the label to be a formula of the same input features (100% accuracy, no real learning). This version instead uses labelled synthetic scenarios calibrated to the same source-trust domain knowledge used in ml/evidence_graph.py, with the label built from independent noise + corroboration signals rather than a 1:1 function of the model's own input features.",
+  "total_samples": 20000,
+  "features": [
+    "n_corroborating_reports",
+    "has_gps",
+    "gps_validity",
+    "has_image",
+    "time_to_first_response_min",
+    "n_prior_reports_from_source",
+    "report_text_length",
+    "officer_confirmed",
+    "contradicted_by_other_report",
+    "hour_of_day",
+    "district_random_id"
+  ],
+  "classifier": {
+    "type": "GradientBoostingClassifier",
+    "labels": [
+      "HIGH",
+      "MEDIUM",
+      "LOW"
+    ],
+    "accuracy": 0.8323,
+    "macro_f1": 0.8092,
+    "cv_5fold_macro_f1_mean": 0.7984,
+    "cv_5fold_macro_f1_std": 0.0016,
+    "per_class": {
+      "HIGH": {
+        "precision": 0.9067,
+        "recall": 0.8964,
+        "f1": 0.9015
+      },
+      "MEDIUM": {
+        "precision": 0.6533,
+        "recall": 0.6715,
+        "f1": 0.6623
+      },
+      "LOW": {
+        "precision": 0.8659,
+        "recall": 0.8619,
+        "f1": 0.8639
+      }
+    }
+  },
+  "regressor": {
+    "type": "GradientBoostingRegressor",
+    "mae": 0.075687
+  },
+  "credibility_thresholds": {
+    "high": 0.7,
+    "medium": 0.45,
+    "low": 0.0
+  }
+}

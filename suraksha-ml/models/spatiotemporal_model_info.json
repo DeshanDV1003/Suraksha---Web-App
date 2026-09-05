@@ -1,0 +1,37 @@
+{
+  "version": "v2.0_real_dmc",
+  "trained_at": "2026-09-05T18:47:44.113030",
+  "data_source": "REAL_DMC_105744_RECORDS",
+  "total_records": 146544,
+  "valid_records": 143613,
+  "district_month_cells": 295,
+  "districts": 27,
+  "model_type": "GradientBoostingRegressor",
+  "n_estimators": 200,
+  "test_mae": 0.018182,
+  "test_r2": 0.7527,
+  "cv_r2_mean": 0.0534,
+  "cv_r2_std": 0.1729,
+  "risk_tier_classification_accuracy": 1.0,
+  "caveat": "Only 295 district-month cells with real incident data (27 districts x 12 months), so the 20% test split is a small sample and R2/accuracy can vary noticeably by random_state. district_code is a plain categorical feature, so the model can largely learn per-district historical baselines rather than deeper spatiotemporal dynamics -- this is expected given the data volume, not a training bug.",
+  "features": [
+    "district_code",
+    "month",
+    "coastal",
+    "mountain",
+    "rainfall_proxy",
+    "flood_ratio",
+    "landslide_ratio",
+    "fire_ratio",
+    "wind_ratio",
+    "drought_ratio",
+    "other_ratio"
+  ],
+  "risk_weights": {
+    "death_score": 0.3,
+    "freq_score": 0.25,
+    "people_score": 0.2,
+    "loss_score": 0.15,
+    "house_score": 0.1
+  }
+}

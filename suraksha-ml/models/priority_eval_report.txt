@@ -1,0 +1,47 @@
+SURAKSHA Priority Classifier - Real DMC Data Retrain Report
+=================================================================
+
+Dataset          : DI_report105745.xls (REAL DMC)
+Total records    : 146,544
+Train / Test     : 117,235 / 29,309 (80/20 stratified)
+SMOTE            : Applied
+Model            : XGBClassifier (400 estimators)
+Feature schema   : 12-dim, identical to live ml/feature_builder.py
+Trained at       : 2026-09-05T13:15:00.815108+00:00
+
+-----------------------------------------------------------------
+PER-CLASS METRICS (test set)
+-----------------------------------------------------------------
+              precision    recall  f1-score   support
+
+    CRITICAL       0.54      0.86      0.67        74
+        HIGH       0.91      0.90      0.90      1764
+      MEDIUM       0.57      0.85      0.68      1007
+         LOW       1.00      0.98      0.99     26464
+
+    accuracy                           0.97     29309
+   macro avg       0.76      0.90      0.81     29309
+weighted avg       0.98      0.97      0.97     29309
+
+-----------------------------------------------------------------
+CONFUSION MATRIX
+Labels: ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
+[[   64    10     0     0]
+ [   52  1579   119    14]
+ [    2   134   858    13]
+ [    0     7   535 25922]]
+
+-----------------------------------------------------------------
+SUMMARY METRICS
+-----------------------------------------------------------------
+Overall Accuracy          : 0.9698
+Macro AUC-ROC (OvR)       : 0.9966
+Macro-F1 (all 4 classes)  : 0.8102
+Weighted-F1               : 0.9726
+3-class Macro-F1*         : 0.8589  (* HIGH/MEDIUM/LOW only)
+
+-----------------------------------------------------------------
+5-FOLD STRATIFIED CROSS-VALIDATION
+-----------------------------------------------------------------
+Fold Macro-F1 scores      : [0.8275, 0.838, 0.8262, 0.842, 0.8354]
+Mean +/- Std              : 0.8338 +/- 0.0061

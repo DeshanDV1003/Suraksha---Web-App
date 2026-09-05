@@ -1,10 +1,13 @@
 {
-  "version": "v1.0",
-  "trained_at": "2026-07-21T07:09:12.160979",
-  "epochs_run": 11,
-  "val_mae_normalised": 0.009755,
-  "val_mae_metres": 0.1364,
+  "version": "v3.0_real_dmc_bulletins",
+  "trained_at": "2026-09-05T20:07:58.916382",
+  "data_source": "REAL_DMC_RIVER_BULLETINS (2218 real PDFs total, random sample of 500 parsed directly)",
+  "epochs_run": 30,
+  "val_mae_normalised": 0.023355,
+  "val_mae_metres": 0.3426,
+  "naive_persistence_baseline_mae_metres": 0.3605,
   "sequence_length": 12,
+  "prediction_horizon": 2,
   "features": [
     "water_level_m",
     "rainfall_mm_hr",
@@ -14,5 +17,17 @@
     "rate_of_change",
     "month"
   ],
-  "data_source": "REAL_CSV"
+  "train_sequences": 7094,
+  "val_sequences": 1774,
+  "stations_used": 47,
+  "total_real_readings_parsed": 9940,
+  "bulletins_parsed_ok": 369,
+  "bulletins_failed": 131,
+  "scaler_fit": "training rows only (leakage-free)",
+  "caveats": [
+    "Reporting cadence is irregular (~3-8h between bulletins), so the 12-step sequence spans several real days, not a strict 12-hour window.",
+    "humidity_pct and temp_c are not in the real bulletins; set to the same defaults ml/lstm_water_predictor.py falls back to at inference time.",
+    "rainfall_24h_total is estimated by scaling the reported rolling-window rainfall rate to 24h, not a true rolling 24h sum.",
+    "The scaler's water_level_m range spans all 47 stations combined (very different rivers/gauges), so a hand-crafted or cross-station input sequence outside a specific station's normal range can cause poor LSTM extrapolation (verified: an out-of-distribution probe produced a wildly wrong prediction, while real per-station sequences from the training distribution predicted sensibly). Feed it real per-station readings, not synthetic probes spanning unrelated stations' ranges."
+  ]
 }

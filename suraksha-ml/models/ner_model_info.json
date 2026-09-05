@@ -1,0 +1,71 @@
+{
+  "version": "v2.1_real_dmc_pdf_split",
+  "trained_at": "2026-09-05T19:22:26.955835",
+  "data_source": "REAL_DMC_SITUATION_REPORTS_300_PDFs + Curated Seeds",
+  "evaluation_methodology": "Silver-standard: both train and test labels come from the same gazetteer/regex auto-annotation, not independent human annotation. Scores here measure whether the neural model learned to reproduce the rule-based labeller on unseen PDFs, not ground-truth extraction quality. The train/test split is done at the PDF level (not sentence level) so no boilerplate or curated-seed sentence is shared between splits \u2014 this removes the exact-duplicate leakage the previous version had, but does not remove the silver-label circularity. COUNT/DATE/DAMAGE are purely regex-defined, so high scores there mainly show the model imitates the regex; LOC/INCIDENT scores are more informative since they depend on context, not just pattern match.",
+  "total_examples": 1509,
+  "train_examples": 1272,
+  "test_examples": 237,
+  "entity_labels": [
+    "LOC",
+    "INCIDENT",
+    "COUNT",
+    "DATE",
+    "DAMAGE"
+  ],
+  "entity_coverage": {
+    "LOC": 997,
+    "INCIDENT": 502,
+    "COUNT": 86,
+    "DATE": 131,
+    "DAMAGE": 15
+  },
+  "iterations_run": 6,
+  "best_loss": 31.4336,
+  "macro_f1": 0.7093,
+  "micro_f1": 0.9412,
+  "macro_precision": 0.7818,
+  "macro_recall": 0.6709,
+  "per_class_metrics": {
+    "LOC": {
+      "precision": 0.9091,
+      "recall": 0.9524,
+      "f1": 0.9302,
+      "tp": 80,
+      "fp": 8,
+      "fn": 4
+    },
+    "INCIDENT": {
+      "precision": 1.0,
+      "recall": 0.9545,
+      "f1": 0.9767,
+      "tp": 21,
+      "fp": 0,
+      "fn": 1
+    },
+    "COUNT": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6667,
+      "tp": 1,
+      "fp": 0,
+      "fn": 1
+    },
+    "DATE": {
+      "precision": 1.0,
+      "recall": 0.9474,
+      "f1": 0.973,
+      "tp": 18,
+      "fp": 0,
+      "fn": 1
+    },
+    "DAMAGE": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    }
+  }
+}

@@ -46,11 +46,27 @@ Output:
   narrative     — XAI explanation including bias warning if applicable
 """
 
+import json
 import math
+import os
 import logging
 from typing import Dict, List, Optional
 
 logger = logging.getLogger(__name__)
+
+# ── Trained Model 4 artifact: real district-month historical risk matrix ───────
+# Computed from 146,544 real DMC incident records (see
+# training/train_real_spatiotemporal.py). Used as the empirical hazard prior
+# below in place of/alongside the hand-coded DISTRICT_BASE_HAZARD guesses,
+# whenever real historical data exists for a given district+month.
+_RISK_MATRIX_PATH = os.path.join(os.path.dirname(__file__), "..", "models", "risk_score_matrix.json")
+_RISK_MATRIX: Dict[str, Dict[str, float]] = {}
+try:
+    with open(_RISK_MATRIX_PATH) as f:
+        _RISK_MATRIX = json.load(f).get("risk_matrix", {})
+    logger.info(f"[R5] Loaded real district-month risk matrix ({len(_RISK_MATRIX)} districts).")
+except Exception as e:
+    logger.warning(f"[R5] Could not load risk_score_matrix.json, using hand-coded hazard priors only: {e}")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # District geography: adjacency graph (Sri Lanka districts)
@@ -178,6 +194,19 @@ SPATIAL_PROPAGATION_WEIGHT = 0.15
 # ─────────────────────────────────────────────────────────────────────────────
 # Bias estimation and correction
 # ─────────────────────────────────────────────────────────────────────────────
+
+def get_base_hazard(district: str, month: int) -> float:
+    """
+    Empirical hazard prior for a district+month, from real DMC incident
+    history (Model 4). Falls back to the hand-coded DISTRICT_BASE_HAZARD
+    guess when no real historical data exists for that exact cell (e.g. a
+    district/month combination with zero recorded incidents in the export).
+    """
+    real_value = _RISK_MATRIX.get(district, {}).get(str(month))
+    if real_value:
+        return real_value
+    return DISTRICT_BASE_HAZARD.get(district, 0.50)
+
 
 def estimate_reporting_bias(district: str) -> dict:
     """
@@ -437,8 +466,9 @@ def forecast_risk(
     temporal = temporal_risk_score(incident_history, forecast_horizon_hours, district)
     base_score = min(temporal["bias_corrected_temporal_score"], 1.0)
 
-    # ── Step 3: Base hazard prior ─────────────────────────────────────────────
-    base_hazard = DISTRICT_BASE_HAZARD.get(district, 0.50)
+    # ── Step 3: Base hazard prior (real historical district-month data where
+    #    available, Model 4 -- falls back to the hand-coded prior otherwise) ──
+    base_hazard = get_base_hazard(district, month)
 
     # ── Step 4: Seasonal adjustment ───────────────────────────────────────────
     seasonal = SEASONAL_MULTIPLIERS.get(month, 1.0)
