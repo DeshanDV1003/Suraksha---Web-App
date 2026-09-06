@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import prisma from '../utils/prisma';
-import { getPrediction, checkMLServiceOnline } from '../services/water-predictor';
+import { getPrediction, checkMLServiceOnline, savePrediction, refreshPredictions, PREDICTION_STALE_MS } from '../services/water-predictor';
 import { createAndEmitAlert } from '../services/alert-generator';
 import { getIO } from '../utils/socketInstance';
 import { sendTelegramTestMessage } from '../services/telegram-alert';
@@ -34,46 +34,110 @@ router.get('/river', async (req, res) => {
 });
 
 // ─── PREDICTIONS: all gauges ──────────────────────────────────────
-router.get('/predictions', async (_req, res) => {
-  try {
-    // Get distinct gauges
+// Served from the WaterLevelPrediction cache table (refreshed hourly by the
+// prediction cycle). Gauges with no cached row are computed inline (bounded);
+// gauges whose row is stale are returned as-is and refreshed in the background.
+// The assembled payload is also held in-process for a short TTL — the underlying
+// data only changes hourly, so this keeps the endpoint flat under load.
+let predictionsResponseCache: { body: any[]; expires: number } | null = null;
+let predictionsInFlight: Promise<any[]> | null = null;
+const PREDICTIONS_RESPONSE_TTL_MS = 60_000;
+
+async function buildPredictionsPayload(): Promise<any[]> {
     const gauges = await prisma.riverWaterLevel.findMany({
       distinct: ['gaugeId'],
       orderBy:  { recordedAt: 'desc' },
       take:     50,
     });
+    const gaugeIds = gauges.map(g => g.gaugeId);
 
-    const predictions = await Promise.allSettled(
-      gauges.map(async g => {
-        const thresholds = {
-          watch_m:    g.alertLevel,
-          warning_m:  g.minorFloodLevel,
-          critical_m: g.majorFloodLevel,
-        };
-        const pred = await getPrediction(g.gaugeId, thresholds);
-        return {
-          gaugeId:          g.gaugeId,
-          riverName:        g.riverName,
-          stationName:      g.stationName,
-          district:         g.district,
-          currentLevelM:    g.waterLevelMetres,
-          trend:            g.trend,
-          changeFromLast:   g.changeFromLastHour,
-          alertLevel:       g.status,
-          watchThreshold:   g.alertLevel,
-          minorFloodLevel:  g.minorFloodLevel,
-          majorFloodLevel:  g.majorFloodLevel,
-          prediction:       pred,
-        };
-      })
-    );
+    const cachedRows = await prisma.waterLevelPrediction.findMany({
+      where: { gaugeId: { in: gaugeIds } },
+    });
+    const cache = new Map(cachedRows.map(r => [r.gaugeId, r]));
+    const now = Date.now();
 
-    const results = predictions
-      .filter(p => p.status === 'fulfilled')
-      .map((p: any) => p.value);
+    const toPredObj = (c: (typeof cachedRows)[number]) => ({
+      gaugeId:      c.gaugeId,
+      predictedT1M: c.predictedT1M,
+      predictedT2M: c.predictedT2M,
+      confidence:   c.confidence,
+      alertLevel:   c.alertLevel,
+      modelUsed:    c.modelUsed,
+      reason:       c.reason,
+      predictedAt:  c.predictedAt.toISOString(),
+    });
 
-    res.json(results);
+    const missing: typeof gauges = [];
+    const stale:   typeof gauges = [];
+    for (const g of gauges) {
+      const c = cache.get(g.gaugeId);
+      if (!c) missing.push(g);
+      else if (now - c.computedAt.getTime() > PREDICTION_STALE_MS) stale.push(g);
+    }
+
+    // No cached row at all → compute now so the response still carries real data.
+    if (missing.length > 0) {
+      await Promise.allSettled(missing.map(async g => {
+        const pred = await getPrediction(g.gaugeId, {
+          watch_m: g.alertLevel, warning_m: g.minorFloodLevel, critical_m: g.majorFloodLevel,
+        });
+        if (pred) {
+          await savePrediction(pred);
+          cache.set(g.gaugeId, {
+            id: '', gaugeId: g.gaugeId, predictedT1M: pred.predictedT1M, predictedT2M: pred.predictedT2M,
+            confidence: pred.confidence, alertLevel: pred.alertLevel, modelUsed: pred.modelUsed,
+            reason: pred.reason, predictedAt: new Date(pred.predictedAt),
+            computedAt: new Date(), updatedAt: new Date(),
+          } as any);
+        }
+      }));
+    }
+
+    // Stale rows are returned immediately; refresh happens off the request path.
+    if (stale.length > 0) {
+      void refreshPredictions(stale.map(g => ({
+        gaugeId: g.gaugeId, alertLevel: g.alertLevel,
+        minorFloodLevel: g.minorFloodLevel, majorFloodLevel: g.majorFloodLevel,
+      })));
+    }
+
+    const results = gauges.map(g => {
+      const c = cache.get(g.gaugeId);
+      return {
+        gaugeId:          g.gaugeId,
+        riverName:        g.riverName,
+        stationName:      g.stationName,
+        district:         g.district,
+        currentLevelM:    g.waterLevelMetres,
+        trend:            g.trend,
+        changeFromLast:   g.changeFromLastHour,
+        alertLevel:       g.status,
+        watchThreshold:   g.alertLevel,
+        minorFloodLevel:  g.minorFloodLevel,
+        majorFloodLevel:  g.majorFloodLevel,
+        prediction:       c ? toPredObj(c) : null,
+        predictionStale:  c ? (now - c.computedAt.getTime() > PREDICTION_STALE_MS) : false,
+      };
+    });
+
+    predictionsResponseCache = { body: results, expires: Date.now() + PREDICTIONS_RESPONSE_TTL_MS };
+    return results;
+}
+
+router.get('/predictions', async (_req, res) => {
+  try {
+    if (predictionsResponseCache && Date.now() < predictionsResponseCache.expires) {
+      return res.json(predictionsResponseCache.body);
+    }
+    // Collapse a concurrent burst of cache-misses onto one build.
+    if (!predictionsInFlight) {
+      predictionsInFlight = buildPredictionsPayload().finally(() => { predictionsInFlight = null; });
+    }
+    const body = await predictionsInFlight;
+    res.json(body);
   } catch (err) {
+    console.error('[water/predictions] error:', err);
     res.status(500).json({ error: 'Failed to get predictions' });
   }
 });
@@ -99,7 +163,25 @@ router.get('/predictions/:gaugeId', async (req, res) => {
       warning_m:  latest.minorFloodLevel,
       critical_m: latest.majorFloodLevel,
     };
-    const prediction = await getPrediction(gaugeId, thresholds);
+
+    // Serve a fresh cached prediction if we have one; otherwise compute live and cache it.
+    const cached = await prisma.waterLevelPrediction.findUnique({ where: { gaugeId } });
+    let prediction: any = null;
+    if (cached && Date.now() - cached.computedAt.getTime() <= PREDICTION_STALE_MS) {
+      prediction = {
+        gaugeId: cached.gaugeId, predictedT1M: cached.predictedT1M, predictedT2M: cached.predictedT2M,
+        confidence: cached.confidence, alertLevel: cached.alertLevel, modelUsed: cached.modelUsed,
+        reason: cached.reason, predictedAt: cached.predictedAt.toISOString(),
+      };
+    } else {
+      prediction = await getPrediction(gaugeId, thresholds);
+      if (prediction) await savePrediction(prediction);
+      else if (cached) prediction = {
+        gaugeId: cached.gaugeId, predictedT1M: cached.predictedT1M, predictedT2M: cached.predictedT2M,
+        confidence: cached.confidence, alertLevel: cached.alertLevel, modelUsed: cached.modelUsed,
+        reason: cached.reason, predictedAt: cached.predictedAt.toISOString(),
+      };
+    }
 
     res.json({ latest, history, prediction });
   } catch (err) {

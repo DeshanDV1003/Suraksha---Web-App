@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import * as incidentService from '../services/incidentService';
 import { processReport } from '../services/mlService';
 import prisma from '../utils/prisma';
+import { requireFields, sendError } from '../utils/apiError';
+import { Status } from '../../prisma/generated/client';
 import { geocodeAddress } from '../services/geocodingService';
 import { findZoneForCoordinates } from '../services/zoneService';
 import { notifyAdmins, sendNotification, sendExpoPush } from '../services/notificationService';
@@ -67,6 +69,7 @@ import {
  */
 export const createIncident = async (req: any, res: Response) => {
   try {
+    requireFields(req.body, ['title', 'description', 'location', 'category']);
     const reporterId = req.user.userId;
     let { latitude, longitude, location, ...rest } = req.body;
     let zoneId: string | null = null;
@@ -195,8 +198,7 @@ export const createIncident = async (req: any, res: Response) => {
         message: 'Report submitted. Priority classification in progress.'
     });
   } catch (error) {
-    console.error('Create incident error:', error);
-    res.status(500).json({ message: 'Internal server error', error });
+    sendError(res, error, 'Create incident error');
   }
 };
 
@@ -220,10 +222,11 @@ export const createIncident = async (req: any, res: Response) => {
  */
 export const getIncidents = async (req: Request, res: Response) => {
   try {
-    const incidents = await incidentService.getAllIncidents();
+    const { category, status } = req.query as { category?: string; status?: string };
+    const incidents = await incidentService.getAllIncidents({ category, status });
     res.json(incidents);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    sendError(res, error, 'Get incidents error');
   }
 };
 
@@ -281,6 +284,10 @@ export const updateIncidentStatus = async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
     const { status } = req.body;
+    requireFields(req.body, ['status']);
+    if (!Object.values(Status).includes(status)) {
+      return res.status(400).json({ message: `Invalid status. Allowed: ${Object.values(Status).join(', ')}` });
+    }
     const incident = await incidentService.updateIncidentStatus(id, status);
 
     // Notify the reporter that their incident status changed
@@ -298,7 +305,7 @@ export const updateIncidentStatus = async (req: Request, res: Response) => {
 
     res.json(incident);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    sendError(res, error, 'Update incident status error');
   }
 };
 

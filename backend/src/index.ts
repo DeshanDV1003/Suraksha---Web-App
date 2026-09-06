@@ -172,4 +172,12 @@ const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
   console.log(`🚀 Suraksha Backend listening on port ${PORT}`);
   console.log(`📖 API Documentation available at http://localhost:${PORT}/api-docs`);
+
+  // Warm the WaterLevelPrediction cache shortly after boot so the first hit on
+  // GET /api/water/predictions is fast (no alert dispatch on this pass).
+  setTimeout(() => {
+    import('./services/water-predictor')
+      .then(m => m.runPredictionsForAllGauges({ dispatchAlerts: false }))
+      .catch(e => console.warn('[Startup] prediction cache warm-up skipped:', e?.message ?? e));
+  }, 15_000);
 });

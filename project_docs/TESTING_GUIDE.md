@@ -11,10 +11,10 @@ Complete guide for running all tests: functional API tests, load/performance tes
 | Generate / regenerate Excel test cases | `npx tsx scripts/generate-test-cases.ts` | ~5 sec |
 | Update Excel with latest results | `npx tsx scripts/update-test-results.ts` | ~5 sec |
 | Run functional API tests | See Section 2 below | ~3 min |
-| Load test (100 VUs, 5 min) | `k6 run tests/load/load-test.js` | 5 min |
-| Spike test (300 VU burst) | `k6 run tests/load/spike-test.js` | ~5 min |
-| Stress test (ramp to 200 VUs) | `k6 run tests/load/stress-test.js` | 13 min |
-| Soak test (50 VUs, 30 min) | `k6 run tests/load/soak-test.js` | 32 min |
+| Load test (100 VUs, 5 min) | `k6 run tests/k6/load-test.js` | 5 min |
+| Spike test (300 VU burst) | `k6 run tests/k6/spike-test.js` | ~5 min |
+| Stress test (ramp to 200 VUs) | `k6 run tests/k6/stress-test.js` | 13 min |
+| Soak test (50 VUs, 30 min) | `k6 run tests/k6/soak-test.js` | 32 min |
 
 > **k6 is installed at:** `D:\k6\k6-v0.54.0-windows-amd64\k6.exe`
 > Use the full path if `k6` is not on your system PATH.
@@ -55,7 +55,7 @@ Complete guide for running all tests: functional API tests, load/performance tes
 
 The Excel file contains **100 test cases** across 11 modules.
 
-**File location:** `D:\Suraksha - Web App\backend\Suraksha_Test_Cases.xlsx`
+**File location:** `D:\Suraksha - Web App\tests\test-cases\Suraksha_Test_Cases.xlsx`
 
 ### Sheets inside the Excel
 
@@ -293,8 +293,8 @@ Then you can just type `k6` instead of the full path.
 Tests normal production load.
 
 ```powershell
-cd "D:\Suraksha - Web App\backend"
-D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/load-test.js
+cd "D:\Suraksha - Web App"
+D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/k6/load-test.js
 ```
 
 **What it does:** Ramps to 100 users over 1 minute, holds for 3 minutes, ramps down.
@@ -303,7 +303,7 @@ D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/load-test.js
 - p95 response time must be under 1,500 ms
 - Error rate must be under 1%
 
-**Known result:** Error rate 0% ✅ — p95 is ~20 s ❌ because the ML predictions endpoint is slow (calls Python service once per gauge). This is a documented limitation.
+**Known result (2026-09-06):** Error rate 0% ✅, p95 ≈ **530 ms** ✅ — both thresholds pass. `/api/water/predictions` is now served from the `WaterLevelPrediction` cache table instead of calling the ML service per gauge (see `project_docs/water_predictions_caching.md`). Before that fix p95 was ~26 s.
 
 ---
 
@@ -311,8 +311,8 @@ D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/load-test.js
 Tests how the system handles a sudden flood of users (like during a real disaster event).
 
 ```powershell
-cd "D:\Suraksha - Web App\backend"
-D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/spike-test.js
+cd "D:\Suraksha - Web App"
+D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/k6/spike-test.js
 ```
 
 **What it does:** Baseline 10 users → instant spike to 300 → hold 2 minutes → drop back.
@@ -327,8 +327,8 @@ D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/spike-test.js
 Finds the breaking point of the system.
 
 ```powershell
-cd "D:\Suraksha - Web App\backend"
-D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/stress-test.js
+cd "D:\Suraksha - Web App"
+D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/k6/stress-test.js
 ```
 
 **What it does:** Slowly increases from 50 → 100 → 150 → 200 users over 13 minutes.
@@ -343,8 +343,8 @@ D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/stress-test.js
 Detects memory leaks and slow degradation that only appear over time.
 
 ```powershell
-cd "D:\Suraksha - Web App\backend"
-D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/soak-test.js
+cd "D:\Suraksha - Web App"
+D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/k6/soak-test.js
 ```
 
 **What it does:** Holds a steady 50 users for 30 minutes.
@@ -360,11 +360,12 @@ D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/soak-test.js
 ### Save Load Test Results to a File
 
 ```powershell
-cd "D:\Suraksha - Web App\backend"
-D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/load/load-test.js 2>&1 | Tee-Object -FilePath load-test-results.txt
+cd "D:\Suraksha - Web App"
+D:\k6\k6-v0.54.0-windows-amd64\k6.exe run tests/k6/load-test.js 2>&1 | Tee-Object -FilePath tests/k6/results/load-test-results.txt
 ```
 
-This saves the full k6 output to `load-test-results.txt` so you can show it at your viva.
+This saves the full k6 output under `tests/k6/results/` so you can show it at your viva.
+All k6 result records live in `tests/k6/results/<date>/` (see `tests/README.md`).
 
 ---
 
@@ -430,7 +431,7 @@ Use this checklist when presenting at your viva:
 - [ ] Open `Suraksha_Test_Cases.xlsx` — show 100 test cases with colour-coded results
 - [ ] Open the Summary Dashboard sheet — 47 Pass, 1 Fail (fixed), 98% pass rate
 - [ ] Run one live API call in PowerShell to prove tests are real (TC-001 login)
-- [ ] Show the k6 scripts in `backend/tests/load/` — explain the 4 test types
+- [ ] Show the k6 scripts in `tests/k6/` — explain the 4 test types
 - [ ] Show the load test result numbers: 0% error rate, p95 bottleneck on ML endpoint
 - [ ] Explain Bug BUG-001: what it was, where it was, how you fixed it
 - [ ] Show the fix in `helpRequestService.ts` — the destructure line

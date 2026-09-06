@@ -146,6 +146,56 @@ export async function getPrediction(
   }
 }
 
+// ─── Prediction cache (DB) ───────────────────────────────────────
+// One row per gauge in WaterLevelPrediction. GET /api/water/predictions reads
+// this instead of calling the ML service once per gauge on every request.
+export const PREDICTION_STALE_MS = 90 * 60 * 1000; // readings arrive hourly
+
+export async function savePrediction(p: WaterPrediction): Promise<void> {
+  try {
+    const data = {
+      predictedT1M: p.predictedT1M,
+      predictedT2M: p.predictedT2M,
+      confidence:   p.confidence,
+      alertLevel:   p.alertLevel,
+      modelUsed:    p.modelUsed,
+      reason:       p.reason,
+      predictedAt:  new Date(p.predictedAt),
+      computedAt:   new Date(),
+    };
+    await prisma.waterLevelPrediction.upsert({
+      where:  { gaugeId: p.gaugeId },
+      create: { gaugeId: p.gaugeId, ...data },
+      update: data,
+    });
+  } catch (err) {
+    console.warn(`[WaterPredictor] Failed to cache prediction for ${p.gaugeId}:`, err);
+  }
+}
+
+// Only one background refresh at a time — protects the single-worker ML service
+// when the endpoint is under load with a stale cache.
+let backgroundRefreshRunning = false;
+
+export async function refreshPredictions(
+  gauges: { gaugeId: string; alertLevel: number; minorFloodLevel: number; majorFloodLevel: number }[],
+): Promise<void> {
+  if (backgroundRefreshRunning || gauges.length === 0) return;
+  backgroundRefreshRunning = true;
+  try {
+    for (const g of gauges) {
+      const p = await getPrediction(g.gaugeId, {
+        watch_m: g.alertLevel, warning_m: g.minorFloodLevel, critical_m: g.majorFloodLevel,
+      });
+      if (p) await savePrediction(p);
+    }
+  } catch (err) {
+    console.warn('[WaterPredictor] Background refresh error:', err);
+  } finally {
+    backgroundRefreshRunning = false;
+  }
+}
+
 // ─── Push ML prediction alert to mobile app ──────────────────────
 // Dedup key store — same gauge+level won't re-alert within 30 min
 const mobileSentKeys = new Map<string, number>();
@@ -203,8 +253,11 @@ async function pushMobileAlert(payload: {
 }
 
 // ─── Run predictions for all active gauges ────────────────────────
-export async function runPredictionsForAllGauges(): Promise<void> {
-  console.log('[WaterPredictor] Starting prediction cycle for all gauges...');
+export async function runPredictionsForAllGauges(
+  opts: { dispatchAlerts?: boolean } = {},
+): Promise<void> {
+  const dispatchAlerts = opts.dispatchAlerts ?? true;
+  console.log(`[WaterPredictor] Starting prediction cycle for all gauges (alerts=${dispatchAlerts})...`);
 
   // Get the distinct active gauges from recent river readings
   const recentGauges = await prisma.riverWaterLevel.findMany({
@@ -237,15 +290,20 @@ export async function runPredictionsForAllGauges(): Promise<void> {
     const prediction = await getPrediction(gauge.gaugeId, thresholds);
     if (!prediction) continue;
 
+    // Persist to the cache table that GET /api/water/predictions serves from
+    await savePrediction(prediction);
+
     console.log(
       `[WaterPredictor] ${gauge.riverName}@${gauge.stationName}: ` +
       `T+1=${prediction.predictedT1M.toFixed(2)}m T+2=${prediction.predictedT2M.toFixed(2)}m ` +
       `confidence=${(prediction.confidence * 100).toFixed(0)}% alert=${prediction.alertLevel}`
     );
 
+    if (!dispatchAlerts) continue;
+
     // Only fire alert if confidence ≥ 75% and there is a threat in the next 2 hours
     const hasThreatInNext2Hours = prediction.predictedT1M >= thresholds.watch_m || prediction.predictedT2M >= thresholds.watch_m;
-    
+
     if (
       prediction.alertLevel !== 'NONE' &&
       prediction.confidence >= MIN_CONFIDENCE &&

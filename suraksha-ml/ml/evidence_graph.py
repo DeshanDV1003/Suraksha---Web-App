@@ -600,17 +600,69 @@ def baseline_ml_credibility(
     n_verified = sum(1 for v in (verifications or []) if v.get("confirmed"))
     n_contradicted = sum(1 for v in (verifications or []) if not v.get("confirmed"))
     hour = target_report.get("timestamp_hour", 12)
+    has_gps = 1.0 if target_report.get("latitude") else 0.0
+    text = target_report.get("text", "") or ""
+
+    # ── v3.1 observable verifier signals (match training FEATURE_COLS order) ──
+    # source_hist_accuracy: fraction of this source's past reports later confirmed
+    # (use the value the backend attaches if present, else a neutral prior).
+    source_hist_accuracy = float(target_report.get("source_accuracy", 0.5))
+
+    # gps_cluster_agreement: how tightly corroborating reports' GPS agree with
+    # this report's location (1.0 = all within ~2 km, decaying to 0 by ~25 km).
+    gps_cluster_agreement = 0.0
+    if has_gps:
+        tlat, tlon = target_report.get("latitude"), target_report.get("longitude")
+        dists = [
+            _haversine_km(tlat, tlon, r.get("latitude"), r.get("longitude"))
+            for r in (related_reports or [])
+            if r.get("latitude") and r.get("longitude") and tlon is not None
+        ]
+        if dists:
+            gps_cluster_agreement = float(np.clip(
+                1.0 - (np.mean(dists) - 2.0) / 23.0, 0.0, 1.0
+            ))
+
+    # image_hash_shared: this report's image also appears on a corroborating one
+    t_hash = target_report.get("image_hash")
+    image_hash_shared = 1.0 if (t_hash and any(
+        r.get("image_hash") == t_hash for r in (related_reports or [])
+    )) else 0.0
+
+    # text_specificity: named-entity / structured-detail density proxy
+    # (digits + Capitalised tokens, normalised by length).
+    toks = text.split()
+    if toks:
+        specific = sum(1 for w in toks if any(c.isdigit() for c in w) or
+                       (w[:1].isupper() and len(w) > 2))
+        text_specificity = float(np.clip(specific / len(toks) * 2.5, 0.0, 1.0))
+    else:
+        text_specificity = 0.0
+
+    # corrob_time_spread_min: minutes between first and last corroborating report
+    corrob_time_spread_min = 0.0
+    stamps = sorted(
+        r["timestamp_epoch"] for r in (related_reports or [])
+        if isinstance(r.get("timestamp_epoch"), (int, float))
+    )
+    if len(stamps) >= 2:
+        corrob_time_spread_min = float(min((stamps[-1] - stamps[0]) / 60.0, 1440.0))
 
     features = np.array([[
         min(n_related, 20),
-        1.0 if target_report.get("latitude") else 0.0,
+        has_gps,
         1.0 if target_report.get("latitude") else 0.5,
         1.0 if target_report.get("image_hash") else 0.0,
         60.0,  # time_to_first_response_min -- not tracked on the report dict yet, neutral default
         min(target_report.get("reports_submitted", 0), 60),
-        len(target_report.get("text", "")),
+        len(text),
         1.0 if n_verified > 0 else 0.0,
         1.0 if n_contradicted > 0 else 0.0,
+        source_hist_accuracy,
+        gps_cluster_agreement,
+        image_hash_shared,
+        text_specificity,
+        corrob_time_spread_min,
         hour,
         0,  # district_random_id -- distractor feature at train time, irrelevant here
     ]], dtype=np.float32)

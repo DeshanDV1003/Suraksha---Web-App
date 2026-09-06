@@ -1,0 +1,69 @@
+TC ID	Status	Notes
+TC-M-001	Pass	HTTP 200; token=true; role=CITIZEN
+TC-M-002	Pass	GET /users/me with the stored token → HTTP 200; id=true
+TC-M-003	Fail	GET /api/auth/profile → HTTP 404. BUG: route does not exist (404); mobile authService.getProfile() is dead — the app must use userService.getMe() (/api/users/me)
+TC-M-004	Pass	HTTP 201; {message,userId}
+TC-M-005	Pass	HTTP 401 for wrong password
+TC-M-006	Pass	POST /api/auth/google → HTTP 401 for an invalid idToken (route exists)
+TC-M-007	Pass	HTTP 401 for a forged JWT → app clears token + returns to Login
+TC-M-008	Pass	Verified by inspection: api.ts response interceptor rejects any response whose content-type includes text/html before JSON parsing
+TC-M-009	Pass	HTTP 200; keys=activeIncidents,volunteersActive,reliefCamps,helpRequests,missingPersons,avgResponseTime,secondaryStats,recentIncidents
+TC-M-010	Pass	HTTP 200; 55 alerts
+TC-M-011	Pass	GET /incidents/my → HTTP 200
+TC-M-012	Pass	GET /notifications/my → HTTP 200
+TC-M-013	Pass	HTTP 201; id=2cb60eff-3b39-4616-b075-1d0a925e76f6; status=PENDING
+TC-M-014	Pass	HTTP 201; images array accepted
+TC-M-015	Pass	POST /incidents/sos → HTTP 201; {"ok":true,"incidentId":"af2f1461-f6b6-43e4-816e-027a9e23cf3f"}
+TC-M-016	N/A	VoiceReport uses the device microphone + expo-speech — needs a real device
+TC-M-017	Pass	Device coordinates round-trip: stored lat=7.2906, lng=80.6337
+TC-M-018	Pass	Verified by inspection: useOfflineSubmit catches AbortError / "Network request failed" and calls addToSyncQueue(type, data); localDB inserts a sync_queue row with status "pending". Live queue-drain covered by TC-M-027..M-031.
+TC-M-019	Pass	Valid submit → HTTP 201 → hook sets 'success', nothing queued
+TC-M-020	Pass	Invalid submit → HTTP 400 (4xx) → hook surfaces the error and does NOT queue (permanent failure)
+TC-M-021	Pass	Verified by inspection: on AbortError (8 s) / "Network request failed" the hook falls through to addToSyncQueue and returns status "queued". Server-unreachable cannot be simulated against a live backend; drain behaviour is TC-M-027..M-031.
+TC-M-022	Pass	localDB.setupTables: sync_queue(id, type, payload, status DEFAULT "pending", attempts DEFAULT 0, max_attempts DEFAULT 5, created_at, synced_at, error_msg) — matches the runner/handlers.
+TC-M-023	Pass	All 12 enqueued types have a handler
+TC-M-024	Pass	POST with X-Offline-Sync + X-Original-Timestamp → HTTP 201 (headers accepted, request processed)
+TC-M-025	Pass	localDB.markFailed: attempts = attempts + 1; status = CASE WHEN attempts+1 >= max_attempts THEN "failed" ELSE "pending". Item stops retrying after 5 attempts.
+TC-M-026	Pass	localDB.getPendingItems: WHERE status="pending" AND attempts < max_attempts ORDER BY created_at ASC — FIFO, excludes failed/exhausted.
+TC-M-027	Pass	offline_sync_results.json: reconnect-ideal Q10/50/100 → 100% success, 0% data loss, p95 ~316 ms
+TC-M-028	Pass	Disconnect mid-sync Q50 → 76.9% success, 23.1% deferred, 0.0% data loss (failed items stay pending)
+TC-M-029	Pass	App-restart Q50 → 100.0% synced, 0.0% loss (SQLite queue persists)
+TC-M-030	Fail	Duplicate-retry Q50 → Duplicate 10.0%. BUG: retries create duplicate server records — no idempotency key / X-Original-Timestamp is not used for dedup on the backend
+TC-M-031	Pass	Packet loss 5/10/20% → success 96.2% / 87.7% / 75.8%, 0% data loss throughout (failed items retryable)
+TC-M-032	Pass	haversineKm(Colombo,Kandy) = 94.3 km; identical points = 0
+TC-M-033	Pass	'All Island' alert → shown to everyone
+TC-M-034	Pass	within 10 km → true; ~330 km away → false
+TC-M-035	Pass	no coords + not All-Island → hidden (false)
+TC-M-036	Pass	null coords → shown; far item within 25 km → hidden
+TC-M-037	Pass	GET /safe-zones → HTTP 200; 0 places
+TC-M-038	Pass	GET /water/river → HTTP 200; 100 readings
+TC-M-039	Pass	GET /water/predictions → HTTP 200 in 290 ms (app axios timeout 10 s); 50 gauges — served from cache
+TC-M-040	Pass	GET /water/rainfall → HTTP 200
+TC-M-041	Pass	GET /family/my-status → HTTP 200; keys=myStatus,familyMembers
+TC-M-042	Pass	POST /family/status {status:'SAFE'} → HTTP 201
+TC-M-043	Pass	POST /family/members (name, relation, status:'UNKNOWN' — as the app sends) → HTTP 201
+TC-M-044	Pass	GET /relief-tokens/my → HTTP 200; 0 tokens
+TC-M-045	Pass	claim invalid code → HTTP 400 (4xx expected for a bad / used / expired token)
+TC-M-046	N/A	QR scanning uses expo-camera — needs a real device; the claim API path is covered by TC-M-045
+TC-M-047	Pass	GET /camps → HTTP 200; 24 camps (cached to relief_camps_cache for offline)
+TC-M-048	Pass	GET /missing-persons → HTTP 200
+TC-M-049	Pass	POST /help-requests → HTTP 201; id=2b876eae-e5fe-496d-b7e0-ea7c685e0192
+TC-M-050	Pass	GET /supply-requests/my → HTTP 200
+TC-M-051	Pass	GET /volunteers/tasks/my → HTTP 200
+TC-M-052	Pass	POST /donations → HTTP 201; id=fe16bb44-0e65-432b-9d4e-08c878fe45e1
+TC-M-053	Pass	POST /assessments/damage (category, location, structuralDamage — as the app sends) HTTP 201; GET HTTP 200
+TC-M-054	Pass	GET /analytics/operational-intelligence → HTTP 200 (no 404/500)
+TC-M-055	Pass	POST /location/log → HTTP 201
+TC-M-056	N/A	expo-notifications remote push tokens require a dev build / APK (Expo Go SDK 53+ returns undefined) — documented limitation in notificationService.ts
+TC-M-057	Pass	showLocalNotification() uses Notifications.scheduleNotificationAsync with trigger:null — works in Expo Go and builds (verified by inspection); a visual check needs a device
+TC-M-058	N/A	LocationGateScreen permission gate — needs a device / emulator
+TC-M-059	N/A	Camera / image-picker permission flow — needs a device
+TC-M-060	N/A	expo-background-fetch periodic sync — needs a device and cannot be observed headlessly
+TC-M-061	Pass	localDB.openDatabase(): WAL, seedEmergencyNumbers (7 entries: 119/117/118/110/1990…), seedFirstAid (6 guides) — verified by inspection; runtime open needs a device
+TC-M-062	N/A	react-native-maps rendering — needs a device / emulator
+TC-M-063	Pass	i18n registers: en, si, ta (en/si/ta expected)
+TC-M-064	Pass	config.ts: API_BASE_URL ends with /api = true; SOCKET_URL set = true (ngrok static domains)
+TC-M-065	Fail	SECURITY: the JWT is persisted with AsyncStorage.setItem("token", …) (LoginScreen / api.ts interceptor), not expo-secure-store — even though expo-secure-store is a dependency. AsyncStorage is unencrypted plaintext on device.
+TC-M-066	N/A	socket.io-client connection to SOCKET_URL — needs the app running against the tunnel; contract (new-alert event) is verified on the web side (Socket.IO tests)
+TC-M-067	Pass	networkMonitor polls checkConnectivity() every 8 s (expo-network isConnected), toggles OfflineBanner and triggers syncPendingItems() on restore — verified by inspection; a live toggle needs a device
+TC-M-068	Pass	navigation/index.tsx reads the stored user.role and only mounts the Tasks tab for VOLUNTEER / FIELD_RESPONDER — verified by inspection

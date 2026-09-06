@@ -43,7 +43,16 @@ export const updateOccupancy = async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
     const { currentOccupancy } = req.body;
-    const result = await campService.updateCampOccupancy(id, parseInt(currentOccupancy.toString()));
+    const occ = parseInt(String(currentOccupancy));
+    if (isNaN(occ) || occ < 0) {
+      return res.status(400).json({ message: 'currentOccupancy must be a non-negative number.' });
+    }
+    const camp = await campService.getCampById(id);
+    if (!camp) return res.status(404).json({ message: 'Camp not found.' });
+    if (occ > camp.totalCapacity) {
+      return res.status(400).json({ message: `Occupancy (${occ}) cannot exceed the camp's total capacity (${camp.totalCapacity}).` });
+    }
+    const result = await campService.updateCampOccupancy(id, occ);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

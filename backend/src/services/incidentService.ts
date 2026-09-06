@@ -1,7 +1,11 @@
 import prisma from '../utils/prisma';
 
-export const getAllIncidents = async () => {
+export const getAllIncidents = async (filter: { category?: string; status?: string } = {}) => {
+  const where: any = {};
+  if (filter.category) where.category = filter.category;
+  if (filter.status) where.status = filter.status;
   return prisma.incidentReport.findMany({
+    where,
     include: {
       reporter:      { select: { name: true } },
       verifications: { include: { user: { select: { name: true } } } },

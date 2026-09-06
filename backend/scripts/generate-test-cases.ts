@@ -800,7 +800,7 @@ const TEST_CASES: TestCase[] = [
     id: 'TC-096', module: 'Performance', testName: 'Dashboard Stats Load Under 100 VUs',
     description: 'Verify the dashboard stats endpoint performs under 100 concurrent virtual users.',
     preconditions: 'k6 installed. Backend running with seeded data.',
-    steps: '1. Run: k6 run tests/load/load-test.js\n2. Target: GET /api/dashboard/stats\n3. 100 VUs, 5 minutes',
+    steps: '1. Run: k6 run tests/k6/load-test.js\n2. Target: GET /api/dashboard/stats\n3. 100 VUs, 5 minutes',
     expectedResult: 'p95 response time < 1500 ms. Error rate < 1%. Throughput > 50 req/s.',
     priority: 'High', type: 'Performance', status: 'Not Tested',
   },
@@ -808,7 +808,7 @@ const TEST_CASES: TestCase[] = [
     id: 'TC-097', module: 'Performance', testName: 'Login Endpoint Stress Test – 200 VUs',
     description: 'Verify the login endpoint handles a spike of 200 concurrent logins.',
     preconditions: 'k6 installed. 200 test user accounts seeded.',
-    steps: '1. Run: k6 run tests/load/stress-test.js\n2. Target: POST /api/auth/login\n3. Ramp 0→200 VUs over 2 min, hold 5 min',
+    steps: '1. Run: k6 run tests/k6/stress-test.js\n2. Target: POST /api/auth/login\n3. Ramp 0→200 VUs over 2 min, hold 5 min',
     expectedResult: 'p95 < 3000 ms. Error rate < 5%. No DB connection exhaustion errors.',
     priority: 'High', type: 'Performance', status: 'Not Tested',
   },
@@ -816,7 +816,7 @@ const TEST_CASES: TestCase[] = [
     id: 'TC-098', module: 'Performance', testName: 'Water Predictions Endpoint – Spike Test',
     description: 'Verify water predictions endpoint survives a sudden traffic spike.',
     preconditions: 'k6 installed. Backend running.',
-    steps: '1. Run: k6 run tests/load/spike-test.js\n2. Target: GET /api/water/predictions\n3. Spike to 300 VUs instantly, drop after 1 min',
+    steps: '1. Run: k6 run tests/k6/spike-test.js\n2. Target: GET /api/water/predictions\n3. Spike to 300 VUs instantly, drop after 1 min',
     expectedResult: 'System recovers after spike. Error rate < 10% during spike. No permanent hang.',
     priority: 'High', type: 'Performance', status: 'Not Tested',
   },
@@ -824,7 +824,7 @@ const TEST_CASES: TestCase[] = [
     id: 'TC-099', module: 'Performance', testName: 'Soak Test – Backend Stable Over 30 Minutes',
     description: 'Verify the backend does not degrade or leak memory over a sustained 30-minute run.',
     preconditions: 'k6 installed. Backend running with all crons active.',
-    steps: '1. Run: k6 run tests/load/soak-test.js\n2. 50 VUs hitting mixed endpoints for 30 minutes\n3. Monitor memory usage',
+    steps: '1. Run: k6 run tests/k6/soak-test.js\n2. 50 VUs hitting mixed endpoints for 30 minutes\n3. Monitor memory usage',
     expectedResult: 'p95 stays stable throughout. Memory does not grow unboundedly. No OOM crash.',
     priority: 'High', type: 'Performance', status: 'Not Tested',
   },
@@ -1031,10 +1031,10 @@ async function generateExcel() {
     ['INSTALL (Linux)', 'sudo snap install k6', ''],
     ['', '', ''],
     ['TEST SCENARIO', 'COMMAND', 'TARGET METRIC'],
-    ['Load Test (100 VUs)', 'k6 run tests/load/load-test.js', 'p95 < 1500 ms, error < 1%'],
-    ['Stress Test (200 VUs)', 'k6 run tests/load/stress-test.js', 'p95 < 3000 ms, error < 5%'],
-    ['Spike Test (300 VUs)', 'k6 run tests/load/spike-test.js', 'Recovers after spike'],
-    ['Soak Test (30 min)', 'k6 run tests/load/soak-test.js', 'No memory leak, stable p95'],
+    ['Load Test (100 VUs)', 'k6 run tests/k6/load-test.js', 'p95 < 1500 ms, error < 1%'],
+    ['Stress Test (200 VUs)', 'k6 run tests/k6/stress-test.js', 'p95 < 3000 ms, error < 5%'],
+    ['Spike Test (300 VUs)', 'k6 run tests/k6/spike-test.js', 'Recovers after spike'],
+    ['Soak Test (30 min)', 'k6 run tests/k6/soak-test.js', 'No memory leak, stable p95'],
     ['', '', ''],
     ['OUTPUT FORMAT', 'k6 run --out json=results.json load-test.js', 'Machine-readable results'],
     ['HTML REPORT', 'k6 run --out html=report.html load-test.js', 'Visual HTML dashboard'],
@@ -1075,7 +1075,7 @@ async function generateExcel() {
   });
 
   // ── Save ─────────────────────────────────────────────────────────────────────
-  const OUT = path.join(__dirname, '..', 'Suraksha_Test_Cases.xlsx');
+  const OUT = path.join(__dirname, '..', '..', 'tests', 'test-cases', 'Suraksha_Test_Cases.xlsx');
   await wb.xlsx.writeFile(OUT);
   console.log(`\n✅  Excel file written: ${OUT}\n`);
 }

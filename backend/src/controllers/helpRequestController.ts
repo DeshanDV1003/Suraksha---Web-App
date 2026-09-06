@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import * as helpRequestService from '../services/helpRequestService';
 import { notifyAdmins, sendNotification } from '../services/notificationService';
+import { requireFields, sendError } from '../utils/apiError';
 
 export const submitPublicRequest = async (req: Request, res: Response) => {
   try {
+    requireFields(req.body, ['type', 'description', 'location']);
     const request = await helpRequestService.submitPublicRequest(req.body);
     const io = req.app.get('socketio');
     if (io) io.emit('new-help-request', request);
@@ -13,19 +15,20 @@ export const submitPublicRequest = async (req: Request, res: Response) => {
     ).catch(() => {});
     res.status(201).json(request);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    sendError(res, error, 'Submit public help request error');
   }
 };
 
 export const createHelpRequest = async (req: any, res: Response) => {
   try {
+    requireFields(req.body, ['type', 'description', 'location']);
     const userId = req.user.userId;
     const request = await helpRequestService.createHelpRequest(userId, req.body);
     const io = req.app.get('socketio');
     if (io) io.emit('new-help-request', request);
     res.status(201).json(request);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    sendError(res, error, 'Create help request error');
   }
 };
 

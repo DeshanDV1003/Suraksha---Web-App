@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import * as missingPersonService from '../services/missingPersonService';
+import { requireFields, sendError } from '../utils/apiError';
 
 export const reportMissingPerson = async (req: any, res: Response) => {
   try {
+    requireFields(req.body, ['name', 'description', 'lastSeen']);
     const userId = req.user?.userId || null;
     const person = await missingPersonService.createMissingPerson(userId, req.body);
 
@@ -11,7 +13,7 @@ export const reportMissingPerson = async (req: any, res: Response) => {
 
     res.status(201).json(person);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    sendError(res, error, 'Report missing person error');
   }
 };
 

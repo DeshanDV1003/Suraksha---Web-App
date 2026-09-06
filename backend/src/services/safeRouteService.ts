@@ -256,3 +256,6 @@ export async function computeSafeRoutes(req: SafeRouteRequest) {
     generatedAt: new Date(),
   };
 }
+
+// ─── Exposed for unit tests (no behavioural impact) ───────────────────────────
+export const __test__ = { haversineM, totalKm, generateRoute, scoreRoute, riskLabel };

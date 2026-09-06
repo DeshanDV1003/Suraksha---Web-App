@@ -21,6 +21,10 @@ npx playwright install
 npm test
 ```
 
+> **Local runs: use Chromium.** The Vite dev server is too slow for Firefox /
+> WebKit on heavy routes; those projects time out until a prod-preview
+> `webServer` is added to the config. `npx playwright test --project=chromium`.
+
 ### Run tests with UI
 ```bash
 npm run test:ui
@@ -37,4 +41,11 @@ npm run test:report
 ```
 
 ## Notes
-- `global-setup.ts` runs automatically before tests to authenticate the different user roles (Admin, Citizen, Hospital) and saves their state, so tests don't need to log in manually every time.
+- `e2e/auth.setup.ts` is the `setup` project (a dependency of every browser
+  project). It registers the test accounts, logs in via the API, and writes
+  `.auth/{admin,citizen,hospital}.json` storage-state files. The fixtures in
+  `fixtures/test.fixtures.ts` load these with `browser.newContext({ storageState })`.
+- The frontend keeps its JWT in `localStorage` (`token` + `user`), so the setup
+  injects those keys for the frontend origin — no UI login, and it side-steps the
+  2FA on the seeded `admin@suraksha.gov` account (the E2E admin is a dedicated
+  `pw.admin@suraksha.lk`, see `.env`).

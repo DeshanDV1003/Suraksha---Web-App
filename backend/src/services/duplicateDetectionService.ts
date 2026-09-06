@@ -197,3 +197,6 @@ export async function updateDuplicateLinkStatus(linkId: string, status: 'CONFIRM
     data:  { status },
   });
 }
+
+// ─── Exposed for unit tests (no behavioural impact) ───────────────────────────
+export const __test__ = { haversineMetres, nlpEntityOverlap };

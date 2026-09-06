@@ -324,6 +324,13 @@ export type RiverWaterLevel = $Result.DefaultSelection<Prisma.$RiverWaterLevelPa
  */
 export type DownstreamMapping = $Result.DefaultSelection<Prisma.$DownstreamMappingPayload>
 /**
+ * Model WaterLevelPrediction
+ * Cached LSTM output — one row per gauge, refreshed by the hourly prediction
+ * cycle. `GET /api/water/predictions` reads this instead of calling the ML
+ * service once per gauge on every request.
+ */
+export type WaterLevelPrediction = $Result.DefaultSelection<Prisma.$WaterLevelPredictionPayload>
+/**
  * Model IncidentDuplicateLink
  * 
  */
@@ -1459,6 +1466,16 @@ export class PrismaClient<
   get downstreamMapping(): Prisma.DownstreamMappingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.waterLevelPrediction`: Exposes CRUD operations for the **WaterLevelPrediction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WaterLevelPredictions
+    * const waterLevelPredictions = await prisma.waterLevelPrediction.findMany()
+    * ```
+    */
+  get waterLevelPrediction(): Prisma.WaterLevelPredictionDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.incidentDuplicateLink`: Exposes CRUD operations for the **IncidentDuplicateLink** model.
     * Example usage:
     * ```ts
@@ -2019,6 +2036,7 @@ export namespace Prisma {
     RainfallAlertLog: 'RainfallAlertLog',
     RiverWaterLevel: 'RiverWaterLevel',
     DownstreamMapping: 'DownstreamMapping',
+    WaterLevelPrediction: 'WaterLevelPrediction',
     IncidentDuplicateLink: 'IncidentDuplicateLink',
     PublicSafePlace: 'PublicSafePlace',
     AuthorityContact: 'AuthorityContact',
@@ -2040,7 +2058,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "campSupplyRequest" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospital" | "hospitalWard" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "rainfallAlertLog" | "riverWaterLevel" | "downstreamMapping" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
+      modelProps: "user" | "incidentReport" | "alert" | "sector" | "reliefCamp" | "resource" | "task" | "volunteerProfile" | "helpRequest" | "helpRequestEscalation" | "reportVerification" | "missingPerson" | "notification" | "mLLog" | "incidentHistory" | "resourceRequestMatch" | "campSupplyRequest" | "auditLog" | "locationLog" | "reliefToken" | "reliefTokenClaim" | "damageAssessment" | "localVerifier" | "verifierAction" | "psychologicalSupportRequest" | "threatForecast" | "shiftHandover" | "evacuationRoute" | "volunteerLocation" | "threatProjection" | "afterActionReport" | "kPIBenchmark" | "resourceCost" | "disasterBudget" | "resourceExpenditure" | "rolePermission" | "userSessionLog" | "campResident" | "campInventory" | "campSchedule" | "hospital" | "hospitalWard" | "hospitalReferral" | "campTransferRequest" | "donorCampaign" | "volunteerSkill" | "volunteerTraining" | "volunteerCheckIn" | "volunteerWellbeing" | "volunteerBadge" | "chatSession" | "chatMessage" | "groupTherapySession" | "donation" | "safetyCheckIn" | "familyMember" | "groupTherapyParticipant" | "mentalHealthGuide" | "rainfallReading" | "rainfallAlertLog" | "riverWaterLevel" | "downstreamMapping" | "waterLevelPrediction" | "incidentDuplicateLink" | "publicSafePlace" | "authorityContact" | "rescueVehicle" | "rescueMission" | "safeZoneCheckIn"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6632,6 +6650,80 @@ export namespace Prisma {
           }
         }
       }
+      WaterLevelPrediction: {
+        payload: Prisma.$WaterLevelPredictionPayload<ExtArgs>
+        fields: Prisma.WaterLevelPredictionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WaterLevelPredictionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WaterLevelPredictionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>
+          }
+          findFirst: {
+            args: Prisma.WaterLevelPredictionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WaterLevelPredictionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>
+          }
+          findMany: {
+            args: Prisma.WaterLevelPredictionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>[]
+          }
+          create: {
+            args: Prisma.WaterLevelPredictionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>
+          }
+          createMany: {
+            args: Prisma.WaterLevelPredictionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WaterLevelPredictionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>[]
+          }
+          delete: {
+            args: Prisma.WaterLevelPredictionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>
+          }
+          update: {
+            args: Prisma.WaterLevelPredictionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>
+          }
+          deleteMany: {
+            args: Prisma.WaterLevelPredictionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WaterLevelPredictionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WaterLevelPredictionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>[]
+          }
+          upsert: {
+            args: Prisma.WaterLevelPredictionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WaterLevelPredictionPayload>
+          }
+          aggregate: {
+            args: Prisma.WaterLevelPredictionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWaterLevelPrediction>
+          }
+          groupBy: {
+            args: Prisma.WaterLevelPredictionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WaterLevelPredictionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WaterLevelPredictionCountArgs<ExtArgs>
+            result: $Utils.Optional<WaterLevelPredictionCountAggregateOutputType> | number
+          }
+        }
+      }
       IncidentDuplicateLink: {
         payload: Prisma.$IncidentDuplicateLinkPayload<ExtArgs>
         fields: Prisma.IncidentDuplicateLinkFieldRefs
@@ -7226,6 +7318,7 @@ export namespace Prisma {
     rainfallAlertLog?: RainfallAlertLogOmit
     riverWaterLevel?: RiverWaterLevelOmit
     downstreamMapping?: DownstreamMappingOmit
+    waterLevelPrediction?: WaterLevelPredictionOmit
     incidentDuplicateLink?: IncidentDuplicateLinkOmit
     publicSafePlace?: PublicSafePlaceOmit
     authorityContact?: AuthorityContactOmit
@@ -79268,6 +79361,1121 @@ export namespace Prisma {
 
 
   /**
+   * Model WaterLevelPrediction
+   */
+
+  export type AggregateWaterLevelPrediction = {
+    _count: WaterLevelPredictionCountAggregateOutputType | null
+    _avg: WaterLevelPredictionAvgAggregateOutputType | null
+    _sum: WaterLevelPredictionSumAggregateOutputType | null
+    _min: WaterLevelPredictionMinAggregateOutputType | null
+    _max: WaterLevelPredictionMaxAggregateOutputType | null
+  }
+
+  export type WaterLevelPredictionAvgAggregateOutputType = {
+    predictedT1M: number | null
+    predictedT2M: number | null
+    confidence: number | null
+  }
+
+  export type WaterLevelPredictionSumAggregateOutputType = {
+    predictedT1M: number | null
+    predictedT2M: number | null
+    confidence: number | null
+  }
+
+  export type WaterLevelPredictionMinAggregateOutputType = {
+    id: string | null
+    gaugeId: string | null
+    predictedT1M: number | null
+    predictedT2M: number | null
+    confidence: number | null
+    alertLevel: string | null
+    modelUsed: string | null
+    reason: string | null
+    predictedAt: Date | null
+    computedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WaterLevelPredictionMaxAggregateOutputType = {
+    id: string | null
+    gaugeId: string | null
+    predictedT1M: number | null
+    predictedT2M: number | null
+    confidence: number | null
+    alertLevel: string | null
+    modelUsed: string | null
+    reason: string | null
+    predictedAt: Date | null
+    computedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WaterLevelPredictionCountAggregateOutputType = {
+    id: number
+    gaugeId: number
+    predictedT1M: number
+    predictedT2M: number
+    confidence: number
+    alertLevel: number
+    modelUsed: number
+    reason: number
+    predictedAt: number
+    computedAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WaterLevelPredictionAvgAggregateInputType = {
+    predictedT1M?: true
+    predictedT2M?: true
+    confidence?: true
+  }
+
+  export type WaterLevelPredictionSumAggregateInputType = {
+    predictedT1M?: true
+    predictedT2M?: true
+    confidence?: true
+  }
+
+  export type WaterLevelPredictionMinAggregateInputType = {
+    id?: true
+    gaugeId?: true
+    predictedT1M?: true
+    predictedT2M?: true
+    confidence?: true
+    alertLevel?: true
+    modelUsed?: true
+    reason?: true
+    predictedAt?: true
+    computedAt?: true
+    updatedAt?: true
+  }
+
+  export type WaterLevelPredictionMaxAggregateInputType = {
+    id?: true
+    gaugeId?: true
+    predictedT1M?: true
+    predictedT2M?: true
+    confidence?: true
+    alertLevel?: true
+    modelUsed?: true
+    reason?: true
+    predictedAt?: true
+    computedAt?: true
+    updatedAt?: true
+  }
+
+  export type WaterLevelPredictionCountAggregateInputType = {
+    id?: true
+    gaugeId?: true
+    predictedT1M?: true
+    predictedT2M?: true
+    confidence?: true
+    alertLevel?: true
+    modelUsed?: true
+    reason?: true
+    predictedAt?: true
+    computedAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WaterLevelPredictionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WaterLevelPrediction to aggregate.
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WaterLevelPredictions to fetch.
+     */
+    orderBy?: WaterLevelPredictionOrderByWithRelationInput | WaterLevelPredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WaterLevelPredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WaterLevelPredictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WaterLevelPredictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WaterLevelPredictions
+    **/
+    _count?: true | WaterLevelPredictionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WaterLevelPredictionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WaterLevelPredictionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WaterLevelPredictionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WaterLevelPredictionMaxAggregateInputType
+  }
+
+  export type GetWaterLevelPredictionAggregateType<T extends WaterLevelPredictionAggregateArgs> = {
+        [P in keyof T & keyof AggregateWaterLevelPrediction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWaterLevelPrediction[P]>
+      : GetScalarType<T[P], AggregateWaterLevelPrediction[P]>
+  }
+
+
+
+
+  export type WaterLevelPredictionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WaterLevelPredictionWhereInput
+    orderBy?: WaterLevelPredictionOrderByWithAggregationInput | WaterLevelPredictionOrderByWithAggregationInput[]
+    by: WaterLevelPredictionScalarFieldEnum[] | WaterLevelPredictionScalarFieldEnum
+    having?: WaterLevelPredictionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WaterLevelPredictionCountAggregateInputType | true
+    _avg?: WaterLevelPredictionAvgAggregateInputType
+    _sum?: WaterLevelPredictionSumAggregateInputType
+    _min?: WaterLevelPredictionMinAggregateInputType
+    _max?: WaterLevelPredictionMaxAggregateInputType
+  }
+
+  export type WaterLevelPredictionGroupByOutputType = {
+    id: string
+    gaugeId: string
+    predictedT1M: number
+    predictedT2M: number
+    confidence: number
+    alertLevel: string
+    modelUsed: string
+    reason: string
+    predictedAt: Date
+    computedAt: Date
+    updatedAt: Date
+    _count: WaterLevelPredictionCountAggregateOutputType | null
+    _avg: WaterLevelPredictionAvgAggregateOutputType | null
+    _sum: WaterLevelPredictionSumAggregateOutputType | null
+    _min: WaterLevelPredictionMinAggregateOutputType | null
+    _max: WaterLevelPredictionMaxAggregateOutputType | null
+  }
+
+  type GetWaterLevelPredictionGroupByPayload<T extends WaterLevelPredictionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WaterLevelPredictionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WaterLevelPredictionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WaterLevelPredictionGroupByOutputType[P]>
+            : GetScalarType<T[P], WaterLevelPredictionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WaterLevelPredictionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gaugeId?: boolean
+    predictedT1M?: boolean
+    predictedT2M?: boolean
+    confidence?: boolean
+    alertLevel?: boolean
+    modelUsed?: boolean
+    reason?: boolean
+    predictedAt?: boolean
+    computedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["waterLevelPrediction"]>
+
+  export type WaterLevelPredictionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gaugeId?: boolean
+    predictedT1M?: boolean
+    predictedT2M?: boolean
+    confidence?: boolean
+    alertLevel?: boolean
+    modelUsed?: boolean
+    reason?: boolean
+    predictedAt?: boolean
+    computedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["waterLevelPrediction"]>
+
+  export type WaterLevelPredictionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gaugeId?: boolean
+    predictedT1M?: boolean
+    predictedT2M?: boolean
+    confidence?: boolean
+    alertLevel?: boolean
+    modelUsed?: boolean
+    reason?: boolean
+    predictedAt?: boolean
+    computedAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["waterLevelPrediction"]>
+
+  export type WaterLevelPredictionSelectScalar = {
+    id?: boolean
+    gaugeId?: boolean
+    predictedT1M?: boolean
+    predictedT2M?: boolean
+    confidence?: boolean
+    alertLevel?: boolean
+    modelUsed?: boolean
+    reason?: boolean
+    predictedAt?: boolean
+    computedAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WaterLevelPredictionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gaugeId" | "predictedT1M" | "predictedT2M" | "confidence" | "alertLevel" | "modelUsed" | "reason" | "predictedAt" | "computedAt" | "updatedAt", ExtArgs["result"]["waterLevelPrediction"]>
+
+  export type $WaterLevelPredictionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WaterLevelPrediction"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      gaugeId: string
+      predictedT1M: number
+      predictedT2M: number
+      confidence: number
+      alertLevel: string
+      modelUsed: string
+      reason: string
+      predictedAt: Date
+      computedAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["waterLevelPrediction"]>
+    composites: {}
+  }
+
+  type WaterLevelPredictionGetPayload<S extends boolean | null | undefined | WaterLevelPredictionDefaultArgs> = $Result.GetResult<Prisma.$WaterLevelPredictionPayload, S>
+
+  type WaterLevelPredictionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WaterLevelPredictionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WaterLevelPredictionCountAggregateInputType | true
+    }
+
+  export interface WaterLevelPredictionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WaterLevelPrediction'], meta: { name: 'WaterLevelPrediction' } }
+    /**
+     * Find zero or one WaterLevelPrediction that matches the filter.
+     * @param {WaterLevelPredictionFindUniqueArgs} args - Arguments to find a WaterLevelPrediction
+     * @example
+     * // Get one WaterLevelPrediction
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WaterLevelPredictionFindUniqueArgs>(args: SelectSubset<T, WaterLevelPredictionFindUniqueArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one WaterLevelPrediction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WaterLevelPredictionFindUniqueOrThrowArgs} args - Arguments to find a WaterLevelPrediction
+     * @example
+     * // Get one WaterLevelPrediction
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WaterLevelPredictionFindUniqueOrThrowArgs>(args: SelectSubset<T, WaterLevelPredictionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first WaterLevelPrediction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionFindFirstArgs} args - Arguments to find a WaterLevelPrediction
+     * @example
+     * // Get one WaterLevelPrediction
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WaterLevelPredictionFindFirstArgs>(args?: SelectSubset<T, WaterLevelPredictionFindFirstArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first WaterLevelPrediction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionFindFirstOrThrowArgs} args - Arguments to find a WaterLevelPrediction
+     * @example
+     * // Get one WaterLevelPrediction
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WaterLevelPredictionFindFirstOrThrowArgs>(args?: SelectSubset<T, WaterLevelPredictionFindFirstOrThrowArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more WaterLevelPredictions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WaterLevelPredictions
+     * const waterLevelPredictions = await prisma.waterLevelPrediction.findMany()
+     * 
+     * // Get first 10 WaterLevelPredictions
+     * const waterLevelPredictions = await prisma.waterLevelPrediction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const waterLevelPredictionWithIdOnly = await prisma.waterLevelPrediction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WaterLevelPredictionFindManyArgs>(args?: SelectSubset<T, WaterLevelPredictionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a WaterLevelPrediction.
+     * @param {WaterLevelPredictionCreateArgs} args - Arguments to create a WaterLevelPrediction.
+     * @example
+     * // Create one WaterLevelPrediction
+     * const WaterLevelPrediction = await prisma.waterLevelPrediction.create({
+     *   data: {
+     *     // ... data to create a WaterLevelPrediction
+     *   }
+     * })
+     * 
+     */
+    create<T extends WaterLevelPredictionCreateArgs>(args: SelectSubset<T, WaterLevelPredictionCreateArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many WaterLevelPredictions.
+     * @param {WaterLevelPredictionCreateManyArgs} args - Arguments to create many WaterLevelPredictions.
+     * @example
+     * // Create many WaterLevelPredictions
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WaterLevelPredictionCreateManyArgs>(args?: SelectSubset<T, WaterLevelPredictionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WaterLevelPredictions and returns the data saved in the database.
+     * @param {WaterLevelPredictionCreateManyAndReturnArgs} args - Arguments to create many WaterLevelPredictions.
+     * @example
+     * // Create many WaterLevelPredictions
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WaterLevelPredictions and only return the `id`
+     * const waterLevelPredictionWithIdOnly = await prisma.waterLevelPrediction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WaterLevelPredictionCreateManyAndReturnArgs>(args?: SelectSubset<T, WaterLevelPredictionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a WaterLevelPrediction.
+     * @param {WaterLevelPredictionDeleteArgs} args - Arguments to delete one WaterLevelPrediction.
+     * @example
+     * // Delete one WaterLevelPrediction
+     * const WaterLevelPrediction = await prisma.waterLevelPrediction.delete({
+     *   where: {
+     *     // ... filter to delete one WaterLevelPrediction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WaterLevelPredictionDeleteArgs>(args: SelectSubset<T, WaterLevelPredictionDeleteArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one WaterLevelPrediction.
+     * @param {WaterLevelPredictionUpdateArgs} args - Arguments to update one WaterLevelPrediction.
+     * @example
+     * // Update one WaterLevelPrediction
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WaterLevelPredictionUpdateArgs>(args: SelectSubset<T, WaterLevelPredictionUpdateArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more WaterLevelPredictions.
+     * @param {WaterLevelPredictionDeleteManyArgs} args - Arguments to filter WaterLevelPredictions to delete.
+     * @example
+     * // Delete a few WaterLevelPredictions
+     * const { count } = await prisma.waterLevelPrediction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WaterLevelPredictionDeleteManyArgs>(args?: SelectSubset<T, WaterLevelPredictionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WaterLevelPredictions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WaterLevelPredictions
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WaterLevelPredictionUpdateManyArgs>(args: SelectSubset<T, WaterLevelPredictionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WaterLevelPredictions and returns the data updated in the database.
+     * @param {WaterLevelPredictionUpdateManyAndReturnArgs} args - Arguments to update many WaterLevelPredictions.
+     * @example
+     * // Update many WaterLevelPredictions
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more WaterLevelPredictions and only return the `id`
+     * const waterLevelPredictionWithIdOnly = await prisma.waterLevelPrediction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WaterLevelPredictionUpdateManyAndReturnArgs>(args: SelectSubset<T, WaterLevelPredictionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one WaterLevelPrediction.
+     * @param {WaterLevelPredictionUpsertArgs} args - Arguments to update or create a WaterLevelPrediction.
+     * @example
+     * // Update or create a WaterLevelPrediction
+     * const waterLevelPrediction = await prisma.waterLevelPrediction.upsert({
+     *   create: {
+     *     // ... data to create a WaterLevelPrediction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WaterLevelPrediction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WaterLevelPredictionUpsertArgs>(args: SelectSubset<T, WaterLevelPredictionUpsertArgs<ExtArgs>>): Prisma__WaterLevelPredictionClient<$Result.GetResult<Prisma.$WaterLevelPredictionPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of WaterLevelPredictions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionCountArgs} args - Arguments to filter WaterLevelPredictions to count.
+     * @example
+     * // Count the number of WaterLevelPredictions
+     * const count = await prisma.waterLevelPrediction.count({
+     *   where: {
+     *     // ... the filter for the WaterLevelPredictions we want to count
+     *   }
+     * })
+    **/
+    count<T extends WaterLevelPredictionCountArgs>(
+      args?: Subset<T, WaterLevelPredictionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WaterLevelPredictionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WaterLevelPrediction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WaterLevelPredictionAggregateArgs>(args: Subset<T, WaterLevelPredictionAggregateArgs>): Prisma.PrismaPromise<GetWaterLevelPredictionAggregateType<T>>
+
+    /**
+     * Group by WaterLevelPrediction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WaterLevelPredictionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WaterLevelPredictionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WaterLevelPredictionGroupByArgs['orderBy'] }
+        : { orderBy?: WaterLevelPredictionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WaterLevelPredictionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWaterLevelPredictionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WaterLevelPrediction model
+   */
+  readonly fields: WaterLevelPredictionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WaterLevelPrediction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WaterLevelPredictionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WaterLevelPrediction model
+   */ 
+  interface WaterLevelPredictionFieldRefs {
+    readonly id: FieldRef<"WaterLevelPrediction", 'String'>
+    readonly gaugeId: FieldRef<"WaterLevelPrediction", 'String'>
+    readonly predictedT1M: FieldRef<"WaterLevelPrediction", 'Float'>
+    readonly predictedT2M: FieldRef<"WaterLevelPrediction", 'Float'>
+    readonly confidence: FieldRef<"WaterLevelPrediction", 'Float'>
+    readonly alertLevel: FieldRef<"WaterLevelPrediction", 'String'>
+    readonly modelUsed: FieldRef<"WaterLevelPrediction", 'String'>
+    readonly reason: FieldRef<"WaterLevelPrediction", 'String'>
+    readonly predictedAt: FieldRef<"WaterLevelPrediction", 'DateTime'>
+    readonly computedAt: FieldRef<"WaterLevelPrediction", 'DateTime'>
+    readonly updatedAt: FieldRef<"WaterLevelPrediction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WaterLevelPrediction findUnique
+   */
+  export type WaterLevelPredictionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * Filter, which WaterLevelPrediction to fetch.
+     */
+    where: WaterLevelPredictionWhereUniqueInput
+  }
+
+  /**
+   * WaterLevelPrediction findUniqueOrThrow
+   */
+  export type WaterLevelPredictionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * Filter, which WaterLevelPrediction to fetch.
+     */
+    where: WaterLevelPredictionWhereUniqueInput
+  }
+
+  /**
+   * WaterLevelPrediction findFirst
+   */
+  export type WaterLevelPredictionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * Filter, which WaterLevelPrediction to fetch.
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WaterLevelPredictions to fetch.
+     */
+    orderBy?: WaterLevelPredictionOrderByWithRelationInput | WaterLevelPredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WaterLevelPredictions.
+     */
+    cursor?: WaterLevelPredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WaterLevelPredictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WaterLevelPredictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WaterLevelPredictions.
+     */
+    distinct?: WaterLevelPredictionScalarFieldEnum | WaterLevelPredictionScalarFieldEnum[]
+  }
+
+  /**
+   * WaterLevelPrediction findFirstOrThrow
+   */
+  export type WaterLevelPredictionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * Filter, which WaterLevelPrediction to fetch.
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WaterLevelPredictions to fetch.
+     */
+    orderBy?: WaterLevelPredictionOrderByWithRelationInput | WaterLevelPredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WaterLevelPredictions.
+     */
+    cursor?: WaterLevelPredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WaterLevelPredictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WaterLevelPredictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WaterLevelPredictions.
+     */
+    distinct?: WaterLevelPredictionScalarFieldEnum | WaterLevelPredictionScalarFieldEnum[]
+  }
+
+  /**
+   * WaterLevelPrediction findMany
+   */
+  export type WaterLevelPredictionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * Filter, which WaterLevelPredictions to fetch.
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WaterLevelPredictions to fetch.
+     */
+    orderBy?: WaterLevelPredictionOrderByWithRelationInput | WaterLevelPredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WaterLevelPredictions.
+     */
+    cursor?: WaterLevelPredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WaterLevelPredictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WaterLevelPredictions.
+     */
+    skip?: number
+    distinct?: WaterLevelPredictionScalarFieldEnum | WaterLevelPredictionScalarFieldEnum[]
+  }
+
+  /**
+   * WaterLevelPrediction create
+   */
+  export type WaterLevelPredictionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a WaterLevelPrediction.
+     */
+    data: XOR<WaterLevelPredictionCreateInput, WaterLevelPredictionUncheckedCreateInput>
+  }
+
+  /**
+   * WaterLevelPrediction createMany
+   */
+  export type WaterLevelPredictionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WaterLevelPredictions.
+     */
+    data: WaterLevelPredictionCreateManyInput | WaterLevelPredictionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WaterLevelPrediction createManyAndReturn
+   */
+  export type WaterLevelPredictionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * The data used to create many WaterLevelPredictions.
+     */
+    data: WaterLevelPredictionCreateManyInput | WaterLevelPredictionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WaterLevelPrediction update
+   */
+  export type WaterLevelPredictionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a WaterLevelPrediction.
+     */
+    data: XOR<WaterLevelPredictionUpdateInput, WaterLevelPredictionUncheckedUpdateInput>
+    /**
+     * Choose, which WaterLevelPrediction to update.
+     */
+    where: WaterLevelPredictionWhereUniqueInput
+  }
+
+  /**
+   * WaterLevelPrediction updateMany
+   */
+  export type WaterLevelPredictionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WaterLevelPredictions.
+     */
+    data: XOR<WaterLevelPredictionUpdateManyMutationInput, WaterLevelPredictionUncheckedUpdateManyInput>
+    /**
+     * Filter which WaterLevelPredictions to update
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * Limit how many WaterLevelPredictions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WaterLevelPrediction updateManyAndReturn
+   */
+  export type WaterLevelPredictionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * The data used to update WaterLevelPredictions.
+     */
+    data: XOR<WaterLevelPredictionUpdateManyMutationInput, WaterLevelPredictionUncheckedUpdateManyInput>
+    /**
+     * Filter which WaterLevelPredictions to update
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * Limit how many WaterLevelPredictions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WaterLevelPrediction upsert
+   */
+  export type WaterLevelPredictionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the WaterLevelPrediction to update in case it exists.
+     */
+    where: WaterLevelPredictionWhereUniqueInput
+    /**
+     * In case the WaterLevelPrediction found by the `where` argument doesn't exist, create a new WaterLevelPrediction with this data.
+     */
+    create: XOR<WaterLevelPredictionCreateInput, WaterLevelPredictionUncheckedCreateInput>
+    /**
+     * In case the WaterLevelPrediction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WaterLevelPredictionUpdateInput, WaterLevelPredictionUncheckedUpdateInput>
+  }
+
+  /**
+   * WaterLevelPrediction delete
+   */
+  export type WaterLevelPredictionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+    /**
+     * Filter which WaterLevelPrediction to delete.
+     */
+    where: WaterLevelPredictionWhereUniqueInput
+  }
+
+  /**
+   * WaterLevelPrediction deleteMany
+   */
+  export type WaterLevelPredictionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WaterLevelPredictions to delete
+     */
+    where?: WaterLevelPredictionWhereInput
+    /**
+     * Limit how many WaterLevelPredictions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WaterLevelPrediction without action
+   */
+  export type WaterLevelPredictionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WaterLevelPrediction
+     */
+    select?: WaterLevelPredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WaterLevelPrediction
+     */
+    omit?: WaterLevelPredictionOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model IncidentDuplicateLink
    */
 
@@ -87085,6 +88293,23 @@ export namespace Prisma {
   export type DownstreamMappingScalarFieldEnum = (typeof DownstreamMappingScalarFieldEnum)[keyof typeof DownstreamMappingScalarFieldEnum]
 
 
+  export const WaterLevelPredictionScalarFieldEnum: {
+    id: 'id',
+    gaugeId: 'gaugeId',
+    predictedT1M: 'predictedT1M',
+    predictedT2M: 'predictedT2M',
+    confidence: 'confidence',
+    alertLevel: 'alertLevel',
+    modelUsed: 'modelUsed',
+    reason: 'reason',
+    predictedAt: 'predictedAt',
+    computedAt: 'computedAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WaterLevelPredictionScalarFieldEnum = (typeof WaterLevelPredictionScalarFieldEnum)[keyof typeof WaterLevelPredictionScalarFieldEnum]
+
+
   export const IncidentDuplicateLinkScalarFieldEnum: {
     id: 'id',
     reportId: 'reportId',
@@ -92561,6 +93786,90 @@ export namespace Prisma {
     targetDistricts?: StringNullableListFilter<"DownstreamMapping">
     createdAt?: DateTimeWithAggregatesFilter<"DownstreamMapping"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DownstreamMapping"> | Date | string
+  }
+
+  export type WaterLevelPredictionWhereInput = {
+    AND?: WaterLevelPredictionWhereInput | WaterLevelPredictionWhereInput[]
+    OR?: WaterLevelPredictionWhereInput[]
+    NOT?: WaterLevelPredictionWhereInput | WaterLevelPredictionWhereInput[]
+    id?: StringFilter<"WaterLevelPrediction"> | string
+    gaugeId?: StringFilter<"WaterLevelPrediction"> | string
+    predictedT1M?: FloatFilter<"WaterLevelPrediction"> | number
+    predictedT2M?: FloatFilter<"WaterLevelPrediction"> | number
+    confidence?: FloatFilter<"WaterLevelPrediction"> | number
+    alertLevel?: StringFilter<"WaterLevelPrediction"> | string
+    modelUsed?: StringFilter<"WaterLevelPrediction"> | string
+    reason?: StringFilter<"WaterLevelPrediction"> | string
+    predictedAt?: DateTimeFilter<"WaterLevelPrediction"> | Date | string
+    computedAt?: DateTimeFilter<"WaterLevelPrediction"> | Date | string
+    updatedAt?: DateTimeFilter<"WaterLevelPrediction"> | Date | string
+  }
+
+  export type WaterLevelPredictionOrderByWithRelationInput = {
+    id?: SortOrder
+    gaugeId?: SortOrder
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
+    alertLevel?: SortOrder
+    modelUsed?: SortOrder
+    reason?: SortOrder
+    predictedAt?: SortOrder
+    computedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WaterLevelPredictionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    gaugeId?: string
+    AND?: WaterLevelPredictionWhereInput | WaterLevelPredictionWhereInput[]
+    OR?: WaterLevelPredictionWhereInput[]
+    NOT?: WaterLevelPredictionWhereInput | WaterLevelPredictionWhereInput[]
+    predictedT1M?: FloatFilter<"WaterLevelPrediction"> | number
+    predictedT2M?: FloatFilter<"WaterLevelPrediction"> | number
+    confidence?: FloatFilter<"WaterLevelPrediction"> | number
+    alertLevel?: StringFilter<"WaterLevelPrediction"> | string
+    modelUsed?: StringFilter<"WaterLevelPrediction"> | string
+    reason?: StringFilter<"WaterLevelPrediction"> | string
+    predictedAt?: DateTimeFilter<"WaterLevelPrediction"> | Date | string
+    computedAt?: DateTimeFilter<"WaterLevelPrediction"> | Date | string
+    updatedAt?: DateTimeFilter<"WaterLevelPrediction"> | Date | string
+  }, "id" | "gaugeId">
+
+  export type WaterLevelPredictionOrderByWithAggregationInput = {
+    id?: SortOrder
+    gaugeId?: SortOrder
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
+    alertLevel?: SortOrder
+    modelUsed?: SortOrder
+    reason?: SortOrder
+    predictedAt?: SortOrder
+    computedAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WaterLevelPredictionCountOrderByAggregateInput
+    _avg?: WaterLevelPredictionAvgOrderByAggregateInput
+    _max?: WaterLevelPredictionMaxOrderByAggregateInput
+    _min?: WaterLevelPredictionMinOrderByAggregateInput
+    _sum?: WaterLevelPredictionSumOrderByAggregateInput
+  }
+
+  export type WaterLevelPredictionScalarWhereWithAggregatesInput = {
+    AND?: WaterLevelPredictionScalarWhereWithAggregatesInput | WaterLevelPredictionScalarWhereWithAggregatesInput[]
+    OR?: WaterLevelPredictionScalarWhereWithAggregatesInput[]
+    NOT?: WaterLevelPredictionScalarWhereWithAggregatesInput | WaterLevelPredictionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WaterLevelPrediction"> | string
+    gaugeId?: StringWithAggregatesFilter<"WaterLevelPrediction"> | string
+    predictedT1M?: FloatWithAggregatesFilter<"WaterLevelPrediction"> | number
+    predictedT2M?: FloatWithAggregatesFilter<"WaterLevelPrediction"> | number
+    confidence?: FloatWithAggregatesFilter<"WaterLevelPrediction"> | number
+    alertLevel?: StringWithAggregatesFilter<"WaterLevelPrediction"> | string
+    modelUsed?: StringWithAggregatesFilter<"WaterLevelPrediction"> | string
+    reason?: StringWithAggregatesFilter<"WaterLevelPrediction"> | string
+    predictedAt?: DateTimeWithAggregatesFilter<"WaterLevelPrediction"> | Date | string
+    computedAt?: DateTimeWithAggregatesFilter<"WaterLevelPrediction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WaterLevelPrediction"> | Date | string
   }
 
   export type IncidentDuplicateLinkWhereInput = {
@@ -98520,6 +99829,104 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WaterLevelPredictionCreateInput = {
+    id?: string
+    gaugeId: string
+    predictedT1M: number
+    predictedT2M: number
+    confidence: number
+    alertLevel: string
+    modelUsed: string
+    reason: string
+    predictedAt: Date | string
+    computedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WaterLevelPredictionUncheckedCreateInput = {
+    id?: string
+    gaugeId: string
+    predictedT1M: number
+    predictedT2M: number
+    confidence: number
+    alertLevel: string
+    modelUsed: string
+    reason: string
+    predictedAt: Date | string
+    computedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WaterLevelPredictionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gaugeId?: StringFieldUpdateOperationsInput | string
+    predictedT1M?: FloatFieldUpdateOperationsInput | number
+    predictedT2M?: FloatFieldUpdateOperationsInput | number
+    confidence?: FloatFieldUpdateOperationsInput | number
+    alertLevel?: StringFieldUpdateOperationsInput | string
+    modelUsed?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    predictedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WaterLevelPredictionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gaugeId?: StringFieldUpdateOperationsInput | string
+    predictedT1M?: FloatFieldUpdateOperationsInput | number
+    predictedT2M?: FloatFieldUpdateOperationsInput | number
+    confidence?: FloatFieldUpdateOperationsInput | number
+    alertLevel?: StringFieldUpdateOperationsInput | string
+    modelUsed?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    predictedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WaterLevelPredictionCreateManyInput = {
+    id?: string
+    gaugeId: string
+    predictedT1M: number
+    predictedT2M: number
+    confidence: number
+    alertLevel: string
+    modelUsed: string
+    reason: string
+    predictedAt: Date | string
+    computedAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WaterLevelPredictionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gaugeId?: StringFieldUpdateOperationsInput | string
+    predictedT1M?: FloatFieldUpdateOperationsInput | number
+    predictedT2M?: FloatFieldUpdateOperationsInput | number
+    confidence?: FloatFieldUpdateOperationsInput | number
+    alertLevel?: StringFieldUpdateOperationsInput | string
+    modelUsed?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    predictedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WaterLevelPredictionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gaugeId?: StringFieldUpdateOperationsInput | string
+    predictedT1M?: FloatFieldUpdateOperationsInput | number
+    predictedT2M?: FloatFieldUpdateOperationsInput | number
+    confidence?: FloatFieldUpdateOperationsInput | number
+    alertLevel?: StringFieldUpdateOperationsInput | string
+    modelUsed?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    predictedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IncidentDuplicateLinkCreateInput = {
     id?: string
     score: number
@@ -102907,6 +104314,60 @@ export namespace Prisma {
     stationName?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type WaterLevelPredictionCountOrderByAggregateInput = {
+    id?: SortOrder
+    gaugeId?: SortOrder
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
+    alertLevel?: SortOrder
+    modelUsed?: SortOrder
+    reason?: SortOrder
+    predictedAt?: SortOrder
+    computedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WaterLevelPredictionAvgOrderByAggregateInput = {
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
+  }
+
+  export type WaterLevelPredictionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    gaugeId?: SortOrder
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
+    alertLevel?: SortOrder
+    modelUsed?: SortOrder
+    reason?: SortOrder
+    predictedAt?: SortOrder
+    computedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WaterLevelPredictionMinOrderByAggregateInput = {
+    id?: SortOrder
+    gaugeId?: SortOrder
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
+    alertLevel?: SortOrder
+    modelUsed?: SortOrder
+    reason?: SortOrder
+    predictedAt?: SortOrder
+    computedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WaterLevelPredictionSumOrderByAggregateInput = {
+    predictedT1M?: SortOrder
+    predictedT2M?: SortOrder
+    confidence?: SortOrder
   }
 
   export type IncidentDuplicateLinkCountOrderByAggregateInput = {

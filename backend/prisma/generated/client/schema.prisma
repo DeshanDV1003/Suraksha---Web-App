@@ -869,6 +869,23 @@ model DownstreamMapping {
   updatedAt       DateTime @updatedAt
 }
 
+/// Cached LSTM output — one row per gauge, refreshed by the hourly prediction
+/// cycle. `GET /api/water/predictions` reads this instead of calling the ML
+/// service once per gauge on every request.
+model WaterLevelPrediction {
+  id           String   @id @default(uuid())
+  gaugeId      String   @unique
+  predictedT1M Float
+  predictedT2M Float
+  confidence   Float
+  alertLevel   String
+  modelUsed    String
+  reason       String
+  predictedAt  DateTime
+  computedAt   DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 enum Role {
   CITIZEN
   VOLUNTEER

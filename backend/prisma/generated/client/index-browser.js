@@ -873,6 +873,20 @@ exports.Prisma.DownstreamMappingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WaterLevelPredictionScalarFieldEnum = {
+  id: 'id',
+  gaugeId: 'gaugeId',
+  predictedT1M: 'predictedT1M',
+  predictedT2M: 'predictedT2M',
+  confidence: 'confidence',
+  alertLevel: 'alertLevel',
+  modelUsed: 'modelUsed',
+  reason: 'reason',
+  predictedAt: 'predictedAt',
+  computedAt: 'computedAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.IncidentDuplicateLinkScalarFieldEnum = {
   id: 'id',
   reportId: 'reportId',
@@ -1230,6 +1244,7 @@ exports.Prisma.ModelName = {
   RainfallAlertLog: 'RainfallAlertLog',
   RiverWaterLevel: 'RiverWaterLevel',
   DownstreamMapping: 'DownstreamMapping',
+  WaterLevelPrediction: 'WaterLevelPrediction',
   IncidentDuplicateLink: 'IncidentDuplicateLink',
   PublicSafePlace: 'PublicSafePlace',
   AuthorityContact: 'AuthorityContact',

@@ -1,0 +1,80 @@
+project	file	test	status
+chromium	ai-research/ai-research.spec.ts	TC-PW-065: AI research page loads	PASS
+chromium	ai-research/ai-research.spec.ts	TC-PW-066: Graceful degradation when ML service is offline	PASS
+chromium	alerts/alerts-management.spec.ts	TC-PW-022: Alert list loads with data	FAIL
+chromium	alerts/alerts-management.spec.ts	TC-PW-023: Create new alert dialog opens	FAIL
+chromium	alerts/alerts-management.spec.ts	TC-PW-024: Alert form validation (empty title)	FAIL
+chromium	alerts/alerts-management.spec.ts	TC-PW-025: Emergency alert banner appears via socket	PASS
+setup	auth.setup.ts	authenticate all roles	PASS
+chromium	auth/login.spec.ts	TC-PW-001: Valid admin login redirects to admin dashboard	PASS
+chromium	auth/login.spec.ts	TC-PW-002: Valid citizen login redirects to citizen dashboard	PASS
+chromium	auth/login.spec.ts	TC-PW-003: Valid hospital login redirects to hospital dashboard	PASS
+chromium	auth/login.spec.ts	TC-PW-004: Wrong password shows error message	FAIL
+chromium	auth/login.spec.ts	TC-PW-005: Empty form shows validation error	PASS
+chromium	auth/login.spec.ts	TC-PW-006: Remember me checkbox repopulates on revisit	PASS
+chromium	auth/login.spec.ts	TC-PW-007: Register link navigation	PASS
+chromium	auth/register.spec.ts	TC-PW-008: Registration form loads	PASS
+chromium	auth/register.spec.ts	TC-PW-009: Duplicate email shows error	FAIL
+chromium	auth/role-guards.spec.ts	TC-PW-011: Citizen cannot access /reports (redirects to /citizen-home)	PASS
+chromium	auth/role-guards.spec.ts	TC-PW-012: Citizen cannot access /users (redirects to /citizen-home)	PASS
+chromium	auth/role-guards.spec.ts	TC-PW-013: Hospital staff cannot access admin dashboard (redirects to /hospital)	PASS
+chromium	auth/role-guards.spec.ts	TC-PW-014: Unauthenticated user redirects to /login	PASS
+chromium	camps/camps.spec.ts	TC-PW-041: Camps list loads	PASS
+chromium	camps/camps.spec.ts	TC-PW-042: Camp capacity bar renders	PASS
+chromium	camps/camps.spec.ts	TC-PW-043: Add new camp form	PASS
+chromium	dashboard/admin-dashboard.spec.ts	TC-PW-015: Dashboard loads with statistics cards	FAIL
+chromium	dashboard/admin-dashboard.spec.ts	TC-PW-016: Stat cards display numeric values	FAIL
+chromium	dashboard/admin-dashboard.spec.ts	TC-PW-017: Navigation sidebar links are visible	PASS
+chromium	dashboard/admin-dashboard.spec.ts	TC-PW-018: Dark mode toggle works	PASS
+chromium	dashboard/citizen-dashboard.spec.ts	TC-PW-019: Citizen dashboard loads at /citizen-home	PASS
+chromium	dashboard/citizen-dashboard.spec.ts	TC-PW-020: "Request Help" button is visible	PASS
+chromium	dashboard/citizen-dashboard.spec.ts	TC-PW-021: Water level widget visible	PASS
+chromium	donations/donations.spec.ts	TC-PW-063: Donations page loads	PASS
+chromium	donations/donations.spec.ts	TC-PW-064: Donation chart renders	PASS
+chromium	family-safety/family-safety.spec.ts	TC-PW-061: Family safety page loads	PASS
+chromium	family-safety/family-safety.spec.ts	TC-PW-062: Family member list visible	FAIL
+chromium	help-requests/help-requests.spec.ts	TC-PW-033: Help request list loads	PASS
+chromium	help-requests/help-requests.spec.ts	TC-PW-034: Status filter works	PASS
+chromium	help-requests/public-portal.spec.ts	TC-PW-035: Public portal loads without login	PASS
+chromium	help-requests/public-portal.spec.ts	TC-PW-036: Submit help request form (API-backed)	PASS
+chromium	help-requests/public-portal.spec.ts	TC-PW-037: Form validation (required fields)	PASS
+chromium	hospital/hospital.spec.ts	TC-PW-054: Hospital dashboard loads at /hospital	FAIL
+chromium	hospital/hospital.spec.ts	TC-PW-055: Referrals page loads	PASS
+chromium	hospital/hospital.spec.ts	TC-PW-056: Capacity page loads	FAIL
+chromium	incidents/incidents.spec.ts	TC-PW-026: Incidents list loads	FAIL
+chromium	incidents/incidents.spec.ts	TC-PW-027: Filter by type works	FAIL
+chromium	incidents/incidents.spec.ts	TC-PW-028: Create incident form opens	FAIL
+chromium	incidents/incidents.spec.ts	TC-PW-029: Incident detail view	PASS
+chromium	map/map.spec.ts	TC-PW-030: Map loads and renders Leaflet tiles	PASS
+chromium	map/map.spec.ts	TC-PW-031: Layer controls are visible	PASS
+chromium	map/map.spec.ts	TC-PW-032: Marker cluster renders on zoom	FAIL
+chromium	missing-persons/missing-persons.spec.ts	TC-PW-038: Missing persons list loads (Admin)	PASS
+chromium	missing-persons/missing-persons.spec.ts	TC-PW-039: Report missing person form	FAIL
+chromium	missing-persons/missing-persons.spec.ts	TC-PW-040: Public portal (no auth) lists missing persons	PASS
+chromium	mobile-api/mobile-alerts.spec.ts	TC-PW-M-004: GET /api/alerts returns alert array	PASS
+chromium	mobile-api/mobile-auth.spec.ts	TC-PW-M-001: Mobile login returns JWT	PASS
+chromium	mobile-api/mobile-auth.spec.ts	TC-PW-M-002: JWT payload verification	PASS
+chromium	mobile-api/mobile-family.spec.ts	TC-PW-M-013: GET /api/family returns member list	PASS
+chromium	mobile-api/mobile-geospatial.spec.ts	TC-PW-M-007: GET /api/safe-zones returns GeoJSON	PASS
+chromium	mobile-api/mobile-geospatial.spec.ts	TC-PW-M-008: POST /api/location/update works	PASS
+chromium	mobile-api/mobile-tokens.spec.ts	TC-PW-M-010: GET /api/tokens works for citizen	PASS
+chromium	mobile-api/mobile-water.spec.ts	TC-PW-M-014: GET /api/water/river returns readings	PASS
+chromium	mobile-api/mobile-water.spec.ts	TC-PW-M-015: GET /api/water/predictions works	FAIL
+chromium	navigation/navigation.spec.ts	TC-PW-067: Sidebar links navigate to correct pages	PASS
+chromium	navigation/navigation.spec.ts	TC-PW-069: Mobile responsive sidebar	PASS
+chromium	notifications/notifications.spec.ts	TC-PW-070: Notifications page loads	PASS
+chromium	notifications/notifications.spec.ts	TC-PW-071: Mark-as-read interaction	PASS
+chromium	reports/reports.spec.ts	TC-PW-057: Reports page loads (staff only)	PASS
+chromium	reports/reports.spec.ts	TC-PW-058: Export button visible	PASS
+chromium	settings/settings.spec.ts	TC-PW-059: Settings page loads	PASS
+chromium	settings/settings.spec.ts	TC-PW-060: Language switcher changes UI text	PASS
+chromium	tokens/tokens.spec.ts	TC-PW-044: Tokens list loads	PASS
+chromium	tokens/tokens.spec.ts	TC-PW-045: Generate token button visible (staff)	PASS
+chromium	users/user-management.spec.ts	TC-PW-049: User list loads for admin	PASS
+chromium	users/user-management.spec.ts	TC-PW-050: Search user by name	PASS
+chromium	users/user-management.spec.ts	TC-PW-051: Change user role	PASS
+chromium	volunteers/volunteers.spec.ts	TC-PW-052: Volunteer list loads	PASS
+chromium	volunteers/volunteers.spec.ts	TC-PW-053: Task assignment UI	PASS
+chromium	water-monitor/water-monitor.spec.ts	TC-PW-046: Water monitor loads	PASS
+chromium	water-monitor/water-monitor.spec.ts	TC-PW-047: Gauge readings appear	PASS
+chromium	water-monitor/water-monitor.spec.ts	TC-PW-048: ML predictions chart renders	PASS

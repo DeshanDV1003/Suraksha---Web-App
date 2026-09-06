@@ -1,9 +1,10 @@
 {
-  "version": "v3.0_synthetic_crowdsourced",
-  "trained_at": "2026-09-05T18:46:05.390191",
+  "version": "v3.1_synthetic_crowdsourced_xgb_richer_features",
+  "trained_at": "2026-09-06T13:32:48.754600",
   "data_source": "SYNTHETIC_CROWDSOURCED_SCENARIOS (NOT the real DMC official-records export)",
   "why_not_real_dmc_data": "DI_report105745.xls contains only official government-sourced records (EOC/DDMCU/Police/District offices) with no citizen/anonymous/app-sourced reports, so it has no real examples of the low-credibility class this model needs to recognise. Training on it directly forced the label to be a formula of the same input features (100% accuracy, no real learning). This version instead uses labelled synthetic scenarios calibrated to the same source-trust domain knowledge used in ml/evidence_graph.py, with the label built from independent noise + corroboration signals rather than a 1:1 function of the model's own input features.",
-  "total_samples": 20000,
+  "v3_1_changes": "Kept the designed-in adjudication noise (N(0,0.06)) untouched, so the task is no easier than v3.0. Improvements are model-side and feature-side only: (a) added 5 further OBSERVABLE verifier signals (source_hist_accuracy, gps_cluster_agreement, image_hash_shared, text_specificity, corrob_time_spread_min) -- each correlated with the hidden true trust but with its own independent noise, and computed from other reports / source history rather than this report's label; (b) GradientBoosting -> tuned XGBoost; (c) 20k -> 40k samples.",
+  "total_samples": 40000,
   "features": [
     "n_corroborating_reports",
     "has_gps",
@@ -14,41 +15,46 @@
     "report_text_length",
     "officer_confirmed",
     "contradicted_by_other_report",
+    "source_hist_accuracy",
+    "gps_cluster_agreement",
+    "image_hash_shared",
+    "text_specificity",
+    "corrob_time_spread_min",
     "hour_of_day",
     "district_random_id"
   ],
   "classifier": {
-    "type": "GradientBoostingClassifier",
+    "type": "XGBClassifier",
     "labels": [
       "HIGH",
       "MEDIUM",
       "LOW"
     ],
-    "accuracy": 0.8323,
-    "macro_f1": 0.8092,
-    "cv_5fold_macro_f1_mean": 0.7984,
-    "cv_5fold_macro_f1_std": 0.0016,
+    "accuracy": 0.8578,
+    "macro_f1": 0.8378,
+    "cv_5fold_macro_f1_mean": 0.8371,
+    "cv_5fold_macro_f1_std": 0.0023,
     "per_class": {
       "HIGH": {
-        "precision": 0.9067,
-        "recall": 0.8964,
-        "f1": 0.9015
+        "precision": 0.9071,
+        "recall": 0.9201,
+        "f1": 0.9136
       },
       "MEDIUM": {
-        "precision": 0.6533,
-        "recall": 0.6715,
-        "f1": 0.6623
+        "precision": 0.7124,
+        "recall": 0.7029,
+        "f1": 0.7076
       },
       "LOW": {
-        "precision": 0.8659,
-        "recall": 0.8619,
-        "f1": 0.8639
+        "precision": 0.8984,
+        "recall": 0.8859,
+        "f1": 0.8921
       }
     }
   },
   "regressor": {
     "type": "GradientBoostingRegressor",
-    "mae": 0.075687
+    "mae": 0.062058
   },
   "credibility_thresholds": {
     "high": 0.7,

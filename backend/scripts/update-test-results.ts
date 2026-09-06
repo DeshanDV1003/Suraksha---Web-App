@@ -1,11 +1,16 @@
 /**
  * Updates the Excel test cases with actual Pass/Fail results from the testing session.
  * Run: npx tsx scripts/update-test-results.ts
+ *
+ * NOTE (2026-09-06): the RESULTS map below is a static snapshot of the 2026-08-19
+ * session. For a LIVE re-run that actually calls the API and writes fresh results,
+ * use `node tests/test-cases/run-and-update.cjs` instead — that is now the
+ * canonical way to execute and score the 100 cases.
  */
 import ExcelJS from 'exceljs';
 import path from 'path';
 
-const XLSX_PATH = path.join(__dirname, '..', 'Suraksha_Test_Cases.xlsx');
+const XLSX_PATH = path.join(__dirname, '..', '..', 'tests', 'test-cases', 'Suraksha_Test_Cases.xlsx');
 
 // Actual test results from the functional testing session (2026-08-19)
 const RESULTS: Record<string, { status: 'Pass' | 'Fail' | 'N/A'; note: string }> = {

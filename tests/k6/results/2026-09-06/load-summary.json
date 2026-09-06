@@ -1,0 +1,251 @@
+{
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {
+            "Dashboard Stats": {
+                "path": "::Dashboard Stats",
+                "id": "5538d69da2fb2e20a1d039a442621461",
+                "groups": {},
+                "checks": {
+                        "stats 200": {
+                            "fails": 0,
+                            "name": "stats 200",
+                            "path": "::Dashboard Stats::stats 200",
+                            "id": "d68533fc1a5719318ccc03b79b072702",
+                            "passes": 3894
+                        }
+                    },
+                "name": "Dashboard Stats"
+            },
+            "Alert List": {
+                "name": "Alert List",
+                "path": "::Alert List",
+                "id": "91f811b053027bd27e1b2510bacc5381",
+                "groups": {},
+                "checks": {
+                        "alerts 200": {
+                            "name": "alerts 200",
+                            "path": "::Alert List::alerts 200",
+                            "id": "d6a76d75fd45ab7a7903606721b47940",
+                            "passes": 3894,
+                            "fails": 0
+                        },
+                        "alerts array": {
+                            "fails": 0,
+                            "name": "alerts array",
+                            "path": "::Alert List::alerts array",
+                            "id": "5e28d64013f48df9f2a42ce96250c8d3",
+                            "passes": 3894
+                        }
+                    }
+            },
+            "Water River Levels": {
+                "groups": {},
+                "checks": {
+                        "river 200": {
+                            "fails": 0,
+                            "name": "river 200",
+                            "path": "::Water River Levels::river 200",
+                            "id": "7931c28c0065b14cad05b1289aa35cf5",
+                            "passes": 3894
+                        }
+                    },
+                "name": "Water River Levels",
+                "path": "::Water River Levels",
+                "id": "b7227df67225389ed9d18745dfa8255a"
+            },
+            "Water Predictions": {
+                "name": "Water Predictions",
+                "path": "::Water Predictions",
+                "id": "abcc84ee0c750c52b051f6199505cb48",
+                "groups": {},
+                "checks": {
+                        "predictions 200": {
+                            "passes": 3894,
+                            "fails": 0,
+                            "name": "predictions 200",
+                            "path": "::Water Predictions::predictions 200",
+                            "id": "455fe77c898d4f74142decc8c7608b6a"
+                        }
+                    }
+            },
+            "Incidents List": {
+                "path": "::Incidents List",
+                "id": "42fa8e05100797cfca7691b3447128f5",
+                "groups": {},
+                "checks": {
+                        "incidents 200": {
+                            "fails": 0,
+                            "name": "incidents 200",
+                            "path": "::Incidents List::incidents 200",
+                            "id": "35048aae57483f0eb319d312c5c6bbff",
+                            "passes": 3894
+                        }
+                    },
+                "name": "Incidents List"
+            }
+        },
+        "checks": {}
+    },
+    "metrics": {
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 19471,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_req_blocked": {
+            "med": 0,
+            "max": 271.1215,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.05240444250423709,
+            "min": 0
+        },
+        "vus": {
+            "value": 1,
+            "min": 1,
+            "max": 100
+        },
+        "error_rate": {
+            "passes": 0,
+            "fails": 19470,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "checks": {
+            "passes": 23364,
+            "fails": 0,
+            "value": 1
+        },
+        "water_predictions_duration": {
+            "avg": 73.125577734977,
+            "min": 0,
+            "med": 41.111149999999995,
+            "max": 1885.0961,
+            "p(90)": 176.00146999999998,
+            "p(95)": 243.33066499999998
+        },
+        "http_req_duration{expected_response:true}": {
+            "min": 0,
+            "med": 93.4286,
+            "max": 1885.0961,
+            "p(90)": 390.8874,
+            "p(95)": 533.2129,
+            "avg": 159.79634662318378
+        },
+        "http_req_receiving": {
+            "p(95)": 5.1827000000000005,
+            "avg": 1.7478177494735785,
+            "min": 0,
+            "med": 0,
+            "max": 1101.1464,
+            "p(90)": 2.8793
+        },
+        "dashboard_stats_duration": {
+            "avg": 276.62205418592754,
+            "min": 8.5383,
+            "med": 198.7166,
+            "max": 1487.1437,
+            "p(90)": 650.0429800000002,
+            "p(95)": 866.3085349999996
+        },
+        "http_req_connecting": {
+            "min": 0,
+            "med": 0,
+            "max": 97.4603,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.026122027630835615
+        },
+        "data_sent": {
+            "count": 7137908,
+            "rate": 23545.248176841927
+        },
+        "http_req_duration": {
+            "p(90)": 390.8874,
+            "p(95)": 533.2129,
+            "avg": 159.79634662318378,
+            "min": 0,
+            "med": 93.4286,
+            "max": 1885.0961,
+            "thresholds": {
+                "p(95)<1500": false
+            }
+        },
+        "iteration_duration": {
+            "p(95)": 4803.456505,
+            "avg": 3886.122292809446,
+            "min": 3069.6246,
+            "med": 3807.9929,
+            "max": 6664.7343,
+            "p(90)": 4641.77976
+        },
+        "iterations": {
+            "count": 3894,
+            "rate": 12.84482742010999
+        },
+        "group_duration": {
+            "avg": 162.89775208012327,
+            "min": 0,
+            "med": 95.9991,
+            "max": 1886.0982,
+            "p(90)": 394.32442000000066,
+            "p(95)": 536.91958
+        },
+        "data_received": {
+            "rate": 2420496.273537275,
+            "count": 733790512
+        },
+        "http_req_waiting": {
+            "p(90)": 386.4998,
+            "p(95)": 528.18335,
+            "avg": 157.917903482101,
+            "min": 0,
+            "med": 91.4393,
+            "max": 1885.0961
+        },
+        "alert_list_duration": {
+            "avg": 128.0711993066258,
+            "min": 0,
+            "med": 88.6489,
+            "max": 1204.145,
+            "p(90)": 310.50217000000004,
+            "p(95)": 392.27732999999995
+        },
+        "http_req_tls_handshaking": {
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0,
+            "med": 0
+        },
+        "http_req_sending": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.13062539160803252,
+            "min": 0,
+            "med": 0,
+            "max": 147.904
+        },
+        "vus_max": {
+            "max": 100,
+            "value": 100,
+            "min": 100
+        },
+        "http_reqs": {
+            "count": 19471,
+            "rate": 64.22743572084273
+        }
+    },
+    "setup_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhY2I5MzNkNS1jNDdkLTQxYzUtOTI3MS03OTVlNmU5M2YzMTEiLCJyb2xlIjoiQ0lUSVpFTiIsImlhdCI6MTc4ODY4MDE5MCwiZXhwIjoxNzg4NzAxNzkwfQ.H4KI6hlK7nsd-psVNItuQQpTPCW9PmarRYXdDzt_uRk"
+    }
+}

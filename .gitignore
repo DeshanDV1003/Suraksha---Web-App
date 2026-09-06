@@ -30,3 +30,9 @@ npm-debug.log*
 **/__pycache__/
 *.pyc
 River water level data.zip
+
+
+# k6 raw per-request streams are large — keep summary.json + output.txt; the
+# 2026-08-23 baseline streams are already committed and stay.
+tests/k6/results/*/results-*.json
+!tests/k6/results/2026-08-23-baseline/results-*.json

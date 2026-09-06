@@ -1,0 +1,23 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mD:/Suraksha - Web App/tests/unit[39m
+
+ [32m✓[39m backend/safe-route.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 37[2mms[22m[39m
+ [32m✓[39m backend/auth-middleware.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 75[2mms[22m[39m
+[90mstderr[2m | backend/geocoding.test.ts[2m > [22m[2mgeocodeAddress[2m > [22m[2mfails gracefully when the geocoding request throws
+[22m[39mNominatim geocoding failed: network down
+
+[90mstderr[2m | backend/geocoding.test.ts[2m > [22m[2mreverseGeocode[2m > [22m[2mreturns an empty object when the request fails
+[22m[39mReverse geocoding failed: timeout
+
+ [32m✓[39m backend/geocoding.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+ [32m✓[39m backend/duplicate-detection.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+ [32m✓[39m frontend/useAppStore.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 36[2mms[22m[39m
+ [32m✓[39m frontend/useModal.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[90m 159[2mms[22m[39m
+ [32m✓[39m frontend/cn.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 39[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[32m52 passed[39m[22m[90m (52)[39m
+[2m   Start at [22m 01:17:56
+[2m   Duration [22m 9.95s[2m (transform 990ms, setup 2.38s, collect 3.45s, tests 408ms, environment 12.07s, prepare 4.12s)[22m
+
+JUNIT report written to D:/Suraksha - Web App/tests/runs/2026-09-06/unit/junit.xml

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="52" failures="0" errors="0" time="9.947">
+    <testsuite name="backend/auth-middleware.test.ts" timestamp="2026-09-05T19:48:06.847Z" hostname="DESKTOP-62H5EBA" tests="8" failures="0" errors="0" skipped="0" time="0.074793">
+        <testcase classname="backend/auth-middleware.test.ts" name="authMiddleware &gt; rejects a request with no Authorization header (401)" time="0.0224459">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="authMiddleware &gt; rejects a malformed / wrongly-signed token (401)" time="0.0255093">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="authMiddleware &gt; accepts a valid token, attaches the payload to req.user and calls next()" time="0.0074848">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="authMiddleware &gt; tolerates a token passed without the &quot;Bearer &quot; prefix" time="0.0027274">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="role guards &gt; adminMiddleware allows ADMIN and blocks everyone else (403)" time="0.0017021">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="role guards &gt; officerMiddleware allows ADMIN and DMC_OFFICER, blocks CITIZEN" time="0.0049832">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="role guards &gt; hospitalMiddleware allows only HOSPITAL_STAFF" time="0.0022771">
+        </testcase>
+        <testcase classname="backend/auth-middleware.test.ts" name="role guards &gt; role guards block when req.user is missing entirely" time="0.0017255">
+        </testcase>
+    </testsuite>
+    <testsuite name="backend/duplicate-detection.test.ts" timestamp="2026-09-05T19:48:06.867Z" hostname="DESKTOP-62H5EBA" tests="9" failures="0" errors="0" skipped="0" time="0.0213105">
+        <testcase classname="backend/duplicate-detection.test.ts" name="haversineMetres &gt; is zero for identical points" time="0.0078106">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="haversineMetres &gt; matches the known Colombo → Kandy great-circle distance (~94 km)" time="0.0014947">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="haversineMetres &gt; is symmetric" time="0.0009842">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="haversineMetres &gt; grows monotonically with separation" time="0.0007254">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="nlpEntityOverlap &gt; returns 0 when either side is empty or nullish" time="0.0014076">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="nlpEntityOverlap &gt; returns 1 for identical entity arrays" time="0.0010359">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="nlpEntityOverlap &gt; is case-insensitive" time="0.0007366">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="nlpEntityOverlap &gt; scores partial overlap as intersection / max(setA, setB)" time="0.0009317">
+        </testcase>
+        <testcase classname="backend/duplicate-detection.test.ts" name="nlpEntityOverlap &gt; reads both `text` and `value` fields" time="0.0008572">
+        </testcase>
+    </testsuite>
+    <testsuite name="backend/geocoding.test.ts" timestamp="2026-09-05T19:48:06.875Z" hostname="DESKTOP-62H5EBA" tests="8" failures="0" errors="0" skipped="0" time="0.0407173">
+        <testcase classname="backend/geocoding.test.ts" name="isInSriLanka &gt; accepts coordinates inside the Sri Lanka bounding box" time="0.0062224">
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="isInSriLanka &gt; rejects coordinates outside the box" time="0.001376">
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="isInSriLanka &gt; treats the box edges as inclusive" time="0.0012535">
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="geocodeAddress &gt; returns coordinates from Nominatim when the hit is inside Sri Lanka" time="0.0100064">
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="geocodeAddress &gt; fails gracefully when Nominatim returns a hit outside Sri Lanka" time="0.0024682">
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="geocodeAddress &gt; fails gracefully when the geocoding request throws" time="0.0052943">
+            <system-err>
+Nominatim geocoding failed: network down
+
+            </system-err>
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="reverseGeocode &gt; returns the address object on success" time="0.0064841">
+        </testcase>
+        <testcase classname="backend/geocoding.test.ts" name="reverseGeocode &gt; returns an empty object when the request fails" time="0.001662">
+            <system-err>
+Reverse geocoding failed: timeout
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="backend/safe-route.test.ts" timestamp="2026-09-05T19:48:06.884Z" hostname="DESKTOP-62H5EBA" tests="10" failures="0" errors="0" skipped="0" time="0.0365477">
+        <testcase classname="backend/safe-route.test.ts" name="haversineM &gt; is zero for the same point and ~94 km Colombo → Kandy" time="0.0056573">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="totalKm &gt; is 0 for a single waypoint" time="0.0011116">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="totalKm &gt; sums leg distances and rounds to 0.1 km" time="0.0013242">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="generateRoute &gt; returns the requested number of points, anchored at both endpoints" time="0.0056788">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="generateRoute &gt; with zero deviation the midpoint sits on the straight line" time="0.0011622">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="generateRoute &gt; a non-zero deviation pushes the path off the straight line" time="0.0012193">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="scoreRoute &gt; scores a hazard-free route at 100 (safest)" time="0.0035522">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="scoreRoute &gt; drops the score and reports the hazard when one sits on the path" time="0.0060208">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="scoreRoute &gt; ignores hazards outside their influence radius" time="0.001967">
+        </testcase>
+        <testcase classname="backend/safe-route.test.ts" name="riskLabel &gt; maps scores to the documented bands" time="0.0015698">
+        </testcase>
+    </testsuite>
+    <testsuite name="frontend/cn.test.ts" timestamp="2026-09-05T19:48:06.892Z" hostname="DESKTOP-62H5EBA" tests="5" failures="0" errors="0" skipped="0" time="0.0393549">
+        <testcase classname="frontend/cn.test.ts" name="cn (class-name merge helper) &gt; joins plain class strings" time="0.0304224">
+        </testcase>
+        <testcase classname="frontend/cn.test.ts" name="cn (class-name merge helper) &gt; drops falsy values from conditional expressions" time="0.0012089">
+        </testcase>
+        <testcase classname="frontend/cn.test.ts" name="cn (class-name merge helper) &gt; lets a later Tailwind utility win over an earlier conflicting one" time="0.0019554">
+        </testcase>
+        <testcase classname="frontend/cn.test.ts" name="cn (class-name merge helper) &gt; accepts arrays and objects like clsx does" time="0.0007808">
+        </testcase>
+        <testcase classname="frontend/cn.test.ts" name="cn (class-name merge helper) &gt; returns an empty string for no meaningful input" time="0.0005134">
+        </testcase>
+    </testsuite>
+    <testsuite name="frontend/useAppStore.test.ts" timestamp="2026-09-05T19:48:06.898Z" hostname="DESKTOP-62H5EBA" tests="7" failures="0" errors="0" skipped="0" time="0.0360691">
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — auth slice &gt; setUser stores the user object" time="0.0078013">
+        </testcase>
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — auth slice &gt; setAuthenticated toggles the flag" time="0.0014155">
+        </testcase>
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — notifications slice &gt; addNotification prepends (newest first)" time="0.0019914">
+        </testcase>
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — notifications slice &gt; markAsRead flips only the matching notification" time="0.0047159">
+        </testcase>
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — notifications slice &gt; clearNotifications empties the list" time="0.0060889">
+        </testcase>
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — misc slices &gt; setSearchQuery and setActiveIncidentId round-trip" time="0.0012196">
+        </testcase>
+        <testcase classname="frontend/useAppStore.test.ts" name="useAppStore — misc slices &gt; setIncidents replaces the array" time="0.0057846">
+        </testcase>
+    </testsuite>
+    <testsuite name="frontend/useModal.test.tsx" timestamp="2026-09-05T19:48:06.906Z" hostname="DESKTOP-62H5EBA" tests="5" failures="0" errors="0" skipped="0" time="0.1588111">
+        <testcase classname="frontend/useModal.test.tsx" name="useModal &gt; is closed by default" time="0.0770806">
+        </testcase>
+        <testcase classname="frontend/useModal.test.tsx" name="useModal &gt; honours an explicit initial state" time="0.0136276">
+        </testcase>
+        <testcase classname="frontend/useModal.test.tsx" name="useModal &gt; openModal / closeModal set the flag" time="0.0175886">
+        </testcase>
+        <testcase classname="frontend/useModal.test.tsx" name="useModal &gt; toggleModal flips the flag each call" time="0.0143322">
+        </testcase>
+        <testcase classname="frontend/useModal.test.tsx" name="useModal &gt; keeps stable callback identities across renders" time="0.0227184">
+        </testcase>
+    </testsuite>
+</testsuites>
