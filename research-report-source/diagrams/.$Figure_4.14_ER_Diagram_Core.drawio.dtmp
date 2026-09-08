@@ -1,0 +1,136 @@
+<mxfile host="Electron">
+  <diagram name="Fig 4.14 ER Core" id="fig414">
+    <mxGraphModel dx="748" dy="467" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=14;align=left;" value="Figure 4.14 — Entity-Relationship Diagram: Core Schema (~18 of 72 tables)" vertex="1">
+          <mxGeometry height="24" width="1420" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="User" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;User&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;email (U), password?&lt;br&gt;name, phone?, role&lt;br&gt;currentSectorId (FK)&lt;br&gt;hospitalId (FK)&lt;br&gt;twoFactorEnabled" vertex="1">
+          <mxGeometry height="130" width="190" x="620" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Inc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;IncidentReport&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK reporterId&lt;br&gt;title, description, location&lt;br&gt;lat?, lng?, category&lt;br&gt;status, severity&lt;br&gt;mlConfidence?, nlpEntities" vertex="1">
+          <mxGeometry height="130" width="190" x="320" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="IH" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;IncidentHistory&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK incidentId&lt;br&gt;fromStatus, toStatus&lt;br&gt;changedById, note" vertex="1">
+          <mxGeometry height="98" width="190" x="60" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="IDL" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;IncidentDuplicateLink&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK reportId&lt;br&gt;FK canonicalId&lt;br&gt;score, distanceM, status" vertex="1">
+          <mxGeometry height="98" width="190" x="60" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Task" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;Task&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK incidentId&lt;br&gt;FK createdById&lt;br&gt;FK assigneeId?&lt;br&gt;status, description" vertex="1">
+          <mxGeometry height="114" width="190" x="320" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="Alert" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;Alert&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;title, message, type&lt;br&gt;active, locations[]&lt;br&gt;broadcastRadiusKm?&lt;br&gt;notifiedCount" vertex="1">
+          <mxGeometry height="114" width="190" x="900" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Notif" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;Notification&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK userId&lt;br&gt;FK alertId? (SetNull)&lt;br&gt;title, body, read" vertex="1">
+          <mxGeometry height="98" width="190" x="1200" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="HR" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;HelpRequest&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK userId? (public)&lt;br&gt;type, description, location&lt;br&gt;priority, status&lt;br&gt;peopleCount?, phone?" vertex="1">
+          <mxGeometry height="114" width="190" x="320" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="VP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;VolunteerProfile&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK userId (U)&lt;br&gt;incidentsJoined&lt;br&gt;readinessScore, totalHours" vertex="1">
+          <mxGeometry height="98" width="190" x="620" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="RC" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;ReliefCamp&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;name, location, lat?, lng?&lt;br&gt;currentOccupancy ≤ totalCapacity&lt;br&gt;services[], status" vertex="1">
+          <mxGeometry height="98" width="190" x="900" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="RT" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;ReliefToken&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK userId, FK campId?&lt;br&gt;code (U), qrCodeData&lt;br&gt;status, usageCount / maxUsage&lt;br&gt;categories[], fraudRiskScore" vertex="1">
+          <mxGeometry height="114" width="190" x="900" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="RTC" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;ReliefTokenClaim&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK tokenId&lt;br&gt;claimedAt, claimedBy&lt;br&gt;itemType, quantity&lt;br&gt;locationLat?, locationLng?" vertex="1">
+          <mxGeometry height="114" width="190" x="1200" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="DA" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;DamageAssessment&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK reportedById&lt;br&gt;FK incidentId?&lt;br&gt;category, damage levels&lt;br&gt;estimatedLoss?, status&lt;br&gt;compensationEligible" vertex="1">
+          <mxGeometry height="130" width="190" x="320" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="MP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;MissingPerson&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;name, age?, description&lt;br&gt;lastSeenLocation, photo&lt;br&gt;status" vertex="1">
+          <mxGeometry height="98" width="190" x="60" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="RWL" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;RiverWaterLevel&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;gaugeId, riverName, district&lt;br&gt;waterLevelMetres, trend&lt;br&gt;alertLevel, status&lt;br&gt;recordedAt" vertex="1">
+          <mxGeometry height="114" width="190" x="1200" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="WLP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;WaterLevelPrediction&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;gaugeId (U)&lt;br&gt;predictedT1M, predictedT2M&lt;br&gt;confidence, alertLevel&lt;br&gt;modelUsed, computedAt" vertex="1">
+          <mxGeometry height="114" width="190" x="1200" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="FM" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;FamilyMember&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK primaryUserId&lt;br&gt;name, relation, age?&lt;br&gt;status, phone?" vertex="1">
+          <mxGeometry height="98" width="190" x="60" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="SCI" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;SafetyCheckIn&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK userId&lt;br&gt;status, message?&lt;br&gt;latitude?, longitude?" vertex="1">
+          <mxGeometry height="98" width="190" x="620" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="Hos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;Hospital&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;name, location&lt;br&gt;email (U), specialties[]&lt;br&gt;totalBeds, availableBeds" vertex="1">
+          <mxGeometry height="98" width="190" x="620" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="HRef" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;HospitalReferral&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK campId&lt;br&gt;FK hospitalId?&lt;br&gt;patientName, conditionSeverity&lt;br&gt;status, admittedAt?" vertex="1">
+          <mxGeometry height="114" width="190" x="900" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="Inc" value="reports  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" edge="1" parent="1" source="Inc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="IH" value="has history  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" edge="1" parent="1" source="Inc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="IDL" value="duplicate-of (reportId)  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" edge="1" parent="1" source="Inc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="IDL" value="canonical (canonicalId)  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" edge="1" parent="1" source="Inc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="Task" value="spawns  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="Task" value="assigned  0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r7" edge="1" parent="1" source="Alert" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="Notif" value="generates  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="Notif" value="receives  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r9" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="HR" value="submits  0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r10" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERone;startFill=0;endFill=0;" target="VP" value="has profile  1 : 0..1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r11" edge="1" parent="1" source="RC" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="RT" value="issues at  0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r12" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="RT" value="owns  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r13" edge="1" parent="1" source="RT" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="RTC" value="claimed via  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r14" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="DA" value="files  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r15" edge="1" parent="1" source="Inc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="DA" value="assessed for  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r16" edge="1" parent="1" source="RWL" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERone;startFill=0;endFill=0;" target="WLP" value="forecast cached (by gaugeId)  1 : 1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r17" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="FM" value="lists  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r18" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="SCI" value="broadcasts  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r19" edge="1" parent="1" source="RC" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="HRef" value="refers  1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r20" edge="1" parent="1" source="Hos" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="HRef" value="receives  0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r21" edge="1" parent="1" source="User" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="Hos" value="staff-of  0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

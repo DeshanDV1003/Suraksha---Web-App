@@ -1,0 +1,146 @@
+<mxfile host="Electron">
+  <diagram name="Fig 4.4 Incident Management" id="uc-m2">
+    <mxGraphModel dx="1535" dy="947" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="912" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" value="Incident Management" vertex="1">
+          <mxGeometry height="712" width="900" x="260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_report" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Report incident" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_sos" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Trigger SOS" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_enrich" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Enrich incident with ML" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_dedup" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Detect duplicate incidents" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_list" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View incident list / detail" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_mine" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View my incidents" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_verify" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Verify incident" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_status" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Update incident status" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_task" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Assign task from incident" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_reviewdup" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Review duplicate links" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_delete" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Delete incident" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_aar" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="File After-Action Report" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_geocode" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Geocode location" vertex="1">
+          <mxGeometry height="46" width="220" x="335" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_zone" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Tag district zone" vertex="1">
+          <mxGeometry height="46" width="220" x="695" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_hist" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Log status history" vertex="1">
+          <mxGeometry height="46" width="220" x="335" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m2_notify" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Notify reporter" vertex="1">
+          <mxGeometry height="46" width="220" x="695" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Citizen" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Citizen" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_LocalVerifier" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Local Verifier" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="a_DMCOfficer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="DMC Officer" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="396" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Administrator" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Administrator" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="554" as="geometry" />
+        </mxCell>
+        <mxCell id="a_MLService" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="ML Service" vertex="1">
+          <mxGeometry height="80" width="40" x="1230" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_SystemScheduler" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="System Scheduler" vertex="1">
+          <mxGeometry height="80" width="40" x="1230" y="396" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" edge="1" parent="1" source="a_Administrator" style="endArrow=block;endFill=0;html=1;strokeColor=#666666;" target="a_DMCOfficer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_sos" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n4" edge="1" parent="1" source="a_MLService" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_enrich" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" edge="1" parent="1" source="a_SystemScheduler" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_enrich" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" edge="1" parent="1" source="a_SystemScheduler" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_dedup" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_list" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n8" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_list" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n9" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_mine" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n10" edge="1" parent="1" source="a_LocalVerifier" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_verify" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n11" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_status" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n12" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_task" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n13" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_reviewdup" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n14" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_delete" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n15" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m2_aar" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n16" edge="1" parent="1" source="uc_m2_report" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m2_geocode" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n17" edge="1" parent="1" source="uc_m2_report" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m2_zone" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n18" edge="1" parent="1" source="uc_m2_enrich" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m2_dedup" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n19" edge="1" parent="1" source="uc_m2_status" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m2_hist" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n20" edge="1" parent="1" source="uc_m2_status" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m2_notify" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n21" edge="1" parent="1" source="uc_m2_sos" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#cc6600;" target="uc_m2_report" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

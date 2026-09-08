@@ -1,0 +1,147 @@
+<mxfile host="Electron">
+  <diagram name="Fig 4.3 Authentication &amp; User Management" id="uc-m1">
+    <mxGraphModel dx="1298" dy="802" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="844" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" value="Authentication and User Management" vertex="1">
+          <mxGeometry height="644" width="900" x="260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_register" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Register account" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_login" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Log in (email + password)" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_google" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Log in with Google" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_2fa" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Verify 2FA code" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_profile" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View / edit own profile" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_pwd" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Change password" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_listusers" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="List all users" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_role" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Change user role" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_deact" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Deactivate / delete user" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_rbac" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Configure RBAC permissions" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_logs" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View session &amp; audit logs" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_hash" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Hash password" vertex="1">
+          <mxGeometry height="46" width="220" x="335" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m1_verifypwd" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Verify current password" vertex="1">
+          <mxGeometry height="46" width="220" x="695" y="592" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Citizen" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Citizen" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Volunteer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Volunteer" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="268" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Administrator" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Administrator" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="456" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" edge="1" parent="1" source="a_Volunteer" style="endArrow=block;endFill=0;html=1;strokeColor=#666666;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="60" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n2" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_register" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_login" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="510" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n4" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_login" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_login" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_google" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_google" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n8" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_2fa" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n9" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_profile" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n10" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_profile" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n11" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_profile" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n12" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_pwd" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n13" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_pwd" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n14" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#333333;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="uc_m1_pwd" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="420" />
+              <mxPoint x="610" y="370" />
+              <mxPoint x="610" y="352.72" />
+            </Array>
+            <mxPoint x="80" y="474.1381818181819" as="sourcePoint" />
+            <mxPoint x="750.3610159830805" y="290.0039928964086" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n15" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_listusers" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n16" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_role" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n17" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_deact" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n18" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#333333;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="590" y="466.68" />
+            </Array>
+            <mxPoint x="100" y="501.2682352941177" as="sourcePoint" />
+            <mxPoint x="709.4945695775073" y="456.00176186754203" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n19" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m1_logs" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n20" edge="1" parent="1" source="uc_m1_register" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m1_hash" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n21" edge="1" parent="1" source="uc_m1_pwd" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m1_verifypwd" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n22" edge="1" parent="1" source="uc_m1_2fa" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#cc6600;" target="uc_m1_login" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
