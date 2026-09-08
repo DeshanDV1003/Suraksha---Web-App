@@ -11668,6 +11668,7 @@ export namespace Prisma {
     updatedAt: Date | null
     acknowledgementRate: number | null
     scheduledTime: Date | null
+    dispatchedAt: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
     broadcastRadiusKm: number | null
@@ -11684,6 +11685,7 @@ export namespace Prisma {
     updatedAt: Date | null
     acknowledgementRate: number | null
     scheduledTime: Date | null
+    dispatchedAt: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
     broadcastRadiusKm: number | null
@@ -11704,6 +11706,7 @@ export namespace Prisma {
     acknowledgementRate: number
     channels: number
     scheduledTime: number
+    dispatchedAt: number
     translatedMsgSinhala: number
     translatedMsgTamil: number
     targetSectors: number
@@ -11739,6 +11742,7 @@ export namespace Prisma {
     updatedAt?: true
     acknowledgementRate?: true
     scheduledTime?: true
+    dispatchedAt?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
     broadcastRadiusKm?: true
@@ -11755,6 +11759,7 @@ export namespace Prisma {
     updatedAt?: true
     acknowledgementRate?: true
     scheduledTime?: true
+    dispatchedAt?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
     broadcastRadiusKm?: true
@@ -11775,6 +11780,7 @@ export namespace Prisma {
     acknowledgementRate?: true
     channels?: true
     scheduledTime?: true
+    dispatchedAt?: true
     translatedMsgSinhala?: true
     translatedMsgTamil?: true
     targetSectors?: true
@@ -11883,6 +11889,7 @@ export namespace Prisma {
     acknowledgementRate: number | null
     channels: JsonValue | null
     scheduledTime: Date | null
+    dispatchedAt: Date | null
     translatedMsgSinhala: string | null
     translatedMsgTamil: string | null
     targetSectors: string[]
@@ -11923,6 +11930,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
+    dispatchedAt?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
@@ -11946,6 +11954,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
+    dispatchedAt?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
@@ -11967,6 +11976,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
+    dispatchedAt?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
@@ -11988,6 +11998,7 @@ export namespace Prisma {
     acknowledgementRate?: boolean
     channels?: boolean
     scheduledTime?: boolean
+    dispatchedAt?: boolean
     translatedMsgSinhala?: boolean
     translatedMsgTamil?: boolean
     targetSectors?: boolean
@@ -11995,7 +12006,7 @@ export namespace Prisma {
     notifiedCount?: boolean
   }
 
-  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "type" | "active" | "createdAt" | "updatedAt" | "latitudes" | "locations" | "longitudes" | "acknowledgementRate" | "channels" | "scheduledTime" | "translatedMsgSinhala" | "translatedMsgTamil" | "targetSectors" | "broadcastRadiusKm" | "notifiedCount", ExtArgs["result"]["alert"]>
+  export type AlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "message" | "type" | "active" | "createdAt" | "updatedAt" | "latitudes" | "locations" | "longitudes" | "acknowledgementRate" | "channels" | "scheduledTime" | "dispatchedAt" | "translatedMsgSinhala" | "translatedMsgTamil" | "targetSectors" | "broadcastRadiusKm" | "notifiedCount", ExtArgs["result"]["alert"]>
   export type AlertInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     notifications?: boolean | Alert$notificationsArgs<ExtArgs>
     _count?: boolean | AlertCountOutputTypeDefaultArgs<ExtArgs>
@@ -12022,6 +12033,7 @@ export namespace Prisma {
       acknowledgementRate: number | null
       channels: Prisma.JsonValue | null
       scheduledTime: Date | null
+      dispatchedAt: Date | null
       translatedMsgSinhala: string | null
       translatedMsgTamil: string | null
       targetSectors: string[]
@@ -12464,6 +12476,7 @@ export namespace Prisma {
     readonly acknowledgementRate: FieldRef<"Alert", 'Float'>
     readonly channels: FieldRef<"Alert", 'Json'>
     readonly scheduledTime: FieldRef<"Alert", 'DateTime'>
+    readonly dispatchedAt: FieldRef<"Alert", 'DateTime'>
     readonly translatedMsgSinhala: FieldRef<"Alert", 'String'>
     readonly translatedMsgTamil: FieldRef<"Alert", 'String'>
     readonly targetSectors: FieldRef<"Alert", 'String[]'>
@@ -87419,6 +87432,7 @@ export namespace Prisma {
     acknowledgementRate: 'acknowledgementRate',
     channels: 'channels',
     scheduledTime: 'scheduledTime',
+    dispatchedAt: 'dispatchedAt',
     translatedMsgSinhala: 'translatedMsgSinhala',
     translatedMsgTamil: 'translatedMsgTamil',
     targetSectors: 'targetSectors',
@@ -89249,6 +89263,7 @@ export namespace Prisma {
     acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
     channels?: JsonNullableFilter<"Alert">
     scheduledTime?: DateTimeNullableFilter<"Alert"> | Date | string | null
+    dispatchedAt?: DateTimeNullableFilter<"Alert"> | Date | string | null
     translatedMsgSinhala?: StringNullableFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableFilter<"Alert"> | string | null
     targetSectors?: StringNullableListFilter<"Alert">
@@ -89271,6 +89286,7 @@ export namespace Prisma {
     acknowledgementRate?: SortOrderInput | SortOrder
     channels?: SortOrderInput | SortOrder
     scheduledTime?: SortOrderInput | SortOrder
+    dispatchedAt?: SortOrderInput | SortOrder
     translatedMsgSinhala?: SortOrderInput | SortOrder
     translatedMsgTamil?: SortOrderInput | SortOrder
     targetSectors?: SortOrder
@@ -89296,6 +89312,7 @@ export namespace Prisma {
     acknowledgementRate?: FloatNullableFilter<"Alert"> | number | null
     channels?: JsonNullableFilter<"Alert">
     scheduledTime?: DateTimeNullableFilter<"Alert"> | Date | string | null
+    dispatchedAt?: DateTimeNullableFilter<"Alert"> | Date | string | null
     translatedMsgSinhala?: StringNullableFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableFilter<"Alert"> | string | null
     targetSectors?: StringNullableListFilter<"Alert">
@@ -89318,6 +89335,7 @@ export namespace Prisma {
     acknowledgementRate?: SortOrderInput | SortOrder
     channels?: SortOrderInput | SortOrder
     scheduledTime?: SortOrderInput | SortOrder
+    dispatchedAt?: SortOrderInput | SortOrder
     translatedMsgSinhala?: SortOrderInput | SortOrder
     translatedMsgTamil?: SortOrderInput | SortOrder
     targetSectors?: SortOrder
@@ -89347,6 +89365,7 @@ export namespace Prisma {
     acknowledgementRate?: FloatNullableWithAggregatesFilter<"Alert"> | number | null
     channels?: JsonNullableWithAggregatesFilter<"Alert">
     scheduledTime?: DateTimeNullableWithAggregatesFilter<"Alert"> | Date | string | null
+    dispatchedAt?: DateTimeNullableWithAggregatesFilter<"Alert"> | Date | string | null
     translatedMsgSinhala?: StringNullableWithAggregatesFilter<"Alert"> | string | null
     translatedMsgTamil?: StringNullableWithAggregatesFilter<"Alert"> | string | null
     targetSectors?: StringNullableListFilter<"Alert">
@@ -94826,6 +94845,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
+    dispatchedAt?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
@@ -94848,6 +94868,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
+    dispatchedAt?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
@@ -94870,6 +94891,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dispatchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
@@ -94892,6 +94914,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dispatchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
@@ -94914,6 +94937,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
+    dispatchedAt?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
@@ -94935,6 +94959,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dispatchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
@@ -94956,6 +94981,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dispatchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
@@ -101165,6 +101191,7 @@ export namespace Prisma {
     acknowledgementRate?: SortOrder
     channels?: SortOrder
     scheduledTime?: SortOrder
+    dispatchedAt?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
     targetSectors?: SortOrder
@@ -101190,6 +101217,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     acknowledgementRate?: SortOrder
     scheduledTime?: SortOrder
+    dispatchedAt?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
     broadcastRadiusKm?: SortOrder
@@ -101206,6 +101234,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     acknowledgementRate?: SortOrder
     scheduledTime?: SortOrder
+    dispatchedAt?: SortOrder
     translatedMsgSinhala?: SortOrder
     translatedMsgTamil?: SortOrder
     broadcastRadiusKm?: SortOrder
@@ -113286,6 +113315,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
+    dispatchedAt?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
@@ -113307,6 +113337,7 @@ export namespace Prisma {
     acknowledgementRate?: number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: Date | string | null
+    dispatchedAt?: Date | string | null
     translatedMsgSinhala?: string | null
     translatedMsgTamil?: string | null
     targetSectors?: AlertCreatetargetSectorsInput | string[]
@@ -113439,6 +113470,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dispatchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]
@@ -113460,6 +113492,7 @@ export namespace Prisma {
     acknowledgementRate?: NullableFloatFieldUpdateOperationsInput | number | null
     channels?: NullableJsonNullValueInput | InputJsonValue
     scheduledTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dispatchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     translatedMsgSinhala?: NullableStringFieldUpdateOperationsInput | string | null
     translatedMsgTamil?: NullableStringFieldUpdateOperationsInput | string | null
     targetSectors?: AlertUpdatetargetSectorsInput | string[]

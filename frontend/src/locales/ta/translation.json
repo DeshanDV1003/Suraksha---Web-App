@@ -130,7 +130,9 @@
     "ai_situation_summary": "AI நிலைமை சுருக்கம் (கடந்த 2 மணி நேரம்)",
     "ai_summary_subtitle": "F16 · மூலத் தரவை மேற்கோள் காட்டும் அறிக்கைகள்",
     "critical_badge": "{{count}} தீவிரம்",
-    "flood_warn_badge": "{{count}} வெள்ள எச்சரிக்கை"
+    "flood_warn_badge": "{{count}} வெள்ள எச்சரிக்கை",
+    "broadcast_radius": "ஒளிபரப்பு ஆரம்",
+    "transmission_channels": "சேனல்கள்"
   },
   "incidents": {
     "title": "சம்பவ மேலாண்மை",

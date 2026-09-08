@@ -22,6 +22,20 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
   }
 };
 
+/**
+ * Populates req.user when a valid bearer token is present, but never rejects.
+ * Use on routes that are public but behave differently for authenticated callers.
+ */
+export const optionalAuth = (req: any, _res: Response, next: NextFunction) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (token) {
+    try {
+      req.user = jwt.verify(token, JWT_SECRET as string);
+    } catch { /* ignore invalid token — treat as anonymous */ }
+  }
+  next();
+};
+
 export const adminMiddleware = (req: any, res: Response, next: NextFunction) => {
   if (req.user && req.user.role === 'ADMIN') {
     next();

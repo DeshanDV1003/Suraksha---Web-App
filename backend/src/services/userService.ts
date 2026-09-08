@@ -191,18 +191,28 @@ export const getAuditLogs = async () => {
     take: 100
   });
 
-  const userIds = [...new Set(actions.map(a => a.userId).filter(Boolean))];
-  const users = await prisma.user.findMany({
-    where: { id: { in: userIds as string[] } },
-    select: { id: true, email: true, name: true }
-  });
+  // Resolve every id we can — actor ids plus entityIds that point at a User.
+  const actorIds = actions.map(a => a.userId).filter(Boolean) as string[];
+  const userEntityIds = actions
+    .filter(a => /user/i.test(a.entity) && a.entityId && a.entityId !== 'MATRIX')
+    .map(a => a.entityId) as string[];
+  const allIds = [...new Set([...actorIds, ...userEntityIds])];
+  const users = allIds.length
+    ? await prisma.user.findMany({ where: { id: { in: allIds } }, select: { id: true, email: true, name: true } })
+    : [];
+  const byId = new Map(users.map(u => [u.id, u]));
+
+  const prettyEntity = (e: string) => e.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 
   const enrichedActions = actions.map(a => {
-    const u = users.find(u => u.id === a.userId);
+    const actor = a.userId ? byId.get(a.userId) : undefined;
+    const target = /user/i.test(a.entity) && a.entityId ? byId.get(a.entityId) : undefined;
     return {
       ...a,
-      userEmail: u ? u.email : 'System',
-      userName: u ? u.name : 'System'
+      userEmail: actor ? actor.email : 'System',
+      userName: actor ? actor.name : 'System',
+      entityLabel: prettyEntity(a.entity),
+      targetName: target ? target.name : (a.entityId === 'MATRIX' ? 'RBAC matrix' : null),
     };
   });
 

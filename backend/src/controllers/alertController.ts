@@ -40,9 +40,12 @@ export const createAlert = async (req: Request, res: Response) => {
   try {
     const alert = await alertService.createAlert(req.body);
 
-    // Broadcast to ALL connected clients — each client's GlobalAlertListener
-    // checks the user's geolocation against the alert's coordinates and only
-    // shows the popup if they are within the broadcast radius.
+    // A future-scheduled alert isn't dispatched yet — the cron handles it when due.
+    if (!alert.dispatchedAt) {
+      res.status(201).json(alert);
+      return;
+    }
+
     const io = req.app.get('socketio');
     const radiusKm = req.body.broadcastRadiusKm || 50;
     io.emit('new-alert', { ...alert, broadcastRadiusKm: radiusKm });
@@ -52,10 +55,8 @@ export const createAlert = async (req: Request, res: Response) => {
     const pushTitle = `🚨 ${alert.title}`;
     const pushBody = `${alert.message}${alert.locations?.length ? ` — ${alert.locations[0]}` : ''}`;
     if (alert.type === 'EMERGENCY') {
-      // EMERGENCY: push to everyone
       sendAlertPushToAll(pushTitle, pushBody, { alertId: alert.id, type: alert.type }).catch(() => {});
     } else if ((alert.type as string) === 'WARNING' || (alert.type as string) === 'FLOOD' || (alert.type as string) === 'EVACUATION') {
-      // WARNING/FLOOD/EVACUATION: push to affected regions only
       sendAlertPushToRegion(pushTitle, pushBody, alert.locations, { alertId: alert.id, type: alert.type }).catch(() => {});
     } else {
       notifyAdmins(pushTitle, pushBody).catch(() => {});

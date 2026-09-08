@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Package, Eye, Phone, Plus, X, Loader2, CheckCircle2, AlertCircle, Copy } from 'lucide-react'
+import { Package, Eye, Phone, Plus, X, Loader2, CheckCircle2, AlertCircle, Copy, Trash2, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { resourceService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
@@ -64,6 +64,29 @@ export default function ResourcesPage() {
       showToast('Failed to load resources', 'error')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleUpdateStatus = async (id: string, status: string) => {
+    // optimistic
+    setResources(prev => prev.map(r => r.id === id ? { ...r, status } : r))
+    try {
+      await resourceService.updateStatus(id, status)
+      showToast('Status updated')
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to update status', 'error')
+      fetchResources()
+    }
+  }
+
+  const handleDeleteResource = async (id: string) => {
+    if (!window.confirm('Remove this resource permanently?')) return
+    try {
+      await resourceService.deleteResource(id)
+      setResources(prev => prev.filter(r => r.id !== id))
+      showToast('Resource removed')
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Failed to remove resource', 'error')
     }
   }
 
@@ -190,12 +213,23 @@ export default function ResourcesPage() {
                         <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">{resource.capacity}</span>
                       </td>
                       <td className="px-8 py-6 text-center">
-                        <span className={cn(
-                          "text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wide whitespace-nowrap inline-block uppercase",
-                          resource.status === 'AVAILABLE' ? "bg-green-50 text-green-600" : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                        )}>
-                          {resource.status}
-                        </span>
+                        <div className="relative inline-block">
+                          <select
+                            value={resource.status}
+                            onChange={(e) => handleUpdateStatus(resource.id, e.target.value)}
+                            className={cn(
+                              "appearance-none text-[10px] font-bold pl-3 pr-7 py-1.5 rounded-full tracking-wide uppercase cursor-pointer outline-none border-0",
+                              resource.status === 'AVAILABLE' ? "bg-green-50 text-green-600"
+                                : resource.status === 'IN_USE' ? "bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400"
+                                : "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400"
+                            )}
+                          >
+                            <option value="AVAILABLE">AVAILABLE</option>
+                            <option value="IN_USE">IN_USE</option>
+                            <option value="MAINTENANCE">MAINTENANCE</option>
+                          </select>
+                          <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none opacity-60" />
+                        </div>
                       </td>
                       <td className="px-8 py-6">
                         <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">{resource.contact}</span>
@@ -209,12 +243,19 @@ export default function ResourcesPage() {
                           >
                             <Eye className="w-5 h-5" />
                           </button>
-                          <button 
+                          <button
                             onClick={() => setContactModal(resource.contact)}
-                            className="text-[#00AEEF] hover:scale-110 transition-transform" 
+                            className="text-[#00AEEF] hover:scale-110 transition-transform"
                             title="Contact options"
                           >
                             <Phone className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteResource(resource.id)}
+                            className="text-rose-400 hover:text-rose-600 hover:scale-110 transition-all"
+                            title="Remove resource"
+                          >
+                            <Trash2 className="w-5 h-5" />
                           </button>
                         </div>
                       </td>

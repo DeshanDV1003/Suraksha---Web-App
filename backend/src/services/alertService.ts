@@ -30,7 +30,9 @@ export const createAlert = async (data: any) => {
     targetSectors = [centerHash, ...geohash.neighbors(centerHash)];
   }
 
-  // Create the alert record first (without notifiedCount — we fill it after)
+  const scheduledTime = data.scheduledTime ? new Date(data.scheduledTime) : null;
+  const isFutureScheduled = scheduledTime != null && scheduledTime.getTime() > Date.now() + 30_000;
+
   const alert = await prisma.alert.create({
     data: {
       title: data.title,
@@ -42,14 +44,33 @@ export const createAlert = async (data: any) => {
       targetSectors,
       broadcastRadiusKm,
       channels: data.channels || null,
-      scheduledTime: data.scheduledTime ? new Date(data.scheduledTime) : null,
+      scheduledTime,
       translatedMsgSinhala: data.translatedMsgSinhala || null,
       translatedMsgTamil: data.translatedMsgTamil || null,
-      // acknowledgementRate is now computed from real reads — no random values
       acknowledgementRate: null,
       notifiedCount: 0,
     },
   });
+
+  // Scheduled for later → leave it undispatched; the cron picks it up when due.
+  if (isFutureScheduled) return alert;
+
+  return dispatchAlert(alert.id);
+};
+
+/**
+ * Deliver an alert: target users, create in-app notifications, fire the selected
+ * channels + push, stamp notifiedCount + dispatchedAt. Idempotent — a second
+ * call on an already-dispatched alert is a no-op.
+ */
+export const dispatchAlert = async (alertId: string) => {
+  const alert = await prisma.alert.findUnique({ where: { id: alertId } });
+  if (!alert) throw new Error('Alert not found');
+  if (alert.dispatchedAt) return alert;
+
+  const locations = alert.locations || [];
+  const targetSectors = alert.targetSectors || [];
+  const data = { channels: alert.channels as Record<string, boolean> | null };
 
   // ── Determine which users to notify ─────────────────────────────────────────
   // Priority 1: All Island
@@ -126,10 +147,10 @@ export const createAlert = async (data: any) => {
     }
   }
 
-  // Store the real notifiedCount on the alert
+  // Stamp real notifiedCount + mark dispatched
   const updated = await prisma.alert.update({
     where: { id: alert.id },
-    data: { notifiedCount },
+    data: { notifiedCount, dispatchedAt: new Date() },
   });
 
   return updated;

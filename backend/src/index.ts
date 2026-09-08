@@ -35,6 +35,7 @@ import aiRoutes from './routes/aiRoutes';
 import safeZoneRoutes from './routes/safeZoneRoutes';
 import rescueRoutes from './routes/rescueRoutes';
 import chatbotRoutes from './routes/chatbotRoutes';
+import searchRoutes from './routes/searchRoutes';
 import supplyRequestRoutes from './routes/supplyRequestRoutes';
 import { setupWaterDataCron } from './services/water-data-fetcher';
 import { setupRainfallWeatherCron } from './services/rainfallWeatherCron';
@@ -43,7 +44,8 @@ import hospitalRoutes from './routes/hospitalRoutes';
 import { getHospitals, createHospital, getHospitalStaff, createHospitalStaff, deleteHospitalStaff } from './controllers/hospitalController';
 import { authMiddleware, adminMiddleware } from './middleware/auth';
 import { setupBackupCron, runBackup } from './services/backupService';
-import { setIO } from './utils/socketInstance';
+import { setupScheduledAlertCron } from './services/scheduledAlertCron';
+import { setIO, getIO } from './utils/socketInstance';
 
 dotenv.config();
 
@@ -89,6 +91,7 @@ app.use('/api/map', mapRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/family', familyRoutes);
 app.use('/api/water', waterRoutes);
+app.use('/api/search', searchRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/safe-zones', safeZoneRoutes);
@@ -157,6 +160,9 @@ setupRainfallWeatherCron();
 
 // Start daily DB backup cron (02:00 AM → D:\SurakshaBackups)
 setupBackupCron();
+
+// Dispatch future-scheduled alerts when they come due
+setupScheduledAlertCron(getIO);
 
 // Manual backup trigger (admin only)
 app.post('/api/admin/backup', async (req, res) => {

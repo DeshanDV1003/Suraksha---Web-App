@@ -130,7 +130,9 @@
     "ai_situation_summary": "AI Situation Summary (last 2h)",
     "ai_summary_subtitle": "F16 · Grounded template extraction · All statements cite source data",
     "critical_badge": "{{count}} Critical",
-    "flood_warn_badge": "{{count}} Flood Warn"
+    "flood_warn_badge": "{{count}} Flood Warn",
+    "broadcast_radius": "Broadcast Radius",
+    "transmission_channels": "Channels"
   },
   "incidents": {
     "title": "Incident Management",

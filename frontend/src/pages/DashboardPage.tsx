@@ -22,6 +22,7 @@ import L from 'leaflet'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import PageMeta from "@/components/common/PageMeta";
 import ExportReportModal from "@/components/dashboard/ExportReportModal";
+import { AreaMultiSelect } from "@/components/map/AreaMultiSelect";
 
 // Fix Leaflet icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -118,8 +119,8 @@ export default function DashboardPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { searchQuery } = useAppStore()
-  
+  const { searchQuery, addNotification } = useAppStore()
+
   const [incidents, setIncidents] = useState<any[]>([])
   const [alerts, setAlerts] = useState<any[]>([])
   const [campsCount, setCampsCount] = useState(0)
@@ -128,6 +129,8 @@ export default function DashboardPage() {
   const [missingCount, setMissingCount] = useState(0)
   const [activeIncidentsCount, setActiveIncidentsCount] = useState(0)
   const [avgResponseTime, setAvgResponseTime] = useState('0m')
+  const [slaBreaches, setSlaBreaches] = useState(0)
+  const [trends, setTrends] = useState<Record<string, { value: string; isUp: boolean }>>({})
   const [secondaryStatsData, setSecondaryStatsData] = useState({
     resourcesTotal: 0,
     resourcesBoats: 0,
@@ -135,6 +138,7 @@ export default function DashboardPage() {
     familyUpdatesTotal: 0,
     familyUpdatesSafe: 0,
     tokenClaimsTotal: 0,
+    duplicatesPrevented: 0,
   })
   
   const [threatForecasts, setThreatForecasts] = useState<any[]>([])
@@ -150,7 +154,12 @@ export default function DashboardPage() {
 
   // Modal states
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false)
-  const [newAlert, setNewAlert] = useState({ title: '', message: '', location: '', type: 'INFO' })
+  const emptyAlert = {
+    title: '', message: '', locations: [] as string[], type: 'INFO',
+    broadcastRadiusKm: 50,
+    channels: { app: true, sms: false, whatsapp: false, email: false },
+  }
+  const [newAlert, setNewAlert] = useState(emptyAlert)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isExportModalOpen, setIsExportModalOpen] = useState(false)
 
@@ -166,7 +175,9 @@ export default function DashboardPage() {
       setMissingCount(data.missingPersons || 0)
       setActiveIncidentsCount(data.activeIncidents || 0)
       setAvgResponseTime(data.avgResponseTime || '0m')
-      
+      setSlaBreaches(data.slaBreaches || 0)
+      if (data.trends) setTrends(data.trends)
+
       if (data.secondaryStats) setSecondaryStatsData(data.secondaryStats)
       if (data.threatForecasts) setThreatForecasts(data.threatForecasts)
       if (data.latestShift) setLatestShift(data.latestShift)
@@ -187,12 +198,34 @@ export default function DashboardPage() {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await alertService.createAlert(newAlert)
+      const isAllIsland = newAlert.locations.length === 0 || newAlert.locations.includes('All Island')
+      await alertService.createAlert({
+        title: newAlert.title,
+        message: newAlert.message,
+        type: newAlert.type,
+        locations: isAllIsland ? ['All Island'] : newAlert.locations,
+        broadcastRadiusKm: isAllIsland ? null : newAlert.broadcastRadiusKm,
+        channels: newAlert.channels,
+      })
+      addNotification({
+        id: Date.now().toString(),
+        title: 'Broadcast sent',
+        message: `"${newAlert.title}" → ${isAllIsland ? 'All Island' : newAlert.locations.join(', ')}`,
+        time: 'Just now',
+        type: 'alert',
+      })
       setIsAlertModalOpen(false)
-      setNewAlert({ title: '', message: '', location: '', type: 'INFO' })
+      setNewAlert(emptyAlert)
       fetchData() // Refresh
     } catch (error) {
       console.error('Failed to create alert', error)
+      addNotification({
+        id: Date.now().toString(),
+        title: 'Broadcast failed',
+        message: 'Could not send the alert. Please try again.',
+        time: 'Just now',
+        type: 'error',
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -202,8 +235,8 @@ export default function DashboardPage() {
     {
       label: t('dashboard.active_incidents'),
       value: activeIncidentsCount.toString(),
-      trend: '+3',
-      isUp: true,
+      trend: trends.incidents?.value ?? '—',
+      isUp: trends.incidents?.isUp ?? false,
       icon: AlertTriangle,
       color: 'text-red-500',
       blob: 'bg-red-400'
@@ -211,8 +244,8 @@ export default function DashboardPage() {
     {
       label: t('dashboard.volunteers_active'),
       value: volunteersCount.toString(),
-      trend: '+12',
-      isUp: true,
+      trend: trends.volunteers?.value ?? '—',
+      isUp: trends.volunteers?.isUp ?? false,
       icon: Users,
       color: 'text-green-600',
       blob: 'bg-green-400'
@@ -220,8 +253,8 @@ export default function DashboardPage() {
     {
       label: t('dashboard.relief_camps'),
       value: campsCount.toString(),
-      trend: '+2',
-      isUp: true,
+      trend: trends.camps?.value ?? '—',
+      isUp: trends.camps?.isUp ?? false,
       icon: Building2,
       color: 'text-purple-600',
       blob: 'bg-purple-400'
@@ -229,8 +262,8 @@ export default function DashboardPage() {
     {
       label: t('dashboard.help_requests'),
       value: helpRequestsCount.toString(),
-      trend: '+5',
-      isUp: true,
+      trend: trends.helpRequests?.value ?? '—',
+      isUp: trends.helpRequests?.isUp ?? false,
       icon: Heart,
       color: 'text-pink-600',
       blob: 'bg-pink-400'
@@ -238,8 +271,8 @@ export default function DashboardPage() {
     {
       label: t('dashboard.avg_response_time'),
       value: avgResponseTime,
-      trend: '-3m',
-      isUp: false,
+      trend: trends.responseTime?.value ?? '—',
+      isUp: trends.responseTime?.isUp ?? false,
       icon: Clock,
       color: 'text-blue-600',
       blob: 'bg-blue-400'
@@ -268,7 +301,7 @@ export default function DashboardPage() {
     {
       label: t('dashboard.token_distributions'),
       value: secondaryStatsData.tokenClaimsTotal.toString(),
-      subtext: t('dashboard.duplicates_prevented', { count: 0 }),
+      subtext: t('dashboard.duplicates_prevented', { count: secondaryStatsData.duplicatesPrevented }),
       icon: LayoutGrid,
       color: 'bg-blue-500',
       cardClass: 'bg-blue-500/10 border-blue-500/20',
@@ -322,13 +355,19 @@ export default function DashboardPage() {
                 <div className={cn("p-3 rounded-2xl bg-white dark:bg-gray-900 shadow-sm border border-gray-200 dark:border-gray-800", stat.color)}>
                   <stat.icon className="w-6 h-6" />
                 </div>
-                <div className={cn(
-                  "flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg",
-                  stat.isUp ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
-                )}>
-                  {stat.isUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                  {stat.trend}
-                </div>
+                {(() => {
+                  const neutral = stat.trend === '—' || stat.trend === '+0' || stat.trend === '0' || stat.trend === '0m' || stat.trend === '+0m'
+                  return (
+                    <div className={cn(
+                      "flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg",
+                      neutral ? "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                        : stat.isUp ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
+                    )}>
+                      {!neutral && (stat.isUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />)}
+                      {stat.trend}
+                    </div>
+                  )
+                })()}
               </div>
               <div className="relative z-10">
                 <div className="text-4xl font-extrabold text-gray-800 dark:text-white/90 mb-1">{stat.value}</div>
@@ -425,9 +464,12 @@ export default function DashboardPage() {
           <div className="suraksha-card p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">{t('dashboard.sla_trend')}</h3>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-md">
+              <div className={cn(
+                "flex items-center gap-1.5 text-xs font-bold px-2 py-1 rounded-md",
+                slaBreaches > 0 ? "text-red-500 bg-red-50" : "text-emerald-600 bg-emerald-50"
+              )}>
                 <Activity className="w-4 h-4" />
-                {t('dashboard.sla_breaches', { count: 2 })}
+                {t('dashboard.sla_breaches', { count: slaBreaches })}
               </div>
             </div>
             <div className="h-[200px] w-full" style={{ minWidth: 0 }}>
@@ -580,9 +622,11 @@ export default function DashboardPage() {
                             item.status === 'ASSIGNED' ? "border-teal-100 bg-teal-50 text-teal-600" :
                               "bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700"
                       )}>{item.status.replace('_', ' ')}</span>
-                      <div className="text-xs font-bold text-gray-400 dark:text-gray-500">
-                        {t('dashboard.ml_score')}: <span className="text-brand-500 font-extrabold text-sm ml-1">0.92</span>
-                      </div>
+                      {typeof item.mlConfidence === 'number' && (
+                        <div className="text-xs font-bold text-gray-400 dark:text-gray-500">
+                          {t('dashboard.ml_score')}: <span className="text-brand-500 font-extrabold text-sm ml-1">{item.mlConfidence.toFixed(2)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))
@@ -699,7 +743,7 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              <form onSubmit={handleCreateAlert} className="p-8 space-y-6">
+              <form onSubmit={handleCreateAlert} className="p-8 space-y-6 max-h-[72vh] overflow-y-auto">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.alert_title_label')}</label>
                   <input
@@ -712,29 +756,78 @@ export default function DashboardPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.severity_type_label')}</label>
+                  <select
+                    className="suraksha-input appearance-none"
+                    value={newAlert.type}
+                    onChange={(e) => setNewAlert({ ...newAlert, type: e.target.value })}
+                  >
+                    <option value="INFO">Info</option>
+                    <option value="WARNING">Warning</option>
+                    <option value="EMERGENCY">Emergency</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.location_label')}</label>
+                  <AreaMultiSelect
+                    selectedLocations={newAlert.locations}
+                    onChange={(locations) => setNewAlert({ ...newAlert, locations })}
+                  />
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 pl-1">
+                    {newAlert.locations.length === 0 || newAlert.locations.includes('All Island')
+                      ? 'Reaches every registered user (web + mobile).'
+                      : `Reaches users registered in or located near: ${newAlert.locations.join(', ')}.`}
+                  </p>
+                </div>
+
+                {newAlert.locations.length > 0 && !newAlert.locations.includes('All Island') && (
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.location_label')}</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder={t('dashboard.location_placeholder')}
-                      className="suraksha-input"
-                      value={newAlert.location}
-                      onChange={(e) => setNewAlert({ ...newAlert, location: e.target.value })}
-                    />
+                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.broadcast_radius')}</label>
+                    <div className="flex gap-2">
+                      {[10, 25, 50, 100].map((km) => (
+                        <button
+                          key={km}
+                          type="button"
+                          onClick={() => setNewAlert({ ...newAlert, broadcastRadiusKm: km })}
+                          className={cn(
+                            'flex-1 py-2.5 rounded-xl text-xs font-bold border transition-all',
+                            newAlert.broadcastRadiusKm === km
+                              ? 'bg-brand-500 border-brand-500 text-white'
+                              : 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+                          )}
+                        >
+                          {km} km
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.severity_type_label')}</label>
-                    <select
-                      className="suraksha-input appearance-none"
-                      value={newAlert.type}
-                      onChange={(e) => setNewAlert({ ...newAlert, type: e.target.value })}
-                    >
-                      <option value="INFO">Info</option>
-                      <option value="WARNING">Warning</option>
-                      <option value="EMERGENCY">Emergency</option>
-                    </select>
+                )}
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest pl-1">{t('dashboard.transmission_channels')}</label>
+                  <div className="flex flex-wrap gap-2">
+                    {([
+                      { id: 'app', label: 'In-app + Push' },
+                      { id: 'sms', label: 'SMS' },
+                      { id: 'whatsapp', label: 'WhatsApp' },
+                      { id: 'email', label: 'Email' },
+                    ] as const).map((ch) => (
+                      <button
+                        key={ch.id}
+                        type="button"
+                        onClick={() => setNewAlert({ ...newAlert, channels: { ...newAlert.channels, [ch.id]: !newAlert.channels[ch.id] } })}
+                        className={cn(
+                          'px-3.5 py-2 rounded-xl border text-[11px] font-bold uppercase tracking-wider transition-all',
+                          newAlert.channels[ch.id]
+                            ? 'bg-blue-50 border-brand-500 text-brand-600'
+                            : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500'
+                        )}
+                      >
+                        {ch.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
 

@@ -11,12 +11,13 @@ import { authMiddleware, officerMiddleware } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/damage', getDamageAssessments);
+router.get('/damage', authMiddleware, getDamageAssessments);
 router.post('/damage', authMiddleware, reportDamage);
-router.delete('/damage/:id', authMiddleware, deleteDamageAssessment);
+router.delete('/damage/:id', authMiddleware, officerMiddleware, deleteDamageAssessment);
 
 router.post('/damage/ai-classify', authMiddleware, aiClassifyImage);
-router.patch('/damage/:id/workflow', authMiddleware, updateWorkflowStatus);
+// The verification workflow (escalate / approve compensation / reject) is officer-only
+router.patch('/damage/:id/workflow', authMiddleware, officerMiddleware, updateWorkflowStatus);
 router.get('/damage/district-report', authMiddleware, getDistrictSummaryReport);
 
 export default router;

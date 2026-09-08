@@ -62,30 +62,41 @@ interface Hazard {
   maxPenalty: number;  // penalty at 0m distance
 }
 
-// Score a single route — returns 0-100 (higher = safer)
+// Score a single route — returns 0-100 (higher = safer).
+// Each hazard is counted ONCE, by the route's closest approach to it, and the
+// aggregate penalty is passed through an exponential so a route near a dense
+// incident cluster still scores above zero and routes stay comparable.
 function scoreRoute(waypoints: [number, number][], hazards: Hazard[]): {
   score: number;
   hazardsNearby: Array<{ name: string; type: string; distanceKm: number }>;
 } {
-  let totalPenalty = 0;
-  const hitSet = new Map<string, { name: string; type: string; distanceKm: number }>();
-
-  for (const [wLat, wLng] of waypoints) {
-    for (const h of hazards) {
-      const dist = haversineM(wLat, wLng, h.lat, h.lng);
-      if (dist < h.radiusM) {
-        const proximity = 1 - dist / h.radiusM; // 1 at 0 m, 0 at radiusM
-        totalPenalty += h.maxPenalty * proximity;
-        if (!hitSet.has(h.id)) {
-          hitSet.set(h.id, { name: h.name, type: h.type, distanceKm: Math.round(dist / 100) / 10 });
-        }
-      }
+  const contributions: Array<{ pen: number; name: string; type: string; distanceKm: number }> = [];
+  for (const h of hazards) {
+    // closest approach of the route to this hazard
+    let minDist = Infinity;
+    for (const [wLat, wLng] of waypoints) {
+      const d = haversineM(wLat, wLng, h.lat, h.lng);
+      if (d < minDist) minDist = d;
     }
+    if (minDist >= h.radiusM) continue;
+    const proximity = 1 - minDist / h.radiusM;      // 1 at 0 m, 0 at radiusM
+    contributions.push({
+      pen: h.maxPenalty * proximity * proximity,    // quadratic — only a near miss really hurts
+      name: h.name, type: h.type, distanceKm: Math.round(minDist / 100) / 10,
+    });
   }
 
-  const avgPenalty = totalPenalty / waypoints.length;
-  const score = Math.max(0, Math.min(100, Math.round(100 - avgPenalty)));
-  return { score, hazardsNearby: Array.from(hitSet.values()) };
+  // Only the 10 worst hazards drive the score — a route can't be endangered
+  // by 50 separate things equally, and it stops dense test data flooring it.
+  contributions.sort((a, b) => b.pen - a.pen);
+  const penalty = contributions.slice(0, 10).reduce((s, c) => s + c.pen, 0);
+
+  // Exponential decay: penalty 0 -> 100, 40 -> ~64, 100 -> ~28, 200 -> ~8
+  const score = Math.round(100 * Math.exp(-penalty / 90));
+  const nearbyOut = contributions
+    .map(c => ({ name: c.name, type: c.type, distanceKm: c.distanceKm }))
+    .sort((a, b) => a.distanceKm - b.distanceKm);
+  return { score: Math.max(0, Math.min(100, score)), hazardsNearby: nearbyOut };
 }
 
 function riskLabel(score: number): 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL' {
@@ -163,7 +174,7 @@ export async function computeSafeRoutes(req: SafeRouteRequest) {
       where: {
         latitude:  { not: null },
         longitude: { not: null },
-        severity:  { in: ['CRITICAL', 'HIGH', 'MEDIUM'] },
+        severity:  { in: ['CRITICAL', 'HIGH'] },        // minor incidents don't block an evacuation route
         status:    { notIn: ['RESOLVED'] },
       },
       select: { id: true, title: true, severity: true, latitude: true, longitude: true },
@@ -183,9 +194,8 @@ export async function computeSafeRoutes(req: SafeRouteRequest) {
   incidents.forEach(i => {
     if (!i.latitude || !i.longitude) return;
     const { maxPenalty, radiusM } =
-      i.severity === 'CRITICAL' ? { maxPenalty: 35, radiusM: 2500 } :
-      i.severity === 'HIGH'     ? { maxPenalty: 20, radiusM: 2000 } :
-                                  { maxPenalty:  8, radiusM: 1200 };
+      i.severity === 'CRITICAL' ? { maxPenalty: 30, radiusM: 1500 } :
+                                  { maxPenalty: 15, radiusM: 1000 };  // HIGH
     hazards.push({ id: i.id, name: i.title, type: 'INCIDENT', severity: i.severity!, lat: i.latitude, lng: i.longitude, radiusM, maxPenalty });
   });
 

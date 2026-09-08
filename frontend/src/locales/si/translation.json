@@ -130,7 +130,9 @@
     "ai_situation_summary": "AI තත්ත්ව සාරාංශය (පසුගිය පැය 2)",
     "ai_summary_subtitle": "F16 · සත්‍ය දත්ත මත පදනම් වූ අදහස් ලිවීම",
     "critical_badge": "{{count}} දැඩි",
-    "flood_warn_badge": "{{count}} ගංවතුර අනතුරු"
+    "flood_warn_badge": "{{count}} ගංවතුර අනතුරු",
+    "broadcast_radius": "විකාශන අරය",
+    "transmission_channels": "නාලිකා"
   },
   "incidents": {
     "title": "සිදුවීම් කළමනාකරණය",

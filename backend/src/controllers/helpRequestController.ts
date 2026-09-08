@@ -37,7 +37,8 @@ export const getHelpRequests = async (req: Request, res: Response) => {
     const requests = await helpRequestService.getHelpRequests();
     res.json(requests);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -47,7 +48,8 @@ export const getMyHelpRequests = async (req: any, res: Response) => {
     const requests = await helpRequestService.getMyHelpRequests(userId);
     res.json(requests);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -61,7 +63,8 @@ export const handleSMSWebhook = async (req: Request, res: Response) => {
     res.type('text/xml');
     res.send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>${responseMessage}</Message></Response>`);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -85,22 +88,26 @@ export const assignResponder = async (req: Request, res: Response) => {
 
     res.json(request);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 export const updateRequestStatus = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status } = req.body;
-    const request = await helpRequestService.updateRequestStatus(id as string, status);
+    const VALID = ['PENDING','ASSIGNED','IN_PROGRESS','RESOLVED','EN_ROUTE','ON_SITE'];
+    if (!VALID.includes(status)) return res.status(400).json({ message: `status must be one of ${VALID.join(', ')}` });
+    const request = await helpRequestService.updateRequestStatus(id, status);
     
     const io = req.app.get('socketio');
     if (io) io.emit('help-request-updated', request);
 
     res.json(request);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -109,7 +116,8 @@ export const getClusteredRequests = async (req: Request, res: Response) => {
     const clusters = await helpRequestService.getClusteredRequests();
     res.json(clusters);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -118,7 +126,8 @@ export const checkEscalations = async (req: Request, res: Response) => {
     const result = await helpRequestService.checkEscalations();
     res.json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -129,7 +138,8 @@ export const registerAsVerifier = async (req: any, res: Response) => {
     const verifier = await helpRequestService.registerVerifier(userId, req.body);
     res.status(201).json(verifier);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[help-requests]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 

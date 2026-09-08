@@ -4,8 +4,8 @@ import {
   Send, Bell, Radio, MapPin, Users, Info, 
   History, Clock, CheckCircle2, ChevronRight,
   ShieldAlert, Landmark, Droplets, Stethoscope, 
-  Route, UserCheck, Trash2, XCircle, Search, Filter,
-  Smartphone, Mail, MessageSquare, Languages, Calendar, Map, PhoneCall, BarChart2
+  Route, UserCheck, Trash2, XCircle, Search,
+  Smartphone, Mail, MessageSquare, Calendar, PhoneCall
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { alertService } from '../services/api'
@@ -130,15 +130,14 @@ export default function AlertsPage() {
   const [newAlert, setNewAlert] = useState<{
     title: string, message: string, locations: string[], type: string,
     channels: { app: boolean, sms: boolean, whatsapp: boolean, email: boolean, radio: boolean },
-    scheduledTime: string, translated: boolean, broadcastRadiusKm: number
+    scheduledTime: string, broadcastRadiusKm: number
   }>({
     title: '', message: '', locations: [], type: 'INFO',
     channels: { app: true, sms: false, whatsapp: false, email: false, radio: false },
-    scheduledTime: '', translated: false, broadcastRadiusKm: 50
+    scheduledTime: '', broadcastRadiusKm: 50
   })
   
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isMapModalOpen, setIsMapModalOpen] = useState(false)
   const canBroadcast = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
   const [filterType, setFilterType] = useState('ALL')
   const [activeTab, setActiveTab] = useState<'ACTIVE' | 'SCHEDULED'>('ACTIVE')
@@ -158,6 +157,19 @@ export default function AlertsPage() {
     fetchAlerts()
   }, [])
 
+  // Prefill the composer when arriving from the Live Map "Dispatch Local Alert" action
+  useEffect(() => {
+    const district = new URLSearchParams(window.location.search).get('district')
+    if (district) {
+      setNewAlert(prev => ({
+        ...prev,
+        type: 'WARNING',
+        locations: prev.locations.includes(district) ? prev.locations : [district],
+      }))
+      setTimeout(() => document.getElementById('alert-composer')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200)
+    }
+  }, [])
+
   const handleBroadcast = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -171,8 +183,6 @@ export default function AlertsPage() {
         channels: newAlert.channels,
         scheduledTime: newAlert.scheduledTime,
         broadcastRadiusKm: isAllIsland ? null : newAlert.broadcastRadiusKm,
-        translatedMsgSinhala: newAlert.translated ? `(Mock Sinhala) ${newAlert.message}` : null,
-        translatedMsgTamil: newAlert.translated ? `(Mock Tamil) ${newAlert.message}` : null
       }
       await alertService.createAlert(alertData)
       
@@ -188,7 +198,7 @@ export default function AlertsPage() {
       setNewAlert({
         title: '', message: '', locations: [], type: 'INFO',
         channels: { app: true, sms: false, whatsapp: false, email: false, radio: false },
-        scheduledTime: '', translated: false, broadcastRadiusKm: 50
+        scheduledTime: '', broadcastRadiusKm: 50
       })
       fetchAlerts()
     } catch (err) {
@@ -218,20 +228,17 @@ export default function AlertsPage() {
   }
 
   const filteredAlerts = alerts.filter(alert => {
+    // pending future-scheduled alerts live in the SCHEDULED tab, not this list
+    if (alert.scheduledTime && !alert.dispatchedAt && new Date(alert.scheduledTime) > new Date()) return false
     const locationsString = alert.locations ? alert.locations.join(', ') : ''
-    const matchesSearch = alert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch = alert.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           locationsString.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           alert.message.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesType = filterType === 'ALL' || alert.type === filterType
     return matchesSearch && matchesType
   })
 
-  // Simulated Community Feedback Data
-  const getMockFeedbackData = (id: string) => [
-    { name: 'Safe', value: Math.floor(Math.random() * 500) + 100, color: '#22c55e' },
-    { name: 'Need Help', value: Math.floor(Math.random() * 50) + 5, color: '#ef4444' },
-    { name: 'Info Req', value: Math.floor(Math.random() * 100) + 20, color: '#f59e0b' }
-  ]
+  const scheduledAlerts = alerts.filter(a => a.scheduledTime && !a.dispatchedAt && new Date(a.scheduledTime) > new Date())
 
   return (
         <>
@@ -257,8 +264,8 @@ export default function AlertsPage() {
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
               {categories.map((cat, i) => (
-                <div key={i} 
-                  onClick={() => setNewAlert(prev => ({ ...prev, title: cat.label, type: cat.type, message: cat.defaultMsg, locations: [cat.defaultLoc] }))}
+                <div key={i}
+                  onClick={() => setNewAlert(prev => ({ ...prev, title: cat.label, type: cat.type, message: cat.defaultMsg }))}
                   className="suraksha-card p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-brand-500/30 hover:scale-[1.05] transition-all bg-white dark:bg-gray-900 group"
                 >
                   <div className={cn("p-4 rounded-2xl mb-4 group-hover:scale-110 transition-transform bg-gray-50 dark:bg-gray-800/50", cat.color)}><cat.icon className="w-7 h-7" /></div>
@@ -277,7 +284,7 @@ export default function AlertsPage() {
                  <Send className="w-6 h-6" /> <h3 className="text-2xl font-black">{t('alerts_page.transmit_directive')}</h3>
               </div>
               
-              <form onSubmit={handleBroadcast} className="space-y-10">
+              <form id="alert-composer" onSubmit={handleBroadcast} className="space-y-10">
                 <div className="space-y-8">
                   
                   {/* Channels selection */}
@@ -309,10 +316,7 @@ export default function AlertsPage() {
 
                   <div className="grid grid-cols-2 gap-8">
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.targeted_areas')}</label>
-                          <button type="button" onClick={() => setIsMapModalOpen(true)} className="text-[9px] text-blue-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1"><Map className="w-3 h-3" /> {t('alerts_page.draw_zone')}</button>
-                        </div>
+                        <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.targeted_areas')}</label>
                         <AreaMultiSelect selectedLocations={newAlert.locations} onChange={(locations) => setNewAlert({ ...newAlert, locations })} />
                       </div>
                      <div className="space-y-3">
@@ -351,24 +355,8 @@ export default function AlertsPage() {
                   )}
 
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.detailed_instructions')}</label>
-                      <button type="button" onClick={() => setNewAlert(prev => ({...prev, translated: !prev.translated}))} className="text-[9px] text-indigo-600 font-black uppercase tracking-widest hover:underline flex items-center gap-1"><Languages className="w-3 h-3" /> {t('alerts_page.auto_translate')}</button>
-                    </div>
+                    <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.detailed_instructions')}</label>
                     <textarea required rows={5} placeholder={t('alerts_page.instructions_placeholder')} className="suraksha-input h-32 py-5 resize-none leading-relaxed font-bold" value={newAlert.message} onChange={(e) => setNewAlert({...newAlert, message: e.target.value})} />
-                    
-                    {newAlert.translated && (
-                      <div className="grid grid-cols-2 gap-4 mt-2 animate-in slide-in-from-top-2">
-                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl">
-                           <div className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">{t('alerts_page.sinhala_translation')}</div>
-                           <div className="text-xs font-bold text-slate-700 font-sinhala">{newAlert.message ? `(Mock Sinhala) ${newAlert.message}` : t('alerts_page.translating')}</div>
-                        </div>
-                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl">
-                           <div className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">{t('alerts_page.tamil_translation')}</div>
-                           <div className="text-xs font-bold text-slate-700 font-tamil">{newAlert.message ? `(Mock Tamil) ${newAlert.message}` : t('alerts_page.translating')}</div>
-                        </div>
-                      </div>
-                    )}
                   </div>
                   
                   <div className="space-y-3">
@@ -467,10 +455,34 @@ export default function AlertsPage() {
                  <p className="text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest text-xs">{t('alerts_page.no_directive_matches')}</p>
               </div>
             ) : activeTab === 'SCHEDULED' ? (
-              <div className="text-center py-10 bg-amber-50 rounded-[2rem] border border-amber-100">
-                <Calendar className="w-8 h-8 text-amber-400 mx-auto mb-3" />
-                <p className="text-xs font-black text-amber-700 uppercase tracking-widest">{t('alerts_page.mock_scheduled')}</p>
-              </div>
+              scheduledAlerts.length === 0 ? (
+                <div className="text-center py-10 bg-amber-50 rounded-[2rem] border border-amber-100">
+                  <Calendar className="w-8 h-8 text-amber-400 mx-auto mb-3" />
+                  <p className="text-xs font-black text-amber-700 uppercase tracking-widest">No scheduled broadcasts pending</p>
+                </div>
+              ) : (
+                scheduledAlerts.map((alert) => (
+                  <div key={alert.id} className="suraksha-card p-6 flex items-center gap-6 bg-white dark:bg-gray-900 border-l-4 border-l-amber-400">
+                    <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3">
+                        <h4 className="font-black text-gray-800 dark:text-white/90">{alert.title}</h4>
+                        <span className={cn("text-[9px] font-black px-3 py-1 rounded-full uppercase", alert.type === 'EMERGENCY' ? "bg-red-50 text-red-600" : alert.type === 'WARNING' ? "bg-amber-50 text-amber-600" : "bg-blue-50 text-blue-600")}>{alert.type}</span>
+                      </div>
+                      <p className="text-xs font-bold text-gray-500 dark:text-gray-400 mt-1 line-clamp-1">{alert.message}</p>
+                      <div className="flex items-center gap-4 mt-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Fires {format(new Date(alert.scheduledTime), 'MMM d, HH:mm')} ({formatDistanceToNow(new Date(alert.scheduledTime))})</span>
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {alert.locations?.join(', ') || 'All Island'}</span>
+                      </div>
+                    </div>
+                    {canBroadcast && (
+                      <button onClick={() => handleDeleteAlert(alert.id)} className="p-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shrink-0"><Trash2 className="w-5 h-5" /></button>
+                    )}
+                  </div>
+                ))
+              )
             ) : (
               filteredAlerts.map((alert, i) => (
                 <div key={alert.id} className="suraksha-card p-8 flex flex-col md:flex-row md:items-start bg-white dark:bg-gray-900 hover:shadow-2xl hover:shadow-blue-500/5 transition-all group overflow-hidden border-none shadow-sm relative">
@@ -503,34 +515,27 @@ export default function AlertsPage() {
                       )}
                     </div>
                     
-                    {/* Channels Status */}
-                    <div className="flex gap-2 pt-2 border-t border-slate-50">
-                      <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1 mr-2">{t('alerts_page.dispatched_via')}</span>
-                      <span title="SMS Sent"><Smartphone className="w-4 h-4 text-green-500" /></span>
-                      <span title="App Sent"><Bell className="w-4 h-4 text-green-500" /></span>
-                      {alert.type === 'EMERGENCY' && <span title="WhatsApp Sent"><MessageSquare className="w-4 h-4 text-green-500" /></span>}
+                    {/* Channels Status — from the channels actually selected on this alert */}
+                    <div className="flex gap-2 pt-2 border-t border-slate-50 items-center">
+                      <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mr-2">{t('alerts_page.dispatched_via')}</span>
+                      {([
+                        { key: 'app', icon: Bell, label: 'In-app + Push' },
+                        { key: 'sms', icon: Smartphone, label: 'SMS' },
+                        { key: 'whatsapp', icon: MessageSquare, label: 'WhatsApp' },
+                        { key: 'email', icon: Mail, label: 'Email' },
+                        { key: 'radio', icon: Radio, label: 'DMC Radio' },
+                      ] as const).map(ch => {
+                        const on = ch.key === 'app' || !!(alert.channels && alert.channels[ch.key])
+                        return (
+                          <span key={ch.key} title={`${ch.label}${on ? ' — sent' : ' — not used'}`}>
+                            <ch.icon className={cn('w-4 h-4', on ? 'text-green-500' : 'text-slate-200 dark:text-slate-700')} />
+                          </span>
+                        )
+                      })}
                     </div>
 
                     {/* Real delivery tracking */}
                     <DeliveryStats alertId={alert.id} type={alert.type} notifiedCount={alert.notifiedCount ?? 0} />
-
-                    {/* Community Feedback (Mocked) */}
-                    {alert.active && (
-                      <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl border border-gray-200 dark:border-gray-800 mt-4">
-                        <div className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><BarChart2 className="w-3 h-3" /> {t('alerts_page.community_feedback')}</div>
-                        <div className="flex gap-4 h-12">
-                           {getMockFeedbackData(alert.id).map((data, idx) => (
-                             <div key={idx} className="flex-1 flex flex-col justify-end bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-2 relative overflow-hidden group/chart">
-                                <div className="absolute bottom-0 left-0 w-full opacity-20 group-hover/chart:opacity-30 transition-opacity" style={{ height: `${(data.value / 600) * 100}%`, backgroundColor: data.color }} />
-                                <div className="relative z-10 flex justify-between items-baseline">
-                                  <span className="text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase">{data.name}</span>
-                                  <span className="text-sm font-black" style={{ color: data.color }}>{data.value}</span>
-                                </div>
-                             </div>
-                           ))}
-                        </div>
-                      </div>
-                    )}
 
                   </div>
 
@@ -546,28 +551,6 @@ export default function AlertsPage() {
           </div>
         </div>
 
-        {/* Map Zone Mock Modal */}
-        {isMapModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-            <div className="bg-white dark:bg-gray-900 rounded-[2rem] p-8 max-w-xl w-full shadow-2xl relative">
-              <h3 className="text-xl font-black text-slate-800 mb-2">{t('alerts_page.draw_alert_polygon')}</h3>
-              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-6">{t('alerts_page.polygon_mock_desc')}</p>
-              <div className="h-64 bg-blue-50 border-2 border-dashed border-blue-200 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden">
-                 <MapPin className="w-10 h-10 text-blue-400 opacity-50" />
-                 <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 100 100">
-                   <polygon points="20,20 80,30 70,80 10,70" fill="#0061ff" stroke="#0061ff" strokeWidth="2" />
-                 </svg>
-              </div>
-              <div className="flex justify-end gap-3">
-                <button onClick={() => setIsMapModalOpen(false)} className="px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-200 dark:bg-gray-700">{t('alerts_page.cancel')}</button>
-                <button onClick={() => {
-                  setNewAlert(prev => ({...prev, locations: [...prev.locations, 'Geo-Polygon #7A']}))
-                  setIsMapModalOpen(false)
-                }} className="px-6 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700">{t('alerts_page.save_zone')}</button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
         </>
       )

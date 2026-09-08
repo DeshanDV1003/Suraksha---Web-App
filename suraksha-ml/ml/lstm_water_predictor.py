@@ -10,7 +10,7 @@ import json
 import numpy as np
 import joblib
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 
 # Gracefully import tensorflow (may not be installed on this Python)
 try:
@@ -46,6 +46,7 @@ class WaterLevelPredictor:
         self.scaler       = None
         self.model_info   = {}
         self.model_loaded = False
+        self._mc_fn       = None  # cached dropout-active inference fn (traced once)
         self._load_model()
 
     # ──────────────────────────────────────────
@@ -109,30 +110,84 @@ class WaterLevelPredictor:
     # ──────────────────────────────────────────
     # Confidence calculation
     # ──────────────────────────────────────────
-    def _calculate_confidence(self, readings: List[Dict]) -> float:
+    def _calculate_confidence(
+        self, readings: List[Dict], model_spread_m: Optional[float] = None
+    ) -> float:
         """
-        Returns 0.0–1.0.
-        Reduces confidence when:
-        - Fewer than 8 readings available
-        - High variance in last 3 water level readings (outliers)
+        Genuine per-gauge confidence in [0.20, 0.97]. Every input is a real,
+        gauge-specific signal — nothing is fixed:
+          1. Sequence coverage — how many of the 12 hourly slots we actually have
+          2. Recent volatility — hour-to-hour movement over the last ~6 readings
+          3. Rainfall regime   — heavy / spiking rain makes the river less predictable
+          4. Model spread      — std of Monte-Carlo-Dropout samples (metres),
+                                 passed in by predict(); absent on the rule-based path
         """
-        base = 0.90 if len(readings) >= SEQUENCE_LENGTH else 0.65 + 0.04 * len(readings)
+        n = len(readings)
+        if n == 0:
+            return 0.20
 
-        # Penalise high short-term variance
-        if len(readings) >= 3:
-            recent = [r.get("water_level_m", 0) for r in readings[-3:]]
-            variance = float(np.var(recent))
-            if variance > 4.0:
-                base -= 0.20
-            elif variance > 2.0:
-                base -= 0.10
+        levels = [float(r.get("water_level_m", 0.0)) for r in readings]
 
-        # Penalise extreme rainfall spikes (could be sensor error)
-        recent_rain = [r.get("rainfall_mm_hr", 0) for r in readings[-3:]]
-        if max(recent_rain, default=0) > 150:
-            base -= 0.10
+        # Start from a high ceiling and subtract real, additive penalties.
+        conf = 0.97
 
-        return float(min(max(base, 0.20), 0.97))
+        # 1. Coverage: missing hourly slots → up to -0.25 at 3 readings
+        coverage = min(n, SEQUENCE_LENGTH) / SEQUENCE_LENGTH
+        conf -= 0.25 * (1.0 - coverage)
+
+        # 2. Volatility: mean absolute hour-to-hour delta over the recent window
+        window = levels[-7:] if n >= 7 else levels
+        deltas = [abs(window[i] - window[i - 1]) for i in range(1, len(window))]
+        vol = float(np.mean(deltas)) if deltas else 0.0
+        conf -= min(0.30, 0.6 * vol)  # ~0.5 m/hr sustained movement → -0.30
+
+        # 3. Rainfall regime over the recent window
+        peak_rain = max((float(r.get("rainfall_mm_hr", 0.0)) for r in readings[-6:]), default=0.0)
+        if   peak_rain > 120: conf -= 0.22
+        elif peak_rain > 60:  conf -= 0.13
+        elif peak_rain > 25:  conf -= 0.05
+
+        # 4. Model spread (MC-Dropout std, metres) relative to current level
+        if model_spread_m is not None:
+            rel = model_spread_m / max(abs(levels[-1]), 0.5)
+            conf -= min(0.35, 1.5 * rel)
+        else:
+            conf -= 0.07  # rule-based path: no ensemble to measure
+
+        return float(min(max(conf, 0.35), 0.97))
+
+    # ──────────────────────────────────────────
+    # Monte-Carlo Dropout — epistemic uncertainty
+    # ──────────────────────────────────────────
+    def _mc_dropout_spread(
+        self, seq: np.ndarray, passes: int = 20
+    ) -> Tuple[np.ndarray, Optional[float]]:
+        """
+        Estimate epistemic uncertainty with Monte-Carlo Dropout: replicate the
+        input `passes` times into one batch and run a single stochastic forward
+        pass with dropout left active. Returns (mean_scaled_pred, spread_m) where
+        spread_m is the mean (over T+1/T+2) std of the samples in metres.
+        Falls back to a plain deterministic predict if anything goes wrong.
+        """
+        try:
+            if self._mc_fn is None:
+                # trace once with dropout active; reused for every later call
+                self._mc_fn = tf.function(
+                    lambda x: self.model(x, training=True),
+                    reduce_retracing=True,
+                )
+            batch = np.repeat(seq, passes, axis=0).astype(np.float32)  # (passes, 12, 7)
+            samples = np.asarray(self._mc_fn(batch))                   # (passes, 2), scaled
+            # inverse-transform every sample's T+1/T+2 to metres in one shot
+            flat = samples.reshape(-1)                              # (passes*2,)
+            dummy = np.zeros((flat.size, len(FEATURE_COLS)), dtype=np.float32)
+            dummy[:, 0] = flat
+            metres = self.scaler.inverse_transform(dummy)[:, 0].reshape(passes, 2)
+            spread = float(metres.std(axis=0).mean())
+            return samples.mean(axis=0), spread
+        except Exception as e:
+            print(f"[WARN] MC-dropout failed ({e}); using deterministic predict.")
+            return self.model.predict(seq, verbose=0)[0], None
 
     # ──────────────────────────────────────────
     # Determine alert level
@@ -203,7 +258,7 @@ class WaterLevelPredictor:
             t1 = current
             t2 = current
 
-        confidence   = 0.85  # Set high for demo purposes so alerts trigger
+        confidence   = self._calculate_confidence(readings)  # data-quality only (no model)
         alert_level  = self._determine_alert_level(t1, t2, confidence, watch, warning, critical)
         return {
             "predicted_t1_m": round(t1, 3),
@@ -252,8 +307,8 @@ class WaterLevelPredictor:
             flat_scaled = self.scaler.transform(flat)
             seq      = flat_scaled.reshape(1, SEQUENCE_LENGTH, len(FEATURE_COLS))
 
-            # Predict (model outputs 2 normalised values)
-            pred_scaled = self.model.predict(seq, verbose=0)[0]  # shape (2,)
+            # Predict with MC-Dropout — mean prediction + epistemic spread (metres)
+            pred_scaled, model_spread_m = self._mc_dropout_spread(seq)  # shape (2,), float|None
 
             # Inverse transform — only need water_level_m column (index 0)
             dummy        = np.zeros((2, len(FEATURE_COLS)), dtype=np.float32)
@@ -266,7 +321,7 @@ class WaterLevelPredictor:
             t1 = max(t1, 0.0)
             t2 = max(t2, 0.0)
 
-            confidence  = self._calculate_confidence(readings)
+            confidence  = self._calculate_confidence(readings, model_spread_m)
             alert_level = self._determine_alert_level(t1, t2, confidence, watch, warning, critical)
             reason      = self._build_reason(readings, t1, t2)
             version     = self.model_info.get("version", "v1.0")

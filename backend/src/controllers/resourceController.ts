@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import * as resourceService from '../services/resourceService';
 
+const VALID_STATUSES = ['AVAILABLE', 'IN_USE', 'MAINTENANCE'];
+
 /**
  * @swagger
  * tags:
@@ -61,17 +63,34 @@ export const getResources = async (req: Request, res: Response) => {
  */
 export const createResource = async (req: Request, res: Response) => {
   try {
-    const resource = await resourceService.createResource(req.body);
-
-    // Emit socket event for real-time update
-    const io = req.app.get('socketio');
-    if (io) {
-      io.emit('resource_added', resource);
+    const { type, owner, location, capacity, contact, status } = req.body;
+    if (!type || !owner || !location || !capacity || !contact) {
+      return res.status(400).json({ message: 'type, owner, location, capacity and contact are required' });
     }
+    const resource = await resourceService.createResource({
+      type, owner, location, capacity, contact,
+      status: VALID_STATUSES.includes(status) ? status : 'AVAILABLE',
+    });
+
+    const io = req.app.get('socketio');
+    if (io) io.emit('resource_added', resource);
 
     res.status(201).json(resource);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    console.error('createResource error:', error);
+    res.status(400).json({ message: 'Failed to create resource' });
+  }
+};
+
+export const deleteResource = async (req: Request, res: Response) => {
+  try {
+    await resourceService.deleteResource(req.params.id as string);
+    const io = req.app.get('socketio');
+    if (io) io.emit('resource_removed', { id: req.params.id });
+    res.json({ message: 'Resource deleted' });
+  } catch (error: any) {
+    console.error('deleteResource error:', error);
+    res.status(400).json({ message: 'Failed to delete resource' });
   }
 };
 
@@ -107,9 +126,13 @@ export const updateResourceStatus = async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
     const { status } = req.body;
+    if (!VALID_STATUSES.includes(status)) {
+      return res.status(400).json({ message: `status must be one of ${VALID_STATUSES.join(', ')}` });
+    }
     const resource = await resourceService.updateResourceStatus(id, status);
     res.json(resource);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    console.error('updateResourceStatus error:', error);
+    res.status(400).json({ message: 'Failed to update status' });
   }
 };

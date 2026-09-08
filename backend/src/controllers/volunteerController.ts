@@ -7,7 +7,8 @@ export const getVolunteerProfile = async (req: any, res: Response) => {
     const profile = await volunteerService.getVolunteerProfile(userId);
     res.json(profile);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -17,7 +18,8 @@ export const addSkill = async (req: any, res: Response) => {
     const skill = await volunteerService.addSkill(userId, req.body);
     res.status(201).json(skill);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -27,7 +29,8 @@ export const addTraining = async (req: any, res: Response) => {
     const training = await volunteerService.addTraining(userId, req.body);
     res.status(201).json(training);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -37,7 +40,8 @@ export const checkIn = async (req: any, res: Response) => {
     const checkin = await volunteerService.checkIn(userId, req.body);
     res.status(201).json(checkin);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -57,7 +61,8 @@ export const submitWellbeing = async (req: any, res: Response) => {
     const survey = await volunteerService.submitWellbeing(userId, req.body);
     res.status(201).json(survey);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -67,7 +72,8 @@ export const getRecommendedIncidents = async (req: any, res: Response) => {
     const incidents = await volunteerService.getRecommendedIncidents(userId);
     res.json(incidents);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -76,7 +82,8 @@ export const listVolunteers = async (req: Request, res: Response) => {
     const volunteers = await volunteerService.listAllVolunteers();
     res.json(volunteers);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[volunteers]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -87,30 +94,35 @@ export const createTask = async (req: any, res: Response) => {
     const io = req.app.get('socketio');
     io.emit('new-task', task);
     res.status(201).json(task);
-  } catch (error) { res.status(500).json({ message: 'Internal server error', error }); }
+  } catch (error) { console.error('[volunteers]', error); res.status(500).json({ message: 'Internal server error' }); }
 };
 
 export const getAllTasks = async (req: any, res: Response) => {
   try {
     const tasks = await volunteerService.getAllTasks();
     res.json(tasks);
-  } catch (error) { res.status(500).json({ message: 'Internal server error', error }); }
+  } catch (error) { console.error('[volunteers]', error); res.status(500).json({ message: 'Internal server error' }); }
 };
 
 export const getMyTasks = async (req: any, res: Response) => {
   try {
     const tasks = await volunteerService.getTasksByVolunteer(req.user.userId);
     res.json(tasks);
-  } catch (error) { res.status(500).json({ message: 'Internal server error', error }); }
+  } catch (error) { console.error('[volunteers]', error); res.status(500).json({ message: 'Internal server error' }); }
 };
+
+const TASK_STATUSES = ['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'RESOLVED', 'EN_ROUTE', 'ON_SITE'];
 
 export const updateTaskStatus = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
+    if (!TASK_STATUSES.includes(status)) {
+      return res.status(400).json({ message: `status must be one of ${TASK_STATUSES.join(', ')}` });
+    }
     const task = await volunteerService.updateTaskStatus(id, status);
     const io = req.app.get('socketio');
     io.emit('task-updated', task);
     res.json(task);
-  } catch (error) { res.status(500).json({ message: 'Internal server error', error }); }
+  } catch (error) { console.error('[volunteers]', error); res.status(500).json({ message: 'Internal server error' }); }
 };

@@ -16,3 +16,7 @@ export const updateResourceStatus = async (id: string, status: string) => {
     data: { status }
   });
 };
+
+export const deleteResource = async (id: string) => {
+  return prisma.resource.delete({ where: { id } });
+};

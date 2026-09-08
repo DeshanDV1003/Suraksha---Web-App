@@ -17,7 +17,7 @@ export default function UserManagementPage() {
   const [localSearch, setLocalSearch] = useState('')
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [roleFilter, setRoleFilter] = useState('All Roles')
+  const [roleFilter, setRoleFilter] = useState('ALL')
   
   const [isOnboardModalOpen, setIsOnboardModalOpen] = useState(false)
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false)
@@ -91,7 +91,7 @@ export default function UserManagementPage() {
                           (u.name && u.name.toLowerCase().includes(searchStr)) || 
                           (u.email && u.email.toLowerCase().includes(searchStr)) ||
                           (u.id && u.id.toLowerCase().includes(searchStr))
-    const matchesRole = roleFilter === 'All Roles' || u.role === roleFilter
+    const matchesRole = roleFilter === 'ALL' || u.role === roleFilter
     return matchesSearch && matchesRole
   })
 
@@ -186,7 +186,7 @@ export default function UserManagementPage() {
                           onChange={(e) => setRoleFilter(e.target.value)}
                           className="appearance-none w-full bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl px-6 py-4 text-[11px] font-black text-gray-600 dark:text-gray-300 uppercase tracking-widest focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all cursor-pointer"
                         >
-                            <option>{t('user_management_page.all_roles')}</option>
+                            <option value="ALL">{t('user_management_page.all_roles')}</option>
                             <option value="CITIZEN">{t('user_management_page.citizen')}</option>
                             <option value="VOLUNTEER">{t('user_management_page.volunteer')}</option>
                             <option value="FIELD_RESPONDER">{t('user_management_page.field_responder')}</option>
@@ -359,7 +359,9 @@ function RBACMatrixTab({ showToast }: any) {
   const [matrix, setMatrix] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  const defaultModules = ['Incidents', 'Alerts', 'Users', 'Resources', 'Analytics']
+  // Module keys must match the backend RolePermission.module values exactly.
+  const MODULES = ['INCIDENTS', 'ALERTS', 'CAMPS', 'RESOURCES', 'TASKS', 'REPORTS', 'ANALYTICS', 'USERS', 'SYSTEM']
+  const label = (m: string) => m.charAt(0) + m.slice(1).toLowerCase()
   const roles = ['CITIZEN', 'VOLUNTEER', 'FIELD_RESPONDER', 'DMC_OFFICER', 'ADMIN']
 
   useEffect(() => {
@@ -369,12 +371,12 @@ function RBACMatrixTab({ showToast }: any) {
   const fetchMatrix = async () => {
     try {
       const res = await userService.getRBACMatrix()
-      let perms = res.data
-      
-      // Seed missing permutations
+      const perms: any[] = res.data || []
+
+      // Start from the real rows, then fill any missing (role, module) combos
       const updated = [...perms]
       roles.forEach(role => {
-        defaultModules.forEach(mod => {
+        MODULES.forEach(mod => {
           if (!updated.find(p => p.role === role && p.module === mod)) {
             updated.push({ role, module: mod, canView: false, canEdit: false, canDelete: false })
           }
@@ -419,8 +421,8 @@ function RBACMatrixTab({ showToast }: any) {
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-800/50">
               <th className="px-6 py-4 text-left text-xs font-black uppercase text-gray-500 dark:text-gray-400">{t('user_management_page.role_module')}</th>
-              {defaultModules.map(mod => (
-                <th key={mod} className="px-6 py-4 text-center text-xs font-black uppercase text-gray-500 dark:text-gray-400">{mod}</th>
+              {MODULES.map(mod => (
+                <th key={mod} className="px-6 py-4 text-center text-xs font-black uppercase text-gray-500 dark:text-gray-400">{label(mod)}</th>
               ))}
             </tr>
           </thead>
@@ -428,7 +430,7 @@ function RBACMatrixTab({ showToast }: any) {
             {roles.map(role => (
               <tr key={role} className="hover:bg-white/5 transition-colors">
                 <td className="px-6 py-6 font-black text-sm text-gray-800 dark:text-white/90">{role}</td>
-                {defaultModules.map(mod => {
+                {MODULES.map(mod => {
                   const pIdx = matrix.findIndex(m => m.role === role && m.module === mod)
                   const p = matrix[pIdx]
                   if (!p) return <td key={mod} />
@@ -517,7 +519,7 @@ function AuditLogsTab() {
                 <span className="text-[10px] font-black text-gray-400 dark:text-gray-500">{format(new Date(a.createdAt), 'PP p')}</span>
               </div>
               <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                {t('user_management_page.user_action_prefix')} <span className="font-bold text-slate-800">{a.userId}</span> {t('user_management_page.user_action_desc')} <span className="font-bold text-slate-800">{a.entity} ({a.entityId})</span>.
+                {t('user_management_page.user_action_prefix')} <span className="font-bold text-slate-800 dark:text-slate-200">{a.userName || 'System'}</span> {t('user_management_page.user_action_desc')} <span className="font-bold text-slate-800 dark:text-slate-200">{a.targetName || a.entityLabel || a.entity}</span>.
               </p>
             </div>
           ))}
@@ -700,7 +702,8 @@ function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
     email: '',
     password: '',
     role: 'VOLUNTEER',
-    phone: ''
+    phone: '',
+    region: ''
   })
   const [loading, setLoading] = useState(false)
 
@@ -763,6 +766,13 @@ function OnboardSpecialistModal({ onClose, onSuccess, showToast }: any) {
              <div className="space-y-2">
                 <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('user_management_page.phone')}</label>
                 <input required className="suraksha-input" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+             </div>
+             <div className="col-span-2 space-y-2">
+                <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">District / Region</label>
+                <select required className="suraksha-input" value={formData.region} onChange={(e) => setFormData({...formData, region: e.target.value})}>
+                  <option value="">Select district…</option>
+                  {['Colombo','Gampaha','Kalutara','Kandy','Matale','Nuwara Eliya','Galle','Matara','Hambantota','Jaffna','Kilinochchi','Mannar','Vavuniya','Mullaitivu','Batticaloa','Ampara','Trincomalee','Kurunegala','Puttalam','Anuradhapura','Polonnaruwa','Badulla','Monaragala','Ratnapura','Kegalle'].map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
              </div>
            </div>
            <button type="submit" disabled={loading} className="suraksha-button w-full h-14">

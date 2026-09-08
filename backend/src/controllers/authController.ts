@@ -37,9 +37,31 @@ import { googleLoginUser } from '../services/authService';
  *       400:
  *         description: Registration failed
  */
-export const register = async (req: Request, res: Response) => {
+// Roles a self-service (unauthenticated) caller may create.
+const SELF_SIGNUP_ROLES = ['CITIZEN', 'VOLUNTEER', 'DMC_OFFICER'];
+// Validation codes for the two gated self-signup roles (client used to check these).
+const SIGNUP_CODES: Record<string, string> = {
+  VOLUNTEER: process.env.SIGNUP_CODE_VOLUNTEER || 'VOL-2026-ACTIVE',
+  DMC_OFFICER: process.env.SIGNUP_CODE_DMC || 'DMC-2026-SECURE',
+};
+
+export const register = async (req: any, res: Response) => {
   try {
-    const user = await authService.registerUser(req.body);
+    const requestedRole = (req.body?.role || 'CITIZEN').toUpperCase();
+    const isAdminCaller = req.user?.role === 'ADMIN';
+
+    if (requestedRole !== 'CITIZEN' && !isAdminCaller) {
+      // Elevated roles (FIELD_RESPONDER, ADMIN, HOSPITAL_STAFF) are admin-only.
+      if (!SELF_SIGNUP_ROLES.includes(requestedRole)) {
+        return res.status(403).json({ message: 'This role can only be assigned by an administrator.' });
+      }
+      // VOLUNTEER / DMC_OFFICER self-signup requires the matching validation code.
+      if (SIGNUP_CODES[requestedRole] && req.body?.validationCode !== SIGNUP_CODES[requestedRole]) {
+        return res.status(403).json({ message: `Invalid validation code for the ${requestedRole} role.` });
+      }
+    }
+
+    const user = await authService.registerUser({ ...req.body, role: requestedRole });
     res.status(201).json({ message: 'User registered successfully', userId: user.id });
   } catch (error: any) {
     res.status(400).json({ message: error.message || 'Internal server error' });

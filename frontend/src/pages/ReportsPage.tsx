@@ -137,11 +137,35 @@ export default function ReportsPage() {
     )
   }
 
+  const tr = data.trends || {}
   const topKpis = [
-    { label: t('reports_page.total_incidents'), value: data.incidents.total.toString(), trend: '+12%', isUp: true },
-    { label: t('reports_page.avg_response_time'), value: data.kpis.avgResponseTime, trend: '-18%', isUp: false },
-    { label: t('reports_page.volunteer_utilization'), value: data.kpis.volunteerUtilization, trend: '+8%', isUp: true },
-    { label: t('reports_page.alert_delivery_rate'), value: data.kpis.alertDeliveryRate, trend: '+1.2%', isUp: true },
+    { label: t('reports_page.total_incidents'), value: data.incidents.total.toString(), trend: tr.incidents?.value ?? '—', isUp: tr.incidents?.isUp ?? false },
+    { label: t('reports_page.avg_response_time'), value: data.kpis.avgResponseTime, trend: tr.responseTime?.value ?? '—', isUp: tr.responseTime?.isUp ?? false },
+    { label: t('reports_page.volunteer_utilization'), value: data.kpis.volunteerUtilization, trend: tr.volunteerUtilization?.value ?? '—', isUp: tr.volunteerUtilization?.isUp ?? false },
+    { label: t('reports_page.alert_delivery_rate'), value: data.kpis.alertDeliveryRate, trend: tr.alertDelivery?.value ?? '—', isUp: tr.alertDelivery?.isUp ?? false },
+  ]
+
+  // Real KPI benchmark comparison — fetched targets vs live actuals
+  const k = kpis[0] || { targetAvgResponse: 25, targetOccupancy: 80, targetVolunteer: 85 }
+  const ragStatus = (label: string) => label === 'ON TRACK'
+    ? 'bg-green-100 text-green-700' : label === 'WARNING'
+    ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700'
+  const benchmarkRows = [
+    (() => {
+      const actual = data.kpis.avgResponseMinutes ?? 0
+      const status = actual <= k.targetAvgResponse ? 'ON TRACK' : actual <= k.targetAvgResponse * 1.5 ? 'WARNING' : 'CRITICAL'
+      return { metric: t('reports_page.response_time'), target: `< ${k.targetAvgResponse}m`, actual: `${actual}m`, status }
+    })(),
+    (() => {
+      const actual = data.kpis.avgOccupancyPct ?? 0
+      const status = actual <= k.targetOccupancy ? 'ON TRACK' : actual <= k.targetOccupancy * 1.1 ? 'WARNING' : 'CRITICAL'
+      return { metric: t('reports_page.shelter_capacity'), target: `< ${k.targetOccupancy}%`, actual: `${actual}%`, status }
+    })(),
+    (() => {
+      const actual = data.kpis.volunteerUtilizationPct ?? 0
+      const status = actual >= k.targetVolunteer ? 'ON TRACK' : actual >= k.targetVolunteer * 0.7 ? 'WARNING' : 'CRITICAL'
+      return { metric: t('reports_page.volunteer_deployment'), target: `> ${k.targetVolunteer}%`, actual: `${actual}%`, status }
+    })(),
   ]
 
   const specialNeedsItems = [
@@ -179,13 +203,19 @@ export default function ReportsPage() {
             <div className="absolute top-0 right-0 w-24 h-24 bg-brand-500/5 rounded-full blur-3xl group-hover:bg-brand-500/10 transition-colors" />
             <div className="flex items-start justify-between gap-4 mb-10 relative z-10">
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 leading-relaxed">{kpi.label}</span>
-              <div className={cn(
-                "flex items-center shrink-0 gap-1.5 text-[10px] font-black px-3 py-1.5 rounded-full",
-                kpi.isUp ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
-              )}>
-                {kpi.isUp ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
-                {kpi.trend}
-              </div>
+              {(() => {
+                const neutral = !kpi.trend || kpi.trend === '—' || kpi.trend === '+0%' || kpi.trend === '0%'
+                return (
+                  <div className={cn(
+                    "flex items-center shrink-0 gap-1.5 text-[10px] font-black px-3 py-1.5 rounded-full",
+                    neutral ? "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                      : kpi.isUp ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
+                  )}>
+                    {!neutral && (kpi.isUp ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />)}
+                    {kpi.trend}
+                  </div>
+                )
+              })()}
             </div>
             <div className="text-4xl font-black text-gray-800 dark:text-white/90 tracking-tighter relative z-10">{kpi.value}</div>
           </div>
@@ -401,35 +431,25 @@ export default function ReportsPage() {
           </div>
           
           <div className="space-y-4">
-            <div className="grid grid-cols-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-4">
+            <div className="grid grid-cols-5 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest px-4">
               <div className="col-span-2">{t('reports_page.metric')}</div>
               <div>{t('reports_page.target')}</div>
+              <div>Actual</div>
               <div className="text-right">{t('reports_page.status')}</div>
             </div>
-            
-            <div className="grid grid-cols-4 items-center p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50">
-              <div className="col-span-2 font-black text-gray-800 dark:text-white/90 text-sm">{t('reports_page.response_time')}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-bold text-sm">{'< 45m'}</div>
-              <div className="flex justify-end">
-                <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase rounded-full">{t('reports_page.on_track')}</span>
-              </div>
-            </div>
-            
-             <div className="grid grid-cols-4 items-center p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50">
-              <div className="col-span-2 font-black text-gray-800 dark:text-white/90 text-sm">{t('reports_page.shelter_capacity')}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-bold text-sm">{'< 80%'}</div>
-              <div className="flex justify-end">
-                <span className="px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-black uppercase rounded-full">{t('reports_page.warning')}</span>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-4 items-center p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50">
-              <div className="col-span-2 font-black text-gray-800 dark:text-white/90 text-sm">{t('reports_page.volunteer_deployment')}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-bold text-sm">{'> 50%'}</div>
-              <div className="flex justify-end">
-                <span className="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-black uppercase rounded-full">{t('reports_page.critical')}</span>
+            {benchmarkRows.map((row, i) => (
+              <div key={i} className="grid grid-cols-5 items-center p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50">
+                <div className="col-span-2 font-black text-gray-800 dark:text-white/90 text-sm">{row.metric}</div>
+                <div className="text-gray-500 dark:text-gray-400 font-bold text-sm">{row.target}</div>
+                <div className="text-gray-800 dark:text-white/90 font-black text-sm">{row.actual}</div>
+                <div className="flex justify-end">
+                  <span className={cn("px-3 py-1 text-[10px] font-black uppercase rounded-full", ragStatus(row.status))}>
+                    {row.status === 'ON TRACK' ? t('reports_page.on_track') : row.status === 'WARNING' ? t('reports_page.warning') : t('reports_page.critical')}
+                  </span>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -469,9 +489,6 @@ export default function ReportsPage() {
             <div className="p-6 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-gray-200 dark:border-gray-800 animate-in fade-in slide-in-from-bottom-4">
               <div className="flex justify-between items-center mb-4">
                 <h4 className="font-black text-gray-800 dark:text-white/90">{t('reports_page.aar_success')}</h4>
-                <button className="text-xs font-bold text-brand-500 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors flex items-center gap-2">
-                  <Download className="w-3.5 h-3.5" /> PDF
-                </button>
               </div>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2, BarChart2, ShieldAlert, HeartHandshake, List } from 'lucide-react'
+import { Html5Qrcode } from 'html5-qrcode'
+import { QrCode, Clock, Plus, X, Search, CheckCircle2, AlertCircle, Loader2, BarChart2, ShieldAlert, HeartHandshake, List, Camera } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { reliefTokenService, userService } from '@/services/api'
 import { useAppStore } from '@/store/useAppStore'
@@ -25,6 +26,58 @@ interface Token {
     donorName: string
   }
   claims: any[]
+}
+
+function QrCameraScanner({ onDecode }: { onDecode: (text: string) => void }) {
+  const { t } = useTranslation()
+  const [active, setActive] = useState(false)
+  const [error, setError] = useState('')
+  const scannerRef = useRef<Html5Qrcode | null>(null)
+  const elementId = 'token-qr-reader'
+
+  useEffect(() => {
+    if (!active) return
+    const scanner = new Html5Qrcode(elementId)
+    scannerRef.current = scanner
+    scanner
+      .start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: { width: 220, height: 220 } },
+        (decodedText) => {
+          onDecode(decodedText.trim().toUpperCase())
+          setActive(false)
+        },
+        () => { /* per-frame decode failure — ignore */ }
+      )
+      .catch(() => setError('Could not access the camera. Check browser permissions or type the code manually.'))
+
+    return () => {
+      scannerRef.current?.stop().then(() => scannerRef.current?.clear()).catch(() => {})
+      scannerRef.current = null
+    }
+  }, [active, onDecode])
+
+  return (
+    <div>
+      {!active ? (
+        <button
+          type="button"
+          onClick={() => { setError(''); setActive(true) }}
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-cyan-400/30 bg-cyan-500/10 text-cyan-400 font-bold text-sm hover:bg-cyan-500/20 transition-colors"
+        >
+          <Camera className="w-4 h-4" /> {t('tokens_page.scan_with_camera') || 'Scan QR with camera'}
+        </button>
+      ) : (
+        <div className="space-y-2">
+          <div id={elementId} className="rounded-xl overflow-hidden bg-black/40 [&>video]:w-full" />
+          <button type="button" onClick={() => setActive(false)} className="w-full py-2 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 font-bold text-xs">
+            {t('tokens_page.stop_camera') || 'Stop camera'}
+          </button>
+        </div>
+      )}
+      {error && <p className="text-xs text-red-400 font-bold mt-2">{error}</p>}
+    </div>
+  )
 }
 
 export default function TokensPage() {
@@ -145,6 +198,17 @@ export default function TokensPage() {
     }
   }
 
+  const handleRevokeToken = async (code: string) => {
+    if (!window.confirm(`Revoke token ${code}? It can no longer be claimed.`)) return
+    try {
+      await reliefTokenService.revokeToken(code)
+      showToast(`Token ${code} revoked`, 'success')
+      fetchData()
+    } catch (error: any) {
+      showToast(error?.response?.data?.message || 'Failed to revoke token', 'error')
+    }
+  }
+
   const handleCreateDonor = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -257,6 +321,14 @@ export default function TokensPage() {
                       <div className="text-xs font-bold text-emerald-400 mt-2 bg-emerald-500/15 inline-block px-2 py-1 rounded">
                         {t('tokens_page.sponsored_by')} {token.donor.donorName}
                       </div>
+                    )}
+                    {!isCitizen && (token.status === 'ACTIVE' || token.status === 'PARTIALLY_USED') && (
+                      <button
+                        onClick={() => handleRevokeToken(token.code)}
+                        className="block ml-auto mt-2 text-[11px] font-bold text-red-400 hover:text-red-300 hover:underline"
+                      >
+                        {t('tokens_page.freeze_token')}
+                      </button>
                     )}
                   </div>
                 </div>
@@ -394,11 +466,12 @@ export default function TokensPage() {
              </div>
              
              <form onSubmit={handleScanToken} className="space-y-5">
+               <QrCameraScanner onDecode={(code) => setScanData((s) => ({ ...s, code }))} />
                <div>
                   <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2">{t('tokens_page.token_code')}</label>
-                  <input 
+                  <input
                     type="text" required autoFocus
-                    placeholder="SRK-..."
+                    placeholder="SRK-... (or scan above)"
                     className="suraksha-input w-full text-center text-lg font-mono tracking-widest py-4"
                     value={scanData.code}
                     onChange={(e) => setScanData({...scanData, code: e.target.value.toUpperCase()})}
@@ -486,12 +559,16 @@ export default function TokensPage() {
                     </div>
                   </div>
                   <div className="md:text-right">
-                    <button
-                      onClick={() => showToast(`Token ${token.code} freeze requested — contact system admin to apply.`, 'warning')}
-                      className="bg-red-500/15 hover:bg-red-500/25 text-red-400 border border-red-500/30 font-bold px-4 py-2 rounded-lg text-sm transition-all"
-                    >
-                      {t('tokens_page.freeze_token')}
-                    </button>
+                    {token.status === 'REVOKED' ? (
+                      <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Revoked</span>
+                    ) : (
+                      <button
+                        onClick={() => handleRevokeToken(token.code)}
+                        className="bg-red-500/15 hover:bg-red-500/25 text-red-400 border border-red-500/30 font-bold px-4 py-2 rounded-lg text-sm transition-all"
+                      >
+                        {t('tokens_page.freeze_token')}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

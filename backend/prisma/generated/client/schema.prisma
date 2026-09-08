@@ -101,6 +101,7 @@ model Alert {
   acknowledgementRate  Float?
   channels             Json?
   scheduledTime        DateTime?
+  dispatchedAt         DateTime?
   translatedMsgSinhala String?
   translatedMsgTamil   String?
   targetSectors        String[]       @default([])

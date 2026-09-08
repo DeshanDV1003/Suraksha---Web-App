@@ -179,6 +179,7 @@ exports.Prisma.AlertScalarFieldEnum = {
   acknowledgementRate: 'acknowledgementRate',
   channels: 'channels',
   scheduledTime: 'scheduledTime',
+  dispatchedAt: 'dispatchedAt',
   translatedMsgSinhala: 'translatedMsgSinhala',
   translatedMsgTamil: 'translatedMsgTamil',
   targetSectors: 'targetSectors',

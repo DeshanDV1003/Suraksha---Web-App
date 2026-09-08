@@ -6,7 +6,8 @@ export const issueReliefToken = async (req: any, res: Response) => {
     const token = await reliefTokenService.issueReliefToken(req.body);
     res.status(201).json(token);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -25,7 +26,8 @@ export const getReliefTokens = async (req: Request, res: Response) => {
     const tokens = await reliefTokenService.getReliefTokens();
     res.json(tokens);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -35,7 +37,8 @@ export const getReliefTokenByCode = async (req: Request, res: Response) => {
     if (!token) return res.status(404).json({ message: 'Token not found' });
     res.json(token);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -44,7 +47,8 @@ export const getMyReliefTokens = async (req: any, res: Response) => {
     const tokens = await reliefTokenService.getReliefTokensByUser(req.user.userId);
     res.json(tokens);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -53,7 +57,8 @@ export const createDonorCampaign = async (req: Request, res: Response) => {
     const campaign = await reliefTokenService.createDonorCampaign(req.body);
     res.status(201).json(campaign);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -62,7 +67,8 @@ export const getDonorCampaigns = async (req: Request, res: Response) => {
     const campaigns = await reliefTokenService.getDonorCampaigns();
     res.json(campaigns);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -71,6 +77,22 @@ export const getFraudAnalytics = async (req: Request, res: Response) => {
     const analytics = await reliefTokenService.getFraudAnalytics();
     res.json(analytics);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const revokeReliefToken = async (req: any, res: Response) => {
+  try {
+    const token = await reliefTokenService.revokeReliefToken(
+      req.params.code as string,
+      req.user?.userId,
+      req.body?.reason,
+    );
+    if (!token) return res.status(404).json({ message: 'Token not found' });
+    res.json(token);
+  } catch (error) {
+    console.error('[relief-tokens]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

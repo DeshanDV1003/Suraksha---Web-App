@@ -7,7 +7,8 @@ import {
   getReliefTokenByCode,
   createDonorCampaign,
   getDonorCampaigns,
-  getFraudAnalytics
+  getFraudAnalytics,
+  revokeReliefToken
 } from '../controllers/reliefTokenController';
 import { authMiddleware, officerMiddleware } from '../middleware/auth';
 
@@ -21,6 +22,9 @@ router.post('/claim', authMiddleware, claimReliefToken);
 
 // Analytics & Fraud (static — must be before /:code)
 router.get('/analytics/fraud', authMiddleware, officerMiddleware, getFraudAnalytics);
+
+// Revoke a token (officer only) — static-ish, before the /:code GET wildcard
+router.patch('/:code/revoke', authMiddleware, officerMiddleware, revokeReliefToken);
 
 // Donor Campaigns (static — must be before /:code)
 router.post('/donors', authMiddleware, officerMiddleware, createDonorCampaign);

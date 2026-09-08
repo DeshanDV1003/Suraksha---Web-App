@@ -112,12 +112,33 @@ export const getReliefTokensByUser = async (userId: string) => {
 export const getReliefTokenByCode = async (code: string) => {
   return prisma.reliefToken.findUnique({
     where: { code },
-    include: { 
+    include: {
       user: { select: { name: true, phone: true } },
       claims: true,
       donor: true
     }
   });
+};
+
+export const revokeReliefToken = async (code: string, revokedBy?: string, reason?: string) => {
+  const token = await prisma.reliefToken.findUnique({ where: { code } });
+  if (!token) return null;
+  if (token.status === 'REVOKED') return token;
+
+  const updated = await prisma.reliefToken.update({
+    where: { code },
+    data: { status: 'REVOKED' },
+  });
+  await prisma.auditLog.create({
+    data: {
+      userId: revokedBy ?? '',
+      action: 'REVOKE',
+      entity: 'ReliefToken',
+      entityId: token.id,
+    },
+  }).catch(() => {});
+  void reason;
+  return updated;
 };
 
 export const createDonorCampaign = async (data: any) => {

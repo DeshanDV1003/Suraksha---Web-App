@@ -40,15 +40,22 @@ export default function IncidentsPage() {
   const { searchQuery, setSearchQuery, addNotification } = useAppStore()
   const [incidents, setIncidents] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [severityFilter, setSeverityFilter] = useState('All Severities')
-  const [statusFilter, setStatusFilter] = useState('All Status')
+  const [severityFilter, setSeverityFilter] = useState('ALL')
+  const [statusFilter, setStatusFilter] = useState('ALL')
   const [showOnlyMine, setShowOnlyMine] = useState(false)
 
   const isOfficer = user?.role === 'ADMIN' || user?.role === 'DMC_OFFICER'
   const isAdmin = user?.role === 'ADMIN'
 
-  const severities = [t('incidents.all_severities'), 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
-  const statuses = [t('incidents.all_status'), 'PENDING', 'IN_PROGRESS', 'ASSIGNED', 'RESOLVED']
+  // value 'ALL' is the language-independent "no filter" sentinel; labels are translated
+  const severities: { value: string; label: string }[] = [
+    { value: 'ALL', label: t('incidents.all_severities') },
+    ...['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(s => ({ value: s, label: s })),
+  ]
+  const statuses: { value: string; label: string }[] = [
+    { value: 'ALL', label: t('incidents.all_status') },
+    ...['PENDING', 'IN_PROGRESS', 'ASSIGNED', 'RESOLVED'].map(s => ({ value: s, label: s.replace(/_/g, ' ') })),
+  ]
 
   // Modal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -139,8 +146,8 @@ export default function IncidentsPage() {
     const matchesSearch = i.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       i.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       i.id.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesSeverity = severityFilter === t('incidents.all_severities') || i.severity === severityFilter
-    const matchesStatus = statusFilter === t('incidents.all_status') || i.status === statusFilter
+    const matchesSeverity = severityFilter === 'ALL' || i.severity === severityFilter
+    const matchesStatus = statusFilter === 'ALL' || i.status === statusFilter
     const matchesMine = !showOnlyMine || i.reporterId === user?.id
     return matchesSearch && matchesSeverity && matchesStatus && matchesMine
   })
@@ -171,7 +178,7 @@ export default function IncidentsPage() {
                 onChange={(e) => setSeverityFilter(e.target.value)}
                 className="bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 rounded-xl px-5 py-3 text-[11px] font-black appearance-none focus:outline-none focus:ring-2 focus:ring-[#0061ff]/10 cursor-pointer min-w-[150px] text-slate-800 dark:text-slate-100 uppercase tracking-widest"
               >
-                {severities.map(s => <option key={s} value={s}>{s}</option>)}
+                {severities.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
               <LucideChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             </div>
@@ -181,7 +188,7 @@ export default function IncidentsPage() {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-cyan-400/20 rounded-xl px-5 py-3 text-[11px] font-black appearance-none focus:outline-none focus:ring-2 focus:ring-[#0061ff]/10 cursor-pointer min-w-[150px] text-slate-800 dark:text-slate-100 uppercase tracking-widest"
               >
-                {statuses.map(s => <option key={s} value={s}>{s}</option>)}
+                {statuses.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
               <LucideChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             </div>
@@ -298,7 +305,7 @@ export default function IncidentsPage() {
                                       'bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-100 dark:border-green-500/20'
                               )}
                             >
-                              {statuses.filter(s => s !== t('incidents.all_status')).map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
+                              {statuses.filter(s => s.value !== 'ALL').map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                             </select>
                           ) : (
                             <span className={cn(
@@ -748,17 +755,15 @@ function FieldEvidencePanel({ incident }: { incident: any }) {
 function IncidentDetailsModal({ incident, onClose }: any) {
   const { t } = useTranslation()
 
-  // Generate deterministic mock history
-  const history = [
-    { time: new Date(incident.createdAt), user: incident.reporter?.name || 'Citizen', action: 'Incident Created & Logged' },
-    { time: new Date(new Date(incident.createdAt).getTime() + 15 * 60000), user: 'System AI', action: 'Auto-Assigned to Region B Command' },
-    ...(incident.status !== 'PENDING' ? [{ time: new Date(new Date(incident.createdAt).getTime() + 45 * 60000), user: 'Dispatcher Officer', action: 'Status changed to IN_PROGRESS. Field units deployed.' }] : []),
-    ...(incident.status === 'RESOLVED' ? [{ time: new Date(new Date(incident.createdAt).getTime() + 180 * 60000), user: 'Field Commander', action: 'Incident marked as RESOLVED. Scene cleared.' }] : []),
-  ];
-
-  const aiRecommendation = incident.severity === 'CRITICAL' ? 'Deploy 2x Heavy Rescue Teams, 1x Medevac' :
-    incident.severity === 'HIGH' ? 'Deploy 1x Rescue Team, Local Medics' :
-      'Deploy Local Volunteers for assessment';
+  // Real audit trail — fetched from the server (IncidentHistory)
+  const [history, setHistory] = useState<any[]>([])
+  useEffect(() => {
+    let alive = true
+    incidentService.getIncidentById(incident.id)
+      .then(res => { if (alive) setHistory(res.data?.history || []) })
+      .catch(() => { if (alive) setHistory([]) })
+    return () => { alive = false }
+  }, [incident.id])
 
   return (
     <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
@@ -790,21 +795,6 @@ function IncidentDetailsModal({ incident, onClose }: any) {
               </div>
             </div>
 
-            {/* AI Recommendation Engine */}
-            {incident.status === 'PENDING' && (
-              <div className="bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-3xl p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Cpu className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  <h4 className="text-xs font-black text-indigo-900 dark:text-indigo-300 uppercase tracking-widest">AI Dispatch Recommendation</h4>
-                </div>
-                <p className="text-sm font-bold text-indigo-700 dark:text-indigo-300 mb-4">{aiRecommendation}</p>
-                <div className="flex gap-2">
-                  <button className="flex-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-indigo-700 transition-colors">One-Click Dispatch</button>
-                  <button className="px-4 bg-slate-100 dark:bg-[#131f33] border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-500/20 transition-colors">Modify</button>
-                </div>
-              </div>
-            )}
-
             <div className="space-y-3 flex-1">
               <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest italic">{t('incidents.modals.briefing')}</div>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-bold text-sm bg-slate-50 dark:bg-[#0f172a] p-6 rounded-3xl border border-dashed border-slate-200 dark:border-gray-700">
@@ -821,14 +811,17 @@ function IncidentDetailsModal({ incident, onClose }: any) {
             <div className="mb-10">
               <div className="flex items-center justify-between mb-6 pr-12">
                 <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest flex items-center gap-2"><History className="w-4 h-4 text-blue-500" /> Audit Log</h3>
-                <button className="text-[9px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest hover:underline flex items-center gap-1"><FileText className="w-3 h-3" /> Export PDF</button>
               </div>
               <div className="relative pl-6 space-y-6 before:absolute before:inset-y-0 before:left-[11px] before:w-0.5 before:bg-gray-200 before:dark:bg-gray-700">
-                {history.map((item, i) => (
-                  <div key={i} className="relative">
+                {history.length === 0 ? (
+                  <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500">No recorded activity yet.</div>
+                ) : history.map((item, i) => (
+                  <div key={item.id || i} className="relative">
                     <div className="absolute -left-[30px] w-4 h-4 rounded-full border-4 border-white dark:border-[#0f172a] bg-blue-500 shadow-sm" />
-                    <div className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{format(item.time, 'MMM d, HH:mm')} - {item.user}</div>
-                    <div className="text-sm font-bold text-slate-700 dark:text-slate-200 mt-1">{item.action}</div>
+                    <div className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                      {format(new Date(item.createdAt), 'MMM d, HH:mm')} · {item.actorName || 'System'}{item.actorRole ? ` (${String(item.actorRole).replace(/_/g, ' ')})` : ''}
+                    </div>
+                    <div className="text-sm font-bold text-slate-700 dark:text-slate-200 mt-1">{item.note || `Status → ${String(item.status).replace(/_/g, ' ')}`}</div>
                   </div>
                 ))}
               </div>

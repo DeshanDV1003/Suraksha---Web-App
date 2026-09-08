@@ -34,7 +34,7 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
     try {
-      await authService.register(formData)
+      await authService.register({ ...formData, validationCode })
       navigate('/login')
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.')

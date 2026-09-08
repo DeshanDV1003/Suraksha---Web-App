@@ -53,7 +53,7 @@ export function ImpactMap({
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" // Cleaner, more professional map style
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
         {showIncidents && mockMarkers.filter(m => m.type !== 'volunteer').map((marker, idx) => (

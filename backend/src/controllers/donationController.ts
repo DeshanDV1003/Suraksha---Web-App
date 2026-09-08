@@ -56,14 +56,23 @@ export const getDonations = async (req: Request, res: Response): Promise<any> =>
     });
     return res.json(donations);
   } catch (error) {
-    return res.status(500).json({ message: 'Error fetching donations', error });
+    return sendError(res, error, 'Error fetching donations');
   }
 };
+
+const DONATION_STATUSES = ['PENDING', 'RECEIVED', 'ALLOCATED'];
 
 export const updateDonationStatus = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     const { status } = req.body;
+
+    if (!DONATION_STATUSES.includes(status)) {
+      return res.status(400).json({ message: `status must be one of ${DONATION_STATUSES.join(', ')}` });
+    }
+
+    const existing = await prisma.donation.findUnique({ where: { id: id as string } });
+    if (!existing) return res.status(404).json({ message: 'Donation not found' });
 
     const donation = await prisma.donation.update({
       where: { id: id as string },
@@ -72,6 +81,6 @@ export const updateDonationStatus = async (req: Request, res: Response): Promise
 
     return res.json(donation);
   } catch (error) {
-    return res.status(500).json({ message: 'Error updating donation status', error });
+    return sendError(res, error, 'Error updating donation status');
   }
 };

@@ -112,6 +112,7 @@ export const resourceService = {
   getResources: () => api.get('/resources'),
   createResource: (data: any) => api.post('/resources', data),
   updateStatus: (id: string, status: string) => api.patch(`/resources/${id}/status`, { status }),
+  deleteResource: (id: string) => api.delete(`/resources/${id}`),
 };
 
 export const tokenService = {
@@ -157,6 +158,7 @@ export const reliefTokenService = {
   createDonorCampaign: (data: any) => api.post('/relief-tokens/donors', data),
   getDonorCampaigns: () => api.get('/relief-tokens/donors/all'),
   getFraudAnalytics: () => api.get('/relief-tokens/analytics/fraud'),
+  revokeToken: (code: string, reason?: string) => api.patch(`/relief-tokens/${code}/revoke`, { reason }),
 };
 
 export const damageAssessmentService = {
@@ -206,6 +208,10 @@ export const psychSupportService = {
 
 export const dashboardService = {
   getStats: () => api.get('/dashboard/stats'),
+};
+
+export const searchService = {
+  global: (q: string) => api.get('/search', { params: { q } }),
 };
 
 export const reportService = {

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { register, login, changePassword, setup2FA, verify2FA, googleLogin, savePushToken } from '../controllers/authController';
-import { authMiddleware } from '../middleware/auth';
+import { authMiddleware, optionalAuth } from '../middleware/auth';
 
 const router = Router();
 
-router.post('/register', register);
+router.post('/register', optionalAuth, register);
 router.post('/login', login);
 router.post('/google', googleLogin);
 router.patch('/push-token', authMiddleware, savePushToken);

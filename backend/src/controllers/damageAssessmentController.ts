@@ -56,7 +56,7 @@ export const reportDamage = async (req: any, res: Response) => {
     res.status(201).json(assessment);
   } catch (error) {
     console.error('Report damage error:', error);
-    res.status(500).json({ message: 'Internal server error', error });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -65,7 +65,8 @@ export const getDamageAssessments = async (req: Request, res: Response) => {
     const assessments = await damageAssessmentService.getDamageAssessments();
     res.json(assessments);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[damage-assessment]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -75,7 +76,8 @@ export const deleteDamageAssessment = async (req: any, res: Response) => {
     await damageAssessmentService.deleteDamageAssessment(id);
     res.json({ message: 'Assessment record deleted' });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[damage-assessment]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -87,24 +89,32 @@ export const aiClassifyImage = async (req: Request, res: Response) => {
     const result = await damageAssessmentService.aiClassifyImage(imageUrl);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[damage-assessment]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
+const DAMAGE_STATUSES = ['PENDING_REVIEW', 'VERIFIED', 'REJECTED', 'SENIOR_REVIEW', 'APPROVED'];
+
 export const updateWorkflowStatus = async (req: any, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status, reviewerNotes } = req.body;
     const userId = req.user.userId;
-    
+
+    if (!DAMAGE_STATUSES.includes(status)) {
+      return res.status(400).json({ message: `status must be one of ${DAMAGE_STATUSES.join(', ')}` });
+    }
+
     const assessment = await damageAssessmentService.updateWorkflowStatus(id, status, reviewerNotes, userId);
-    
+
     const io = req.app.get('socketio');
     if (io) io.emit('damage-assessment-updated', assessment);
-    
+
     res.json(assessment);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[damage-assessment]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -113,6 +123,7 @@ export const getDistrictSummaryReport = async (req: Request, res: Response) => {
     const report = await damageAssessmentService.getDistrictSummaryReport();
     res.json(report);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[damage-assessment]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

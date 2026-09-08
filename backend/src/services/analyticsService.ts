@@ -13,7 +13,9 @@ export const getOperationalIntelligence = async () => {
     locationLogs,
     tokenClaims,
     resources,
-    mlLogs
+    mlLogs,
+    volunteerCheckIns,
+    donations
   ] = await Promise.all([
     prisma.incidentReport.findMany(),
     prisma.alert.findMany(),
@@ -26,7 +28,9 @@ export const getOperationalIntelligence = async () => {
     prisma.locationLog.findMany(),
     prisma.reliefTokenClaim.findMany(),
     prisma.resource.findMany(),
-    prisma.mLLog.findMany()
+    prisma.mLLog.findMany(),
+    prisma.volunteerCheckIn.findMany(),
+    prisma.donation.findMany()
   ]);
 
   // 1. Weekly Trends
@@ -65,8 +69,34 @@ export const getOperationalIntelligence = async () => {
   const assignedVolunteers = new Set(tasks.filter(t => t.assignedToId && t.status !== 'RESOLVED').map(t => t.assignedToId));
   const volunteerUtilization = volunteers.length > 0 ? Math.round((assignedVolunteers.size / volunteers.length) * 100) : 0;
 
-  // Alert Delivery Rate
-  const alertDeliveryRate = notifications.length > 0 ? Math.round((notifications.filter(n => n.read).length / notifications.length) * 100) : 100;
+  // Alert acknowledgement rate — share of area-alert notifications that were read
+  const alertNotifs = notifications.filter(n => n.alertId);
+  const alertDeliveryRate = alertNotifs.length > 0
+    ? Math.round((alertNotifs.filter(n => n.read).length / alertNotifs.length) * 100)
+    : 0;
+
+  // ── Week-over-week trend deltas for the header KPI cards ──────────────────
+  const DAY = 86_400_000;
+  const w1 = new Date(Date.now() - 7 * DAY);
+  const w2 = new Date(Date.now() - 14 * DAY);
+  const incThisWeek = incidents.filter(i => new Date(i.createdAt) >= w1).length;
+  const incPrevWeek = incidents.filter(i => new Date(i.createdAt) >= w2 && new Date(i.createdAt) < w1).length;
+  const incidentTrendPct = incPrevWeek > 0
+    ? Math.round(((incThisWeek - incPrevWeek) / incPrevWeek) * 100)
+    : (incThisWeek > 0 ? 100 : 0);
+
+  const respPrev = incidents.filter(i => i.status !== 'PENDING' && new Date(i.updatedAt) >= w2 && new Date(i.updatedAt) < w1);
+  const respNow  = incidents.filter(i => i.status !== 'PENDING' && new Date(i.updatedAt) >= w1);
+  const meanMin = (arr: any[]) => arr.length
+    ? arr.reduce((s, i) => s + (new Date(i.updatedAt).getTime() - new Date(i.createdAt).getTime()) / 60000, 0) / arr.length
+    : 0;
+  const rPrev = meanMin(respPrev), rNow = meanMin(respNow);
+  const responseTrendPct = rPrev > 0 ? Math.round(((rNow - rPrev) / rPrev) * 100) : 0;
+
+  const badge = (pct: number, lowerIsBetter = false) => ({
+    value: `${pct > 0 ? '+' : ''}${pct}%`,
+    isUp: lowerIsBetter ? pct < 0 : pct > 0,
+  });
 
   // 3. Citizen Status Matrix
   const verifiedSafe = missingPersons.filter(m => m.status === 'FOUND').length;
@@ -79,6 +109,12 @@ export const getOperationalIntelligence = async () => {
   const criticalPct = totalStatus ? Math.round((criticalResponse / totalStatus) * 100) : 0;
   const trackPct = totalStatus ? Math.round((locationTracking / totalStatus) * 100) : 0;
   const transitPct = totalStatus ? Math.max(0, 100 - safePct - criticalPct - trackPct) : 0; // Remainder
+
+  // Average relief-camp occupancy (%) across open camps
+  const openCamps = camps.filter(c => c.status === 'OPEN' && c.totalCapacity > 0);
+  const avgOccupancyPct = openCamps.length
+    ? Math.round(openCamps.reduce((s, c) => s + (c.currentOccupancy / c.totalCapacity) * 100, 0) / openCamps.length)
+    : 0;
 
   // 4. Field Inventory
   const rescueBoats = resources.filter(r => r.type.toLowerCase().includes('boat')).length;
@@ -115,11 +151,40 @@ export const getOperationalIntelligence = async () => {
   const recall = Math.min(99.9, avgConfidence * 97).toFixed(1) + '%';
   const latency = Math.floor(Math.random() * (65 - 40 + 1) + 40) + 'ms';
 
-  // 7. Crisis Fund
-  // 1 relief request/token roughly simulates 5000 LKR of distributed goods value
-  const totalFundValue = (helpRequests.length + tokenClaims.length) * 5000;
-  // Format as millions
-  const fundStr = totalFundValue > 1000000 ? `LKR ${(totalFundValue / 1000000).toFixed(1)}M` : `LKR ${(totalFundValue / 1000).toFixed(1)}K`;
+  // 7. Crisis Fund — real donation money + estimated value of distributed relief
+  const donatedMoney = donations.reduce((s, d) => s + (d.amount ?? 0), 0);
+  const reliefValue = tokenClaims.reduce((s, tc) => s + (tc.quantity ?? 1) * 1500, 0); // ~1.5k LKR/unit
+  const totalFundValue = donatedMoney + reliefValue;
+  const fundStr = totalFundValue >= 1_000_000
+    ? `LKR ${(totalFundValue / 1_000_000).toFixed(1)}M`
+    : `LKR ${(totalFundValue / 1000).toFixed(0)}K`;
+  const uniqueDonors = new Set(donations.map(d => d.donorId ?? d.donorName)).size;
+  const fulfilledRequests = helpRequests.filter(h => h.status === 'RESOLVED').length;
+  const fulfilmentEfficiency = helpRequests.length > 0
+    ? Math.round((fulfilledRequests / helpRequests.length) * 100)
+    : 0;
+
+  // Real volunteer hours per weekday over the last 7 days (from check-ins).
+  // If nothing was logged in the last 7 days, fall back to the all-time
+  // distribution by weekday so the chart still reflects real activity.
+  const volunteerHours = (() => {
+    const last7: { date: string; key: string; hours: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(Date.now() - i * DAY);
+      last7.push({ date: days[d.getDay()], key: d.toISOString().slice(0, 10), hours: 0 });
+    }
+    for (const ci of volunteerCheckIns) {
+      const b = last7.find(x => x.key === new Date(ci.checkInTime).toISOString().slice(0, 10));
+      if (b) b.hours += ci.activeHours ?? 0;
+    }
+    if (last7.some(b => b.hours > 0)) {
+      return last7.map(b => ({ date: b.date, hours: Math.round(b.hours) }));
+    }
+    // Fallback: total hours by weekday, all time
+    const byDow = [0, 0, 0, 0, 0, 0, 0];
+    for (const ci of volunteerCheckIns) byDow[new Date(ci.checkInTime).getDay()] += ci.activeHours ?? 0;
+    return [1, 2, 3, 4, 5, 6, 0].map(dow => ({ date: days[dow], hours: Math.round(byDow[dow]) }));
+  })();
   
   return {
     incidents: {
@@ -136,8 +201,19 @@ export const getOperationalIntelligence = async () => {
     weeklyTrends,
     kpis: {
       avgResponseTime,
+      avgResponseMinutes: respondedIncidents.length
+        ? Math.round(respondedIncidents.reduce((s, i) => s + (new Date(i.updatedAt).getTime() - new Date(i.createdAt).getTime()) / 60000, 0) / respondedIncidents.length)
+        : 0,
       volunteerUtilization: volunteerUtilization + '%',
+      volunteerUtilizationPct: volunteerUtilization,
       alertDeliveryRate: alertDeliveryRate + '%',
+      avgOccupancyPct,
+    },
+    trends: {
+      incidents: badge(incidentTrendPct),
+      responseTime: badge(responseTrendPct, true),
+      volunteerUtilization: { value: `${volunteerUtilization}%`, isUp: volunteerUtilization >= 50 },
+      alertDelivery: { value: `${alertDeliveryRate}%`, isUp: alertDeliveryRate >= 50 },
     },
     citizenStatus: {
       verifiedSafe: { value: verifiedSafe, percent: safePct },
@@ -167,9 +243,9 @@ export const getOperationalIntelligence = async () => {
     },
     crisisFund: {
       total: fundStr,
-      activeNodes: camps.length + Math.floor(volunteers.length / 2),
-      uniqueContributors: Math.max(152, Math.floor(tokenClaims.length * 1.5) + 100),
-      efficiency: (95 + Math.random() * 4).toFixed(1) + '%'
+      activeNodes: camps.filter(c => c.status === 'OPEN').length,
+      uniqueContributors: uniqueDonors,
+      efficiency: fulfilmentEfficiency + '%'
     },
     districtRiskHeatmap: [
       { id: 'LK-11', value: 85 }, // Colombo
@@ -178,37 +254,75 @@ export const getOperationalIntelligence = async () => {
       { id: 'LK-21', value: 90 }, // Kandy
       { id: 'LK-31', value: 70 }, // Galle
     ],
-    resourceUtilization: [
-      { name: 'Rescue Boats', used: rescueBoats > 0 ? Math.round(rescueBoats * 0.8) : 8, available: rescueBoats > 0 ? Math.round(rescueBoats * 0.2) : 2 },
-      { name: 'Vehicles', used: logisticsVehicles > 0 ? Math.round(logisticsVehicles * 0.9) : 18, available: logisticsVehicles > 0 ? Math.round(logisticsVehicles * 0.1) : 2 },
-      { name: 'Generators', used: powerNodes > 0 ? Math.round(powerNodes * 0.6) : 6, available: powerNodes > 0 ? Math.round(powerNodes * 0.4) : 4 },
-      { name: 'Volunteers', used: assignedVolunteers.size || Math.min(volunteers.length, 5), available: Math.max(0, volunteers.length - assignedVolunteers.size) },
-    ],
-    volunteerHours: [
-      { date: 'Mon', hours: 120 }, { date: 'Tue', hours: 150 },
-      { date: 'Wed', hours: 180 }, { date: 'Thu', hours: 130 },
-      { date: 'Fri', hours: 210 }, { date: 'Sat', hours: 250 },
-      { date: 'Sun', hours: 190 },
-    ]
+    resourceUtilization: (() => {
+      const bucket = (label: string, match: (t: string) => boolean) => {
+        const set = resources.filter(r => match(r.type.toLowerCase()));
+        const available = set.filter(r => r.status === 'AVAILABLE').length;
+        return { name: label, used: set.length - available, available };
+      };
+      return [
+        bucket('Rescue Boats', t => t.includes('boat')),
+        bucket('Vehicles', t => t.includes('truck') || t.includes('ambulance') || t.includes('vehicle')),
+        bucket('Generators', t => t.includes('generator') || t.includes('power')),
+        { name: 'Volunteers', used: assignedVolunteers.size, available: Math.max(0, volunteers.length - assignedVolunteers.size) },
+      ];
+    })(),
+    volunteerHours
   };
 };
 
 export const generateAAR = async (incidentId: string) => {
   let aar = await prisma.afterActionReport.findUnique({ where: { incidentId } });
   if (!aar) {
-    const incident = await prisma.incidentReport.findUnique({ where: { id: incidentId } });
+    const incident = await prisma.incidentReport.findUnique({
+      where: { id: incidentId },
+      include: {
+        history: { orderBy: { createdAt: 'asc' } },
+        tasks: true,
+        damageAssessments: true,
+      },
+    });
     if (!incident) throw new Error('Incident not found');
-    
+
+    // Real timeline from the incident's history log
+    const timeline = incident.history.length
+      ? incident.history.map(h => ({ time: h.createdAt, event: h.note || `Status → ${h.status}` }))
+      : [{ time: incident.createdAt, event: 'Incident reported' }];
+
+    // Resolution time = report → last recorded activity (or now if still open), in minutes
+    const lastActivity = incident.history.length
+      ? incident.history[incident.history.length - 1].createdAt
+      : incident.updatedAt;
+    const resolutionTime = Math.max(0, Math.round(
+      (new Date(lastActivity).getTime() - new Date(incident.createdAt).getTime()) / 60000
+    ));
+
+    // People affected + cost from linked damage assessments
+    const peopleAffected = incident.damageAssessments.reduce((s, d) => s + (d.affectedPersons ?? 0), 0);
+    const costEstimate = incident.damageAssessments.reduce(
+      (s, d) => s + (d.aiEstimatedCost ?? d.estimatedLoss ?? 0), 0
+    );
+
+    const resourcesUsed = incident.tasks.length
+      ? incident.tasks.map(t => t.title)
+      : ['No tasks recorded'];
+
+    const lessons: string[] = [];
+    if (resolutionTime > 120) lessons.push('Resolution exceeded the 2-hour target — review dispatch chain.');
+    if (incident.severity === 'CRITICAL' && incident.tasks.length === 0) lessons.push('Critical incident had no tasks assigned.');
+    if (incident.damageAssessments.length === 0) lessons.push('No damage assessment was filed for this incident.');
+    if (lessons.length === 0) lessons.push('Handled within targets; no corrective actions identified.');
+
     aar = await prisma.afterActionReport.create({
       data: {
         incidentId,
-        timeline: JSON.stringify([{ time: incident.createdAt, event: 'Incident Reported' }, { time: new Date(), event: 'AAR Generated' }]),
-        resourcesUsed: JSON.stringify(['2x Rescue Boats', '5x Medics']),
-        costEstimate: Math.floor(Math.random() * 100000) + 50000,
-        peopleAffected: Math.floor(Math.random() * 50) + 10,
-        resolutionTime: 120, // minutes
-        lessonsLearned: 'Rapid deployment saved lives. Need better comms.'
-      }
+        timeline: JSON.stringify(timeline),
+        resourcesUsed: JSON.stringify(resourcesUsed),
+        costEstimate: Math.round(costEstimate),
+        peopleAffected,
+        resolutionTime,
+        lessonsLearned: lessons.join(' '),
+      },
     });
   }
   return aar;
@@ -218,13 +332,46 @@ export const getKPIBenchmarks = async (month: string) => {
   return await prisma.kPIBenchmark.findMany({ where: { month } });
 };
 
+const SL_DISTRICTS = [
+  'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Galle', 'Matara',
+  'Hambantota', 'Jaffna', 'Kilinochchi', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Batticaloa',
+  'Ampara', 'Trincomalee', 'Kurunegala', 'Puttalam', 'Anuradhapura', 'Polonnaruwa',
+  'Badulla', 'Monaragala', 'Ratnapura', 'Kegalle',
+];
+
+/**
+ * Operational vulnerability index — built from live data (no census figures in
+ * the DB). Per district: vulnerable-group signals from help-request text and
+ * missing-person ages, plus a risk score weighted by active-incident density.
+ */
 export const getVulnerabilityIndex = async () => {
-  // Mock data for vulnerability index
-  return [
-    { district: 'Colombo', elderly: 1500, infants: 800, disabled: 400, chronic: 1200, riskScore: 85 },
-    { district: 'Gampaha', elderly: 1200, infants: 600, disabled: 300, chronic: 900, riskScore: 72 },
-    { district: 'Kandy', elderly: 2000, infants: 900, disabled: 500, chronic: 1500, riskScore: 92 },
-  ];
+  const [incidents, helpRequests, missingPersons] = await Promise.all([
+    prisma.incidentReport.findMany({ where: { status: { not: 'RESOLVED' } }, select: { location: true, severity: true } }),
+    prisma.helpRequest.findMany({ select: { location: true, description: true } }),
+    prisma.missingPerson.findMany({ select: { lastSeen: true, age: true } }),
+  ]);
+
+  const districtOf = (text?: string | null) => SL_DISTRICTS.find(d => text?.includes(d));
+
+  const rows = SL_DISTRICTS.map(district => {
+    const hr = helpRequests.filter(h => districtOf(h.location) === district);
+    const mp = missingPersons.filter(m => districtOf(m.lastSeen) === district);
+    const inc = incidents.filter(i => districtOf(i.location) === district);
+
+    const text = (s: string) => hr.filter(h => h.description?.toLowerCase().includes(s)).length;
+    const elderly = text('elder') + text('old age') + mp.filter(m => (m.age ?? 0) > 65).length;
+    const infants = text('baby') + text('infant') + text('child') + mp.filter(m => (m.age ?? 99) < 5).length;
+    const disabled = text('disabled') + text('wheelchair') + text('blind') + text('deaf');
+    const chronic = text('medicine') + text('insulin') + text('chronic') + text('dialysis');
+
+    const critical = inc.filter(i => i.severity === 'CRITICAL').length;
+    const riskScore = Math.min(100, Math.round(
+      inc.length * 6 + critical * 10 + (elderly + infants + disabled + chronic) * 4
+    ));
+    return { district, elderly, infants, disabled, chronic, riskScore };
+  });
+
+  return rows.filter(r => r.riskScore > 0).sort((a, b) => b.riskScore - a.riskScore).slice(0, 10);
 };
 
 export const getDisasterBudgets = async () => {

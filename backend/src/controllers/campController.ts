@@ -6,17 +6,22 @@ import { getIO } from '../utils/socketInstance';
 export const createCamp = async (req: Request, res: Response) => {
   try {
     const { name, location, latitude, longitude, totalCapacity, services } = req.body;
+    const capacity = parseInt(String(totalCapacity));
+    if (!name || !location || isNaN(capacity) || capacity <= 0) {
+      return res.status(400).json({ message: 'name, location and a positive totalCapacity are required' });
+    }
     const camp = await campService.createCamp({
       name,
       location,
       latitude: latitude ? parseFloat(latitude.toString()) : null,
       longitude: longitude ? parseFloat(longitude.toString()) : null,
-      totalCapacity: parseInt(totalCapacity.toString()),
-      services: services || [],
+      totalCapacity: capacity,
+      services: Array.isArray(services) ? services : [],
     });
     res.status(201).json(camp);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -25,7 +30,8 @@ export const getCamps = async (req: Request, res: Response) => {
     const camps = await campService.getAllCamps();
     res.json(camps);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -35,7 +41,8 @@ export const getCampById = async (req: Request, res: Response) => {
     if (!camp) return res.status(404).json({ message: 'Camp not found' });
     res.json(camp);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -55,7 +62,8 @@ export const updateOccupancy = async (req: Request, res: Response) => {
     const result = await campService.updateCampOccupancy(id, occ);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -65,7 +73,8 @@ export const getResidents = async (req: Request, res: Response) => {
     const residents = await campService.getCampResidents(req.params.id as string);
     res.json(residents);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -74,7 +83,8 @@ export const addResident = async (req: Request, res: Response) => {
     const result = await campService.addCampResident(req.params.id as string, req.body);
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -83,18 +93,29 @@ export const checkoutResident = async (req: Request, res: Response) => {
     const resident = await campService.checkoutResident(req.params.residentId as string);
     res.json(resident);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 // --- Inventory ---
+const INVENTORY_ITEMS = ['FOOD', 'WATER', 'MEDICAL', 'BLANKETS', 'HYGIENE'];
+
 export const updateInventory = async (req: Request, res: Response) => {
   try {
     const { itemType, quantity, threshold } = req.body;
-    const inv = await campService.updateCampInventory(req.params.id as string, itemType as InventoryItemType, parseInt(quantity), threshold ? parseInt(threshold) : undefined);
+    if (!INVENTORY_ITEMS.includes(itemType)) {
+      return res.status(400).json({ message: `itemType must be one of ${INVENTORY_ITEMS.join(', ')}` });
+    }
+    const qty = parseInt(quantity);
+    if (isNaN(qty) || qty < 0) {
+      return res.status(400).json({ message: 'quantity must be a non-negative number' });
+    }
+    const inv = await campService.updateCampInventory(req.params.id as string, itemType as InventoryItemType, qty, threshold ? parseInt(threshold) : undefined);
     res.json(inv);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -104,7 +125,8 @@ export const addSchedule = async (req: Request, res: Response) => {
     const schedule = await campService.addCampSchedule(req.params.id as string, req.body);
     res.status(201).json(schedule);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -113,7 +135,8 @@ export const deleteSchedule = async (req: Request, res: Response) => {
     await campService.deleteCampSchedule(req.params.scheduleId as string);
     res.json({ success: true });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -129,7 +152,8 @@ export const addReferral = async (req: Request, res: Response) => {
     }
     res.status(201).json(referral);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -138,7 +162,8 @@ export const updateReferral = async (req: Request, res: Response) => {
     const referral = await campService.updateReferralStatus(req.params.referralId as string, req.body.status as ReferralStatus);
     res.json(referral);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -148,7 +173,8 @@ export const getAllTransfers = async (_req: Request, res: Response) => {
     const transfers = await campService.getAllTransferRequests();
     res.json(transfers);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -157,7 +183,8 @@ export const getTransferSuggestions = async (_req: Request, res: Response) => {
     const suggestions = await campService.getTransferSuggestions();
     res.json(suggestions);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -167,7 +194,8 @@ export const createTransfer = async (req: Request, res: Response) => {
     const transfer = await campService.createTransferRequest(req.params.id as string, toCampId, parseInt(peopleCount));
     res.status(201).json(transfer);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -176,6 +204,7 @@ export const updateTransfer = async (req: Request, res: Response) => {
     const transfer = await campService.updateTransferRequestStatus(req.params.transferId as string, req.body.status);
     res.json(transfer);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error', error });
+    console.error('[camps]', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

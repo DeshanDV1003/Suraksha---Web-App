@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDialog } from '@/components/ui/dialogs/DialogProvider';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, ZoomControl, useMap, Circle, Polygon, Polyline } from 'react-leaflet';
 import L from 'leaflet';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   Layers, Zap, Search, Shield, AlertTriangle, TrendingUp, Activity,
   Heart, Home, Play, Pause, Navigation, Clock, User, ShieldCheck,
@@ -158,30 +159,12 @@ function MapAddressSearch({ onLocationFound }: { onLocationFound: (loc: any) => 
   );
 }
 
-// Mock Data Generators for New Features
-// Cyclone cone bounded within Sri Lanka's eastern coast (lng max 81.9)
-const MOCK_CYCLONE_CONE: [number, number][] = [
-  [8.8, 81.0], [8.2, 81.5], [7.8, 81.7], [7.2, 81.8], [6.8, 81.5], [7.2, 81.0], [7.8, 80.8], [8.4, 80.8]
-];
-
-const generateMockVolunteers = (incidents: Incident[]) => {
-  return incidents.slice(0, 10).map((inc, i) => ({
-    id: `vol-${i}`,
-    name: `Volunteer ${i + 1}`,
-    skill: i % 3 === 0 ? 'Medical' : i % 3 === 1 ? 'Rescue' : 'General',
-    latitude: inc.latitude + (Math.random() - 0.5) * 0.05,
-    longitude: inc.longitude + (Math.random() - 0.5) * 0.05,
-    status: 'ACTIVE'
-  }));
-};
-
-const generateEvacRoutes = () => {
-  // Mock routes near Colombo
-  return {
-    primary: [[6.92, 79.86], [6.95, 79.90], [6.97, 79.95], [7.0, 80.0]] as [number, number][],
-    alternate: [[6.92, 79.86], [6.88, 79.90], [6.90, 79.98], [7.0, 80.0]] as [number, number][]
-  };
-};
+// Convert a stored EvacuationRoute (coordinates: [{lat,lng}] | [[lat,lng]])
+// into a Leaflet-ready polyline positions array.
+const routePositions = (coordinates: any): [number, number][] =>
+  (Array.isArray(coordinates) ? coordinates : [])
+    .map((c: any) => (Array.isArray(c) ? c : [c?.lat, c?.lng]))
+    .filter((p: any) => typeof p[0] === 'number' && typeof p[1] === 'number') as [number, number][];
 
 const generateAssignmentArrows = (camps: Camp[], incidents: Incident[]) => {
   const arrows: { id: string; positions: [number, number][] }[] = [];
@@ -208,6 +191,7 @@ const generateAssignmentArrows = (camps: Camp[], incidents: Incident[]) => {
 export default function MapPage() {
   const { alert } = useDialog()
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [camps, setCamps] = useState<Camp[]>([]);
   const [districtGeoJSON, setDistrictGeoJSON] = useState<any>(null);
@@ -218,16 +202,16 @@ export default function MapPage() {
   
   // New Feature States
   const [volunteers, setVolunteers] = useState<any[]>([]);
-  const [evacRoutes, setEvacRoutes] = useState<any>(null);
+  const [evacRoutes, setEvacRoutes] = useState<any[]>([]);
   const [assignmentArrows, setAssignmentArrows] = useState<any[]>([]);
   const [districtRainfall, setDistrictRainfall] = useState<any[]>([]);
   const [isExportingRoute, setIsExportingRoute] = useState(false);
 
   const handleExportRoute = async () => {
-    if (!evacRoutes) return;
+    if (!evacRoutes.length) return;
     setIsExportingRoute(true);
     try {
-      const response = await mapService.exportRoutePdf(evacRoutes);
+      const response = await mapService.exportRoutePdf({ routes: evacRoutes });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -316,39 +300,60 @@ export default function MapPage() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const [incRes, campRes] = await Promise.all([
-          axios.get('http://localhost:3001/api/incidents', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://localhost:3001/api/camps', { headers: { Authorization: `Bearer ${token}` } })
-        ]);
-        
-        // Add fake created dates for historical replay if missing
-        const incs = incRes.data.map((inc: any, idx: number) => ({
-          ...inc,
-          createdAt: inc.createdAt || new Date(Date.now() - (100 - idx) * 3600000).toISOString()
-        })).sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-        
-        setIncidents(incs);
-        setCamps(campRes.data);
-        setEvacRoutes(generateEvacRoutes());
-        setAssignmentArrows(generateAssignmentArrows(campRes.data, incs));
+  const fetchData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const [incRes, campRes] = await Promise.all([
+        axios.get('http://localhost:3001/api/incidents', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('http://localhost:3001/api/camps', { headers: { Authorization: `Bearer ${token}` } })
+      ]);
 
-        // Real volunteer positions — falls back to empty array silently
-        try {
-          const volRes = await axios.get('http://localhost:3001/api/location/field-team', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setVolunteers(volRes.data || []);
-        } catch { setVolunteers([]); }
-      } catch (err) {
-        console.error('Failed to load static datasets for map:', err);
-      }
-    };
-    fetchData();
+      // Chronological order for the historical timeline (drop any without a real timestamp)
+      const incs = incRes.data
+        .filter((inc: any) => inc.createdAt)
+        .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+      setIncidents(incs);
+      setCamps(campRes.data);
+      setAssignmentArrows(generateAssignmentArrows(campRes.data, incs));
+
+      try {
+        const routeRes = await mapService.getEvacuationRoutes();
+        setEvacRoutes(routeRes.data || []);
+      } catch { setEvacRoutes([]); }
+
+      try {
+        const volRes = await mapService.getVolunteerLocations();
+        setVolunteers(volRes.data || []);
+      } catch { setVolunteers([]); }
+    } catch (err) {
+      console.error('Failed to load datasets for map:', err);
+    }
   }, []);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  // ── Live updates: refresh when incidents/alerts change on the server ──────
+  const [liveConnected, setLiveConnected] = useState(false);
+  useEffect(() => {
+    const socket = io('http://localhost:3001', { transports: ['websocket', 'polling'], reconnection: true });
+    let debounce: ReturnType<typeof setTimeout> | null = null;
+    const refresh = () => {
+      if (debounce) clearTimeout(debounce);
+      debounce = setTimeout(() => fetchData(), 800);
+    };
+    socket.on('connect', () => setLiveConnected(true));
+    socket.on('disconnect', () => setLiveConnected(false));
+    socket.on('connect_error', () => setLiveConnected(false));
+    socket.on('new-incident', refresh);
+    socket.on('incident-updated', refresh);
+    socket.on('new-high-priority-incident', refresh);
+    socket.on('new-alert', refresh);
+    return () => {
+      if (debounce) clearTimeout(debounce);
+      socket.disconnect();
+    };
+  }, [fetchData]);
 
   useEffect(() => {
     if (incidents.length === 0) return;
@@ -413,9 +418,23 @@ export default function MapPage() {
     });
   };
 
-  // Filter incidents based on scrubber (0 = first incident, 100 = all incidents)
-  const visibleIncidentCount = Math.max(1, Math.floor((timeScrubber / 100) * incidents.length));
-  const activeIncidents = incidents.slice(0, visibleIncidentCount).filter((i) => i.latitude && i.longitude);
+  // ── Historical timeline: map the 0-100 scrubber to a real point in time ────
+  const incidentTimes = incidents.map((i) => new Date(i.createdAt!).getTime()).filter((n) => !isNaN(n));
+  const minTime = incidentTimes.length ? Math.min(...incidentTimes) : Date.now();
+  const maxTime = incidentTimes.length ? Math.max(...incidentTimes) : Date.now();
+  const cutoffTime = minTime + (timeScrubber / 100) * (maxTime - minTime);
+  const activeIncidents = incidents.filter(
+    (i) => i.latitude && i.longitude && new Date(i.createdAt!).getTime() <= cutoffTime
+  );
+
+  // ── Risk Coverage Index: share of the 25 districts with a fresh (<6h) rainfall reading ──
+  const SL_DISTRICT_COUNT = 25;
+  const coveredDistricts = new Set(
+    districtRainfall
+      .filter((d: any) => d.recordedAt && Date.now() - new Date(d.recordedAt).getTime() < 6 * 3600 * 1000)
+      .map((d: any) => d.district)
+  ).size;
+  const riskCoveragePct = Math.round((coveredDistricts / SL_DISTRICT_COUNT) * 1000) / 10;
 
   return (
         <>
@@ -428,12 +447,17 @@ export default function MapPage() {
             
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-2xl border border-emerald-100">
+            <div className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-2xl border",
+              liveConnected ? "bg-emerald-50 border-emerald-100" : "bg-slate-100 border-slate-200 dark:bg-slate-800 dark:border-slate-700"
+            )}>
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                {liveConnected && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
+                <span className={cn("relative inline-flex rounded-full h-2 w-2", liveConnected ? "bg-emerald-500" : "bg-slate-400")}></span>
               </span>
-              <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">{t('map_page.live_monitoring')}</span>
+              <span className={cn("text-[10px] font-black uppercase tracking-widest", liveConnected ? "text-emerald-600" : "text-slate-500 dark:text-slate-400")}>
+                {liveConnected ? t('map_page.live_monitoring') : 'Reconnecting…'}
+              </span>
             </div>
           </div>
         </div>
@@ -466,10 +490,10 @@ export default function MapPage() {
               <div className="space-y-3 mt-1">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500 dark:text-gray-400 font-semibold">{t('map_page.risk_coverage_index')}</span>
-                  <span className="text-blue-600 dark:text-blue-400 font-extrabold">94.2%</span>
+                  <span className="text-blue-600 dark:text-blue-400 font-extrabold">{riskCoveragePct}%</span>
                 </div>
                 <div className="w-full bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                  <div className="bg-blue-500 h-full rounded-full" style={{ width: '94.2%' }} />
+                  <div className="bg-blue-500 h-full rounded-full" style={{ width: `${riskCoveragePct}%` }} />
                 </div>
               </div>
             </div>
@@ -638,15 +662,32 @@ export default function MapPage() {
               </div>
             )}
 
-            {layers.evacuationRoutes && evacRoutes && (
-              <div className="suraksha-card p-6 border-l-4 border-l-blue-500 bg-blue-50/30">
-                 <h3 className="text-xs font-black text-blue-800 uppercase tracking-widest flex items-center gap-2 mb-3">
+            {layers.evacuationRoutes && (
+              <div className="suraksha-card p-6 border-l-4 border-l-blue-500 bg-blue-50/30 dark:bg-blue-950/20">
+                 <h3 className="text-xs font-black text-blue-800 dark:text-blue-300 uppercase tracking-widest flex items-center gap-2 mb-3">
                   <Navigation className="w-4 h-4 text-blue-600" /> {t('map_page.evacuation_route')}
                 </h3>
-                <p className="text-xs text-blue-700 font-bold mb-4">{t('map_page.evacuation_desc')}</p>
-                <button onClick={handleExportRoute} disabled={isExportingRoute} className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-50">
-                  {isExportingRoute ? t('map_page.exporting') : t('map_page.export_route_pdf')}
-                </button>
+                {evacRoutes.length === 0 ? (
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold">No evacuation routes defined yet.</p>
+                ) : (
+                  <>
+                    <div className="space-y-2 mb-4 max-h-52 overflow-y-auto">
+                      {evacRoutes.map((r: any) => (
+                        <div key={r.id} className="bg-white dark:bg-gray-900/70 rounded-xl p-2.5 border border-blue-100 dark:border-blue-900/40">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-bold text-slate-800 dark:text-slate-100 truncate">{r.name}</span>
+                            <span className={cn('text-[8px] font-black px-1.5 py-0.5 rounded uppercase',
+                              r.status === 'BLOCKED' ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white')}>{r.status}</span>
+                          </div>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{r.type} · {routePositions(r.coordinates).length} waypoints</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button onClick={handleExportRoute} disabled={isExportingRoute} className="w-full bg-blue-600 text-white font-extrabold text-[10px] uppercase tracking-widest py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-50">
+                      {isExportingRoute ? t('map_page.exporting') : t('map_page.export_route_pdf')}
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
@@ -659,7 +700,15 @@ export default function MapPage() {
                   </div>
                   <button onClick={() => setSelectedZone(null)} className="text-slate-400 hover:text-gray-600 dark:text-slate-300 dark:hover:text-white font-bold text-sm">✕</button>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl shadow-lg shadow-blue-500/25 transition-all text-center">
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div><div className="text-lg font-black text-slate-800 dark:text-slate-100">{selectedZone.incidentCount}</div><div className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Incidents</div></div>
+                  <div><div className="text-lg font-black text-red-500">{selectedZone.criticalCount}</div><div className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Critical</div></div>
+                  <div><div className="text-lg font-black text-amber-500">{Math.round(selectedZone.riskScore * 100)}%</div><div className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Risk</div></div>
+                </div>
+                <button
+                  onClick={() => navigate(`/suraksha-alerts?district=${encodeURIComponent(selectedZone.zoneName)}`)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl shadow-lg shadow-blue-500/25 transition-all text-center"
+                >
                   📢 {t('map_page.dispatch_local_alert')}
                 </button>
               </div>
@@ -669,7 +718,7 @@ export default function MapPage() {
           <div className="xl:col-span-3 h-[700px] flex flex-col bg-gray-100 dark:bg-gray-800 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl relative">
             <MapContainer center={SRI_LANKA_CENTER} zoom={DEFAULT_ZOOM} maxBounds={SRI_LANKA_BOUNDS} maxBoundsViscosity={0.9} minZoom={7} maxZoom={17} style={{ flex: 1, width: '100%' }} className="z-0" zoomControl={false}>
               <ZoomControl position="bottomright" />
-              <TileLayer attribution='&copy; OpenStreetMap' url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+              <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <MapAddressSearch onLocationFound={(loc) => {
                 setSearchedPin(loc);
                 if (loc.latitude && loc.longitude) {
@@ -716,12 +765,31 @@ export default function MapPage() {
                 );
               })}
 
-              {layers.evacuationRoutes && evacRoutes && (
-                 <>
-                   <Polyline positions={evacRoutes.primary} pathOptions={{ color: '#2563eb', weight: 4, opacity: 0.8 }} />
-                   <Polyline positions={evacRoutes.alternate} pathOptions={{ color: '#64748b', weight: 3, dashArray: '10, 10', opacity: 0.8 }} />
-                 </>
-              )}
+              {layers.evacuationRoutes && evacRoutes.map((r: any) => {
+                const positions = routePositions(r.coordinates);
+                if (positions.length < 2) return null;
+                const blocked = r.status === 'BLOCKED';
+                return (
+                  <Polyline
+                    key={r.id}
+                    positions={positions}
+                    pathOptions={{
+                      color: blocked ? '#dc2626' : '#2563eb',
+                      weight: 4,
+                      opacity: 0.85,
+                      dashArray: blocked ? '8, 8' : undefined,
+                    }}
+                  >
+                    <Popup className="suraksha-popup">
+                      <div className="font-sans p-1">
+                        <div className="font-black text-sm">{r.name}</div>
+                        <div className="text-[11px] text-gray-500">{r.type} route · <span className={blocked ? 'text-red-600 font-bold' : 'text-emerald-600 font-bold'}>{r.status}</span></div>
+                        <div className="text-[10px] text-gray-400 mt-1">{positions.length} waypoints</div>
+                      </div>
+                    </Popup>
+                  </Polyline>
+                );
+              })}
 
               {/* ── Safe Routes Layer ─────────────────────────────────── */}
               {layers.safeRoutes && routeData && routeData.routes.map((route: any, idx: number) => {
@@ -782,32 +850,39 @@ export default function MapPage() {
                  </Polyline>
               ))}
 
-              {layers.volunteers && volunteers.map(vol => (
-                <Marker
-                  key={vol.id}
-                  position={[vol.latitude, vol.longitude]}
-                  icon={createVolunteerIcon(vol.user?.role === 'FIELD_RESPONDER' ? 'Rescue' : 'General')}
-                >
-                  <Popup className="suraksha-popup">
-                    <div className="font-sans p-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <User className="w-4 h-4 text-blue-500" />
-                        <span className="font-black text-slate-800 text-sm">{vol.user?.name || 'Field Personnel'}</span>
+              {layers.volunteers && volunteers.filter(v => v.latitude && v.longitude && v.status !== 'OFFLINE').map(vol => {
+                const skill = vol.skill || '';
+                const skillGroup = /medic|first aid|health/i.test(skill) ? 'Medical'
+                  : /rescue|search|swift/i.test(skill) || vol.user?.role === 'FIELD_RESPONDER' ? 'Rescue'
+                  : 'General';
+                return (
+                  <Marker
+                    key={vol.id}
+                    position={[vol.latitude, vol.longitude]}
+                    icon={createVolunteerIcon(skillGroup)}
+                  >
+                    <Popup className="suraksha-popup">
+                      <div className="font-sans p-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <User className="w-4 h-4 text-blue-500" />
+                          <span className="font-black text-slate-800 text-sm">{vol.user?.name || 'Field Volunteer'}</span>
+                        </div>
+                        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+                          {(vol.user?.role || 'VOLUNTEER').replace(/_/g, ' ')}
+                          {vol.status && <span className={cn('ml-2', vol.status === 'ACTIVE' ? 'text-green-600' : 'text-amber-500')}>● {vol.status}</span>}
+                        </div>
+                        {skill && <div className="text-[10px] text-gray-500 mb-1">Skill: <strong>{skill}</strong></div>}
+                        <div className="text-[10px] text-gray-400 mb-2">
+                          Last ping: {new Date(vol.updatedAt || vol.createdAt).toLocaleString()}
+                        </div>
+                        <div className="text-[10px] text-gray-400">
+                          {vol.latitude.toFixed(5)}, {vol.longitude.toFixed(5)}
+                        </div>
                       </div>
-                      <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
-                        {vol.user?.role?.replace('_', ' ')}
-                        {vol.user?.isFieldActive && <span className="ml-2 text-green-600">● ACTIVE</span>}
-                      </div>
-                      <div className="text-[10px] text-gray-400 mb-2">
-                        Last ping: {new Date(vol.createdAt).toLocaleTimeString()}
-                      </div>
-                      <div className="text-[10px] text-gray-400">
-                        {vol.latitude.toFixed(5)}, {vol.longitude.toFixed(5)}
-                      </div>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
+                    </Popup>
+                  </Marker>
+                );
+              })}
 
               {layers.incidents && mapMode === 'incidents' && activeIncidents.map((incident) => (
                 <Marker key={incident.id} position={[incident.latitude, incident.longitude]} icon={createPinIcon(incident.severity, incident.category)}>
@@ -918,7 +993,11 @@ export default function MapPage() {
               <div className="flex-1 flex flex-col gap-1">
                  <div className="flex justify-between text-[10px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest">
                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {t('map_page.historical_timeline')}</span>
-                   <span>{timeScrubber}%</span>
+                   <span className="tabular-nums normal-case">
+                     {incidentTimes.length
+                       ? `${new Date(cutoffTime).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })} · ${activeIncidents.length} shown`
+                       : '—'}
+                   </span>
                  </div>
                  <input type="range" min="0" max="100" value={timeScrubber} onChange={(e) => setTimeScrubber(parseInt(e.target.value))} className="w-full accent-blue-600 cursor-pointer" />
               </div>

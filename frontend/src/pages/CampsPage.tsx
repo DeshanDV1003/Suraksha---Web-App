@@ -210,7 +210,7 @@ function RescueDetailModal({
                 zoomControl={true}
               >
                 <TileLayer
-                  url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                  url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; OpenStreetMap contributors &copy; CARTO'
                 />
                 {/* User location marker */}
@@ -436,7 +436,7 @@ function CampRouteModal({ camp, userLocation, missions, myCheckIn, onMarkSafe, m
                 zoom={10}
                 style={{ height: '100%', width: '100%' }}
               >
-                <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
+                <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
                 <Marker position={[userLocation.lat, userLocation.lng]} icon={L.divIcon({
                   className: '',
                   html: `<div style="width:16px;height:16px;background:#06b6d4;border:3px solid white;border-radius:50%;box-shadow:0 0 0 5px rgba(6,182,212,0.3)"></div>`,
@@ -844,7 +844,7 @@ export default function CampsPage() {
                     zoom={userLocation ? 12 : 8}
                     style={{ height: '100%', width: '100%' }}
                   >
-                    <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
+                    <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap &copy; CARTO' />
                     <LocationPicker onPick={(lat, lng) => {
                       setUserLocation({ lat, lng })
                       setLocationStatus('granted')
@@ -1267,7 +1267,7 @@ export default function CampsPage() {
                           {showVehicleMapPicker && (
                             <div className="rounded-2xl overflow-hidden border border-white/10" style={{ height: 220 }}>
                               <MapContainer center={[7.8731, 80.7718]} zoom={8} style={{ height: '100%', width: '100%' }}>
-                                <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+                                <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
                                 <LocationPicker onPick={(lat, lng) => {
                                   setVehicleForm(p => ({ ...p, latitude: String(lat), longitude: String(lng) }))
                                   setShowVehicleMapPicker(false)
@@ -1699,7 +1699,7 @@ export default function CampsPage() {
                            style={{ height: '100%', width: '100%', cursor: 'crosshair' }}
                            zoomControl={true}
                          >
-                           <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+                           <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
                            <LocationPicker onPick={(lat, lng) => {
                              setPickedLatLng({ lat, lng })
                              if (!newCamp.location) {
@@ -1859,7 +1859,7 @@ function CampDetailsModal({ campId, onClose, isCitizen = false }: { campId: stri
                 <div className="suraksha-card bg-white dark:bg-[#131f33] border border-cyan-400/20 overflow-hidden h-64 lg:h-auto relative min-h-[300px]">
                   {camp.latitude && camp.longitude ? (
                     <MapContainer center={[camp.latitude, camp.longitude]} zoom={15} style={{ height: '100%', width: '100%' }} zoomControl={false}>
-                      <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+                      <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
                       <Marker position={[camp.latitude, camp.longitude]} icon={createCampIcon()} />
                     </MapContainer>
                   ) : (

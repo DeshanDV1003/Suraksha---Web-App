@@ -280,15 +280,15 @@ export const getUserIncidents = async (req: any, res: Response) => {
  *       200:
  *         description: Status updated successfully
  */
-export const updateIncidentStatus = async (req: Request, res: Response) => {
+export const updateIncidentStatus = async (req: any, res: Response) => {
   try {
     const id = req.params.id as string;
-    const { status } = req.body;
+    const { status, note } = req.body;
     requireFields(req.body, ['status']);
     if (!Object.values(Status).includes(status)) {
       return res.status(400).json({ message: `Invalid status. Allowed: ${Object.values(Status).join(', ')}` });
     }
-    const incident = await incidentService.updateIncidentStatus(id, status);
+    const incident = await incidentService.updateIncidentStatus(id, status, req.user?.userId, note);
 
     // Notify the reporter that their incident status changed
     if (incident.reporterId) {
