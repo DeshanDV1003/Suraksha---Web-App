@@ -1,0 +1,202 @@
+<mxfile host="Electron">
+  <diagram name="App C.2 Full Domain Classes" id="appc2">
+    <mxGraphModel dx="593" dy="370" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2040" pageHeight="1240" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=14;align=left;" value="Appendix C.2 — Full Domain Class Diagram (18 core entities + 8 enumerations · associations per 4.6)" vertex="1">
+          <mxGeometry height="24" width="1960" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;User&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, email (U), name, phone?&lt;br&gt;googleId? (U), nic? (U)&lt;br&gt;role : Role&lt;br&gt;region?, hasMobileApp, isFieldActive&lt;br&gt;twoFactorEnabled&lt;br&gt;FK currentSectorId?, FK hospitalId?" vertex="1">
+          <mxGeometry height="124" width="300" x="700" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="hr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;HelpRequest&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK userId?  (nullable — public)&lt;br&gt;type, description, location&lt;br&gt;latitude?, longitude?&lt;br&gt;priority : Severity&lt;br&gt;status : Status&lt;br&gt;peopleCount?, escalationLevel, phone?" vertex="1">
+          <mxGeometry height="124" width="300" x="360" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;VolunteerProfile&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK userId (U)&lt;br&gt;incidentsJoined&lt;br&gt;readinessScore, totalHours" vertex="1">
+          <mxGeometry height="79" width="300" x="360" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="fm" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;FamilyMember&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK primaryUserId&lt;br&gt;name, relation, age?&lt;br&gt;status : SafetyStatus&lt;br&gt;notes?, phone?" vertex="1">
+          <mxGeometry height="94" width="300" x="360" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="sci" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;SafetyCheckIn&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK userId&lt;br&gt;status : SafetyStatus&lt;br&gt;message?, latitude?, longitude?" vertex="1">
+          <mxGeometry height="79" width="300" x="40" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="hos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Hospital&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, name, location, email? (U)&lt;br&gt;specialties[], totalBeds&lt;br&gt;availableBeds, isActive" vertex="1">
+          <mxGeometry height="79" width="300" x="40" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="ir" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;IncidentReport&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK reporterId&lt;br&gt;title, description, location&lt;br&gt;latitude?, longitude?, category&lt;br&gt;status : Status&lt;br&gt;severity : Severity&lt;br&gt;images[], mlConfidence?, nlpEntities : Json" vertex="1">
+          <mxGeometry height="124" width="300" x="700" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="da" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;DamageAssessment&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK reportedById, FK incidentId?&lt;br&gt;location, category : DamageCategory&lt;br&gt;structuralDamage : DamageLevel&lt;br&gt;cropDamage / utilityDamage / roadDamage : DamageLevel&lt;br&gt;status : DamageStatus, estimatedLoss?&lt;br&gt;compensationEligible" vertex="1">
+          <mxGeometry height="124" width="300" x="700" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="ih" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;IncidentHistory&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK incidentId&lt;br&gt;status : Status&lt;br&gt;updatedBy, note?" vertex="1">
+          <mxGeometry height="79" width="300" x="1060" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="task" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Task&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK incidentId?&lt;br&gt;FK assignedToId?, FK assignedById?&lt;br&gt;priority : Severity&lt;br&gt;status : Status&lt;br&gt;dueDate?" vertex="1">
+          <mxGeometry height="109" width="300" x="1060" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="mp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;MissingPerson&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, name, age?, gender?&lt;br&gt;lastSeen, photo?, nic?&lt;br&gt;contactName?, contactPhone?&lt;br&gt;status, reunificationStatus&lt;br&gt;reportedBy?  (soft — no FK)" vertex="1">
+          <mxGeometry height="109" width="300" x="1060" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="al" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Alert&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, title, message&lt;br&gt;type : AlertType, active&lt;br&gt;latitudes[], longitudes[], locations[]&lt;br&gt;broadcastRadiusKm?, notifiedCount&lt;br&gt;translatedMsgSinhala?/Tamil?" vertex="1">
+          <mxGeometry height="109" width="300" x="1420" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nt" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Notification&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK userId&lt;br&gt;FK alertId?  (onDelete SetNull)&lt;br&gt;title, message, read, readAt?" vertex="1">
+          <mxGeometry height="79" width="300" x="1420" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="rwl" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;RiverWaterLevel&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, gaugeId, riverName, district&lt;br&gt;waterLevelMetres, flowRateCumecs&lt;br&gt;alertLevel, minor/majorFloodLevel&lt;br&gt;status : RiverStatus&lt;br&gt;trend : WaterTrend, recordedAt" vertex="1">
+          <mxGeometry height="109" width="300" x="1420" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="wlp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;WaterLevelPrediction&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, gaugeId (U)&lt;br&gt;predictedT1M, predictedT2M&lt;br&gt;confidence, alertLevel&lt;br&gt;modelUsed, reason, computedAt" vertex="1">
+          <mxGeometry height="94" width="300" x="1420" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="rc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;ReliefCamp&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, name, location&lt;br&gt;latitude?, longitude?&lt;br&gt;currentOccupancy ≤ totalCapacity&lt;br&gt;services[], status, waitTime?" vertex="1">
+          <mxGeometry height="94" width="300" x="700" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="rt" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;ReliefToken&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, code (U), qrCodeData&lt;br&gt;FK userId, FK donorId?&lt;br&gt;campId?  (soft — no FK)&lt;br&gt;status : TokenStatus&lt;br&gt;categories : TokenCategory[]&lt;br&gt;usageCount / maxUsage, fraudRiskScore" vertex="1">
+          <mxGeometry height="124" width="300" x="360" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="rtc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;ReliefTokenClaim&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK tokenId&lt;br&gt;claimedAt, claimedBy&lt;br&gt;itemType, quantity&lt;br&gt;locationLat?, locationLng?" vertex="1">
+          <mxGeometry height="94" width="300" x="40" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="href" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«entity»&lt;/i&gt;&lt;br&gt;&lt;b&gt;HospitalReferral&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;id, FK campId, FK hospitalId?&lt;br&gt;patientName, patientAge?&lt;br&gt;conditionSeverity : Severity&lt;br&gt;status : ReferralStatus&lt;br&gt;admittedAt?, dischargedAt?" vertex="1">
+          <mxGeometry height="109" width="300" x="1060" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="e_role" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Role&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;CITIZEN&lt;br&gt;VOLUNTEER&lt;br&gt;ADMIN&lt;br&gt;DMC_OFFICER&lt;br&gt;FIELD_RESPONDER&lt;br&gt;HOSPITAL_STAFF" vertex="1">
+          <mxGeometry height="118" width="180" x="1800" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e_stat" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Status&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PENDING&lt;br&gt;ASSIGNED&lt;br&gt;IN_PROGRESS&lt;br&gt;RESOLVED&lt;br&gt;EN_ROUTE&lt;br&gt;ON_SITE" vertex="1">
+          <mxGeometry height="118" width="180" x="1800" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sev" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;Severity&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;LOW&lt;br&gt;MEDIUM&lt;br&gt;HIGH&lt;br&gt;CRITICAL" vertex="1">
+          <mxGeometry height="90" width="180" x="1800" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="e_at" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;AlertType&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;INFO&lt;br&gt;WARNING&lt;br&gt;EMERGENCY" vertex="1">
+          <mxGeometry height="76" width="180" x="1800" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="e_rs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;RiverStatus&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;NORMAL&lt;br&gt;ALERT&lt;br&gt;MINOR_FLOOD&lt;br&gt;MAJOR_FLOOD" vertex="1">
+          <mxGeometry height="90" width="180" x="1800" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ss" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;SafetyStatus&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;SAFE&lt;br&gt;NEEDS_HELP&lt;br&gt;UNKNOWN&lt;br&gt;MISSING&lt;br&gt;INJURED&lt;br&gt;EVACUATED&lt;br&gt;TRAPPED&lt;br&gt;SHELTERED" vertex="1">
+          <mxGeometry height="146" width="180" x="40" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ts" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;TokenStatus&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;ACTIVE&lt;br&gt;PARTIALLY_USED&lt;br&gt;FULLY_USED&lt;br&gt;EXPIRED&lt;br&gt;REVOKED" vertex="1">
+          <mxGeometry height="104" width="180" x="360" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="e_dl" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;" value="&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;DamageLevel&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;NONE&lt;br&gt;MINOR&lt;br&gt;MODERATE&lt;br&gt;MAJOR&lt;br&gt;TOTAL_LOSS" vertex="1">
+          <mxGeometry height="104" width="180" x="700" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="ir" value="1        0..*   reports">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="ir" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="ih" value="1        0..*   has history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="ir" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="ir" value="0..*        0..*   duplicate-of  (via IncidentDuplicateLink)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" edge="1" parent="1" source="al" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="nt" value="0..1        0..*   generates">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="nt" value="1        0..*   receives">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="hr" value="0..1        0..*   submits">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" edge="1" parent="1" source="ir" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="task" value="0..1        0..*   spawns">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a8" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="task" value="0..1        0..*   assigned">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a9" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="vp" value="1        0..1   has profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a10" edge="1" parent="1" source="rc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="rt" value="0..1        0..*   issues at">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a11" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="rt" value="1        0..*   owns">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a12" edge="1" parent="1" source="rt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="rtc" value="1        0..*   claimed via">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a13" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="da" value="1        0..*   files">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a14" edge="1" parent="1" source="ir" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="da" value="0..1        0..*   assessed for">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a15" edge="1" parent="1" source="rwl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="wlp" value="1        1   forecast cache  (gaugeId)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a16" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="fm" value="1        0..*   lists">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a17" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="sci" value="1        0..*   broadcasts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a18" edge="1" parent="1" source="rc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="href" value="1        0..*   refers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a19" edge="1" parent="1" source="hos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="href" value="0..1        0..*   receives">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a20" edge="1" parent="1" source="hos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;" target="user" value="0..1        0..*   staff">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u21" edge="1" parent="1" source="e_role" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="user" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u22" edge="1" parent="1" source="e_stat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="ir" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u23" edge="1" parent="1" source="e_stat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="ih" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u24" edge="1" parent="1" source="e_stat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="task" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u25" edge="1" parent="1" source="e_stat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="hr" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u26" edge="1" parent="1" source="e_sev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="ir" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u27" edge="1" parent="1" source="e_sev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="task" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u28" edge="1" parent="1" source="e_sev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="hr" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u29" edge="1" parent="1" source="e_sev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="href" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u30" edge="1" parent="1" source="e_at" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="al" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u31" edge="1" parent="1" source="e_rs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="rwl" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u32" edge="1" parent="1" source="e_ss" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="fm" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u33" edge="1" parent="1" source="e_ss" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="sci" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u34" edge="1" parent="1" source="e_ts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="rt" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u35" edge="1" parent="1" source="e_dl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;" target="da" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nn" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;size=14;align=left;spacingLeft=4;" value="Only the eight enumerations named in §4.6 are drawn as classes; the schema defines 25 in total (see Table 4.x). Persistence entities carry no operations — all behaviour lives on the service classes in Figure 4.12. MissingPerson has no association here (reportedBy is a soft reference)." vertex="1">
+          <mxGeometry height="44" width="1960" x="40" y="1176" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

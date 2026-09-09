@@ -76,6 +76,18 @@ async def load_models():
     except Exception as e:
         print(f"Warning: Could not load classifier: {e}")
 
+    # Warm the face-matching model in the background so the first /match-face
+    # call isn't a 60-90s freeze while weights download + the model loads.
+    import threading
+    def _warm_face():
+        try:
+            from ml.face_matcher import warmup
+            warmup()
+            print("[FaceMatch] model warmed and ready")
+        except Exception as e:
+            print(f"[FaceMatch] warmup skipped: {e}")
+    threading.Thread(target=_warm_face, daemon=True).start()
+
 class ReportInput(BaseModel):
     raw_text: str
     latitude: Optional[float] = None
@@ -745,15 +757,26 @@ class FaceMatchInput(BaseModel):
 async def match_face_endpoint(data: FaceMatchInput):
     """
     AI face matching — compare query photo against candidate missing-person photos.
-    Returns list of {person_id, confidence, verified} sorted by confidence descending.
+    Runs the (blocking) DeepFace work in a thread so it never freezes the service,
+    with a hard timeout so one bad request can't hang forever.
     """
+    import asyncio
+    from ml.face_matcher import match_faces
+
+    loop = asyncio.get_event_loop()
     try:
-        from ml.face_matcher import match_faces
-        results = match_faces(
-            query_b64=data.query_image,
-            candidates=[c.dict() for c in data.candidates],
+        results = await asyncio.wait_for(
+            loop.run_in_executor(
+                None,
+                match_faces,
+                data.query_image,
+                [c.dict() for c in data.candidates],
+            ),
+            timeout=60.0,
         )
         return {"matches": results, "total_candidates": len(data.candidates)}
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="Face matching timed out")
     except RuntimeError as e:
         raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:

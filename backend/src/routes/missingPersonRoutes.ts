@@ -8,7 +8,7 @@ import {
   triggerReunification,
   runCrossReference
 } from '../controllers/missingPersonController';
-import { authMiddleware } from '../middleware/auth';
+import { authMiddleware, officerMiddleware } from '../middleware/auth';
 
 const router = Router();
 
@@ -20,7 +20,8 @@ router.post('/public', reportMissingPerson);
 router.get('/', authMiddleware, getMissingPersons);
 router.post('/', authMiddleware, reportMissingPerson);
 router.patch('/:id/status', authMiddleware, updateMissingPersonStatus);
-router.delete('/:id', authMiddleware, deleteMissingPerson);
+// Deleting a case record is destructive — officer only
+router.delete('/:id', authMiddleware, officerMiddleware, deleteMissingPerson);
 
 // Advanced Missing Persons routes
 router.post('/search-face', authMiddleware, searchFace);

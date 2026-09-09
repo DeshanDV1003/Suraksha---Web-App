@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UserSearch, Plus, X, MapPin, Loader2, User, Phone, BrainCircuit, Activity, Users, ShieldAlert, CheckCircle2, Trash2, CheckCheck } from 'lucide-react'
+import { UserSearch, Plus, X, MapPin, Loader2, User, Phone, BrainCircuit, Activity, Users, ShieldAlert, CheckCircle2, Trash2, CheckCheck, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { missingPersonService } from '@/services/api'
 import { useAuth } from '@/hooks/useAuth'
@@ -23,6 +23,8 @@ export default function MissingPersonsPage() {
 
   const [aiLoading, setAiLoading] = useState(false)
   const [aiMatches, setAiMatches] = useState<any[]>([])
+  const [aiError, setAiError] = useState<string | null>(null)
+  const [aiSearched, setAiSearched] = useState(false)
   const [crossRefLoading, setCrossRefLoading] = useState(false)
   const [crossRefMatches, setCrossRefMatches] = useState<any[]>([])
 
@@ -102,12 +104,16 @@ export default function MissingPersonsPage() {
     if (!selectedImage) { showToast('Upload a photo first', 'warning'); return }
     setAiLoading(true)
     setAiMatches([])
+    setAiError(null)
+    setAiSearched(false)
     try {
       const res = await missingPersonService.searchFace(selectedImage)
       setAiMatches(res.data)
-      if (res.data.length === 0) showToast('No matches found in database', 'warning')
+      setAiSearched(true)
+      if (res.data.length === 0) showToast('No matches found in the missing-persons database', 'warning')
     } catch (e: any) {
-      const msg = e?.response?.data?.message || 'AI scan failed'
+      const msg = e?.response?.data?.message || 'AI scan failed. The face-matching service may be unavailable.'
+      setAiError(msg)
       showToast(msg, 'error')
     } finally {
       setAiLoading(false)
@@ -371,6 +377,7 @@ export default function MissingPersonsPage() {
                 {aiLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <BrainCircuit className="w-5 h-5" />}
                 {t('missing_persons_page.run_ai_scan')}
               </button>
+              <p className="text-[10px] text-slate-500 mt-3">The first scan after the server restarts can take up to ~30&nbsp;s while the face model loads.</p>
             </div>
 
             {/* Results */}
@@ -404,6 +411,17 @@ export default function MissingPersonsPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              ) : aiError ? (
+                <div className="py-16 text-center bg-red-500/5 rounded-3xl border border-dashed border-red-500/30">
+                  <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-3" />
+                  <p className="text-red-400 font-bold max-w-sm mx-auto">{aiError}</p>
+                  <button onClick={handleAiSearch} className="mt-4 text-xs font-bold text-purple-400 hover:text-purple-300 underline">Retry scan</button>
+                </div>
+              ) : aiSearched ? (
+                <div className="py-20 text-center bg-slate-50 dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10">
+                  <BrainCircuit className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto mb-3" />
+                  <p className="text-slate-500 dark:text-slate-400 font-bold">No matches found in the database for this photo.</p>
                 </div>
               ) : (
                 <div className="py-20 text-center bg-slate-50 dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10">

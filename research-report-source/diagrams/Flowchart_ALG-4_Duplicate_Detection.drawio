@@ -1,1 +1,110 @@
-<mxfile host="app.diagrams.net" version="24.7.5"><diagram name="Flowchart ALG-4" id="algc4"><mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1304" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="t" value="Flowchart ALG-4 — Incident Duplicate Detection (weighted additive scoring)" style="text;html=1;fontStyle=1;fontSize=13;align=left;" vertex="1" parent="1"><mxGeometry x="40" y="10" width="820" height="26" as="geometry"/></mxCell><mxCell id="s" value="START — new incident created" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="280" height="54" as="geometry"/></mxCell><mxCell id="fc" value="fetch candidates: same category, &lt; 6 h old, not RESOLVED" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="166" width="280" height="54" as="geometry"/></mxCell><mxCell id="lp" value="for each candidate: score = 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="272" width="280" height="54" as="geometry"/></mxCell><mxCell id="q1" value="both have coordinates AND distance ≤ 1000 m ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="378" width="280" height="90" as="geometry"/></mxCell><mxCell id="loc" value="score += 40 × (1 − d/1000)   [LOCATION]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="250" width="280" height="54" as="geometry"/></mxCell><mxCell id="cat" value="score += 30   [CATEGORY — always, candidates already filtered]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="520" width="280" height="54" as="geometry"/></mxCell><mxCell id="q2" value="|Δt| ≤ 6 h ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="626" width="280" height="90" as="geometry"/></mxCell><mxCell id="tim" value="score += 20 × (1 − Δt/6h)   [TIME]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="470" width="280" height="54" as="geometry"/></mxCell><mxCell id="q3" value="NLP entity-text overlap &gt; 0 ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="768" width="280" height="90" as="geometry"/></mxCell><mxCell id="nlp" value="score += 10 × overlap   [NLP]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="620" width="280" height="54" as="geometry"/></mxCell><mxCell id="q4" value="score ≥ 50 ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="910" width="280" height="90" as="geometry"/></mxCell><mxCell id="mk" value="create IncidentDuplicateLink (older = canonical, PENDING); officer confirms / dismisses" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="770" width="280" height="54" as="geometry"/></mxCell><mxCell id="nx" value="next candidate" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="1052" width="280" height="54" as="geometry"/></mxCell><mxCell id="e" value="END  (fire-and-forget — never blocks the create response)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="300" y="1158" width="280" height="54" as="geometry"/></mxCell><mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="s" target="fc"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="fc" target="lp"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="lp" target="q1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="cat" target="q2"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="nx" target="e"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e6" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q1" target="cat"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e7" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q1" target="loc"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="loc" target="cat"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e9" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q2" target="q3"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e10" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q2" target="tim"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="tim" target="q3"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e12" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q3" target="q4"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e13" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q3" target="nlp"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="nlp" target="q4"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e15" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q4" target="nx"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e16" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q4" target="mk"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="mk" target="nx"><mxGeometry relative="1" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="Electron">
+  <diagram name="Flowchart ALG-4" id="algc4">
+    <mxGraphModel dx="1720" dy="1074" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1304" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=13;align=left;" value="Flowchart ALG-4 — Incident Duplicate Detection (weighted additive scoring)" vertex="1">
+          <mxGeometry height="26" width="820" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="s" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="START — new incident created" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="fetch candidates: same category, &lt; 6 h old, not RESOLVED" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="166" as="geometry" />
+        </mxCell>
+        <mxCell id="lp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="for each candidate: score = 0" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="272" as="geometry" />
+        </mxCell>
+        <mxCell id="q1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="both have coordinates AND distance ≤ 1000 m ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="378" as="geometry" />
+        </mxCell>
+        <mxCell id="loc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="score += 40 × (1 − d/1000)   [LOCATION]" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="cat" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="score += 30   [CATEGORY — always, candidates already filtered]" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="q2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="|Δt| ≤ 6 h ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="626" as="geometry" />
+        </mxCell>
+        <mxCell id="tim" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="score += 20 × (1 − Δt/6h)   [TIME]" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="q3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="NLP entity-text overlap &gt; 0 ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="nlp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="score += 10 × overlap   [NLP]" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="q4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="score ≥ 50 ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="mk" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="create IncidentDuplicateLink (older = canonical, PENDING); officer confirms / dismisses" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="nx" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="next candidate" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="1052" as="geometry" />
+        </mxCell>
+        <mxCell id="e" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="END  (fire-and-forget — never blocks the create response)" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="1158" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="fc" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="fc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="lp" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="lp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="cat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="nx" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="e" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="cat" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="loc" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="loc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="cat" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q3" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="tim" value="yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="tim" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="q3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q4" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="q3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="nlp" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="nlp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="q4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="nx" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="q4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="mk" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="mk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="nx" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

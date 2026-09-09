@@ -1307,4 +1307,429 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
   save('Figure_4.8_Activity_River_Forecast_to_Threshold_Alert_Dispatch.drawio','Fig 4.8 Activity AD-3','fig48ad',c,W,H);
 })();
 
+/* ============================================================
+   Figure 5.1 — Mobile Offline-Sync Architecture
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=1440,H=760;
+  c.push(V('t','Figure 5.1 — Mobile Offline-Sync Architecture',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  const b=(id,x,y,w,h,txt,st)=>c.push(V(id,txt,x,y,w,h,st||S.plain));
+
+  b('scr',40,150,190,110,'25 mobile screens<br><font style="font-size:9px">role-adaptive bottom tabs · citizen / volunteer / field responder</font>',S.web);
+  b('hook',290,140,230,130,'useOfflineSubmit hook<br><font style="font-size:9px">wraps every write operation · tries the network first with an 8 s timeout</font>',S.app);
+  b('q',600,120,250,170,'SQLite  (expo-sqlite, WAL)<br><br><b>sync_queue</b><br><font style="font-size:9px">outbound mutations · 12 types · payload (JSON) · status · attempts · created_at</font>',S.data);
+  b('cache',600,340,250,110,'Read-only cache tables<br><font style="font-size:9px">incidents_cache · alerts_cache · relief_camps_cache · (seeded) emergency_numbers_cache · first_aid_cache</font>',S.data);
+  b('sync',930,120,250,150,'syncService.syncPendingItems()<br><font style="font-size:9px">strict FIFO drain (ORDER BY created_at) · marks each item synced / failed · retries a failed item up to 5 times, then gives up · 300 ms inter-request gap</font>',S.app);
+  b('api',930,350,250,80,'Backend API<br><font style="font-size:9px">POST SYNC_HANDLERS[type].endpoint  { X-Offline-Sync, X-Original-Timestamp }</font>',S.ml);
+
+  b('nm',600,540,240,80,'networkMonitor<br><font style="font-size:9px">polls device network state every 8 s · triggers an immediate sync on reconnection</font>',S.ext);
+  b('bg',870,540,240,80,'backgroundSync<br><font style="font-size:9px">registered with Expo background-fetch · drains the queue periodically even when the app is closed</font>',S.ext);
+  b('fg',1150,540,180,80,'app returns to foreground',S.ext);
+
+  c.push(E(nid('e'),'scr','hook','submit(payload)',EDGE.flow));
+  c.push(E(nid('e'),'hook','q','5xx / timeout / offline → enqueue (retryable)',EDGE.flow));
+  c.push(E(nid('e'),'hook','scr','4xx → surface error, NOT queued','endArrow=block;html=1;fontSize=9;dashed=1;'));
+  c.push(E(nid('e'),'q','sync','SELECT pending  (FIFO)',EDGE.flow));
+  c.push(E(nid('e'),'sync','q','markSynced / markFailed (attempts++)','endArrow=open;dashed=1;html=1;fontSize=9;'));
+  c.push(E(nid('e'),'sync','api','replay in order',EDGE.flow));
+  c.push(E(nid('e'),'api','sync','201 / 4xx / 5xx','endArrow=open;dashed=1;html=1;fontSize=9;'));
+  c.push(E(nid('e'),'nm','sync','trigger',EDGE.flow));
+  c.push(E(nid('e'),'bg','sync','trigger',EDGE.flow));
+  c.push(E(nid('e'),'fg','sync','trigger',EDGE.flow));
+  c.push(E(nid('e'),'cache','scr','offline reads',EDGE.flow));
+
+  c.push(V('n1','A client error (4xx) is treated as permanent — shown to the user, never queued (bad data will not sync later). A server error (5xx), an 8 s timeout, or a network failure is treated as retryable.',40,300,510,80,S.note));
+  c.push(V('n2','12 queued mutation types cover every citizen / volunteer write: incident report, SOS, help request, damage assessment, task-status update, relief-token claim, family-member add / update, safety check-in, volunteer check-in, wellbeing log, profile update.',40,410,510,90,S.note));
+  c.push(V('n3','Measured under 6 connectivity-failure conditions (§6.6): 0% data loss. Known gap: a retried item the server already accepted is written twice — future work: client idempotency key + server-side upsert (TC-M-030).',930,470,250,150,S.note));
+  save('Figure_5.1_Mobile_Offline_Sync_Architecture.drawio','Fig 5.1 Mobile Offline Sync','fig51mob',c,W,H);
+})();
+
+/* ============================================================
+   Figure 5.2 — Trilingual Intake Pipeline  (/process-report)
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=1960,H=520;
+  c.push(V('t','Figure 5.2 — Trilingual Intake Pipeline (runs automatically on every incident report)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  const b=(id,x,y,w,h,txt,st)=>c.push(V(id,txt,x,y,w,h,st||S.proc));
+
+  b('si',40,95,150,40,'Sinhala text',S.web);
+  b('ta',40,145,150,40,'Tamil text',S.web);
+  b('en',40,195,150,40,'English text',S.web);
+
+  b('d1',250,110,210,110,'1 · detect_language()<br><font style="font-size:9px">Unicode-script check → Sinhala / Tamil / English word-list → statistical library (langdetect / langid)</font>',S.proc);
+  b('d2',510,110,210,110,'2 · translate_to_english()<br><font style="font-size:9px">library NMT — only when language ≠ English</font>',S.proc);
+  b('d3',770,110,220,110,'3 · extract_entities()<br><font style="font-size:9px">spaCy NER trained on auto-annotated DMC reports → { LOC, INCIDENT, COUNT, DATE, DAMAGE }</font>',S.ml);
+  b('d4',770,320,220,100,'4 · build_feature_vector()<br><font style="font-size:9px">12-dim: affected population, hazard type, vulnerability flags</font>',S.proc);
+  b('d5',1040,315,250,120,'5 · multitask classification<br><font style="font-size:9px">XGBoost predict_proba → temperature-scale → <b>severity</b> + disaster type + urgency + resource-need signals</font>',S.ml);
+  b('ph',1050,150,240,44,'attached photo  (optional)',S.web);
+  b('d6',1050,205,240,80,'6 · image_encoder()<br><font style="font-size:9px">CLIP-style embedding — only when a photo is attached (pre-trained library)</font>',S.proc);
+  b('d7',1340,300,230,130,'7 · multimodal_fusion()<br><font style="font-size:9px">confidence-weighted fusion of text + image + location + time</font>',S.ml);
+  b('out',1620,315,300,110,'RETURN { severity, confidence, detected_language, translated_text, entities }<br><font style="font-size:9px">written back to IncidentReport; all downstream logic uses this normalised output</font>',S.app);
+
+  c.push(E(nid('e'),'si','d1','',EDGE.flow));
+  c.push(E(nid('e'),'ta','d1','',EDGE.flow));
+  c.push(E(nid('e'),'en','d1','',EDGE.flow));
+  c.push(E(nid('e'),'d1','d2','detected language',EDGE.flow));
+  c.push(E(nid('e'),'d2','d3','English text',EDGE.flow));
+  c.push(E(nid('e'),'d1','d3','[ English — skip translation ]','endArrow=block;html=1;fontSize=9;dashed=1;'));
+  c.push(E(nid('e'),'d3','d4','entities',EDGE.flow));
+  c.push(E(nid('e'),'d4','d5','feature vector',EDGE.flow));
+  c.push(E(nid('e'),'ph','d6','',EDGE.flow));
+  c.push(E(nid('e'),'d5','d7','severity + signals',EDGE.flow));
+  c.push(E(nid('e'),'d6','d7','[ if photo attached ] image embedding','endArrow=block;html=1;fontSize=9;dashed=1;'));
+  c.push(E(nid('e'),'d7','out','',EDGE.flow));
+
+  c.push(V('n1','Every input language is normalised to English + structured entities before any human sees it — this removes the "read three languages under pressure" burden from DMC officers. Steps 2, 6 and 7 are conditional (translation skipped for English; image encoding + fusion run only when a photo is attached).',250,250,700,56,S.note));
+  save('Figure_5.2_Trilingual_Intake_Pipeline.drawio','Fig 5.2 Trilingual Intake Pipeline','fig52pipe',c,W,H);
+})();
+
+/* ============================================================
+   Figure 5.4 — Flowchart: Severity Triage with Uncertainty
+   Routing (Algorithm 3) — hand-laid-out, clean branches
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=1060,H=1200;
+  c.push(V('t','Figure 5.4 — Flowchart: Severity Triage with Uncertainty Routing (Algorithm 3)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  const SX=300, SW=310, BX=720, BW=270;   // spine x / width, branch column x / width
+  const n=(id,x,y,w,h,txt,kind)=>{
+    const st = kind==='term'?S.term : kind==='dec'?S.dec : S.proc;
+    c.push(V(id,txt,x,y,w,h,st));
+  };
+  const go=(s,t,l,extra)=>c.push(E(nid('e'),s,t,l||'',(extra||'')+'edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;'));
+
+  n('s',SX,56,SW,44,'START — incident feature vector x','term');
+  n('a1',SX,146,SW,48,'Build the feature vector x  (12-dim)');
+  n('a2',SX,236,SW,54,'p_raw = xgb.predict_proba(x)[0]   — 4-class probabilities');
+  n('a3',SX,332,SW,60,'Temperature-scale:  p = softmax(logit(p_raw) / T)   (T tuned on a held-out calibration set)');
+  n('a4',SX,434,SW,52,'severity = classes[argmax(p)] ;   confidence = max(p)');
+  n('d1',SX,522,SW,100,'confidence ≥ THRESHOLD  (≈ 0.73) ?','dec');
+  n('auto',BX,536,BW,72,"route = 'auto' — prediction accepted automatically; incident enters the normal officer queue");
+  n('a5',SX,664,SW,58,"route = 'human' — add incident to the human-review queue; notify officers");
+  n('a6',SX,754,SW,50,'Reviewing officer opens the incident (description + NLP entities + map)');
+  n('d2',SX,838,SW,96,'Officer agrees with the predicted severity ?','dec');
+  n('conf',BX,842,BW,56,'Confirm severity  (no change)');
+  n('corr',BX,936,BW,84,'Officer sets the correct severity; add the corrected case to the active-learning re-annotation pool (future retraining)');
+  n('a7',SX,1000,SW,58,'Write the final severity to IncidentReport; append IncidentHistory');
+  n('e',SX,1094,SW,44,'END','term');
+
+  go('s','a1'); go('a1','a2'); go('a2','a3'); go('a3','a4'); go('a4','d1');
+  go('d1','auto','yes','exitX=1;exitY=0.5;entryX=0;entryY=0.5;');
+  go('d1','a5','no','exitX=0.5;exitY=1;entryX=0.5;entryY=0;');
+  go('auto','e','','exitX=1;exitY=0.5;entryX=1;entryY=0.5;');
+  go('a5','a6'); go('a6','d2');
+  go('d2','conf','yes','exitX=1;exitY=0.35;entryX=0;entryY=0.5;');
+  go('d2','corr','no','exitX=1;exitY=0.75;entryX=0;entryY=0.5;');
+  go('conf','a7','','exitX=0.5;exitY=1;entryX=0.75;entryY=0;');
+  go('corr','a7','','exitX=0.5;exitY=1;entryX=0.9;entryY=0;');
+  go('a7','e');
+
+  c.push(V('note','THRESHOLD is tuned on a held-out calibration set, not the test set; under-triage (predicting a lower tier than the truth) is weighted as more costly than over-triage. This is the central algorithm for RO2 / RQ1. Reported metrics (Ch. 6): auto-coverage, error-capture rate, accepted accuracy.',40,150,240,220,S.note));
+  save('Figure_5.4_Flowchart_Severity_Triage_Uncertainty_Routing.drawio','Fig 5.4 ALG-3 Flowchart','fig54',c,W,H);
+})();
+
+/* ============================================================
+   Appendix B.5 — Use-Case Diagram: Analytics, Notifications &
+   System Administration Module  (UC-M8) — clean hand layout
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=1440,H=940;
+  c.push(V('t','Appendix B.5 — Use-Case Diagram: Analytics, Notifications and System Administration Module',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  c.push(V('bnd','Analytics, Notifications and System Administration',330,70,780,820,'rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fillColor=none;strokeColor=#000000;'));
+  // actors
+  const A=(id,x,y,label)=>c.push(V(id,label,x,y,46,74,S.actor));
+  A('off',60,150,'DMC Officer');
+  A('adm',60,340,'Administrator');
+  A('usr',40,560,'Any authenticated user<br><font style="font-size:8px">Citizen · Volunteer · Officer · Admin · Hospital Staff</font>');
+  A('ml',1330,170,'ML Service');
+  A('sch',1330,540,'System Scheduler');
+  // use cases
+  const uc=(id,x,y,txt)=>c.push(V(id,txt,x,y,270,52,'ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;'));
+  const cA=360, cB=700;
+  uc('u1',cA,110,'View dashboard statistics');
+  uc('u2',cA,196,'View operational-intelligence analytics');
+  uc('u3',cA,282,'Generate situation summary');
+  uc('u4',cA,368,'Forecast district hotspots');
+  uc('u5',cA,454,'Detect data drift');
+  uc('u6',cB,110,'View notification inbox / mark read');
+  uc('u7',cB,196,'View audit log');
+  uc('u8',cB,282,'Trigger manual DB backup');
+  uc('u9',cB,368,'Run scheduled DB backup');
+  uc('u10',cB,454,'Switch UI language (Si / Ta / En)');
+  const sub=(id,x,y,txt)=>c.push(V(id,txt,x,y,250,48,'ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;'));
+  sub('s1',520,600,'Write backup archive + rotate (7-day retention)');
+  sub('s2',520,690,'Aggregate live incidents / alerts / camps / water status');
+  // associations
+  const as=(a,u)=>c.push(E(nid('e'),a,u,'',EDGE.assoc));
+  as('off','u1'); as('off','u2'); as('off','u3'); as('off','u4');
+  as('ml','u3'); as('ml','u4'); as('ml','u5');
+  as('adm','u7'); as('adm','u8');
+  as('sch','u9');
+  as('usr','u6'); as('usr','u10');
+  // includes
+  const inc=(b,i)=>c.push(E(nid('e'),b,i,'«include»',EDGE.incl));
+  inc('u8','s1'); inc('u9','s1'); inc('u3','s2'); inc('u1','s2');
+  // notes
+  c.push(V('nAss','Assumptions: analytics are read-only aggregates; the ML situation summary, hotspot forecast and drift report are advisory, not authoritative; the DB backup runs automatically every day and can also be triggered manually by an administrator.',330,820,760,58,S.note));
+  c.push(V('nWhy','This module gathers the cross-cutting, non-domain capabilities — dashboards, notifications, audit and backup — that every other module depends on but that belong to no single operational module.',60,700,240,150,S.note));
+  save('use-cases/Appendix_B.5_UseCase_Analytics_Notifications_and_System_Administration.drawio','App B.5 Analytics & Admin','appb5',c,W,H);
+})();
+
+/* ============================================================
+   Appendix C.1 — Module Entity-Relationship Fragments (×10)
+   Verified against backend/prisma/schema.prisma
+   ============================================================ */
+(function(){
+  fs.mkdirSync(path.join(OUT,'er-fragments'),{recursive:true});
+  const LOG='edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=9;dashed=1;startArrow=none;endArrow=none;';
+  function frag(nn, name, ents, rels, notes, W, H){
+    const c=[]; U=0;
+    c.push(V('t','Appendix C.1 — ER Fragment '+nn+': '+name+'   (crow\'s-foot · verified against schema.prisma)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=13;align=left;'));
+    for(const e of ents){
+      const label='<b>'+e.n+'</b>'+(e.ext?'  <i>(external)</i>':'')+'<hr size="1" noshade>'+(e.r&&e.r.length?e.r.join('<br>'):'&nbsp;');
+      const h=30+((e.r&&e.r.length)||1)*15;
+      c.push(V(e.id,label,e.x,e.y,e.w||220,h, e.ext
+        ? 'rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#999999;dashed=1;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;'
+        : 'rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;'));
+    }
+    for(const r of rels) c.push(E(nid('r'),r[0],r[1],r[2]||'', r[3]==='11'?EDGE.er11 : r[3]==='log'?LOG : EDGE.er));
+    let ny=H-58-(notes||[]).length*46;
+    (notes||[]).forEach((t)=>{ c.push(V(nid('nn'),t,40,ny,W-80,42,S.note)); ny+=46; });
+    save('er-fragments/Appendix_C.1_ER_Fragment_'+String(nn).padStart(2,'0')+'_'+name.replace(/[^A-Za-z0-9]+/g,'_')+'.drawio',
+      'C.1 Fragment '+nn, 'erf'+nn, c, W, H);
+  }
+
+  frag(1,'Identity and Access',
+    [
+      {id:'usr',n:'User',x:430,y:90,r:['PK id','email (U), name','role : Role','FK currentSectorId?  → Sector','FK hospitalId?  → Hospital']},
+      {id:'sec',n:'Sector',x:60,y:110,r:['PK id','name, type, district, province','polygonData : Json']},
+      {id:'hos',n:'Hospital',x:800,y:110,r:['PK id','name, email (U)','totalBeds, availableBeds, isActive']},
+      {id:'usl',n:'UserSessionLog',x:430,y:340,r:['PK id','FK userId  → User','ipAddress, device, loginTime']},
+      {id:'lv',n:'LocalVerifier',x:90,y:340,r:['PK id','FK userId (U)  → User','verifierRole : VerifierRole','jurisdiction, isApproved']},
+      {id:'rp',n:'RolePermission',x:790,y:340,r:['PK id  (no FK)','role : Role, module','canView / canEdit / canDelete']},
+    ],
+    [ ['sec','usr','1 : 0..*  (currentSector)'], ['hos','usr','0..1 : 0..*  (staff)'],
+      ['usr','usl','1 : 0..*'], ['usr','lv','1 : 0..1','11'] ],
+    ['RolePermission has no foreign key — it is keyed logically by (role, module).'],
+    1100, 560);
+
+  frag(2,'Incident Lifecycle',
+    [
+      {id:'ir',n:'IncidentReport',x:520,y:100,r:['PK id','FK reporterId  → User','title, description, location','status : Status, severity : Severity','category, nlpEntities : Json']},
+      {id:'ih',n:'IncidentHistory',x:70,y:90,r:['PK id','FK incidentId  → IncidentReport','status : Status, updatedBy, note']},
+      {id:'rv',n:'ReportVerification',x:70,y:320,r:['PK id','FK reportId  → IncidentReport','FK userId  → User','status, comment']},
+      {id:'va',n:'VerifierAction',x:70,y:520,r:['PK id','FK verifierId  → LocalVerifier','FK incidentId?  → IncidentReport','FK helpRequestId?  → HelpRequest','result : VerificationResult']},
+      {id:'idl',n:'IncidentDuplicateLink',x:520,y:380,r:['PK id','FK reportId  → IncidentReport (Cascade)','FK canonicalId  → IncidentReport (Cascade)','score, distanceM?, status, reasons[]']},
+      {id:'ml',n:'MLLog',x:960,y:90,r:['PK id','incidentId?  (soft — no FK)','prediction, confidence?, modelVersion','inputData : Json']},
+      {id:'tk',n:'Task',x:960,y:300,r:['PK id','FK incidentId?  → IncidentReport','FK assignedToId?  → User','FK assignedById?  → User','status : Status, priority : Severity']},
+      {id:'aar',n:'AfterActionReport',x:960,y:520,r:['PK id','FK incidentId (U)  → IncidentReport','timeline : Json, costEstimate','resolutionTime, peopleAffected']},
+    ],
+    [ ['ir','ih','1 : 0..*'], ['ir','rv','1 : 0..*'], ['ir','va','0..1 : 0..*'],
+      ['ir','idl','1 : 0..*  (duplicateOf)'], ['ir','idl','1 : 0..*  (canonicalFor)'],
+      ['ir','tk','0..1 : 0..*'], ['ir','aar','1 : 0..1','11'], ['ir','ml','logical (incidentId)','log'] ],
+    ['MLLog.incidentId is a soft reference — no database foreign key.',
+     'VerifierAction also links to LocalVerifier (Fragment 1) and HelpRequest (Help & Rescue).'],
+    1320, 780);
+
+  frag(3,'Alerting',
+    [
+      {id:'al',n:'Alert',x:110,y:110,r:['PK id','title, message','type : AlertType, active','locations[], latitudes[], longitudes[]','broadcastRadiusKm?, notifiedCount']},
+      {id:'nt',n:'Notification',x:500,y:110,r:['PK id','FK userId  → User','FK alertId?  → Alert (onDelete SetNull)','title, message, read, readAt?']},
+      {id:'ral',n:'RainfallAlertLog',x:500,y:330,r:['PK id','district (U)  (no FK)','lastFiredAt']},
+    ],
+    [ ['al','nt','0..1 : 0..*  (SetNull)'] ],
+    ['Notification.userId → User (Fragment 1).',
+     'RainfallAlertLog has no foreign key — a per-district rate-limit log keyed by district.'],
+    900, 460);
+
+  frag(4,'Hydrology',
+    [
+      {id:'rwl',n:'RiverWaterLevel',x:80,y:110,r:['PK id  (no FK — telemetry)','gaugeId, riverName, stationName, district','waterLevelMetres, flowRateCumecs','alertLevel, minor/majorFloodLevel','status : RiverStatus, trend : WaterTrend','recordedAt, fetchedAt, source']},
+      {id:'rr',n:'RainfallReading',x:80,y:380,r:['PK id  (no FK — telemetry)','stationId, district, province','rainfallMmPerHour, cumulativeRain24h/72h','riskLevel : WaterRiskLevel','recordedAt, fetchedAt, source']},
+      {id:'dm',n:'DownstreamMapping',x:470,y:110,r:['PK id','gaugeId (U)','riverName, stationName','targetDistricts[]']},
+      {id:'wlp',n:'WaterLevelPrediction',x:470,y:330,r:['PK id','gaugeId (U)','predictedT1M, predictedT2M','confidence, alertLevel','modelUsed, reason, predictedAt, computedAt']},
+      {id:'tf',n:'ThreatForecast',x:870,y:110,r:['PK id','district, threatType','confidence, severity : Severity','forecastTime']},
+      {id:'tp',n:'ThreatProjection',x:870,y:330,r:['PK id','name, type','polygonCoords : Json','riskLevel : Severity, active']},
+    ],
+    [ ['rwl','dm','gaugeId  (logical)','log'], ['rwl','wlp','gaugeId  1 : 1  (logical)','log'],
+      ['rwl','rr','district  (logical)','log'], ['rr','tf','district  (logical)','log'] ],
+    ['Every table in this fragment is append-only telemetry or a derived cache — none carry a database foreign key.',
+     'They are associated logically by gaugeId (river gauge) or district.'],
+    1230, 620);
+
+  frag(5,'Relief Logistics',
+    [
+      {id:'rc',n:'ReliefCamp',x:520,y:100,r:['PK id','name, location, latitude?, longitude?','currentOccupancy ≤ totalCapacity','services[], status, waitTime?']},
+      {id:'cr',n:'CampResident',x:80,y:90,r:['PK id','FK campId  → ReliefCamp','name, nic?, familySize','checkInTime, checkOutTime?, status']},
+      {id:'ci',n:'CampInventory',x:80,y:300,r:['PK id','FK campId  → ReliefCamp','itemType : InventoryItemType','quantity, threshold, lastUpdated']},
+      {id:'cs',n:'CampSchedule',x:80,y:490,r:['PK id','FK campId  → ReliefCamp','activityName, startTime, endTime, type']},
+      {id:'csr',n:'CampSupplyRequest',x:520,y:340,r:['PK id','FK campId?  → ReliefCamp','FK requesterId  → User','itemType, quantity, urgency, status']},
+      {id:'ctr',n:'CampTransferRequest',x:520,y:520,r:['PK id','FK fromCampId  → ReliefCamp','FK toCampId  → ReliefCamp','peopleCount, status, requestDate']},
+      {id:'res',n:'Resource',x:950,y:100,r:['PK id  (no FK)','type, owner, location','capacity, status, contact']},
+    ],
+    [ ['rc','cr','1 : 0..*'], ['rc','ci','1 : 0..*'], ['rc','cs','1 : 0..*'],
+      ['rc','csr','0..1 : 0..*'], ['rc','ctr','1 : 0..*  (fromCamp)'], ['rc','ctr','1 : 0..*  (toCamp)'] ],
+    ['Resource is a standalone registry (no foreign key).',
+     'CampSupplyRequest.requesterId → User (Fragment 1).'],
+    1260, 640);
+
+  frag(6,'Tokens and Donations',
+    [
+      {id:'dc',n:'DonorCampaign',x:80,y:120,r:['PK id','donorName, contributionAmount','targetCategories : TokenCategory[]']},
+      {id:'rt',n:'ReliefToken',x:440,y:110,r:['PK id','code (U), qrCodeData','FK userId  → User','FK donorId?  → DonorCampaign','campId?  (soft — no FK)','status : TokenStatus, categories : TokenCategory[]','usageCount / maxUsage, fraudRiskScore']},
+      {id:'rtc',n:'ReliefTokenClaim',x:440,y:380,r:['PK id','FK tokenId  → ReliefToken','claimedAt, claimedBy','itemType, quantity','locationLat?, locationLng?']},
+      {id:'dn',n:'Donation',x:820,y:110,r:['PK id','FK donorId?  → User','FK campId?  → ReliefCamp','type : DonationType, amount?','status : DonationStatus, transactionId?']},
+    ],
+    [ ['dc','rt','0..1 : 0..*'], ['rt','rtc','1 : 0..*'] ],
+    ['ReliefToken.userId → User and Donation.donorId → User (Fragment 1); Donation.campId → ReliefCamp (Fragment 5).',
+     'ReliefToken.campId is a soft reference (no foreign key).'],
+    1120, 560);
+
+  frag(7,'Volunteers',
+    [
+      {id:'vp',n:'VolunteerProfile',x:480,y:100,r:['PK id','FK userId (U)  → User','incidentsJoined','readinessScore, totalHours']},
+      {id:'vs',n:'VolunteerSkill',x:80,y:90,r:['PK id','FK volunteerId  → VolunteerProfile','skillName, certificationUrl?']},
+      {id:'vt',n:'VolunteerTraining',x:80,y:270,r:['PK id','FK volunteerId  → VolunteerProfile','trainingName, completedAt, expiresAt?']},
+      {id:'vc',n:'VolunteerCheckIn',x:80,y:450,r:['PK id','FK volunteerId  → VolunteerProfile','checkInTime, checkOutTime?','latitude, longitude, zone?, activeHours']},
+      {id:'vw',n:'VolunteerWellbeing',x:880,y:90,r:['PK id','FK volunteerId  → VolunteerProfile','physicalRating, mentalRating','needsResources, distressFlag']},
+      {id:'vb',n:'VolunteerBadge',x:880,y:270,r:['PK id','FK volunteerId  → VolunteerProfile','badgeType, earnedAt']},
+      {id:'tk',n:'Task',x:880,y:450,r:['PK id','FK incidentId?  → IncidentReport','FK assignedToId?  → User','FK assignedById?  → User','status : Status']},
+    ],
+    [ ['vp','vs','1 : 0..*'], ['vp','vt','1 : 0..*'], ['vp','vc','1 : 0..*'],
+      ['vp','vw','1 : 0..*'], ['vp','vb','1 : 0..*'], ['vp','tk','via assignedToId → User (no direct FK)','log'] ],
+    ['VolunteerProfile.userId → User (Fragment 1).',
+     'A Task is assigned to a volunteer through Task.assignedToId → User — there is no direct foreign key from Task to VolunteerProfile.'],
+    1250, 660);
+
+  frag(8,'Support and Health',
+    [
+      {id:'psr',n:'PsychologicalSupportRequest',x:80,y:90,r:['PK id','FK userId  → User','type : SupportType, urgency : SupportUrgency','status : SupportStatus, anonymous']},
+      {id:'cse',n:'ChatSession',x:80,y:320,r:['PK id','requestId  (soft — no FK)','counselorId?, userId (default "anonymous")','status, startedAt, endedAt?']},
+      {id:'cm',n:'ChatMessage',x:80,y:520,r:['PK id','FK sessionId  → ChatSession','senderId, content, createdAt']},
+      {id:'gts',n:'GroupTherapySession',x:470,y:90,r:['PK id','title, campId?','counselorId, scheduledFor','maxParticipants, status']},
+      {id:'gtp',n:'GroupTherapyParticipant',x:470,y:320,r:['PK id','FK sessionId  → GroupTherapySession','userId, attendanceStatus']},
+      {id:'hos',n:'Hospital',x:880,y:90,r:['PK id','name, email (U)','totalBeds, availableBeds, isActive']},
+      {id:'hw',n:'HospitalWard',x:880,y:300,r:['PK id','FK hospitalId  → Hospital','name, totalBeds, availableBeds']},
+      {id:'hr',n:'HospitalReferral',x:880,y:480,r:['PK id','FK campId  → ReliefCamp','FK hospitalId?  → Hospital','patientName, conditionSeverity : Severity','status : ReferralStatus, admittedAt?']},
+    ],
+    [ ['cse','cm','1 : 0..*'], ['gts','gtp','1 : 0..*'], ['hos','hw','1 : 0..*'],
+      ['hos','hr','0..1 : 0..*'], ['psr','cse','requestId  (soft)','log'] ],
+    ['PsychologicalSupportRequest.userId → User (Fragment 1). HospitalReferral.campId → ReliefCamp (Fragment 5).',
+     'ChatSession.requestId is a soft reference (no FK). Hospital also has staff Users (Fragment 1).'],
+    1320, 680);
+
+  frag(9,'Family and Missing Persons',
+    [
+      {id:'usr',n:'User',x:430,y:110,ext:true,r:['PK id  (see Fragment 1)']},
+      {id:'fm',n:'FamilyMember',x:80,y:90,r:['PK id','FK primaryUserId  → User','name, relation, age?','status : SafetyStatus, phone?, notes?']},
+      {id:'sci',n:'SafetyCheckIn',x:80,y:300,r:['PK id','FK userId  → User','status : SafetyStatus, message?','latitude?, longitude?, createdAt']},
+      {id:'mp',n:'MissingPerson',x:770,y:90,r:['PK id','name, age?, gender?, lastSeen','photo?, nic?, contactName?, contactPhone?','reportedBy?  (soft — no FK)','status, reunificationStatus']},
+      {id:'psp',n:'PublicSafePlace',x:770,y:320,r:['PK id  (no FK)','name, type, district, province','latitude, longitude, capacity?','address?, phone?, isVerified']},
+    ],
+    [ ['usr','fm','1 : 0..*'], ['usr','sci','1 : 0..*'] ],
+    ['MissingPerson.reportedBy is a soft reference (no FK). PublicSafePlace is standalone reference data.',
+     'The four tables are related only through User (Fragment 1).'],
+    1050, 500);
+
+  frag(10,'Damage and Finance',
+    [
+      {id:'da',n:'DamageAssessment',x:80,y:90,r:['PK id','FK reportedById  → User','FK incidentId?  → IncidentReport','category : DamageCategory','structural/crop/utility/roadDamage : DamageLevel','status : DamageStatus, estimatedLoss?','compensationEligibilityScore?, compensationEligible']},
+      {id:'db',n:'DisasterBudget',x:490,y:90,r:['PK id','eventName','allocatedBudget']},
+      {id:'re',n:'ResourceExpenditure',x:490,y:300,r:['PK id','FK budgetId  → DisasterBudget','FK resourceCostId  → ResourceCost','quantity, totalCost']},
+      {id:'rcst',n:'ResourceCost',x:830,y:90,r:['PK id','resourceType (U)','unitCost, unitType']},
+      {id:'kpi',n:'KPIBenchmark',x:830,y:290,r:['PK id  (no FK)','month','targetAvgResponse, targetOccupancy, targetVolunteer']},
+    ],
+    [ ['db','re','1 : 0..*'], ['rcst','re','1 : 0..*'] ],
+    ['DamageAssessment.reportedById → User (Fragment 1) and incidentId → IncidentReport (Fragment 2).',
+     'KPIBenchmark is standalone monthly targets (no foreign key).'],
+    1120, 560);
+
+})();
+
+/* ============================================================
+   Appendix C.2 — Full Domain Class Diagram
+   18 core entity classes (attributes only) + 8 enumeration
+   classes. Associations / multiplicities per Chapter 4 §4.6.
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=2040,H=1240;
+  c.push(V('t','Appendix C.2 — Full Domain Class Diagram (18 core entities + 8 enumerations · associations per §4.6)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  const ecls=(id,name,attrs,x,y,w)=>{
+    c.push(V(id,'<i>«entity»</i><br><b>'+name+'</b><hr size="1" noshade>'+attrs.join('<br>'),x,y,w||300,34+attrs.length*15,
+      'rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;'));
+  };
+  const enm=(id,name,vals,x,y)=>{
+    c.push(V(id,'<i>«enumeration»</i><br><b>'+name+'</b><hr size="1" noshade>'+vals.join('<br>'),x,y,180,34+vals.length*14,
+      'rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=5;spacingTop=3;overflow=hidden;'));
+  };
+  const A=(s,t,card)=>c.push(E(nid('a'),s,t,card||'','edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;'));
+  const A11=(s,t,card)=>c.push(E(nid('a'),s,t,card||'','edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;fontSize=9;'));
+  const EU=(s,t)=>c.push(E(nid('u'),s,t,'','edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;endFill=0;strokeColor=#9673a6;fontSize=8;'));
+
+  // ---- entities (5-column grid, User at the hub) ----
+  ecls('user','User',['id, email (U), name, phone?','googleId? (U), nic? (U)','role : Role','region?, hasMobileApp, isFieldActive','twoFactorEnabled','FK currentSectorId?, FK hospitalId?'],700,300);
+  ecls('hr','HelpRequest',['id, FK userId?  (nullable — public)','type, description, location','latitude?, longitude?','priority : Severity','status : Status','peopleCount?, escalationLevel, phone?'],360,60);
+  ecls('vp','VolunteerProfile',['id, FK userId (U)','incidentsJoined','readinessScore, totalHours'],360,320);
+  ecls('fm','FamilyMember',['id, FK primaryUserId','name, relation, age?','status : SafetyStatus','notes?, phone?'],360,560);
+  ecls('sci','SafetyCheckIn',['id, FK userId','status : SafetyStatus','message?, latitude?, longitude?'],40,560);
+  ecls('hos','Hospital',['id, name, location, email? (U)','specialties[], totalBeds','availableBeds, isActive'],40,320);
+  ecls('ir','IncidentReport',['id, FK reporterId','title, description, location','latitude?, longitude?, category','status : Status','severity : Severity','images[], mlConfidence?, nlpEntities : Json'],700,40);
+  ecls('da','DamageAssessment',['id, FK reportedById, FK incidentId?','location, category : DamageCategory','structuralDamage : DamageLevel','cropDamage / utilityDamage / roadDamage : DamageLevel','status : DamageStatus, estimatedLoss?','compensationEligible'],700,560);
+  ecls('ih','IncidentHistory',['id, FK incidentId','status : Status','updatedBy, note?'],1060,40);
+  ecls('task','Task',['id, FK incidentId?','FK assignedToId?, FK assignedById?','priority : Severity','status : Status','dueDate?'],1060,300);
+  ecls('mp','MissingPerson',['id, name, age?, gender?','lastSeen, photo?, nic?','contactName?, contactPhone?','status, reunificationStatus','reportedBy?  (soft — no FK)'],1060,540);
+  ecls('al','Alert',['id, title, message','type : AlertType, active','latitudes[], longitudes[], locations[]','broadcastRadiusKm?, notifiedCount','translatedMsgSinhala?/Tamil?'],1420,40);
+  ecls('nt','Notification',['id, FK userId','FK alertId?  (onDelete SetNull)','title, message, read, readAt?'],1420,300);
+  ecls('rwl','RiverWaterLevel',['id, gaugeId, riverName, district','waterLevelMetres, flowRateCumecs','alertLevel, minor/majorFloodLevel','status : RiverStatus','trend : WaterTrend, recordedAt'],1420,520);
+  ecls('wlp','WaterLevelPrediction',['id, gaugeId (U)','predictedT1M, predictedT2M','confidence, alertLevel','modelUsed, reason, computedAt'],1420,760);
+  ecls('rc',  'ReliefCamp',['id, name, location','latitude?, longitude?','currentOccupancy ≤ totalCapacity','services[], status, waitTime?'],700,820);
+  ecls('rt',  'ReliefToken',['id, code (U), qrCodeData','FK userId, FK donorId?','campId?  (soft — no FK)','status : TokenStatus','categories : TokenCategory[]','usageCount / maxUsage, fraudRiskScore'],360,820);
+  ecls('rtc', 'ReliefTokenClaim',['id, FK tokenId','claimedAt, claimedBy','itemType, quantity','locationLat?, locationLng?'],40,820);
+  ecls('href','HospitalReferral',['id, FK campId, FK hospitalId?','patientName, patientAge?','conditionSeverity : Severity','status : ReferralStatus','admittedAt?, dischargedAt?'],1060,820);
+
+  // ---- enumerations ----
+  enm('e_role','Role',['CITIZEN','VOLUNTEER','ADMIN','DMC_OFFICER','FIELD_RESPONDER','HOSPITAL_STAFF'],1800,60);
+  enm('e_stat','Status',['PENDING','ASSIGNED','IN_PROGRESS','RESOLVED','EN_ROUTE','ON_SITE'],1800,300);
+  enm('e_sev','Severity',['LOW','MEDIUM','HIGH','CRITICAL'],1800,540);
+  enm('e_at','AlertType',['INFO','WARNING','EMERGENCY'],1800,730);
+  enm('e_rs','RiverStatus',['NORMAL','ALERT','MINOR_FLOOD','MAJOR_FLOOD'],1800,900);
+  enm('e_ss','SafetyStatus',['SAFE','NEEDS_HELP','UNKNOWN','MISSING','INJURED','EVACUATED','TRAPPED','SHELTERED'],40,1050);
+  enm('e_ts','TokenStatus',['ACTIVE','PARTIALLY_USED','FULLY_USED','EXPIRED','REVOKED'],360,1080);
+  enm('e_dl','DamageLevel',['NONE','MINOR','MODERATE','MAJOR','TOTAL_LOSS'],700,1080);
+
+  // ---- associations (multiplicities per §4.6) ----
+  A('user','ir','1        0..*   reports');
+  A('ir','ih','1        0..*   has history');
+  A('ir','ir','0..*        0..*   duplicate-of  (via IncidentDuplicateLink)');
+  A('al','nt','0..1        0..*   generates');
+  A('user','nt','1        0..*   receives');
+  A('user','hr','0..1        0..*   submits');
+  A('ir','task','0..1        0..*   spawns');
+  A('user','task','0..1        0..*   assigned');
+  A('user','vp','1        0..1   has profile');
+  A('rc','rt','0..1        0..*   issues at');
+  A('user','rt','1        0..*   owns');
+  A('rt','rtc','1        0..*   claimed via');
+  A('user','da','1        0..*   files');
+  A('ir','da','0..1        0..*   assessed for');
+  A('rwl','wlp','1        1   forecast cache  (gaugeId)');
+  A('user','fm','1        0..*   lists');
+  A('user','sci','1        0..*   broadcasts');
+  A('rc','href','1        0..*   refers');
+  A('hos','href','0..1        0..*   receives');
+  A('hos','user','0..1        0..*   staff');
+
+  // ---- enum usage links ----
+  EU('e_role','user');
+  EU('e_stat','ir'); EU('e_stat','ih'); EU('e_stat','task'); EU('e_stat','hr');
+  EU('e_sev','ir'); EU('e_sev','task'); EU('e_sev','hr'); EU('e_sev','href');
+  EU('e_at','al');
+  EU('e_rs','rwl');
+  EU('e_ss','fm'); EU('e_ss','sci');
+  EU('e_ts','rt');
+  EU('e_dl','da');
+
+  c.push(V('nn','Only the eight enumerations named in §4.6 are drawn as classes; the schema defines 25 in total (see Table 4.x). Persistence entities carry no operations — all behaviour lives on the service classes in Figure 4.12. MissingPerson has no association here (reportedBy is a soft reference).',40,H-64,W-80,44,S.note));
+  save('Appendix_C.2_Full_Domain_Class_Diagram.drawio','App C.2 Full Domain Classes','appc2',c,W,H);
+})();
+
 console.log('\nAll diagrams written to', OUT);

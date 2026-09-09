@@ -42,10 +42,13 @@ export const searchFace = async (queryImageBase64: string) => {
   let mlMatches: { person_id: string; confidence: number; verified: boolean }[] = [];
 
   try {
+    // The face model can be a cold start (weights download + build) on the first
+    // call — allow up to 90s before giving up.
     const mlRes = await fetch('http://localhost:8000/match-face', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query_image: queryImageBase64, candidates }),
+      signal: AbortSignal.timeout(90_000),
     });
 
     if (!mlRes.ok) throw new Error(`ML service responded ${mlRes.status}`);
@@ -53,10 +56,12 @@ export const searchFace = async (queryImageBase64: string) => {
     mlMatches = mlData.matches ?? [];
   } catch (err: any) {
     console.error('[Face Match] ML service call failed:', err);
-    const isOffline = err.code === 'ECONNREFUSED' || err.cause?.code === 'ECONNREFUSED' || err.message?.includes('fetch failed');
-    throw new Error(isOffline
-      ? 'ML_OFFLINE'
-      : `ML service error: ${err.message}`);
+    const isOffline =
+      err.code === 'ECONNREFUSED' ||
+      err.cause?.code === 'ECONNREFUSED' ||
+      err.message?.includes('fetch failed');
+    const isTimeout = err.name === 'TimeoutError' || err.name === 'AbortError';
+    throw new Error(isOffline ? 'ML_OFFLINE' : isTimeout ? 'ML_TIMEOUT' : 'ML_ERROR');
   }
 
   // Join ML results with full person records
