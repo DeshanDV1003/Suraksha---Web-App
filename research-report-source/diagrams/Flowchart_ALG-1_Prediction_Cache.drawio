@@ -1,1 +1,82 @@
-<mxfile host="app.diagrams.net" version="24.7.5"><diagram name="Flowchart ALG-1" id="algc1"><mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1232" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="t" value="Flowchart ALG-1 — River-Forecast Prediction Cache &amp; Serve (GET /api/water/predictions)" style="text;html=1;fontStyle=1;fontSize=13;align=left;" vertex="1" parent="1"><mxGeometry x="40" y="10" width="820" height="26" as="geometry"/></mxCell><mxCell id="s" value="START — GET /api/water/predictions" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="280" height="54" as="geometry"/></mxCell><mxCell id="q1" value="60 s response cache fresh ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="166" width="280" height="90" as="geometry"/></mxCell><mxCell id="rc" value="return cached body" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="120" width="280" height="54" as="geometry"/></mxCell><mxCell id="q2" value="a build already in flight ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="308" width="280" height="90" as="geometry"/></mxCell><mxCell id="aw" value="await the in-flight promise → return" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="290" width="280" height="54" as="geometry"/></mxCell><mxCell id="qg" value="query distinct gauges (≤ 50) + WaterLevelPrediction rows (2 DB queries, no ML calls)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="450" width="280" height="54" as="geometry"/></mxCell><mxCell id="loop" value="for each gauge: cache row missing? → add to &amp;quot;compute inline&amp;quot;; stale (&gt; 90 min)? → add to &amp;quot;refresh async&amp;quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="556" width="280" height="54" as="geometry"/></mxCell><mxCell id="ci" value="Promise.allSettled(missing → computeAndSave)  (bounded inline ML compute)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="662" width="280" height="54" as="geometry"/></mxCell><mxCell id="bg" value="if stale set non-empty → void refreshPredictions(stale)  (single-flight lock, no alert dispatch)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="768" width="280" height="54" as="geometry"/></mxCell><mxCell id="set" value="set 60 s response cache = results" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="874" width="280" height="54" as="geometry"/></mxCell><mxCell id="o" value="return results array (one object per gauge + predictionStale flag)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="300" y="980" width="280" height="54" as="geometry"/></mxCell><mxCell id="e" value="END" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="300" y="1086" width="280" height="54" as="geometry"/></mxCell><mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="s" target="q1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="qg" target="loop"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="loop" target="ci"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="ci" target="bg"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="bg" target="set"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="set" target="o"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="o" target="e"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e8" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q1" target="q2"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e9" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q1" target="rc"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="rc" target="e"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e11" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q2" target="qg"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e12" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q2" target="aw"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="aw" target="e"><mxGeometry relative="1" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="Electron">
+  <diagram name="Flowchart ALG-1" id="algc1">
+    <mxGraphModel dx="905" dy="565" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1232" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=13;align=left;" value="Flowchart ALG-1 — River-Forecast Prediction Cache &amp; Serve (GET /api/water/predictions)" vertex="1">
+          <mxGeometry height="26" width="820" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="s" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="START — GET /api/water/predictions" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="q1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="60 s response cache fresh ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="166" as="geometry" />
+        </mxCell>
+        <mxCell id="rc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="return cached body" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="q2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="a build already in flight ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="308" as="geometry" />
+        </mxCell>
+        <mxCell id="aw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="await the in-flight promise → return" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="qg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="query distinct gauges (≤ 50) + WaterLevelPrediction rows (2 DB queries, no ML calls)" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="loop" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="for each gauge: cache row missing? → add to &amp;quot;compute inline&amp;quot;; stale (&gt; 90 min)? → add to &amp;quot;refresh async&amp;quot;" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="556" as="geometry" />
+        </mxCell>
+        <mxCell id="ci" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Promise.allSettled(missing → computeAndSave)  (bounded inline ML compute)" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="662" as="geometry" />
+        </mxCell>
+        <mxCell id="bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="if stale set non-empty → void refreshPredictions(stale)  (single-flight lock, no alert dispatch)" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="set" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="set 60 s response cache = results" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="874" as="geometry" />
+        </mxCell>
+        <mxCell id="o" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;font&gt;return results array (one object per gauge + predictionStale flag)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="340" x="270" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="e" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="END" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="1086" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="qg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="loop" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="loop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="ci" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="ci" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="bg" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="bg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="set" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="set" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="o" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="o" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="e" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q2" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="rc" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="qg" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="aw" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

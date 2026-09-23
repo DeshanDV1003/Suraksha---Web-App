@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Flowchart ALG-4" id="algc4">
-    <mxGraphModel dx="1720" dy="1074" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1304" math="0" shadow="0">
+    <mxGraphModel dx="1229" dy="767" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1304" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -29,19 +29,19 @@
           <mxGeometry height="90" width="280" x="300" y="626" as="geometry" />
         </mxCell>
         <mxCell id="tim" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="score += 20 × (1 − Δt/6h)   [TIME]" vertex="1">
-          <mxGeometry height="54" width="280" x="600" y="470" as="geometry" />
+          <mxGeometry height="54" width="280" x="610" y="560" as="geometry" />
         </mxCell>
         <mxCell id="q3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="NLP entity-text overlap &gt; 0 ?" vertex="1">
           <mxGeometry height="90" width="280" x="300" y="768" as="geometry" />
         </mxCell>
         <mxCell id="nlp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="score += 10 × overlap   [NLP]" vertex="1">
-          <mxGeometry height="54" width="280" x="600" y="620" as="geometry" />
+          <mxGeometry height="54" width="280" x="610" y="690" as="geometry" />
         </mxCell>
         <mxCell id="q4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="score ≥ 50 ?" vertex="1">
           <mxGeometry height="90" width="280" x="300" y="910" as="geometry" />
         </mxCell>
         <mxCell id="mk" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="create IncidentDuplicateLink (older = canonical, PENDING); officer confirms / dismisses" vertex="1">
-          <mxGeometry height="54" width="280" x="600" y="770" as="geometry" />
+          <mxGeometry height="54" width="280" x="600" y="840" as="geometry" />
         </mxCell>
         <mxCell id="nx" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="next candidate" vertex="1">
           <mxGeometry height="54" width="280" x="300" y="1052" as="geometry" />
@@ -70,9 +70,6 @@
         <mxCell id="e7" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="loc" value="yes">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e8" edge="1" parent="1" source="loc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="cat" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="e9" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q3" value="no">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -83,25 +80,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e11" edge="1" parent="1" source="tim" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q3" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="e12" edge="1" parent="1" source="q3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q4" value="no">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e13" edge="1" parent="1" source="q3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="nlp" value="yes">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e14" edge="1" parent="1" source="nlp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q4" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="e15" edge="1" parent="1" source="q4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="nx" value="no">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e16" edge="1" parent="1" source="q4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="mk" value="yes">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e17" edge="1" parent="1" source="mk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="nx" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

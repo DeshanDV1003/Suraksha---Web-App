@@ -55,7 +55,26 @@ async function buildContext(lat?: number, lng?: number): Promise<string> {
   return lines.join('\n');
 }
 
-const SYSTEM_PROMPT = `You are Suraksha, a caring disaster relief assistant for Sri Lanka. You help citizens during floods and emergencies.
+const LANG_NAMES: Record<string, string> = {
+  en: 'English',
+  si: 'Sinhala (සිංහල)',
+  ta: 'Tamil (தமிழ்)',
+};
+
+function buildSystemPrompt(uiLang?: string): string {
+  const uiLangName = uiLang && LANG_NAMES[uiLang] ? LANG_NAMES[uiLang] : null;
+
+  return `You are Suraksha, a caring disaster relief assistant for Sri Lanka. You help citizens during floods and emergencies.
+
+CRITICAL LANGUAGE RULE — READ FIRST, FOLLOW ALWAYS:
+Detect the language of the user's MOST RECENT message and reply in that exact same language, every single turn.
+- If the user writes in English, reply ONLY in English.
+- If the user writes in Sinhala script, reply ONLY in Sinhala.
+- If the user writes in Tamil script, reply ONLY in Tamil.
+- If the user writes Romanized/singlish Sinhala or Tamil (Sinhala/Tamil words in English letters), reply in that same romanized style, not in Sinhala/Tamil script and not in plain English.
+- Never default to Sinhala just because the topic is about Sri Lanka. Never switch language mid-conversation unless the user switches first.
+- If the message is only a short greeting or too short/ambiguous to tell (e.g. "hi", "ok", numbers)${uiLangName ? `, use the app's current interface language: ${uiLangName}.` : ', default to English.'}
+Do not mention this rule or explain your language choice — just respond naturally in the correct language.
 
 YOUR MAIN JOB — MEDICAL & HOME REMEDY GUIDANCE:
 When a user describes any physical symptom or discomfort, you must:
@@ -83,26 +102,54 @@ DISASTER QUESTIONS:
 - If asked how to help others — give practical guidance
 - For missing persons, direct to DMC hotline 1989
 
-LANGUAGE: Users may mix Sinhala and English. Understand both. Reply in whichever language they use.
-
 TONE: Calm, caring, practical. Like a trusted neighbor who knows first aid. Short clear sentences. Not scary.
 
 EMERGENCY NUMBERS (only mention when truly needed):
 - Life emergency: 1990
 - Disaster/DMC: 1989
 - Police: 119
-- Ambulance: 110`;
+- Ambulance: 110
+
+Reminder: follow the CRITICAL LANGUAGE RULE above on every reply.`;
+}
+
+function stripThink(raw: string): string {
+  // Strip any residual <think>...</think> blocks as a safety net
+  return raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+}
+
+/**
+ * gpt-oss-20b on Groq occasionally leaks its internal "harmony" channel format
+ * and emits its answer as a malformed tool call (e.g. name:
+ * "assistant<|channel|>final") instead of plain content, even though no tools
+ * were ever configured. Groq's API then rejects the whole response with a 400
+ * "tool_use_failed" — but the model's actual answer is still sitting in the
+ * error body's `failed_generation` field. Salvage it instead of losing the turn.
+ */
+function extractFromFailedGeneration(raw?: string | null): string | null {
+  if (!raw) return null;
+  const m = raw.match(/"arguments"\s*:\s*"?([\s\S]*?)"?\s*\}\s*$/);
+  if (!m) return null;
+  const text = m[1]
+    .trim()
+    .replace(/\\n/g, '\n')
+    .replace(/\\"/g, '"')
+    .trim();
+  return text || null;
+}
 
 export async function chat(
   message: string,
   history: { role: 'user' | 'model'; parts: { text: string }[] }[],
   lat?: number,
   lng?: number,
+  uiLang?: string,
 ): Promise<string> {
   const context = await buildContext(lat, lng);
+  const systemPrompt = buildSystemPrompt(uiLang);
   const systemWithContext = context
-    ? `${SYSTEM_PROMPT}\n\nCURRENT SYSTEM CONTEXT:\n${context}`
-    : SYSTEM_PROMPT;
+    ? `${systemPrompt}\n\nCURRENT SYSTEM CONTEXT:\n${context}`
+    : systemPrompt;
 
   // Convert history from Gemini format to OpenAI/Groq format
   const messages: { role: 'user' | 'assistant'; content: string }[] = history.map(h => ({
@@ -112,18 +159,43 @@ export async function chat(
 
   messages.push({ role: 'user', content: message });
 
-  const completion = await groq.chat.completions.create({
+  const requestPayload = {
     model: 'openai/gpt-oss-20b',
     messages: [
-      { role: 'system', content: systemWithContext },
+      { role: 'system' as const, content: systemWithContext },
       ...messages,
     ],
     max_tokens: 500,
     temperature: 0.7,
-  });
+    // gpt-oss models generate hidden chain-of-thought in a separate "analysis"
+    // channel before their real answer (the "final" channel). Without these,
+    // Groq sometimes fails to separate the two, which either leaks raw
+    // reasoning fragments into the reply or mis-parses the channel switch as
+    // a malformed tool call (400 tool_use_failed). 'parsed' makes Groq strip
+    // reasoning server-side and return only the final answer; 'low' keeps the
+    // model from over-reasoning on a short chat message in the first place.
+    reasoning_effort: 'low' as const,
+    reasoning_format: 'parsed' as const,
+  };
+
+  let completion;
+  try {
+    completion = await groq.chat.completions.create(requestPayload);
+  } catch (err: any) {
+    if (err?.status !== 400 || err?.error?.error?.code !== 'tool_use_failed') throw err;
+
+    // Transient decoding glitch — one retry with the same (now-hardened) params usually succeeds.
+    try {
+      completion = await groq.chat.completions.create(requestPayload);
+    } catch (retryErr: any) {
+      // Last resort: salvage whatever text the model was producing rather than losing the turn.
+      const failedGeneration = retryErr?.error?.error?.failed_generation ?? err?.error?.error?.failed_generation;
+      const salvaged = extractFromFailedGeneration(failedGeneration);
+      if (salvaged) return stripThink(salvaged);
+      throw retryErr;
+    }
+  }
 
   const raw = completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
-  // Strip any residual <think>...</think> blocks as a safety net
-  const clean = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
-  return clean || 'Sorry, I could not generate a response.';
+  return stripThink(raw) || 'Sorry, I could not generate a response.';
 }

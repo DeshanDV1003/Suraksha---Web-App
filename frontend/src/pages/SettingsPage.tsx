@@ -320,6 +320,28 @@ export default function SettingsPage() {
     }
   }
 
+  const [showDisable2FAModal, setShowDisable2FAModal] = useState(false)
+  const [disable2FAPassword, setDisable2FAPassword] = useState('')
+  const [disable2FASubmitting, setDisable2FASubmitting] = useState(false)
+
+  const handleDisable2FA = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!disable2FAPassword) { showToast(t('settings_page.toast_2fa_password_required'), 'error'); return }
+    setDisable2FASubmitting(true)
+    try {
+      await authService.disable2FA(disable2FAPassword)
+      setTwoFAEnabled(false)
+      updateUser({ ...(user as any), twoFactorEnabled: false })
+      setShowDisable2FAModal(false)
+      setDisable2FAPassword('')
+      showToast(t('settings_page.toast_2fa_disabled'))
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || t('settings_page.toast_2fa_disable_failed'), 'error')
+    } finally {
+      setDisable2FASubmitting(false)
+    }
+  }
+
   const tabs = [
     { id: 'profile',       name: t('settings_page.tab_profile'),       icon: User   },
     { id: 'notifications', name: t('settings_page.tab_notifications'), icon: Bell   },
@@ -426,6 +448,36 @@ export default function SettingsPage() {
                 </form>
               </div>
             ) : null}
+          </div>
+        </div>
+      )}
+
+      {/* 2FA Disable Modal */}
+      {showDisable2FAModal && (
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-[#1c2128] border border-gray-200 dark:border-slate-800 rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-red-500/15 rounded-2xl flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 text-red-500" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('settings_page.disable_2fa_modal_title')}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('settings_page.disable_2fa_modal_subtitle')}</p>
+                </div>
+              </div>
+              <button onClick={() => { setShowDisable2FAModal(false); setDisable2FAPassword('') }} className="text-gray-400 hover:text-gray-700 dark:hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+            <form onSubmit={handleDisable2FA} className="space-y-4">
+              <DarkInput label={t('settings_page.disable_2fa_password_label')} value={disable2FAPassword} type="password" icon={Lock} onChange={(v: string) => setDisable2FAPassword(v)} />
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => { setShowDisable2FAModal(false); setDisable2FAPassword('') }} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-sm font-bold text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">{t('settings_page.cancel_btn')}</button>
+                <button type="submit" disabled={disable2FASubmitting || !disable2FAPassword} className="flex-1 py-3 rounded-xl bg-red-600 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-50 flex items-center justify-center gap-2">
+                  {disable2FASubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <X className="w-4 h-4" />}
+                  {t('settings_page.disable_2fa_confirm_btn')}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -592,9 +644,17 @@ export default function SettingsPage() {
                           <div className="text-xs text-gray-500 dark:text-gray-400">{twoFAEnabled ? t('settings_page.two_fa_active') : t('settings_page.two_fa_not_configured')}</div>
                         </div>
                         {twoFAEnabled ? (
-                          <span className="px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider border bg-emerald-500/20 text-emerald-400 border-emerald-500/20">
-                            {t('settings_page.enabled_badge')}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider border bg-emerald-500/20 text-emerald-400 border-emerald-500/20">
+                              {t('settings_page.enabled_badge')}
+                            </span>
+                            <button
+                              onClick={() => setShowDisable2FAModal(true)}
+                              className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 text-xs font-bold rounded-lg border border-red-500/20 transition-all"
+                            >
+                              {t('settings_page.disable_btn')}
+                            </button>
+                          </div>
                         ) : (
                           <button
                             onClick={open2FAModal}

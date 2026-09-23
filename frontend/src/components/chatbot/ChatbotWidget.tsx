@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Loader2, Bot, User, AlertTriangle } from 'lucide-react'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import api from '../../services/api'
 
 const API = '/chatbot/message'
@@ -21,6 +22,7 @@ I can help you with:
 How can I help you right now?`
 
 export default function ChatbotWidget() {
+  const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', text: WELCOME },
@@ -74,6 +76,7 @@ export default function ChatbotWidget() {
         history: buildHistory(messages),
         lat: userCoords?.lat,
         lng: userCoords?.lng,
+        lang: i18n.language?.split('-')[0],
       })
       setMessages(prev => [...prev, { role: 'model', text: data.reply }])
     } catch {

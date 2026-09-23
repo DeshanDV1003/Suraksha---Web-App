@@ -37,6 +37,7 @@ export const authService = {
   changePassword: (data: any) => api.post('/auth/change-password', data),
   setup2FA: () => api.post('/auth/2fa/setup'),
   verify2FA: (token: string) => api.post('/auth/2fa/verify', { token }),
+  disable2FA: (password: string) => api.post('/auth/2fa/disable', { password }),
 };
 
 export const incidentService = {

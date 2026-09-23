@@ -1,1 +1,76 @@
-<mxfile host="app.diagrams.net" version="24.7.5"><diagram name="Flowchart ALG-2" id="algc2"><mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1126" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="t" value="Flowchart ALG-2 — LSTM River-Level Forecast (per gauge)" style="text;html=1;fontStyle=1;fontSize=13;align=left;" vertex="1" parent="1"><mxGeometry x="40" y="10" width="820" height="26" as="geometry"/></mxCell><mxCell id="s" value="START — gaugeId, thresholds {watch, warning, critical}, last ≤ 12 readings" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="300" y="60" width="280" height="54" as="geometry"/></mxCell><mxCell id="q1" value="readings ≥ 3 ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="166" width="280" height="90" as="geometry"/></mxCell><mxCell id="ret" value="return null (not forecastable)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="120" width="280" height="54" as="geometry"/></mxCell><mxCell id="bf" value="build feature matrix; add rate_of_change = level[i] − level[i−1]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="308" width="280" height="54" as="geometry"/></mxCell><mxCell id="sc" value="pad / truncate to SEQUENCE_LENGTH = 12; MinMax-scale with fitted scaler" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="414" width="280" height="54" as="geometry"/></mxCell><mxCell id="q2" value="LSTM model file loaded ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="520" width="280" height="90" as="geometry"/></mxCell><mxCell id="rb" value="rule-based linear extrapolation → t1, t2, confidence (documented fallback)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="600" y="430" width="280" height="54" as="geometry"/></mxCell><mxCell id="pr" value="model.predict(seq) → y1, y2 (normalised); inverse-scale to metres; confidence = 1 − min(uncertainty, 0.25)/0.25" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="662" width="280" height="54" as="geometry"/></mxCell><mxCell id="cl" value="alert_level = classify(max(t1, t2) vs thresholds) → NONE / WATCH / WARNING / CRITICAL" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="300" y="768" width="280" height="54" as="geometry"/></mxCell><mxCell id="o" value="return { predicted_t1_m, predicted_t2_m, confidence, alert_level, reason }" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="300" y="874" width="280" height="54" as="geometry"/></mxCell><mxCell id="e" value="END  (orchestrator alerts only if confidence ≥ 0.75 AND alert_level ≠ NONE AND not de-duped 30 min)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="300" y="980" width="280" height="54" as="geometry"/></mxCell><mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="s" target="q1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="bf" target="sc"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="sc" target="q2"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="pr" target="cl"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="cl" target="o"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="o" target="e"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e7" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q1" target="bf"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e8" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q1" target="ret"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="ret" target="e"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e10" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q2" target="pr"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e11" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="q2" target="rb"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="rb" target="cl"><mxGeometry relative="1" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="Electron">
+  <diagram name="Flowchart ALG-2" id="algc2">
+    <mxGraphModel dx="860" dy="537" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1126" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=13;align=left;" value="Flowchart ALG-2 — LSTM River-Level Forecast (per gauge)" vertex="1">
+          <mxGeometry height="26" width="820" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="s" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="START — gaugeId, thresholds {watch, warning, critical}, last ≤ 12 readings" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="q1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="readings ≥ 3 ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="166" as="geometry" />
+        </mxCell>
+        <mxCell id="ret" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="return null (not forecastable)" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bf" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="build feature matrix; add rate_of_change = level[i] − level[i−1]" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="308" as="geometry" />
+        </mxCell>
+        <mxCell id="sc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="pad / truncate to SEQUENCE_LENGTH = 12; MinMax-scale with fitted scaler" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="414" as="geometry" />
+        </mxCell>
+        <mxCell id="q2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="LSTM model file loaded ?" vertex="1">
+          <mxGeometry height="90" width="280" x="300" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="rb" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="rule-based linear extrapolation → t1, t2, confidence (documented fallback)" vertex="1">
+          <mxGeometry height="54" width="280" x="600" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="pr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="model.predict(seq) → y1, y2 (normalised); inverse-scale to metres; confidence = 1 − min(uncertainty, 0.25)/0.25" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="662" as="geometry" />
+        </mxCell>
+        <mxCell id="cl" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="alert_level = classify(max(t1, t2) vs thresholds) → NONE / WATCH / WARNING / CRITICAL" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="o" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="return { predicted_t1_m, predicted_t2_m, confidence, alert_level, reason }" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="874" as="geometry" />
+        </mxCell>
+        <mxCell id="e" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="END  (orchestrator alerts only if confidence ≥ 0.75 AND alert_level ≠ NONE AND not de-duped 30 min)" vertex="1">
+          <mxGeometry height="54" width="280" x="300" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="bf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="sc" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="q2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="pr" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="cl" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="cl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="o" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="o" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="e" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="bf" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="q1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="ret" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="pr" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="q2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="rb" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

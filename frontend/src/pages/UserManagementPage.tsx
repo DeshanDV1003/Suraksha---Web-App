@@ -407,16 +407,16 @@ function RBACMatrixTab({ showToast }: any) {
   }
 
   return (
-    <div className="suraksha-card p-10 bg-white dark:bg-gray-900 space-y-8 animate-in fade-in duration-500">
-      <div className="flex justify-between items-center">
+    <div className="suraksha-card overflow-hidden bg-white dark:bg-gray-900 animate-in fade-in duration-500">
+      <div className="flex justify-between items-center p-10 pb-8">
         <div>
           <h2 className="text-xl font-black text-gray-800 dark:text-white/90">{t('user_management_page.rbac_title')}</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{t('user_management_page.rbac_desc')}</p>
         </div>
-        <button onClick={saveMatrix} className="suraksha-button px-8">{t('user_management_page.save_policy')}</button>
+        <button onClick={saveMatrix} className="suraksha-button px-8 shrink-0">{t('user_management_page.save_policy')}</button>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto px-10 pb-10">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-800/50">

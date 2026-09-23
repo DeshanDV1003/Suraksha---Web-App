@@ -191,3 +191,15 @@ export const verify2FA = async (req: any, res: Response) => {
     res.status(400).json({ message: error.message || 'Internal server error' });
   }
 };
+
+export const disable2FA = async (req: any, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { password } = req.body;
+    if (!password) return res.status(400).json({ message: 'Password is required' });
+    const result = await authService.disable2FA(userId, password);
+    res.json(result);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message || 'Internal server error' });
+  }
+};

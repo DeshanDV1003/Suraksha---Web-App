@@ -144,6 +144,23 @@ export const verify2FA = async (userId: string, token: string) => {
   throw new Error('Invalid 2FA token');
 };
 
+export const disable2FA = async (userId: string, password: string) => {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) throw new Error('User not found');
+  if (!user.twoFactorEnabled) throw new Error('Two-factor authentication is not enabled');
+
+  if (!user.password) throw new Error('This account uses Google Sign-In. 2FA cannot be verified here.');
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) throw new Error('Incorrect password');
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { twoFactorEnabled: false, twoFactorSecret: null }
+  });
+
+  return { success: true };
+};
+
 const GOOGLE_ALLOWED_ROLES = ['CITIZEN', 'VOLUNTEER'];
 
 export const googleLoginUser = async (idToken: string, ipAddress?: string, device?: string) => {
