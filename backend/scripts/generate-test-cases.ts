@@ -880,7 +880,9 @@ async function generateExcel() {
     { header: 'Pre-Conditions',   key: 'preconditions',  width: 38 },
     { header: 'Test Steps',       key: 'steps',          width: 48 },
     { header: 'Expected Result',  key: 'expectedResult', width: 44 },
+    { header: 'Actual Result',    key: 'actualResult',   width: 42 },
     { header: 'Priority',         key: 'priority',       width: 11 },
+    { header: 'Severity',         key: 'severity',       width: 12 },
     { header: 'Type',             key: 'type',           width: 14 },
     { header: 'Status',           key: 'status',         width: 13 },
     { header: 'Tested By',        key: 'testedBy',       width: 16 },
@@ -892,7 +894,7 @@ async function generateExcel() {
 
   // Title row
   ws.insertRow(1, ['SURAKSHA DISASTER MANAGEMENT SYSTEM — TEST CASES (v1.0)']);
-  ws.mergeCells('A1:M1');
+  ws.mergeCells('A1:O1');
   const titleCell = ws.getCell('A1');
   titleCell.font  = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FF' + COLORS.headerFg } };
   titleCell.fill  = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + COLORS.headerBg } };
@@ -917,7 +919,8 @@ async function generateExcel() {
       id: tc.id, module: tc.module, testName: tc.testName,
       description: tc.description, preconditions: tc.preconditions,
       steps: tc.steps, expectedResult: tc.expectedResult,
-      priority: tc.priority, type: tc.type, status: tc.status,
+      actualResult: '', priority: tc.priority, severity: '',
+      type: tc.type, status: tc.status,
       testedBy: '', testDate: '', notes: '',
     });
 
@@ -958,7 +961,7 @@ async function generateExcel() {
   });
 
   // Auto-filter on header row
-  ws.autoFilter = { from: 'A2', to: 'M2' };
+  ws.autoFilter = { from: 'A2', to: 'O2' };
 
   // ── Sheet 2: Summary Dashboard ───────────────────────────────────────────────
   const sum = wb.addWorksheet('Summary');

@@ -31,6 +31,25 @@ const results = {};
 const rec = (id, status, note) => { results[id] = { status, note }; };
 const rnd = () => Math.random().toString(36).slice(2, 8);
 
+// Severity classification — only meaningful for Fail rows (Pass/N/A -> 'N/A').
+const SEVERITY_OVERRIDES = {
+  'TC-M-003': 'Medium', // dead route (404) — app already uses the correct alternate endpoint
+  'TC-M-030': 'High',   // data-integrity: duplicate records created on offline-retry
+  'TC-M-065': 'High',   // security: JWT persisted in plaintext AsyncStorage
+};
+function classifySeverity(status, note, id) {
+  if (status !== 'Fail') return 'N/A';
+  if (SEVERITY_OVERRIDES[id]) return SEVERITY_OVERRIDES[id];
+  const n = String(note || '').toLowerCase();
+  if (n.includes('security') || n.includes('plaintext')) return 'High';
+  if (n.includes('duplicate') || n.includes('data integrity') || n.includes('idempotency')) return 'High';
+  if (n.includes('crash') || n.includes(' 500') || n.includes('data loss')) return 'Critical';
+  return 'Medium';
+}
+const SEVERITY_FILL = {
+  Critical: 'FFF5C6CB', High: 'FFF8D7DA', Medium: 'FFFFF3CD', Low: 'FFD4EDDA',
+};
+
 async function req(method, url, { token, body, headers = {} } = {}) {
   const h = { 'Content-Type': 'application/json', ...headers };
   if (token) h.Authorization = `Bearer ${token}`;
@@ -337,9 +356,11 @@ async function main() {
     row.getCell(5).value = d.preconditions || 'Backend running on :3001; mobile app points at the same API.';
     row.getCell(6).value = d.steps;
     row.getCell(7).value = d.expected;
-    row.getCell(8).value = d.priority;
-    row.getCell(9).value = d.type;
-    row.getCell(10).value = 'Not Tested';
+    row.getCell(8).value = ''; // Actual Result — filled once the case is executed
+    row.getCell(9).value = d.priority;
+    row.getCell(10).value = ''; // Severity — filled once the case is executed
+    row.getCell(11).value = d.type;
+    row.getCell(12).value = 'Not Tested';
     row.commit();
     appended++;
   }
@@ -351,12 +372,23 @@ async function main() {
     const id = String(row.getCell(1).value ?? '').trim();
     const r = results[id];
     if (!r) return;
-    const sc = row.getCell(10);
+
+    row.getCell(8).value = r.note; // Actual Result — the observed outcome, same text as Notes
+
+    const severity = classifySeverity(r.status, r.note, id);
+    const svc = row.getCell(10);
+    svc.value = severity;
+    if (SEVERITY_FILL[severity]) {
+      svc.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: SEVERITY_FILL[severity] } };
+      svc.font = { name: 'Calibri', size: 10, bold: true };
+    }
+
+    const sc = row.getCell(12);
     sc.value = r.status;
     sc.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: r.status === 'Pass' ? 'FFD4EDDA' : r.status === 'Fail' ? 'FFF8D7DA' : 'FFFFF3CD' } };
-    row.getCell(11).value = TESTED_BY;
-    row.getCell(12).value = TEST_DATE;
-    row.getCell(13).value = r.note;
+    row.getCell(13).value = TESTED_BY;
+    row.getCell(14).value = TEST_DATE;
+    row.getCell(15).value = r.note;
     row.commit();
     written++;
   });
@@ -370,7 +402,7 @@ async function main() {
   ws.eachRow((row, i) => {
     if (i <= 2) return;
     const m = String(row.getCell(2).value || '');
-    const s = String(row.getCell(10).value || '');
+    const s = String(row.getCell(12).value || '');
     if (!m) return;
     mod[m] = mod[m] || { pass: 0, fail: 0, na: 0 };
     total++;

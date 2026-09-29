@@ -23,7 +23,7 @@ Interim figure numbers/titles are kept. Open each `.drawio` at
 ### Chapter 1–2 (context / literature)
 | File | Figure | Notes |
 |---|---|---|
-| `Figure_1.1_Rich_Picture_Four_Layer_Sociotechnical_System.drawio` | **Fig 1.1** | 4 layers + stakeholders + external services + concerns note |
+| `Figure_1.1_Rich_Picture_Four_Layer_Sociotechnical_System.drawio` | **Fig 1.1** | **Redrawn 2026-09** as a simple, hand-drawn (`sketch=1`), strictly black-and-white orientation sketch — flood → citizen/volunteer → mobile app → platform (AI + dashboard, kept as one blob) → officer → camp/hospital, alert loop back to citizens. Deliberately informal; the precise 4-layer architecture is Fig 4.1/4.13. Low cleanup — everything is core shapes (actor/cloud/rect), no exotic stencils. |
 | `Figure_2.1_Conceptual_Map_of_Literature.drawio` | **Fig 2.1** | two axes (theory→applied, global→local) converging on Suraksha; 5 gaps |
 | `Figure_2.2_Workflow_Data_Flow_Across_System_Layers.drawio` | **Fig 2.2** | end-to-end data flow: report → mobile → API → ML → DB → dashboard → officer → alert → citizens |
 
@@ -40,14 +40,15 @@ Interim figure numbers/titles are kept. Open each `.drawio` at
 | `Figure_4.8_Class_Diagram_Incident_Alert_Water.drawio` | Interim Fig 4.8 | same clean diagram, Interim number |
 | `Figure_4.2_Core_ER_Diagram.drawio` | **Fig 4.2** (Draft_Thesis_3 numbering) | **Medium** — 19 entities on a 6-column grid, crow's-foot; nudge a few boxes so relationship lines don't cross. Verify against `schema.prisma` (`grep -c "^model " backend/prisma/schema.prisma` → 72). |
 | `Figure_4.14_ER_Diagram_Core.drawio` | **Fig 4.14** (Interim numbering) | same diagram, Interim number |
-| `Figure_4.1_System_Architecture_Diagram.drawio` | **Fig 4.1** (Draft_Thesis_3 numbering) | Low — presentation-ready; matches the §4.5 paragraph incl. graceful-degradation note |
-| `Figure_4.13_System_Architecture_Four_Layer.drawio` | **Fig 4.13** (Interim-2 numbering) | same diagram, Interim number |
+| `Figure_4.1_System_Architecture_Diagram.drawio` | **Fig 4.1** (Draft_Thesis_3 numbering) | **Redrawn 2026-09** as a simple, hand-drawn (`sketch=1`), black-and-white sketch — same 4 layers/components/connections as before (Web Dashboard + Mobile App → Backend API → PostgreSQL + ML Service → external services), just re-drawn plainly with short labels instead of dense technical bullets. Low cleanup. |
+| `Figure_4.13_System_Architecture_Four_Layer.drawio` | **Fig 4.13** (Interim-2 numbering) | same redrawn diagram, Interim number |
 
 ### Activity diagrams (vertical swimlanes)
 | File | Figure | Cleanup |
 |---|---|---|
 | `Figure_4.6_Activity_Offline_First_Incident_Report_and_Sync.drawio` | **Fig 4.6** (Draft_Thesis_3, AD-1) | **Low** — hand-laid-out |
-| `Figure_4.7_Activity_Severity_Triage_Human_in_the_Loop.drawio` | **Fig 4.7** (Draft_Thesis_3, AD-2) | **Low** — hand-laid-out; 4 lanes Backend / ML Service / DMC Officer / PostgreSQL |
+| `Figure_4.5_Activity_Severity_Triage_Human_in_the_Loop.drawio` | **Fig 4.5** (current thesis numbering) | **Low** — simple, hand-drawn (`sketch=1`), black-and-white; same 4 lanes/logic as Fig 4.7 (AI-unreachable fallback, confidence gate, officer agree/correct), plain everyday wording instead of technical field names |
+| `Figure_4.7_Activity_Severity_Triage_Human_in_the_Loop.drawio` | superseded by Fig 4.5 above (kept as the detailed/technical version) | **Low** — hand-laid-out; 4 lanes Backend / ML Service / DMC Officer / PostgreSQL |
 | `Figure_4.9_Activity_Incident_Lifecycle.drawio` | **Fig 4.9** | **Medium** — check fork/join bar alignment; a few edges cross lanes (expected for cross-actor flow) |
 | `Activity_AD-1_Offline_Report_and_Sync.drawio` | auto-laid alt of Fig 4.6 | superseded by Fig 4.6 |
 | `Figure_4.8_Activity_River_Forecast_to_Threshold_Alert_Dispatch.drawio` | **Fig 4.8** (Draft_Thesis_3, AD-3) | **Low** — hand-laid-out; 6 lanes; nudge the `loop` frame only if you resize nodes. (Distinct from the Interim `Figure_4.8_Class_Diagram_…`.) |

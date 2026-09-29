@@ -63,45 +63,79 @@ const EDGE = {
 };
 
 /* ============================================================
-   Figure 1.1 — Rich Picture: Four-Layer Sociotechnical System
+   Figure 1.1 — Rich Picture (Chapter 1): a simple, hand-drawn,
+   black-and-white orientation sketch of the whole platform.
+   Deliberately informal — the precise 4-layer architecture is
+   Figure 4.1 / 4.13; this one just orients the reader.
    ============================================================ */
 (function(){
   const c=[]; U=0;
-  const W=1360;
-  c.push(V('t','Figure 1.1 — Suraksha: Four-Layer Sociotechnical System (as built)',40,10,W-80,26,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
-  // stakeholders (left)
-  const st=[['Citizen','stk_cit'],['Volunteer /\nField Responder','stk_vol'],['DMC Officer','stk_off'],['Administrator','stk_adm'],['Hospital Staff','stk_hos'],['Local Verifier','stk_ver']];
-  st.forEach((s,i)=>c.push(V(s[1],s[0],40,70+i*95,44,70,S.actor)));
-  // Layer bands
-  c.push(V('L1','PRESENTATION LAYER (User Interface Tier)',180,60,900,150,S.band));
-  c.push(V('l1a','Mobile App — Expo / React Native<br><font style="font-size:9px">citizen &amp; volunteer field client · offline-first (SQLite queue + FIFO sync + background task) · voice/photo/GPS capture · i18n Si/Ta/En</font>',200,95,430,95,S.web));
-  c.push(V('l1b','Web Dashboard — React 19 + Vite<br><font style="font-size:9px">DMC command centre · RBAC routing · Leaflet map · charts · alert / incident / camp / resource management · Socket.IO live feed</font>',650,95,410,95,S.web));
-  c.push(V('L2','APPLICATION LAYER (Coordination Tier)',180,230,900,140,S.band));
-  c.push(V('l2a','Backend API — Node.js + Express + TypeScript (single service, :3001)<br><font style="font-size:9px">31 route groups → controllers → ~45 services · JWT auth + RBAC middleware · Socket.IO server · node-cron jobs (water, rainfall, backup, escalation) · multi-channel dispatch · geocoding + district-zone lookup</font>',200,265,860,90,S.app));
-  c.push(V('L3','DATA LAYER',180,390,435,150,S.band));
-  c.push(V('l3a','PostgreSQL 17<br><font style="font-size:9px">72 tables · 24 enums<br>Prisma ORM · daily pg_dump backup</font>',215,430,360,95,S.data));
-  c.push(V('L4','INTELLIGENCE LAYER',645,390,435,150,S.band));
-  c.push(V('l4a','ML Microservice — Python FastAPI (:8000)<br><font style="font-size:9px">22 endpoints · 16 AI components<br>5 trained models: severity XGBoost · LSTM river · spaCy NER · credibility XGBoost · spatiotemporal GB<br>+ analytical / rule-based components</font>',665,428,395,100,S.ml));
-  // external strip
-  c.push(V('L5','EXTERNAL SERVICES',180,560,900,90,S.band));
-  ['Twilio SMS','Nodemailer e-mail','Expo Push','Telegram Bot','Open-Meteo rainfall','Nominatim geocoding','Google OAuth'].forEach((e,i)=>
-    c.push(V(nid('ex'),e,200+i*126,595,116,44,S.ext)));
-  // concerns note (right)
-  c.push(V('cn','Key concerns driving the design:<br>• network fails exactly when a citizen needs to report<br>• DMC officers must read Si / Ta / En under time pressure<br>• every AI output requires human validation before action<br>• downstream districts need 1–2 h flood lead time',1100,70,240,220,S.note));
-  // arrows
-  c.push(E(nid('e'),'stk_cit','l1a','report / SOS / alerts',EDGE.assoc));
-  c.push(E(nid('e'),'stk_vol','l1a','tasks / check-in',EDGE.assoc));
-  c.push(E(nid('e'),'stk_off','l1b','triage / dispatch',EDGE.assoc));
-  c.push(E(nid('e'),'stk_adm','l1b','users / RBAC',EDGE.assoc));
-  c.push(E(nid('e'),'stk_hos','l1b','referrals / beds',EDGE.assoc));
-  c.push(E(nid('e'),'stk_ver','l1b','verify in jurisdiction',EDGE.assoc));
-  c.push(E(nid('e'),'l1a','l2a','REST (JWT, via ngrok) + Socket.IO',EDGE.flow));
-  c.push(E(nid('e'),'l1b','l2a','REST (JWT) + Socket.IO',EDGE.flow));
-  c.push(E(nid('e'),'l2a','l3a','Prisma ORM',EDGE.flow));
-  c.push(E(nid('e'),'l2a','l4a','HTTP (JSON) — best-effort, non-blocking',EDGE.flow));
-  c.push(E(nid('e'),'l2a','L5','push / SMS / e-mail / Telegram',EDGE.flow));
-  c.push(E(nid('e'),'l4a','L5','Open-Meteo pull',EDGE.flow));
-  save('Figure_1.1_Rich_Picture_Four_Layer_Sociotechnical_System.drawio','Fig 1.1 Rich Picture','fig11',c,W,700);
+  const W=1220, H=800;
+  const nid2 = p => 'rp' + (++U);
+  // Every shape in this drawing is hand-drawn (sketch=1) and strictly
+  // black-on-white — no colour anywhere, per the "human-drawn" brief.
+  const INK = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+  const shape = (id,label,x,y,w,h,extra)=>c.push(V(id,label,x,y,w,h,
+    HAND+'whiteSpace=wrap;html=1;fillColor=none;fontSize=12;'+(extra||'')));
+  const person = (id,label,x,y)=>c.push(V(id,label,x,y,50,80,
+    HAND+'shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=12;'));
+  const note = (id,label,x,y,w,h,align)=>c.push(V(id,label,x,y,w,h,
+    'text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=11;align='+(align||'center')+';'+INK));
+  const link = (s,t,label,dashed,style)=>c.push(E(nid2(),s,t,label||'',
+    HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=10;'+
+    (dashed?'dashed=1;':'')+(style||'')));
+
+  c.push(V('t','Figure 1.1 — Rich Picture: Suraksha at a Glance',40,10,W-80,26,
+    'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  c.push(V('sub','(an early orientation sketch — the precise architecture follows in Chapter 4)',
+    40,36,W-80,20,'text;html=1;fontStyle=2;fontSize=10;align=left;color=#555555;'));
+
+  // ── the trigger: a flood ──────────────────────────────────────
+  shape('flood','FLOOD /\nHEAVY RAIN',40,90,160,100,'shape=cloud;fontSize=12;fontStyle=1;');
+  note('flood_n','rivers rise fast —\nlittle warning time',40,196,160,30);
+
+  // ── citizens & volunteers on the ground ──────────────────────
+  person('cit','Citizen',60,320);
+  person('vol','Volunteer',60,460);
+  note('cit_say','"There\'s flooding\nnear my home!"',130,300,170,40,'left');
+  note('vol_say','"Where am\nI needed?"',130,455,170,40,'left');
+
+  shape('phone','Mobile App\n(works even\nwhen offline)',330,360,150,90);
+  link('cit','phone','reports / SOS');
+  link('vol','phone','tasks');
+
+  // ── the platform: kept as ONE simple blob on purpose ─────────
+  shape('platform','SURAKSHA\nweb dashboard + database + AI\n— all in one place —',
+    560,300,260,170,'fontSize=13;fontStyle=1;shape=cloud;');
+  link('phone','platform','sends reports');
+  link('flood','platform','river & rain\ndata (auto)',true);
+
+  shape('ai','AI quietly helps\nsort & predict —\na person always\ndecides',600,470,190,80,
+    'fontSize=10;dashed=1;');
+
+  // ── the officer, and where help actually goes ────────────────
+  shape('desk','Web Dashboard',900,320,150,70);
+  person('off','DMC\nOfficer',1110,300);
+  note('off_say','"Sending\nhelp now!"',960,255,150,50,'left');
+  link('platform','desk','shows the\nbig picture');
+  link('desk','off','');
+
+  shape('camp','Relief Camp',900,470,140,60);
+  shape('hosp','Hospital',1060,470,120,60);
+  link('off','camp','coordinates');
+  link('off','hosp','coordinates');
+
+  // ── the loop closes: alerts go back out to everyone ──────────
+  shape('alert','ALERT!\n(SMS · App · Radio\n— Sinhala / Tamil / English)',
+    330,560,230,90,'fontSize=11;fontStyle=1;');
+  link('platform','alert','broadcasts');
+  link('alert','cit','warns people\nnearby',false,'exitX=0;exitY=0.5;entryX=0;entryY=0.9;');
+
+  note('bottom','One simple idea: whoever sees trouble first — citizen, sensor, or officer —\ncan get the whole system moving, in the language people actually speak.',
+    140,690,900,50,'center');
+
+  save('Figure_1.1_Rich_Picture_Four_Layer_Sociotechnical_System.drawio','Fig 1.1 Rich Picture','fig11',c,W,H);
 })();
 
 /* ============================================================
@@ -225,41 +259,61 @@ const EDGE = {
 })();
 
 /* ============================================================
-   Figure 4.13 — System Architecture (Four-Layer)
+   Figure 4.1 / 4.13 — System Architecture (Four-Layer)
+   Simple, hand-drawn, strictly black-and-white — same layers,
+   components and connections as before, just re-drawn plainly.
    ============================================================ */
 (function(){
-  const c=[]; U=0; const W=1360,H=940;
-  const L=210;                       // left edge of the layer bands
-  c.push(V('t','Figure 4.1 — System Architecture: Four-Layer Service-Oriented Architecture with External Integrations',40,10,W-80,26,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
-  // actors (left margin)
-  c.push(V('u_web','DMC Officer ·<br>Administrator ·<br>Hospital Staff',30,110,150,60,'text;html=1;fontSize=10;align=right;fontStyle=2;'));
-  c.push(V('u_mob','Citizen ·<br>Volunteer ·<br>Field Responder',30,175,150,60,'text;html=1;fontSize=10;align=right;fontStyle=2;'));
-  // PRESENTATION
-  c.push(V('b1','PRESENTATION LAYER',L,60,1090,160,S.band));
-  c.push(V('web','Web Dashboard — React 19 + Vite + Tailwind<br><font style="font-size:9px">DMC officers, administrators, hospital staff · Zustand · TanStack Query · React Router 7 · React Leaflet · i18next · Socket.IO client</font>',L+30,100,505,100,S.web));
-  c.push(V('mob','Mobile App — Expo + React Native (offline-first)<br><font style="font-size:9px">citizens, volunteers, responders · local SQLite queue + FIFO background sync · expo-location/camera/notifications · AsyncStorage</font>',L+560,100,500,100,S.web));
-  // APPLICATION
-  c.push(V('b2','APPLICATION LAYER',L,250,1090,150,S.band));
-  c.push(V('api','Backend API — Node.js + Express + TypeScript (single service, :3001)<br><font style="font-size:9px">user authentication + role-based access control · orchestrates ML-service API calls · scheduled jobs (hourly water &amp; rainfall ingestion, daily backup, escalation) · multi-channel alert dispatch · @turf district-zone lookup · Socket.IO server</font>',L+30,285,1030,95,S.app));
-  // DATA + INTELLIGENCE
-  c.push(V('b3','DATA LAYER',L,430,520,160,S.band));
-  c.push(V('pg','PostgreSQL — single shared database<br><font style="font-size:9px">72 tables · 24 enums · UUID PKs · accessed via Prisma ORM · daily pg_dump backup</font>',L+30,470,460,100,S.data));
-  c.push(V('b4','INTELLIGENCE LAYER',L+560,430,530,160,S.band));
-  c.push(V('mlv','ML Microservice — Python FastAPI<br><font style="font-size:9px">22 API endpoints · 16 ML/AI components · 5 genuinely trained (severity XGBoost, LSTM river, spaCy NER, credibility XGBoost, spatiotemporal GB) · rest analytical / rule-based / pre-trained</font>',L+590,470,470,100,S.ml));
-  // EXTERNAL
-  c.push(V('b5','EXTERNAL INTEGRATIONS',L,620,1090,95,S.band));
-  ['Twilio<br>(SMS)','Nodemailer<br>(e-mail)','Expo<br>(push)','Telegram<br>Bot','Open-Meteo<br>(rainfall)','Nominatim<br>(geocoding)','Google<br>OAuth'].forEach((e,i)=>c.push(V(nid('x'),e,L+30+i*150,655,140,48,S.ext)));
-  // edges
-  c.push(E(nid('e'),'u_web','web','',EDGE.assoc));
-  c.push(E(nid('e'),'u_mob','mob','',EDGE.assoc));
-  c.push(E(nid('e'),'web','api','REST (JWT) + Socket.IO',EDGE.flow));
-  c.push(E(nid('e'),'mob','api','REST (JWT, via ngrok) + Socket.IO',EDGE.flow));
-  c.push(E(nid('e'),'api','pg','Prisma ORM',EDGE.flow));
-  c.push(E(nid('e'),'api','mlv','HTTP (JSON)',EDGE.flow));
-  c.push(E(nid('e'),'api','b5','best-effort fan-out',EDGE.flow));
-  c.push(E(nid('e'),'mlv','b5','Open-Meteo pull',EDGE.flow));
-  c.push(V('deg','Graceful degradation: if the ML service is unavailable, AI-only endpoints return an explicit error (HTTP 503) rather than hanging, and GET /api/water/predictions keeps serving the most recently cached WaterLevelPrediction row — the command dashboard never goes dark.',210,745,1090,60,S.note));
-  c.push(V('dep','Evaluated topology: all four tiers on one workstation (PostgreSQL :5432, backend :3001, web dev :5173, ML :8000); mobile reaches the backend + Socket.IO via two static ngrok tunnels. Production (future work): backend + ML behind a reverse proxy, managed PostgreSQL, web as CDN static assets.',210,815,1090,60,S.note));
+  const c=[]; U=0; const W=1300,H=800;
+  const nid2 = () => 'ar' + (++U);
+  const INK  = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+  const band  = (id,label,x,y,w,h)=>c.push(V(id,label,x,y,w,h,
+    HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontStyle=1;fontSize=12;spacingLeft=10;spacingTop=6;dashed=1;'));
+  const box   = (id,label,x,y,w,h,extra)=>c.push(V(id,label,x,y,w,h,
+    HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=12;'+(extra||'')));
+  const person = (id,label,x,y)=>c.push(V(id,label,x,y,46,74,
+    HAND+'shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;fontSize=10;'));
+  const note  = (id,label,x,y,w,h)=>c.push(V(id,label,x,y,w,h,
+    'text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=11;align=left;'+INK));
+  const link  = (s,t,label,extra)=>c.push(E(nid2(),s,t,label||'',
+    HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=10;'+(extra||'')));
+
+  c.push(V('t','Figure 4.1 — System Architecture (Four Layers)',40,10,W-80,26,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+
+  // who uses which front door
+  person('u_web',' DMC Officer /\nAdmin / Hospital',20,120);
+  person('u_mob','Citizen /\nVolunteer',20,270);
+
+  // 1 — PRESENTATION
+  band('b1','PRESENTATION',150,70,1100,140);
+  box('web','Web Dashboard\n(React)',190,105,480,80);
+  box('mob','Mobile App\n(offline-first)',770,105,450,80);
+
+  // 2 — APPLICATION
+  band('b2','APPLICATION',150,225,1100,100);
+  box('api','Backend API\n(Node.js + Express)',190,258,1020,55);
+
+  // 3 — DATA & INTELLIGENCE
+  band('b3','DATA  &  INTELLIGENCE',150,340,1100,140);
+  box('pg','Database\n(PostgreSQL)',190,375,480,80);
+  box('mlv','AI / ML Service\n(Python)',770,375,450,80);
+
+  // 4 — EXTERNAL SERVICES
+  band('b4','EXTERNAL SERVICES',150,495,1100,95);
+  box('ext','SMS · e-mail · push · Telegram\nweather data · maps · Google sign-in',190,528,1020,50);
+
+  link('u_web','web','');
+  link('u_mob','mob','');
+  link('web','api','');
+  link('mob','api','');
+  link('api','pg','saves &amp; reads');
+  link('api','mlv','asks for\npredictions');
+  link('api','ext','sends alerts');
+
+  note('deg','If the AI service is down, the app does not hang — it just shows\nthe last known answer. Nothing else stops working.',150,610,1100,45);
+  note('dep','Today all four layers run together on one machine;\neach one can move to its own server later without changing this picture.',150,665,1100,45);
+
   save('Figure_4.1_System_Architecture_Diagram.drawio','Fig 4.1 Architecture','fig41arch',c.slice(),W,H);
   // also keep the Interim-numbered copy
   const c2 = c.map(x=>x.replace('Figure 4.1 —','Figure 4.13 —'));
@@ -1240,6 +1294,80 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
   c.push(V('note1','Design rationale: a classifier at ~80% accuracy cannot be trusted unconditionally for disaster triage. Routing only the least-confident ~15–26% of cases to a human captures a disproportionate share of the dangerous errors while still automating the majority.',LX['DMC Officer']-10,120,laneW*2,80,S.note));
   c.push(V('note2','Under-triage (predicting a lower tier than the truth) is weighted as more costly than over-triage. Process metrics reported in Chapter 5: auto-coverage, error-capture rate, accepted accuracy, under-triage rate before vs after routing.',LX['DMC Officer']-10,225,laneW*2,80,S.note));
   save('Figure_4.7_Activity_Severity_Triage_Human_in_the_Loop.drawio','Fig 4.7 Activity AD-2','fig47',c,W,H);
+})();
+
+/* ============================================================
+   Figure 4.5 — Activity Diagram: Severity Triage with
+   Human-in-the-Loop Routing — simple, hand-drawn, black & white
+   (same flow/logic as Figure 4.7, re-drawn plainly)
+   ============================================================ */
+(function(){
+  const c=[]; U=0;
+  const laneW=260, lanes=['Backend','ML Service','DMC Officer','Database'];
+  const LX={}; lanes.forEach((L,i)=>LX[L]=40+i*laneW);
+  const W = 40 + lanes.length*laneW + 40, H = 1360;
+  const nid2 = () => 'sv' + (++U);
+  const INK  = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+
+  c.push(V('t','Figure 4.5 — Activity Diagram: Severity Triage with Human-in-the-Loop Routing',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  lanes.forEach((L,i)=>c.push(V('ln'+i,L,40+i*laneW,44,laneW,H-70,
+    HAND+'swimlane;html=1;startSize=28;horizontal=1;fillColor=none;fontStyle=1;fontSize=12;')));
+
+  const put=(id,lane,y,text,kind,w,h)=>{
+    w = w || (kind==='dec' ? 200 : 220);
+    h = h || (kind==='dec' ? 90 : (kind==='start'||kind==='end' ? 26 : (kind==='bar' ? 8 : 56)));
+    const x = LX[lane] + (laneW-w)/2;
+    const st = kind==='start' ? HAND+'ellipse;whiteSpace=wrap;html=1;fillColor=#000000;'
+      : kind==='end' ? HAND+'ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeWidth=3;'
+      : kind==='dec' ? HAND+'rhombus;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;'
+      : kind==='bar' ? 'rounded=0;fillColor=#000000;strokeColor=#000000;'
+      : HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;';
+    c.push(V(id,text,x,y,w,h,st));
+  };
+  const go=(s,t,l)=>c.push(E(nid2(),s,t,l||'',HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;'));
+
+  put('st','Backend',80,'','start');
+  put('a1','Backend',130,'New incident saved\n(severity = Medium for now)');
+  put('a2','Backend',215,'Ask the AI to\ncheck it');
+  put('d1','Backend',300,'AI reachable?','dec');
+
+  // AI unreachable
+  put('u1','Backend',440,'Keep it Medium;\nflag for a human');
+  put('u2','Database',440,'Note: AI\nwas unavailable');
+  put('ue','Backend',530,'','end');
+
+  // AI reachable
+  put('m1','ML Service',440,'AI reads the report and\nguesses severity +\nhow sure it is','proc',220,70);
+  put('a3','Database',530,"Save the\nAI's guess");
+  put('d2','Backend',560,'Confident\nenough?','dec');
+
+  // auto-accept
+  put('auto','DMC Officer',570,'Goes straight to\nthe normal queue');
+  put('autoe','DMC Officer',660,'','end');
+
+  // human review
+  put('a4','Backend',690,'Send to a human\nto double-check');
+  put('a5','DMC Officer',780,'Officer reviews\nthe report');
+  put('d3','DMC Officer',865,'Officer\nagrees?','dec');
+  put('conf','DMC Officer',990,'Confirm it');
+  put('corr','ML Service',990,'Officer corrects it\n(this also helps\nthe AI learn)','proc',220,66);
+  put('j','Backend',1090,'','bar',160);
+  put('a6','Database',1115,'Save the final\nseverity');
+  put('e','Backend',1135,'','end');
+
+  go('st','a1'); go('a1','a2'); go('a2','d1');
+  go('d1','u1','no'); go('u1','u2'); go('u2','ue');
+  go('d1','m1','yes'); go('m1','a3'); go('a3','d2');
+  go('d2','auto','yes'); go('auto','autoe');
+  go('d2','a4','no'); go('a4','a5'); go('a5','d3');
+  go('d3','conf','yes'); go('d3','corr','no');
+  go('conf','j'); go('corr','j'); go('j','a6'); go('a6','e');
+
+  c.push(V('note','One idea drives this: don\'t trust the AI blindly. When it isn\'t sure, a person\nlooks at it — and that person\'s correction quietly helps the AI get better next time.',
+    LX['Backend'],1195,laneW*3,60,'text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=11;align=left;'+INK));
+
+  save('Figure_4.5_Activity_Severity_Triage_Human_in_the_Loop.drawio','Fig 4.5 Activity (simple)','fig45simple',c,W,H);
 })();
 
 /* ============================================================

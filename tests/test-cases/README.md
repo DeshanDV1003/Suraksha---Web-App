@@ -1,8 +1,18 @@
 # Suraksha — Documented Test Cases
 
 `Suraksha_Test_Cases.xlsx` — 168 test cases: **TC-001 … TC-100** (web / API) plus
-**TC-M-001 … TC-M-068** (the mobile app). Columns for Status / Tested By /
-Test Date / Notes, and a **Summary** sheet with a per-module breakdown.
+**TC-M-001 … TC-M-068** (the mobile app). 15 columns — TC ID / Module / Test Case
+Name / Description / Pre-Conditions / Test Steps / Expected Result / **Actual
+Result** / Priority / **Severity** / Type / Status / Tested By / Test Date /
+Notes — and a **Summary** sheet with a per-module breakdown.
+
+- **Actual Result** — the observed outcome for each executed case (same text as
+  Notes; kept as its own column so Expected vs Actual sit side by side).
+- **Severity** — impact of the defect for **Fail** rows only (`Critical` /
+  `High` / `Medium` / `Low`); `N/A` for every Pass/N/A row, since severity
+  describes a defect, not a passing test. Distinct from **Priority**, which is
+  the test's business importance and is set at authoring time, independent of
+  the result.
 
 This is the human-readable test-case catalogue. It is distinct from:
 - `tests/unit/` — Vitest unit tests
@@ -26,7 +36,20 @@ node tests/test-cases/run-mobile.cjs        # mobile app  (TC-M-001..068)
   **Summary** sheet (colour-coded: green / red / amber),
 - drops `results.json` + `results.tsv` into `tests/runs/<date>/test-cases/`.
 
-Idempotent — safe to re-run; each run overwrites the result columns.
+Idempotent — safe to re-run; each run overwrites the result columns (now
+including Actual Result and Severity).
+
+## Schema history
+
+`Actual Result` and `Severity` were added on 2026-09-29 via a one-time
+migration (`backfill-actual-result-severity.cjs`) that inserted the two
+columns into the *existing* workbook in place — preserving all 168 rows'
+results — rather than regenerating from scratch. `generate-test-cases.ts`,
+`run-and-update.cjs`, and `run-mobile.cjs` were all updated to the new
+15-column layout at the same time, so any future full regeneration or
+re-run already produces the current schema; the backfill script itself only
+needs to run again if a workbook is ever restored from a pre-2026-09-29
+backup.
 
 ## Regenerating the workbook structure (loses results)
 
