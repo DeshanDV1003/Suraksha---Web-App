@@ -1,1 +1,115 @@
-<mxfile host="app.diagrams.net" version="24.7.5"><diagram name="App B.3 Missing Persons, Damage &amp; Hospital Referral" id="uc-m6"><mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="776" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="boundary" value="Missing Persons, Damage Assessment and Hospital Referral" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="260" y="40" width="900" height="576" as="geometry"/></mxCell><mxCell id="uc_m6_report" value="Report missing person" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="100" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_browse" value="Browse public missing-persons list" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="100" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_found" value="Mark person found / reunified" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="178" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_face" value="Match face against missing persons" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="178" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_damage" value="Submit damage assessment" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="256" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_score" value="Score damage &amp; estimate cost" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="256" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_review" value="Review damage assessment" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="334" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_comp" value="Determine compensation eligibility" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="334" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_beds" value="Manage hospital bed capacity" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="412" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_refer" value="Create patient referral from camp" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="412" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m6_accept" value="Accept / update referral status" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="490" width="250" height="54" as="geometry"/></mxCell><mxCell id="a_Citizen" value="Citizen" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="80" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_MemberofthePublic" value="Member of the Public" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="204" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_DMCOfficer" value="DMC Officer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="328" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_HospitalStaff" value="Hospital Staff" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="452" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_MLService" value="ML Service" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1230" y="80" width="40" height="80" as="geometry"/></mxCell><mxCell id="n1" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m6_report"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n2" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_MemberofthePublic" target="uc_m6_browse"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n3" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m6_found"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n4" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m6_face"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n5" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_MLService" target="uc_m6_face"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n6" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m6_damage"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n7" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_MLService" target="uc_m6_score"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n8" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m6_review"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n9" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m6_comp"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n10" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_HospitalStaff" target="uc_m6_beds"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n11" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m6_refer"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n12" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_HospitalStaff" target="uc_m6_accept"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n13" value="&#171;include&#187;" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" edge="1" parent="1" source="uc_m6_damage" target="uc_m6_score"><mxGeometry relative="1" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="Electron">
+  <diagram name="App B.3 Missing Persons, Damage &amp; Hospital Referral" id="uc-m6">
+    <mxGraphModel dx="1298" dy="802" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="776" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" value="Missing Persons, Damage Assessment and Hospital Referral" vertex="1">
+          <mxGeometry height="576" width="900" x="260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_report" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Report missing person" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_browse" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Browse public missing-persons list" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_found" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Mark person found / reunified" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_face" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Match face against missing persons" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_damage" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Submit damage assessment" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_score" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Score damage &amp; estimate cost" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_review" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Review damage assessment" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_comp" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Determine compensation eligibility" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_beds" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Manage hospital bed capacity" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_refer" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Create patient referral from camp" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m6_accept" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Accept / update referral status" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Citizen" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Citizen" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_MemberofthePublic" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Member of the Public" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="a_DMCOfficer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="DMC Officer" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="328" as="geometry" />
+        </mxCell>
+        <mxCell id="a_HospitalStaff" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Hospital Staff" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="452" as="geometry" />
+        </mxCell>
+        <mxCell id="a_MLService" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="ML Service" vertex="1">
+          <mxGeometry height="80" width="40" x="1230" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" edge="1" parent="1" source="a_MemberofthePublic" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_browse" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="160" />
+              <mxPoint x="570" y="170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n3" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_found" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_face" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="270" />
+              <mxPoint x="410" y="240" />
+              <mxPoint x="500" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n5" edge="1" parent="1" source="a_MLService" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_face" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_damage" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" edge="1" parent="1" source="a_MLService" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_score" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n8" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_review" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n9" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_comp" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n10" edge="1" parent="1" source="a_HospitalStaff" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_beds" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n11" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_refer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n12" edge="1" parent="1" source="a_HospitalStaff" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m6_accept" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n13" edge="1" parent="1" source="uc_m6_damage" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m6_score" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

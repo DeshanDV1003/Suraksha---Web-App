@@ -46,18 +46,20 @@ Interim figure numbers/titles are kept. Open each `.drawio` at
 ### Activity diagrams (vertical swimlanes)
 | File | Figure | Cleanup |
 |---|---|---|
-| `Figure_4.6_Activity_Offline_First_Incident_Report_and_Sync.drawio` | **Fig 4.6** (Draft_Thesis_3, AD-1) | **Low** — hand-laid-out |
+| `Figure_4.9_Activity_Offline_First_Incident_Report_and_Synchronisation.drawio` | **Fig 4.9** (current thesis numbering) | **Low** — simple, hand-drawn (`sketch=1`), black-and-white. Same 5 lanes, same online/4xx/offline-queue paths and the same deferred-sync loop as the file below — only colours removed and wording simplified; no content cut. |
+| `Figure_4.6_Activity_Offline_First_Incident_Report_and_Sync.drawio` | superseded by Fig 4.9 above (kept as the detailed/technical reference; still labelled Fig 4.6 — not currently reused by anything else) | **Low** — hand-laid-out |
 | `Figure_4.5_Activity_Severity_Triage_Human_in_the_Loop.drawio` | **Fig 4.5** (current thesis numbering) | **Low** — simple, hand-drawn (`sketch=1`), black-and-white; same 4 lanes/logic as Fig 4.7 (AI-unreachable fallback, confidence gate, officer agree/correct), plain everyday wording instead of technical field names |
 | `Figure_4.7_Activity_Severity_Triage_Human_in_the_Loop.drawio` | superseded by Fig 4.5 above (kept as the detailed/technical version) | **Low** — hand-laid-out; 4 lanes Backend / ML Service / DMC Officer / PostgreSQL |
-| `Figure_4.9_Activity_Incident_Lifecycle.drawio` | **Fig 4.9** | **Medium** — check fork/join bar alignment; a few edges cross lanes (expected for cross-actor flow) |
+| `Figure_4.9_Activity_Incident_Lifecycle.drawio` | ⚠️ **number now reused** — this file's own title no longer says "Figure 4.9" (freed up for the offline-sync diagram above); confirm what number this one should carry in the current thesis | **Medium** — check fork/join bar alignment; a few edges cross lanes (expected for cross-actor flow) |
 | `Activity_AD-1_Offline_Report_and_Sync.drawio` | auto-laid alt of Fig 4.6 | superseded by Fig 4.6 |
-| `Figure_4.8_Activity_River_Forecast_to_Threshold_Alert_Dispatch.drawio` | **Fig 4.8** (Draft_Thesis_3, AD-3) | **Low** — hand-laid-out; 6 lanes; nudge the `loop` frame only if you resize nodes. (Distinct from the Interim `Figure_4.8_Class_Diagram_…`.) |
+| `Figure_4.7_Activity_River_Forecast_to_Threshold_Alert_Dispatch.drawio` | **Fig 4.7** (current thesis numbering) | **Low** — simple, hand-drawn (`sketch=1`), black-and-white. Same 6 lanes, same every step/decision/loop/fork as the file below — only the colours were removed and the wording simplified; no content was cut. |
+| `Figure_4.8_Activity_River_Forecast_to_Threshold_Alert_Dispatch.drawio` | superseded by Fig 4.7 above (kept as the detailed/technical reference) | **Low** — hand-laid-out; 6 lanes; nudge the `loop` frame only if you resize nodes. (Distinct from the Interim `Figure_4.8_Class_Diagram_…`.) |
 | `Activity_AD-3_River_Forecast_to_Alert.drawio` | auto-laid alt of Fig 4.8 | superseded |
 
 ### Sequence diagrams (lifelines + `alt`/`par`/`loop` frames)
 | File | Figure | Cleanup |
 |---|---|---|
-| `Figure_4.9_Sequence_Offline_First_Incident_Report.drawio` | **Fig 4.9** (Draft_Thesis_3, SD-1) | **Medium** — full SD-1 (8 lifelines, nested `alt`/`par`/`loop`); check the frame rectangles wrap their messages, nudge if a node moved. Mirrors activity Fig 4.6. |
+| `Figure_4.9_Sequence_Offline_First_Incident_Report.drawio` | ⚠️ **number now reused** — its own title no longer says "Figure 4.9" either (that number now belongs to the offline-sync *activity* diagram above); confirm what number this sequence diagram should carry | **Medium** — full SD-1 (8 lifelines, nested `alt`/`par`/`loop`); check the frame rectangles wrap their messages, nudge if a node moved. Mirrors activity Fig 4.9. |
 | `Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio` | **Fig 4.10** (Draft_Thesis_3, SD-2) | **Medium** — 4 lifelines, 3 nested `alt` frames (reachable/unreachable · auto/review · agree/correct); check the frame boxes wrap their messages. Mirrors activity Fig 4.7. |
 | `Figure_4.10_Sequence_Incident_Submission_and_ML.drawio` | Interim Fig 4.10 (SD-1 + ML) | **Medium** — drag the `par` frame to enclose its messages |
 | `Figure_4.11_Sequence_Officer_Validation_and_Task_Assignment.drawio` | **Fig 4.11** | Medium — position the `alt` frame |
@@ -67,9 +69,11 @@ Interim figure numbers/titles are kept. Open each `.drawio` at
 ### Chapter 4–5 (algorithms / flowcharts)
 | File | Figure | Cleanup |
 |---|---|---|
-| `Figure_5.1_Mobile_Offline_Sync_Architecture.drawio` | **Fig 5.1** (Draft_Thesis_3) | Low — presentation-ready; central `sync_queue`, `useOfflineSubmit` in, `syncService` out to Backend, `networkMonitor` / `backgroundSync` / foreground triggers, caches → screens |
-| `Figure_5.1_NLP_Pipeline_Flowchart.drawio` | Interim Fig 5.1 (NLP pipeline) | Low |
-| `Figure_5.2_Trilingual_Intake_Pipeline.drawio` | **Fig 5.2** (Draft_Thesis_3) | Low — horizontal 7-step pipeline; 3 input languages converge, steps 2/6/7 conditional |
+| `Figure_5.1_Trilingual_Intake_Pipeline.drawio` | **Fig 5.1** (current thesis numbering) | **Low** — simple, hand-drawn (`sketch=1`), black-and-white. Same 7 steps, 3 input languages, and both optional branches (skip-translate-if-English, image step only if a photo) as the file below — only colours removed and wording simplified. |
+| `Figure_5.2_Trilingual_Intake_Pipeline.drawio` | superseded by Fig 5.1 above (kept as the detailed/technical reference) | Low — horizontal 7-step pipeline; 3 input languages converge, steps 2/6/7 conditional |
+| `Figure_5.8_Mobile_Offline_Sync_Architecture.drawio` | **Fig 5.8** (current thesis numbering) | **Low** — simple, hand-drawn (`sketch=1`), black-and-white. Same boxes/connections/3 notes as the file below — only colours removed and wording simplified. |
+| `Figure_5.1_Mobile_Offline_Sync_Architecture.drawio` | superseded by Fig 5.8 above (kept as the detailed/technical reference) | Low — presentation-ready; central `sync_queue`, `useOfflineSubmit` in, `syncService` out to Backend, `networkMonitor` / `backgroundSync` / foreground triggers, caches → screens |
+| `Figure_5.1_NLP_Pipeline_Flowchart.drawio` | Interim Fig 5.1 — also superseded by the new Fig 5.1 above (kept as an alternate flowchart-style technical reference for the same pipeline) | Low |
 | `Figure_5.2_ML_Classification_and_Uncertainty_Flowchart.drawio` | Interim Fig 5.2 (ALG-3 flowchart) | Low-Medium — branch nodes `un`/`auto`/`corr` sit to the right |
 | `Figure_5.3_Framework_Workflow_Block_Diagram.drawio` | **Fig 5.3** | Low |
 | `Flowchart_ALG-1_Prediction_Cache.drawio` | Appendix E | Low-Medium |

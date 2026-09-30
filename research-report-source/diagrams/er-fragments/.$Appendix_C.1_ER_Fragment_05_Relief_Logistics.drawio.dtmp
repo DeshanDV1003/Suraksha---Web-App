@@ -1,0 +1,58 @@
+<mxfile host="Electron">
+  <diagram name="C.1 Fragment 5" id="erf5">
+    <mxGraphModel dx="1229" dy="767" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1260" pageHeight="640" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=13;align=left;" value="Appendix C.1 — ER Fragment 5: Relief Logistics   (crow&#39;s-foot · verified against schema.prisma)" vertex="1">
+          <mxGeometry height="24" width="1180" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="rc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;ReliefCamp&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;name, location, latitude?, longitude?&lt;br&gt;currentOccupancy ≤ totalCapacity&lt;br&gt;services[], status, waitTime?" vertex="1">
+          <mxGeometry height="90" width="220" x="520" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="cr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;CampResident&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK campId  → ReliefCamp&lt;br&gt;name, nic?, familySize&lt;br&gt;checkInTime, checkOutTime?, status" vertex="1">
+          <mxGeometry height="90" width="220" x="80" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ci" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;CampInventory&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK campId  → ReliefCamp&lt;br&gt;itemType : InventoryItemType&lt;br&gt;quantity, threshold, lastUpdated" vertex="1">
+          <mxGeometry height="90" width="220" x="80" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="cs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;CampSchedule&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK campId  → ReliefCamp&lt;br&gt;activityName, startTime, endTime, type" vertex="1">
+          <mxGeometry height="75" width="220" x="80" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="csr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;CampSupplyRequest&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK campId?  → ReliefCamp&lt;br&gt;FK requesterId  → User&lt;br&gt;itemType, quantity, urgency, status" vertex="1">
+          <mxGeometry height="90" width="220" x="520" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="ctr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;CampTransferRequest&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK fromCampId  → ReliefCamp&lt;br&gt;FK toCampId  → ReliefCamp&lt;br&gt;peopleCount, status, requestDate" vertex="1">
+          <mxGeometry height="90" width="220" x="960" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="res" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;Resource&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id  (no FK)&lt;br&gt;type, owner, location&lt;br&gt;capacity, status, contact" vertex="1">
+          <mxGeometry height="75" width="220" x="950" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" edge="1" parent="1" source="rc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="cr" value="1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" edge="1" parent="1" source="rc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="ci" value="1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" edge="1" parent="1" source="rc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="cs" value="1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" edge="1" parent="1" source="rc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="csr" value="0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" edge="1" parent="1" source="rc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="ctr" value="1 : 0..*  (fromCamp)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" edge="1" parent="1" source="rc" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="ctr" value="1 : 0..*  (toCamp)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nn7" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;size=14;align=left;spacingLeft=4;" value="Resource is a standalone registry (no foreign key)." vertex="1">
+          <mxGeometry height="42" width="1180" x="40" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="nn8" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;size=14;align=left;spacingLeft=4;" value="CampSupplyRequest.requesterId → User (Fragment 1)." vertex="1">
+          <mxGeometry height="42" width="1180" x="40" y="536" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,101 @@
+<mxfile host="Electron">
+  <diagram name="Fig 5.8 Mobile Offline Sync (simple)" id="fig58simple">
+    <mxGraphModel dx="1075" dy="671" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="760" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="text;html=1;fontStyle=1;fontSize=14;align=left;" value="Figure 5.8 — Mobile Offline-Sync Architecture" vertex="1">
+          <mxGeometry height="24" width="1360" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="scr" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="25 screens in the app" vertex="1">
+          <mxGeometry height="110" width="190" x="40" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="hook" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="Every &#39;Save&#39; button tries the internet first (gives up after 8 seconds)" vertex="1">
+          <mxGeometry height="130" width="230" x="290" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="q" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="A list on the phone of things still waiting to be sent" vertex="1">
+          <mxGeometry height="170" width="250" x="600" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="cache" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="A copy of useful data kept on the phone, so screens still work without the internet" vertex="1">
+          <mxGeometry height="110" width="250" x="380" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="sync" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="Sends everything on the list, oldest first — tries again if it fails (up to 5 times)" vertex="1">
+          <mxGeometry height="150" width="250" x="930" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="The server" vertex="1">
+          <mxGeometry height="80" width="250" x="930" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="nm" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="Watches for the internet coming back" vertex="1">
+          <mxGeometry height="80" width="240" x="600" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="bg" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="Also checks every so often, even if the app is closed" vertex="1">
+          <mxGeometry height="80" width="240" x="870" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="fg" parent="1" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="...or when you open the app again" vertex="1">
+          <mxGeometry height="80" width="180" x="1150" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="mo1" edge="1" parent="1" source="scr" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="hook" value="save">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mo2" edge="1" parent="1" source="hook" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="q" value="no internet → save for later">
+          <mxGeometry relative="1" x="-0.25" y="-25" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mo3" edge="1" parent="1" source="hook" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;dashed=1;" target="scr" value="bad data → show error (not saved for later)">
+          <mxGeometry relative="1" y="15" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="260" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mo4" edge="1" parent="1" source="q" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="sync" value="oldest first">
+          <mxGeometry relative="1" x="0.0151" y="20" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mo5" edge="1" parent="1" source="sync" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;dashed=1;" target="q" value="mark done / try again">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mo6" edge="1" parent="1" source="sync" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="api" value="send it">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mo7" edge="1" parent="1" source="api" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;dashed=1;" target="sync" value="reply">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mo8" edge="1" parent="1" source="nm" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="sync" value="go!">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mo9" edge="1" parent="1" source="bg" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="sync" value="go!">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mo10" edge="1" parent="1" source="fg" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="sync" value="go!">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mo11" edge="1" parent="1" source="cache" style="sketch=1;fontFamily=Comic Sans MS;strokeColor=#000000;fontColor=#000000;html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;" target="scr" value="read while offline">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n1" parent="1" style="text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=10;align=left;strokeColor=#000000;fontColor=#000000;" value="If it&#39;s bad data, we tell you right away — there&#39;s no point saving it. If it&#39;s just no&amp;nbsp;&lt;div&gt;internet or a slow server, we save it and try again later.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="510" x="40" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" parent="1" style="text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=10;align=left;strokeColor=#000000;fontColor=#000000;" value="12 kinds of thing can be saved this way — incident reports, SOS, help requests,&lt;div&gt;&amp;nbsp;damage reports, task updates, relief tokens, family updates, check-ins, wellbeing logs, profile changes.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="510" x="40" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" parent="1" style="text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=10;align=left;strokeColor=#000000;fontColor=#000000;" value="Tested under 6 different ways the connection can fail: nothing was lost. One known issue:&amp;nbsp;&lt;div&gt;retrying can occasionally save the same thing twice — a fix is planned.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="470" x="930" y="650" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

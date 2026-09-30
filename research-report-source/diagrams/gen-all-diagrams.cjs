@@ -402,7 +402,7 @@ function flowchart(fname,title,id, spine, branches){
 
 /* ---- Figure 5.1 NLP Pipeline ---- */
 flowchart('Figure_5.1_NLP_Pipeline_Flowchart.drawio',
-  'Figure 5.1 — NLP Pipeline: Trilingual Intake Processing (/process-report)','fig51',
+  'NLP Pipeline: Trilingual Intake Processing (/process-report) — detailed/technical reference (see Figure 5.1 for the simplified pipeline diagram)','fig51',
   [
     {id:'s',kind:'term',text:'START — raw citizen report text'},
     {id:'ld',kind:'proc',text:'detect_language()  — Unicode-script check → Sinhala/Tamil/English word-list → langdetect / langid cascade'},
@@ -621,7 +621,7 @@ function activity(fname,title,id, lanes, nodes, edges, H){
 
 /* Figure 4.9 — Incident Lifecycle (end-to-end) */
 activity('Figure_4.9_Activity_Incident_Lifecycle.drawio',
-  'Figure 4.9 — Activity Diagram: Incident Lifecycle (citizen report → ML triage → officer validation → task → resolution)','fig49',
+  'Activity Diagram: Incident Lifecycle (citizen report → ML triage → officer validation → task → resolution) — Interim numbering, confirm current figure number','fig49',
   ['Citizen','Backend','ML Service','DMC Officer','Volunteer','PostgreSQL'],
   [
     {id:'st',lane:'Citizen',kind:'start',y:70,w:24,h:24},
@@ -1039,7 +1039,7 @@ sequence('Sequence_SD-3_River_Forecast_Alert_Dispatch.drawio',
    & Later Synchronisation  (SD-1, full)
    ============================================================ */
 sequence('Figure_4.9_Sequence_Offline_First_Incident_Report.drawio',
-  'Figure 4.9 — Sequence Diagram: Offline-First Incident Report and Later Synchronisation','fig49seq',
+  'Sequence Diagram: Offline-First Incident Report and Later Synchronisation (companion to the Figure 4.9 activity diagram — confirm this one\'s own figure number)','fig49seq',
   [
     {id:'ci',label:'Citizen (Mobile)'},{id:'mob',label:'Mobile App Logic'},
     {id:'q',label:'SQLite Queue'},{id:'api',label:'Backend API'},
@@ -1229,6 +1229,102 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
 })();
 
 /* ============================================================
+   Figure 4.9 — Activity Diagram: Offline-First Incident Report
+   and Synchronisation — same content as Fig 4.6, only the
+   colours are converted to black & white (hand-drawn) and the
+   wording is simplified. Every step, branch and loop is kept.
+   ============================================================ */
+(function(){
+  const c=[]; U=0;
+  const laneW=270, lanes=['Citizen (UI)','Mobile App Logic','Local Queue','Backend API','Database'];
+  const LX={}; lanes.forEach((L,i)=>LX[L]=40+i*laneW);
+  const W = 40 + lanes.length*laneW + 40, H = 1780;
+  const nid2 = () => 'of' + (++U);
+  const INK  = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+
+  c.push(V('t','Figure 4.9 — Activity Diagram: Offline-First Incident Report and Synchronisation',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  lanes.forEach((L,i)=>c.push(V('ln'+i,L,40+i*laneW,44,laneW,H-60,
+    HAND+'swimlane;html=1;startSize=28;horizontal=1;fillColor=none;fontStyle=1;fontSize=12;')));
+  // section divider
+  c.push(V('div','LATER: SENDING SAVED REPORTS  —  triggered by: back online · a check every 8 s · a background task · or opening the app again',
+    48,1010,W-96,26,HAND+'fillColor=none;fontSize=11;align=center;'));
+
+  const put=(id,lane,y,text,kind,w,h)=>{
+    w=w|| (kind==='dec'?190:220); h=h|| (kind==='dec'?90: kind==='bar'?10 : (kind==='start'||kind==='end'?28:56));
+    const x = LX[lane] + (laneW-w)/2;
+    const st = kind==='start' ? HAND+'ellipse;whiteSpace=wrap;html=1;fillColor=#000000;'
+      : kind==='end' ? HAND+'ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeWidth=3;'
+      : kind==='dec' ? HAND+'rhombus;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;'
+      : kind==='bar' ? 'rounded=0;fillColor=#000000;strokeColor=#000000;'
+      : HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;';
+    c.push(V(id,text,x,y,w,h,st));
+  };
+  const go=(s,t,l)=>c.push(E(nid2(),s,t,l||'',HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;'));
+
+  /* ---- online path ---- */
+  put('st','Citizen (UI)',80,'','start');
+  put('a1','Citizen (UI)',140,'Fill in the report\nand tap Submit');
+  put('a2','Mobile App Logic',140,'Get ready to send it\n(read the saved login)');
+  put('a3','Mobile App Logic',235,'Try sending it to the server\n(give up after 8 seconds)','proc',220,60);
+  put('d1','Mobile App Logic',330,'Did we get a reply\nin time?','dec');
+  put('d2','Mobile App Logic',470,'What kind of\nreply was it?','dec');
+  put('a4','Backend API',470,'Check that all required\nfields were filled in');
+  put('d3','Backend API',580,'Are the fields OK?','dec');
+  put('fk','Backend API',710,'','bar',200);
+  put('a5','Backend API',745,'Work out the location\n(guess it from GPS if needed)');
+  put('a5b','Database',745,'Save the new incident\n(status: Pending)');
+  put('a6','Backend API',835,'In the background: ask the AI to\ncheck it, and look for duplicates');
+  put('a6b','Database',835,'Save what\nthe AI found');
+  put('jn','Backend API',930,'','bar',200);
+  put('a7','Backend API',960,'Tell the dashboard live;\nconfirm it was received');
+  put('a8','Mobile App Logic',960,'Show\n"Sent successfully"');
+  put('e1','Citizen (UI)',965,'','end');
+
+  /* ---- client-error path (4xx) ---- */
+  put('aerr','Mobile App Logic',600,"Show the server's error message\n(this one is NOT saved for later)",'proc',220,60);
+  put('e2','Citizen (UI)',605,'','end');
+
+  /* ---- offline / server-error path -> queue ---- */
+  put('q1','Local Queue',470,'Save the report on the\nphone, to send later','proc',230,64);
+  put('q2','Mobile App Logic',700,'Show "Saved — will send\nonce you\'re back online"');
+  put('e3','Citizen (UI)',705,'','end');
+
+  go('st','a1'); go('a1','a2'); go('a2','a3'); go('a3','d1');
+  go('d1','d2','yes'); go('d1','q1','no — timeout /\nno connection');
+  go('d2','a4','ok'); go('d2','aerr','client\nerror'); go('d2','q1','server\nerror');
+  go('a4','d3'); go('d3','fk','yes'); go('d3','aerr','no');
+  go('fk','a5'); go('fk','a6'); go('a5','a5b'); go('a6','a6b');
+  go('a5b','jn'); go('a6b','jn'); go('jn','a7'); go('a7','a8'); go('a8','e1');
+  go('aerr','e2');
+  go('q1','q2'); go('q2','e3');
+
+  /* ---- deferred synchronisation ---- */
+  put('st2','Mobile App Logic',1070,'','start');
+  put('s1','Mobile App Logic',1120,'Time to try sending saved reports\n(only if online, and not already busy)','proc',230,64);
+  put('s2','Local Queue',1120,'Get the oldest\nsaved reports first','proc',230,58);
+  // loop frame
+  c.push(V('loop','for each saved report',LX['Mobile App Logic']-10,1235,laneW*4+20,430,
+    HAND+'rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;align=left;fontStyle=2;fontSize=10;spacingLeft=6;spacingTop=4;'));
+  put('s3','Backend API',1270,'Send it\nto the server');
+  put('s3b','Database',1270,'Save it\non the server');
+  put('d4','Mobile App Logic',1380,'What was\nthe reply?','dec');
+  put('s4a','Local Queue',1500,'Mark it\nas sent');
+  put('s4b','Local Queue',1565,"Mark it as failed\n(bad data, won't retry)");
+  put('s4c','Local Queue',1630,'Mark it as failed for now —\nwill try again (up to 5 times)','proc',230,64);
+  put('s5','Mobile App Logic',1560,'Wait a moment, then\ntry the next one');
+  put('e4','Mobile App Logic',1690,'Note how many reports\nare still waiting','end',180,40);
+
+  go('st2','s1'); go('s1','s2'); go('s2','s3'); go('s3','s3b'); go('s3b','d4');
+  go('d4','s4a','sent ok'); go('d4','s4b','client\nerror'); go('d4','s4c','server error /\nno connection');
+  go('s4a','s5'); go('s4b','s5'); go('s4c','s5');
+  c.push(E(nid2(),'s5','s3','next report',HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;exitX=0;exitY=0.5;entryX=0;entryY=0.5;'));
+  go('s5','e4','none left');
+
+  save('Figure_4.9_Activity_Offline_First_Incident_Report_and_Synchronisation.drawio','Fig 4.9 Activity (simple)','fig49simple',c,W,H);
+})();
+
+/* ============================================================
    Figure 4.7 — Activity Diagram: ML Severity Triage with
    Human-in-the-Loop Routing  (AD-2, hand-laid-out for clarity)
    ============================================================ */
@@ -1237,7 +1333,7 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
   const laneW=280, lanes=['Backend','ML Service','DMC Officer','PostgreSQL'];
   const LX={}; lanes.forEach((L,i)=>LX[L]=40+i*laneW);
   const W = 40 + lanes.length*laneW + 40, H = 1620;
-  c.push(V('t','Figure 4.7 — Activity Diagram: Severity Triage with Human-in-the-Loop Routing',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  c.push(V('t','Severity Triage with Human-in-the-Loop Routing — detailed/technical reference (see Figure 4.5 for the simplified thesis figure)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
   lanes.forEach((L,i)=>c.push(V('ln'+i,L,40+i*laneW,44,laneW,H-70,'swimlane;html=1;startSize=28;horizontal=1;fillColor=none;strokeColor=#666666;fontStyle=1;')));
   const put=(id,lane,y,text,kind,w,h)=>{
     w=w|| (kind==='dec'?210:230); h=h|| (kind==='dec'?96 : kind==='bar'?10 : (kind==='start'||kind==='end'?28:58));
@@ -1379,7 +1475,7 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
   const laneW=245, lanes=['System Scheduler','Backend','ML Service','PostgreSQL','External Channels','Citizen'];
   const LX={}; lanes.forEach((L,i)=>LX[L]=40+i*laneW);
   const W = 40 + lanes.length*laneW + 40, H = 1680;
-  c.push(V('t','Figure 4.8 — Activity Diagram: Automated River Forecast → Threshold Alert Dispatch (hourly)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  c.push(V('t','Automated River Forecast → Threshold Alert Dispatch — detailed/technical reference (see Figure 4.7 for the simplified thesis figure)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
   lanes.forEach((L,i)=>c.push(V('ln'+i,L,40+i*laneW,44,laneW,H-70,'swimlane;html=1;startSize=28;horizontal=1;fillColor=none;strokeColor=#666666;fontStyle=1;')));
   const put=(id,lane,y,text,kind,w,h)=>{
     w=w|| (kind==='dec'?205:210); h=h|| (kind==='dec'?92 : kind==='bar'?10 : (kind==='start'||kind==='end'?28:56));
@@ -1436,11 +1532,89 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
 })();
 
 /* ============================================================
+   Figure 4.7 — Activity Diagram: River Forecast to Threshold
+   Alert Dispatch — same content as Fig 4.8, only the colours
+   are converted to black & white (hand-drawn) and the wording
+   is simplified. Every step, branch, loop and note is kept.
+   ============================================================ */
+(function(){
+  const c=[]; U=0;
+  const laneW=245, lanes=['System Scheduler','Backend','ML Service','Database','External Channels','Citizen'];
+  const LX={}; lanes.forEach((L,i)=>LX[L]=40+i*laneW);
+  const W = 40 + lanes.length*laneW + 40, H = 1680;
+  const nid2 = () => 'rf' + (++U);
+  const INK  = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+
+  c.push(V('t','Figure 4.7 — Activity Diagram: River Forecast to Threshold Alert Dispatch (hourly)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  lanes.forEach((L,i)=>c.push(V('ln'+i,L,40+i*laneW,44,laneW,H-70,
+    HAND+'swimlane;html=1;startSize=28;horizontal=1;fillColor=none;fontStyle=1;fontSize=12;')));
+
+  const put=(id,lane,y,text,kind,w,h)=>{
+    w=w|| (kind==='dec'?205:210); h=h|| (kind==='dec'?92 : kind==='bar'?10 : (kind==='start'||kind==='end'?28:56));
+    const x = LX[lane] + (laneW-w)/2;
+    const st = kind==='start' ? HAND+'ellipse;whiteSpace=wrap;html=1;fillColor=#000000;'
+      : kind==='end' ? HAND+'ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeWidth=3;'
+      : kind==='dec' ? HAND+'rhombus;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;'
+      : kind==='bar' ? 'rounded=0;fillColor=#000000;strokeColor=#000000;'
+      : HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;';
+    c.push(V(id,text,x,y,w,h,st));
+  };
+  const go=(s,t,l,extra)=>c.push(E(nid2(),s,t,l||'',(extra||'')+HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;'));
+
+  put('st','System Scheduler',80,'','start');
+  put('a1','System Scheduler',135,'Every hour, start a\nnew check');
+  put('a2','Backend',135,'Backend fetches the latest\nriver readings');
+  put('a3','Database',135,'Save the new readings');
+  put('a4','Backend',235,'Check if any reading has already\ncrossed a danger level','proc',210,60);
+  put('a5','Backend',330,'Get the list of river\ngauges to forecast');
+
+  // loop frame
+  c.push(V('loop','for each gauge, one at a time',LX['Backend']-12,430,laneW*5+24,1080,
+    HAND+'rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;align=left;fontStyle=2;fontSize=10;spacingLeft=6;spacingTop=4;'));
+
+  put('g1','Backend',470,"Gather this gauge's recent\nreadings and rainfall",'proc',210,58);
+  put('d1','Backend',560,'Enough readings to\nforecast?','dec');
+  put('g2','Backend',690,'Ask the AI to forecast\nthis gauge','proc',210,56);
+  put('g3','ML Service',690,'AI predicts the water level\n1–2 hours ahead, with a\nconfidence score','proc',210,80);
+  put('g4','Database',700,'Save this forecast so the\napp can show it instantly','proc',210,72);
+  put('d2','Backend',805,'Is the AI confident, and is\ndanger expected soon?','dec',205,104);
+  put('d3','Backend',945,'Was this same warning\nalready sent recently?','dec',205,100);
+  put('a6','Backend',1085,'Work out which downstream\nareas are at risk','proc',210,64);
+  put('a7','Backend',1190,'Create the alert, translated\ninto Sinhala and Tamil','proc',210,60);
+  put('fk','Backend',1280,'','bar',180);
+  put('p1','Database',1310,'Save a notification for\nevery affected person');
+  put('p2','External Channels',1310,'Send it out — push, SMS,\ne-mail, Telegram','proc',210,56);
+  put('p3','Backend',1310,'Push it live to the\ndashboard immediately');
+  put('jn','Backend',1400,'','bar',180);
+  put('cc','Citizen',1420,"Citizen only sees it if it's\nactually relevant to\nwhere they are",'proc',210,64);
+  put('a8','Backend',1430,"Record that this alert was\nsent, so it isn't repeated\ntoo soon",'proc',210,64);
+  put('e','System Scheduler',1560,'','end');
+  c.push(V('ee','write down how many gauges were checked\nand how many alerts were sent',LX['System Scheduler']-30,1595,laneW+60,32,
+    'text;html=1;fontFamily=Comic Sans MS;fontSize=9;align=center;'+INK));
+
+  go('st','a1'); go('a1','a2'); go('a2','a3'); go('a3','a4'); go('a4','a5'); go('a5','g1');
+  go('g1','d1');
+  go('d1','g2','yes'); go('d1','g1','no — skip\nthis gauge','exitX=1;exitY=0.5;entryX=1;entryY=0.5;');
+  go('g2','g3'); go('g3','g4'); go('g4','d2');
+  go('d2','d3','yes'); go('d2','g1','no — next gauge','exitX=0;exitY=0.5;entryX=0;entryY=0.5;');
+  go('d3','a6','no'); go('d3','g1','yes — don\'t\nsend again','exitX=0;exitY=0.5;entryX=0;entryY=0.5;');
+  go('a6','a7'); go('a7','fk'); go('fk','p1'); go('fk','p2'); go('fk','p3');
+  go('p1','jn'); go('p2','jn'); go('p3','jn'); go('jn','cc'); go('jn','a8');
+  go('a8','g1','next gauge','exitX=0;exitY=0.5;entryX=0;entryY=0.5;');
+  go('a8','e','done — no\ngauges left');
+
+  c.push(V('note',"Why this matters: doing this automatically means no officer has to watch the rivers all day —\npeople downstream still get 1–2 hours of warning. Checking the AI's confidence, and not repeating\nthe same warning too soon, keeps people from being flooded with alerts.",
+    LX['ML Service']+10,120,laneW*3-20,80,'text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=10;align=left;'+INK));
+  save('Figure_4.7_Activity_River_Forecast_to_Threshold_Alert_Dispatch.drawio','Fig 4.7 Activity (simple)','fig47simple',c,W,H);
+})();
+
+/* ============================================================
    Figure 5.1 — Mobile Offline-Sync Architecture
    ============================================================ */
 (function(){
   const c=[]; U=0; const W=1440,H=760;
-  c.push(V('t','Figure 5.1 — Mobile Offline-Sync Architecture',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  c.push(V('t','Mobile Offline-Sync Architecture — detailed/technical reference (see Figure 5.8 for the simplified diagram)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
   const b=(id,x,y,w,h,txt,st)=>c.push(V(id,txt,x,y,w,h,st||S.plain));
 
   b('scr',40,150,190,110,'25 mobile screens<br><font style="font-size:9px">role-adaptive bottom tabs · citizen / volunteer / field responder</font>',S.web);
@@ -1473,11 +1647,61 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
 })();
 
 /* ============================================================
+   Figure 5.8 — Mobile Offline-Sync Architecture — same content
+   as the file above, only the colours are converted to black &
+   white (hand-drawn) and the wording is simplified. Every box,
+   connection and note is kept.
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=1440,H=760;
+  const nid2 = () => 'mo' + (++U);
+  const INK  = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+  const b=(id,x,y,w,h,txt,extra)=>c.push(V(id,txt,x,y,w,h,
+    HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;'+(extra||'')));
+  const arrow=(s,t,label,extra)=>c.push(E(nid2(),s,t,label||'',
+    HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;'+(extra||'')));
+  const note=(id,label,x,y,w,h)=>c.push(V(id,label,x,y,w,h,
+    'text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=10;align=left;'+INK));
+
+  c.push(V('t','Figure 5.8 — Mobile Offline-Sync Architecture',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+
+  b('scr',40,150,190,110,'25 screens\nin the app');
+  b('hook',290,140,230,130,"Every 'Save' button tries\nthe internet first\n(gives up after 8 seconds)");
+  b('q',600,120,250,170,'A list on the phone of\nthings still waiting\nto be sent');
+  b('cache',600,340,250,110,'A copy of useful data kept\non the phone, so screens still\nwork without the internet');
+  b('sync',930,120,250,150,'Sends everything on the list,\noldest first — tries again\nif it fails (up to 5 times)');
+  b('api',930,350,250,80,'The server');
+
+  b('nm',600,540,240,80,'Watches for the\ninternet coming back');
+  b('bg',870,540,240,80,'Also checks every\nso often, even if the\napp is closed');
+  b('fg',1150,540,180,80,'...or when you\nopen the app again');
+
+  arrow('scr','hook','save');
+  arrow('hook','q','no internet →\nsave for later');
+  arrow('hook','scr',"bad data → show error\n(not saved for later)",'dashed=1;');
+  arrow('q','sync','oldest first');
+  arrow('sync','q','mark done /\ntry again','dashed=1;');
+  arrow('sync','api','send it');
+  arrow('api','sync','reply','dashed=1;');
+  arrow('nm','sync','go!');
+  arrow('bg','sync','go!');
+  arrow('fg','sync','go!');
+  arrow('cache','scr','read while offline');
+
+  note('n1',"If it's bad data, we tell you right away — there's no point saving it. If it's just no internet\nor a slow server, we save it and try again later.",40,300,510,60);
+  note('n2','12 kinds of thing can be saved this way — incident reports, SOS, help requests, damage\nreports, task updates, relief tokens, family updates, check-ins, wellbeing logs, profile changes.',40,410,510,60);
+  note('n3',"Tested under 6 different ways the connection can fail: nothing was lost.\nOne known issue: retrying can occasionally save the same thing twice — a fix is planned.",930,650,470,60);
+
+  save('Figure_5.8_Mobile_Offline_Sync_Architecture.drawio','Fig 5.8 Mobile Offline Sync (simple)','fig58simple',c,W,H);
+})();
+
+/* ============================================================
    Figure 5.2 — Trilingual Intake Pipeline  (/process-report)
    ============================================================ */
 (function(){
   const c=[]; U=0; const W=1960,H=520;
-  c.push(V('t','Figure 5.2 — Trilingual Intake Pipeline (runs automatically on every incident report)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+  c.push(V('t','Trilingual Intake Pipeline (runs automatically on every incident report) — detailed/technical reference (see Figure 5.1 for the simplified diagram)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
   const b=(id,x,y,w,h,txt,st)=>c.push(V(id,txt,x,y,w,h,st||S.proc));
 
   b('si',40,95,150,40,'Sinhala text',S.web);
@@ -1509,6 +1733,54 @@ sequence('Figure_4.10_Sequence_Severity_Triage_Human_in_the_Loop.drawio',
 
   c.push(V('n1','Every input language is normalised to English + structured entities before any human sees it — this removes the "read three languages under pressure" burden from DMC officers. Steps 2, 6 and 7 are conditional (translation skipped for English; image encoding + fusion run only when a photo is attached).',250,250,700,56,S.note));
   save('Figure_5.2_Trilingual_Intake_Pipeline.drawio','Fig 5.2 Trilingual Intake Pipeline','fig52pipe',c,W,H);
+})();
+
+/* ============================================================
+   Figure 5.1 — Trilingual Intake Pipeline — same content as
+   the file above, only the colours are converted to black &
+   white (hand-drawn) and the wording is simplified. All 7
+   steps, both optional branches, and the note are kept.
+   ============================================================ */
+(function(){
+  const c=[]; U=0; const W=1960,H=520;
+  const nid2 = () => 'tp' + (++U);
+  const INK  = 'strokeColor=#000000;fontColor=#000000;';
+  const HAND = 'sketch=1;fontFamily=Comic Sans MS;' + INK;
+  const b=(id,x,y,w,h,txt,extra)=>c.push(V(id,txt,x,y,w,h,
+    HAND+'rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;'+(extra||'')));
+  const arrow=(s,t,label,extra)=>c.push(E(nid2(),s,t,label||'',
+    HAND+'html=1;endArrow=block;endFill=1;rounded=0;curved=1;strokeWidth=2;fontSize=9;'+(extra||'')));
+
+  c.push(V('t','Figure 5.1 — Trilingual Intake Pipeline (runs automatically on every incident report)',40,10,W-80,24,'text;html=1;fontStyle=1;fontSize=14;align=left;'));
+
+  b('si',40,95,150,40,'Sinhala text');
+  b('ta',40,145,150,40,'Tamil text');
+  b('en',40,195,150,40,'English text');
+
+  b('d1',250,110,210,110,'1. Work out what\nlanguage it is written in');
+  b('d2',510,110,210,110,"2. Translate it into English\n(only if it isn't already)");
+  b('d3',770,110,220,110,'3. Pick out the key facts —\nplace, what happened,\nhow many people, when,\nhow bad the damage is');
+  b('d4',770,320,220,100,'4. Turn those facts into\nnumbers the AI can use');
+  b('d5',1040,315,250,120,'5. AI guesses: how severe,\nwhat kind of disaster,\nhow urgent, what is needed');
+  b('ph',1050,150,240,44,'a photo,\nif one was attached');
+  b('d6',1050,205,240,80,'6. Turn the photo into something\nthe AI can compare\n(only if there is one)');
+  b('d7',1340,300,230,130,'7. Combine the text and\nphoto results together');
+  b('out',1620,315,300,110,"Result: how severe, how confident,\nwhat language it was in, the translation,\nand the key facts — saved with the report");
+
+  arrow('si','d1'); arrow('ta','d1'); arrow('en','d1');
+  arrow('d1','d2','what language\nit found');
+  arrow('d2','d3','English text');
+  arrow('d1','d3','already English —\nskip translating','dashed=1;');
+  arrow('d3','d4','the facts');
+  arrow('d4','d5','the numbers');
+  arrow('ph','d6');
+  arrow('d5','d7','severity guess');
+  arrow('d6','d7','if there was\na photo','dashed=1;');
+  arrow('d7','out');
+
+  c.push(V('n1',"Whatever language someone writes in, it all becomes the same clear English summary before anyone\nreads it — so no DMC officer has to read three languages under pressure.\nSteps 2, 6 and 7 only run when they are actually needed.",
+    250,250,700,64,'text;html=1;fontFamily=Comic Sans MS;fontStyle=2;fontSize=10;align=left;'+INK));
+  save('Figure_5.1_Trilingual_Intake_Pipeline.drawio','Fig 5.1 Trilingual Pipeline (simple)','fig51simple',c,W,H);
 })();
 
 /* ============================================================

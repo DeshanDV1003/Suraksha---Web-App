@@ -1,1 +1,116 @@
-<mxfile host="app.diagrams.net" version="24.7.5"><diagram name="App B.4 Family Safety &amp; Volunteers" id="uc-m7"><mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="698" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="boundary" value="Family Safety and Volunteer Coordination" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="260" y="40" width="900" height="498" as="geometry"/></mxCell><mxCell id="uc_m7_addfam" value="Add / edit family member" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="100" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_viewfam" value="View family safety status" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="100" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_broadcast" value="Broadcast &quot;I am SAFE / NEEDS HELP&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="178" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_profile" value="Maintain volunteer profile" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="178" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_zone" value="Check in / out of a zone" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="256" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_wellbeing" value="Log wellbeing (physical / mental)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="256" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_recommend" value="View recommended incidents" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="334" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_createtask" value="Create task" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="334" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_updatetask" value="Update own task status" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="412" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m7_team" value="Compose response team" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="412" width="250" height="54" as="geometry"/></mxCell><mxCell id="a_Citizen" value="Citizen" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="80" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_Volunteer" value="Volunteer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="219.33333333333334" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_DMCOfficer" value="DMC Officer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="358.6666666666667" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_MLService" value="ML Service" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1230" y="80" width="40" height="80" as="geometry"/></mxCell><mxCell id="n1" value="" style="endArrow=block;endFill=0;html=1;strokeColor=#666666;" edge="1" parent="1" source="a_Volunteer" target="a_Citizen"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n2" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m7_addfam"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n3" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m7_viewfam"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n4" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m7_broadcast"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n5" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Volunteer" target="uc_m7_profile"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n6" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Volunteer" target="uc_m7_zone"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n7" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Volunteer" target="uc_m7_wellbeing"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n8" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Volunteer" target="uc_m7_recommend"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n9" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m7_createtask"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n10" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Volunteer" target="uc_m7_updatetask"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n11" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m7_team"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n12" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_MLService" target="uc_m7_team"><mxGeometry relative="1" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="Electron">
+  <diagram name="App B.4 Family Safety &amp; Volunteers" id="uc-m7">
+    <mxGraphModel dx="1407" dy="868" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="698" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" value="Family Safety and Volunteer Coordination" vertex="1">
+          <mxGeometry height="498" width="900" x="260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_addfam" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Add / edit family member" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_viewfam" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View family safety status" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_broadcast" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Broadcast &quot;I am SAFE / NEEDS HELP&quot;" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_profile" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Maintain volunteer profile" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_zone" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Check in / out of a zone" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_wellbeing" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Log wellbeing (physical / mental)" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_recommend" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View recommended incidents" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_createtask" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Create task" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_updatetask" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Update own task status" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m7_team" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Compose response team" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Citizen" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Citizen" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Volunteer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Volunteer" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="219.33333333333334" as="geometry" />
+        </mxCell>
+        <mxCell id="a_DMCOfficer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="DMC Officer" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="358.6666666666667" as="geometry" />
+        </mxCell>
+        <mxCell id="a_MLService" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="ML Service" vertex="1">
+          <mxGeometry height="80" width="40" x="1230" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" edge="1" parent="1" source="a_Volunteer" style="endArrow=block;endFill=0;html=1;strokeColor=#666666;" target="a_Citizen" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_addfam" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_viewfam" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n4" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_broadcast" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_profile" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n6" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_zone" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_wellbeing" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n8" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_recommend" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n9" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_createtask" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="390" />
+              <mxPoint x="480" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n10" edge="1" parent="1" source="a_Volunteer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_updatetask" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n11" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_team" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n12" edge="1" parent="1" source="a_MLService" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m7_team" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1060" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

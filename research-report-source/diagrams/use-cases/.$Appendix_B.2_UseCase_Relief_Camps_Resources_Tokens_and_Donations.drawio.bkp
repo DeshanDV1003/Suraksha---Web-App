@@ -1,1 +1,129 @@
-<mxfile host="app.diagrams.net" version="24.7.5"><diagram name="App B.2 Relief Camps, Resources, Tokens &amp; Donations" id="uc-m5"><mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="912" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="boundary" value="Relief Camps, Resources, Tokens and Donations" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" vertex="1" parent="1"><mxGeometry x="260" y="40" width="900" height="712" as="geometry"/></mxCell><mxCell id="uc_m5_camp" value="Create / manage relief camp" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="100" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_occ" value="Update camp occupancy" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="100" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_res" value="Manage residents / inventory / schedule" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="178" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_supply" value="Request &amp; fulfil camp supplies" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="178" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_transfer" value="Request inter-camp transfer" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="256" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_optimise" value="Optimise resource allocation" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="256" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_issue" value="Issue relief token" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="334" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_claim" value="Claim relief token" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="334" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_mytokens" value="View my relief tokens (offline)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="412" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_donate" value="Submit donation" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="412" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_donhist" value="View donation history" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="320" y="490" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_campaign" value="Manage donor campaign" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="680" y="490" width="250" height="54" as="geometry"/></mxCell><mxCell id="uc_m5_validate" value="Validate token (active / not expired / under limit)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="335" y="592" width="220" height="46" as="geometry"/></mxCell><mxCell id="uc_m5_record" value="Record claim + fraud score" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="695" y="592" width="220" height="46" as="geometry"/></mxCell><mxCell id="uc_m5_guard" value="Enforce occupancy &lt;= capacity" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" vertex="1" parent="1"><mxGeometry x="335" y="660" width="220" height="46" as="geometry"/></mxCell><mxCell id="a_Citizen" value="Citizen" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="80" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_DMCOfficer" value="DMC Officer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="290.66666666666663" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_Administrator" value="Administrator" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="501.3333333333333" width="40" height="80" as="geometry"/></mxCell><mxCell id="a_MLService" value="ML Service" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1230" y="80" width="40" height="80" as="geometry"/></mxCell><mxCell id="n1" value="" style="endArrow=block;endFill=0;html=1;strokeColor=#666666;" edge="1" parent="1" source="a_Administrator" target="a_DMCOfficer"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n2" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_camp"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n3" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_occ"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n4" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_res"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n5" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_supply"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n6" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_transfer"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n7" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_optimise"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n8" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_MLService" target="uc_m5_optimise"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n9" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_issue"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n10" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m5_claim"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n11" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m5_mytokens"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n12" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Citizen" target="uc_m5_donate"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n13" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_DMCOfficer" target="uc_m5_donhist"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n14" value="" style="endArrow=none;html=1;strokeColor=#333333;" edge="1" parent="1" source="a_Administrator" target="uc_m5_campaign"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n15" value="&#171;include&#187;" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" edge="1" parent="1" source="uc_m5_claim" target="uc_m5_validate"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n16" value="&#171;include&#187;" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" edge="1" parent="1" source="uc_m5_claim" target="uc_m5_record"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="n17" value="&#171;include&#187;" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" edge="1" parent="1" source="uc_m5_occ" target="uc_m5_guard"><mxGeometry relative="1" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="Electron">
+  <diagram name="App B.2 Relief Camps, Resources, Tokens &amp; Donations" id="uc-m5">
+    <mxGraphModel dx="1298" dy="802" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="912" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;" value="Relief Camps, Resources, Tokens and Donations" vertex="1">
+          <mxGeometry height="712" width="900" x="260" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_camp" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Create / manage relief camp" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_occ" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Update camp occupancy" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_res" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Manage residents / inventory / schedule" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_supply" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Request &amp; fulfil camp supplies" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_transfer" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Request inter-camp transfer" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_optimise" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Optimise resource allocation" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_issue" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Issue relief token" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_claim" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Claim relief token" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_mytokens" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View my relief tokens (offline)" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_donate" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Submit donation" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_donhist" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="View donation history" vertex="1">
+          <mxGeometry height="54" width="250" x="320" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_campaign" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Manage donor campaign" vertex="1">
+          <mxGeometry height="54" width="250" x="680" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_validate" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Validate token (active / not expired / under limit)" vertex="1">
+          <mxGeometry height="46" width="220" x="940" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_record" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Record claim + fraud score" vertex="1">
+          <mxGeometry height="46" width="220" x="930" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_m5_guard" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=10;" value="Enforce occupancy &lt;= capacity" vertex="1">
+          <mxGeometry height="46" width="220" x="930" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Citizen" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Citizen" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a_DMCOfficer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="DMC Officer" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="290.66666666666663" as="geometry" />
+        </mxCell>
+        <mxCell id="a_Administrator" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="Administrator" vertex="1">
+          <mxGeometry height="80" width="40" x="40" y="501.3333333333333" as="geometry" />
+        </mxCell>
+        <mxCell id="a_MLService" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" value="ML Service" vertex="1">
+          <mxGeometry height="80" width="40" x="1230" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" edge="1" parent="1" source="a_Administrator" style="endArrow=block;endFill=0;html=1;strokeColor=#666666;" target="a_DMCOfficer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_camp" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_occ" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_res" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_supply" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_transfer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_optimise" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n8" edge="1" parent="1" source="a_MLService" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_optimise" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n9" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_issue" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n10" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_claim" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n11" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_mytokens" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n12" edge="1" parent="1" source="a_Citizen" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_donate" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n13" edge="1" parent="1" source="a_DMCOfficer" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_donhist" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n14" edge="1" parent="1" source="a_Administrator" style="endArrow=none;html=1;strokeColor=#333333;" target="uc_m5_campaign" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n15" edge="1" parent="1" source="uc_m5_claim" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m5_validate" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n16" edge="1" parent="1" source="uc_m5_claim" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m5_record" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n17" edge="1" parent="1" source="uc_m5_occ" style="endArrow=open;endFill=0;html=1;dashed=1;fontSize=10;strokeColor=#009900;" target="uc_m5_guard" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,55 @@
+<mxfile host="Electron">
+  <diagram name="C.1 Fragment 8" id="erf8">
+    <mxGraphModel dx="1323" dy="826" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1320" pageHeight="680" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="psr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;PsychologicalSupportRequest&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK userId  → User&lt;br&gt;type : SupportType, urgency : SupportUrgency&lt;br&gt;status : SupportStatus, anonymous" vertex="1">
+          <mxGeometry height="130" width="220" x="80" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cse" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;ChatSession&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;requestId  (soft — no FK)&lt;br&gt;counselorId?, userId (default &quot;anonymous&quot;)&lt;br&gt;status, startedAt, endedAt?" vertex="1">
+          <mxGeometry height="130" width="220" x="80" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="cm" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;ChatMessage&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK sessionId  → ChatSession&lt;br&gt;senderId, content, createdAt" vertex="1">
+          <mxGeometry height="112" width="220" x="80" y="408" as="geometry" />
+        </mxCell>
+        <mxCell id="gts" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;GroupTherapySession&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;title, campId?&lt;br&gt;counselorId, scheduledFor&lt;br&gt;maxParticipants, status" vertex="1">
+          <mxGeometry height="90" width="220" x="470" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="gtp" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;GroupTherapyParticipant&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK sessionId  → GroupTherapySession&lt;br&gt;userId, attendanceStatus" vertex="1">
+          <mxGeometry height="75" width="220" x="470" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="hos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;Hospital&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;name, email (U)&lt;br&gt;totalBeds, availableBeds, isActive" vertex="1">
+          <mxGeometry height="75" width="220" x="880" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="hw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;HospitalWard&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK hospitalId  → Hospital&lt;br&gt;name, totalBeds, availableBeds" vertex="1">
+          <mxGeometry height="75" width="220" x="880" y="277.5" as="geometry" />
+        </mxCell>
+        <mxCell id="hr" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;align=left;verticalAlign=top;spacingLeft=4;spacingTop=2;overflow=hidden;" value="&lt;b&gt;HospitalReferral&lt;/b&gt;&lt;hr size=&quot;1&quot; noshade&gt;PK id&lt;br&gt;FK campId  → ReliefCamp&lt;br&gt;FK hospitalId?  → Hospital&lt;br&gt;patientName, conditionSeverity : Severity&lt;br&gt;status : ReferralStatus, admittedAt?" vertex="1">
+          <mxGeometry height="105" width="220" x="880" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" edge="1" parent="1" source="cse" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="cm" value="1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" edge="1" parent="1" source="gts" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="gtp" value="1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" edge="1" parent="1" source="hos" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="hw" value="1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" edge="1" parent="1" source="hos" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=10;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;" target="hr" value="0..1 : 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" edge="1" parent="1" source="psr" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;fontSize=9;dashed=1;startArrow=none;endArrow=none;" target="cse" value="requestId  (soft)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nn6" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;size=14;align=left;spacingLeft=4;" value="PsychologicalSupportRequest.userId → User (Fragment 1). HospitalReferral.campId → ReliefCamp (Fragment 5)." vertex="1">
+          <mxGeometry height="42" width="1240" x="40" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="nn7" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;size=14;align=left;spacingLeft=4;" value="ChatSession.requestId is a soft reference (no FK). Hospital also has staff Users (Fragment 1)." vertex="1">
+          <mxGeometry height="42" width="1240" x="40" y="576" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
