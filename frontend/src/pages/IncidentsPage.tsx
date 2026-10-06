@@ -257,7 +257,7 @@ export default function IncidentsPage() {
                     const duplicate = serverDup?.peer ?? null;
 
                     return (
-                      <tr key={incident.id} className={cn("hover:bg-slate-50 dark:hover:bg-cyan-500/5 transition-all group border-l-4 border-b border-slate-100 dark:border-cyan-400/5", isSlaBreached ? "bg-red-50 dark:bg-red-500/5 border-l-red-500 hover:bg-red-100 dark:hover:bg-red-500/10" : "border-l-transparent hover:border-l-cyan-400")}>
+                      <tr key={incident.id} data-testid="incident-row" className={cn("hover:bg-slate-50 dark:hover:bg-cyan-500/5 transition-all group border-l-4 border-b border-slate-100 dark:border-cyan-400/5", isSlaBreached ? "bg-red-50 dark:bg-red-500/5 border-l-red-500 hover:bg-red-100 dark:hover:bg-red-500/10" : "border-l-transparent hover:border-l-cyan-400")}>
                         <td className="px-4 py-6 text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black">
                           #DM-{incident.id.slice(0, 6)}
                           {isSlaBreached && (
@@ -348,6 +348,7 @@ export default function IncidentsPage() {
                               </>
                             )}
                             <button
+                              data-testid="view-incident-btn"
                               onClick={() => { setSelectedIncident(incident); setIsDetailsModalOpen(true); }}
                               className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-[#0f172a] flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 hover:text-brand-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all"
                             >
@@ -766,7 +767,7 @@ function IncidentDetailsModal({ incident, onClose }: any) {
   }, [incident.id])
 
   return (
-    <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
+    <div data-testid="incident-details-modal" className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
       <div className="suraksha-card w-full max-w-5xl bg-white dark:bg-[#131f33] border border-slate-200 dark:border-cyan-400/20 p-0 overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl rounded-[3rem]">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full min-h-[600px] max-h-[90vh]">
           {/* Info Side */}

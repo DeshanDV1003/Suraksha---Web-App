@@ -7,8 +7,8 @@ export class DashboardPage {
 
   constructor(page: Page) {
     this.page = page;
-    // Targeting typical stats cards in the dashboard
-    this.statsCards = page.locator('.bg-white, .dark\\:bg-gray-800').filter({ hasText: /Total/i });
+    // Stable hook — see DashboardPage.tsx mainStats.map(...)
+    this.statsCards = page.getByTestId('dashboard-stat-card');
     this.sidebarLinks = page.locator('nav a');
   }
 

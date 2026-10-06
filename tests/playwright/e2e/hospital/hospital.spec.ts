@@ -11,11 +11,11 @@ test.describe('Dashboard - Hospital', () => {
 
   test('TC-PW-055: Referrals page loads', async ({ hospitalPage }) => {
     await hospitalPage.goto('/hospital/referrals');
-    await expect(hospitalPage.getByRole('heading', { name: /referral/i }).first()).toBeVisible();
+    await expect(hospitalPage.getByRole('heading', { name: /referral/i }).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('TC-PW-056: Capacity page loads', async ({ hospitalPage }) => {
     await hospitalPage.goto('/hospital/capacity');
-    await expect(hospitalPage.getByRole('heading', { name: /capacity|beds/i }).first()).toBeVisible();
+    await expect(hospitalPage.getByRole('heading', { name: /capacity|beds/i }).first()).toBeVisible({ timeout: 10000 });
   });
 });

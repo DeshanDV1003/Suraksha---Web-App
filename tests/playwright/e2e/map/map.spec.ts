@@ -25,18 +25,19 @@ test.describe('Map Visualization', () => {
     await mapPage.goto();
     await mapPage.expectMapLoaded();
     
-    // Zoom out using leaflet zoom out button
+    // Zoom out using the leaflet zoom-out button (clustering kicks in at lower zoom levels).
+    // The map's minZoom is 7 and starts at zoom 8, so only one zoom-out step is available
+    // before the control disables itself.
     const zoomOut = adminPage.locator('.leaflet-control-zoom-out');
-    if (await zoomOut.count() > 0) {
-      await zoomOut.click();
-      await zoomOut.click();
-      
-      // Check for marker clusters
-      const cluster = adminPage.locator('.marker-cluster');
-      // It might not exist if there is no data, so we don't strictly assert it
-      if (await cluster.count() > 0) {
-        await expect(cluster.first()).toBeVisible();
-      }
+    await expect(zoomOut).toBeVisible({ timeout: 10000 });
+    // The always-on Layers panel sits in the same corner and briefly animates (transition-all)
+    // on mount, which can intercept the click mid-transition in slower engines — force it.
+    await zoomOut.click({ force: true });
+
+    // Check for marker clusters — it might not exist if there is no data, so we don't strictly assert it
+    const cluster = adminPage.locator('.marker-cluster');
+    if (await cluster.count() > 0) {
+      await expect(cluster.first()).toBeVisible();
     }
   });
 });

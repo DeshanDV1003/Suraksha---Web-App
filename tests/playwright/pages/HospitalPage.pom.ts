@@ -14,6 +14,6 @@ export class HospitalPage {
   }
 
   async expectDashboardLoaded() {
-    await expect(this.page.locator('text=Hospital')).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByTestId('hospital-dashboard-heading')).toBeVisible({ timeout: 10000 });
   }
 }

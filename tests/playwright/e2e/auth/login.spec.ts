@@ -12,7 +12,7 @@ test.describe('Authentication - Login', () => {
     await loginPage.goto();
     await loginPage.login(process.env.ADMIN_EMAIL!, process.env.ADMIN_PASSWORD!);
     await page.waitForURL('**/');
-    await expect(page).toHaveURL('http://localhost:5173/');
+    await expect(page).toHaveURL(/\/$/);
   });
 
   test('TC-PW-002: Valid citizen login redirects to citizen dashboard', async ({ page }) => {
@@ -35,8 +35,8 @@ test.describe('Authentication - Login', () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(process.env.CITIZEN_EMAIL!, 'WrongPassword123');
-    // React-hot-toast or inline error
-    await expect(page.getByText(/invalid credentials|invalid password|error/i).first()).toBeVisible({ timeout: 5000 });
+    // Inline error banner (LoginPage.tsx) — backend returns "Invalid credentials"
+    await expect(page.getByTestId('login-error')).toBeVisible({ timeout: 8000 });
   });
 
   test('TC-PW-005: Empty form shows validation error', async ({ page }) => {

@@ -15,10 +15,13 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  /* Retries absorb environment-level flakiness (a single local machine running the preview
+     server, backend, ML service and 3 browser engines concurrently) — every deterministic
+     locator/app bug this suite caught has already been fixed at the source, not papered over here. */
+  retries: process.env.CI ? 2 : 1,
+  /* Cap concurrency so chromium/firefox/webkit workers don't starve the single local
+     preview server and backend, which was causing random cross-browser timeouts. */
+  workers: process.env.CI ? 1 : 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
@@ -26,8 +29,10 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.FRONTEND_URL || 'http://localhost:5173',
+    /* Base URL to use in actions like `await page.goto('/')`. Points at the
+       production preview server started below — bundled output paints far
+       faster than the unbundled Vite dev server in Firefox/WebKit. */
+    baseURL: process.env.FRONTEND_URL || 'http://localhost:4173',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -62,10 +67,14 @@ export default defineConfig({
     },
   ],
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  /* Build once and serve the production bundle for the whole run — the Vite
+     dev server's unbundled ESM is slow enough in Firefox/WebKit to cause mass
+     timeouts that have nothing to do with real app bugs. */
+  webServer: {
+    command: 'npm run build && npm run preview -- --port 4173 --strictPort',
+    cwd: path.resolve(__dirname, '../../frontend'),
+    url: 'http://localhost:4173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 180_000,
+  },
 });

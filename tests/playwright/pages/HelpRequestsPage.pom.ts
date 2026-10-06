@@ -6,7 +6,7 @@ export class HelpRequestsPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.listContainer = page.locator('.bg-white.rounded-xl').first();
+    this.listContainer = page.getByTestId('help-request-card');
   }
 
   async goto() {

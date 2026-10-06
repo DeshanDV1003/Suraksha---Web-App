@@ -349,7 +349,7 @@ export default function DashboardPage() {
         {/* Main Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {mainStats.map((stat, i) => (
-            <div key={i} className="suraksha-card p-7 group hover:shadow-xl transition-all">
+            <div key={i} data-testid="dashboard-stat-card" className="suraksha-card p-7 group hover:shadow-xl transition-all">
               <div className={`stat-blob ${stat.blob}`} />
               <div className="flex items-center justify-between mb-6 relative z-10">
                 <div className={cn("p-3 rounded-2xl bg-white dark:bg-gray-900 shadow-sm border border-gray-200 dark:border-gray-800", stat.color)}>
@@ -370,7 +370,7 @@ export default function DashboardPage() {
                 })()}
               </div>
               <div className="relative z-10">
-                <div className="text-4xl font-extrabold text-gray-800 dark:text-white/90 mb-1">{stat.value}</div>
+                <div data-testid="dashboard-stat-value" className="text-4xl font-extrabold text-gray-800 dark:text-white/90 mb-1">{stat.value}</div>
                 <div className="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.1em]">{stat.label}</div>
               </div>
             </div>

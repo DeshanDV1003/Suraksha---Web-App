@@ -270,9 +270,9 @@ function CitizenFamilySafety() {
           </div>
         )}
 
-        <div className="space-y-3">
+        <div className="space-y-3" data-testid="family-members-list">
           {familyMembers.map(m => (
-            <div key={m.id} className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl">
+            <div key={m.id} data-testid="family-member-item" className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl">
               <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center text-slate-600 dark:text-slate-300 font-black text-sm shrink-0">
                 {m.name.charAt(0).toUpperCase()}
               </div>

@@ -957,7 +957,7 @@ export default function AIResearchPage() {
 
   return (
     <div>
-      <PageMeta title="AI Research Features — SURAKSHA" />
+      <PageMeta title="AI Research Features — SURAKSHA" description="Explore SURAKSHA's AI-powered disaster research and analysis tools." />
       <PageBreadcrumb pageTitle={t('page_titles.ai_research')} />
 
       {/* Header */}

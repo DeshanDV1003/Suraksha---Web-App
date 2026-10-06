@@ -3,7 +3,7 @@ import { test, expect } from '../../fixtures/test.fixtures';
 test.describe('Camps Management', () => {
   test('TC-PW-041: Camps list loads', async ({ adminPage }) => {
     await adminPage.goto('/camps');
-    await expect(adminPage.locator('.bg-white').first().or(adminPage.getByText(/no camps/i).first())).toBeVisible({ timeout: 10000 });
+    await expect(adminPage.locator('.bg-white').or(adminPage.getByText(/no camps/i)).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('TC-PW-042: Camp capacity bar renders', async ({ adminPage }) => {

@@ -54,7 +54,7 @@ export default function HospitalDashboardPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{hospital.name}</h1>
+          <h1 data-testid="hospital-dashboard-heading" className="text-2xl font-bold text-gray-900 dark:text-white">{hospital.name}</h1>
           <p className="text-sm text-gray-500 mt-1">{hospital.location}</p>
           {(hospital.specialties ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">

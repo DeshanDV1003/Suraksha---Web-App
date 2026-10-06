@@ -469,7 +469,7 @@ export default function HelpRequestsPage() {
               )}
 
               {requests.filter(r => r.status === 'PENDING').map(req => (
-                <div key={req.id} className={cn(
+                <div key={req.id} data-testid="help-request-card" className={cn(
                   "suraksha-card p-6 rounded-[1.5rem] relative overflow-hidden transition-all",
                   req.escalationLevel === 'CRITICAL' ? 'border-2 border-red-500 ring-4 ring-red-500/20' :
                   req.escalationLevel === 'HIGH' ? 'border-2 border-orange-500 ring-4 ring-orange-500/20' : ''

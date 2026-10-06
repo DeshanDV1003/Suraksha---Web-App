@@ -6,8 +6,8 @@ test.describe('Help Requests', () => {
     const page = new HelpRequestsPage(adminPage);
     await page.goto();
     
-    // Either a table, a list of cards, or an empty state
-    await expect(page.listContainer.first().or(adminPage.getByText(/no requests/i).first())).toBeVisible({ timeout: 10000 });
+    // Either a list of request cards, or the "all clear" empty state
+    await expect(page.listContainer.or(adminPage.getByText(/no pending/i)).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('TC-PW-034: Status filter works', async ({ adminPage }) => {

@@ -20,7 +20,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    // Auth endpoints return 401 for expected failures (wrong password, bad 2FA code, etc.) —
+    // those must surface as an inline error, not force a redirect that wipes the error state.
+    const isAuthEndpoint = typeof error.config?.url === 'string' && error.config.url.startsWith('/auth/');
+    if (error.response && error.response.status === 401 && !isAuthEndpoint) {
       // Clear local storage and redirect to login if unauthorized
       localStorage.removeItem('token');
       localStorage.removeItem('user');

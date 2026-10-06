@@ -3,7 +3,7 @@ import { test, expect } from '../../fixtures/test.fixtures';
 test.describe('Tokens Management', () => {
   test('TC-PW-044: Tokens list loads', async ({ adminPage }) => {
     await adminPage.goto('/tokens');
-    await expect(adminPage.locator('table, .bg-white').first().or(adminPage.getByText(/no tokens/i).first())).toBeVisible({ timeout: 10000 });
+    await expect(adminPage.locator('table, .bg-white').or(adminPage.getByText(/no tokens/i)).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('TC-PW-045: Generate token button visible (staff)', async ({ adminPage }) => {

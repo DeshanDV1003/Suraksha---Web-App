@@ -5,42 +5,36 @@ test.describe('Incidents Management', () => {
   test('TC-PW-026: Incidents list loads', async ({ adminPage }) => {
     const incidentsPage = new IncidentsPage(adminPage);
     await incidentsPage.goto();
-    await expect(incidentsPage.incidentCards.first().or(adminPage.getByText(/no incidents/i).first())).toBeVisible({ timeout: 10000 });
+    await expect(incidentsPage.incidentRows.or(adminPage.getByText(/no records/i)).first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('TC-PW-027: Filter by type works', async ({ adminPage }) => {
+  test('TC-PW-027: Filter by severity works', async ({ adminPage }) => {
+    // The page filters by Severity and Status — there is no category/type filter.
     const incidentsPage = new IncidentsPage(adminPage);
     await incidentsPage.goto();
-    
-    // Wait for the select to be available
-    if (await incidentsPage.filterSelect.count() > 0) {
-      await incidentsPage.filterSelect.selectOption({ label: 'FLOOD' });
-      // We don't assert strict data matching here to keep tests robust against db changes,
-      // just ensuring it doesn't crash
-      await adminPage.waitForTimeout(500); 
-    }
+    await incidentsPage.severityFilter.selectOption({ label: 'HIGH' });
+    // We don't assert strict data matching here to keep tests robust against db changes,
+    // just ensuring the filtered list (or the empty state) renders without crashing.
+    await expect(incidentsPage.incidentRows.or(adminPage.getByText(/no records/i)).first()).toBeVisible({ timeout: 5000 });
   });
 
   test('TC-PW-028: Create incident form opens', async ({ adminPage }) => {
     const incidentsPage = new IncidentsPage(adminPage);
     await incidentsPage.goto();
-    await incidentsPage.newIncidentButton.first().click();
-    await expect(adminPage.locator('form').filter({ hasText: /incident/i })).toBeVisible();
+    await incidentsPage.newIncidentButton.click();
+    // The modal is titled "New Field Directive" rather than literally containing "incident".
+    await expect(adminPage.locator('form').filter({ hasText: /directive/i })).toBeVisible();
   });
 
   test('TC-PW-029: Incident detail view', async ({ adminPage }) => {
     const incidentsPage = new IncidentsPage(adminPage);
     await incidentsPage.goto();
-    
-    // Click on the first incident if it exists
-    if (await incidentsPage.incidentCards.count() > 0) {
-      // Find a view button or just click the card
-      const viewBtn = incidentsPage.incidentCards.first().locator('button').filter({ hasText: /view|details/i });
-      if (await viewBtn.count() > 0) {
-        await viewBtn.first().click();
-        // Expect some modal or detail page to open
-        await expect(adminPage.locator('[role="dialog"], .modal').first()).toBeVisible({ timeout: 5000 });
-      }
+
+    // Click on the first incident row if one exists
+    if (await incidentsPage.incidentRows.count() > 0) {
+      const viewBtn = incidentsPage.incidentRows.first().getByTestId('view-incident-btn');
+      await viewBtn.click({ force: true }); // the button only becomes visible on row hover
+      await expect(adminPage.getByTestId('incident-details-modal')).toBeVisible({ timeout: 5000 });
     }
   });
 });

@@ -311,7 +311,7 @@ export default function AlertsPage() {
 
                   <div className="space-y-3">
                     <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] pl-1 italic">{t('alerts_page.directive_headline')}</label>
-                    <input required type="text" placeholder={t('alerts_page.headline_placeholder')} className="suraksha-input" value={newAlert.title} onChange={(e) => setNewAlert({...newAlert, title: e.target.value})} />
+                    <input data-testid="alert-title-input" required type="text" placeholder={t('alerts_page.headline_placeholder')} className="suraksha-input" value={newAlert.title} onChange={(e) => setNewAlert({...newAlert, title: e.target.value})} />
                   </div>
 
                   <div className="grid grid-cols-2 gap-8">
@@ -485,7 +485,7 @@ export default function AlertsPage() {
               )
             ) : (
               filteredAlerts.map((alert, i) => (
-                <div key={alert.id} className="suraksha-card p-8 flex flex-col md:flex-row md:items-start bg-white dark:bg-gray-900 hover:shadow-2xl hover:shadow-blue-500/5 transition-all group overflow-hidden border-none shadow-sm relative">
+                <div key={alert.id} data-testid="alert-card" className="suraksha-card p-8 flex flex-col md:flex-row md:items-start bg-white dark:bg-gray-900 hover:shadow-2xl hover:shadow-blue-500/5 transition-all group overflow-hidden border-none shadow-sm relative">
                   <div className={cn("absolute left-0 top-0 h-full w-2 transition-all", alert.type === 'EMERGENCY' ? "bg-red-500" : alert.type === 'WARNING' ? "bg-amber-500" : "bg-blue-500")} />
 
                   <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 md:mr-8 shadow-lg mb-6 md:mb-0", alert.type === 'EMERGENCY' ? "bg-red-50 text-red-500" : alert.type === 'WARNING' ? "bg-amber-50 text-amber-500" : "bg-blue-50 text-blue-600")}>

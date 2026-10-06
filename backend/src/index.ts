@@ -53,7 +53,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:19000", "http://localhost:8081"], // Web and Mobile dev ports
+    origin: ["http://localhost:5173", "http://localhost:4173", "http://localhost:19000", "http://localhost:8081"], // Web dev/preview and Mobile ports
     methods: ["GET", "POST", "PATCH", "DELETE"]
   }
 });

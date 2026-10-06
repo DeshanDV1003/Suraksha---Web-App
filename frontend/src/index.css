@@ -814,6 +814,13 @@ span.flatpickr-weekday,
   @apply opacity-100;
 }
 
+/* The map page's always-visible Layers panel shares the bottom-right corner with Leaflet's
+   zoom control; keep the zoom control above it so it stays clickable. */
+.leaflet-top.leaflet-right,
+.leaflet-bottom.leaflet-right {
+  z-index: 1001;
+}
+
 
 
 

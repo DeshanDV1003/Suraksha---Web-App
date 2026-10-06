@@ -8,6 +8,8 @@ test.describe('Family Safety', () => {
 
   test('TC-PW-062: Family member list visible', async ({ citizenPage }) => {
     await citizenPage.goto('/family-safety');
-    await expect(citizenPage.locator('.bg-white, .grid').first().or(citizenPage.getByText(/no family members/i).first())).toBeVisible({ timeout: 10000 });
+    await expect(
+      citizenPage.getByTestId('family-member-item').or(citizenPage.getByText(/no family members/i)).first()
+    ).toBeVisible({ timeout: 10000 });
   });
 });

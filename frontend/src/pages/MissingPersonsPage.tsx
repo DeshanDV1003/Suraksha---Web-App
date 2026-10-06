@@ -444,7 +444,7 @@ export default function MissingPersonsPage() {
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-10 space-y-6">
+              <form data-testid="missing-person-form" onSubmit={handleSubmit} className="p-10 space-y-6">
                 {/* Unidentified toggle — staff only */}
                 {!isCitizen && (
                   <div className={cn("p-4 rounded-xl border cursor-pointer transition-all", isUnidentified ? "bg-red-500/15 border-red-500/30" : "bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10")}>
